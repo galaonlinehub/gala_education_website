@@ -1,6 +1,7 @@
 import localFont from "next/font/local";
 import "../globals.css";
 import { AntdRegistry } from '@ant-design/nextjs-registry';
+import Footer from "@/components/layout/footer";
 
 const geistSans = localFont({
   src: "../fonts/GeistVF.woff",
@@ -45,7 +46,7 @@ export default function RootLayout({ children }) {
             <main>
                 {children}
             </main>
-        <footer>This is the footer</footer>
+        <Footer/>
         </AntdRegistry>
       </body>
     </html>
