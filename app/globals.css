@@ -2,26 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+
+.custom-select .ant-select-selection-placeholder {
+  color: white !important;  
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.custom-select .ant-select-selector {
+  background-color: #001840 !important; 
+  border-radius: 5px !important;     
+  padding: 4px 8px !important;     
+  color: white !important; 
+  
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+
+.custom-select .ant-select-selector input {
+  background-color: transparent !important; 
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+.custom-select .ant-select-arrow {
+  color: white;  
 }
