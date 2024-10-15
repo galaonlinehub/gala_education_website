@@ -2,6 +2,7 @@ import localFont from "next/font/local";
 import "../globals.css";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import Footer from "@/components/layout/footer";
+import { dashboard_links } from "@/constants/links";
 
 const geistSans = localFont({
     src: "../fonts/GeistVF.woff",
@@ -80,12 +81,26 @@ export default function RootLayout({ children }) {
                         </span>
                     </nav>
                     <main className="min-h-screen w-full flex">
-                        <div className="w-[20vw] h-screen border-[0.9px] border-r">
-                            Sidebar
+                        <div className="w-[15vw] h-screen border-[0.9px] border-r p-4">
+                           <ul className="flex flex-col gap-3 w-full ">
+                            {
+                              dashboard_links.map((item,i)=>(
+                                <li key={i} className="gap-x-2 flex">
+                                  <span>
+                                    {item.icon}
+                                  </span>
+                                  <span className="font-bold">
+
+                                  {item.name}
+                                  </span>
+                                  </li>
+                              ))
+                            }
+                           </ul>
                         </div>
 
                         
-                        <div className="w-[80vw] ml-[10vw] h-screen overflow-y-auto">
+                        <div className="w-[85vw] ml-[10vw] h-screen overflow-y-auto">
                             {children}
                         </div>
                     </main>
