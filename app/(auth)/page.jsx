@@ -480,10 +480,10 @@ function Home() {
                         </button>
                     </div>
                 </div>
-                <div className="relative flex flex-col sm:flex-row  mt-4 h-[80vh] w-screen">
-                    <div className="absolute left-12 -top-[200px] w-full">
+                <div className="relative flex flex-col sm:flex-row  mt-4 sm:h-[80vh] h-fit w-screen ">
+                    <div className="absolute left-0 -top-[200px] w-full">
                         <svg
-                            className="w-[250px] h-[250px] !-z-10"
+                            className="sm:w-[250px] sm:h-[250px] w-[150px] h-[150px]  !-z-10"
                             viewBox="0 0 300 300"
                             fill="none"
                             xmlns="http://www.w3.org/2000/svg"
@@ -526,7 +526,7 @@ function Home() {
                         </svg>
                     </div>
 
-                    <div className="w-full flex py-8 bg-black/10 flex-col items-center">
+                    <div className="w-full flex py-8 bg-black/10 sm:h-[70vh] h-fit flex-col items-center">
                         <h1 className="text-3xl text-center font-black ">
                             Pioneers in Digital Teaching
                         </h1>
@@ -536,7 +536,7 @@ function Home() {
                             digital habits for balanced, responsible technology
                             use."
                         </h1>
-                        <div className="flex p-20 justify-around ">
+                        <div className="flex p-20 justify-around flex-col gap-y-10 sm:gap-0  sm:flex-row ">
                             <PioneerCard
                                 icon={
                                     <svg
@@ -630,56 +630,14 @@ function Home() {
                             />
                         </div>
                     </div>
-                </div>
-                <div>
-                    <div className="absolute left-12 -top-[200px] w-full">
-                        <svg
-                            className="w-[250px] h-[250px] !-z-10"
-                            viewBox="0 0 300 300"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path
-                                d="M234 72H170.7C169.5 63.6 163.5 57 155.4 54.6C160.5 48.6 168.3 45 176.4 45H226.5C235.5 45 243 37.5 243 28.5C243 19.5 235.5 12 226.5 12H150H73.5C64.5 12 57 19.5 57 28.5C57 37.5 64.5 45 73.5 45H123.6C131.7 45 139.5 48.6 144.6 54.6C136.5 56.7 130.5 63.6 129.3 72H66C60.9 72 57 75.9 57 81V279C57 284.1 60.9 288 66 288H234C239.1 288 243 284.1 243 279V81C243 75.9 239.1 72 234 72ZM164.7 72H158.4C157.5 69.6 155.4 67.5 153 66.6V60.3C159 61.5 163.5 66 164.7 72ZM123.6 39H73.5C67.8 39 63 34.2 63 28.5C63 22.8 67.8 18 73.5 18H150H226.5C232.2 18 237 22.8 237 28.5C237 34.2 232.2 39 226.5 39H176.4C166.2 39 156.3 43.8 150 51.9C143.7 43.8 133.8 39 123.6 39ZM147 60.3V66.6C144.6 67.5 142.5 69.6 141.6 72H135.3C136.5 66 141 61.5 147 60.3ZM237 279C237 280.8 235.8 282 234 282H66C64.2 282 63 280.8 63 279V81C63 79.2 64.2 78 66 78H234C235.8 78 237 79.2 237 81V279Z"
-                                fill="black"
-                                fill-opacity="0.1"
-                            />
-                            <path
-                                d="M228 84H72C70.2 84 69 85.2 69 87V273C69 274.8 70.2 276 72 276H228C229.8 276 231 274.8 231 273V87C231 85.2 229.8 84 228 84ZM225 270H75V90H225V270Z"
-                                fill="black"
-                                fill-opacity="0.1"
-                            />
-                            <path
-                                d="M111 195H189C194.1 195 198 191.1 198 186V108C198 102.9 194.1 99 189 99H111C105.9 99 102 102.9 102 108V186C102 191.1 105.9 195 111 195ZM150 153C140.1 153 132 144.9 132 135C132 125.1 140.1 117 150 117C159.9 117 168 125.1 168 135C168 144.9 159.9 153 150 153ZM150 159C153.3 159 156.3 158.4 159 157.2C174 161.1 184.5 173.7 185.7 189H114C115.2 173.7 126 161.1 140.7 157.2C143.7 158.4 146.7 159 150 159ZM108 108C108 106.2 109.2 105 111 105H189C190.8 105 192 106.2 192 108V186C192 186.6 192 186.9 191.7 187.2C189.9 171.9 180 158.7 165.6 153C170.7 148.5 174 142.2 174 135C174 121.8 163.2 111 150 111C136.8 111 126 121.8 126 135C126 142.2 129.3 148.8 134.4 153C120 158.7 110.1 171.9 108.3 187.2C108 186.9 108 186.6 108 186V108Z"
-                                fill="black"
-                                fill-opacity="0.1"
-                            />
-                            <path
-                                d="M90 216H210C211.8 216 213 214.8 213 213C213 211.2 211.8 210 210 210H90C88.2 210 87 211.2 87 213C87 214.8 88.2 216 90 216Z"
-                                fill="black"
-                                fill-opacity="0.1"
-                            />
-                            <path
-                                d="M90 231H210C211.8 231 213 229.8 213 228C213 226.2 211.8 225 210 225H90C88.2 225 87 226.2 87 228C87 229.8 88.2 231 90 231Z"
-                                fill="black"
-                                fill-opacity="0.1"
-                            />
-                            <path
-                                d="M90 246H210C211.8 246 213 244.8 213 243C213 241.2 211.8 240 210 240H90C88.2 240 87 241.2 87 243C87 244.8 88.2 246 90 246Z"
-                                fill="black"
-                                fill-opacity="0.1"
-                            />
-                            <path
-                                d="M90 261H210C211.8 261 213 259.8 213 258C213 256.2 211.8 255 210 255H90C88.2 255 87 256.2 87 258C87 259.8 88.2 261 90 261Z"
-                                fill="black"
-                                fill-opacity="0.1"
-                            />
-                        </svg>
                     </div>
+                </div>
+                <div className="relative">
+                    
 
-                    <div className="relative ">
+                    <div className="relative flex justify-center ">
                         <svg
-                            className="w-[350px] h-[350px] absolute -top-64 -z-[100] -left-[5rem]"
+                            className="sm:w-[350px] w-[150px]   sm:h-[350px] h-[150px] absolute -top-64 -z-[100] sm:-left-[5rem] left-0"
                             viewBox="0 0 500 500"
                             fill="none"
                             xmlns="http://www.w3.org/2000/svg"
@@ -731,7 +689,7 @@ function Home() {
                             />
                         </svg>
 
-                        <div className="self-center flex px-6 rounded-md shadow-md shadow-black w-[90vw] bg-[#F3F2F2] my-10">
+                        <div className="self-center flex flex-col sm:flex-row px-6 rounded-md shadow-md shadow-black w-[90vw] bg-[#F3F2F2] my-10">
                             <div className="basis-2/3  py-2 flex flex-col gap-y-4">
                                 <h1 className="font-bold ">Financial Aid</h1>
                                 <p className="text-xs">
@@ -753,14 +711,13 @@ function Home() {
                                     their educational goals, regardless of their
                                     financial situation.
                                 </p>
-                                <div className="border-[1px] w-2/5 text-xs font-bold p-1  border-[#030DFE] rounded">
+                                <div className="border-[1px] sm:w-2/5 w-fit text-xs font-bold p-1  border-[#030DFE] rounded">
                                     Apply for financial aid
                                 </div>
                             </div>
-                            <div className="basis-1/3 flex gap-x-5  items-center">
+                            <div className="basis-1/3 flex sm:gap-x-5  gap-x-3 justify-between sm:justify-normal py-4 items-center">
                                 <svg
-                                    width="70"
-                                    height="70"
+                                    className="w-[50px] sm:w-[70px] h-[50px] sm:h-[50px]"
                                     viewBox="0 0 70 70"
                                     fill="none"
                                     xmlns="http://www.w3.org/2000/svg"
@@ -782,8 +739,7 @@ function Home() {
                                     </defs>
                                 </svg>
                                 <svg
-                                    width="70"
-                                    height="70"
+                                    className="w-[50px] sm:w-[70px] h-[50px] sm:h-[50px]"
                                     viewBox="0 0 70 70"
                                     fill="none"
                                     xmlns="http://www.w3.org/2000/svg"
@@ -834,8 +790,7 @@ function Home() {
                                     />
                                 </svg>
                                 <svg
-                                    width="68"
-                                    height="70"
+                                    className="w-[50px] sm:w-[70px] h-[50px] sm:h-[50px]"
                                     viewBox="0 0 68 70"
                                     fill="none"
                                     xmlns="http://www.w3.org/2000/svg"
@@ -846,7 +801,7 @@ function Home() {
                                     />
                                 </svg>
                             </div>
-                        </div>
+                        
                     </div>
                 </div>
                 <div className="relative py-4">
@@ -890,7 +845,7 @@ function Home() {
                     <div className="w-screen bg-black/10 px-[60px] py-3">
                         <div className="basis-1/2 space-y-2">
                         <h1 className="font-bold text-lg">Latest news</h1>
-                          <div className="flex gap-2 ">
+                          <div className="flex gap-2 flex-col sm:flex-row">
                             <div className="basis-1/2 flex flex-col  h-[316px]">
                                 <Image src="/ai.jpeg" width={200} height={200} className="w-full h-1/3 object-cover" />
                                 
@@ -903,7 +858,7 @@ function Home() {
                                     Gala Education is excited to announce the launch of our AI-powered learning platform, offering personalized tutoring and adaptive learning experiences for K12 students. 
                                     </div>
                                 </div>
-                                    <button className='border border-[#030DFE] mt-4  w-1/4 rounded p-1 text-xs'>Read the Article</button>
+                                    <button className='border border-[#030DFE] mt-4  sm:w-1/4 w-fit rounded p-1 text-xs'>Read the Article</button>
                             </div>    
                             <div className="basis-1/2 flex flex-col gap-1">
                                 <NewsCard img={'/news1.jpeg'} title={'New Scholarships for Students Facing Financial Hardship.'} desc={"In our commitment to making education accessible, Gala Education has introduced new scholarship opportunities for students struggling to afford our courses."} />
@@ -916,14 +871,17 @@ function Home() {
                 </div>
                 <div className={'py-4'}>
 
-                    <div className="font-black text-lg">Latest Events</div>
+                    <div className="font-black text-lg text-center">Latest Events</div>
 
-                <div className="relative">
-                <svg className={"w-[300px] h-[300px] -z-[90] absolute top-0 -left-28"} viewBox="0 0 460 418" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M334.167 167.333C334.167 201.916 323.633 234.041 305.6 260.671C320.804 270.519 331.458 286.794 333.719 305.648C368.598 292.516 382.223 277.283 388.985 260.002C393.59 248.235 395.74 233.702 396.521 214.502C397.156 198.862 396.865 181.831 396.725 161.793C384.24 154.597 375.833 141.113 375.833 125.666C375.833 102.655 394.488 83.9998 417.5 83.9998C440.513 83.9998 459.167 102.655 459.167 125.666C459.167 141.063 450.817 154.509 438.398 161.722C438.542 179.875 438.892 198.05 438.154 216.194C437.306 237.031 434.9 257.004 427.785 275.185C413.927 310.604 384.717 333.402 334.167 349.566V354.833C334.167 389.352 306.185 417.333 271.667 417.333H63.3334C28.8157 417.333 0.833374 389.352 0.833374 354.833V313.166C0.833374 291.158 12.2088 271.806 29.4009 260.671C11.3669 234.041 0.833374 201.916 0.833374 167.333C0.833374 75.2857 75.4525 0.666504 167.5 0.666504C259.548 0.666504 334.167 75.2857 334.167 167.333ZM167.5 292.333C236.535 292.333 292.5 236.369 292.5 167.333C292.5 98.2975 236.535 42.3332 167.5 42.3332C98.4644 42.3332 42.5 98.2975 42.5 167.333C42.5 236.369 98.4644 292.333 167.5 292.333ZM167.5 334C209.398 334 247.685 318.539 276.967 293.014C285.906 295.358 292.5 303.491 292.5 313.166V354.833C292.5 366.339 283.173 375.666 271.667 375.666H63.3334C51.8275 375.666 42.5 366.339 42.5 354.833V313.166C42.5 303.491 49.0942 295.358 58.033 293.014C87.3155 318.539 125.602 334 167.5 334Z" fill="#0F0F0F" fill-opacity="0.1"/>
-</svg>
+                <div className="relative py-16">
+                    <svg className={"sm:w-[300px] w-[250px] sm:h-[300px] h-[250px] -z-[90] absolute top-0 -left-28"} viewBox="0 0 460 418" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M334.167 167.333C334.167 201.916 323.633 234.041 305.6 260.671C320.804 270.519 331.458 286.794 333.719 305.648C368.598 292.516 382.223 277.283 388.985 260.002C393.59 248.235 395.74 233.702 396.521 214.502C397.156 198.862 396.865 181.831 396.725 161.793C384.24 154.597 375.833 141.113 375.833 125.666C375.833 102.655 394.488 83.9998 417.5 83.9998C440.513 83.9998 459.167 102.655 459.167 125.666C459.167 141.063 450.817 154.509 438.398 161.722C438.542 179.875 438.892 198.05 438.154 216.194C437.306 237.031 434.9 257.004 427.785 275.185C413.927 310.604 384.717 333.402 334.167 349.566V354.833C334.167 389.352 306.185 417.333 271.667 417.333H63.3334C28.8157 417.333 0.833374 389.352 0.833374 354.833V313.166C0.833374 291.158 12.2088 271.806 29.4009 260.671C11.3669 234.041 0.833374 201.916 0.833374 167.333C0.833374 75.2857 75.4525 0.666504 167.5 0.666504C259.548 0.666504 334.167 75.2857 334.167 167.333ZM167.5 292.333C236.535 292.333 292.5 236.369 292.5 167.333C292.5 98.2975 236.535 42.3332 167.5 42.3332C98.4644 42.3332 42.5 98.2975 42.5 167.333C42.5 236.369 98.4644 292.333 167.5 292.333ZM167.5 334C209.398 334 247.685 318.539 276.967 293.014C285.906 295.358 292.5 303.491 292.5 313.166V354.833C292.5 366.339 283.173 375.666 271.667 375.666H63.3334C51.8275 375.666 42.5 366.339 42.5 354.833V313.166C42.5 303.491 49.0942 295.358 58.033 293.014C87.3155 318.539 125.602 334 167.5 334Z" fill="#0F0F0F" fill-opacity="0.1"/>
+                    </svg>
+                    <svg className="sm:w-[300px] w-[250px] sm:h-[300px] h-[250px] -z-[90] absolute sm:top-0 bottom-0 sm:-right-28 right-14" viewBox="0 0 460 418" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M334.167 167.333C334.167 201.916 323.633 234.041 305.6 260.671C320.804 270.519 331.458 286.794 333.719 305.648C368.598 292.516 382.223 277.283 388.985 260.002C393.59 248.235 395.74 233.702 396.521 214.502C397.156 198.862 396.865 181.831 396.725 161.793C384.24 154.597 375.833 141.113 375.833 125.666C375.833 102.655 394.488 83.9998 417.5 83.9998C440.513 83.9998 459.167 102.655 459.167 125.666C459.167 141.063 450.817 154.509 438.398 161.722C438.542 179.875 438.892 198.05 438.154 216.194C437.306 237.031 434.9 257.004 427.785 275.185C413.927 310.604 384.717 333.402 334.167 349.566V354.833C334.167 389.352 306.185 417.333 271.667 417.333H63.3334C28.8157 417.333 0.833374 389.352 0.833374 354.833V313.166C0.833374 291.158 12.2088 271.806 29.4009 260.671C11.3669 234.041 0.833374 201.916 0.833374 167.333C0.833374 75.2857 75.4525 0.666504 167.5 0.666504C259.548 0.666504 334.167 75.2857 334.167 167.333ZM167.5 292.333C236.535 292.333 292.5 236.369 292.5 167.333C292.5 98.2975 236.535 42.3332 167.5 42.3332C98.4644 42.3332 42.5 98.2975 42.5 167.333C42.5 236.369 98.4644 292.333 167.5 292.333ZM167.5 334C209.398 334 247.685 318.539 276.967 293.014C285.906 295.358 292.5 303.491 292.5 313.166V354.833C292.5 366.339 283.173 375.666 271.667 375.666H63.3334C51.8275 375.666 42.5 366.339 42.5 354.833V313.166C42.5 303.491 49.0942 295.358 58.033 293.014C87.3155 318.539 125.602 334 167.5 334Z" fill="#0F0F0F" fill-opacity="0.1"/>
+                    </svg>
 
-                    <div className={'flex justify-around gap-y-2 gap-x-4'}>
+                    <div className={'flex flex-col sm:flex-row justify-around items-center gap-y-2 gap-x-4'}>
                         <Events img={"/events1.jpeg"} title={'"Future of Learning" Summit'} desc={"A conference exploring cutting-edge technologies in education, featuring expert speakers on AI, personalized learning, and digital transformation in classrooms."} />
                         <Events img={"/events2.jpeg"} title={'"Future of Learning" Summit'} desc={"A conference exploring cutting-edge technologies in education, featuring expert speakers on AI, personalized learning, and digital transformation in classrooms."} />
                         <Events img={"/events3.jpeg"} title={'"Future of Learning" Summit'} desc={"A conference exploring cutting-edge technologies in education, featuring expert speakers on AI, personalized learning, and digital transformation in classrooms."} />
