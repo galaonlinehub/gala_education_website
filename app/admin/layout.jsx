@@ -1,6 +1,7 @@
 import localFont from "next/font/local";
 import "../globals.css";
 import { AntdRegistry } from '@ant-design/nextjs-registry';
+import AdminMain from "@/components/admin/AdminMain";
 
 const geistSans = localFont({
   src: "../fonts/GeistVF.woff",
@@ -25,7 +26,10 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <AntdRegistry>
+
+        <AdminMain>
         {children}
+          </AdminMain>
         </AntdRegistry>
       </body>
     </html>

@@ -1,3 +1,7 @@
+import { FaBook, FaNewspaper, FaUsers } from "react-icons/fa6";
+
+import { MdDashboard, MdEventAvailable, MdPayment } from "react-icons/md";
+
 export const footer_links = {
     "Services":[
         {
@@ -134,4 +138,38 @@ export const dashboard_links = [
         </svg>
         
     }  
+]
+
+
+export const adminLinks = [
+    {
+        name:"Dashboard",
+        icon:MdDashboard,
+        link:"/admin"
+    },
+    {
+        name:"Users",
+        icon:FaUsers,
+        link:"/admin/users"
+    },
+    {
+        name:"Subjects",
+        icon:FaBook,
+        link:"/admin/subjects"
+    },
+    {
+        name:"News",
+        icon:FaNewspaper,
+        link:"/admin/news"
+    },
+    {
+        name:"Events",
+        icon:MdEventAvailable,
+        link:"/admin/events"
+    },
+    {
+        name:"Payments",
+        icon:MdPayment,
+        link:"/admin/payments"
+    }
 ]
