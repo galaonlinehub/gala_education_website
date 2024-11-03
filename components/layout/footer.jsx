@@ -58,8 +58,8 @@ function Footer() {
                <div className="flex flex-wrap gap-x-24">
 
                 {
-                    Object.entries(footer_links).map(([item,links])=>(
-                        <div>
+                    Object.entries(footer_links).map(([item,links],itemKey)=>(
+                        <div key={itemKey}>
                             <h1 className="font-bold text-[#8C8B8D] py-2 ">{item}</h1>
                             <ul>
                                 {
