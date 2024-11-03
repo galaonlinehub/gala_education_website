@@ -1,0 +1,23 @@
+
+.ant-tabs-ink-bar {
+    background-color: #030DFE !important;
+    height: 6px !important;
+}
+.ant-tabs-nav::before {
+    border-top: 0.4em solid #D9D9D9;
+    width: 32em;
+    margin: 0 auto;
+}
+
+@media (max-width: 700px) {
+    .ant-tabs-nav::before {
+        width: 80%;
+    }
+}
+
+.ant-select-selection {
+    background-color: #001840 !important;
+    width: 10em !important;
+}
+
+

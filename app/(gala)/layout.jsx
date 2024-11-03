@@ -1,7 +1,9 @@
 import localFont from "next/font/local";
 import "../globals.css";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
-import Footer from "@/components/layout/footer";
+import Footer from "@/src/components/layout/footer";
+import Sidebar from "@/src/components/layout/Sidebar";
+import {Input} from "antd";
 
 const geistSans = localFont({
     src: "../fonts/GeistVF.woff",
@@ -25,34 +27,38 @@ export default function RootLayout({ children }) {
             <body
                 className={`${geistSans.variable} ${geistMono.variable} antialiased`}
             >
-                <AntdRegistry>
-                    <nav className="h-14 bg-white p-2 flex justify-between max-w-screen items-center">
-                        <div className="w-[40px] h-[40px] relative bg-[#d9d9d9]  rounded-full  ring-[#a0a0a0] ring-offset-1 ring-[2px] flex items-start flex-col ">
-                            <div className="absolute left-2 top-1 flex flex-col">
-                                <p className="text-black text-[12px] font-bold leading-tight">
-                                    Gala
-                                </p>
-                                <p className="text-black text-[12px] font-bold leading-tight">
-                                    Education
-                                </p>
-                            </div>
+            <AntdRegistry>
+                <nav className="h-14 bg-white p-2 flex justify-between max-w-screen items-center">
+                    <div
+                        className="w-[40px] h-[40px] relative bg-[#d9d9d9]  rounded-full  ring-[#a0a0a0] ring-offset-1 ring-[2px] flex items-start flex-col ">
+                        <div className="absolute left-2 top-1 flex flex-col">
+                            <p className="text-black text-[12px] font-bold leading-tight">
+                                Gala
+                            </p>
+                            <p className="text-black text-[12px] font-bold leading-tight">
+                                Education
+                            </p>
                         </div>
+                    </div>
 
-                        <ul className="text-black font-black mr-[10vw] flex sm:gap-x-4 gap-x-2 sm:text-xs text-[8px] leading-[5px]">
-                            <li>Home</li>
-                            <li>About Us</li>
-                            <li>Register</li>
-                            <li>Login</li>
-                        </ul>
-                        {/* <div/> */}
-                    </nav>
-                    <nav className="flex h-12 justify-between w-screen border-y-[0.8px] p-2  border-gray-400 items-center">
-                        <input
-                            className="rounded border-gray-400 border h-10 px-2 basis-2/5"
-                            placeholder="Hint search text "
-                        />
-                        <span className="basis-1/5">October 14,2024</span>
-                        <span className="gap-x-6 basis-1/5 flex items-center">
+                    <ul className="text-black font-black mr-[10vw] flex sm:gap-x-4 gap-x-2 sm:text-xs text-[8px] leading-[5px]">
+                        <li>Home</li>
+                        <li>About Us</li>
+                        <li>Register</li>
+                        <li>Login</li>
+                    </ul>
+                    {/* <div/> */}
+                </nav>
+                <nav
+                    className="flex h-[79.41px] justify-between w-screen border-y-[2.01px] py-2 px-8  border-[#D9D9D9] items-center">
+                    <Input
+                        className="rounded-[10px] !w-[503px] !h-[34px] !border-[#030DFE] border px-2 "
+                        placeholder="Hint search text "
+                    />
+                    <span className="leading-[14.52px] text-[12px] font-extrabold">
+                             {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                    </span>
+                    <span className="gap-x-6 flex items-center">
                             <svg
                                 width="25"
                                 height="29"
@@ -78,19 +84,19 @@ export default function RootLayout({ children }) {
                                 />
                             </svg>
                         </span>
-                    </nav>
-                    <main className="min-h-screen w-full flex">
-                        <div className="w-[20vw] h-screen border-[0.9px] border-r">
-                            Sidebar
-                        </div>
+                </nav>
+                <main className="min-h-screen w-full flex">
+                    <div className="w-[15vw] h-screen border-r" style={{borderRightWidth: '2.01px'}}>
+                        <Sidebar/>
+                    </div>
 
-                        
-                        <div className="w-[80vw] ml-[10vw] h-screen overflow-y-auto">
-                            {children}
-                        </div>
-                    </main>
-                    <Footer />
-                </AntdRegistry>
+                    <div className="w-full h-screen overflow-y-auto">
+                        {children}
+                    </div>
+                </main>
+
+                <Footer/>
+            </AntdRegistry>
             </body>
         </html>
     );
