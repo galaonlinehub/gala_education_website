@@ -12,6 +12,14 @@ function page() {
           </div>
           <div className='flex gap-x-4'>
             <div>
+              <h1 className='text-xs text-gray-400'>Total students</h1>
+              <h2 className='text-3xl text-gray-600'>50</h2>
+            </div>
+            <div>
+              <h1 className='text-xs text-gray-400'>Total teachers</h1>
+              <h2 className='text-3xl text-gray-600'>15</h2>
+            </div>
+            <div>
               <h1 className='text-xs text-gray-400'>Total users</h1>
               <h2 className='text-3xl text-gray-600'>2000</h2>
             </div>

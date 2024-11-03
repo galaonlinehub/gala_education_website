@@ -26,7 +26,7 @@ function AdminNavbar() {
             <Badge status='processing' color={"green"} className='!absolute !top-0 !right-0' />
             <IoIosNotificationsOutline className='text-2xl ' />
             </div>
-            <Image src={"/man.jpg"} width={200} height={200} className='object-cover h-12 w-12 rounded-full' />
+            <Image alt="image" src={"/man.jpg"} width={200} height={200} className='object-cover h-12 w-12 rounded-full' />
             
             
         </div>

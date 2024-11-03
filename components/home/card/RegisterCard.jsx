@@ -11,6 +11,7 @@ function RegisterCard({image,title,desc}) {
   {/* Wrap the image in a div */}
   <div className='w-full h-[12vh]'>
     <img 
+      alt="image Data"
       src={image} 
       className='w-full h-full border-white border-[1px] object-cover' 
       width={100} 

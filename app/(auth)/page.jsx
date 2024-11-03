@@ -11,7 +11,7 @@ function Home() {
     return (
         <div>
             <div className="relative w-[100vw]  h-[100vh] overflow-y-auto">
-                <Image
+                <Image 
                     src="/gala_home1.jpeg"
                     layout="fill"
                     objectFit="cover"
@@ -19,7 +19,7 @@ function Home() {
                 />
                 <div className="absolute inset-0 bg-black opacity-70" />
 
-                <div className="absolute inset-0 sm:px-[15vw] px-[5vw] sm:pt-[10vh] pt-[4vh] flex sm:flex-row flex-col sm:justify-between">
+                <div className="absolute inset-0 lg:px-[15vw] px-[5vw] lg:pt-[10vh] pt-[4vh] gap-y-12 lg:gap-y-0 flex lg:flex-row flex-col lg:justify-between">
                     <div>
                         <div className="">
                             <h1 className="text-white sm:text-[64px] text-[40px]  sm:leading-[70px] leading-[35px] font-black">
@@ -30,15 +30,15 @@ function Home() {
                             </h1>
                         </div>
                         <h2 className="text-white font-bold sm:leading-[30px] leading-[15px] sm:text-[20px] text-[10px] pt-[4vh]">
-                            "Empowering minds,shaping <br /> futures - Gala
+                            &ldquo;Empowering minds,shaping <br /> futures - Gala
                             Education, your
-                            <br /> pathway to success."
+                            <br /> pathway to success.&ldquo;
                         </h2>
                         <h2 className="text-white font-bold leading-[30px] sm:text-[20px] text-[10px] sm:pt-[4vh] pt-[2vh]">
                             Join Now to get 50% off
                         </h2>
                     </div>
-                    <div className="bg-white px-5 py-3 w-[90vw] sm:w-[30vw] h-fit rounded-[15px]">
+                    <div className="bg-white px-5 py-3 w-[90vw] lg:w-[30vw] h-fit rounded-[15px]">
                         <h1 className="font-black sm:text-xs text-[10px]">
                             Are you interested in a session and want to know
                             more?
@@ -162,11 +162,11 @@ function Home() {
                             Why choose our platform?
                         </h1>
                         <h2 className="text-xs sm:text-lg  text-center">
-                            "Choose Gala Education for personalized learning,
+                        &ldquo;Choose Gala Education for personalized learning,
                             innovative teaching methods, and a commitment to
                         </h2>
                         <h2 className="text-xs sm:text-lg text-center">
-                            unlocking every student's full potential."
+                            unlocking every student&apos;s full potential.&ldquo;
                         </h2>
                         <div className="flex flex-col sm:flex-row gap-5">
                             <Card1
@@ -206,9 +206,9 @@ function Home() {
                             Register with us!
                         </h1>
                         <h3 className="sm:leading-[4px] leading-[12px] text-xs text-center ">
-                            "Join Gala Education today - register as a teacher
+                        &ldquo;Join Gala Education today - register as a teacher
                             or student and unlock endless learning
-                            opportunities!”
+                            opportunities!&ldquo;
                         </h3>
                         <div className="flex flex-col sm:flex-row gap-5">
                             <RegisterCard
@@ -233,7 +233,7 @@ function Home() {
                         }
                     >
                         <div className="relative w-full h-[50vh] ">
-                            <Image
+                            <Image alt="image"
                                 src={"/donate1.jpeg"}
                                 width={100}
                                 height={100}
@@ -339,7 +339,7 @@ function Home() {
                                 AI-powered tutoring and learning experiences
                             </h2>
                             <h2 className="text-center leading-none">
-                                tailored to each student's unique needs and
+                                tailored to each student&apos;s unique needs and
                                 progress.
                             </h2>
                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 ">
@@ -450,7 +450,7 @@ function Home() {
 
                     <div className="relative w-full h-full ">
                         <div className="sm:w-2/3 w-full h-3/4 absolute left-0 bg-black/10" />
-                        <Image
+                        <Image alt="image"
                             src="/register_teacher.jpeg"
                             width={200}
                             height={200}
@@ -459,13 +459,13 @@ function Home() {
                     </div>
                     <div className=" sm:px-20 px-2 sm:w-3/4 w-full space-y-3 sm:py-[15vh]">
                         <h1 className="text-3xl font-black ">
-                            Here's more on what you need to know about Us!
+                            Here&apos;s more on what you need to know about Us!
                         </h1>
                         <h2 className="text-sm">
                             At Gala Education, we offer personalized one-on-one
                             tutoring in subjects like math, science, English,
                             social studies, foreign languages, and more, with
-                            flexible scheduling tailored to your child's
+                            flexible scheduling tailored to your child&apos;s
                             learning needs. Our experienced and qualified tutors
                             provide targeted help with homework, test
                             preparation, and standardized exams, as well as
@@ -531,10 +531,10 @@ function Home() {
                             Pioneers in Digital Teaching
                         </h1>
                         <h1 className="text-center">
-                            "Our platform offers personalized, AI-driven
+                        &ldquo;Our platform offers personalized, AI-driven
                             learning while teaching students healthy <br />{" "}
                             digital habits for balanced, responsible technology
-                            use."
+                            use.&ldquo;
                         </h1>
                         <div className="flex p-20 justify-around flex-col gap-y-10 sm:gap-0  sm:flex-row ">
                             <PioneerCard
@@ -847,7 +847,7 @@ function Home() {
                         <h1 className="font-bold text-lg">Latest news</h1>
                           <div className="flex gap-2 flex-col sm:flex-row">
                             <div className="basis-1/2 flex flex-col  h-[316px]">
-                                <Image src="/ai.jpeg" width={200} height={200} className="w-full h-1/3 object-cover" />
+                                <Image alt="image" src="/ai.jpeg" width={200} height={200} className="w-full h-1/3 object-cover" />
                                 
                                 <div className="flex bg-[#001840] ">
                                 

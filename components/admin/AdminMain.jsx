@@ -26,8 +26,8 @@ function AdminMain({children}) {
 
                 {children}
                 </div>
-            <footer className='w-full bg-green-300 '>
-                This is the footer
+            <footer className='w-full  text-center py-2 bg-gray-200'>
+                Galahub @2024 v1.0
             </footer>
             </section>
             </main>    
@@ -43,7 +43,7 @@ function AdminMain({children}) {
       >
          <div className='flex items-center justify-center py-14 flex-col gap-2'>
                 <div className='w-16 h-16 relative '>
-                    <Image src={'/man.jpg'} className='outline outline-[#001840] shadow-2xl outline-[3px] outline-offset-2 rounded-full object-cover' layout='fill' />
+                    <Image alt="image" src={'/man.jpg'} className='outline outline-[#001840] shadow-2xl outline-[3px] outline-offset-2 rounded-full object-cover' layout='fill' />
                     
                     <span className='w-3 h-3 absolute bottom-0 right-0 bg-green-500 animate-wave-pulse rounded-full' />
                 </div>
