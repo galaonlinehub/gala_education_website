@@ -4,6 +4,7 @@ import { AntdRegistry } from "@ant-design/nextjs-registry";
 import Footer from "@/src/components/layout/footer";
 import Sidebar from "@/src/components/layout/Sidebar";
 import {Input} from "antd";
+import { dashboard_links } from "@/constants/links";
 
 const geistSans = localFont({
     src: "../fonts/GeistVF.woff",
@@ -84,19 +85,35 @@ export default function RootLayout({ children }) {
                                 />
                             </svg>
                         </span>
-                </nav>
-                <main className="min-h-screen w-full flex">
-                    <div className="w-[15vw] h-screen border-r" style={{borderRightWidth: '2.01px'}}>
-                        <Sidebar/>
-                    </div>
 
-                    <div className="w-full h-screen overflow-y-auto">
-                        {children}
-                    </div>
-                </main>
+                    </nav>
+                    <main className="min-h-screen w-full flex">
+                        <div className="w-[15vw] h-screen border-[0.9px] border-r p-4">
+                           <ul className="flex flex-col gap-3 w-full ">
+                            {
+                              dashboard_links.map((item,i)=>(
+                                <li key={i} className="gap-x-2 flex">
+                                  <span>
+                                    {item.icon}
+                                  </span>
+                                  <span className="font-bold">
 
-                <Footer/>
-            </AntdRegistry>
+                                  {item.name}
+                                  </span>
+                                  </li>
+                              ))
+                            }
+                           </ul>
+                        </div>
+
+                        
+                        <div className="w-[85vw] ml-[10vw] h-screen overflow-y-auto">
+                            {children}
+                        </div>
+                    </main>
+                    <Footer />
+                </AntdRegistry>
+
             </body>
         </html>
     );
