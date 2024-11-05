@@ -18,7 +18,7 @@ export default function Home() {
               Welcome back, Denis Mgaya!
             </span>
             <span className="text-[12px] font-medium">
-              You’ve successfully logged in to your Teachers Dashboard. Here's where you can manage your classes. Here, you can create new classes, enroll students, schedule live sessions, and keep track of your Learn more....
+              You&apos;ve successfully logged in to your Teachers Dashboard. Here&apos;s where you can manage your classes. Here, you can create new classes, enroll students, schedule live sessions, and keep track of your Learn more....
             </span>
           </span>
           <BookAndPersonSvg/>

@@ -34,7 +34,7 @@ const ConfirmPlan = () => {
                 </div>
 
                 <span className={'text-center text-[12px] text-black font-medium'}>
-                    This fee grants you full access to Gala Education's teaching platform, allowing you to connect with students, manage lessons, and utilize our advanced tools and resources to deliver high-quality education.
+                    This fee grants you full access to Gala Education&apos;s teaching platform, allowing you to connect with students, manage lessons, and utilize our advanced tools and resources to deliver high-quality education.
                 </span>
 
                 <div className="flex flex-col items-center gap-1">

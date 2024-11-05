@@ -7,7 +7,7 @@ const SignInPage = () => {
             <div className="flex flex-col items-center justify-center gap-2">
                 <span className="font-black">Login</span>
                 <span className="font-black text-[32px]">Welcome Back</span>
-                <span className="text-[12px] font-medium text-center px-8">"Welcome back! We're excited to see you again, let’s pick up where you left off and continue your learning journey!"</span>
+                <span className="text-[12px] font-medium text-center px-8">&quot;Welcome back! We&apos;re excited to see you again, let&apos;s pick up where you left off and continue your learning journey!&quot;</span>
                 <form className="flex flex-col items-center justify-center w-full gap-4">
                     <div className="flex flex-col gap-2 w-full">
                         <span className="font-black">Email *</span>
@@ -23,7 +23,7 @@ const SignInPage = () => {
                     <Button
                         className="!text-white !texr-[16px] !h-[42.27px] !bg-[#030DFE] !rounded-[5px] !w-[234.51px] !font-black !mt-5">Login</Button>
                 </form>
-                <span className="text-[14px] font-semibold mt-3">Don't have an account? <span
+                <span className="text-[14px] font-semibold mt-3">Don&apos;t have an account? <span
                     className="text-[#030DFE] ">Sign Up</span></span>
 
                 <Button
