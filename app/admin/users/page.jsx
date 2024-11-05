@@ -2,6 +2,7 @@
 import React from 'react'
 import DataTable from 'react-data-table-component';
 import Link from 'next/link';
+import Image from 'next/image'
 
 function Users() {
   const [selectedRows, setSelectedRows] = React.useState([]);
@@ -105,7 +106,7 @@ function Users() {
     },
     {
       name: "Profile Picture",
-      selector: row => <img  src={row.profile_picture} alt="Profile" width="50" />
+      selector: row => <Image  src={row.profile_picture} alt="Profile" width={100} height={100} className='w-40 h-40 object-cover' />
     },
     {
       name: "Status",

@@ -141,7 +141,7 @@ const Live = () => {
                   
                   </select>
                   </div>
-                <div className="flex items-center text-xs italic">"Enter the class details, choose the date and time, then click to generate the link."</div>
+                <div className="flex items-center text-xs italic">&quot;Enter the class details, choose the date and time, then click to generate the link.&quot;</div>
                 <button type="submit" className="w-full bg-blue-600 text-white px-4 py-2 rounded-3xl hover:bg-blue-700 transition-colors">
                   Generate Link
                 </button>

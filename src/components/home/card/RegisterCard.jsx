@@ -10,13 +10,13 @@ function RegisterCard({image,title,desc}) {
   {/* <div className='flex-col flex w-[20vw] h-[12vh]'> */}
   {/* Wrap the image in a div */}
   <div className='w-full h-[12vh]'>
-    <img 
+    <Image 
       alt="image Data"
       src={image} 
       className='w-full h-full border-white border-[1px] object-cover' 
       width={100} 
       height={100} 
-      // layout='fill' 
+      
     />
   </div>
   
