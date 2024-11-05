@@ -1,11 +1,11 @@
 import React from "react";
 import Image from "next/image";
 import { Button, Checkbox, Input, Select } from "antd";
-import Card1 from "@/components/home/card/Card1";
-import RegisterCard from "@/components/home/card/RegisterCard";
-import PioneerCard from "@/components/home/card/PioneerCard";
-import NewsCard from "@/components/home/card/NewsCard";
-import Events from "@/components/home/card/Events";
+import Card1 from "@/src/components/home/card/Card1";
+import RegisterCard from "@/src/components/home/card/RegisterCard";
+import PioneerCard from "@/src/components/home/card/PioneerCard";
+import NewsCard from "@/src/components/home/card/NewsCard";
+import Events from "@/src/components/home/card/Events";
 // const {TextArea} = Input;
 function Home() {
     return (
