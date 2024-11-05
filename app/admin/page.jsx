@@ -1,5 +1,5 @@
-import DashboardCard from '@/components/admin/DashboardCard'
-import RecentCustomers from '@/components/admin/RecentCustomers'
+import DashboardCard from '@/src/components/admin/DashboardCard'
+import RecentCustomers from '@/src/components/admin/RecentCustomers'
 import React from 'react'
 
 function page() {
