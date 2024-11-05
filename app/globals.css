@@ -3,16 +3,17 @@
 @tailwind utilities;
 
 
+
 .custom-select .ant-select-selection-placeholder {
-  color: white !important;  
+  color: white !important;
 }
 
 .custom-select .ant-select-selector {
-  background-color: #001840 !important; 
-  border-radius: 5px !important;     
-  padding: 4px 8px !important;     
-  color: white !important; 
-  
+  background-color: #001840 !important;
+  border-radius: 5px !important;
+  padding: 4px 8px !important;
+  color: white !important;
+
 }
 
 .custom-tab-label .ant-tabs-tab-btn {
@@ -22,12 +23,13 @@
 
 
 .custom-select .ant-select-selector input {
-  background-color: transparent !important; 
+  background-color: transparent !important;
 }
 
 .custom-select .ant-select-arrow {
-  color: white;  
+  color: white;
 }
+
 
 .ant-tabs-ink-bar {
   height: 6px !important;

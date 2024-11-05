@@ -1,7 +1,8 @@
 import localFont from "next/font/local";
 import "../globals.css";
 import { AntdRegistry } from '@ant-design/nextjs-registry';
-import Footer from "@/components/layout/footer";
+import Footer from "@/src/components/layout/footer";
+import Link from "next/link";
 
 const geistSans = localFont({
   src: "../fonts/GeistVF.woff",
@@ -38,8 +39,12 @@ export default function RootLayout({ children }) {
                 <ul className="text-black font-black mr-[10vw] flex sm:gap-x-4 gap-x-2 sm:text-xs text-[8px] leading-[5px]">
                     <li>Home</li>
                     <li>About Us</li>
-                    <li>Register</li>
-                    <li>Login</li>
+                    <Link href={'/signup'} className='hover:cursor-pointer'>
+                         <li>Register</li>
+                    </Link>
+                    <Link href={'/signin'} className='hover:cursor-pointer'>
+                        <li>Login</li>
+                    </Link>
                 </ul>
                 {/* <div/> */}
             </nav>
