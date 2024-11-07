@@ -35,6 +35,22 @@ const tailwindConfig = {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      boxShadow:{
+        'navbar': '5px 7px 26px -5px rgb(205, 212, 231)',
+      },
+      animation: {
+        'wave-pulse': 'wavePulse 1.5s infinite',
+      },
+      keyframes: {
+        wavePulse: {
+          '0%': {
+            boxShadow: '0 0 0 0 rgba(0, 255, 0, 0.7)', 
+          },
+          '100%': {
+            boxShadow: '0 0 0 10px rgba(0, 255, 0, 0)', 
+          },
+        },
+      },
     },
   },
   plugins: [],

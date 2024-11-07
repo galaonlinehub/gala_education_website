@@ -16,6 +16,11 @@
 
 }
 
+.custom-tab-label .ant-tabs-tab-btn {
+  font-weight: bold;
+  font-size: "8px";
+}
+
 
 .custom-select .ant-select-selector input {
   background-color: transparent !important;
@@ -26,3 +31,41 @@
 }
 
 
+.ant-tabs-ink-bar {
+  height: 6px !important;
+  width:50% !important;
+
+ 
+}
+
+
+.ant-tabs-tab {
+  margin: 0 80px; 
+}
+
+
+.ant-tabs-nav::before {
+  width: 120%;
+  border: none !important;
+}
+
+.ant-switch {
+  box-shadow: 0 0 0 2px #ffffff !important; /* White border as box-shadow */
+}
+
+.ant-switch-checked {
+  background-color: #2459a4 !important; /* Color when checked */
+}
+
+.ant-switch:not(.ant-switch-checked) {
+  background-color: #001840!important; /* Unchecked color */
+}
+
+.ant-switch-handle::before {
+  background-color: #ffffff !important; /* Ball color */
+}
+
+.input-placeholder::placeholder {
+  color: #cccccc; /* light gray for visibility */
+  opacity: 1; /* Ensures the color is solid */
+}

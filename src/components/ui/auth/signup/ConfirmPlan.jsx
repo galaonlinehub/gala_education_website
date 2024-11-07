@@ -66,3 +66,4 @@ const ConfirmPlan = () => {
 };
 
 export default ConfirmPlan;
+
