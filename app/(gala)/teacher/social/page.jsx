@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { Button, Input, Tooltip } from "antd";
-import { PaperClipOutlined, SmileOutlined, AudioOutlined, SendOutlined } from "@ant-design/icons";
+import { PaperClipOutlined, SmileOutlined, AudioOutlined, SendOutlined, VideoCameraOutlined, PhoneOutlined, EllipsisOutlined } from "@ant-design/icons";
 
 const TeacherSocial = () => {
   const [currentTab, setCurrentTab] = useState("direct");
@@ -18,15 +18,24 @@ const TeacherSocial = () => {
     const handleResize = () => {
       setIsSmallScreen(window.innerWidth < 768);
     };
-
     handleResize();
-
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const handleChange = (e) => {
     setSearchValue(e.target.value);
+  };
+
+  const handleAttachment = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      console.log("File selected:", file.name);
+    }
   };
 
   const users = [
@@ -79,25 +88,17 @@ const TeacherSocial = () => {
     }
   };
 
-  const handleAttachment = () => {
-    fileInputRef.current.click();
-  };
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      console.log("File selected:", file.name);
-    }
-  };
-
   const renderContent = () => {
     const filteredUsers = users.filter((user) => user.name.toLowerCase().includes(searchValue.toLowerCase()) || user.message.toLowerCase().includes(searchValue.toLowerCase()));
 
     return filteredUsers.map((item, index) => (
-      <div key={index} onClick={() => viewOnClickedUser(index)} className={`p-3 mb-3 shadow-md flex cursor-pointer gap-2 rounded-lg ${clickedUserIndex === index ? "bg-[#001840] text-white" : "bg-white"}`}>
-        <Image className="rounded-full" src="/necklace.png" alt="avatar" width={32} height={32} />
-        <div className="flex flex-col flex-grow">
-          <div className="text-sm font-bold truncate">{item.name}</div>
+      <div key={index} onClick={() => viewOnClickedUser(index)} className={`p-2 mb-3 bg-[#070B65] shadow-md flex items-center cursor-pointer gap-2 rounded-lg ${clickedUserIndex === index ? "bg-[#001840] text-white" : "bg-white"}`}>
+        <div className="flex items-center justify-center">
+          <img src="/necklace.png" alt="avatar" className="w-10 object-cover rounded-full" />
+        </div>
+
+        <div className="flex flex-col  w-72 flex-grow overflow-hidden">
+          <div className="text-xs font-bold truncate">{item.name}</div>
           <div className="text-xs truncate text-gray-400">{item.message}</div>
         </div>
       </div>
@@ -106,7 +107,7 @@ const TeacherSocial = () => {
 
   const renderChat = () => (
     <div className="flex flex-col h-full">
-      <div className="bg-green-400 p-4 text-white font-bold flex items-center">
+      <div className="bg-gray-200 p-2 text-black font-bold flex items-center">
         {isSmallScreen && (
           <button onClick={() => setClickedUserIndex(null)} className="mr-4">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -114,13 +115,36 @@ const TeacherSocial = () => {
             </svg>
           </button>
         )}
-        <h2>{users[clickedUserIndex].name}</h2>
+        <div className="flex justify-between w-full">
+          <div className="flex gap-2">
+            <div className="flex items-center justify-center">
+              <img src="/necklace.png" alt="avatar" className="w-8 h-8 object-cover rounded-full" />
+            </div>
+            <div className="flex flex-col">
+              <h2 style={{ fontSize: "10px" }}>{users[clickedUserIndex].name} </h2>
+              <h2 style={{ fontSize: "8px" }} className=" text-gray-400">
+                Last seen: 3 hours ago
+              </h2>
+            </div>
+          </div>
+          <div className="flex gap-3">
+            <button>
+              <PhoneOutlined />
+            </button>
+            <button>
+              <VideoCameraOutlined />
+            </button>
+            <button>
+              <EllipsisOutlined />
+            </button>
+          </div>
+        </div>
       </div>
       <div className="flex-grow overflow-y-auto p-4 space-y-2">
         {messages.map((message, index) => (
-          <div key={index} className={`p-2 rounded-lg ${message.sender === "You" ? "bg-blue-100 ml-auto" : "bg-gray-100"} max-w-[70%]`}>
-            <p className="font-bold text-xs">{message.sender}</p>
-            <p className="text-sm">{message.text}</p>
+          <div key={index} className={`p-2 rounded-lg w-fit ${message.sender === "You" ? "bg-[#070B65] ml-auto text-right" : "bg-[#8E8C90]"}`}>
+            {/* <p className="font-bold text-xs">{message.sender}</p> */}
+            <p className="text-xs text-white">{message.text}</p>
           </div>
         ))}
       </div>
@@ -130,7 +154,7 @@ const TeacherSocial = () => {
             <Button icon={<PaperClipOutlined />} onClick={handleAttachment} />
           </Tooltip>
           <input type="file" ref={fileInputRef} onChange={handleFileChange} style={{ display: "none" }} />
-          <Input value={newMessage} onChange={(e) => setNewMessage(e.target.value)} placeholder="Type a message..." className="flex-grow" />
+          <Input value={newMessage} onChange={(e) => setNewMessage(e.target.value)} placeholder="Type a message here..." className="flex-grow" />
           <Tooltip title="Emoji">
             <Button icon={<SmileOutlined />} />
           </Tooltip>
@@ -146,21 +170,22 @@ const TeacherSocial = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex flex-col lg:flex-row gap-8">
-        <div className="w-full lg:w-2/3">
-          <div className="bg-gray-100 rounded-lg shadow-md overflow-hidden h-[600px]">
+        <div className="w-full lg:w-3/4">
+          <div className=" rounded-lg shadow-md overflow-hidden h-[600px]">
             {(!isSmallScreen || clickedUserIndex === null) && (
               <div className="flex flex-col md:flex-row h-full">
-                <div className="w-full md:w-1/3 p-4 border-r border-gray-300">
-                  <h2 className="font-bold text-lg mb-4">Chats</h2>
-                  <div className="flex justify-between mb-4">
+                <div className="w-full md:w-1/3 p-4 pl-3 border-r bg-gray-100 border-gray-300">
+                  <h2 className="font-bold text-sm mb-4">Chats</h2>
+                  <div className="flex justify-evenly gap-1 mb-4">
                     {["Direct", "Groups", "Public"].map((tab) => (
-                      <button key={tab} onClick={() => setCurrentTab(tab.toLowerCase())} className={`px-3 py-1 rounded ${currentTab === tab.toLowerCase() ? "bg-blue-500 text-white" : "bg-gray-200"}`}>
-                        {tab}
+                      <button key={tab} onClick={() => setCurrentTab(tab.toLowerCase())} className={`px-2 text-sm py-1 font-bold items-center rounded ${currentTab === tab.toLowerCase() ? " text-black" : "text-gray-400"}`}>
+                        <span>{tab}</span>
+                        <span className="text-red-500">*</span>
                       </button>
                     ))}
                   </div>
                   <div className="relative mb-4">
-                    <input type="text" placeholder="Search" value={searchValue} onChange={handleChange} className="w-full p-2 pl-8 border rounded-full" />
+                    <input type="text" placeholder="Search" value={searchValue} onChange={handleChange} className="w-full p-2 pl-8 text-xs border rounded-full" />
                     <svg className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                     </svg>
@@ -184,29 +209,39 @@ const TeacherSocial = () => {
 
         {(!isSmallScreen || clickedUserIndex === null) && (
           <div className="w-full lg:w-1/3">
-            <div className="bg-[#001840] rounded-xl p-6">
-              <h2 className="text-white text-lg font-bold mb-4">Notifications</h2>
-              <div className="space-y-4 mb-8">
+            <div className="bg-[#001840] rounded-xl p-6 max-h-[600px] overflow-y-auto">
+              <h2 className="text-white text-xs font-bold mb-4">Notifications</h2>
+              <div className="space-y-4 mb-8 max-h-[300px] overflow-y-auto">
                 {notifications.map((item, index) => (
-                  <div key={index} className="bg-white rounded-md p-3 flex items-start gap-3">
-                    <Image className="rounded-full" src="/necklace.png" alt="avatar" width={32} height={32} />
+                  <div key={index} className="bg-white rounded-md p-2 flex items-center gap-3 h-14">
+                    <div className="flex items-center justify-center">
+                      <img src="/necklace.png" alt="avatar" className="w-8 h-8 object-cover rounded-full" />
+                    </div>
                     <div>
-                      <p className="text-blue-600 text-sm font-bold">{item.name}</p>
-                      <p className="text-xs font-bold">{item.head}</p>
-                      <p className="text-xs">{item.msg}</p>
+                      <p style={{ fontSize: "10px" }} className="text-blue-600 font-bold truncate">
+                        {item.name}
+                      </p>
+                      <p style={{ fontSize: "10px" }} className="text-xs font-bold truncate">
+                        {item.head}
+                      </p>
+                      <p style={{ fontSize: "10px" }} className="truncate max-w-[150px]">
+                        {item.msg}
+                      </p>
                     </div>
                   </div>
                 ))}
               </div>
 
-              <h2 className="text-white text-lg font-bold mb-4">Online Users</h2>
-              <div className="space-y-4">
+              <h2 className="text-white text-sm font-bold mb-4">Online Users</h2>
+              <div className="space-y-4 max-h-[300px] overflow-y-auto">
                 {onlineUsers.map((item, index) => (
-                  <div key={index} className="bg-white rounded-md p-3 flex items-center gap-3">
-                    <Image className="rounded-full" src="/necklace.png" alt="avatar" width={32} height={32} />
+                  <div key={index} className="bg-white rounded-md p-2 flex items-center gap-3">
+                    <div className="flex items-center justify-center">
+                      <img src="/necklace.png" alt="avatar" className="w-8 h-8 object-cover rounded-full" />
+                    </div>
                     <div>
-                      <p className="text-sm font-bold">{item.name}</p>
-                      <p className="text-xs text-green-500">{item.status}</p>
+                      <p className="text-xs font-bold">{item.name}</p>
+                      <p className="text-xs font-bold text-green-500">{item.status}</p>
                     </div>
                   </div>
                 ))}

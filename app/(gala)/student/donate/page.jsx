@@ -208,7 +208,7 @@ const { TabPane } = Tabs;
 const { Title, Paragraph, Text } = Typography;
 const { Option } = Select;
 
-const TeacherDonate = () => {
+const StudentDonate = () => {
   const [activeTab, setActiveTab] = useState("monthly");
   const [activePayTab, setActivePayTab] = useState("bank");
 
@@ -392,4 +392,4 @@ const TeacherDonate = () => {
   );
 };
 
-export default TeacherDonate;
+export default StudentDonate;

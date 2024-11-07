@@ -46,15 +46,17 @@ const Live = () => {
   );
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex flex-col lg:flex-row gap-8">
+    <div className="container py-8">
+      <div className="flex flex-col lg:flex-row gap-20">
         <div className="w-full lg:w-2/3">
           <div className="bg-white rounded-lg shadow-md mb-8">
             <div className="p-6">
               <div className="flex flex-col md:flex-row items-center gap-4">
-                <div className="flex-grow">
-                  <h2 className="text-2xl font-bold mb-2">Welcome back, Diana Malle!</h2>
-                  <ReadMoreContainer />
+                <div className="flex flex-col">
+                  <div className="font-bold text-sm">Welcome back, Diana Malle!</div>
+                  <div>
+                    <ReadMoreContainer />
+                  </div>
                 </div>
                 <div className="flex-shrink-0">
                   <Image className="h-auto w-auto" src="/sitting_on_books.png" alt="An image of a character sitting on books" width={130} height={130} />
@@ -64,10 +66,10 @@ const Live = () => {
           </div>
 
           <h3 className="text-xl font-bold mb-4">Upcoming Live Classes</h3>
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse">
+          <div className="overflow-x-auto text-xs">
+            <table className="w-full border-separate border-spacing-y-2">
               <thead>
-                <tr className="bg-blue-600 text-white">
+                <tr className="bg-[#001840] text-white">
                   <th className="p-2 text-left">Class Name</th>
                   <th className="p-2 text-left">Date</th>
                   <th className="p-2 text-left">Time</th>
@@ -76,9 +78,10 @@ const Live = () => {
                   <th className="p-2 text-left">Actions</th>
                 </tr>
               </thead>
+              <br />
               <tbody>
                 {liveClasses.map((item, index) => (
-                  <tr key={index} className={index % 2 === 0 ? "bg-gray-100" : ""}>
+                  <tr key={index} className="bg-[#001840] p-2 text-white m-3">
                     <td className="p-2">{item.class_name}</td>
                     <td className="p-2">{item.date}</td>
                     <td className="p-2">{item.time}</td>
@@ -88,10 +91,9 @@ const Live = () => {
                       <a href={item.link} className="text-blue-600 underline block mb-2" target="_blank" rel="noopener noreferrer">
                         {item.link}
                       </a>
-                      <div className="flex gap-2 items-center justify-center">
-                      <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors">Share</button>
-                      <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors">Cancel</button>
-
+                      <div className="flex gap-3">
+                        <button className="bg-[#001840] border border-white text-white px-1 w-20 py-1 rounded-lg hover:bg-blue-700 transition-colors">Share</button>
+                        <button className="bg-[#001840] border border-white text-white px-1 w-20 py-1 rounded-lg hover:bg-blue-700 transition-colors">Cancel</button>
                       </div>
                     </td>
                   </tr>
@@ -102,28 +104,32 @@ const Live = () => {
         </div>
 
         <div className="w-full lg:w-1/3">
-          <div className="bg-white rounded-lg shadow-md">
+          <div className="bg-[#001840] text-white rounded-lg shadow-md">
             <div className="p-6">
-              <h3 className="text-xl font-bold mb-4">Schedule a Class</h3>
-              <form className="space-y-4">
+              <h3 className="text-sm font-bold mb-4">Schedule a class</h3>
+              <form className="space-y-4 text-xs">
                 <div>
-                  <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">
-                    Class Name
+                  <label htmlFor="subject" className="block text-sm font-medium text-white">
+                    Class Name*
                   </label>
-                  <input type="text" id="fullName" name="fullName" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="Enter your full name" />
-                </div>
-            
-                <div>
-                  <label htmlFor="date" className="block text-sm font-medium text-gray-700">
-                    Date
-                  </label>
-                  <input type="date" id="date" name="date" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" />
+                  <select id="subject" name="subject" className="mt-1 bg-[#001840] rounded block w-full p-2 border-white border shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                    <option value="">Enter class name</option>
+                    <option value="Form 1">Form 1</option>
+                    <option value="Form 2">Form 2</option>
+                    <option value="Form 3">Form 3</option>
+                  </select>
                 </div>
                 <div>
-                  <label htmlFor="time" className="block text-sm font-medium text-gray-700">
-                    Time
+                  <label htmlFor="date" className="block text-sm  font-medium text-white">
+                    Date*
                   </label>
-                  <select id="time" name="time" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                  <input type="date" id="date" name="date" className="mt-1 bg-[#001840] rounded block w-full p-2 border-white border shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" />
+                </div>
+                <div>
+                  <label htmlFor="time" className="block text-sm font-medium text-white">
+                    Time*
+                  </label>
+                  <select id="time" name="time" className="mt-1 bg-[#001840] rounded block w-full p-2 border-white border shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
                     <option value="19:00">19:00 PM</option>
                     <option value="19:30">19:30 PM</option>
                     <option value="20:00">20:00 PM</option>
@@ -131,23 +137,29 @@ const Live = () => {
                   </select>
                 </div>
                 <div>
-                  <label htmlFor="time" className="block text-sm font-medium text-gray-700">
-                    Duration
+                  <label htmlFor="time" className="block text-sm font-medium text-white">
+                    Duration*
                   </label>
-                  <select id="time" name="time" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
-                    <option value="30">30 min</option>
-                    <option value="45">45 min</option>
-                    <option value="60">60 min</option>
-                  
+                  <select id="time" name="time" className="mt-1 bg-[#001840] rounded block w-full p-2 border-white border shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                    <option value="60">60 minutes</option>
+                    <option value="19:30">45 minutes</option>
+                    <option value="20:00">30 minutes</option>
                   </select>
-                  </div>
-                <div className="flex items-center text-xs italic">&quot;Enter the class details, choose the date and time, then click to generate the link.&quot;</div>
-                <button type="submit" className="w-full bg-blue-600 text-white px-4 py-2 rounded-3xl hover:bg-blue-700 transition-colors">
-                  Generate Link
-                </button>
+
+                </div>
+                <div className="flex items-center italic gap-2">
+                  <span>"Enter the class details, choose the date and time, then click to generate the link."</span>
+                </div>
+                <div className="flex justify-center items-center">
+                  <button type="submit" className="w-fit items-center bg-[#2c2d2e] text-white px-4 py-2 rounded-2xl border border-r-white flex justify-center hover:bg-blue-700 transition-colors">
+                    <span>Generate Link</span>
+                  </button>
+                </div>
+
               </form>
             </div>
           </div>
+          <p className="mt-4 text-xs text-white italic">These details make it easier to find and join a class. They help quickly identify the student and bring up the right class information when searched.</p>
         </div>
       </div>
     </div>

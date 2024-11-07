@@ -46,8 +46,8 @@ const LiveLesson = () => {
   );
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex flex-col lg:flex-row gap-8">
+    <div className="container py-8">
+      <div className="flex flex-col lg:flex-row gap-20">
         <div className="w-full lg:w-2/3">
           <div className="bg-white rounded-lg shadow-md mb-8">
             <div className="p-6">
@@ -67,7 +67,7 @@ const LiveLesson = () => {
 
           <h3 className="text-xl font-bold mb-4">Upcoming Live Classes</h3>
           <div className="overflow-x-auto text-xs">
-            <table className="w-full border-collapse">
+            <table className="w-full border-separate border-spacing-y-2">
               <thead>
                 <tr className="bg-[#001840] text-white">
                   <th className="p-2 text-left">Class Name</th>
@@ -91,7 +91,7 @@ const LiveLesson = () => {
                       <a href={item.link} className="text-blue-600 underline block mb-2" target="_blank" rel="noopener noreferrer">
                         {item.link}
                       </a>
-                      <button className="bg-[#001840] border border-white text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors">Join</button>
+                      <button className="bg-[#001840] border border-white text-white px-1 w-20 py-1 rounded-3xl hover:bg-blue-700 transition-colors">Join</button>
                     </td>
                   </tr>
                 ))}
