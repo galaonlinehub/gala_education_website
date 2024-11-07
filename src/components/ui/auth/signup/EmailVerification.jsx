@@ -47,7 +47,7 @@ const EmailVerification = () => {
         window.removeEventListener("beforeunload", handleBeforeUnload);
       };
     }
-  }, []);
+  }, [openEmailVerificationModal]);
 
   const handleChange = async (value, index) => {
     if (isNaN(value) || value.length > 1) return;
