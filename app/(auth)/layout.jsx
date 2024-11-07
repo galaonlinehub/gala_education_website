@@ -37,8 +37,16 @@ export default function RootLayout({ children }) {
                 </div>
 
                 <ul className="text-black font-black mr-[10vw] flex sm:gap-x-4 gap-x-2 sm:text-xs text-[8px] leading-[5px]">
-                    <li>Home</li>
-                    <li>About Us</li>
+                    <li>
+                    <Link href={'/'} className='hover:cursor-pointer'> 
+                      Home
+                      </Link>
+                      </li>
+                    <li>
+                    <Link href={'#'} className='hover:cursor-pointer'>
+                      About Us
+                      </Link>
+                      </li>
                     <Link href={'/signup'} className='hover:cursor-pointer'>
                          <li>Register</li>
                     </Link>
