@@ -87,9 +87,9 @@ export default function ManageClass() {
         <div className="p-2 rounded border text-xs border-blue-700">Accept Applications</div>
       </div>
       <div className="text-xs">
-        {managedClasses.map((item) => {
+        {managedClasses.map((item, i) => {
           return (
-            <div className="flex mb-4 justify-evenly flex-col gap-3 lg:flex-row items-center">
+            <div key={i} className="flex mb-4 justify-evenly flex-col gap-3 lg:flex-row items-center">
               <div className="flex flex-col font-semibold gap-1">
                 <button className="p-1 rounded-2xl border border-blue-600">{item.category}</button>
                 <span className="text-green-600 font-semibold">{item.time}</span>

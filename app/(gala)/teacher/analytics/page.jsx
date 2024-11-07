@@ -192,7 +192,7 @@ export default function Component() {
                   </select>
                 </div>
 
-                <div className="text-[10px] text-white italic p-2">"Generate insightful analytics to track student performance and enhance your teaching strategies effortlessly!".</div>
+                <div className="text-[10px] text-white italic p-2">&quot;Generate insightful analytics to track student performance and enhance your teaching strategies effortlessly!&quot;.</div>
 
                 <div className="flex items-center justify-center">
                   <button type="submit" className="text-[12px] bg-[#001840] border border-white font-semibold text-white px-2 w-32 py-2 rounded-3xl hover:bg-blue-700 transition-colors">
