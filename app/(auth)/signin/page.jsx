@@ -13,8 +13,8 @@ const SignInPage = () => {
         <span className="font-black">Login</span>
         <span className="font-black text-4xl">Welcome Back</span>
         <span className="text-sm font-medium text-center px-4 sm:px-8">
-          "Welcome back! We're excited to see you again, let's pick up where you
-          left off and continue your learning journey!"
+        &quot;Welcome back! We&lsquo;re excited to see you again, let&#34;s pick up where you
+          left off and continue your learning journey!&quot;
         </span>
         <form className="flex flex-col items-center justify-center w-full gap-4">
           <div className="flex flex-col gap-1 w-full">
@@ -55,7 +55,7 @@ const SignInPage = () => {
           </button>
         </form>
         <span className="text-sm font-semibold mt-3">
-          Don't have an account? <span className="text-[#030DFE]">Sign Up</span>
+          Don&#34;t have an account? <span className="text-[#030DFE]">Sign Up</span>
         </span>
 
         <button className="rounded-md h-12 w-3/4 md:w-full bg-[#001840] mt-10 text-white text-base font-black">
