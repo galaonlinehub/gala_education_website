@@ -5,7 +5,7 @@ import localFont from "next/font/local";
 import { FaBell, FaUserCircle } from "react-icons/fa";
 import "../globals.css";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
-import Footer from "@/components/layout/footer";
+import Footer from "@/src/components/layout/footer";
 import { dashboard_links } from "@/constants/links";
 import Link from "next/link";
 import { MenuOutlined, CloseOutlined } from "@ant-design/icons";

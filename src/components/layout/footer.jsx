@@ -15,8 +15,8 @@ function Footer() {
                 xmlns="http://www.w3.org/2000/svg"
             >
                 <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
                     d="M250 50V250H50V50H250ZM134.179 100H114.701L77.7219 200H95.2942L102.276 180.451H146.543L153.375 200H172.006L134.179 100ZM203.198 100H185.696V200H203.198V100ZM124.293 116.778L141.726 166.666H107.137L124.293 116.778ZM266.667 200H300V233.333H266.667V200ZM66.6667 266.667H100V300H66.6667V266.667ZM133.333 266.667H166.667V300H133.333V266.667ZM66.6667 0H100V33.3333H66.6667V0ZM200 266.667H233.333V300H200V266.667ZM133.333 0H166.667V33.3333H133.333V0ZM200 0H233.333V33.3333H200V0ZM266.667 133.333H300V166.667H266.667V133.333ZM0 200H33.3333V233.333H0V200ZM266.667 66.6667H300V100H266.667V66.6667ZM0 133.333H33.3333V166.667H0V133.333ZM0 66.6667H33.3333V100H0V66.6667Z"
                     fill="#8C8B8D"
                     fillOpacity="0.1"
@@ -58,8 +58,8 @@ function Footer() {
                <div className="flex flex-wrap gap-x-24">
 
                 {
-                    Object.entries(footer_links).map(([item,links])=>(
-                        <div>
+                    Object.entries(footer_links).map(([item,links],itemKey)=>(
+                        <div key={itemKey}>
                             <h1 className="font-bold text-[#8C8B8D] py-2 ">{item}</h1>
                             <ul>
                                 {

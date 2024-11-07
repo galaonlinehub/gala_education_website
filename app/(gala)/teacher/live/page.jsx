@@ -145,6 +145,7 @@ const Live = () => {
                     <option value="19:30">45 minutes</option>
                     <option value="20:00">30 minutes</option>
                   </select>
+
                 </div>
                 <div className="flex items-center italic gap-2">
                   <span>"Enter the class details, choose the date and time, then click to generate the link."</span>
@@ -154,6 +155,7 @@ const Live = () => {
                     <span>Generate Link</span>
                   </button>
                 </div>
+
               </form>
             </div>
           </div>

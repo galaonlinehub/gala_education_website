@@ -243,7 +243,9 @@ const TeacherDonate = () => {
                   <Title level={4} style={{ color: "white" }}>
                     Help us do more
                   </Title>
+
                   <Paragraph style={{ color: "white" }}>Dear members, many students are unable to afford the app charges, limiting their access to vital learning resources. We're stepping in to help cover these costs, ensuring every student has a chance to learn, no matter their financial situation. Your donation is crucial—it opens doors to education for those in need and helps us support underfunded rural schools, where students study under incredibly harsh conditions. Together, we can break the cycle of poverty and build a brighter future for these young minds.</Paragraph>
+
                 </div>
               </Col>
               <Col xs={24} lg={12}>
@@ -328,7 +330,9 @@ const TeacherDonate = () => {
                   <Title level={4} style={{ color: "white" }}>
                     Help us do more
                   </Title>
+
                   <Paragraph style={{ color: "white" }}>Dear members, many students are unable to afford the app charges, limiting their access to vital learning resources. We're stepping in to help cover these costs, ensuring every student has a chance to learn, no matter their financial situation. Your donation is crucial—it opens doors to education for those in need and helps us support underfunded rural schools, where students study under incredibly harsh conditions. Together, we can break the cycle of poverty and build a brighter future for these young minds.</Paragraph>
+
                 </div>
               </Col>
               <Col xs={24} lg={12}>
