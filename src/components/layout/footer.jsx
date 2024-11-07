@@ -42,7 +42,7 @@ function Footer() {
             </svg>
             
         </div>
-        <div className="absolute top-0 left-0 w-screen sm:h-[60vh] h-fit flex flex-col sm:flex-row ">
+        <div className="absolute top-0 left-0 w-screen sm:h-[60vh] h-fit flex flex-col sm:flex-row mt-16">
             <div className="text-white flex basis-1/2 px-[3vw] items-center justify-center h-full w-full flex-col">
                 <h1 className="font-black text-sm sm:text-lg">Join the Mailing List</h1>
                <div>
@@ -59,7 +59,7 @@ function Footer() {
 
                 {
                     Object.entries(footer_links).map(([item,links])=>(
-                        <div>
+                        <div key={links}>
                             <h1 className="font-bold text-[#8C8B8D] py-2 ">{item}</h1>
                             <ul>
                                 {
