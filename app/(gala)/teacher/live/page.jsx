@@ -148,7 +148,7 @@ const Live = () => {
 
                 </div>
                 <div className="flex items-center italic gap-2">
-                  <span>"Enter the class details, choose the date and time, then click to generate the link."</span>
+                  <span>&quot;Enter the class details, choose the date and time, then click to generate the link.&quot;</span>
                 </div>
                 <div className="flex justify-center items-center">
                   <button type="submit" className="w-fit items-center bg-[#2c2d2e] text-white px-4 py-2 rounded-2xl border border-r-white flex justify-center hover:bg-blue-700 transition-colors">

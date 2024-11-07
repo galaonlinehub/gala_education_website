@@ -98,7 +98,7 @@ const StudentReminders = () => {
     <div className="flex flex-col justify-center w-full items-center p-8">
       <div className="text-sm font-bold">Reminders</div>
 
-      <div className="text-xs">Reminders help students stay organized, ensuring they don't miss important sessions, deadlines, or updates.</div>
+      <div className="text-xs">Reminders help students stay organized, ensuring they don&apos;t miss important sessions, deadlines, or updates.</div>
       <div className="flex w-full flex-col md:flex-row mt-5 px-20 ">
         <div className="flex w-full border border-blue-700 text-xs p-6 flex-col gap-2">
 
