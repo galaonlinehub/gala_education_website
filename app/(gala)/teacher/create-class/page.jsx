@@ -25,8 +25,8 @@ export default function CreateClass() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4 md:p-6 lg:p-8">
-      <div className="max-w-2xl mx-auto bg-white p-6 rounded-md shadow-md">
+    <div className="min-h-screen w-full p-4 md:p-6 lg:p-8">
+      <div className="max-w-2xl mx-auto p-6 rounded-md shadow-md">
         <Title level={3} className="text-center mb-4">
           Create a Class
         </Title>
@@ -58,10 +58,11 @@ export default function CreateClass() {
             <Space size={[0, 8]} wrap>
               {selectedForms.map((item) => (
                 <Tag
+                color='#001840'
                   key={item}
                   closable
                   onClose={() => removeItem(item)}
-                  className="bg-[#001840] text-white border-none"
+                  className=" text-white border-none"
                   closeIcon={<CloseOutlined className="text-white" />}
                 >
                   {item}

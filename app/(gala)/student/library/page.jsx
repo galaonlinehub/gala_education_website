@@ -27,7 +27,7 @@ const Library = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="flex flex-col lg:flex-row gap-8">
+      <div className="flex flex-col lg:flex-row gap-20">
         <div className="w-full lg:w-2/3">
           <div className=" border-2 border-blue-600 rounded-xl p-4 mb-8 relative">
             <div className="flex flex-col md:flex-row items-center gap-4">

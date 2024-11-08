@@ -95,11 +95,13 @@ const StudentReminders = () => {
   ];
 
   return (
-    <div className="flex flex-col justify-center items-center p-8">
+    <div className="flex flex-col justify-center w-full items-center p-8">
       <div className="text-sm font-bold">Reminders</div>
+
       <div className="text-xs">Reminders help students stay organized, ensuring they don&apos;t miss important sessions, deadlines, or updates.</div>
-      <div className="flex w-full flex-col md:flex-row mt-5">
-        <div className="flex w-full border border-blue-700 md:w-1/2 text-xs p-6 flex-col gap-2">
+      <div className="flex w-full flex-col md:flex-row mt-5 px-20 ">
+        <div className="flex w-full border border-blue-700 text-xs p-6 flex-col gap-2">
+
           <span className="text-sm font-semibold">Create a new reminder</span>
           <div className="flex flex-col">
             <span>Reminder Title</span>
@@ -135,7 +137,7 @@ const StudentReminders = () => {
             <button className="p-2 bg-blue-700 text-white w-20">Cancel</button>
           </div>
         </div>
-        <div className="bg-[#001840] w-full border border-blue-700 md:w-1/2 p-6">
+        <div className="bg-[#001840] w-full border border-blue-700 p-6">
           <span className="text-white text-sm font-semibold">All reminders</span>
           <div>
             <div className="w-full mt-4 max-h-64 overflow-y-auto">

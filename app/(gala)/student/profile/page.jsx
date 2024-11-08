@@ -8,11 +8,11 @@ const StudentProfile = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center p-8">
+    <div className="flex flex-col justify-center w-full items-center p-8">
       <img src="/avatar.png" alt="Avatar" width="72px" height="72px" />
       <div className="text-sm">Profile Settings</div>
-      <div className=" w-full mt-5 text-xs md:flex justify-center flex-col md:flex-row ">
-        <div className="flex w-full md:w-1/2 border border-blue-700 lg:w-1/3 p-6 flex-col gap-2">
+      <div className=" w-full mt-5 text-xs md:flex justify-center px-20 flex-col md:flex-row ">
+        <div className="flex w-full  border border-blue-700 p-6 flex-col gap-2">
           <div className="flex flex-col">
             <span>Username</span>
             <input type="text" className="p-2 border border-blue-700" />
@@ -35,7 +35,7 @@ const StudentProfile = () => {
             <button className="p-1.5 bg-blue-700 text-white w-24">Save Changes</button>
           </div>
         </div>
-        <div className="bg-[#001840] border border-blue-700 w-full md:w-1/2 p-6 lg:w-1/3 text-white">
+        <div className="bg-[#001840] border border-blue-700 w-full  p-6  text-white">
           <span className="text-white font-semibold mb-2 flex">Toggle account functionalities</span>
           <div className="flex flex-col gap-2">
             <div className="flex justify-between items-center">
