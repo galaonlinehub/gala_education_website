@@ -42,7 +42,8 @@ function Footer() {
             </svg>
             
         </div>
-        <div className="absolute top-0 left-0 w-screen sm:h-[60vh] h-fit flex flex-col sm:flex-row mt-16">
+
+        <div className="absolute top-0 left-0 w-screen sm:h-[60vh] py-10 sm:py-0 h-fit flex flex-col sm:flex-row ">
             <div className="text-white flex basis-1/2 px-[3vw] items-center justify-center h-full w-full flex-col">
                 <h1 className="font-black text-sm sm:text-lg">Join the Mailing List</h1>
                <div>
