@@ -16,7 +16,7 @@ const geistMono = localFont({
 });
 
 export const metadata = {
-  title: "Gala education",
+  title: "Galahub education",
   description: "Empowering minds shaping future",
 };
 

@@ -27,6 +27,11 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
+export const metadata = {
+  title: "Galahub education",
+  description: "Empowering minds shaping future",
+};
+
 export default function RootLayout({ children}) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
