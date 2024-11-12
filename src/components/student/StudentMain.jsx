@@ -1,40 +1,31 @@
 "use client";
-
+import React from 'react';
 import { useState, useEffect } from "react";
-import localFont from "next/font/local";
 import { FaBell, FaUserCircle } from "react-icons/fa";
-import "../globals.css";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import Footer from "@/src/components/layout/footer";
-import { dashboard_links } from "@/constants/links";
 import Link from "next/link";
-import { MenuOutlined, CloseOutlined } from "@ant-design/icons";
+import { MenuOutlined, CloseOutlined, CloseCircleFilled } from "@ant-design/icons";
 import RightTiltedBook from "@/components/vectors/CombinedBlock";
 import KidInPicture from "@/components/vectors/KidInPicture";
 import Clock from "@/components/vectors/Clock";
 import StudentsInClass from "@/components/vectors/StudentsInClass";
-import { teacher_links } from "@/constants/teacher_links";
+import { student_links } from "@/constants/navigation_links";
+import {Drawer} from "antd"
 
-const geistSans = localFont({
-  src: "../fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-
-const geistMono = localFont({
-  src: "../fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
-
-export const metadata = {
-  title: "Galahub education",
-  description: "Empowering minds shaping future",
-};
-
-export default function RootLayout({ children}) {
+function StudentMain({children}) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [open, setOpen] = useState(false);
+  
+
+  const showDrawer = () => {
+    setOpen(true);
+  };
+
+  const onClose = () => {
+    setIsSidebarOpen(false);
+  };
 
   useEffect(() => {
     const checkMobile = () => {
@@ -49,11 +40,8 @@ export default function RootLayout({ children}) {
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
-
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}>
-        <AntdRegistry>
+    <AntdRegistry>
           {/* Top Navigation */}
           <nav className="h-16 bg-orange-200 px-4 shadow-sm flex justify-between items-center z-50">
             <div className="flex items-center gap-2">
@@ -73,10 +61,10 @@ export default function RootLayout({ children}) {
                 <Link href="/about">About Us</Link>
               </li>
               <li className="hover:text-blue-600 transition-colors">
-                <Link href="/register">Register</Link>
+                <Link href="/signup">Register</Link>
               </li>
               <li className="hover:text-blue-600 transition-colors">
-                <Link href="/login">Login</Link>
+                <Link href="/signin">Login</Link>
               </li>
             </ul>
 
@@ -98,14 +86,14 @@ export default function RootLayout({ children}) {
           </div>
 
           {/* Mobile Menu Overlay */}
-          {isMobile && (
+          {/* {isMobile && (
             <div
               className={`fixed inset-0 bg-black/50 z-40 transition-opacity duration-300 ${
                 isSidebarOpen ? "opacity-100" : "opacity-0 pointer-events-none"
               }`}
               onClick={toggleSidebar}
             />
-          )}
+          )} */}
 
           <main className="flex-1 flex flex-col md:flex-row w-full overflow-hidden">
             <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
@@ -133,10 +121,10 @@ export default function RootLayout({ children}) {
             >
               <div className="p-4">
                 <ul className="space-y-4">
-                  {teacher_links.map((item, i) => (
+                  {student_links.map((item, i) => (
                     <li key={i}>
                       <Link
-                        href={`/teacher/${item.link}`}
+                        href={item.link}
                         className="flex items-center gap-1 p-1 rounded-lg hover:bg-blue-50 transition-colors"
                         onClick={() => isMobile && setIsSidebarOpen(false)}
                       >
@@ -157,8 +145,35 @@ export default function RootLayout({ children}) {
 
           {/* Footer */}
           <Footer className="w-full mt-auto" />
+          <Drawer
+        title="Galahub Education"
+        placement={"left"}
+        closable={false}
+        onClose={onClose}
+        open={isSidebarOpen}
+        key={"left"}
+        className={"!md:hidden !w-[80%]"}
+      >
+        <ul className="space-y-4">
+                  {student_links.map((item, i) => (
+                    <li key={i}>
+                      <Link
+                        href={item.link}
+                        className="flex items-center gap-1 p-1 rounded-lg hover:bg-blue-50 transition-colors"
+                        onClick={() => isMobile && setIsSidebarOpen(false)}
+                      >
+                        <span className="text-blue-600">{item.icon}</span>
+                        <span className="font-medium text-xs text-gray-700">{item.name}</span>
+                      </Link>
+                    </li>
+                  ))}
+                  <li>
+                    <CloseCircleFilled onClick={onClose} className={"!text-red-500"} />
+                  </li>
+                </ul>
+      </Drawer>
         </AntdRegistry>
-      </body>
-    </html>
-  );
+  )
 }
+
+export default StudentMain

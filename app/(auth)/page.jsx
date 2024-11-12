@@ -168,7 +168,7 @@ function Home() {
                             <br/>unlocking every student&apos;s full potential.&ldquo;
                         </h2>
                         
-                        <div className="flex sm:flex-row flex-col gap-3 h-[60vh]">
+                        <div className="flex sm:flex-row flex-col gap-3 h-[27vh] justify-center  w-full">
                             <Card1
                                 image={"/card1img1.jpeg"}
                                 title={"Comprehensive Support"}
@@ -190,13 +190,7 @@ function Home() {
                                     "Tailored lessons and resources that adapt to your learning style and pace."
                                 }
                             />
-                            <Card1
-                                image={"/card1img3.jpeg"}
-                                title={"Customized Learning"}
-                                desc={
-                                    "Tailored lessons and resources that adapt to your learning style and pace."
-                                }
-                            />
+                            
                         </div>
                         <div>
                             <div className="bg-[#b3b3b3]/40 flex justify-between items-center rounded-[15px] w-[40px] h-4 my-8 px-2">
@@ -207,7 +201,7 @@ function Home() {
                     </div>
                 </div>
 
-                <div className="flex  sm:-mt-[36vh] mt-[5vh] py-6 sm:py-10 flex-col md:flex-row w-screen">
+                <div className="flex  sm:-mt-[0vh] mt-[5vh] py-6 sm:py-10 flex-col md:flex-row w-screen">
                     <div className="sm:basis-1/2 w-full   sm:h-[50vh] h-[90vh]  gap-7 p-4 flex items-center flex-col">
                         <h1 className="text-black w-full font-black text-center sm:text-[40px] text-xl">
                             Register with us!
@@ -238,17 +232,17 @@ function Home() {
                     </div>
                     <div
                         className={
-                            "sm:basis-1/2   h-full flex w-full items-center"
+                            "sm:basis-1/2   h-full flex w-full justify-center"
                         }
                     >
-                        <div className="relative w-full h-[50vh] ">
+                        <div className="relative w-full h-[50vh] left-1/2 top-1/3 ">
                             <Image alt="image"
                                 src={"/donate1.jpeg"}
                                 width={100}
                                 height={100}
-                                className="w-[266px] absolute top-0 sm:right-12 left-[20vw] h-[259px] object-cover rounded-br-[100px]"
+                                className="w-[266px] absolute top-0   h-[259px] object-cover rounded-br-[100px]"
                             />
-                            <div className="w-[300px] border-[0.6px] py-3 px-2 top-[15vh] space-y-4 left-[0vw] sm:top-16 sm:left-[90px] bg-white absolute ">
+                            <div className="w-[300px] border-[0.6px] py-3 px-2 top-[15vh] space-y-4 left-[10vw] sm:top-16 sm:-left-[5vw] bg-white absolute ">
                                 <h1 className="text-lg font-black leading-[30px] text-[20px]">
                                     Donate today to support underfunded schools
                                 </h1>
