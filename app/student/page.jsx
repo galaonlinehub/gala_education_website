@@ -84,8 +84,8 @@ export default function Component() {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row  gap-12 justify-between p-6 bg-orange-100">
-      <div className="flex flex-col w-full lg:w-3/4">
+    <div className="flex gap-x-5 justify-between p-2 flex-col sm:flex-row ">
+      <div className=" flex-col w-full flex sm:w-2/3 ">
         <div className="p-4 z-10 h-fit mt-20 w-full border-blue-600 border-2 rounded-xl flex flex-col relative">
           <div>
             <div className="flex flex-col">
@@ -94,33 +94,14 @@ export default function Component() {
                 <ReadMoreContainer />
               </div>
             </div>
-            <div className="absolute -top-16 right-4">
-              <Image className="h-auto w-auto" src="/sitting_on_books.png" alt="An image of a character sitting on books" width={130} height={130} />
+            <div className="absolute sm:-top-16 -top-8 sm:right-4 right-2">
+              <Image className="h-[8rem] w-[8rem] sm:w-[12rem] sm:h-[12rem] " src="/sitting_on_books.png" alt="An image of a character sitting on books" width={150} height={150} />
             </div>
           </div>
         </div>
         <div className="pt-5">
           <h2 className="text-xs font-bold mb-2">Your Subjects</h2>
-          {/* <div className="block md:hidden">
-            <table className="w-full border-collapse">
-              <thead>
-                <tr className="bg-blue-900 text-white">
-                  <th className="p-2 text-left">Subject</th>
-                  <th className="p-2 text-left">Class Size</th>
-                  <th className="p-2 text-left">Days</th>
-                </tr>
-              </thead>
-              <tbody>
-                {subjects.map((subject, index) => (
-                  <tr key={index} className={index % 2 === 0 ? "bg-gray-100" : "bg-white"}>
-                    <td className="p-2 border">{subject.name}</td>
-                    <td className="p-2 border">{subject.classSize}</td>
-                    <td className="p-2 border">{subject.days}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div> */}
+       
           <div className="">
             <div className="flex items-center mt-2">
               <div ref={scrollRef} className="flex overflow-x-auto space-x-4 pb-4">
@@ -166,56 +147,7 @@ export default function Component() {
         </div>
       </div>
 
-      <button onClick={() => setShowSidebar(!showSidebar)} className="fixed bottom-4 right-4 lg:hidden bg-blue-900 text-white p-2 rounded-full z-10" aria-label={showSidebar ? "Hide Sidebar" : "Show Sidebar"}>
-        {showSidebar ? "Hide" : "Show"} Sidebar
-      </button>
-
-      {/* <div className={`fixed inset-y-0 left-0 z-50 bg-blue-900 transform transition-transform duration-300 ease-in-out ${showSidebar ? "translate-x-0" : "-translate-x-full"} lg:relative lg:translate-x-0 lg:w-1/3`}>
-        <button onClick={() => setShowSidebar(false)} className="lg:hidden absolute top-4 right-4 text-white" aria-label="Close Sidebar">
-          ✕
-        </button>
-        <div className="h-full overflow-y-auto flex flex-col items-center justify-center p-6">
-          <div style={wrapperStyle} className="mb-6 bg-gray-50">
-            <Calendar fullscreen={false} onPanelChange={onPanelChange} />
-          </div>
-          <hr className="bg-white w-5/6 mb-6" style={{ height: "0.4px", border: "none" }} />
-
-          <div className="flex justify-between p-4 w-full">
-            <div className="text-white text-sm p-1">Ends</div>
-            <div className="flex gap-2">
-              <div className="text-white rounded-md w-16 text-center bg-blue-950 p-1 text-sm">8:00</div>
-              <div className="flex gap-1">
-                <span className="p-1 rounded-md w-10 text-center bg-white text-sm">AM</span>
-                <span className="p-1 rounded-md w-10 text-center bg-blue-950 text-white text-sm">PM</span>
-              </div>
-            </div>
-          </div>
-          <div className="flex justify-between w-full px-4 p-1">
-            <div className="font-bold text-white text-sm">Reminders</div>
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M9.99984 18.3333C6.07146 18.3333 4.10728 18.3333 2.8869 17.1129C1.6665 15.8925 1.6665 13.9283 1.6665 9.99996C1.6665 6.07158 1.6665 4.1074 2.8869 2.88702C4.10728 1.66663 6.07146 1.66663 9.99984 1.66663C13.9282 1.66663 15.8924 1.66663 17.1128 2.88702C18.3332 4.1074 18.3332 6.07158 18.3332 9.99996C18.3332 13.9283 18.3332 15.8925 17.1128 17.1129C15.8924 18.3333 13.9282 18.3333 9.99984 18.3333ZM9.99984 6.87496C10.345 6.87496 10.6248 7.15478 10.6248 7.49996V9.37496H12.4998C12.845 9.37496 13.1248 9.65479 13.1248 9.99996C13.1248 10.3451 12.845 10.625 12.4998 10.625H10.6248V12.5C10.6248 12.8451 10.345 13.125 9.99984 13.125C9.65467 13.125 9.37484 12.8451 9.37484 12.5V10.625H7.49984C7.15466 10.625 6.87484 10.3451 6.87484 9.99996C6.87484 9.65479 7.15466 9.37496 7.49984 9.37496H9.37484V7.49996C9.37484 7.15478 9.65467 6.87496 9.99984 6.87496Z"
-                fill="white"
-              />
-            </svg>
-          </div>
-          <div className="w-full p-4">
-            {reminders.map((item, index) => (
-              <div key={index} className="border mb-2 border-white flex justify-start gap-4 items-center rounded-md p-2 h-12">
-                {item.icon}
-                <div className="flex flex-col">
-                  <span className="text-xs text-white font-bold">{item.name}</span>
-                  <span className="text-xs text-gray-400">
-                    {item.time}.{item.day}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div> */}
+      
       <CalendarComponent />
     </div>
   );

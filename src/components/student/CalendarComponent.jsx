@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import Image from 'next/image'
+import { FaPlus } from 'react-icons/fa6';
 
 const CalendarComponent = () => {
   const [date, setDate] = useState(new Date());
@@ -12,48 +14,52 @@ const CalendarComponent = () => {
   ];
 
   return (
-    <div className="bg-blue-900 text-white p-5 rounded-lg shadow-md w-80">
+    <div className="bg-[#001840] sm:w-1/3 text-white p-5 rounded-lg shadow-md ">
       {/* Calendar Section */}
-      <div className="flex flex-col items-center">
+      <div className=" gap-0 items-center">
+
         <Calendar
           onChange={setDate}
           value={date}
-          className="mb-4 !bg-blue-950"
+          className=" !bg-[#001F52] !border-none"
           tileClassName="text-white"
         />
         
         {/* End Time Display */}
-        <div className="flex items-center justify-between w-full mt-4">
-          <span className="text-lg">Ends</span>
-          <span className="text-xl font-semibold bg-blue-800 p-2 rounded-md">
-            8:00 AM
+        <div className="flex items-center bg-[#001F52] p-4 justify-between w-full ">
+          <span className="text-xs">Ends</span>
+          <span className="text-sm font-semibold text-[#d9d9d9] p-2 rounded-md">
+            8:00 
           </span>
+          <span className='bg-white px-2 py-1 text-xs rounded text-blue-950'>AM</span>
+          <span className='text-xs'>PM</span>
         </div>
       </div>
 
       {/* Reminders Section */}
       <div className="mt-6">
         <div className="flex justify-between items-center mb-2">
-          <h2 className="text-lg font-semibold">Reminders</h2>
-          <button className="text-white bg-blue-600 p-1 rounded">+</button>
+          <h2 className="text-xs font-semibold">Reminders</h2>
+          <span className=" text-xs bg-white p-1 rounded">
+            <FaPlus className='text-blue-900' />
+          </span>
         </div>
         
         {/* Reminder List */}
-        <div className="space-y-2">
+        <div className="space-y-4">
           {reminders.map((reminder, index) => (
             <div
               key={index}
-              className="flex items-center justify-between bg-blue-800 p-3 rounded-lg"
+              className="flex items-center gap-x-5 bg-[#001F52] border border-white px-3 py-1 rounded-lg"
             >
+              <Image src={'/svg/reminderIcon.svg'} width={20} height={20} alt="reminder icon" />
               <div>
-                <p className="font-semibold">{reminder.title}</p>
-                <p className="text-sm text-gray-400">
+                <p className="font-semibold text-sm text-white">{reminder.title}</p>
+                <p className="text-xs text-[#b9b8b8]">
                   {reminder.date} . {reminder.day}
                 </p>
               </div>
-              <span className="text-white bg-blue-600 rounded-full p-2">
-                🗓️
-              </span>
+              
             </div>
           ))}
         </div>

@@ -69,3 +69,50 @@
   color: #cccccc; /* light gray for visibility */
   opacity: 1; /* Ensures the color is solid */
 }
+
+@media(min-width:1300px){
+  .homepage-image{
+    height: 80vh;
+  }
+  .register-as-text-card{
+    height: 24vh;
+  }
+
+}
+
+
+@media(min-width:1580px){
+  .homepage-image{
+    height: 60vh;
+  }
+
+  .register-as-text-card{
+    height: 23vh;
+  }
+
+}
+
+@media(min-width:1780px){
+  .homepage-image{
+    height: 60vh;
+  }
+
+  .register-as-text-card{
+    height: 18vh;
+  }
+
+}
+
+@media(min-width:2160px){
+  .homepage-image{
+    height: 40vh;
+  }
+
+  .homepage-info-form{
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+
+  .register-as-text-card{
+    height: 10vh;
+  }
+}

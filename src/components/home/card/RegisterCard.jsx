@@ -6,7 +6,7 @@ import React from 'react'
 
 function RegisterCard({image,link,title,desc}) {
   return (
-    <Link href={link} className='flex-col flex w-[70vw]  sm:w-[20vw] shadow-sm shadow-black'>
+    <Link href={link} className='flex-col flex w-[70vw] h-fit sm:w-[20vw] 2xl:w-[10vw] shadow-sm shadow-black'>
   {/* Wrap the image in a div */}
   {/* <div className='flex-col flex w-[20vw] h-[12vh]'> */}
   {/* Wrap the image in a div */}
@@ -23,8 +23,8 @@ function RegisterCard({image,link,title,desc}) {
   
   
   
-  <div className='h-[20vh] bg-[#001840] flex flex-col px-10 py-8'>
-    <span className='text-white font-black'>{title}</span>
+  <div className='h-[20vh] register-as-text-card bg-[#001840] flex flex-col px-10 py-8'>
+    <span className='text-white font-black 2xl:text-xs'>{title}</span>
     <span className='text-white text-xs'>{desc}</span>
   </div>
 </Link>

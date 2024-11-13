@@ -11,4 +11,9 @@ const useTabNavigator = create((set) => ({
     setActiveTab: (state) => set(() => ({ activeTab: state })),
 }));
 
-export { useEmailVerificationModalOpen, useTabNavigator };
+const useSelectedPlan = create((set) => ({
+    selectedPlan: 1,
+    setSelectedPlan: (plan) => set({ selectedPlan: plan }),
+  }));
+
+export { useEmailVerificationModalOpen, useTabNavigator,useSelectedPlan };

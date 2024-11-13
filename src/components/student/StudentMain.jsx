@@ -1,6 +1,5 @@
 "use client";
-import React from 'react';
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { FaBell, FaUserCircle } from "react-icons/fa";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import Footer from "@/src/components/layout/footer";
@@ -10,22 +9,13 @@ import RightTiltedBook from "@/components/vectors/CombinedBlock";
 import KidInPicture from "@/components/vectors/KidInPicture";
 import Clock from "@/components/vectors/Clock";
 import StudentsInClass from "@/components/vectors/StudentsInClass";
+import Image from 'next/image';
 import { student_links } from "@/constants/navigation_links";
-import {Drawer} from "antd"
+import { Drawer } from "antd";
 
-function StudentMain({children}) {
+function StudentMain({ children }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [open, setOpen] = useState(false);
-  
-
-  const showDrawer = () => {
-    setOpen(true);
-  };
-
-  const onClose = () => {
-    setIsSidebarOpen(false);
-  };
 
   useEffect(() => {
     const checkMobile = () => {
@@ -40,10 +30,13 @@ function StudentMain({children}) {
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
+
   return (
-    <AntdRegistry>
+    <>
+      <AntdRegistry>
+        <div>
           {/* Top Navigation */}
-          <nav className="h-16 bg-orange-200 px-4 shadow-sm flex justify-between items-center z-50">
+          <nav className="h-16 border-b-[1.2px] bg-white fixed inset-0 border-[#d9d9d9] px-4 shadow-sm w-full flex justify-between items-center z-50">
             <div className="flex items-center gap-2">
               <div className="w-10 h-10 relative bg-gradient-to-br from-blue-500 to-blue-600 rounded-full ring-2 ring-blue-400 ring-offset-2 flex items-center justify-center">
                 <div className="text-center">
@@ -74,106 +67,104 @@ function StudentMain({children}) {
           </nav>
 
           {/* Search Bar */}
-          <div className="top-16 z-40 bg-green-300 border-b">
+          <div className="top-16 h-[6rem] sm:h-16 z-40 fixed bg-white left-0 w-full border-b-[1.2px] border-[#d9d9d9]">
             <div className="flex flex-col md:flex-row items-center justify-between px-4 py-2 gap-4">
               <input className="h-10 px-4 w-full md:w-1/3 rounded-lg border-2 border-blue-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none" placeholder="Search..." />
+              <div className="flex w-full justify-between sm:justify-end sm:gap-x-5">
               <span className="text-sm text-gray-600 whitespace-nowrap">October 14, 2024</span>
               <div className="flex gap-3">
                 <FaBell className="text-xl" />
                 <FaUserCircle className="text-xl" />
               </div>
+              </div>
             </div>
           </div>
 
-          {/* Mobile Menu Overlay */}
-          {/* {isMobile && (
-            <div
-              className={`fixed inset-0 bg-black/50 z-40 transition-opacity duration-300 ${
-                isSidebarOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-              }`}
-              onClick={toggleSidebar}
-            />
-          )} */}
-
-          <main className="flex-1 flex flex-col md:flex-row w-full overflow-hidden">
-            <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
-              <div className="absolute left-1/2 top-20 w-52 h-52 hidden md:block">
-                <RightTiltedBook />
-              </div>
-              <div className="absolute left-96 top-20 w-32 h-32 hidden lg:block">
-                <KidInPicture />
-              </div>
-              <div className="absolute left-0 top-20 w-32 h-32 hidden sm:block">
-                <Clock />
-              </div>
-              <div className="absolute left-0 top-2/3 w-20 h-20 hidden sm:block">
-                <StudentsInClass />
-              </div>
+          <main className="flex flex-col md:flex-row w-full mt-[160px] sm:mt-[128px]">
+          
+      <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
+        <div className="absolute left-1/2 top-20 w-52 h-52 hidden md:block">
+          <RightTiltedBook />
+        </div>
+        <div className="absolute left-96 top-20 w-32 h-32 hidden lg:block">
+          <KidInPicture />
+        </div>
+        <div className="absolute left-0 top-20 w-32 h-32 hidden sm:block">
+          <Clock />
+        </div>
+        <div className="absolute left-0 top-2/3 w-20 h-20 hidden sm:block">
+          <StudentsInClass />
+        </div>
+      </div>
+            {/* Sidebar */}
+            <div className="hidden sm:block sticky top-32 left-0 w-[20vw] h-[calc(100vh-128px)] border-r border-[#d9d9d9] p-4">
+              <ul className="space-y-4 ">
+                {student_links.map((item, i) => (
+                  <li key={i}>
+                    <Link
+                      href={item.link}
+                      className="flex items-center gap-1 p-1 rounded-lg hover:bg-blue-50 transition-colors"
+                      onClick={() => isMobile && setIsSidebarOpen(false)}
+                    >
+                      <span className="text-blue-600">{item.icon}</span>
+                      <span className="font-medium text-xs text-gray-700">{item.name}</span>
+                    </Link>
+                  </li>
+                ))}
+                <li className="absolute bottom-0 left-10">
+                  <Image src={'/svg/reminderIcon.svg'} className={"w-[10rem] h-[10rem] object-cover"} width={150} height={150} />
+                </li>
+              </ul>
             </div>
 
-            <aside
-              className={`z-10 transition-transform duration-300 ease-in-out
-                ${isMobile ? (isSidebarOpen ? "translate-x-0" : "-translate-x-full") : "translate-x-0"}
-                ${isMobile ? "fixed inset-y-0 left-0" : "relative"}
-                ${isMobile ? "w-64" : "w-56"}
-                bg-white shadow-xl md:shadow-none
-              `}
-            >
-              <div className="p-4">
-                <ul className="space-y-4">
-                  {student_links.map((item, i) => (
-                    <li key={i}>
-                      <Link
-                        href={item.link}
-                        className="flex items-center gap-1 p-1 rounded-lg hover:bg-blue-50 transition-colors"
-                        onClick={() => isMobile && setIsSidebarOpen(false)}
-                      >
-                        <span className="text-blue-600">{item.icon}</span>
-                        <span className="font-medium text-xs text-gray-700">{item.name}</span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </aside>
-
             {/* Main Content */}
-            <div className={`flex-1 transition-all duration-300 relative z-20 p-6 overflow-auto ${isMobile && isSidebarOpen ? "ml-64" : ""}`}>
+            <div className="flex-1 p-6 w-full md:w-[80vw] overflow-auto">
               {children}
             </div>
           </main>
 
           {/* Footer */}
-          <Footer className="w-full mt-auto" />
-          <Drawer
-        title="Galahub Education"
-        placement={"left"}
+          <Footer />
+        </div>
+      </AntdRegistry>
+
+      {/* Drawer for Mobile Sidebar */}
+      <Drawer
+        title={<div className="flex flex-col gap-2 items-center">
+          <div className="w-10 h-10 relative bg-gradient-to-br from-blue-500 to-blue-600 rounded-full ring-2 ring-blue-400 ring-offset-2 flex items-center justify-center">
+            <div className="text-center">
+              <p className="text-[#d9d9d9] text-[10px] font-bold leading-tight">Gala</p>
+              <p className="text-[#d9d9d9] text-[10px] font-bold leading-tight">Education</p>
+            </div>
+          </div>
+          <div>Gala Education</div>
+        </div>}
+        placement="left"
         closable={false}
-        onClose={onClose}
+        onClose={() => setIsSidebarOpen(false)}
         open={isSidebarOpen}
-        key={"left"}
-        className={"!md:hidden !w-[80%]"}
+        className="!md:hidden !relative"
       >
         <ul className="space-y-4">
-                  {student_links.map((item, i) => (
-                    <li key={i}>
-                      <Link
-                        href={item.link}
-                        className="flex items-center gap-1 p-1 rounded-lg hover:bg-blue-50 transition-colors"
-                        onClick={() => isMobile && setIsSidebarOpen(false)}
-                      >
-                        <span className="text-blue-600">{item.icon}</span>
-                        <span className="font-medium text-xs text-gray-700">{item.name}</span>
-                      </Link>
-                    </li>
-                  ))}
-                  <li>
-                    <CloseCircleFilled onClick={onClose} className={"!text-red-500"} />
-                  </li>
-                </ul>
+          {student_links.map((item, i) => (
+            <li key={i}>
+              <Link
+                href={item.link}
+                className="flex items-center gap-1 p-1 rounded-lg hover:bg-blue-50 transition-colors"
+                onClick={() => setIsSidebarOpen(false)}
+              >
+                <span className="text-blue-600">{item.icon}</span>
+                <span className="font-medium text-xs text-gray-700">{item.name}</span>
+              </Link>
+            </li>
+          ))}
+          <li>
+            <CloseCircleFilled onClick={() => setIsSidebarOpen(false)} className="!text-red-500 absolute bottom-4 left-1/2 transform -translate-x-1/2 text-4xl p-3 cursor-pointer" />
+          </li>
+        </ul>
       </Drawer>
-        </AntdRegistry>
-  )
+    </>
+  );
 }
 
-export default StudentMain
+export default StudentMain;

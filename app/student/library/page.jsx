@@ -29,18 +29,19 @@ const Library = () => {
     <div className="container mx-auto px-4 py-8">
       <div className="flex flex-col lg:flex-row gap-20">
         <div className="w-full lg:w-2/3">
-          <div className=" border-2 border-blue-600 rounded-xl p-4 mb-8 relative">
-            <div className="flex flex-col md:flex-row items-center gap-4">
-              <div className="flex-grow">
-                <h2 className="text-lg font-bold mb-2">Welcome back, Diana Malle!</h2>
+        <div className="p-4 z-10 h-fit mb-10 w-full border-blue-600 border-2 rounded-xl flex flex-col relative">
+          <div>
+            <div className="flex flex-col">
+              <div className="font-bold text-sm">Welcome back, Diana Malle!</div>
+              <div>
                 <ReadMoreContainer />
               </div>
-              <div className="flex-shrink-0 md:absolute md:-top-16 md:right-4">
-                <Image className="h-auto w-auto" src="/sitting_on_books.png" alt="An image of a character sitting on books" width={130} height={130} />
-              </div>
+            </div>
+            <div className="absolute sm:-top-16 -top-8 sm:right-4 right-2">
+              <Image className="h-[8rem] w-[8rem] sm:w-[12rem] sm:h-[12rem] " src="/sitting_on_books.png" alt="An image of a character sitting on books" width={150} height={150} />
             </div>
           </div>
-
+        </div>
           <h3 className="text-sm font-bold mb-4">My Subjects</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
             {mySubjects.map((subject, index) => (
@@ -50,7 +51,7 @@ const Library = () => {
                 <p className="text-xs">{subject.days}</p>
               </div>
             ))}
-            <div className="flex items-center justify-center bg-gray-200 rounded-lg cursor-pointer">
+            <div className="flex items-center justify-center bg-gray-200 py-4 rounded-lg cursor-pointer">
               <button className="w-10 h-10 bg-gray-400 text-white text-2xl rounded-full flex items-center justify-center hover:bg-gray-500 transition-colors">+</button>
             </div>
           </div>
