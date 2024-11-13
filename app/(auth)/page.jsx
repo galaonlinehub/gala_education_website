@@ -158,7 +158,7 @@ function Home() {
                         />
                     </svg>
 
-                    <div className="absolute top-0 left-0 sm:h-[70vh] bg-black/10 h-screen   flex flex-col items-center  py-8  w-screen">
+                    <div className="absolute top-0 left-0  sm:h-[70vh] bg-black/10 h-40vh   flex flex-col items-center  py-8  w-screen">
                         <h1 className="font-black text-[20px] sm:text-[40px]">
                             Why choose our platform?
                         </h1>
@@ -168,7 +168,7 @@ function Home() {
                             <br/>unlocking every student&apos;s full potential.&ldquo;
                         </h2>
                         
-                        <div className="flex sm:flex-row flex-col gap-3 2xl:gap-24 h-[27vh] justify-center  w-full">
+                        <div className="flex  gap-3 2xl:gap-24 h-[30vh] sm:h-[27vh] sm:justify-center  w-[98%] px-4 overflow-auto sm:w-full">
                             <Card1
                                 image={"/card1img1.jpeg"}
                                 title={"Comprehensive Support"}
@@ -201,7 +201,7 @@ function Home() {
                     </div>
                 </div>
 
-                <div className="flex  sm:-mt-[0vh] mt-[5vh]  py-6 sm:py-10 flex-col md:flex-row w-full">
+                <div className="flex   mt-[0vh]  py-6 sm:py-10 flex-col md:flex-row w-full">
                     <div className="sm:basis-1/2 w-full   sm:h-[50vh] h-[90vh]  gap-7 p-4 flex items-center flex-col">
                         <h1 className="text-black w-full font-black text-center sm:text-[40px] text-xl">
                             Register with us!
@@ -232,7 +232,7 @@ function Home() {
                     </div>
                     <div
                         className={
-                            "sm:basis-1/2   h-full flex w-full justify-center items-center"
+                            "sm:basis-1/2 basis-1  h-full flex w-full sm:justify-center sm:items-center"
                         }
                     >
                         <div className="relative w-full h-[50vh] ">
@@ -241,9 +241,9 @@ function Home() {
                                 width={100}
                                 height={100}
                                 quality={75}
-                                className="w-[20vw] absolute top-0   h-[40vh] 2xl:h-[27vh] left-1/2 object-cover rounded-br-[100px]"
+                                className="sm:w-[20vw] bg-blue-400 w-[100vw] absolute sm:top-0 top-20 h-[40vh] 2xl:h-[27vh] sm:left-1/2 object-cover rounded-br-[100px]"
                             />
-                            <div className="w-[20vw] h-fit border-[0.6px] py-3 px-2 top-[15vh] space-y-4 left-1/4 sm:top-16  bg-white absolute ">
+                            <div className="sm:w-[20vw] w-[95vw] h-fit border-[0.6px] py-3 px-2 top-[15vh] space-y-4 sm:left-1/4 -left-1/3 sm:top-16  bg-white absolute ">
                                 <h1 className="text-lg font-black leading-[30px] text-[20px]">
                                     Donate today to support underfunded schools
                                 </h1>
