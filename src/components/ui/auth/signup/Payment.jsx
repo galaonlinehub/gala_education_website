@@ -4,8 +4,12 @@ import axios from 'axios';
 import "../../../../styles/auth/signup.css";
 import countryList from 'country-list';
 import { useRouter } from 'next/navigation';
+import { useSelectedPlan } from '@/src/store/auth/signup';
 
 const Payment = () => {
+
+  const selectedPlan = useSelectedPlan(state=>state.selectedPlan)
+
   const [formData, setFormData] = useState({
     cardNumber: '',
     expirationDate: '',
@@ -78,12 +82,13 @@ const Payment = () => {
     <section className="py-12">
       <div className="flex flex-col items-center justify-center w-full sm:px-0">
         <span className="font-black text-[16px]">Payment</span>
+        
         <span className="flex flex-col items-center">
-          <span className="font-black text-[16px] leading-5">10,000 TSH</span>
-          <span className="font-bold text-[12px] leading-5">(Billed Annually)</span>
+          <span className="font-black text-[16px] leading-5">{selectedPlan === 1 ? "3,000":"10,000" }TSH</span>
+          <span className="font-bold text-[12px] leading-5">{selectedPlan === 1 ? "(Billed Monthly)" : "(Billed Annually)"}</span>
         </span>
         <span className="font-semibold text-[14px]">
-          Your subscription will auto-renew yearly until cancelled
+          Your subscription will auto-renew {selectedPlan === 1 ? "monthly":"yearly"} until cancelled
         </span>
 
         <div className="hidden lg:flex gap-6 w-full sm:w-auto mt-6">

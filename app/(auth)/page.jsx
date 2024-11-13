@@ -11,7 +11,7 @@ import Card2 from "@/src/components/home/card/Card2";
 function Home() {
     return (
         <div>
-            <div className="relative w-[100vw]  h-[100vh] overflow-y-auto">
+            <div className="relative w-[100vw] homepage-image h-[100vh] overflow-y-auto">
                 <Image 
                     src="/gala_home1.jpeg"
                     layout="fill"
@@ -39,7 +39,7 @@ function Home() {
                             Join Now to get 50% off
                         </h2>
                     </div>
-                    <div className="bg-white px-5 py-3 w-[90vw] lg:w-[30vw] h-fit rounded-[15px]">
+                    <div className="bg-white px-5 py-3 w-[90vw] lg:w-[30vw] 2xl:w-[15vw] h-fit rounded-[15px]">
                         <h1 className="font-black sm:text-xs text-[10px]">
                             Are you interested in a session and want to know
                             more?
@@ -48,7 +48,7 @@ function Home() {
                             Fill out the form and you will be contacted as soon
                             as <br /> possible by our office
                         </h2>
-                        <div className="grid grid-cols-2 gap-2 mt-3">
+                        <div className="grid grid-cols-2 homepage-info-form gap-2 mt-3">
                             <input
                                 placeholder="Name*"
                                 className="bg-[#001840] placeholder:text-[#475873] py-1 px-2 rounded-[5px]"
@@ -168,7 +168,7 @@ function Home() {
                             <br/>unlocking every student&apos;s full potential.&ldquo;
                         </h2>
                         
-                        <div className="flex sm:flex-row flex-col gap-3 h-[60vh]">
+                        <div className="flex sm:flex-row flex-col gap-3 2xl:gap-24 h-[27vh] justify-center  w-full">
                             <Card1
                                 image={"/card1img1.jpeg"}
                                 title={"Comprehensive Support"}
@@ -190,13 +190,7 @@ function Home() {
                                     "Tailored lessons and resources that adapt to your learning style and pace."
                                 }
                             />
-                            <Card1
-                                image={"/card1img3.jpeg"}
-                                title={"Customized Learning"}
-                                desc={
-                                    "Tailored lessons and resources that adapt to your learning style and pace."
-                                }
-                            />
+                            
                         </div>
                         <div>
                             <div className="bg-[#b3b3b3]/40 flex justify-between items-center rounded-[15px] w-[40px] h-4 my-8 px-2">
@@ -207,7 +201,7 @@ function Home() {
                     </div>
                 </div>
 
-                <div className="flex  sm:-mt-[36vh] mt-[5vh] py-6 sm:py-10 flex-col md:flex-row w-screen">
+                <div className="flex  sm:-mt-[0vh] mt-[5vh]  py-6 sm:py-10 flex-col md:flex-row w-full">
                     <div className="sm:basis-1/2 w-full   sm:h-[50vh] h-[90vh]  gap-7 p-4 flex items-center flex-col">
                         <h1 className="text-black w-full font-black text-center sm:text-[40px] text-xl">
                             Register with us!
@@ -238,7 +232,7 @@ function Home() {
                     </div>
                     <div
                         className={
-                            "sm:basis-1/2   h-full flex w-full items-center"
+                            "sm:basis-1/2   h-full flex w-full justify-center items-center"
                         }
                     >
                         <div className="relative w-full h-[50vh] ">
@@ -246,9 +240,10 @@ function Home() {
                                 src={"/donate1.jpeg"}
                                 width={100}
                                 height={100}
-                                className="w-[266px] absolute top-0 sm:right-12 left-[20vw] h-[259px] object-cover rounded-br-[100px]"
+                                quality={75}
+                                className="w-[20vw] absolute top-0   h-[40vh] 2xl:h-[27vh] left-1/2 object-cover rounded-br-[100px]"
                             />
-                            <div className="w-[300px] border-[0.6px] py-3 px-2 top-[15vh] space-y-4 left-[0vw] sm:top-16 sm:left-[90px] bg-white absolute ">
+                            <div className="w-[20vw] h-fit border-[0.6px] py-3 px-2 top-[15vh] space-y-4 left-1/4 sm:top-16  bg-white absolute ">
                                 <h1 className="text-lg font-black leading-[30px] text-[20px]">
                                     Donate today to support underfunded schools
                                 </h1>
@@ -339,7 +334,7 @@ function Home() {
                                 </clipPath>
                             </defs>
                         </svg>
-                        <div className=" w-screen mt-12 py-12 flex gap-5 items-center flex-col h-fit sm:h-[120vh]   bg-black/10">
+                        <div className=" w-screen mt-12 py-12 flex gap-5 items-center flex-col h-fit sm:h-[120vh] 2xl:h-[80vh]   bg-black/10">
                             <h1 className="font-black text-3xl">
                                 Our services
                             </h1>
@@ -462,10 +457,11 @@ function Home() {
                             src="/register_teacher.jpeg"
                             width={200}
                             height={200}
+                            quality={75}
                             className="border-[14px] top-[20vh] sm:top-[15vh] w-2/3 h-1/2 object-cover left-[15vw] sm:left-[35vh] absolute  border-white"
                         />
                     </div>
-                    <div className=" sm:px-20 px-2 sm:w-3/4 w-full space-y-6 sm:py-[15vh]">
+                    <div className=" sm:px-20 px-2 sm:w-3/4  w-full space-y-6 sm:py-[15vh]">
                         <h1 className="text-3xl font-black ">
                             Here&apos;s more on what you need to know about Us!
                         </h1>
@@ -534,7 +530,7 @@ function Home() {
                         </svg>
                     </div>
 
-                    <div className="w-full flex py-8 bg-black/10 space-y-8  sm:h-[70vh] h-fit flex-col items-center">
+                    <div className="w-full flex py-8 bg-black/10 space-y-8  sm:h-[70vh] 2xl:h-[50vh] h-fit flex-col items-center">
                         <h1 className="text-3xl text-center font-black ">
                             Pioneers in Digital Teaching
                         </h1>
@@ -697,7 +693,7 @@ function Home() {
                             />
                         </svg>
 
-                        <div className="self-center flex flex-col sm:flex-row px-6 rounded-md shadow-md shadow-black w-[70vw] bg-[#F3F2F2] my-10">
+                        <div className="self-center flex flex-col sm:flex-row px-6 rounded-md shadow-md shadow-black w-[70vw] 2xl:w-[50vw] bg-[#F3F2F2] my-10">
                             <div className="basis-2/3  py-2 flex flex-col gap-y-4">
                                 <h1 className="font-bold ">Financial Aid</h1>
                                 <p className="text-xs">
@@ -853,9 +849,9 @@ function Home() {
                     <div className="w-screen bg-black/10 sm:px-[60px] px-[30px] py-3">
                         <div className="basis-1/2 space-y-2">
                         <h1 className="font-bold text-lg">Latest news</h1>
-                          <div className="flex gap-2 flex-col sm:flex-row">
+                          <div className="flex gap-2 flex-col sm:flex-row 2xl:flex-col">
                             <div className="basis-1/2 flex flex-col  h-[316px]">
-                                <Image alt="image" src="/ai.jpeg" width={200} height={200} className="w-full h-1/3 object-cover" />
+                                <Image alt="image" src="/ai.jpeg" quality={75} width={200} height={200} className="w-full h-1/3 2xl:h-[25vh] object-cover" />
                                 
                                 <div className="flex sm:flex-row flex-col bg-[#001840] ">
                                 
