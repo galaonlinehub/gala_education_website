@@ -49,21 +49,19 @@ const Live = () => {
     <div className="container py-8">
       <div className="flex flex-col lg:flex-row gap-20">
         <div className="w-full lg:w-2/3">
-          <div className="bg-white rounded-lg shadow-md mb-8">
-            <div className="p-6">
-              <div className="flex flex-col md:flex-row items-center gap-4">
-                <div className="flex flex-col">
-                  <div className="font-bold text-sm">Welcome back, Diana Malle!</div>
-                  <div>
-                    <ReadMoreContainer />
-                  </div>
-                </div>
-                <div className="flex-shrink-0">
-                  <Image className="h-auto w-auto" src="/sitting_on_books.png" alt="An image of a character sitting on books" width={130} height={130} />
-                </div>
+        <div className="p-4 z-10 mb-8 h-fit mt-20 w-full border-blue-600 border-2 rounded-xl flex flex-col relative">
+          <div>
+            <div className="flex flex-col">
+              <div className="font-bold text-sm">Welcome back, Diana Malle!</div>
+              <div>
+                <ReadMoreContainer />
               </div>
             </div>
+            <div className="absolute -top-16 right-4">
+              <Image className="h-auto w-auto" src="/sitting_on_books.png" alt="An image of a character sitting on books" width={130} height={130} />
+            </div>
           </div>
+        </div>
 
           <h3 className="text-xl font-bold mb-4">Upcoming Live Classes</h3>
           <div className="overflow-x-auto text-xs">
@@ -145,7 +143,6 @@ const Live = () => {
                     <option value="19:30">45 minutes</option>
                     <option value="20:00">30 minutes</option>
                   </select>
-
                 </div>
                 <div className="flex items-center italic gap-2">
                   <span>&quot;Enter the class details, choose the date and time, then click to generate the link.&quot;</span>
@@ -155,7 +152,6 @@ const Live = () => {
                     <span>Generate Link</span>
                   </button>
                 </div>
-
               </form>
             </div>
           </div>
