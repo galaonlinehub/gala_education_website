@@ -83,7 +83,7 @@ export default function TeacherClasses() {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row w-full gap-12 justify-between p-6 bg-orange-100">
+    <div className="flex flex-col lg:flex-row w-full gap-12 justify-between p-6 ">
       <div className="flex flex-col w-full lg:w-3/4">
         <div className="p-4 z-10 h-fit mt-20 w-full border-blue-600 border-2 rounded-xl flex flex-col relative">
           <div>
@@ -124,7 +124,7 @@ export default function TeacherClasses() {
             <div className="flex items-center mt-2">
               <div ref={scrollRef} className="flex overflow-x-auto space-x-4 pb-4">
                 {subjects.map((subject, index) => (
-                  <div key={index} className="flex-none flex-col text-xs font-bold rounded-md w-60 h-28 p-5 bg-blue-900 text-white">
+                  <div key={index} className="flex-none flex-col text-xs font-bold rounded-md w-60 h-28 p-5 bg-[#001840] text-white">
                     <div className="mb-3">{subject.name}</div>
                     <div>Class size: {subject.classSize}</div>
                     <div>Days: {subject.days}</div>
@@ -143,7 +143,7 @@ export default function TeacherClasses() {
           <span className="text-xs font-bold">Your Classes</span>
           <div className="overflow-x-auto">
             <div className="min-w-[600px] flex flex-col gap-3">
-              <div className="bg-blue-950 w-full flex justify-between items-center font-bold text-xs text-white rounded-md p-2">
+              <div className="bg-[#001840] w-full flex justify-between items-center font-bold text-xs text-white rounded-md p-2">
                 {["Class", "Members", "Starting", "End", "Material", "Percentage"].map((header, index) => (
                   <span key={index} className="text-center py-2 flex-1">
                     {header}
@@ -165,11 +165,11 @@ export default function TeacherClasses() {
         </div>
       </div>
 
-      <button onClick={() => setShowSidebar(!showSidebar)} className="fixed bottom-4 right-4 lg:hidden bg-blue-900 text-white p-2 rounded-full z-10" aria-label={showSidebar ? "Hide Sidebar" : "Show Sidebar"}>
+      <button onClick={() => setShowSidebar(!showSidebar)} className="fixed bottom-4 right-4 lg:hidden bg-[#001840] text-white p-2 rounded-full z-10" aria-label={showSidebar ? "Hide Sidebar" : "Show Sidebar"}>
         {showSidebar ? "Hide" : "Show"} Sidebar
       </button>
 
-      <div className={`fixed inset-y-0 left-0 z-50 bg-blue-900 transform transition-transform duration-300 ease-in-out ${showSidebar ? "translate-x-0" : "-translate-x-full"} lg:relative lg:translate-x-0 lg:w-1/3`}>
+      <div className={`fixed inset-y-0 left-0 z-50 bg-[#001840] transform transition-transform duration-300 ease-in-out ${showSidebar ? "translate-x-0" : "-translate-x-full"} lg:relative lg:translate-x-0 lg:w-1/3`}>
         <button onClick={() => setShowSidebar(false)} className="lg:hidden absolute top-4 right-4 text-white" aria-label="Close Sidebar">
           ✕
         </button>

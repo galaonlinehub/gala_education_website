@@ -86,19 +86,19 @@ export default function Component() {
     <div className="container mx-auto px-4 py-8">
       <div className="flex flex-col lg:flex-row gap-8">
         <div className="w-full lg:w-2/3">
-          <div className="bg-white rounded-lg shadow-md mb-8">
-            <div className="p-4 sm:p-6">
-              <div className="flex flex-col sm:flex-row items-center gap-4">
-                <div className="flex-grow">
-                  <h2 className="text-xl sm:text-2xl font-bold mb-2">Welcome back, Diana Malle!</h2>
-                  <ReadMoreContainer />
-                </div>
-                <div className="flex-shrink-0">
-                  <Image className="h-auto w-auto" src="/placeholder.svg" alt="An image of a character sitting on books" width={130} height={130} />
-                </div>
+        <div className="p-4 z-10 mb-8 h-fit mt-20 w-full border-blue-600 border-2 rounded-xl flex flex-col relative">
+          <div>
+            <div className="flex flex-col">
+              <div className="font-bold text-sm">Welcome back, Diana Malle!</div>
+              <div>
+                <ReadMoreContainer />
               </div>
             </div>
+            <div className="absolute -top-16 right-4">
+              <Image className="h-auto w-auto" src="/sitting_on_books.png" alt="An image of a character sitting on books" width={130} height={130} />
+            </div>
           </div>
+        </div>
 
           <div className="flex flex-col sm:flex-row gap-3 mb-6">
             <div className="w-full sm:w-1/2 border-2 border-blue-700 rounded-xl p-3">

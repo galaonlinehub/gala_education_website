@@ -29,7 +29,7 @@ const Notes = () => {
     <div className="container mx-auto px-4 py-8">
       <div className="flex flex-col lg:flex-row gap-8">
         <div className="w-full lg:w-2/3">
-          <div className="bg-orange-200 border-2 border-blue-600 rounded-xl p-4 mb-8 relative">
+          <div className=" border-2 border-blue-600 rounded-xl p-4 mb-8 relative">
             <div className="flex flex-col md:flex-row items-center gap-4">
               <div className="flex-grow">
                 <h2 className="text-lg font-bold mb-2">Welcome back, Diana Malle!</h2>
