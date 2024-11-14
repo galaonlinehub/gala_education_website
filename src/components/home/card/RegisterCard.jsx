@@ -1,11 +1,12 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react'
 
 
 
-function RegisterCard({image,title,desc}) {
+function RegisterCard({image,link,title,desc}) {
   return (
-    <div className='flex-col flex w-[70vw] sm:w-[20vw] shadow-xl shadow-black'>
+    <Link href={link} className='flex-col flex w-[70vw] h-fit sm:w-[20vw] 2xl:w-[10vw] shadow-sm shadow-black'>
   {/* Wrap the image in a div */}
   {/* <div className='flex-col flex w-[20vw] h-[12vh]'> */}
   {/* Wrap the image in a div */}
@@ -22,11 +23,11 @@ function RegisterCard({image,title,desc}) {
   
   
   
-  <div className='h-[20vh] bg-[#001840] flex flex-col px-2 py-4'>
-    <span className='text-white font-black'>{title}</span>
-    <span className='text-white text-sm'>{desc}</span>
+  <div className='h-[20vh] register-as-text-card bg-[#001840] flex flex-col px-10 py-8'>
+    <span className='text-white font-black 2xl:text-xs'>{title}</span>
+    <span className='text-white text-xs'>{desc}</span>
   </div>
-</div>
+</Link>
 
 
   )

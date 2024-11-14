@@ -1,7 +1,7 @@
 'use client'
 import BookAndPersonSvg from "@/src/utils/vector-svg/BookAndPersonSvg";
 import {Calendar, theme} from "antd";
-import "../../../src/styles/teacher/dashboard.css"
+import "../../src/styles/teacher/dashboard.css"
 
 
 const onPanelChange = (value, mode) => {

@@ -6,11 +6,12 @@ import RegisterCard from "@/src/components/home/card/RegisterCard";
 import PioneerCard from "@/src/components/home/card/PioneerCard";
 import NewsCard from "@/src/components/home/card/NewsCard";
 import Events from "@/src/components/home/card/Events";
+import Card2 from "@/src/components/home/card/Card2";
 // const {TextArea} = Input;
 function Home() {
     return (
         <div>
-            <div className="relative w-[100vw]  h-[100vh] overflow-y-auto">
+            <div className="relative w-[100vw] homepage-image h-[100vh] overflow-y-auto">
                 <Image 
                     src="/gala_home1.jpeg"
                     layout="fill"
@@ -38,7 +39,7 @@ function Home() {
                             Join Now to get 50% off
                         </h2>
                     </div>
-                    <div className="bg-white px-5 py-3 w-[90vw] lg:w-[30vw] h-fit rounded-[15px]">
+                    <div className="bg-white px-5 py-3 w-[90vw] lg:w-[30vw] 2xl:w-[15vw] h-fit rounded-[15px]">
                         <h1 className="font-black sm:text-xs text-[10px]">
                             Are you interested in a session and want to know
                             more?
@@ -47,7 +48,7 @@ function Home() {
                             Fill out the form and you will be contacted as soon
                             as <br /> possible by our office
                         </h2>
-                        <div className="grid grid-cols-2 gap-2 mt-3">
+                        <div className="grid grid-cols-2 homepage-info-form gap-2 mt-3">
                             <input
                                 placeholder="Name*"
                                 className="bg-[#001840] placeholder:text-[#475873] py-1 px-2 rounded-[5px]"
@@ -157,63 +158,64 @@ function Home() {
                         />
                     </svg>
 
-                    <div className="absolute top-0 left-0 sm:h-[70vh] bg-black/10 h-fit   flex flex-col items-center   w-screen">
-                        <h1 className="font-black text-[20px] sm:text-[40px] ">
+                    <div className="absolute top-0 left-0  sm:h-[70vh] bg-black/10 h-40vh   flex flex-col items-center  py-8  w-screen">
+                        <h1 className="font-black text-[20px] sm:text-[40px]">
                             Why choose our platform?
                         </h1>
-                        <h2 className="text-xs sm:text-lg  text-center">
+                        <h2 className="text-[10px] sm:text-[15px] text-center py-6">
                         &ldquo;Choose Gala Education for personalized learning,
                             innovative teaching methods, and a commitment to
+                            <br/>unlocking every student&apos;s full potential.&ldquo;
                         </h2>
-                        <h2 className="text-xs sm:text-lg text-center">
-                            unlocking every student&apos;s full potential.&ldquo;
-                        </h2>
-                        <div className="flex flex-col sm:flex-row gap-5">
+                        
+                        <div className="flex  gap-3 2xl:gap-24 h-[30vh] sm:h-[27vh] sm:justify-center  w-[98%] px-4 overflow-auto sm:w-full">
                             <Card1
                                 image={"/card1img1.jpeg"}
-                                title={"Personalized Personal Teaching"}
+                                title={"Comprehensive Support"}
                                 desc={
-                                    "Tailored one-on-one sessions in core subjects such as math, science, English, and social studies, focusing on the student's specific needs and learning pace."
+                                    "Access 24/7 study assistance, academic tools, and a dedicated support team to guide you."
                                 }
                             />
                             <Card1
                                 image={"/card1img2.jpeg"}
-                                title={"STEM Enrichment Programs"}
+                                title={"Expert Instructors"}
                                 desc={
-                                    "Specialized tutoring in science, technology, engineering, and math for students interested in deepening their knowledge or exploring STEM fields."
+                                    "Learn from highly qualified educators with years of experience."
                                 }
                             />
                             <Card1
                                 image={"/card1img3.jpeg"}
-                                title={"Special Education Support"}
+                                title={"Customized Learning"}
                                 desc={
-                                    "Customized sessions for students with learning disabilities or special needs, providing them with the tools and support to thrive academically."
+                                    "Tailored lessons and resources that adapt to your learning style and pace."
                                 }
                             />
+                            
                         </div>
                         <div>
-                            <div className="bg-gray-100 flex justify-between items-center rounded-[15px] w-[50px] h-8 my-8 px-2">
-                                <div className="h-3 w-3 bg-gray-600 rounded-full" />
-                                <div className="h-3 w-3 bg-gray-400 rounded-full" />
+                            <div className="bg-[#b3b3b3]/40 flex justify-between items-center rounded-[15px] w-[40px] h-4 my-8 px-2">
+                                <div className="h-2 w-2 bg-gray-600 rounded-full" />
+                                <div className="h-2 w-2 bg-gray-400 rounded-full" />
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div className="flex flex-col md:flex-row w-screen">
-                    <div className="sm:basis-1/2 w-full   sm:h-[50vh] h-[90vh]  gap-3 p-4 flex items-center flex-col">
-                        <h1 className="text-black w-full font-black text-center sm:text-3xl text-xl">
+                <div className="flex   mt-[0vh]  py-6 sm:py-10 flex-col md:flex-row w-full">
+                    <div className="sm:basis-1/2 w-full   sm:h-[50vh] h-[90vh]  gap-7 p-4 flex items-center flex-col">
+                        <h1 className="text-black w-full font-black text-center sm:text-[40px] text-xl">
                             Register with us!
                         </h1>
-                        <h3 className="sm:leading-[4px] leading-[12px] text-xs text-center ">
+                        <h3 className="leading-[20px] text-[14px] text-center ">
                         &ldquo;Join Gala Education today - register as a teacher
-                            or student and unlock endless learning
+                            or student and <br/> unlock endless learning
                             opportunities!&ldquo;
                         </h3>
                         <div className="flex flex-col sm:flex-row gap-5">
                             <RegisterCard
                                 title={"Register as teacher"}
                                 image={"/register_teacher.jpeg"}
+                                link={'/teacher'}
                                 desc={
                                     "Become part of our team of educators and help deliver exceptional learning experiences."
                                 }
@@ -221,6 +223,7 @@ function Home() {
                             <RegisterCard
                                 title={"Register as student"}
                                 image={"/register_student.jpeg"}
+                                link={'/student'}
                                 desc={
                                     "Join our community of learners and be part of the journey to excellence in education!"
                                 }
@@ -229,7 +232,7 @@ function Home() {
                     </div>
                     <div
                         className={
-                            "sm:basis-1/2   h-full flex w-full items-center"
+                            "sm:basis-1/2 basis-1  h-full flex w-full sm:justify-center sm:items-center"
                         }
                     >
                         <div className="relative w-full h-[50vh] ">
@@ -237,20 +240,21 @@ function Home() {
                                 src={"/donate1.jpeg"}
                                 width={100}
                                 height={100}
-                                className="w-[266px] absolute top-0 sm:right-12 left-[12vw] h-[259px] object-cover rounded-br-[100px]"
+                                quality={75}
+                                className="sm:w-[20vw] bg-blue-400 w-[100vw] absolute sm:top-0 top-20 h-[40vh] 2xl:h-[27vh] sm:left-1/2 object-cover rounded-br-[100px]"
                             />
-                            <div className="sm:w-2/5 w-4/5 border-[0.6px] py-3 px-2 top-[15vh] left-[5vw] sm:top-20 sm:left-[90px] bg-white absolute ">
-                                <h1 className="text-lg font-black leading-none">
+                            <div className="sm:w-[20vw] w-[95vw] h-fit border-[0.6px] py-3 px-2 top-[15vh] space-y-4 sm:left-1/4 -left-1/3 sm:top-16  bg-white absolute ">
+                                <h1 className="text-lg font-black leading-[30px] text-[20px]">
                                     Donate today to support underfunded schools
                                 </h1>
-                                <h3 className="text-sm">
+                                <h3 className="text-[12px] leading-[25px] font-light">
                                     Join our community and make a difference!
                                     Your donation supports quality education and
                                     empowers lives. Together, we can create a
                                     brighter future. Every contribution counts -
                                     be part of something impactful today!
                                 </h3>
-                                <button className="border-[1px] border-[#030dfe] self-center rounded-[5px] p-2 text-xs">
+                                <button className="border-[1px] font-bold border-[#030dfe] w-[137px] self-center rounded-[5px] p-2 text-xs">
                                     Donate
                                 </button>
                             </div>
@@ -330,55 +334,54 @@ function Home() {
                                 </clipPath>
                             </defs>
                         </svg>
-                        <div className=" w-screen mt-12  flex gap-5 items-center flex-col h-fit sm:h-[120vh]   bg-black/10">
+                        <div className=" w-screen mt-12 py-12 flex gap-5 items-center flex-col h-fit sm:h-[120vh] 2xl:h-[80vh]   bg-black/10">
                             <h1 className="font-black text-3xl">
                                 Our services
                             </h1>
-                            <h2 className="text-center leading-none">
+                            <h2 className="text-center text-[14px]">
                                 We aim to integrate AI to provide personalized,
                                 AI-powered tutoring and learning experiences
-                            </h2>
-                            <h2 className="text-center leading-none">
+                           <br/>
                                 tailored to each student&apos;s unique needs and
                                 progress.
                             </h2>
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 ">
-                                <Card1
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 ">
+                                <Card2
                                     title={"Personalized Subject Tutoring"}
                                     image={"/service1.jpeg"}
                                     desc={
                                         "Tailored one-on-one sessions in core subjects such as math, science, English, and social studies, focusing on the student's specific needs and learning pace."
                                     }
                                 />
-                                <Card1
+                                <Card2
                                     title={"STEM Enrichment Programs"}
                                     image={"/service2.jpeg"}
                                     desc={
                                         "Specialized tutoring in science, technology, engineering, and math for students interested in deepening their knowledge or exploring STEM fields."
                                     }
                                 />
-                                <Card1
+                                <Card2
                                     title={"Special Education Support"}
                                     image={"/service3.jpeg"}
                                     desc={
                                         "Customized sessions for students with learning disabilities or special needs, providing them with the tools and support to thrive academically."
                                     }
                                 />
-                                <Card1
+                                <Card2
                                     title={"Test and Exam Preparation"}
                                     image={"/service4.jpeg"}
                                     desc={
                                         "Focused tutoring to prepare students for standardized tests, school exams, and quizzes, including practice tests and study strategies."
                                     }
                                 />
-                                <Card1
+                                <Card2
                                     title={"Reading and Literacy Support"}
                                     image={"/service5.jpeg"}
                                     desc={
                                         "Personalized reading programs to improve comprehension, vocabulary, and fluency, particularly for early learners or those struggling with literacy."
                                     }
                                 />
-                                <Card1
+                                <Card2
                                     title={"Study Skills Coaching"}
                                     image={"/service6.jpeg"}
                                     desc={
@@ -454,14 +457,15 @@ function Home() {
                             src="/register_teacher.jpeg"
                             width={200}
                             height={200}
-                            className="border-[8px] top-[20vh] sm:top-[15vh] w-2/3 h-1/2 object-cover left-[15vw] sm:left-[35vh] absolute  border-white"
+                            quality={75}
+                            className="border-[14px] top-[20vh] sm:top-[15vh] w-2/3 h-1/2 object-cover left-[15vw] sm:left-[35vh] absolute  border-white"
                         />
                     </div>
-                    <div className=" sm:px-20 px-2 sm:w-3/4 w-full space-y-3 sm:py-[15vh]">
+                    <div className=" sm:px-20 px-2 sm:w-3/4  w-full space-y-6 sm:py-[15vh]">
                         <h1 className="text-3xl font-black ">
                             Here&apos;s more on what you need to know about Us!
                         </h1>
-                        <h2 className="text-sm">
+                        <h2 className="text-[12px]">
                             At Gala Education, we offer personalized one-on-one
                             tutoring in subjects like math, science, English,
                             social studies, foreign languages, and more, with
@@ -475,7 +479,7 @@ function Home() {
                             All you need is a device and a stable internet
                             connection to access our tutoring sessions online
                         </h2>
-                        <button className="px-2 py-1 border-[1px] border-[#030DFE]">
+                        <button className="px-2 py-1 border-[1px] rounded font-bold border-[#030DFE]">
                             Request information
                         </button>
                     </div>
@@ -526,17 +530,17 @@ function Home() {
                         </svg>
                     </div>
 
-                    <div className="w-full flex py-8 bg-black/10 sm:h-[70vh] h-fit flex-col items-center">
+                    <div className="w-full flex py-8 bg-black/10 space-y-8  sm:h-[70vh] 2xl:h-[50vh] h-fit flex-col items-center">
                         <h1 className="text-3xl text-center font-black ">
                             Pioneers in Digital Teaching
                         </h1>
-                        <h1 className="text-center">
+                        <h1 className="text-center text-[14px]">
                         &ldquo;Our platform offers personalized, AI-driven
                             learning while teaching students healthy <br />{" "}
                             digital habits for balanced, responsible technology
                             use.&ldquo;
                         </h1>
-                        <div className="flex p-20 justify-around flex-col gap-y-10 sm:gap-0  sm:flex-row ">
+                        <div className="flex items-center justify-around flex-col gap-y-10 sm:gap-x-4  sm:flex-row ">
                             <PioneerCard
                                 icon={
                                     <svg
@@ -689,7 +693,7 @@ function Home() {
                             />
                         </svg>
 
-                        <div className="self-center flex flex-col sm:flex-row px-6 rounded-md shadow-md shadow-black w-[90vw] bg-[#F3F2F2] my-10">
+                        <div className="self-center flex flex-col sm:flex-row px-6 rounded-md shadow-md shadow-black w-[70vw] 2xl:w-[50vw] bg-[#F3F2F2] my-10">
                             <div className="basis-2/3  py-2 flex flex-col gap-y-4">
                                 <h1 className="font-bold ">Financial Aid</h1>
                                 <p className="text-xs">
@@ -711,7 +715,7 @@ function Home() {
                                     their educational goals, regardless of their
                                     financial situation.
                                 </p>
-                                <div className="border-[1px] sm:w-2/5 w-fit text-xs font-bold p-1  border-[#030DFE] rounded">
+                                <div className="border-[1px] sm:w-2/5 w-fit text-xs text-center font-bold p-1  border-[#030DFE] rounded">
                                     Apply for financial aid
                                 </div>
                             </div>
@@ -842,19 +846,19 @@ function Home() {
                             fill-opacity="0.08"
                         />
                     </svg>
-                    <div className="w-screen bg-black/10 px-[60px] py-3">
+                    <div className="w-screen bg-black/10 sm:px-[60px] px-[30px] py-3">
                         <div className="basis-1/2 space-y-2">
                         <h1 className="font-bold text-lg">Latest news</h1>
-                          <div className="flex gap-2 flex-col sm:flex-row">
+                          <div className="flex gap-2 flex-col sm:flex-row 2xl:flex-col">
                             <div className="basis-1/2 flex flex-col  h-[316px]">
-                                <Image alt="image" src="/ai.jpeg" width={200} height={200} className="w-full h-1/3 object-cover" />
+                                <Image alt="image" src="/ai.jpeg" quality={75} width={200} height={200} className="w-full h-1/3 2xl:h-[25vh] object-cover" />
                                 
-                                <div className="flex bg-[#001840] ">
+                                <div className="flex sm:flex-row flex-col bg-[#001840] ">
                                 
-                                    <div className="basis-1/2 text-white text-2xl p-4 font-black">
+                                    <div className="basis-1/2 text-white sm:text-2xl text-lg p-4 font-black">
                                     Gala Education Launches AI-Powered Learning Platform
                                     </div>
-                                    <div className="basis-1/2 text-xs flex items-center justify-center text-white">
+                                    <div className="basis-1/2 text-[10px] px-2 py-3 flex items-center justify-center text-white">
                                     Gala Education is excited to announce the launch of our AI-powered learning platform, offering personalized tutoring and adaptive learning experiences for K12 students. 
                                     </div>
                                 </div>
@@ -877,13 +881,13 @@ function Home() {
                     <svg className={"sm:w-[300px] w-[250px] sm:h-[300px] h-[250px] -z-[90] absolute top-0 -left-28"} viewBox="0 0 460 418" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path fillRule="evenodd" clipRule="evenodd" d="M334.167 167.333C334.167 201.916 323.633 234.041 305.6 260.671C320.804 270.519 331.458 286.794 333.719 305.648C368.598 292.516 382.223 277.283 388.985 260.002C393.59 248.235 395.74 233.702 396.521 214.502C397.156 198.862 396.865 181.831 396.725 161.793C384.24 154.597 375.833 141.113 375.833 125.666C375.833 102.655 394.488 83.9998 417.5 83.9998C440.513 83.9998 459.167 102.655 459.167 125.666C459.167 141.063 450.817 154.509 438.398 161.722C438.542 179.875 438.892 198.05 438.154 216.194C437.306 237.031 434.9 257.004 427.785 275.185C413.927 310.604 384.717 333.402 334.167 349.566V354.833C334.167 389.352 306.185 417.333 271.667 417.333H63.3334C28.8157 417.333 0.833374 389.352 0.833374 354.833V313.166C0.833374 291.158 12.2088 271.806 29.4009 260.671C11.3669 234.041 0.833374 201.916 0.833374 167.333C0.833374 75.2857 75.4525 0.666504 167.5 0.666504C259.548 0.666504 334.167 75.2857 334.167 167.333ZM167.5 292.333C236.535 292.333 292.5 236.369 292.5 167.333C292.5 98.2975 236.535 42.3332 167.5 42.3332C98.4644 42.3332 42.5 98.2975 42.5 167.333C42.5 236.369 98.4644 292.333 167.5 292.333ZM167.5 334C209.398 334 247.685 318.539 276.967 293.014C285.906 295.358 292.5 303.491 292.5 313.166V354.833C292.5 366.339 283.173 375.666 271.667 375.666H63.3334C51.8275 375.666 42.5 366.339 42.5 354.833V313.166C42.5 303.491 49.0942 295.358 58.033 293.014C87.3155 318.539 125.602 334 167.5 334Z" fill="#0F0F0F" fill-opacity="0.1"/>
                     </svg>
-                    <svg className="sm:w-[300px] w-[250px] sm:h-[300px] h-[250px] -z-[90] absolute sm:top-0 bottom-0 sm:-right-28 right-14" viewBox="0 0 460 418" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg className="sm:w-[300px] w-[250px] sm:h-[300px] h-[250px] -z-[90] absolute sm:top-0 bottom-0 sm:right-10 right-14" viewBox="0 0 460 418" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path fillRule="evenodd" clipRule="evenodd" d="M334.167 167.333C334.167 201.916 323.633 234.041 305.6 260.671C320.804 270.519 331.458 286.794 333.719 305.648C368.598 292.516 382.223 277.283 388.985 260.002C393.59 248.235 395.74 233.702 396.521 214.502C397.156 198.862 396.865 181.831 396.725 161.793C384.24 154.597 375.833 141.113 375.833 125.666C375.833 102.655 394.488 83.9998 417.5 83.9998C440.513 83.9998 459.167 102.655 459.167 125.666C459.167 141.063 450.817 154.509 438.398 161.722C438.542 179.875 438.892 198.05 438.154 216.194C437.306 237.031 434.9 257.004 427.785 275.185C413.927 310.604 384.717 333.402 334.167 349.566V354.833C334.167 389.352 306.185 417.333 271.667 417.333H63.3334C28.8157 417.333 0.833374 389.352 0.833374 354.833V313.166C0.833374 291.158 12.2088 271.806 29.4009 260.671C11.3669 234.041 0.833374 201.916 0.833374 167.333C0.833374 75.2857 75.4525 0.666504 167.5 0.666504C259.548 0.666504 334.167 75.2857 334.167 167.333ZM167.5 292.333C236.535 292.333 292.5 236.369 292.5 167.333C292.5 98.2975 236.535 42.3332 167.5 42.3332C98.4644 42.3332 42.5 98.2975 42.5 167.333C42.5 236.369 98.4644 292.333 167.5 292.333ZM167.5 334C209.398 334 247.685 318.539 276.967 293.014C285.906 295.358 292.5 303.491 292.5 313.166V354.833C292.5 366.339 283.173 375.666 271.667 375.666H63.3334C51.8275 375.666 42.5 366.339 42.5 354.833V313.166C42.5 303.491 49.0942 295.358 58.033 293.014C87.3155 318.539 125.602 334 167.5 334Z" fill="#0F0F0F" fill-opacity="0.1"/>
                     </svg>
 
                     <div className={'flex flex-col sm:flex-row justify-around items-center gap-y-2 gap-x-4'}>
                         <Events img={"/events1.jpeg"} title={'"Future of Learning" Summit'} desc={"A conference exploring cutting-edge technologies in education, featuring expert speakers on AI, personalized learning, and digital transformation in classrooms."} />
-                        <Events img={"/events2.jpeg"} title={'"Future of Learning" Summit'} desc={"A conference exploring cutting-edge technologies in education, featuring expert speakers on AI, personalized learning, and digital transformation in classrooms."} />
+                        <Events img={"/events2.jpeg"} title={'Student Innovation Hackathon'} desc={"A conference exploring cutting-edge technologies in education, featuring expert speakers on AI, personalized learning, and digital transformation in classrooms."} />
                         <Events img={"/events3.jpeg"} title={'"Future of Learning" Summit'} desc={"A conference exploring cutting-edge technologies in education, featuring expert speakers on AI, personalized learning, and digital transformation in classrooms."} />
                     </div>
 

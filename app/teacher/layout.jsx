@@ -13,7 +13,7 @@ import RightTiltedBook from "@/components/vectors/CombinedBlock";
 import KidInPicture from "@/components/vectors/KidInPicture";
 import Clock from "@/components/vectors/Clock";
 import StudentsInClass from "@/components/vectors/StudentsInClass";
-import { teacher_links } from "@/constants/teacher_links";
+import { teacher_links } from "@/constants/navigation_links";
 import Providers from "../providers";
 
 const geistSans = localFont({
@@ -70,10 +70,10 @@ export default function RootLayout({ children }) {
                   <Link href="/about">About Us</Link>
                 </li>
                 <li className="hover:text-blue-600 transition-colors">
-                  <Link href="/register">Register</Link>
+                  <Link href="/signup">Register</Link>
                 </li>
                 <li className="hover:text-blue-600 transition-colors">
-                  <Link href="/login">Login</Link>
+                  <Link href="/signin">Login</Link>
                 </li>
               </ul>
 

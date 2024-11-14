@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://edu.galahub.org
+
+# Sitemaps
+Sitemap: https://edu.galahub.org/sitemap.xml

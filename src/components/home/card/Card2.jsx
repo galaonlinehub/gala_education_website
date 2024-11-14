@@ -3,9 +3,9 @@ import React from 'react'
 
 
 
-function Card1({image,title,desc}) {
+function Card2({image,title,desc}) {
   return (
-    <div className='flex-col flex   sm:w-[259px]  h-fit 2xl:w-[400px] shadow-md shadow-black'>
+    <div className='flex-col flex w-[250px] sm:w-[300px] shadow-md shadow-black'>
   
   <div className='w-full h-[12vh]'>
     <Image 
@@ -20,8 +20,8 @@ function Card1({image,title,desc}) {
   
   
   
-  <div className='sm:h-[15vh] h-[20vh] 2xl:h-[8vh]  bg-[#001840] flex flex-col px-4 py-4'>
-    <span className='text-white font-black'>{title}</span>
+  <div className='h-[25vh] 2xl:h-[10vh] bg-[#001840]  flex flex-col px-4 py-8'>
+    <span className='text-white font-black '>{title}</span>
     <span className='text-white text-[12px]'>{desc}</span>
   </div>
 </div>
@@ -30,4 +30,4 @@ function Card1({image,title,desc}) {
   )
 }
 
-export default Card1
+export default Card2

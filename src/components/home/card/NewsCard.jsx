@@ -3,9 +3,9 @@ import React from 'react'
 
 function NewsCard({img,title,desc}) {
   return (
-    <div className='flex'>
+    <div className='flex sm:flex-row flex-col sm:gap-y-2 gap-y-3'>
       <div className='flex bg-[#001840] text-white flex-col sm:h-[95px] h-fit basis-1/3 '>
-      <Image alt="image" src={img} width={200} height={200} className='w-full h-1/3 object-cover' />
+      <Image alt="image" src={img} width={200} height={200} className='w-full h-1/3  object-cover' />
       <h1 className='h-2/3 text-xs font-black text-center'>{title}</h1>
       </div>
       <div className='sm:p-2 p-1 basis-2/3 '>

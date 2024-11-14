@@ -93,11 +93,11 @@ const StudentSocial = () => {
 
     return filteredUsers.map((item, index) => (
       <div key={index} onClick={() => viewOnClickedUser(index)} className={`p-2 mb-3 bg-[#070B65] shadow-md flex items-center cursor-pointer gap-2 rounded-lg ${clickedUserIndex === index ? "bg-[#001840] text-white" : "bg-white"}`}>
-        <div className="flex items-center justify-center">
-          <img src="/necklace.png" alt="avatar" className="w-10 object-cover rounded-full" />
+        <div className="flex basis-1/6">
+          <Image src="/necklace.png" alt="avatar" width={100} height={100} className="w-8 h-8 object-cover rounded-full" />
         </div>
 
-        <div className="flex flex-col  w-72 flex-grow overflow-hidden">
+        <div className="flex flex-col  basis-5/6 flex-grow overflow-hidden">
           <div className="text-xs font-bold truncate">{item.name}</div>
           <div className="text-xs truncate text-gray-400">{item.message}</div>
         </div>
@@ -178,7 +178,7 @@ const StudentSocial = () => {
                   <h2 className="font-bold text-sm mb-4">Chats</h2>
                   <div className="flex justify-evenly gap-1 mb-4">
                     {["Direct", "Groups", "Public"].map((tab) => (
-                      <button key={tab} onClick={() => setCurrentTab(tab.toLowerCase())} className={`px-2 text-sm py-1 font-bold items-center rounded ${currentTab === tab.toLowerCase() ? " text-black" : "text-gray-400"}`}>
+                      <button key={tab} onClick={() => setCurrentTab(tab.toLowerCase())} className={`px-2 text-xs py-1 font-bold items-center rounded ${currentTab === tab.toLowerCase() ? " text-black" : "text-gray-400"}`}>
                         <span>{tab}</span>
                         <span className="text-red-500">*</span>
                       </button>
