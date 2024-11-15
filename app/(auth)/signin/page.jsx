@@ -15,20 +15,19 @@ const SignInPage = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm();
 
   const onSubmit = async (data) => {
     try {
       setLoading(true);
-      message.destroy()
+      message.destroy();
 
       const formData = new FormData();
       formData.append("email", data.email);
       formData.append("password", data.password);
 
-      const response = await api.post("/login", formData, {
-      });
+      const response = await api.post("/login", formData, {});
 
       if (response.data) {
         message.success("Login successful!");
@@ -39,12 +38,12 @@ const SignInPage = () => {
         error.response?.data?.message || "Login failed. Please try again.";
       message.error(errorMessage);
     } finally {
-      setLoading(false);
-      message.success("Login successful!");
-
-      router.push("/teacher");
-
+      // setLoading(false);
     }
+  };
+
+  const preventCopyPaste = (event) => {
+    event.preventDefault();
   };
 
   const handleGoogleLogin = async () => {
@@ -107,6 +106,9 @@ const SignInPage = () => {
             <input
               id="password"
               type="password"
+              onCopy={preventCopyPaste}
+              onPaste={preventCopyPaste}
+              onCut={preventCopyPaste}
               {...register("password", {
                 required: "Password is required",
                 minLength: {
@@ -139,10 +141,16 @@ const SignInPage = () => {
 
           <button
             type="submit"
-            disabled={loading}
+            disabled={isSubmitting}
             className="text-white text-base h-12 bg-[#030DFE] rounded-md w-60 font-bold mt-5 disabled:opacity-60 flex items-center justify-center gap-2"
           >
-            {loading ? <><LoadingState /> Logging in...</> : "Login"}
+            {isSubmitting ? (
+              <>
+                <LoadingState /> Logging in...
+              </>
+            ) : (
+              "Login"
+            )}
           </button>
         </form>
 
@@ -166,7 +174,7 @@ const SignInPage = () => {
         </button>
       </div>
 
-      <LoginVectorSvg />
+      {/* <LoginVectorSvg /> */}
     </div>
   );
 };

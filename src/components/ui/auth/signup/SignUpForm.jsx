@@ -20,6 +20,10 @@ const SignUpForm = () => {
   const [loading , setLoading] = React.useState(false)
   const password = watch('password', '');
 
+  const preventCopyPaste = (event) => {
+    event.preventDefault();
+  };
+
   const onSubmit = async (data) => {
     setLoading(true)
     message.destroy() 
@@ -139,6 +143,9 @@ const SignUpForm = () => {
               autoCapitalize="off"
               autoCorrect="off"
               placeholder="Enter Your Password"
+              onCopy={preventCopyPaste}
+              onPaste={preventCopyPaste}
+              onCut={preventCopyPaste}
               className={`border-[1px] focus:border-[2.5px] focus:outline-none w-full rounded-md border-[#030DFE] h-input-height placeholder:font-semibold placeholder:text-[14px] pl-3 ${errors.password ? "border-red-500 focus:border-red-500" : ""}`}
               {...register("password", {
                 required: "Password is required",
@@ -166,6 +173,9 @@ const SignUpForm = () => {
               autoCapitalize="off"
               autoCorrect="off"
               placeholder="Confirm your Password"
+              onCopy={preventCopyPaste}
+              onPaste={preventCopyPaste}
+              onCut={preventCopyPaste}
               className={`border-[1px] focus:border-[2.5px] focus:outline-none w-full rounded-md border-[#030DFE] h-input-height placeholder:font-semibold placeholder:text-[14px] pl-3 ${errors.confirmPassword ? "border-red-500 focus:border-red-500" : ""}`}
               {...register("confirmPassword", {
                 required: "Confirm password is required",
