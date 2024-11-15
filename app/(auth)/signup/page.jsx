@@ -9,15 +9,17 @@ import InstructorSignUpForm from "@/src/components/ui/auth/signup/InstructorSign
 import ConfirmPlan from "@/src/components/ui/auth/signup/ConfirmPlan";
 import { useTabNavigator } from "@/src/store/auth/signup";
 import { message } from 'antd';
-
+import { useAccountType } from '@/src/store/auth/signup';
 
 const SignupPage = () => {
   const {activeTab, setActiveTab} = useTabNavigator((state) => state)
+  const { accountType } = useAccountType(); 
+
   const tabs = [
     {
       key: 1,
       label: <span className='text-black font-bold text-[10px] sm:text-[14px] px-1 sm:px-6 whitespace-nowrap overflow-hidden truncate'>Sign Up</span>,
-      content: <>{true ? <InstructorSignUpForm /> : <SignUpForm />}</>,
+      content: <>{accountType === 'instructor' ? <InstructorSignUpForm /> : accountType === 'student' ? <SignUpForm /> : '' }</>,
     },
     {
       key: 2,
@@ -33,13 +35,20 @@ const SignupPage = () => {
 
   const handleTabClick = i => {
     if (i === activeTab) return;
+    message.destroy();
 
     const messageText = i < activeTab
         ? "You can not go back, finish all steps."
         : "Complete this stage to proceed.";
 
-    message.info(messageText);
-};
+        message.info({
+          content: (
+            <div className="font-extralight text-xs py-1">
+              {messageText}
+            </div>
+          ),
+          duration:10.0,
+        });};
 
 
   const TabPane = ({ children, isActive }) => (

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 const LoadingState = () => {
   const loaderStyles = {
-    width: '24px',
+    width: '16px',
     aspectRatio: '1',
     display: 'grid',
     borderRadius: '50%',

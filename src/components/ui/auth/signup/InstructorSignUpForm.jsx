@@ -11,11 +11,13 @@ const InstructorSignUpForm = () => {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm();
 
   const setOpenEmailVerificationModal = useEmailVerificationModalOpen((state) => state.setOpenEmailVerificationModal);
-
+  const [loading , setLoading] = useState(false)
+  const password = watch('password', '');
 
   const [files, setFiles] = useState({
     cv: null,
@@ -47,7 +49,9 @@ const InstructorSignUpForm = () => {
   };
 
   const onSubmit = async (data) => {
+    message.destroy() 
     const formData = new FormData();
+
     const keysToRemove = [
       "o_level_certificate",
       "a_level_certificate",
@@ -80,7 +84,7 @@ const InstructorSignUpForm = () => {
       message.success("Data Saved Successfully!");
 
     } catch (error) {
-      message.error("Oops!! Something Went Wrong, Try again.");
+      message.error("Oops!! Something Went Wrong, Try again Later.");
       console.error(error);
     }
   };
@@ -89,7 +93,7 @@ const InstructorSignUpForm = () => {
     <main className="flex justify-center items-center w-full pb-24 mt-6">
       <div className="flex flex-col gap-6 w-full lg:mx-24 z-10">
         <div className="flex flex-col gap-2 justify-center items-center w-full">
-          <span className="font-black text-[16px]">Sign Up</span>
+          <span className="font-bold text-[16px]">Sign Up</span>
           <span className="font-medium text-[12px] w-full text-center">
             When registering with Gala, teachers undergo a vetting process to
             ensure only qualified candidates are selected, maintaining service
@@ -103,9 +107,9 @@ const InstructorSignUpForm = () => {
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col lg:flex-row items-center justify-center gap-12 w-full"
         >
-          <div className="flex flex-col gap-4 w-full lg:w-6/12">
+          <div className="flex flex-col gap-3 w-full lg:w-6/12">
             <div className="flex flex-col gap-1 items-start justify-center">
-              <label for="first-name" className="font-black text-[16px]">
+              <label for="first-name" className="font-bold text-[13px]">
                 First Name *
               </label>
               <input
@@ -115,8 +119,8 @@ const InstructorSignUpForm = () => {
                 autoCapitalize="off"
                 autoCorrect="off"
                 placeholder="Enter Your First Name"
-                className={`border-[2.5px] w-full rounded-[2.5px] border-[#030DFE] focus:border-[#030DFE] focus:outline-none h-input-height placeholder:font-semibold pl-3 placeholder:text-[14px]`}
-                {...register("firstname", {
+                className={`border-[1px] focus:border-[2.5px] w-full rounded-md border-[#030DFE] focus:border-[#030DFE] focus:outline-none h-input-height placeholder:font-semibold pl-3 placeholder:text-[14px]`}
+                {...register("firstName", {
                   required: "First name is required",
                 })}
               />
@@ -127,7 +131,7 @@ const InstructorSignUpForm = () => {
               )}
             </div>
             <div className="flex flex-col gap-1 items-start justify-center">
-              <label for="last-name" className="font-black text-[16px]">
+              <label for="last-name" className="font-bold text-[13px]">
                 Last Name *
               </label>
               <input
@@ -137,8 +141,8 @@ const InstructorSignUpForm = () => {
                 autoCapitalize="off"
                 autoCorrect="off"
                 placeholder="Enter Your Last Name"
-                className="border-[2.5px] w-full rounded-[2.5px] border-[#030DFE] focus:outline-none h-input-height placeholder:font-semibold pl-3 placeholder:text-[14px]"
-                {...register("lastname", { required: "Last name is required" })}
+                className="border-[1px] focus:border-[2.5px] w-full rounded-md border-[#030DFE] focus:outline-none h-input-height placeholder:font-semibold pl-3 placeholder:text-[14px]"
+                {...register("lastName", { required: "Last name is required" })}
               />
               {errors.lastName && (
                 <span className="text-red-500 text-xs">
@@ -148,7 +152,7 @@ const InstructorSignUpForm = () => {
             </div>
 
             <div className="flex flex-col gap-1 justify-center items-start">
-              <label for="email" className="font-black text-[16px]">
+              <label for="email" className="font-bold text-[13px]">
                 Email *
               </label>
               <input
@@ -158,7 +162,7 @@ const InstructorSignUpForm = () => {
                 autoCapitalize="off"
                 autoCorrect="off"
                 placeholder="Enter Your Email"
-                className="border-[2.5px] w-full rounded-[2.5px] border-[#030DFE] focus:outline-none  h-input-height pl-3 placeholder:font-semibold placeholder:text-[14px]"
+                className="border-[1px] focus:border-[2.5px] w-full rounded-md border-[#030DFE] focus:outline-none  h-input-height pl-3 placeholder:font-semibold placeholder:text-[14px]"
                 {...register("email", {
                   required: "Email is required",
                   pattern: {
@@ -175,7 +179,7 @@ const InstructorSignUpForm = () => {
             </div>
 
             <div className="flex flex-col gap-1 justify-center items-start">
-              <label for="password" className="font-black text-[16px]">
+              <label for="password" className="font-bold text-[13px]">
                 Password *
               </label>
               <input
@@ -185,7 +189,7 @@ const InstructorSignUpForm = () => {
                 autoCapitalize="off"
                 autoCorrect="off"
                 placeholder="Enter Your Password"
-                className="border-[2.5px] focus:outline-none w-full rounded-[2.5px] border-[#030DFE] h-input-height placeholder:font-semibold placeholder:text-[14px] pl-3"
+                className="border-[1px] focus:border-[2.5px] focus:outline-none w-full rounded-md border-[#030DFE] h-input-height placeholder:font-semibold placeholder:text-[14px] pl-3"
                 {...register("password", {
                   required: "Password is required",
                   minLength: {
@@ -200,9 +204,33 @@ const InstructorSignUpForm = () => {
                 </span>
               )}
             </div>
+            <div className="flex flex-col gap-1 justify-center items-start">
+              <label for="confirm_password" className="font-bold text-[13px]">
+                Confirm Password *
+              </label>
+              <input
+                type="password"
+                id="confirm_password"
+                autoComplete="off"
+                autoCapitalize="off"
+                autoCorrect="off"
+                placeholder="Confirm your Password"
+                className="border-[1px] focus:border-[2.5px] focus:outline-none w-full rounded-md border-[#030DFE] h-input-height placeholder:font-semibold placeholder:text-[14px] pl-3"
+                {...register("confirmPassword", {
+                  required: "Confirm password is required",
+                  validate: value =>
+                    value === password || 'Passwords do not match',      
+                })}
+              />
+              {errors.confirmPassword && (
+                <span className="text-red-500 text-xs">
+                  {errors.confirmPassword.message}
+                </span>
+              )}
+            </div>
 
             <div className="flex flex-col gap-1 justify-center items-start">
-              <label for="nida-number" className="font-black text-[16px]">
+              <label for="nida-number" className="font-bold text-[13px]">
                 National ID Number (NIDA) *
               </label>
               <input
@@ -212,14 +240,14 @@ const InstructorSignUpForm = () => {
                 autoCapitalize="off"
                 autoCorrect="off"
                 id="nida-number"
-                className="border-[2.5px] w-full focus:outline-none rounded-[2.5px] border-[#030DFE] h-input-height placeholder:font-semibold placeholder:text-[14px] pl-3"
+                className="border-[1px] focus:border-[2.5px] w-full focus:outline-none rounded-md border-[#030DFE] h-input-height placeholder:font-semibold placeholder:text-[14px] pl-3"
                 {...register("nida", {
                   required: "NIDA number is required",
                 })}
               />
-              {errors.nidaNumber && (
+              {errors.nida && (
                 <span className="text-red-500 text-xs">
-                  {errors.nidaNumber.message}
+                  {errors.nida.message}
                 </span>
               )}
             </div>
@@ -227,11 +255,11 @@ const InstructorSignUpForm = () => {
 
           <div className="flex flex-col mx-auto items-center justify-center gap-4 w-full lg:w-4/12">
             <div className="flex flex-col gap-1 justify-center items-start w-full">
-              <span className="font-black text-[16px]">
+              <span className="font-bold text-[13px]">
                 Upload Curriculum vitae (CV)
               </span>
               <label className="cursor-pointer w-full">
-                <div className="h-input-height w-full bg-[#001840] rounded-[2.5px] text-[14px] font-semibold text-[#D9D9D9] flex items-center justify-center">
+                <div className="h-input-height w-full bg-[#001840] rounded-md text-[14px] font-semibold text-[#D9D9D9] flex items-center justify-center">
                   {files.cv ? files.cv.name : `Upload CV`}
                 </div>
                 <input
@@ -251,9 +279,9 @@ const InstructorSignUpForm = () => {
             </div>
 
             <div className="flex flex-col gap-1 justify-center items-start w-full">
-              <span className="font-black text-[16px]">Upload Transcript</span>
+              <span className="font-bold text-[13px]">Upload Transcript</span>
               <label className="cursor-pointer w-full">
-                <div className="h-input-height w-full bg-[#001840] rounded-[2.5px] text-[14px] font-semibold text-[#D9D9D9] flex items-center justify-center">
+                <div className="h-input-height w-full bg-[#001840] rounded-md text-[14px] font-semibold text-[#D9D9D9] flex items-center justify-center">
                   {files.transcript
                     ? files.transcript.name
                     : `Upload Transcript`}
@@ -275,36 +303,11 @@ const InstructorSignUpForm = () => {
             </div>
 
             <div className="flex flex-col gap-1 justify-center items-start w-full">
-              <span className="font-black text-[16px]">
-                Upload A-Level Certificate
-              </span>
-              <label className="cursor-pointer w-full">
-                <div className="h-input-height w-full bg-[#001840] rounded-[2.5px] text-[14px] font-semibold text-[#D9D9D9] flex items-center justify-center">
-                  {files.aLevelCertificate
-                    ? files.aLevelCertificate.name
-                    : "Upload A-Level Certificate"}
-                </div>
-                <input
-                  type="file"
-                  className="hidden"
-                  {...register("a_level_certificate", {
-                    onChange: (e) => handleFileChange(e, "aLevelCertificate"),
-                  })}
-                />
-              </label>
-              {errors.a_level_certificate && (
-                <span className="text-red-500 text-xs">
-                  {errors.a_level_certificate.message}
-                </span>
-              )}
-            </div>
-
-            <div className="flex flex-col gap-1 justify-center items-start w-full">
-              <span className="font-black text-[16px]">
+              <span className="font-bold text-[13px]">
                 Upload O-Level Certificate
               </span>
               <label className="cursor-pointer w-full">
-                <div className="h-input-height w-full bg-[#001840] rounded-[2.5px] text-[14px] font-semibold text-[#D9D9D9] flex items-center justify-center">
+                <div className="h-input-height w-full bg-[#001840] rounded-md text-[14px] font-semibold text-[#D9D9D9] flex items-center justify-center">
                   {files.oLevelCertificate
                     ? files.aLevelCertificate.name
                     : "Upload O-Level Certificate"}
@@ -324,13 +327,39 @@ const InstructorSignUpForm = () => {
                 </span>
               )}
             </div>
+
+            <div className="flex flex-col gap-1 justify-center items-start w-full">
+              <span className="font-bold text-[13px]">
+                Upload A-Level Certificate
+              </span>
+              <label className="cursor-pointer w-full">
+                <div className="h-input-height w-full bg-[#001840] rounded-md text-[14px] font-semibold text-[#D9D9D9] flex items-center justify-center">
+                  {files.aLevelCertificate
+                    ? files.aLevelCertificate.name
+                    : "Upload A-Level Certificate"}
+                </div>
+                <input
+                  type="file"
+                  className="hidden"
+                  {...register("a_level_certificate", {
+                    onChange: (e) => handleFileChange(e, "aLevelCertificate"),
+                  })}
+                />
+              </label>
+              {errors.a_level_certificate && (
+                <span className="text-red-500 text-xs">
+                  {errors.a_level_certificate.message}
+                </span>
+              )}
+            </div>
+
           </div>
-          <div className="flex items-center w-[220px] lg:w-2/12">
+          <div className="flex items-center w-[150px]">
             <button
               onClick={()=>setOpenEmailVerificationModal(true)}
               type="submit"
-              className="h-[50.27px] w-full bg-[#030DFE] text-white font-black rounded-[2.5px] flex items-center justify-center">
-             {true ? 'Apply' : <LoadingState/>}
+              className="h-[45.27px] w-full bg-[#030DFE] text-white font-bold rounded-md flex items-center justify-center">
+             {loading ?  <LoadingState/> : 'Apply' }
             </button>
           </div>
         </form>
