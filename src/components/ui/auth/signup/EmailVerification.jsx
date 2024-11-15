@@ -1,4 +1,4 @@
-import { Modal } from "antd";
+import { Modal, Result } from "antd";
 import React from "react";
 import { api } from "@/src/config/settings";
 import LoadingState from "../../loading/LoadingSpinner";
@@ -83,7 +83,7 @@ const EmailVerification = () => {
         setTimeout(() => {
           setActiveTab(1);
           setOpenEmailVerificationModal(false);
-        }, 8000);
+        }, 5000);
       }
     }
   };
@@ -148,31 +148,23 @@ const EmailVerification = () => {
           )}
           {hasVerified !== null &&
             (hasVerified ? (
-              <>
-                <div className="flex items-center gap-3 p-3 m-4 rounded-md bg-green-100 text-green-800 w-full max-w-md">
-                  <FiCheckCircle className="h-8 w-8" />
-                  <div>
-                    <span className="text-xs">
-                      Email successfully Verified.
-                    </span>
-                  </div>
-                </div>
-                <div className="my-5 px-6 w-full flex items-center justify-center">
-                  <span className="font-bold text-sm text-center">
-                    Hold on a moment. You’ll be directed to the next stage
-                    shortly.
-                  </span>
-                </div>
-              </>
+              <Result
+                status="success"
+                title="Email successfully Verified!"
+                subTitle="Hold on a moment. You&#39;ll be directed to the next stage."
+              />
             ) : (
-              <div className="flex items-center gap-3 p-3 m-4 rounded-md bg-red-100 text-red-800 w-full max-w-md">
-                <FiAlertCircle className="h-8 w-8" />
-                <div>
-                  <span className="text-xs">
-                    Failed to Verify Email, Incorrect Code Provided.
-                  </span>
-                </div>
-              </div>
+              <Result
+                status="error"
+                title="Email Verification Failed!"
+                subTitle="Incorrect Code Provided."
+                // extra={[
+                //   <Button type="primary" key="console">
+                //     Go Console
+                //   </Button>,
+                //   <Button key="buy">Buy Again</Button>,
+                // ]}
+              ></Result>
             ))}
           <div className="flex gap-2 text-xs w-full items-center justify-end">
             <span>Didn&#39;t get the code?</span>

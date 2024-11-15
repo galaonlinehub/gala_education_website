@@ -15,17 +15,17 @@ import Clock from "@/components/vectors/Clock";
 import StudentsInClass from "@/components/vectors/StudentsInClass";
 import { teacher_links } from "@/constants/teacher_links";
 
-const geistSans = localFont({
-  src: "../fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
+// const geistSans = localFont({
+//   src: "../fonts/GeistVF.woff",
+//   variable: "--font-geist-sans",
+//   weight: "100 900",
+// });
 
-const geistMono = localFont({
-  src: "../fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+// const geistMono = localFont({
+//   src: "../fonts/GeistMonoVF.woff",
+//   variable: "--font-geist-mono",
+//   weight: "100 900",
+// });
 
 export default function RootLayout({ children}) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -47,7 +47,8 @@ export default function RootLayout({ children}) {
 
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}>
+      <body
+       className={'antialiased min-h-screen flex flex-col'}>
         <AntdRegistry>
           {/* Top Navigation */}
           <nav className="h-16 bg-orange-200 px-4 shadow-sm flex justify-between items-center z-50">

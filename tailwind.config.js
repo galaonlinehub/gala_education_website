@@ -29,7 +29,7 @@ const tailwindConfig = {
   theme: {
     extend: {
       height: {
-        'input-height': '50px', 
+        'input-height': '43px', 
       },
       colors: {
         background: "var(--background)",
