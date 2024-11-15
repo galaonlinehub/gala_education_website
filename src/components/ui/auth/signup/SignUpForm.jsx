@@ -206,7 +206,7 @@ const SignUpForm = () => {
         </span>
       </div>
 
-      <StudentSignUpVectorSvg />
+      {/* <StudentSignUpVectorSvg /> */}
       <EmailVerification/>
 
     </section>

@@ -60,7 +60,7 @@ const SignInPage = () => {
 
   return (
     <div className="flex lg:items-center justify-center h-screen px-3 md:px-8 lg:px-12 xl:px-16">
-      <div className="flex flex-col items-center justify-center gap-3 w-full max-w-md z-10">
+      <div className="flex flex-col items-center justify-center gap-3 w-full max-w-xl z-10">
         <span className="font-black">Login</span>
         <span className="font-black text-4xl">Welcome Back</span>
         <span className="text-sm font-medium text-center px-4 sm:px-8">
