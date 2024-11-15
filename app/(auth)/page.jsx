@@ -1045,7 +1045,7 @@ function Home() {
                 desc={
                   "Become part of our team of educators and help deliver exceptional learning experiences."
                 }
-                accountType="instructor"
+                type={"instructor"}
               />
               <RegisterCard
                 title={"Register as student"}
@@ -1053,7 +1053,7 @@ function Home() {
                 desc={
                   "Join our community of learners and be part of the journey to excellence in education!"
                 }
-                accountType="student"
+                type={"student"}
               />
             </div>
           </div>

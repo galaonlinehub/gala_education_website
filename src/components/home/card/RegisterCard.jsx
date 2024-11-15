@@ -1,27 +1,37 @@
 "use client";
 
 import { useAccountType } from "@/src/store/auth/signup";
+import { message } from "antd";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState, useEffect } from "react";
 
-function RegisterCard({ image, title, desc, accountType }) {
+function RegisterCard({ image, title, desc, type }) {
   const { setAccountType } = useAccountType();
   const router = useRouter();
 
+  // useEffect(() => {
+  //   setLocalAccountType(type);
+  //   console.log("Type prop updated:", type);
+  // }, [type]);
+
   const handleRegister = () => {
-    setAccountType(accountType);
+    message.destroy();
+    if (!type) {
+      message.error("Error occurred, Account type is not set");
+      return;
+    }
+    setAccountType(type);
     router.push("/signup");
   };
+
+  console.log("Rendering RegisterCard with type:", type);
 
   return (
     <div
       className="flex-col flex w-[70vw] sm:w-[20vw] shadow-xl shadow-black cursor-pointer"
       onClick={handleRegister}
     >
-      {/* Wrap the image in a div */}
-      {/* <div className='flex-col flex w-[20vw] h-[12vh]'> */}
-      {/* Wrap the image in a div */}
       <div className="w-full h-[12vh]">
         <Image
           alt="image Data"
