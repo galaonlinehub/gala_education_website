@@ -117,3 +117,8 @@
     border-color: red !important;
     animation-name: shake;
   }
+
+
+  .login-bg {
+    background-image: url('/vectors/auth/sign-in/LoginVectorSvg.svg');
+  }
