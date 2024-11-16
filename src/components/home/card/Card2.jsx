@@ -20,7 +20,7 @@ function Card2({image,title,desc}) {
   
   
   
-  <div className='h-[25vh] 2xl:h-[10vh] bg-[#001840]  flex flex-col px-4 py-8'>
+  <div className='h-[10rem] 2xl:h-[10rem] bg-[#001840]  flex flex-col px-4 py-8'>
     <span className='text-white font-black '>{title}</span>
     <span className='text-white text-[12px]'>{desc}</span>
   </div>
