@@ -7,6 +7,7 @@ import { message } from "antd";
 import { api } from "@/src/config/settings";
 import GoogleSvg from "@/src/utils/vector-svg/sign-in/GoogleSvg";
 import LoadingState from "@/src/components/ui/loading/LoadingSpinner";
+import '../../../src/styles/auth/signup.css'
 
 const SignInPage = () => {
   const router = useRouter();
@@ -59,8 +60,16 @@ const SignInPage = () => {
   };
 
   return (
-    <div className="flex lg:items-center justify-center h-screen px-3 md:px-8 lg:px-12 xl:px-16">
-      <div className="flex flex-col items-center justify-center gap-3 w-full max-w-xl z-10">
+    <div
+      // style={{
+      //   backgroundImage: "url('/vectors/auth/sign-in/LoginVectorSvg.svg')",
+      //   backgroundSize: "cover", 
+      //   backgroundPosition: "center", 
+      //   height: "100vh", 
+      // }}
+      className="login-bg bg-cover bg-center flex lg:items-center justify-center h-screen px-3 md:px-8 lg:px-12 xl:px-16"
+    >
+      <div className="flex flex-col items-center justify-center gap-3 w-full max-w-xl">
         <span className="font-black">Login</span>
         <span className="font-black text-4xl">Welcome Back</span>
         <span className="text-sm font-medium text-center px-4 sm:px-8">
