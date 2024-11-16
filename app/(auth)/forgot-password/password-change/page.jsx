@@ -11,10 +11,12 @@ import {
 import { api } from "@/src/config/settings";
 import { HiCheckCircle } from "react-icons/hi2";
 import { IoIosCloseCircle } from "react-icons/io";
+import { decrypt } from "@/src/utils/encryption";
+import Error from "../../error";
 
 const { Title, Text } = Typography;
 
-const ChangePassword = ({ email }) => {
+const ChangePassword = () => {
   const router = useRouter();
   const [passwordChecks, setPasswordChecks] = useState({
     hasUpperCase: false,
@@ -36,6 +38,8 @@ const ChangePassword = ({ email }) => {
     },
   });
 
+  const [error, setError] = useState("");
+  const [email, setEmail] = useState("");
   const password = watch("password");
 
   useEffect(() => {
@@ -44,7 +48,7 @@ const ChangePassword = ({ email }) => {
         hasUpperCase: /[A-Z]/.test(password),
         hasLowerCase: /[a-z]/.test(password),
         hasNumber: /[0-9]/.test(password),
-        hasSpecialChar: /[!@#$%^&*(),.?":{}|<>]/.test(password),
+        hasSpecialChar: /[!@#$_\-%^&*(),.?":{}|<>]/.test(password),
         hasMinLength: password.length >= 8,
       });
     } else {
@@ -57,6 +61,20 @@ const ChangePassword = ({ email }) => {
       });
     }
   }, [password]);
+
+  useEffect(() => {
+    decryptEmail();
+  }, []);
+
+  const decryptEmail = () => {
+    const storedEmail = sessionStorage.getItem("Gala");
+    const decryptedEmail = decrypt(storedEmail);
+    if (decryptedEmail) {
+      setEmail(decryptedEmail);
+    } else {
+      setError("Failed to decrypt email");
+    }
+  };
 
   const allChecksPassed = Object.values(passwordChecks).every(Boolean);
 
@@ -104,7 +122,7 @@ const ChangePassword = ({ email }) => {
       const formData = new FormData();
       formData.append("email", email);
       formData.append("newPassword", data.password);
-
+      console.log(data, email);
       const response = await api.post("/reset-password", formData);
 
       if (response.data.success) {
@@ -118,8 +136,18 @@ const ChangePassword = ({ email }) => {
     }
   };
 
+  const preventCopyPaste = (event) => {
+    event.preventDefault();
+  };
+
+  //ERROR RETURNED IF DECRYPTION FAILS
+  if (error) {
+    return <Error error={{ message: error }} />;
+  }
+
+  //NORMAL FLOW
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
+    <div className="flex items-center justify-center h-screen bg-gray-100 p-3 lg:p-0">
       <Card
         className="!w-full !max-w-xl !bg-white !p-8 !rounded-lg !shadow-sm"
         title={
@@ -150,6 +178,9 @@ const ChangePassword = ({ email }) => {
                   {...field}
                   id="password"
                   placeholder="Enter new password"
+                  onCopy={preventCopyPaste}
+                  onPaste={preventCopyPaste}
+                  onCut={preventCopyPaste}
                   className="!h-input-height"
                   iconRender={(visible) =>
                     visible ? <EyeOutlined /> : <EyeInvisibleOutlined />
@@ -210,6 +241,9 @@ const ChangePassword = ({ email }) => {
                   {...field}
                   id="confirmPassword"
                   placeholder="Confirm new password"
+                  onCopy={preventCopyPaste}
+                  onPaste={preventCopyPaste}
+                  onCut={preventCopyPaste}
                   className="!h-input-height"
                   iconRender={(visible) =>
                     visible ? <EyeOutlined /> : <EyeInvisibleOutlined />
