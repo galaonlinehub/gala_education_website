@@ -1,54 +1,76 @@
-
-import React from 'react';
-import { Button } from 'antd';
-import { useTabNavigator,useSelectedPlan } from "@/src/store/auth/signup";
-
+import React from "react";
+import { Button } from "antd";
+import { useTabNavigator, useSelectedPlan } from "@/src/store/auth/signup";
 
 const ConfirmPlan = () => {
   const setActiveTab = useTabNavigator((state) => state.setActiveTab);
-  const setSelectedPlan = useSelectedPlan((state)=>state.setSelectedPlan)
-  const handleConfirmPayClick = (plan) =>{
-    setSelectedPlan(plan)
-    setActiveTab(2)
+  const setSelectedPlan = useSelectedPlan((state) => state.setSelectedPlan);
+  const handleConfirmPayClick = (plan) => {
+    setSelectedPlan(plan);
+    setActiveTab(2);
   };
 
   return (
     <section className="flex flex-col lg:flex-row justify-center items-center w-full gap-24 my-24 lg:my-28">
       <div className="border-[3px] border-[#030DFE] rounded-xl w-[280px] md:w-full max-w-[312px] h-auto flex flex-col items-center p-6 gap-8 sm:p-8 sm:gap-12">
         <div className="flex flex-col items-center">
-          <span className="text-black text-[16px] font-extrabold">Monthly Bill</span>
-          <span className="text-[10px] text-[#8C8B8D]">7-day-money-back-guarantee</span>
+          <span className="text-black text-[16px] font-extrabold">
+            Monthly Bill
+          </span>
+          <span className="text-[10px] text-[#8C8B8D]">
+            7-day-money-back-guarantee
+          </span>
         </div>
 
         <span className="text-center text-[12px] text-black font-medium">
-          This fee grants you full access to Gala Education&#39;s teaching platform, allowing you to connect with students,
-          manage lessons, and utilize our advanced tools and resources to deliver high-quality education.
+          This fee grants you full access to Gala Education&#39;s teaching
+          platform, allowing you to connect with students, manage lessons, and
+          utilize our advanced tools and resources to deliver high-quality
+          education.
         </span>
 
         <div className="flex flex-col items-center gap-1">
           <span className="text-black text-[12px] font-medium">3,000 TSH</span>
-          <span className="text-black text-[12px] font-medium">(Billed Monthly)</span>
+          <span className="text-black text-[12px] font-medium">
+            (Billed Monthly)
+          </span>
         </div>
-        <Button onClick={()=>handleConfirmPayClick(1)} className="!rounded-sm !bg-[#010798] !w-[146px] !h-[46.28px]" type="primary">
+        <Button
+          onClick={() => handleConfirmPayClick(1)}
+          className="!rounded-md !bg-[#010798] !w-[120px] !font-semibold !h-[38.28px]"
+          type="primary"
+        >
           CONTINUE
         </Button>
       </div>
       <div className="border-[3px] border-[#030DFE] w-[280px] md:w-full max-w-[312px] h-auto rounded-xl flex flex-col items-center p-6 gap-8 sm:p-8 sm:gap-12">
         <div className="flex flex-col items-center">
-          <span className="text-black text-[16px] font-extrabold">Annual Bill</span>
-          <span className="text-[10px] text-[#8C8B8D]">7-day-money-back-guarantee</span>
+          <span className="text-black text-[16px] font-extrabold">
+            Annual Bill
+          </span>
+          <span className="text-[10px] text-[#8C8B8D]">
+            7-day-money-back-guarantee
+          </span>
         </div>
 
         <span className="text-center text-[12px] text-black font-medium">
-          This fee grants you full access to Gala Education&#39;s teaching platform, allowing you to connect with students,
-          manage lessons, and utilize our advanced tools and resources to deliver high-quality education.
+          This fee grants you full access to Gala Education&#39;s teaching
+          platform, allowing you to connect with students, manage lessons, and
+          utilize our advanced tools and resources to deliver high-quality
+          education.
         </span>
 
         <div className="flex flex-col items-center gap-1">
-          <span className="text-black text-[12px] font-medium">10,000 TSH</span>
-          <span className="text-black text-[12px] font-medium">(Billed Yearly)</span>
+          <span className="text-black text-[12px] font-medium">30,000 TSH</span>
+          <span className="text-black text-[12px] font-medium">
+            (Billed Yearly)
+          </span>
         </div>
-        <Button onClick={()=>handleConfirmPayClick(2)}  className="!rounded-sm !bg-[#010798] !w-[146px] !h-[46.28px]" type="primary">
+        <Button
+          onClick={() => handleConfirmPayClick(2)}
+          className="!rounded-md !bg-[#010798] !w-[120px] !font-semibold !h-[38.28px]"
+          type="primary"
+        >
           CONTINUE
         </Button>
       </div>
@@ -70,4 +92,3 @@ const ConfirmPlan = () => {
 };
 
 export default ConfirmPlan;
-

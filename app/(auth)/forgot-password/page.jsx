@@ -1,175 +1,13 @@
-// "use client";
-// import React, { useState } from "react";
-// import { useRouter } from "next/navigation";
-// import { useForm, Controller } from "react-hook-form";
-// import { message, Input, Button, Card, Typography } from "antd";
-// import { MailOutlined, KeyOutlined } from "@ant-design/icons";
-// import { api } from "@/src/config/settings";
-// import { useEmailVerificationModalOpen } from "@/src/store/auth/signup";
-
-// const { Title, Text } = Typography;
-
-// const ForgotPassword = () => {
-//   const router = useRouter();
-//   const [otpSent, setOtpSent] = useState(false);
-//   const [email, setEmail] = useState("");
-//   const { setOpenEmailVerificationModal } = useEmailVerificationModalOpen();
-
-//   const {
-//     control,
-//     register,
-//     handleSubmit,
-//     formState: { errors, isSubmitting },
-//   } = useForm();
-
-//   const onSubmit = async (data) => {
-//     try {
-//       message.destroy();
-//       const response = await api.post("/forgot-password", {
-//         email: data.email,
-//       });
-//       if (response.data.success) {
-//         setEmail(data.email);
-//         setOtpSent(true);
-//         message.success("OTP sent to your email");
-//       } else {
-//         message.error(response.data.message);
-//       }
-//     } catch (e) {
-//       message.error(`Failed to send OTP, ${e.message}`);
-//       setOtpSent(true);
-
-//       //   router.push("/forgot-password/password-change");
-//     }
-//   };
-
-//   const handleOtpSubmit = async (data) => {
-//     try {
-//     //   setLoading(true);
-//       message.destroy();
-//       const response = await api.post("/verify-otp", { email, otp: data.otp });
-//       if (response.data.success) {
-//         message.success("OTP verified. Reset password now.");
-//         router.push("/reset-password");
-//       } else {
-//         message.error(response.data.message);
-//       }
-//     } catch {
-//       message.error("Failed to verify OTP");
-//     } finally {
-//     //   setLoading(false);
-//     }
-//   };
-
-//   return (
-//     <div className="flex items-center justify-center h-screen bg-gray-100">
-//       <Card
-//         className="!w-full !max-w-xl !bg-white !p-8 !rounded-lg !shadow-sm"
-//         title={
-//           <div className="flex justify-start items-center gap-3">
-//             <Title className="self-center" level={3}>
-//               Forgot Password
-//             </Title>
-//           </div>
-//         }
-//       >
-//         {!otpSent ? (
-//           <form
-//             className="flex flex-col gap-2"
-//             onSubmit={handleSubmit(onSubmit)}
-//           >
-//             <div className="mb-4">
-//               <label
-//                 htmlFor="email"
-//                 className="block text-gray-700 font-bold mb-2"
-//               >
-//                 <MailOutlined className="mr-2" /> Email
-//               </label>
-//               <Controller
-//                 name="email"
-//                 control={control}
-//                 rules={{
-//                   required: "Email is required",
-//                   pattern: {
-//                     value: /^\S+@\S+$/i,
-//                     message: "Please enter a valid email",
-//                   },
-//                 }}
-//                 render={({ field }) => (
-//                   <Input
-//                     {...field}
-//                     id="email"
-//                     type="email"
-//                     placeholder="Enter your email"
-//                     className="!h-input-height"
-//                   />
-//                 )}
-//               />
-//               {errors.email && (
-//                 <Text type="danger" className="!text-sm !mt-2">
-//                   {errors.email.message}
-//                 </Text>
-//               )}
-//             </div>
-//             <Button
-//               type="primary"
-//               htmlType="submit"
-//               loading={isSubmitting}
-//               className="!w-full !bg-[#030DFE] !text-white !font-bold !py-5 !px-4 !rounded"
-//             >
-//               {isSubmitting ? "Sending OTP" : "Send OTP"}
-//             </Button>
-//           </form>
-//         ) : (
-//           <form onSubmit={handleSubmit(handleOtpSubmit)}>
-//             <div className="mb-4">
-//               <label
-//                 htmlFor="otp"
-//                 className="block text-gray-700 font-bold mb-2"
-//               >
-//                 <KeyOutlined /> OTP
-//               </label>
-//               <Input
-//                 id="otp"
-//                 type="text"
-//                 placeholder="Enter the OTP"
-//                 {...register("otp", { required: true, pattern: /^\d{6}$/ })}
-//               />
-//               {errors.otp?.message && (
-//                 <Text type="danger" className="text-sm">
-//                   {errors.otp?.message}
-//                 </Text>
-//               )}
-//             </div>
-//             <Button
-//               type="submit"
-//               loading={isSubmitting}
-//               className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-//             >
-//               Verify OTP
-//             </Button>
-//           </form>
-//         )}
-//       </Card>
-//     </div>
-//   );
-// };
-
-// export default ForgotPassword;
-
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
 import { message, Input, Button, Card, Typography, Space } from "antd";
-import {
-  MailOutlined,
-  SendOutlined,
-  ReloadOutlined,
-} from "@ant-design/icons";
+import { MailOutlined, SendOutlined, ReloadOutlined } from "@ant-design/icons";
 import { api } from "@/src/config/settings";
 import { FaKey } from "react-icons/fa6";
 import LoadingState from "@/src/components/ui/loading/LoadingSpinner";
+import { encrypt } from "@/src/utils/encryption";
 
 const { Title, Text } = Typography;
 
@@ -196,7 +34,6 @@ const ForgotPassword = () => {
       timer = setInterval(() => {
         setResendCounter((prev) => prev - 1);
       }, 1000);
-      
     }
     return () => clearInterval(timer);
   }, [resendCounter]);
@@ -209,9 +46,10 @@ const ForgotPassword = () => {
         email: data.email,
       });
       if (response.data.success) {
+        const encryptedEmail = encrypt(data.email);
         setEmail(data.email);
         setOtpSent(true);
-        setResendCounter(30); 
+        setResendCounter(30);
         message.success("OTP sent to your email");
       } else {
         message.error(response.data.message);
@@ -219,10 +57,11 @@ const ForgotPassword = () => {
     } catch (e) {
       message.error(`Failed to send OTP, ${e.message}`);
     } finally {
-        setResendCounter(30); 
+      setResendCounter(30);
       setIsSendingOtp(false);
       setOtpSent(true);
-
+      const encryptedEmail = encrypt("d@gmail.com");
+      sessionStorage.setItem("Gala", encryptedEmail);
     }
   };
 
@@ -244,7 +83,6 @@ const ForgotPassword = () => {
     } finally {
       setIsSendingOtp(false);
       setResendCounter(200);
-
     }
   };
 
@@ -287,6 +125,7 @@ const ForgotPassword = () => {
       message.error("Failed to verify OTP");
     } finally {
       setIsVerifyingOtp(false);
+      router.push("/forgot-password/password-change");
     }
   };
 
@@ -297,7 +136,7 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
+    <div className="flex items-center justify-center h-screen bg-gray-100 p-3 lg:p-0">
       <Card
         className="!w-full !max-w-xl !bg-white !p-8 !rounded-lg !shadow-sm"
         title={
