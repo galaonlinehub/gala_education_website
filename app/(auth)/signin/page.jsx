@@ -15,20 +15,19 @@ const SignInPage = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm();
 
   const onSubmit = async (data) => {
     try {
       setLoading(true);
-      message.destroy()
+      message.destroy();
 
       const formData = new FormData();
       formData.append("email", data.email);
       formData.append("password", data.password);
 
-      const response = await api.post("/login", formData, {
-      });
+      const response = await api.post("/login", formData, {});
 
       if (response.data) {
         message.success("Login successful!");
@@ -39,12 +38,12 @@ const SignInPage = () => {
         error.response?.data?.message || "Login failed. Please try again.";
       message.error(errorMessage);
     } finally {
-      setLoading(false);
-      message.success("Login successful!");
-
-      router.push("/teacher");
-
+      // setLoading(false);
     }
+  };
+
+  const preventCopyPaste = (event) => {
+    event.preventDefault();
   };
 
   const handleGoogleLogin = async () => {
@@ -61,7 +60,7 @@ const SignInPage = () => {
 
   return (
     <div className="flex lg:items-center justify-center h-screen px-3 md:px-8 lg:px-12 xl:px-16">
-      <div className="flex flex-col items-center justify-center gap-3 w-full max-w-md z-10">
+      <div className="flex flex-col items-center justify-center gap-3 w-full max-w-xl z-10">
         <span className="font-black">Login</span>
         <span className="font-black text-4xl">Welcome Back</span>
         <span className="text-sm font-medium text-center px-4 sm:px-8">
@@ -107,6 +106,9 @@ const SignInPage = () => {
             <input
               id="password"
               type="password"
+              onCopy={preventCopyPaste}
+              onPaste={preventCopyPaste}
+              onCut={preventCopyPaste}
               {...register("password", {
                 required: "Password is required",
                 minLength: {
@@ -139,10 +141,16 @@ const SignInPage = () => {
 
           <button
             type="submit"
-            disabled={loading}
+            disabled={isSubmitting}
             className="text-white text-base h-12 bg-[#030DFE] rounded-md w-60 font-bold mt-5 disabled:opacity-60 flex items-center justify-center gap-2"
           >
-            {loading ? <><LoadingState /> Logging in...</> : "Login"}
+            {isSubmitting ? (
+              <>
+                <LoadingState /> Logging in...
+              </>
+            ) : (
+              "Login"
+            )}
           </button>
         </form>
 
@@ -166,7 +174,7 @@ const SignInPage = () => {
         </button>
       </div>
 
-      <LoginVectorSvg />
+      {/* <LoginVectorSvg /> */}
     </div>
   );
 };

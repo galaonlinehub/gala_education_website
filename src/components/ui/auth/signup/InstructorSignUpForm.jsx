@@ -5,7 +5,7 @@ import { api } from "@/src/config/settings";
 import LoadingState from "../../loading/LoadingSpinner";
 import EmailVerification from "./EmailVerification";
 import { useEmailVerificationModalOpen } from "@/src/store/auth/signup";
-
+import InstructorSignUpPageSvg from "@/src/utils/vector-svg/sign-up/InstructorSignUpPageSvg";
 
 const InstructorSignUpForm = () => {
   const {
@@ -15,9 +15,11 @@ const InstructorSignUpForm = () => {
     formState: { errors },
   } = useForm();
 
-  const setOpenEmailVerificationModal = useEmailVerificationModalOpen((state) => state.setOpenEmailVerificationModal);
-  const [loading , setLoading] = useState(false)
-  const password = watch('password', '');
+  const setOpenEmailVerificationModal = useEmailVerificationModalOpen(
+    (state) => state.setOpenEmailVerificationModal
+  );
+  const [loading, setLoading] = useState(false);
+  const password = watch("password", "");
 
   const [files, setFiles] = useState({
     cv: null,
@@ -49,7 +51,7 @@ const InstructorSignUpForm = () => {
   };
 
   const onSubmit = async (data) => {
-    message.destroy() 
+    message.destroy();
     const formData = new FormData();
 
     const keysToRemove = [
@@ -64,9 +66,9 @@ const InstructorSignUpForm = () => {
       formData.append(key, cleanedData[key]);
     });
 
-    formData.append('role', 'instructor');
-    formData.append('country', 'Tanzania');
-    formData.append('subscription', 'yearly');
+    formData.append("role", "instructor");
+    formData.append("country", "Tanzania");
+    formData.append("subscription", "yearly");
 
     if (files.cv) formData.append("curriculum_vitae", files.cv);
     if (files.transcript) formData.append("transcript", files.transcript);
@@ -78,15 +80,18 @@ const InstructorSignUpForm = () => {
     try {
       const response = await api.post("/register", formData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          "Content-Type": "multipart/form-data",
         },
       });
       message.success("Data Saved Successfully!");
-
     } catch (error) {
       message.error("Oops!! Something Went Wrong, Try again Later.");
       console.error(error);
     }
+  };
+
+  const preventCopyPaste = (event) => {
+    event.preventDefault();
   };
 
   return (
@@ -189,6 +194,9 @@ const InstructorSignUpForm = () => {
                 autoCapitalize="off"
                 autoCorrect="off"
                 placeholder="Enter Your Password"
+                onCopy={preventCopyPaste}
+                onPaste={preventCopyPaste}
+                onCut={preventCopyPaste}
                 className="border-[1px] focus:border-[2.5px] focus:outline-none w-full rounded-md border-[#030DFE] h-input-height placeholder:font-semibold placeholder:text-[14px] pl-3"
                 {...register("password", {
                   required: "Password is required",
@@ -215,11 +223,14 @@ const InstructorSignUpForm = () => {
                 autoCapitalize="off"
                 autoCorrect="off"
                 placeholder="Confirm your Password"
+                onCopy={preventCopyPaste}
+                onPaste={preventCopyPaste}
+                onCut={preventCopyPaste}
                 className="border-[1px] focus:border-[2.5px] focus:outline-none w-full rounded-md border-[#030DFE] h-input-height placeholder:font-semibold placeholder:text-[14px] pl-3"
                 {...register("confirmPassword", {
                   required: "Confirm password is required",
-                  validate: value =>
-                    value === password || 'Passwords do not match',      
+                  validate: (value) =>
+                    value === password || "Passwords do not match",
                 })}
               />
               {errors.confirmPassword && (
@@ -352,19 +363,20 @@ const InstructorSignUpForm = () => {
                 </span>
               )}
             </div>
-
           </div>
           <div className="flex items-center w-[150px]">
             <button
-              onClick={()=>setOpenEmailVerificationModal(true)}
+              onClick={() => setOpenEmailVerificationModal(true)}
               type="submit"
-              className="h-[45.27px] w-full bg-[#030DFE] text-white font-bold rounded-md flex items-center justify-center">
-             {loading ?  <LoadingState/> : 'Apply' }
+              className="h-[45.27px] w-full bg-[#030DFE] text-white font-bold rounded-md flex items-center justify-center"
+            >
+              {loading ? <LoadingState /> : "Apply"}
             </button>
           </div>
         </form>
       </div>
-      <EmailVerification/>
+      <EmailVerification />
+      {/* <InstructorSignUpPageSvg/> */}
     </main>
   );
 };
