@@ -6,7 +6,6 @@ import { FaBell, FaUserCircle } from "react-icons/fa";
 import "../globals.css";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import Footer from "@/src/components/layout/footer";
-import { dashboard_links } from "@/constants/links";
 import Link from "next/link";
 import { MenuOutlined, CloseOutlined } from "@ant-design/icons";
 import RightTiltedBook from "@/components/vectors/CombinedBlock";
@@ -15,6 +14,7 @@ import Clock from "@/components/vectors/Clock";
 import StudentsInClass from "@/components/vectors/StudentsInClass";
 import { teacher_links } from "@/constants/teacher_links";
 import Providers from "../providers";
+import { usePathname } from "next/navigation";
 
 const geistSans = localFont({
   src: "../fonts/GeistVF.woff",
@@ -29,6 +29,7 @@ const geistMono = localFont({
 });
 
 export default function RootLayout({ children }) {
+  const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -52,12 +53,12 @@ export default function RootLayout({ children }) {
         <Providers>
           <AntdRegistry>
             {/* Top Navigation */}
-            <nav className="h-16 px-4 shadow-sm flex justify-between items-center z-50">
+            <nav className="fixed top-0 left-0 right-0 h-16 px-4 bg-white shadow-sm flex justify-between items-center z-50">
               <div className="flex items-center gap-2">
                 <div className="w-10 h-10 relative bg-gradient-to-br from-blue-500 to-blue-600 rounded-full ring-2 ring-blue-400 ring-offset-2 flex items-center justify-center">
                   <div className="text-center">
-                    <p className="text-white text-[10px] font-bold leading-tight">Gala</p>
-                    <p className="text-white text-[10px] font-bold leading-tight">Education</p>
+                    <p className="text-black text-[10px] font-bold leading-tight">Gala</p>
+                    <p className="text-black text-[10px] font-bold leading-tight">Education</p>
                   </div>
                 </div>
               </div>
@@ -83,7 +84,7 @@ export default function RootLayout({ children }) {
             </nav>
 
             {/* Search Bar */}
-            <div className="top-16 z-40  border-b">
+            <div className="fixed top-16 left-0 bg-white right-0 z-40 border-b">
               <div className="flex flex-col md:flex-row items-center justify-between px-4 py-2 gap-4">
                 <input className="h-10 px-4 w-full md:w-1/3 rounded-lg border-2 border-blue-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none" placeholder="Search..." />
                 <span className="text-sm text-gray-600 whitespace-nowrap">October 14, 2024</span>
@@ -95,9 +96,16 @@ export default function RootLayout({ children }) {
             </div>
 
             {/* Mobile Menu Overlay */}
-            {isMobile && <div className={`fixed inset-0 bg-black/50 z-40 transition-opacity duration-300 ${isSidebarOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`} onClick={toggleSidebar} />}
+            {isMobile && (
+              <div
+                className={`fixed inset-0 bg-black/50 z-40 transition-opacity duration-300 ${
+                  isSidebarOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+                }`}
+                onClick={toggleSidebar}
+              />
+            )}
 
-            <main className="flex-1 flex flex-col md:flex-row w-full overflow-hidden">
+            <main className="flex-1 flex flex-row w-full">
               <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
                 <div className="absolute left-1/2 top-20 w-52 h-52 hidden md:block">
                   <RightTiltedBook />
@@ -113,30 +121,43 @@ export default function RootLayout({ children }) {
                 </div>
               </div>
 
+              {/* Sidebar */}
               <aside
-                className={` z-10 transition-transform duration-300 ease-in-out
-                ${isMobile ? (isSidebarOpen ? "translate-x-0" : "-translate-x-full") : "translate-x-0"}
-                ${isMobile ? "fixed inset-y-0 left-0" : "relative"}
-                ${isMobile ? "w-64" : "w-56"}
-                 shadow-xl md:shadow-none
-              `}
+                className={`fixed mt-16 md:mt-32 bg-white md:bg-transparent z-50 h-[calc(120vh-7rem)] overflow-y-auto transition-transform duration-300 ease-in-out
+                  md:translate-x-0 md:relative md:w-56 md:z-0
+                  ${isMobile ? "w-64 top-0 left-0" : ""}
+                  ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
+                  shadow-xl md:shadow-none`}
               >
                 <div className="p-4">
                   <ul className="space-y-4">
-                    {teacher_links.map((item, i) => (
-                      <li key={i}>
-                        <Link href={`/teacher/${item.link}`} className="flex items-center gap-1 p-1 rounded-lg hover:bg-blue-50 transition-colors" onClick={() => isMobile && setIsSidebarOpen(false)}>
-                          <span className="text-blue-600">{item.icon}</span>
-                          <span className="font-medium text-xs text-gray-700">{item.name}</span>
-                        </Link>
-                      </li>
-                    ))}
+                    {teacher_links.map((item, i) => {
+                      const href = `/teacher/${item.link}`;
+                      const isActive = pathname.startsWith(href);
+
+                      return (
+                        <li key={i}>
+                          <Link
+                            href={href}
+                            className={`flex items-center gap-1 p-1 rounded-lg transition-colors ${
+                              isActive ? "bg-[#001840] text-white hover:bg-[#001840]" : "text-gray-700 hover:bg-blue-50"
+                            }`}
+                            onClick={() => isMobile && setIsSidebarOpen(false)}
+                          >
+                            <span className={isActive ? "text-white" : "text-[#001840]"}>{item.icon}</span>
+                            <span className="font-medium text-xs">{item.name}</span>
+                          </Link>
+                        </li>
+                      );
+                    })}
                   </ul>
                 </div>
               </aside>
 
               {/* Main Content */}
-              <div className={`flex-1 transition-all duration-300 relative z-20 p-6 overflow-auto ${isMobile && isSidebarOpen ? "ml-64" : ""}`}>{children}</div>
+              <div className="flex-1 relative mt-32 overflow-y-auto h-screen p-6">
+                {children}
+              </div>
             </main>
 
             {/* Footer */}
