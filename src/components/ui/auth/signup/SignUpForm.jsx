@@ -35,7 +35,6 @@ const SignUpForm = () => {
     
     formData.append('role', 'student');
     formData.append('country', 'Tanzania');
-    formData.append('subscription', 'yearly');
 
     try {
       const response = await api.post("/register", formData, {
@@ -74,7 +73,7 @@ const SignUpForm = () => {
               autoCorrect="off"
               placeholder="Enter Your First Name"
               className={`border-[1px] focus:border-[2.5px] w-full rounded-md border-[#030DFE] focus:border-[#030DFE] focus:outline-none h-input-height placeholder:font-semibold pl-3 placeholder:text-[14px] ${errors.firstName ? "border-red-500 focus:border-red-500" : ""}`}
-              {...register("firstName", {
+              {...register("first_name", {
                 required: "First name is required",
               })}
             />
@@ -97,7 +96,7 @@ const SignUpForm = () => {
               autoCorrect="off"
               placeholder="Enter Your Last Name"
               className={`border-[1px] focus:border-[2.5px] w-full rounded-md border-[#030DFE] focus:outline-none h-input-height placeholder:font-semibold pl-3 placeholder:text-[14px] ${errors.lastName ? "border-red-500 focus:border-red-500" : ""}`}
-              {...register("lastName", { required: "Last name is required" })}
+              {...register("last_name", { required: "Last name is required" })}
             />
             {errors.lastName && (
               <span className="text-red-500 text-xs">
@@ -206,7 +205,7 @@ const SignUpForm = () => {
         </span>
       </div>
 
-      {/* <StudentSignUpVectorSvg /> */}
+      <StudentSignUpVectorSvg />
       <EmailVerification/>
 
     </section>
