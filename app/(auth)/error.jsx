@@ -1,14 +1,11 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import Link from 'next/link';
+import { useEffect } from "react";
+import Link from "next/link";
 import { IoHomeOutline } from "react-icons/io5";
 import { IoRefreshOutline } from "react-icons/io5";
 
-export default function Error({
-  error,
-  reset,
-}) {
+export default function Error({ error }) {
   useEffect(() => {
     console.error(error);
   }, [error]);
@@ -27,20 +24,21 @@ export default function Error({
             Oops! Something went wrong
           </h1>
           <p className="text-gray-500 max-w-md mx-auto">
-            {error.message || "We're having trouble processing your request. Please try again."}
+            {error.message ||
+              "We're having trouble processing your request. Please try again."}
           </p>
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <button
-            onClick={reset}
+            onClick={() => window.location.reload()}
             className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
           >
             <IoRefreshOutline className="w-4 h-4" />
             Try Again
           </button>
-          
-          <Link 
+
+          <Link
             href="/"
             className="flex items-center gap-2 px-6 py-3 bg-white text-gray-600 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors"
           >
@@ -49,7 +47,7 @@ export default function Error({
           </Link>
         </div>
 
-        {process.env.NODE_ENV === 'development' && (
+        {process.env.NODE_ENV === "development" && (
           <div className="mt-8">
             <details className="text-left bg-white p-4 rounded-lg border border-gray-200">
               <summary className="cursor-pointer text-sm text-gray-500 hover:text-gray-700">
@@ -63,10 +61,18 @@ export default function Error({
         )}
 
         <div className="text-sm text-gray-500">
-          <p>Need help? <a href="/contact" className="text-blue-600 hover:underline ml-1">Contact Support</a></p>
+          <p>
+            Need help?{" "}
+            <a href="/contact" className="text-blue-600 hover:underline ml-1">
+              Contact Support
+            </a>
+          </p>
           {error.digest && (
             <p className="mt-2">
-              Error ID: <code className="text-xs bg-gray-100 p-1 rounded">{error.digest}</code>
+              Error ID:{" "}
+              <code className="text-xs bg-gray-100 p-1 rounded">
+                {error.digest}
+              </code>
             </p>
           )}
         </div>

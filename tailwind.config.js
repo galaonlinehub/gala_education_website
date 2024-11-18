@@ -28,6 +28,9 @@ const tailwindConfig = {
   ],
   theme: {
     extend: {
+      backgroundImage: {
+        'signin-background': "url('/vectors/auth/sign-in/LoginVectorSvg.svg')",
+      },
       height: {
         'input-height': '43px', 
       },
