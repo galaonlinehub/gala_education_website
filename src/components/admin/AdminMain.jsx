@@ -26,7 +26,7 @@ function AdminMain({children}) {
 
                 {children}
                 </div>
-            <footer className='w-full  text-center py-2 bg-gray-200'>
+            <footer className='w-full text-[#d9d9d9] text-center py-2 bg-blue-900'>
                 Galahub @2024 v1.0
             </footer>
             </section>
