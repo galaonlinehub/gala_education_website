@@ -67,8 +67,6 @@ const InstructorSignUpForm = () => {
     });
 
     formData.append("role", "instructor");
-    formData.append("country", "Tanzania");
-    formData.append("subscription", "yearly");
 
     if (files.cv) formData.append("curriculum_vitae", files.cv);
     if (files.transcript) formData.append("transcript", files.transcript);
@@ -96,7 +94,7 @@ const InstructorSignUpForm = () => {
 
   return (
     <main className="flex justify-center items-center w-full pb-24 mt-6">
-      <div className="flex flex-col gap-6 w-full lg:mx-24 z-10">
+      <div className="flex flex-col gap-6 w-full lg:mx-12">
         <div className="flex flex-col gap-2 justify-center items-center w-full">
           <span className="font-bold text-[16px]">Sign Up</span>
           <span className="font-medium text-[12px] w-full text-center">
@@ -110,9 +108,9 @@ const InstructorSignUpForm = () => {
 
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col lg:flex-row items-center justify-center gap-12 w-full"
+          className="flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-6 w-full"
         >
-          <div className="flex flex-col gap-3 w-full lg:w-6/12">
+          <div className="flex flex-col gap-3 w-full lg:w-8/12">
             <div className="flex flex-col gap-1 items-start justify-center">
               <label for="first-name" className="font-bold text-[13px]">
                 First Name *
@@ -125,7 +123,7 @@ const InstructorSignUpForm = () => {
                 autoCorrect="off"
                 placeholder="Enter Your First Name"
                 className={`border-[1px] focus:border-[2.5px] w-full rounded-md border-[#030DFE] focus:border-[#030DFE] focus:outline-none h-input-height placeholder:font-semibold pl-3 placeholder:text-[14px]`}
-                {...register("firstName", {
+                {...register("first_name", {
                   required: "First name is required",
                 })}
               />
@@ -147,7 +145,7 @@ const InstructorSignUpForm = () => {
                 autoCorrect="off"
                 placeholder="Enter Your Last Name"
                 className="border-[1px] focus:border-[2.5px] w-full rounded-md border-[#030DFE] focus:outline-none h-input-height placeholder:font-semibold pl-3 placeholder:text-[14px]"
-                {...register("lastName", { required: "Last name is required" })}
+                {...register("last_name", { required: "Last name is required" })}
               />
               {errors.lastName && (
                 <span className="text-red-500 text-xs">
@@ -376,7 +374,7 @@ const InstructorSignUpForm = () => {
         </form>
       </div>
       <EmailVerification />
-      {/* <InstructorSignUpPageSvg/> */}
+      <InstructorSignUpPageSvg/>
     </main>
   );
 };

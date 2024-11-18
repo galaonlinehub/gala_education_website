@@ -7,7 +7,7 @@ export default function RootLayout({ children}) {
 
   return (
     <html lang="en">
-      <body className={`antialiased min-h-screen flex flex-col`}>
+      <body className={`min-h-screen flex flex-col`}>
        <StudentMain>
         {children}
        </StudentMain>

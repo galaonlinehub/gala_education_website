@@ -14,14 +14,14 @@ const CalendarComponent = () => {
   ];
 
   return (
-    <div className="bg-[#001840] sm:w-1/3 text-white p-5 rounded-lg shadow-md ">
+    <div className="bg-[#001840] w-full lg:w-1/3 text-white p-5 rounded-lg shadow-md mb-5 lg:mb-0">
       {/* Calendar Section */}
       <div className=" gap-0 items-center">
 
         <Calendar
           onChange={setDate}
           value={date}
-          className=" !bg-[#001F52] !border-none"
+          className=" !bg-[#001F52] !border-none !w-full"
           tileClassName="text-white"
         />
         
