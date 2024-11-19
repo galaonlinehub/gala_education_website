@@ -7,6 +7,7 @@ import { api } from "@/src/config/settings";
 import LoadingState from "../../loading/LoadingSpinner";
 import EmailVerification from "./EmailVerification";
 import { useEmailVerificationModalOpen } from "@/src/store/auth/signup";
+import Image from "next/image";
 
 const SignUpForm = () => {
   const {
@@ -52,8 +53,12 @@ const SignUpForm = () => {
   };
 
   return (
-    <section className="flex flex-col items-center justify-center h-full w-screen py-12">
-      <div className="flex flex-col items-center justify-center h-full w-screen lg:w-1/2 gap-4">
+    <section className="flex relative flex-col items-center justify-center h-full w-screen py-12">
+      <Image alt={"signUpVector1"} src={'/svg/signUpVector1.svg'} width={500} height={500} className={'absolute -z-10 bottom-10 left-[3rem]  max-lg:w-[20rem] max-lg:h-[20rem] object-cover'} />
+      <Image alt={"signUpVector2"} src={'/svg/signUpVector2.svg'} width={200} height={200} className={'absolute -z-10 top-10 '} />
+      <Image alt={"signUpVector3"} src={'/svg/signUpVector3.svg'} width={500} height={500} className={'absolute -z-10 bottom-10 right-[3rem] max-lg:w-[20rem] max-lg:h-[20rem] object-cover'} />
+
+      <div className="flex z-10 flex-col items-center justify-center h-full w-screen lg:w-1/2 gap-4">
         <span className="font-bold text-[16px]">Sign Up</span>
         <span className={"text-center text-[12px] leading-5 font-semibold"}>
           Step into the realm of endless possibilities! Your adventure in
@@ -73,7 +78,7 @@ const SignUpForm = () => {
               autoCapitalize="off"
               autoCorrect="off"
               placeholder="Enter Your First Name"
-              className={`border-[1px] focus:border-[2.5px] w-full rounded-md border-[#030DFE] focus:border-[#030DFE] focus:outline-none h-input-height placeholder:font-semibold pl-3 placeholder:text-[14px] ${errors.firstName ? "border-red-500 focus:border-red-500" : ""}`}
+              className={`border-[1px] bg-transparent focus:border-[2.5px] w-full rounded-md border-[#030DFE] focus:border-[#030DFE] focus:outline-none h-input-height placeholder:font-semibold pl-3 placeholder:text-[14px] ${errors.firstName ? "border-red-500 focus:border-red-500" : ""}`}
               {...register("firstName", {
                 required: "First name is required",
               })}
@@ -96,7 +101,7 @@ const SignUpForm = () => {
               autoCapitalize="off"
               autoCorrect="off"
               placeholder="Enter Your Last Name"
-              className={`border-[1px] focus:border-[2.5px] w-full rounded-md border-[#030DFE] focus:outline-none h-input-height placeholder:font-semibold pl-3 placeholder:text-[14px] ${errors.lastName ? "border-red-500 focus:border-red-500" : ""}`}
+              className={`border-[1px] bg-transparent focus:border-[2.5px] w-full rounded-md border-[#030DFE] focus:outline-none h-input-height placeholder:font-semibold pl-3 placeholder:text-[14px] ${errors.lastName ? "border-red-500 focus:border-red-500" : ""}`}
               {...register("lastName", { required: "Last name is required" })}
             />
             {errors.lastName && (
@@ -117,7 +122,7 @@ const SignUpForm = () => {
               autoCapitalize="off"
               autoCorrect="off"
               placeholder="Enter Your Email"
-              className={`border-[1px] focus:border-[2.5px] w-full rounded-md border-[#030DFE] focus:outline-none  h-input-height pl-3 placeholder:font-semibold placeholder:text-[14px] ${errors.email ? "border-red-500 focus:border-red-500" : ""}`}
+              className={`border-[1px] bg-transparent focus:border-[2.5px] w-full rounded-md border-[#030DFE] focus:outline-none  h-input-height pl-3 placeholder:font-semibold placeholder:text-[14px] ${errors.email ? "border-red-500 focus:border-red-500" : ""}`}
               {...register("email", {
                 required: "Email is required",
                 pattern: {
@@ -146,7 +151,7 @@ const SignUpForm = () => {
               onCopy={preventCopyPaste}
               onPaste={preventCopyPaste}
               onCut={preventCopyPaste}
-              className={`border-[1px] focus:border-[2.5px] focus:outline-none w-full rounded-md border-[#030DFE] h-input-height placeholder:font-semibold placeholder:text-[14px] pl-3 ${errors.password ? "border-red-500 focus:border-red-500" : ""}`}
+              className={`border-[1px] bg-transparent focus:border-[2.5px] focus:outline-none w-full rounded-md border-[#030DFE] h-input-height placeholder:font-semibold placeholder:text-[14px] pl-3 ${errors.password ? "border-red-500 focus:border-red-500" : ""}`}
               {...register("password", {
                 required: "Password is required",
                 minLength: {
@@ -176,7 +181,7 @@ const SignUpForm = () => {
               onCopy={preventCopyPaste}
               onPaste={preventCopyPaste}
               onCut={preventCopyPaste}
-              className={`border-[1px] focus:border-[2.5px] focus:outline-none w-full rounded-md border-[#030DFE] h-input-height placeholder:font-semibold placeholder:text-[14px] pl-3 ${errors.confirmPassword ? "border-red-500 focus:border-red-500" : ""}`}
+              className={`border-[1px] bg-transparent focus:border-[2.5px] focus:outline-none w-full rounded-md border-[#030DFE] h-input-height placeholder:font-semibold placeholder:text-[14px] pl-3 ${errors.confirmPassword ? "border-red-500 focus:border-red-500" : ""}`}
               {...register("confirmPassword", {
                 required: "Confirm password is required",
                 validate: (value) =>

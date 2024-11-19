@@ -8,6 +8,7 @@ import { api } from "@/src/config/settings";
 import GoogleSvg from "@/src/utils/vector-svg/sign-in/GoogleSvg";
 import LoadingState from "@/src/components/ui/loading/LoadingSpinner";
 import '../../../src/styles/auth/signup.css'
+import Image from "next/image";
 
 const SignInPage = () => {
   const router = useRouter();
@@ -67,8 +68,10 @@ const SignInPage = () => {
       //   backgroundPosition: "center", 
       //   height: "100vh", 
       // }}
-      className="login-bg bg-cover bg-center flex lg:items-center justify-center h-screen px-3 md:px-8 lg:px-12 xl:px-16"
+      className="login-bg bg-cover bg-center  relative flex lg:items-center justify-center h-screen px-3 md:px-8 lg:px-12 xl:px-16"
     >
+      <Image className={"absolute sm:top-[10rem]   sm:left-[3rem] top-6 left-1/4 w-[10rem] h-[10rem] sm:w-[20rem] sm:h-[20rem] xl:w-[30rem] xl:h-[30rem]"} src={'/svg/signInVector1.svg'} width={400} height={400} alt={"Logo 1"}  />
+      <Image className={"absolute bottom-12 sm:bottom-6  sm:right-4 xl:w-[40rem] xl:h-[40rem] w-[25rem] h-[25rem] sm:w-[30rem] sm:h-[30rem] object-cover"} src={'/svg/signInVector2.svg'} width={550} height={550} alt={"Logo 2"}  />
       <div className="flex flex-col items-center justify-center gap-3 w-full max-w-xl">
         <span className="font-black">Login</span>
         <span className="font-black text-4xl">Welcome Back</span>
