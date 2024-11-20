@@ -7,7 +7,7 @@ import { MailOutlined, SendOutlined, ReloadOutlined } from "@ant-design/icons";
 import { api } from "@/src/config/settings";
 import { FaKey } from "react-icons/fa6";
 import LoadingState from "@/src/components/ui/loading/LoadingSpinner";
-import { encrypt } from "@/src/utils/encryption";
+import { encrypt } from "@/src/utils/constants/encryption";
 
 const { Title, Text } = Typography;
 
@@ -45,11 +45,12 @@ const ForgotPassword = () => {
       const response = await api.post("/forgot-password", {
         email: data.email,
       });
-      if (response.data.success) {
+      if (response.status === 200) {
         const encryptedEmail = encrypt(data.email);
         setEmail(data.email);
         setOtpSent(true);
         setResendCounter(30);
+
         message.success("OTP sent to your email");
       } else {
         message.error(response.data.message);
@@ -69,7 +70,7 @@ const ForgotPassword = () => {
     if (resendCounter > 0) return;
     try {
       setIsSendingOtp(true);
-      const response = await api.post("/forgot-password", {
+      const response = await api.post("/resend-otp", {
         email: email,
       });
       if (response.data.success) {

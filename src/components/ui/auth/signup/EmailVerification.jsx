@@ -1,11 +1,14 @@
 import { Modal, Result } from "antd";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { api } from "@/src/config/settings";
 import LoadingState from "../../loading/LoadingSpinner";
-import { FiCheckCircle } from "react-icons/fi";
-import { FiAlertCircle } from "react-icons/fi";
 import { useEmailVerificationModalOpen } from "@/src/store/auth/signup";
 import { useTabNavigator } from "@/src/store/auth/signup";
+import { decrypt } from "@/src/utils/constants/encryption";
+import { useRouter } from "next/navigation";
+import { message, Button, Alert } from "antd";
+import { maskEmail } from "@/src/utils/constants/mask_email";
+import { ReloadOutlined } from "@ant-design/icons";
 
 const EmailVerification = () => {
   const openEmailVerificationModal = useEmailVerificationModalOpen(
@@ -17,12 +20,22 @@ const EmailVerification = () => {
   const setActiveTab = useTabNavigator((state) => state.setActiveTab);
 
   const inputs = React.useRef([]);
-  const [values, setValues] = React.useState(Array(6).fill(""));
-  const [hasVerified, setHasVerified] = React.useState(null);
+  const [values, setValues] = useState(Array(6).fill(""));
+  const [hasVerified, setHasVerified] = useState(null);
+  const [email, setEmail] = useState("");
+  const [resendCounter, setResendCounter] = useState(0);
+  const [isSendingOtp, setIsSendingOtp] = useState(false);
+  const [localFeedback, setLocalFeedback] = useState({
+    show: false,
+    type: "",
+    message: "",
+  });
+
+  const router = useRouter();
 
   const [loading, setLoading] = React.useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (openEmailVerificationModal) {
       const handleKeyDownRefresh = (event) => {
         if ((event.ctrlKey || event.metaKey) && event.key === "r") {
@@ -49,8 +62,30 @@ const EmailVerification = () => {
     }
   }, [openEmailVerificationModal]);
 
+  useEffect(() => {
+    const getEmail = () => {
+      const encryptedEmail = sessionStorage.getItem(
+        "e67e4931-4518-4369-b011-fa078beefac1"
+      );
+      if (encryptedEmail) {
+        const decryptedEmail = decrypt(encryptedEmail);
+        setEmail(decryptedEmail);
+      } else {
+        message.error("Unexpected Error Occured, Try again Later!");
+        router.push("/");
+      }
+    };
+
+    if (openEmailVerificationModal) {
+      getEmail();
+      setResendCounter(30);
+    }
+  }, [openEmailVerificationModal, router]);
+
   const handleChange = async (value, index) => {
     if (isNaN(value) || value.length > 1) return;
+
+    setHasVerified(null);
 
     const newValues = [...values];
     newValues[index] = value;
@@ -65,25 +100,24 @@ const EmailVerification = () => {
       setLoading(true);
 
       const formData = new FormData();
-      formData.append("code", code);
+      formData.append("otp", code);
+      formData.append("email", email);
 
       try {
-        const response = await api.post("/email-verify", formData);
+        const response = await api.post("/verify-otp", formData);
+
         if (response.status === 200) {
           setHasVerified(true);
-        } else {
-          setHasVerified(false);
+          setTimeout(() => {
+            setActiveTab(1);
+            setOpenEmailVerificationModal(false);
+          }, 5000);
         }
       } catch (e) {
-        console.log(e);
-        setHasVerified(true);
+        // console.error(e.response?.data || e.message);
+        setHasVerified(false);
       } finally {
         setLoading(false);
-
-        setTimeout(() => {
-          setActiveTab(1);
-          setOpenEmailVerificationModal(false);
-        }, 5000);
       }
     }
   };
@@ -91,6 +125,50 @@ const EmailVerification = () => {
   const handleKeyDown = (e, index) => {
     if (e.key === "Backspace" && !values[index] && index > 0) {
       inputs.current[index - 1]?.focus();
+    }
+  };
+
+  useEffect(() => {
+    let timer;
+    if (resendCounter > 0) {
+      timer = setInterval(() => {
+        setResendCounter((prev) => prev - 1);
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [resendCounter]);
+
+  const handleResendOtp = async () => {
+    if (resendCounter > 0) return;
+    try {
+      setIsSendingOtp(true);
+      const response = await api.post("/request-otp", {
+        email: email,
+      });
+      if (response.status === 200) {
+        setResendCounter(30);
+        setLocalFeedback({
+          show: true,
+          type: "success",
+          message: "OTP sent successfully.",
+        });
+      }
+    } catch (e) {
+      setLocalFeedback({
+        show: true,
+        type: "error",
+        message: "Sending OTP failed, Try again later.",
+      });
+    } finally {
+      setIsSendingOtp(false);
+
+      setTimeout(() => {
+        setLocalFeedback({
+          show: false,
+          type: "",
+          message: "",
+        });
+      }, 10000);
     }
   };
 
@@ -109,10 +187,23 @@ const EmailVerification = () => {
       <div className="mb-6">
         <span className="block w-full space-x-2 overflow-hidden text-ellipsis whitespace-nowrap">
           <span>Enter Verification Code Sent through</span>
-          <span className="font-bold">dn******94@gmail.com</span>
+          <span className="font-bold">
+            {openEmailVerificationModal && email ? maskEmail(email) : ""}
+          </span>
         </span>
+        {localFeedback.show && (
+          <Alert
+            showIcon
+            closable
+            message={localFeedback.message}
+            type={localFeedback.type}
+            className="!my-2"
+          />
+        )}
         <div>
-          <div className={"flex gap-2 items-center justify-center py-4"}>
+          <div
+            className={"flex flex-wrap gap-2 items-center justify-center py-4"}
+          >
             {Array(6)
               .fill()
               .map((_, index) => (
@@ -124,7 +215,7 @@ const EmailVerification = () => {
                   maxLength="1"
                   onInput={(e) => {
                     const value = e.target.value;
-                    if (!/^[1-9]$/.test(value)) {
+                    if (!/^[0-9]$/.test(value)) {
                       e.target.value = "";
                     }
                   }}
@@ -166,11 +257,23 @@ const EmailVerification = () => {
                 // ]}
               ></Result>
             ))}
-          <div className="flex gap-2 text-xs w-full items-center justify-end">
+          <div className="flex flex-wrap gap-2 text-xs w-full items-center justify-end overflow-hidden">
             <span>Didn&#39;t get the code?</span>
-            <span className="bg-transparent/10 py-1 px-2 font-bold rounded cursor-pointer">
-              Resend Code
-            </span>
+            <Button
+              type="link"
+              onClick={handleResendOtp}
+              className={`!p-1 !bg-transparent/10 !rounded-md !cursor-pointer !text-xs disabled:pointer-events-none ${
+                isSendingOtp && "!text-blue-600 !px-2"
+              }`}
+              disabled={resendCounter > 0 || loading || isSendingOtp}
+              icon={!isSendingOtp && <ReloadOutlined />}
+            >
+              {resendCounter > 0
+                ? `Resend OTP in ${resendCounter}s`
+                : isSendingOtp
+                ? "Sending..."
+                : "Resend OTP"}
+            </Button>
           </div>
         </div>
       </div>

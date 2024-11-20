@@ -183,7 +183,7 @@ const SignInPage = () => {
         </button>
       </div>
 
-      {/* <LoginVectorSvg /> */}
+      <LoginVectorSvg />
     </div>
   );
 };

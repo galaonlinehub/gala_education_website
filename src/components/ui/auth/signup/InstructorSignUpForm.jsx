@@ -6,8 +6,12 @@ import LoadingState from "../../loading/LoadingSpinner";
 import EmailVerification from "./EmailVerification";
 import { useEmailVerificationModalOpen } from "@/src/store/auth/signup";
 import InstructorSignUpPageSvg from "@/src/utils/vector-svg/sign-up/InstructorSignUpPageSvg";
+import { encrypt } from "@/src/utils/constants/encryption";
 
 const InstructorSignUpForm = () => {
+  const key = crypto.randomUUID();
+  console.log(key);
+
   const {
     register,
     handleSubmit,
@@ -36,7 +40,7 @@ const InstructorSignUpForm = () => {
         [fieldName]: file,
       }));
       message.success(
-        `File "${file.name}" for ${fieldName.replace(
+        `File "${file?.name}" for ${fieldName.replace(
           /([A-Z])/g,
           " $1"
         )} uploaded successfully!`
@@ -51,6 +55,7 @@ const InstructorSignUpForm = () => {
   };
 
   const onSubmit = async (data) => {
+    setLoading(true);
     message.destroy();
     const formData = new FormData();
 
@@ -81,10 +86,19 @@ const InstructorSignUpForm = () => {
           "Content-Type": "multipart/form-data",
         },
       });
-      message.success("Data Saved Successfully!");
+      if (response.status === 201) {
+        message.success("Data Saved Successfully!");
+        sessionStorage.setItem(
+          "e67e4931-4518-4369-b011-fa078beefac1",
+          encrypt(data.email)
+        );
+        setOpenEmailVerificationModal(true);
+      }
     } catch (error) {
       message.error("Oops!! Something Went Wrong, Try again Later.");
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -145,7 +159,9 @@ const InstructorSignUpForm = () => {
                 autoCorrect="off"
                 placeholder="Enter Your Last Name"
                 className="border-[1px] focus:border-[2.5px] w-full rounded-md border-[#030DFE] focus:outline-none h-input-height placeholder:font-semibold pl-3 placeholder:text-[14px]"
-                {...register("last_name", { required: "Last name is required" })}
+                {...register("last_name", {
+                  required: "Last name is required",
+                })}
               />
               {errors.lastName && (
                 <span className="text-red-500 text-xs">
@@ -269,7 +285,7 @@ const InstructorSignUpForm = () => {
               </span>
               <label className="cursor-pointer w-full">
                 <div className="h-input-height w-full bg-[#001840] rounded-md text-[14px] font-semibold text-[#D9D9D9] flex items-center justify-center">
-                  {files.cv ? files.cv.name : `Upload CV`}
+                  {files.cv ? files.cv?.name : `Upload CV`}
                 </div>
                 <input
                   type="file"
@@ -292,7 +308,7 @@ const InstructorSignUpForm = () => {
               <label className="cursor-pointer w-full">
                 <div className="h-input-height w-full bg-[#001840] rounded-md text-[14px] font-semibold text-[#D9D9D9] flex items-center justify-center">
                   {files.transcript
-                    ? files.transcript.name
+                    ? files.transcript?.name
                     : `Upload Transcript`}
                 </div>
                 <input
@@ -318,7 +334,7 @@ const InstructorSignUpForm = () => {
               <label className="cursor-pointer w-full">
                 <div className="h-input-height w-full bg-[#001840] rounded-md text-[14px] font-semibold text-[#D9D9D9] flex items-center justify-center">
                   {files.oLevelCertificate
-                    ? files.aLevelCertificate.name
+                    ? files.oLevelCertificate?.name
                     : "Upload O-Level Certificate"}
                 </div>
                 <input
@@ -344,7 +360,7 @@ const InstructorSignUpForm = () => {
               <label className="cursor-pointer w-full">
                 <div className="h-input-height w-full bg-[#001840] rounded-md text-[14px] font-semibold text-[#D9D9D9] flex items-center justify-center">
                   {files.aLevelCertificate
-                    ? files.aLevelCertificate.name
+                    ? files.aLevelCertificate?.name
                     : "Upload A-Level Certificate"}
                 </div>
                 <input
@@ -364,7 +380,6 @@ const InstructorSignUpForm = () => {
           </div>
           <div className="flex items-center w-[150px]">
             <button
-              onClick={() => setOpenEmailVerificationModal(true)}
               type="submit"
               className="h-[45.27px] w-full bg-[#030DFE] text-white font-bold rounded-md flex items-center justify-center"
             >
@@ -374,7 +389,7 @@ const InstructorSignUpForm = () => {
         </form>
       </div>
       <EmailVerification />
-      <InstructorSignUpPageSvg/>
+      <InstructorSignUpPageSvg />
     </main>
   );
 };
