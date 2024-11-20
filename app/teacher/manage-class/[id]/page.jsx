@@ -1,57 +1,95 @@
 "use client";
 
-import React from "react";
-import { Form, Input, DatePicker, Button } from "antd";
-
+import React, { useState } from "react";
 
 const Page = ({ params: { id } }) => {
+  const [formData, setFormData] = useState({
+    subTopic: "",
+    startDate: "",
+    endDate: "",
+    description: "",
+  });
 
+  const onFinish = (e) => {
+    e.preventDefault();
+    console.log("Form Values:", formData, id);
+  };
 
-  const onFinish = (values) => {
-    console.log("Form Values:", values, id);
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   return (
-    <div style={{ padding: 20 }}>
-      <div className="flex items-center justify-center">
-        <span>Sub-Topic Details</span>
+    <div className="md:px-32">
+      <div className="flex items-center justify-center mb-4">
+        <span className="text-lg font-semibold">Fill Sub-Topic Details</span>
       </div>
-      <Form
-        name="topicForm"
-        onFinish={onFinish}
-        layout="vertical"
-        initialValues={{
-          subTopic: "",
-          description: "",
-        }}
-      >
+      <form onSubmit={onFinish} className="space-y-4">
         {/* Sub Topic Input */}
-        <Form.Item label="Sub Topic" name="subTopic" rules={[{ required: true, message: "Please enter a sub topic!" }]}>
-          <Input placeholder="Enter Sub Topic" />
-        </Form.Item>
+        <div>
+          <label htmlFor="subTopic" className="block text-xs font-medium text-gray-700">Sub Topic</label>
+          <input
+            type="text"
+            id="subTopic"
+            name="subTopic"
+            value={formData.subTopic}
+            onChange={handleChange}
+            placeholder="Enter Sub Topic"
+            required
+            className="mt-1 p-2 w-full border-2 border-blue-700 shadow-sm focus:outline-none focus:ring-2 focus:border-black text-xs"
+          />
+        </div>
 
         {/* Start Date Input */}
-        <Form.Item label="Start Date" name="startDate" rules={[{ required: true, message: "Please select a start date!" }]}>
-          <DatePicker style={{ width: "100%" }} />
-        </Form.Item>
+        <div>
+          <label htmlFor="startDate" className="block text-xs font-medium text-gray-700">Start Date</label>
+          <input
+            type="date"
+            id="startDate"
+            name="startDate"
+            value={formData.startDate}
+            onChange={handleChange}
+            required
+             className="mt-1 p-2 w-full border-2 border-blue-700 shadow-sm focus:outline-none focus:ring-2 focus:border-black text-xs"
+          />
+        </div>
 
         {/* End Date Input */}
-        <Form.Item label="End Date" name="endDate" rules={[{ required: true, message: "Please select an end date!" }]}>
-          <DatePicker style={{ width: "100%" }} />
-        </Form.Item>
+        <div>
+          <label htmlFor="endDate" className="block text-xs font-medium text-gray-700">End Date</label>
+          <input
+            type="date"
+            id="endDate"
+            name="endDate"
+            value={formData.endDate}
+            onChange={handleChange}
+            required
+             className="mt-1 p-2 w-full border-2 border-blue-700 shadow-sm focus:outline-none focus:ring-2 focus:border-black text-xs"
+          />
+        </div>
 
         {/* Description Input */}
-        <Form.Item label="Description" name="description" rules={[{ required: true, message: "Please enter a description!" }]}>
-          <Input.TextArea placeholder="Enter Description" rows={4} />
-        </Form.Item>
+        <div>
+          <label htmlFor="description" className="block text-xs font-medium text-gray-700">Description</label>
+          <textarea
+            id="description"
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            placeholder="Enter Description"
+            rows="4"
+            required
+            className="mt-1 p-2 w-full border-2 border-blue-700 shadow-sm focus:outline-none focus:ring-2 focus:border-black text-xs"
+          />
+        </div>
 
         {/* Submit Button */}
-        <Form.Item>
-          <Button type="primary" htmlType="submit">
+        <div>
+          <button type="submit" className="w-full py-2 px-4 bg-[#001840] text-white font-medium hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500">
             Submit
-          </Button>
-        </Form.Item>
-      </Form>
+          </button>
+        </div>
+      </form>
     </div>
   );
 };

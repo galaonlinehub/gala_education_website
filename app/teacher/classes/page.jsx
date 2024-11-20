@@ -5,7 +5,6 @@ import ReadMoreContainer from "@/components/layout/ui/ReadMore";
 import Image from "next/image";
 import { Calendar, theme } from "antd";
 
-
 export default function TeacherClasses() {
   const reminders = [
     {
@@ -84,7 +83,7 @@ export default function TeacherClasses() {
 
   return (
     <div className="flex flex-col lg:flex-row w-full gap-12 justify-between p-6 ">
-      <div className="flex flex-col w-full lg:w-3/4">
+      <div className="flex flex-col w-full lg:w-2/3">
         <div className="p-4 z-10 h-fit mt-20 w-full border-blue-600 border-2 rounded-xl flex flex-col relative">
           <div>
             <div className="flex flex-col">
@@ -100,26 +99,6 @@ export default function TeacherClasses() {
         </div>
         <div className="pt-5">
           <h2 className="text-xs font-bold mb-2">Your Subjects</h2>
-          {/* <div className="block md:hidden">
-            <table className="w-full border-collapse">
-              <thead>
-                <tr className="bg-blue-900 text-white">
-                  <th className="p-2 text-left">Subject</th>
-                  <th className="p-2 text-left">Class Size</th>
-                  <th className="p-2 text-left">Days</th>
-                </tr>
-              </thead>
-              <tbody>
-                {subjects.map((subject, index) => (
-                  <tr key={index} className={index % 2 === 0 ? "bg-gray-100" : "bg-white"}>
-                    <td className="p-2 border">{subject.name}</td>
-                    <td className="p-2 border">{subject.classSize}</td>
-                    <td className="p-2 border">{subject.days}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div> */}
           <div className="">
             <div className="flex items-center mt-2">
               <div ref={scrollRef} className="flex overflow-x-auto space-x-4 pb-4">
