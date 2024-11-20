@@ -1,4 +1,4 @@
-import {sideBarItems} from "@/src/utils/utils";
+import {sideBarItems} from "@/src/utils/constants/utils";
 
 const Sidebar = () => {
   return ( <aside className="flex flex-col items-start justify-center gap-3 py-8 pl-12 text-[#49454F] text-[16px] font-black">

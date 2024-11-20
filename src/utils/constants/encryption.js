@@ -2,7 +2,6 @@ import CryptoJS from "crypto-js";
 
 const SECRET_KEY = process.env.NEXT_PUBLIC_ENCRYPTION_KEY;
 
-console.log(SECRET_KEY, "this is the secret key")
 export const encrypt = (text) => {
   try {
     const encrypted = CryptoJS.AES.encrypt(text, SECRET_KEY).toString();

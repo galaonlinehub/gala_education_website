@@ -1,7 +1,7 @@
 const LoginVectorSvg = () => {
   return (
     <>
-      <div className="absolute bottom-10 left-10 hidden sm:block">
+      <div className="absolute bottom-10 left-10 hidden sm:block pointer-events-none overflow-hidden">
         <svg
           width="537"
           height="528"
