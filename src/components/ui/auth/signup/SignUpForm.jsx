@@ -21,6 +21,8 @@ const SignUpForm = () => {
     (state) => state.setOpenEmailVerificationModal
   );
   const [loading, setLoading] = React.useState(false);
+  const [emailExists, setEmailExists] = React.useState(false);
+
   const password = watch("password", "");
 
   const preventCopyPaste = (event) => {
@@ -40,7 +42,7 @@ const SignUpForm = () => {
     formData.append("country", "Tanzania");
 
     try {
-      const response = await api.post("/register", formData, {});
+      const response = await api.post("/register", formData);
       if (response.status === 201) {
         message.success("Data Saved Successfully!");
         sessionStorage.setItem(
@@ -50,7 +52,16 @@ const SignUpForm = () => {
         setOpenEmailVerificationModal(true);
       }
     } catch (error) {
-      message.error("Oops!! Something Went Wrong, Try again Later.");
+      if (error.response) {
+        const errorMessage = error.response.data.email[0];
+        if (errorMessage && errorMessage.toLowerCase().includes("email")) {
+          setEmailExists(errorMessage);
+        } else {
+          message.error("Oops!! Something Went Wrong, Try again Later.");
+        }
+      } else {
+        message.error("Oops!! Something Went Wrong, Try again Later.");
+      }
     } finally {
       setLoading(false);
     }
@@ -134,6 +145,7 @@ const SignUpForm = () => {
               }`}
               {...register("email", {
                 required: "Email is required",
+                onChange: () => setEmailExists(false),
                 pattern: {
                   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                   message: "Invalid email address",
@@ -144,6 +156,9 @@ const SignUpForm = () => {
               <span className="text-red-500 text-xs">
                 {errors.email.message}
               </span>
+            )}
+            {emailExists && !errors.email  && (
+              <span className="text-red-500 text-xs">{emailExists}</span>
             )}
           </div>
           <div className="flex flex-col gap-1 justify-center items-start w-full">
