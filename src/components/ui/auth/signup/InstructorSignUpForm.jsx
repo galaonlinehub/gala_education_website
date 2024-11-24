@@ -9,8 +9,7 @@ import InstructorSignUpPageSvg from "@/src/utils/vector-svg/sign-up/InstructorSi
 import { encrypt } from "@/src/utils/constants/encryption";
 
 const InstructorSignUpForm = () => {
-  const key = crypto.randomUUID();
-  console.log(key);
+  
 
   const {
     register,

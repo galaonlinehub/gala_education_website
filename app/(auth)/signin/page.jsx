@@ -3,15 +3,27 @@ import LoginVectorSvg from "@/src/utils/vector-svg/sign-in/LoginVectorSvg";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { message } from "antd";
+import { message, Alert } from "antd";
 import { api } from "@/src/config/settings";
 import GoogleSvg from "@/src/utils/vector-svg/sign-in/GoogleSvg";
 import LoadingState from "@/src/components/ui/loading/LoadingSpinner";
-import '../../../src/styles/auth/signup.css'
+import "@/src/styles/auth/signup.css";
+import useUser from "@/src/store/auth/user";
+import { encrypt } from "@/src/utils/constants/encryption";
+import Cookies from "js-cookie";
 
 const SignInPage = () => {
+  // const key = crypto.randomUUID();
+  // console.log(key);
+
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const setUser = useUser((state) => state.setUser);
+  const [localFeedback, setLocalFeedback] = useState({
+    show: false,
+    type: "",
+    message: "",
+  });
 
   const {
     register,
@@ -24,22 +36,73 @@ const SignInPage = () => {
       setLoading(true);
       message.destroy();
 
-      const formData = new FormData();
-      formData.append("email", data.email);
-      formData.append("password", data.password);
+      const response = await api.post("/login", {
+        email: data.email,
+        password: data.password,
+      });
 
-      const response = await api.post("/login", formData, {});
+      if (response.status === 200) {
+        const res = await api.get("/user", {
+          headers: {
+            Authorization: `Bearer ${response.data.token}`,
+          },
+        });
 
-      if (response.data) {
-        message.success("Login successful!");
-        router.push("/teacher");
+        if (res.status === 200) {
+          const encryptedData =encrypt(encrypt(res.data));
+          
+          if (encryptedData) {
+            localStorage.setItem("2171f701-2b0c-41f4-851f-318703867868", encryptedData);
+          } else {
+            message.error("Encryption failed - encryptedData is null");
+          }
+
+          const roleRedirects = {
+            student: "/student",
+            instructor: "/teacher",
+            admin: "/admin",
+            parent: "/parent",
+          };
+
+          const redirectTo = roleRedirects[res.data.role] || "/signin";
+          router.push(redirectTo);
+
+          if (redirectTo === "/signin") {
+            setLocalFeedback({
+              show: true,
+              type: "error",
+              message: "Unexpected Error. Try again.",
+            });
+            return;
+          }
+
+          const encryptedToken = encrypt(response.data.token);
+
+          Cookies.set("9fb96164-a058-41e4-9456-1c2bbdbfbf8d", encryptedToken, {
+            expires: 7,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            path: "/",
+          });
+        }
       }
     } catch (error) {
       const errorMessage =
         error.response?.data?.message || "Login failed. Please try again.";
-      message.error(errorMessage);
+      setLocalFeedback({
+        show: true,
+        type: "error",
+        message: errorMessage,
+      });
     } finally {
-      // setLoading(false);
+      setLoading(false);
+      setTimeout(() => {
+        setLocalFeedback({
+          show: false,
+          type: "",
+          message: "",
+        });
+      }, 10000);
     }
   };
 
@@ -53,22 +116,25 @@ const SignInPage = () => {
       const response = await api.get("/auth/google");
       window.location.href = response.data.authUrl;
     } catch (error) {
-      message.error("Google login failed. Please try again.");
+      setLocalFeedback({
+        show: true,
+        type: "error",
+        message: "Google login failed. Please try again later.",
+      });
     } finally {
       setLoading(false);
+      setTimeout(() => {
+        setLocalFeedback({
+          show: false,
+          type: "",
+          message: "",
+        });
+      }, 10000);
     }
   };
 
   return (
-    <div
-      // style={{
-      //   backgroundImage: "url('/vectors/auth/sign-in/LoginVectorSvg.svg')",
-      //   backgroundSize: "cover", 
-      //   backgroundPosition: "center", 
-      //   height: "100vh", 
-      // }}
-      className="login-bg bg-cover bg-center flex lg:items-center justify-center h-screen px-3 md:px-8 lg:px-12 xl:px-16"
-    >
+    <div className="login-bg bg-cover bg-center flex lg:items-center justify-center h-screen px-3 md:px-8 lg:px-12 xl:px-16">
       <div className="flex flex-col items-center justify-center gap-3 w-full max-w-xl">
         <span className="font-black">Login</span>
         <span className="font-black text-4xl">Welcome Back</span>
@@ -81,6 +147,15 @@ const SignInPage = () => {
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col items-center justify-center w-full gap-4"
         >
+          {localFeedback.show && (
+            <Alert
+              showIcon
+              // closable
+              message={localFeedback.message}
+              type={localFeedback.type}
+              className="!my-2 !w-full"
+            />
+          )}
           <div className="flex flex-col gap-1 w-full">
             <label htmlFor="email" className="font-black">
               Email *
@@ -164,7 +239,7 @@ const SignInPage = () => {
         </form>
 
         <span className="text-sm font-semibold mt-3">
-          Don&#34;t have an account?{" "}
+          Don&#39;t have an account?{" "}
           <span
             className="text-[#030DFE] cursor-pointer"
             onClick={() => router.push("/signup")}

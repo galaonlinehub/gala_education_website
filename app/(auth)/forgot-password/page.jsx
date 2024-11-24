@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
-import { message, Input, Button, Card, Typography, Space } from "antd";
+import { message, Input, Button, Card, Typography, Space, Alert } from "antd";
 import { MailOutlined, SendOutlined, ReloadOutlined } from "@ant-design/icons";
 import { api } from "@/src/config/settings";
 import { FaKey } from "react-icons/fa6";
@@ -16,11 +16,16 @@ const ForgotPassword = () => {
   const [otpSent, setOtpSent] = useState(false);
   const [email, setEmail] = useState("");
   const [isSendingOtp, setIsSendingOtp] = useState(false);
-  const [isVerifyingOtp, setIsVerifyingOtp] = useState(false);
+  const [isVerifyingOtp, setIsVerifyingOtp] = useState(null);
   const [resendCounter, setResendCounter] = useState(0);
   const [otpValues, setOtpValues] = useState(["", "", "", "", "", ""]);
   const [otpStatus, setOtpStatus] = useState("");
   const otpRefs = useRef([]);
+  const [emailOtpFeedback, setEmailOtpFeedback] = useState({
+    show: false,
+    type: "",
+    message: "",
+  });
 
   const {
     control,
@@ -42,27 +47,39 @@ const ForgotPassword = () => {
     try {
       setIsSendingOtp(true);
       message.destroy();
-      const response = await api.post("/forgot-password", {
+      const response = await api.post("/password/reset-request", {
         email: data.email,
       });
       if (response.status === 200) {
         const encryptedEmail = encrypt(data.email);
+        sessionStorage.setItem("Gala", encryptedEmail);
+
         setEmail(data.email);
         setOtpSent(true);
         setResendCounter(30);
 
-        message.success("OTP sent to your email");
-      } else {
-        message.error(response.data.message);
+        setEmailOtpFeedback({
+          show: true,
+          type: "success",
+          message: "OTP sent to your email!.",
+        });
       }
-    } catch (e) {
-      message.error(`Failed to send OTP, ${e.message}`);
+    } catch (error) {
+      setEmailOtpFeedback({
+        show: true,
+        type: "error",
+        message: "Failed to send OTP, Try again!.",
+      });
     } finally {
-      setResendCounter(30);
       setIsSendingOtp(false);
-      setOtpSent(true);
-      const encryptedEmail = encrypt("d@gmail.com");
-      sessionStorage.setItem("Gala", encryptedEmail);
+
+      setTimeout(() => {
+        setEmailOtpFeedback({
+          show: false,
+          type: "",
+          message: "",
+        });
+      }, 10000);
     }
   };
 
@@ -88,6 +105,7 @@ const ForgotPassword = () => {
   };
 
   const handleOtpChange = (value, index) => {
+    setIsVerifyingOtp(null);
     const newOtpValues = [...otpValues];
     newOtpValues[index] = value;
     setOtpValues(newOtpValues);
@@ -105,28 +123,26 @@ const ForgotPassword = () => {
 
   const verifyOtp = async (otp) => {
     try {
-      setIsVerifyingOtp(true);
+      setIsVerifyingOtp("loading");
       const response = await api.post("/verify-otp", {
         email,
         otp,
       });
 
-      if (response.data.success) {
+      if (response.status === 200) {
+        setIsVerifyingOtp("success");
         setOtpStatus("success");
-        message.success("OTP verified. Redirecting to reset password...");
         setTimeout(() => {
-          router.push("/reset-password");
-        }, 1500);
-      } else {
-        setOtpStatus("error");
-        message.error(response.data.message);
+          router.push("/forgot-password/password-change");
+        }, 8000);
       }
     } catch (e) {
       setOtpStatus("error");
-      message.error("Failed to verify OTP");
+      setIsVerifyingOtp("error");
     } finally {
-      setIsVerifyingOtp(false);
-      router.push("/forgot-password/password-change");
+      // setTimeout(() => {
+      //   setIsVerifyingOtp(null);
+      // }, 10000);
     }
   };
 
@@ -199,6 +215,15 @@ const ForgotPassword = () => {
           </form>
         ) : (
           <div>
+            {emailOtpFeedback.show && (
+              <Alert
+                showIcon
+                // closable
+                message={emailOtpFeedback.message}
+                type={emailOtpFeedback.type}
+                className="!my-2 !w-full"
+              />
+            )}
             <div className="mb-4">
               <label className="text-gray-700 font-bold mb-4 flex justify-center items-center">
                 <FaKey className="mr-2" /> Enter OTP
@@ -228,17 +253,35 @@ const ForgotPassword = () => {
                 ))}
               </Space>
             </div>
-            {isVerifyingOtp && (
-              <div className="w-full flex flex-col items-center justify-center my-6">
-                <LoadingState />
-                <span> Verifying...</span>
-              </div>
+            {isVerifyingOtp !== null && (
+              <>
+                {isVerifyingOtp === "loading" && (
+                  <div className="w-full flex flex-col items-center justify-center my-6">
+                    <LoadingState />
+                    <span>Verifying...</span>
+                  </div>
+                )}
+                {isVerifyingOtp === "error" && (
+                  <div className="w-full flex flex-col items-center justify-center my-6 text-red-700">
+                    <span>Verification Failed, Incorrect OTP provided!</span>
+                  </div>
+                )}
+                {isVerifyingOtp === "success" && (
+                  <div className="w-full flex flex-col items-center justify-center my-6 text-green-700">
+                    <span>Successfully Verified!</span>
+                    <span>
+                      Hold on a moment. You&#39;ll be directed to the next
+                      stage.
+                    </span>
+                  </div>
+                )}
+              </>
             )}
             <div className="text-center">
               <Button
                 type="link"
                 onClick={handleResendOtp}
-                disabled={resendCounter > 0 || isVerifyingOtp || isSendingOtp}
+                disabled={resendCounter > 0  || isSendingOtp}
                 icon={<ReloadOutlined />}
               >
                 {resendCounter > 0

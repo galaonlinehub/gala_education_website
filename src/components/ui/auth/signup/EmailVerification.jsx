@@ -157,7 +157,7 @@ const EmailVerification = () => {
       setLocalFeedback({
         show: true,
         type: "error",
-        message: "Sending OTP failed, Try again later.",
+        message: "Sending OTP failed, Try again.",
       });
     } finally {
       setIsSendingOtp(false);

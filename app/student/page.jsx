@@ -1,12 +1,14 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import ReadMoreContainer from "@/components/layout/ui/ReadMore";
 import Image from "next/image";
 import { Calendar, theme } from "antd";
 import LeftTiltedBook from "@/components/vectors/LeftTiltedBook";
 import CalendarComponent from "@/src/components/student/CalendarComponent";
 import { useRouter } from "next/navigation";
+import useUser from "@/src/store/auth/user";
+import { decrypt } from "@/src/utils/constants/encryption";
 
 export default function Component() {
   const reminders = [
@@ -101,6 +103,7 @@ export default function Component() {
   ];
 
   const router = useRouter();
+  const [user, setUser] = useState(null);
 
   const onPanelChange = (value, mode) => {
     console.log(value.format("YYYY-MM-DD"), mode);
@@ -122,6 +125,25 @@ export default function Component() {
     }
   };
 
+  useEffect(() => {
+    const user = decrypt(
+      decrypt(localStorage.getItem("2171f701-2b0c-41f4-851f-318703867868"))
+    );
+
+    if (user) {
+      setUser(user);
+    }
+  }, []);
+
+
+  if (!user) {
+    return (
+      <div className="flex lg:gap-x-5 justify-center items-center flex-col lg:flex-row px-2 h-screen">
+        Loading...
+      </div>
+    );
+  }
+
   return (
     <div className="flex lg:gap-x-5 justify-center items-center flex-col lg:flex-row px-2">
       <div className="flex-col w-full lg:w-2/3 flex">
@@ -129,7 +151,7 @@ export default function Component() {
           <div>
             <div className="flex flex-col">
               <div className="font-bold text-sm">
-                Welcome back, Diana Malle!
+                Welcome back, {user?.first_name + "  " + user?.last_name}!
               </div>
               <div>
                 <ReadMoreContainer />
