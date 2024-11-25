@@ -3,23 +3,12 @@
 import { useState, useRef, useEffect } from "react";
 import ReadMoreContainer from "@/components/layout/ui/ReadMore";
 import Image from "next/image";
-
+import { Calendar, theme, Spin, Skeleton } from "antd";
+import LeftTiltedBook from "@/components/vectors/LeftTiltedBook";
 import CalendarComponent from "@/src/components/student/CalendarComponent";
 import { useRouter } from "next/navigation";
+import useUser from "@/src/store/auth/user";
 import { decrypt } from "@/src/utils/constants/encryption";
-import LoadingAnimation from "@/src/components/ui/loading/loadingBooks";
-import LoadingState from "@/src/components/ui/loading/LoadingSpinner";
-import ProgressComponent from "@/src/components/ui/loading/Progress";
-import {
-  Spin,
-  LoadingOutlined,
-  SyncOutlined,
-  LoadingComponent,
-  Skeleton,
-  Progress,
-  Button,
-  theme,
-} from "antd";
 
 export default function Component() {
   const reminders = [
@@ -114,23 +103,7 @@ export default function Component() {
   ];
 
   const router = useRouter();
-  const [auto, setAuto] = useState(true);
-
   const [user, setUser] = useState(null);
-  const [percent, setPercent] = useState(-50);
-  const timerRef = useRef();
-
-  useEffect(() => {
-    timerRef.current = setTimeout(() => {
-      setPercent((v) => {
-        const nextPercent = v + 5;
-        return nextPercent > 150 ? -50 : nextPercent;
-      });
-    }, 100);
-    return () => clearTimeout(timerRef.current);
-  }, [percent]);
-
-  const mergedPercent = auto ? "auto" : percent;
 
   const onPanelChange = (value, mode) => {
     console.log(value.format("YYYY-MM-DD"), mode);
@@ -162,17 +135,13 @@ export default function Component() {
     }
   }, []);
 
-  if (!user) {
-    return (
-      <>
-        <div className="mx-auto w-full  pt-72 ">
-          <Spin size="large" tip="Loading...">
-            <div style={{ padding: "50px" }}>Content with loading tip</div>
-          </Spin>
-        </div>
-      </>
-    );
-  }
+  // if (!user) {
+  //   return (
+  //     <div className="flex items-center justify-center h-screen">
+  //       <Spin tip="Loading..." size="large"></Spin>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="flex lg:gap-x-5 justify-center items-center flex-col lg:flex-row px-2">
@@ -181,7 +150,41 @@ export default function Component() {
           <div>
             <div className="flex flex-col">
               <div className="font-bold text-sm">
-                Welcome back, {user?.first_name + "  " + user?.last_name}!
+                {user ? (
+                  `Welcome back, ${user.first_name} ${user.last_name}!`
+                ) : (
+                  <>
+                    Welcome back,
+                    <Skeleton.Input
+                      active
+                      size="small"
+                      style={{
+                        width: 60,
+                        minWidth: 60,
+                        height: 16,
+                        display: "inline-block",
+                        verticalAlign: "middle",
+                        marginTop: "-4px",
+                        marginLeft: "10px",
+                        marginRight: "10px",
+                      }}
+                    />
+                    <Skeleton.Input
+                      active
+                      size="small"
+                      style={{
+                        width: 80,
+                        minWidth: 80,
+                        height: 16,
+                        display: "inline-block",
+                        verticalAlign: "middle",
+                        marginTop: "-4px",
+                        marginRight: "10px",
+                      }}
+                    />
+                    !
+                  </>
+                )}
               </div>
               <div>
                 <ReadMoreContainer />
