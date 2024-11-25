@@ -9,7 +9,7 @@ export default function RootLayout({ children}) {
     <html lang="en">
       <body className={`min-h-screen flex flex-col`}>
        <StudentMain>
-        {children}
+        {children}  
        </StudentMain>
       </body>
     </html>

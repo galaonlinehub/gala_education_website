@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import ReadMoreContainer from "@/components/layout/ui/ReadMore";
 import Image from "next/image";
-import { Calendar, theme } from "antd";
+import { Calendar, theme, Spin, Skeleton } from "antd";
 import LeftTiltedBook from "@/components/vectors/LeftTiltedBook";
 import CalendarComponent from "@/src/components/student/CalendarComponent";
 import { useRouter } from "next/navigation";
@@ -135,14 +135,13 @@ export default function Component() {
     }
   }, []);
 
-
-  if (!user) {
-    return (
-      <div className="flex lg:gap-x-5 justify-center items-center flex-col lg:flex-row px-2 h-screen">
-        Loading...
-      </div>
-    );
-  }
+  // if (!user) {
+  //   return (
+  //     <div className="flex items-center justify-center h-screen">
+  //       <Spin tip="Loading..." size="large"></Spin>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="flex lg:gap-x-5 justify-center items-center flex-col lg:flex-row px-2">
@@ -151,7 +150,41 @@ export default function Component() {
           <div>
             <div className="flex flex-col">
               <div className="font-bold text-sm">
-                Welcome back, {user?.first_name + "  " + user?.last_name}!
+                {user ? (
+                  `Welcome back, ${user.first_name} ${user.last_name}!`
+                ) : (
+                  <>
+                    Welcome back,
+                    <Skeleton.Input
+                      active
+                      size="small"
+                      style={{
+                        width: 60,
+                        minWidth: 60,
+                        height: 16,
+                        display: "inline-block",
+                        verticalAlign: "middle",
+                        marginTop: "-4px",
+                        marginLeft: "10px",
+                        marginRight: "10px",
+                      }}
+                    />
+                    <Skeleton.Input
+                      active
+                      size="small"
+                      style={{
+                        width: 80,
+                        minWidth: 80,
+                        height: 16,
+                        display: "inline-block",
+                        verticalAlign: "middle",
+                        marginTop: "-4px",
+                        marginRight: "10px",
+                      }}
+                    />
+                    !
+                  </>
+                )}
               </div>
               <div>
                 <ReadMoreContainer />

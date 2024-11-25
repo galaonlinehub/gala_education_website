@@ -18,7 +18,7 @@ const StudentProfile = () => {
             <input type="text" className="p-2 border border-blue-700" />
           </div>
           <div className="flex flex-col">
-            <span>Full Name</span>
+            <span>Full Name </span>
             <input type="text" className="p-2 border border-blue-700" />
           </div>
           <div className="flex flex-col">
