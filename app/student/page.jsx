@@ -3,12 +3,23 @@
 import { useState, useRef, useEffect } from "react";
 import ReadMoreContainer from "@/components/layout/ui/ReadMore";
 import Image from "next/image";
-import { Calendar, theme } from "antd";
-import LeftTiltedBook from "@/components/vectors/LeftTiltedBook";
+
 import CalendarComponent from "@/src/components/student/CalendarComponent";
 import { useRouter } from "next/navigation";
-import useUser from "@/src/store/auth/user";
 import { decrypt } from "@/src/utils/constants/encryption";
+import LoadingAnimation from "@/src/components/ui/loading/loadingBooks";
+import LoadingState from "@/src/components/ui/loading/LoadingSpinner";
+import ProgressComponent from "@/src/components/ui/loading/Progress";
+import {
+  Spin,
+  LoadingOutlined,
+  SyncOutlined,
+  LoadingComponent,
+  Skeleton,
+  Progress,
+  Button,
+  theme,
+} from "antd";
 
 export default function Component() {
   const reminders = [
@@ -103,7 +114,23 @@ export default function Component() {
   ];
 
   const router = useRouter();
+  const [auto, setAuto] = useState(true);
+
   const [user, setUser] = useState(null);
+  const [percent, setPercent] = useState(-50);
+  const timerRef = useRef();
+
+  useEffect(() => {
+    timerRef.current = setTimeout(() => {
+      setPercent((v) => {
+        const nextPercent = v + 5;
+        return nextPercent > 150 ? -50 : nextPercent;
+      });
+    }, 100);
+    return () => clearTimeout(timerRef.current);
+  }, [percent]);
+
+  const mergedPercent = auto ? "auto" : percent;
 
   const onPanelChange = (value, mode) => {
     console.log(value.format("YYYY-MM-DD"), mode);
@@ -135,12 +162,15 @@ export default function Component() {
     }
   }, []);
 
-
   if (!user) {
     return (
-      <div className="flex lg:gap-x-5 justify-center items-center flex-col lg:flex-row px-2 h-screen">
-        Loading...
-      </div>
+      <>
+        <div className="mx-auto w-full  pt-72 ">
+          <Spin size="large" tip="Loading...">
+            <div style={{ padding: "50px" }}>Content with loading tip</div>
+          </Spin>
+        </div>
+      </>
     );
   }
 
