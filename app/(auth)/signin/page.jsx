@@ -51,7 +51,7 @@ const SignInPage = () => {
         if (res.status === 200) {
           const encryptedData = encrypt(encrypt(res.data));
 
-          if (encryptedData) {
+          // if (encryptedData) {
             try {
               localStorage.setItem(
                 "2171f701-2b0c-41f4-851f-318703867868",
@@ -62,9 +62,10 @@ const SignInPage = () => {
               console.log(e, "this is the error");
               console.log(e.message);
             }
-          } else {
-            message.error("Encryption failed - encryptedData is null");
-          }
+          // } 
+          // else {
+          //   message.error("Encryption failed - encryptedData is null");
+          // }
 
           const roleRedirects = {
             student: "/student",
