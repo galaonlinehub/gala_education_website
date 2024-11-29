@@ -49,10 +49,13 @@ const SignInPage = () => {
         });
 
         if (res.status === 200) {
-          const encryptedData =encrypt(encrypt(res.data));
-          
+          const encryptedData = encrypt(encrypt(res.data));
+
           if (encryptedData) {
-            localStorage.setItem("2171f701-2b0c-41f4-851f-318703867868", encryptedData);
+            localStorage.setItem(
+              "2171f701-2b0c-41f4-851f-318703867868",
+              encryptedData
+            );
           } else {
             message.error("Encryption failed - encryptedData is null");
           }
