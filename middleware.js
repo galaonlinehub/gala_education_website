@@ -145,14 +145,16 @@ export async function middleware(request) {
     if (!token) return NextResponse.next();
 
     try {
-      const response = await api.get("/user", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      // const response = await api.get("/user", {
+        // headers: { Authorization: `Bearer ${token}` },
+      // });
 
-      if (response.status === 200) {
-        const redirectTo = AUTH_CONFIG.REDIRECT_ROUTES.afterLogin[response.data.role] || "/signin";
-        return NextResponse.redirect(new URL(redirectTo, request.url));
-      }
+      // if (response.status === 200) {
+        // const redirectTo = AUTH_CONFIG.REDIRECT_ROUTES.afterLogin[response.data.role] || "/signin";
+        return NextResponse.next();
+
+        // return NextResponse.redirect(new URL(redirectTo, request.url));
+      // }
     } catch (error) {
       return NextResponse.redirect(new URL(AUTH_CONFIG.REDIRECT_ROUTES.notAuthenticated, request.url));
     }
