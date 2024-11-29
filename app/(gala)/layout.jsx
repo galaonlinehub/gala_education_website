@@ -123,7 +123,7 @@ export default function RootLayout({ children }) {
 
               {/* Sidebar */}
               <aside
-                className={`fixed mt-16 md:mt-32 bg-white md:bg-transparent z-50 h-[calc(120vh-7rem)] overflow-y-auto transition-transform duration-300 ease-in-out
+                className={`fixed border mt-16 md:mt-28 bg-white md:bg-transparent z-50 h-[calc(120vh-7rem)] overflow-y-auto transition-transform duration-300 ease-in-out
                   md:translate-x-0 md:relative md:w-56 md:z-0
                   ${isMobile ? "w-64 top-0 left-0" : ""}
                   ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
