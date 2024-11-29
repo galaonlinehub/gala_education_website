@@ -23,27 +23,23 @@
 //   }
 // };
 
+import CryptoJS from "crypto-js";
 
-import CryptoJS from 'crypto-js';
-
-// const SECRET_KEY = 'your-secret-key-here';
-const SECRET_KEY = process.env.NEXT_PUBLIC_ENCRYPTION_KEY;
-
+// const SECRET_KEY = process.env.NEXT_PUBLIC_ENCRYPTION_KEY;
+const SECRET_KEY =
+  "ENW8394TU90TCNC43CWE4U943029C2MN394MEJFNWC321b7c23y8drnhweqo8x8bo30JEWKNC8SEU3-490TCNHE98T4C==43289T==";
 
 export const encrypt = (data) => {
   try {
     let textToEncrypt;
-    
-    if (typeof data === 'object') {
-      console.log("WE ARE OBJECT")
+
+    if (typeof data === "object") {
       textToEncrypt = JSON.stringify(data);
     } else if (data === undefined || data === null) {
-      console.log("WE ARE NULL")
       console.error("Cannot encrypt null or undefined data");
       return null;
     } else {
       textToEncrypt = String(data);
-      console.log("WE ARE STRING")
     }
 
     if (!textToEncrypt) {
@@ -52,9 +48,9 @@ export const encrypt = (data) => {
     }
 
     const wordArray = CryptoJS.enc.Utf8.parse(textToEncrypt);
-    
+
     const encrypted = CryptoJS.AES.encrypt(wordArray, SECRET_KEY);
-    
+
     return encodeURIComponent(encrypted.toString());
   } catch (error) {
     console.error("Encryption error:", error);
@@ -73,11 +69,11 @@ export const decrypt = (encryptedText) => {
 
     // Decode the URL encoded string
     const decodedText = decodeURIComponent(encryptedText);
-    
+
     // Decrypt
     const decrypted = CryptoJS.AES.decrypt(decodedText, SECRET_KEY);
     const decryptedString = decrypted.toString(CryptoJS.enc.Utf8);
-    
+
     if (!decryptedString) {
       console.error("Decryption resulted in empty string");
       return null;

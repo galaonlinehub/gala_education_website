@@ -49,25 +49,16 @@ const SignInPage = () => {
         });
 
         if (res.status === 200) {
-          message.error("THIS IS THEM")
-          console.log("THIS IS US")
           const encryptedData = encrypt(encrypt(res.data));
 
-          // if (encryptedData) {
-            try {
-              localStorage.setItem(
-                "2171f701-2b0c-41f4-851f-318703867868",
-                encryptedData
-              );
-            } catch (e) {
-              console.log("ERRORS")
-              console.log(e, "this is the error");
-              console.log(e.message);
-            }
-          // } 
-          // else {
-          //   message.error("Encryption failed - encryptedData is null");
-          // }
+          if (encryptedData) {
+            localStorage.setItem(
+              "2171f701-2b0c-41f4-851f-318703867868",
+              encryptedData
+            );
+          } else {
+            message.error("Encryption failed - encryptedData is null");
+          }
 
           const roleRedirects = {
             student: "/student",
