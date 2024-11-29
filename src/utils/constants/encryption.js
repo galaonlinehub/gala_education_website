@@ -35,13 +35,15 @@ export const encrypt = (data) => {
     let textToEncrypt;
     
     if (typeof data === 'object') {
+      console.log("WE ARE OBJECT")
       textToEncrypt = JSON.stringify(data);
     } else if (data === undefined || data === null) {
+      console.log("WE ARE NULL")
       console.error("Cannot encrypt null or undefined data");
       return null;
     } else {
       textToEncrypt = String(data);
-      console.log("WE ARE HERE")
+      console.log("WE ARE STRING")
     }
 
     if (!textToEncrypt) {
