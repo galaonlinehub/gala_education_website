@@ -58,6 +58,7 @@ const SignInPage = () => {
                 encryptedData
               );
             } catch (e) {
+              console.log("ERRORS")
               console.log(e, "this is the error");
               console.log(e.message);
             }
