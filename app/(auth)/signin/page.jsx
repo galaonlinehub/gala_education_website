@@ -49,6 +49,7 @@ const SignInPage = () => {
         });
 
         if (res.status === 200) {
+          message.error("THIS IS THEM")
           console.log("THIS IS US")
           const encryptedData = encrypt(encrypt(res.data));
 
