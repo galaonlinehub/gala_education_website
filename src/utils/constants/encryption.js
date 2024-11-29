@@ -32,7 +32,6 @@ const SECRET_KEY = process.env.NEXT_PUBLIC_ENCRYPTION_KEY;
 
 export const encrypt = (data) => {
   try {
-    // Convert data to string if it's not already a string
     let textToEncrypt;
     
     if (typeof data === 'object') {
@@ -42,21 +41,18 @@ export const encrypt = (data) => {
       return null;
     } else {
       textToEncrypt = String(data);
+      console.log("WE ARE HERE")
     }
 
-    // Validate the string before encryption
     if (!textToEncrypt) {
       console.error("Empty string after conversion");
       return null;
     }
 
-    // Create a word array from the string
     const wordArray = CryptoJS.enc.Utf8.parse(textToEncrypt);
     
-    // Encrypt
     const encrypted = CryptoJS.AES.encrypt(wordArray, SECRET_KEY);
     
-    // Convert to string and URL encode
     return encodeURIComponent(encrypted.toString());
   } catch (error) {
     console.error("Encryption error:", error);
