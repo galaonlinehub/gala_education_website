@@ -103,7 +103,7 @@ export default function Component() {
   ];
 
   const router = useRouter();
-  const [user, setUser] = useState(null);
+  const { user, setUser } = useUser();
 
   const onPanelChange = (value, mode) => {
     console.log(value.format("YYYY-MM-DD"), mode);
@@ -126,22 +126,14 @@ export default function Component() {
   };
 
   useEffect(() => {
-    const user = decrypt(
+    const userDecrypted = decrypt(
       decrypt(localStorage.getItem("2171f701-2b0c-41f4-851f-318703867868"))
     );
 
-    if (user) {
-      setUser(user);
+    if (userDecrypted) {
+      setUser(userDecrypted);
     }
-  }, []);
-
-  // if (!user) {
-  //   return (
-  //     <div className="flex items-center justify-center h-screen">
-  //       <Spin tip="Loading..." size="large"></Spin>
-  //     </div>
-  //   );
-  // }
+  }, [setUser, user]);
 
   return (
     <div className="flex lg:gap-x-5 justify-center items-center flex-col lg:flex-row px-2">
