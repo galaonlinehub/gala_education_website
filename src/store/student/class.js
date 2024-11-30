@@ -1,3 +1,7 @@
+import { create } from "zustand";
+const useNewClass = create((set) => ({
+  openNewClass: false,
+  setOpenNewClass: (state) => set(() => ({ openNewClass: state })),
+}));
 
-import {create} from 'zustand';
-
+export { useNewClass };

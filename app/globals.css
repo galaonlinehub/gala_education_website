@@ -2,47 +2,63 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
-.custom-select .ant-select-selection-placeholder {
-  color: white !important;
+.custom-select {
+  background-color: #001840 !important;
+  /* color: white !important; */
 }
 
 .custom-select .ant-select-selector {
   background-color: #001840 !important;
+  height: 34px !important;
+  outline: none !important;
+  border: none !important;
   border-radius: 5px !important;
-  padding: 4px 8px !important;
+}
+
+.custom-select .ant-select-selection-placeholder {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.custom-select .ant-select-selection-item {
   color: white !important;
-
+  font-size: 10px !important;
 }
 
-.custom-tab-label .ant-tabs-tab-btn {
-  font-weight: bold;
-  font-size: "8px";
+.custom-select-dropdown {
+  background-color: #001840 !important;
 }
 
+.custom-select-dropdown .ant-select-item {
+  transition: background-color 0.2s ease;
+  color: rgba(255, 255, 255, 0.5) !important;
+}
 
-.custom-select .ant-select-selector input {
-  background-color: transparent !important;
+.custom-select-dropdown .ant-select-item:hover {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  color: white !important;
+  cursor: pointer;
+}
+
+.custom-select-dropdown .ant-select-item-option-selected {
+  background-color: rgba(255, 255, 255, 0.1) !important;
 }
 
 .custom-select .ant-select-arrow {
-  color: white;
+  color: rgba(255, 255, 255, 0.5) !important;
 }
 
+.custom-alert .ant-alert-icon {
+  font-size: 12px !important;
+}
 
 .ant-tabs-ink-bar {
   height: 6px !important;
-  width:50% !important;
-
- 
+  width: 50% !important;
 }
-
 
 .ant-tabs-tab {
-  margin: 0 80px; 
+  margin: 0 80px;
 }
-
 
 .ant-tabs-nav::before {
   width: 120%;
@@ -58,7 +74,7 @@
 }
 
 .ant-switch:not(.ant-switch-checked) {
-  background-color: #001840!important; /* Unchecked color */
+  background-color: #001840 !important; /* Unchecked color */
 }
 
 .ant-switch-handle::before {
@@ -70,49 +86,45 @@
   opacity: 1; /* Ensures the color is solid */
 }
 
-@media(min-width:1300px){
-  .homepage-image{
+@media (min-width: 1300px) {
+  .homepage-image {
     height: 80vh;
   }
-  .register-as-text-card{
+  .register-as-text-card {
     height: 24vh;
   }
-
 }
 
-
-@media(min-width:1580px){
-  .homepage-image{
+@media (min-width: 1580px) {
+  .homepage-image {
     height: 60vh;
   }
 
-  .register-as-text-card{
+  .register-as-text-card {
     height: 23vh;
   }
-
 }
 
-@media(min-width:1780px){
-  .homepage-image{
+@media (min-width: 1780px) {
+  .homepage-image {
     height: 60vh;
   }
 
-  .register-as-text-card{
+  .register-as-text-card {
     height: 18vh;
   }
-
 }
 
-@media(min-width:2160px){
-  .homepage-image{
+@media (min-width: 2160px) {
+  .homepage-image {
     height: 40vh;
   }
 
-  .homepage-info-form{
+  .homepage-info-form {
     grid-template-columns: repeat(1, minmax(0, 1fr));
   }
 
-  .register-as-text-card{
+  .register-as-text-card {
     height: 10vh;
   }
 }

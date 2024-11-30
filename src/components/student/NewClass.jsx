@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { PlusOutlined } from "@ant-design/icons";
 import {
   Button,
   Col,
@@ -11,25 +10,23 @@ import {
   Select,
   Space,
 } from "antd";
+import { useNewClass } from "@/src/store/student/class";
+
 const { Option } = Select;
-const App = () => {
-  const [open, setOpen] = useState(false);
-  const showDrawer = () => {
-    setOpen(true);
-  };
+
+const NewClass = () => {
+  const { openNewClass, setOpenNewClass } = useNewClass();
   const onClose = () => {
-    setOpen(false);
+    setOpenNewClass(false);
   };
+
   return (
     <>
-      <Button type="primary" onClick={showDrawer} icon={<PlusOutlined />}>
-        New account
-      </Button>
       <Drawer
-        title="Create a new account"
+        title="Create a new class"
         width={720}
         onClose={onClose}
-        open={open}
+        open={openNewClass}
         styles={{
           body: {
             paddingBottom: 80,
@@ -180,4 +177,4 @@ const App = () => {
     </>
   );
 };
-export default App;
+export default NewClass;
