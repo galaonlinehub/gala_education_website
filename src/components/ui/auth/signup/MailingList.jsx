@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Alert, Button, Checkbox, Input, message, Select } from "antd";
+import { api } from "@/src/config/settings";
 
 const MailingList = () => {
   const [alert, setAlert] = useState({
@@ -25,24 +26,39 @@ const MailingList = () => {
         formData.append(key, data[key]);
       });
 
-      const response = await axios.post("YOUR_API_ENDPOINT", formData, {
+      const response = await api.post("/mailing-list", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
 
-      message.success("Form submitted successfully");
+      if (response.status === 200) {
+        setAlert({
+          show: true,
+          type: "success",
+          message: "Your data is successfully saved.",
+        });
+      }
 
       reset();
-    } catch (error) {
-      message.error("Failed to submit form. Please try again.");
-      console.error("Submission error:", error);
+    } catch (e) {
+      setAlert({
+        show: true,
+        type: "error",
+        message: `Unexpected error occured, try again later, ${e?.message}`,
+      });
     } finally {
+      setTimeout(() => {
+        setAlert({
+          show: false,
+          type: null,
+          message: null,
+        });
+      }, 8000);
     }
   };
 
   const onError = (errors) => {
-    console.warn(errors);
     if (errors?.personal_data_consent || errors?.informative_material_consent)
       setAlert({
         show: true,
@@ -256,10 +272,11 @@ const MailingList = () => {
 
       <div className="py-4">
         <button
+          disabled={isSubmitting}
           type="submit"
-          className="!bg-[#800000] rounded-md !text-white text-xs sm:!px-5 !px-3 !py-2"
+          className="!bg-[#800000] rounded-md !text-white text-xs sm:!px-5 !px-3 !py-2 disabled:opacity-70"
         >
-          Send your request
+          {isSubmitting ? "Requesting..." : "Send your request"}
         </button>
       </div>
     </form>
