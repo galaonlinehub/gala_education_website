@@ -74,7 +74,7 @@ const Library = () => {
             <div>
               <div className="flex flex-col">
                 <div className="font-bold text-sm">
-                  Welcome back, {user.first_name} {user.last_name}!
+                  Welcome back, {user?.first_name} {user?.last_name}!
                 </div>
                 <div>
                   <ReadMoreContainer />
