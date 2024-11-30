@@ -4,6 +4,7 @@ import { Alert, Button, Checkbox, Input, message, Select } from "antd";
 import { api } from "@/src/config/settings";
 
 const MailingList = () => {
+
   const [alert, setAlert] = useState({
     show: false,
     type: null,
@@ -19,7 +20,8 @@ const MailingList = () => {
     reset,
   } = useForm({});
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data, e) => {
+    e.preventDefault();
     try {
       const formData = new FormData();
       Object.keys(data).forEach((key) => {
@@ -40,7 +42,7 @@ const MailingList = () => {
         });
       }
 
-      reset();
+    //   reset();
     } catch (e) {
       setAlert({
         show: true,

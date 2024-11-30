@@ -8,14 +8,13 @@ import PioneerCard from "@/src/components/home/card/PioneerCard";
 import NewsCard from "@/src/components/home/card/NewsCard";
 import Events from "@/src/components/home/card/Events";
 import Card2 from "@/src/components/home/card/Card2";
-
 import CountDownCard from "@/components/layout/ui/timer";
 import MailingList from "@/src/components/ui/auth/signup/MailingList";
-// const {TextArea} = Input;
+
 function Home() {
   return (
     <div className="relative w-screen max-w-screen-2xl mx-auto h-full overflow-hidden">
-      <div className="relative w-screen max-w-screen-2xl mx-auto h-[100vh] xl:h-[80vh] 2xl:h-[70vh] overflow-hidden">
+      <div className="relative w-screen max-w-screen-2xl mx-auto h-[100vh] xl:h-[90vh] 2xl:h-[70vh] overflow-hidden">
         <Image
           src="/homepage_photo.png"
           layout="fill"
