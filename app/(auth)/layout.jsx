@@ -26,10 +26,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-      // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      className=""
       >
         <AntdRegistry>
-          <nav className="h-14 bg-white p-2 flex justify-between max-w-screen items-center">
+          <div className="w-screen max-w-screen-2xl mx-auto h-full ">
+          <nav className="h-14 bg-white py-2 px-4 flex justify-between mx-auto max-w-screen items-center">
             <div className="w-[40px] h-[40px] relative bg-[#d9d9d9]  rounded-full  ring-[#a0a0a0] ring-offset-1 ring-[2px] flex items-start flex-col ">
               <div className="absolute left-2 top-1 flex flex-col">
                 <p className="text-black text-[12px] font-bold leading-tight">
@@ -41,7 +42,7 @@ export default function RootLayout({ children }) {
               </div>
             </div>
 
-            <ul className="text-black font-black mr-[10vw] flex sm:gap-x-4 gap-x-2 sm:text-xs text-[8px] leading-[5px]">
+            <ul className="text-black font-black flex sm:gap-x-4 gap-x-2 sm:text-xs text-[8px] leading-[5px]">
               <li>
                 <Link href={"/"} className="hover:cursor-pointer">
                   Home
@@ -60,6 +61,7 @@ export default function RootLayout({ children }) {
             {/* <div/> */}
           </nav>
           <main>{children}</main>
+          </div>
           <Footer />
         </AntdRegistry>
       </body>

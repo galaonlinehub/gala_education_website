@@ -244,13 +244,13 @@ const TeacherDonate = () => {
                     Help us do more
                   </Title>
 
-                  <Paragraph style={{ color: "white" }}>Dear members, many students are unable to afford the app charges, limiting their access to vital learning resources. We&apos;re stepping in to help cover these costs, ensuring every student has a chance to learn, no matter their financial situation. Your donation is crucial—it opens doors to education for those in need and helps us support underfunded rural schools, where students study under incredibly harsh conditions. Together, we can break the cycle of poverty and build a brighter future for these young minds.</Paragraph>
+                  <Paragraph style={{ color: "white", fontSize:"10px" }}>Dear members, many students are unable to afford the app charges, limiting their access to vital learning resources. We&apos;re stepping in to help cover these costs, ensuring every student has a chance to learn, no matter their financial situation. Your donation is crucial—it opens doors to education for those in need and helps us support underfunded rural schools, where students study under incredibly harsh conditions. Together, we can break the cycle of poverty and build a brighter future for these young minds.</Paragraph>
 
                 </div>
               </Col>
               <Col xs={24} lg={12}>
                 <Space direction="vertical" size="large" style={{ width: "100%", background: "#001840", padding: "2px" }}>
-                  <Text strong style={{ color: "white" }}>
+                  <Text strong style={{ color: "white",  fontSize:"12px" }}>
                     Choose donation frequency
                   </Text>
                   <div style={{ backgroundColor: "white", padding: "6px 6px", borderRadius: "24px", display: "inline-block" }}>
@@ -275,7 +275,7 @@ const TeacherDonate = () => {
 
                   <div style={{ background: "#001840", padding: "8px", borderRadius: "8px" }}>
                     <Space direction="vertical" size="middle" style={{ width: "100%" }}>
-                      <Text strong style={{ color: "white" }}>
+                      <Text strong style={{ color: "white", fontSize:"12px" }}>
                         Select donation amount
                       </Text>
                       <Space direction="horizontal" size="large">
@@ -286,6 +286,7 @@ const TeacherDonate = () => {
                               onClick={() => handleButtonClick(amount)}
                               style={{
                                 width: "50px",
+                                 fontSize:"12px",
                                 backgroundColor: selectedAmount === amount ? "white" : "#001840",
                                 color: selectedAmount === amount ? "black" : "white",
                                 borderColor: "white",
@@ -305,7 +306,7 @@ const TeacherDonate = () => {
                         Name
                       </Text>
                       <Input placeholder="Enter your name" style={{ color: "white", borderColor: "white", backgroundColor: "#001840" }} />
-                      <Text style={{ color: "white" }}>
+                      <Text style={{ color: "white",  fontSize:"12px" }}>
                         <a style={{ color: "#1890ff" }}>Click here</a> to make a donation in honour of someone special.
                       </Text>
                     </Space>

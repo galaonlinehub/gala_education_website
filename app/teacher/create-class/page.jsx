@@ -1,165 +1,399 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Form, Input, Select, DatePicker, Button, Typography, Spin } from "antd";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
-
-const { Title, Paragraph } = Typography;
-const { TextArea } = Input;
+import { MdCheckCircle } from "react-icons/md";
+import { notification } from "antd";
+import { SmileOutlined } from "@ant-design/icons";
 
 const queryClient = new QueryClient();
 
+const LoadingSpinner = () => <div className="inline-block animate-spin rounded-full h-4 w-4 border-b-2 border-white" />;
+
+const Notification = ({ message }) => (
+  <div className="fixed top-4 right-4 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded shadow-lg flex items-center space-x-2">
+    <MdCheckCircle className="h-5 w-5" />
+    <span>{message}</span>
+  </div>
+);
+
+const RedirectingOverlay = () => (
+  <div className="fixed inset-0 bg-white bg-opacity-70 flex items-center justify-center z-50">
+    <div className="bg-white px-6 py-4 rounded-lg shadow-2xl flex items-center space-x-4 animate-fade-in border-2 border-blue-700">
+      <div className="inline-block animate-spin rounded-full h-6 w-6 border-4 border-blue-700 border-b-transparent" />
+      <p className="text-base text-blue-700 font-semibold whitespace-nowrap">Redirecting to sub-topic creation...</p>
+    </div>
+  </div>
+);
+
 export default function CreateClass() {
   const router = useRouter();
-  const [form] = Form.useForm();
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
-  const {
-    data: gradeData,
-    isLoading: isGradesLoading,
-    error: gradesError,
-  } = useQuery({
+  const [formData, setFormData] = useState({
+    className: "",
+    subject: "",
+    price: "",
+    availableTo: "",
+    startDate: "",
+    endDate: "",
+    description: "",
+  });
+
+  const [errors, setErrors] = useState({
+    className: "",
+    subject: "",
+    price: "",
+    availableTo: "",
+    startDate: "",
+    endDate: "",
+    description: "",
+  });
+
+  const [touched, setTouched] = useState({
+    className: false,
+    subject: false,
+    price: false,
+    availableTo: false,
+    startDate: false,
+    endDate: false,
+    description: false,
+  });
+
+  const openNotification = () => {
+    notification.open({
+      message: "Success",
+      description: "Topic added successfully!",
+      icon: <SmileOutlined style={{ color: "#90EE90" }} />,
+    });
+  };
+
+  const validateField = (name, value) => {
+    switch (name) {
+      case "className":
+        if (!value.trim()) return "Class name is required";
+        if (value.length < 3) return "Class name must be at least 3 characters";
+        if (value.length > 50) return "Class name must be less than 50 characters";
+        return "";
+      
+      case "subject":
+        return !value ? "Please select a subject" : "";
+      
+      case "price":
+        if (!value) return "Price is required";
+        if (isNaN(value) || value < 0) return "Price must be a positive number";
+        if (value > 1000000) return "Price cannot exceed 1,000,000";
+        return "";
+      
+      case "availableTo":
+        return !value ? "Please select a grade level" : "";
+      
+      case "startDate":
+        if (!value) return "Start date is required";
+        if (new Date(value) < new Date().setHours(0, 0, 0, 0)) {
+          return "Start date cannot be in the past";
+        }
+        return "";
+      
+      case "endDate":
+        if (!value) return "End date is required";
+        if (formData.startDate && new Date(value) <= new Date(formData.startDate)) {
+          return "End date must be after start date";
+        }
+        return "";
+      
+      case "description":
+        if (!value.trim()) return "Description is required";
+        if (value.trim().length < 20) return "Description must be at least 20 characters";
+        if (value.trim().length > 500) return "Description must be less than 500 characters";
+        return "";
+      
+      default:
+        return "";
+    }
+  };
+
+  const handleBlur = (e) => {
+    const { name } = e.target;
+    setTouched({ ...touched, [name]: true });
+    setErrors({
+      ...errors,
+      [name]: validateField(name, formData[name])
+    });
+  };
+
+  useEffect(() => {
+    if (showSuccess) {
+      openNotification();
+    }
+  }, [showSuccess]);
+
+  const { data: gradeData, isLoading: isGradesLoading, error: gradesError } = useQuery({
     queryKey: ["grades"],
     queryFn: async () => {
       const response = await fetch("https://galaweb.galahub.org/api/grade_level");
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
+      if (!response.ok) throw new Error("Network response was not ok");
       return response.json();
     },
   });
 
-
-  const {
-    data: subjectData,
-    isLoading: isSubjectLoading,
-    error: subjectError,
-  } = useQuery({
+  const { data: subjectData, isLoading: isSubjectLoading, error: subjectError } = useQuery({
     queryKey: ["subjects"],
     queryFn: async () => {
       const response = await fetch("https://galaweb.galahub.org/api/subjects");
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
+      if (!response.ok) throw new Error("Network response was not ok");
       return response.json();
     },
   });
 
   const mutation = useMutation({
     mutationFn: async (newClass) => {
-      const response = await fetch("https://galaweb.galahub.org/api/cohorts", {
+      const response = await fetch("https://galaweb.galahub.org/api/topics", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newClass),
       });
-  
-      if (!response.ok) {
-        throw new Error("Failed to add class");
-      }
-  
-      const data = await response.json();
-      console.log("Response Data:", data);
-  
-      return data;
+
+      if (!response.ok) throw new Error("Failed to add class");
+      return response.json();
     },
     onSuccess: (data) => {
+      setFormData({
+        className: "",
+        subject: "",
+        price: "",
+        availableTo: "",
+        startDate: "",
+        endDate: "",
+        description: "",
+      });
       queryClient.invalidateQueries(["grades"]);
-      form.resetFields();
-      router.push(`/teacher/manage-class/${data.id}`);  // Using data from response
+      setShowSuccess(true);
+      
+      setTimeout(() => {
+        setIsRedirecting(true);
+        setTimeout(() => {
+          router.push(`/teacher/manage-class/${data.id}`);
+        }, 2000);
+      }, 2000);
     },
   });
-  
 
-  const onFinish = (values) => {
-    const { className, price, subject, startDate, endDate, description, availableTo } = values;
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    
+    if (touched[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: validateField(name, value)
+      }));
+    }
+
+    // Special validation for dependent fields
+    if (name === "startDate" && formData.endDate) {
+      setErrors(prev => ({
+        ...prev,
+        endDate: validateField("endDate", formData.endDate)
+      }));
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // Mark all fields as touched
+    const newTouched = Object.keys(formData).reduce((acc, key) => ({
+      ...acc,
+      [key]: true
+    }), {});
+    setTouched(newTouched);
+
+    // Validate all fields
+    const newErrors = Object.keys(formData).reduce((acc, key) => ({
+      ...acc,
+      [key]: validateField(key, formData[key])
+    }), {});
+    setErrors(newErrors);
+
+    // Check if there are any errors
+    if (Object.values(newErrors).some(error => error !== "")) {
+      return;
+    }
+
     const formattedData = {
-      instructor_id: 1,
-      subject_id: subject,
-      grade_level_id: availableTo,
-      cohort_name: className,
-      price: Number(price),
-      start_date: startDate.format("YYYY-MM-DD"),
-      end_date: endDate.format("YYYY-MM-DD"),
-      description: description,
+      instructor_id: 2,
+      subject_id: formData.subject,
+      grade_level_id: formData.availableTo,
+      title: formData.className,
+      price: Number(formData.price),
+      start_date: formData.startDate,
+      end_date: formData.endDate,
+      description: formData.description,
     };
 
     mutation.mutate(formattedData);
   };
 
-
+  const isLoading = mutation.isPending;
 
   return (
     <div className="min-h-screen w-full p-4 md:p-6 lg:p-8">
-      <div className="max-w-2xl mx-auto p-6 rounded-md shadow-md">
-        <Title level={3} className="text-center mb-4">
-          Create a Class
-        </Title>
-        <Paragraph className="text-center mb-6">
+      {isRedirecting && <RedirectingOverlay />}
+
+      <div className="max-w-2xl mx-auto p-6 border-2 border-blue-700 shadow-md relative">
+        <h3 className="text-center mb-4 font-bold">Create a Class</h3>
+        <p className="text-center text-xs mb-6">
           Welcome! Create a new class by entering a topic or subject name. This makes it easier for students to find and connect with you when they are searching for specific subjects or topics.
-        </Paragraph>
+        </p>
 
-        <Form form={form} layout="vertical" className="space-y-4" onFinish={onFinish}>
-          <Form.Item name="className" label="Class Name" rules={[{ required: true, message: "Please enter a class name" }]}>
-            <Input placeholder="Enter a class name" />
-          </Form.Item>
-
-          <Form.Item name="subject" label="Subject" rules={[{ required: true, message: "Please enter a subject" }]}>
-            <Select placeholder="Select a Subject">
-              {subjectData?.map((subject) => (
-                <Select.Option key={subject.id} value={subject.id}>
-                  {subject.name}
-                </Select.Option>
-              ))}
-              {isSubjectLoading && <div>Fetching subjects...</div>}
-              {subjectError && <div>Error fetching subjects</div>}
-            </Select>
-          </Form.Item>
-
-          <Form.Item name="price" label="Enter Price" rules={[{ required: true, message: "Please enter a price" }]}>
-            <Input type="number" placeholder="Enter price" />
-          </Form.Item>
-
-          <Form.Item name="availableTo" label="Available to">
-            <Select placeholder="Select a Class">
-              {gradeData?.map((grade) => (
-                <Select.Option key={grade.id} value={grade.id}>
-                  {grade.name}
-                </Select.Option>
-              ))}
-              {isGradesLoading && <div>Fetching grades...</div>}
-              {gradesError && <div>Error fetching grades</div>}
-            </Select>
-          </Form.Item>
-
-          <Form.Item name="startDate" label="Start Date" rules={[{ required: true, message: "Please select a start date" }]}>
-            <DatePicker className="w-full" />
-          </Form.Item>
-
-          <Form.Item name="endDate" label="End Date" rules={[{ required: true, message: "Please select an end date" }]}>
-            <DatePicker className="w-full" />
-          </Form.Item>
-
-          <Form.Item name="description" label="Description" rules={[{ required: true, message: "Please enter a class description" }]}>
-            <TextArea rows={4} placeholder="Enter class description" />
-          </Form.Item>
-
-          <Form.Item>
-            {mutation.isLoading ? (
-              <Button type="primary" htmlType="submit" className="w-full md:w-auto float-right" disabled>
-                <Spin size="large" />
-              </Button>
-            ) : (
-              <Button type="primary" htmlType="submit" className="w-full md:w-auto float-right">
-                Create
-              </Button>
+        <form onSubmit={handleSubmit} className="space-y-4 text-xs">
+          <div className="mb-4">
+            <label className="block mb-2 font-bold">Class Name</label>
+            <input
+              type="text"
+              name="className"
+              value={formData.className}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              placeholder="Enter a class name"
+              className={`w-full border-2 ${touched.className && errors.className ? 'border-red-500' : 'border-blue-700'} p-2`}
+              disabled={isLoading || isRedirecting}
+            />
+            {touched.className && errors.className && (
+              <p className="mt-1 text-xs text-red-500">{errors.className}</p>
             )}
-          </Form.Item>
-        </Form>
+          </div>
 
-        {mutation.isError && <p>Error: {mutation.error.message}</p>}
-        {mutation.isSuccess && <p>Class created successfully!</p>}
+          <div className="mb-4">
+            <label className="block mb-2 font-bold">Subject</label>
+            <select
+              name="subject"
+              value={formData.subject}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              className={`w-full border-2 ${touched.subject && errors.subject ? 'border-red-500' : 'border-blue-700'} p-2`}
+              disabled={isLoading || isRedirecting}
+            >
+              <option value="">Select a Subject</option>
+              {subjectData?.map((subject) => (
+                <option key={subject.id} value={subject.id}>{subject.name}</option>
+              ))}
+            </select>
+            {touched.subject && errors.subject && (
+              <p className="mt-1 text-xs text-red-500">{errors.subject}</p>
+            )}
+          </div>
+
+          <div className="mb-4">
+            <label className="block mb-2 font-bold">Enter Price</label>
+            <input
+              type="number"
+              name="price"
+              value={formData.price}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              placeholder="Enter price"
+              className={`w-full border-2 ${touched.price && errors.price ? 'border-red-500' : 'border-blue-700'} p-2`}
+              disabled={isLoading || isRedirecting}
+            />
+            {touched.price && errors.price && (
+              <p className="mt-1 text-xs text-red-500">{errors.price}</p>
+            )}
+          </div>
+
+          <div className="mb-4">
+            <label className="block mb-2 font-bold">Available to</label>
+            <select
+              name="availableTo"
+              value={formData.availableTo}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              className={`w-full border-2 ${touched.availableTo && errors.availableTo ? 'border-red-500' : 'border-blue-700'} p-2`}
+              disabled={isLoading || isRedirecting}
+            >
+              <option value="">Select a Class</option>
+              {gradeData?.map((grade) => (
+                <option key={grade.id} value={grade.id}>{grade.name}</option>
+              ))}
+            </select>
+            {touched.availableTo && errors.availableTo && (
+              <p className="mt-1 text-xs text-red-500">{errors.availableTo}</p>
+            )}
+          </div>
+
+          <div className="mb-4">
+            <label className="block mb-2 font-bold">Start Date</label>
+            <input
+              type="date"
+              name="startDate"
+              value={formData.startDate}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              className={`w-full border-2 ${touched.startDate && errors.startDate ? 'border-red-500' : 'border-blue-700'} p-2`}
+              disabled={isLoading || isRedirecting}
+            />
+            {touched.startDate && errors.startDate && (
+              <p className="mt-1 text-xs text-red-500">{errors.startDate}</p>
+            )}
+          </div>
+
+          <div className="mb-4">
+            <label className="block mb-2 font-bold">End Date</label>
+            <input
+              type="date"
+              name="endDate"
+              value={formData.endDate}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              className={`w-full border-2 ${touched.endDate && errors.endDate ? 'border-red-500' : 'border-blue-700'} p-2`}
+              disabled={isLoading || isRedirecting}
+            />
+            {touched.endDate && errors.endDate && (
+              <p className="mt-1 text-xs text-red-500">{errors.endDate}</p>
+            )}
+          </div>
+
+          <div className="mb-4">
+            <label className="block mb-2 font-bold">Description</label>
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              rows="4"
+              placeholder="Enter class description"
+              className={`w-full border-2 ${touched.description && errors.description ? 'border-red-500' : 'border-blue-700'} p-2`}
+              disabled={isLoading || isRedirecting}
+            />
+            {touched.description && errors.description && (
+              <p className="mt-1 text-xs text-red-500">{errors.description}</p>
+            )}
+          </div>
+
+          <div className="mb-4">
+            <button
+              type="submit"
+              className="w-fit bg-blue-700 font-bold text-white p-2 flex items-center gap-2 disabled:opacity-50"
+              disabled={isLoading || isRedirecting}
+            >
+              {isLoading ? (
+                <>
+                  <LoadingSpinner />
+                  Creating...
+                </>
+              ) : (
+                "Create"
+              )}
+            </button>
+          </div>
+        </form>
+
+        {mutation.isError && (
+          <p className="text-red-500">Error: {mutation.error.message}</p>
+        )}
       </div>
     </div>
   );

@@ -106,7 +106,7 @@ function Users() {
     },
     {
       name: "Profile Picture",
-      selector: row => <Image  src={row.profile_picture} alt="Profile" width={100} height={100} className='w-40 h-40 object-cover' />
+      selector: row => <Image  src={row.profile_picture} alt="Profile" width={100} height={100} className='w-8 h-8 rounded-full object-cover' />
     },
     {
       name: "Status",
@@ -119,11 +119,16 @@ function Users() {
       selector: row => new Date(row.created_at).toLocaleString(),
       sortable: true,
       
+    },{
+      name: "Actions",
+      selector: row =><div className={"flex gap-x-2"}>
+        <div className={'text-xs text-blue-900 cursor-pointer bg-blue-100 px-2 py-1 rounded'}>view</div>
+        <div className={'text-xs text-red-900 cursor-pointer bg-red-100 px-2 py-1 rounded'}>suspend</div>
+      </div>,
+      sortable: true,
+
     }
   ];
-  
-  
-
 
   const handleRowSelected = React.useCallback(state => {
     setSelectedRows(state.selectedRows);
@@ -151,7 +156,7 @@ function Users() {
   }, [data, selectedRows, toggleCleared]);
   return (
     <div>
-      <DataTable title="Users" columns={columns} data={data} selectableRows contextActions={contextActions} onSelectedRowsChange={handleRowSelected} clearSelectedRows={toggleCleared} pagination />;
+      <DataTable title="Users" columns={columns} data={data} selectableRows contextActions={contextActions} onSelectedRowsChange={handleRowSelected} clearSelectedRows={toggleCleared} pagination />
 
 
     </div>
