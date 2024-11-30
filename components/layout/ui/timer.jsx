@@ -1,6 +1,6 @@
-import React from "react";
-import { useState, useEffect } from "react";
-
+"use client";
+import React, { useState, useEffect } from "react";
+import { Spin } from "antd";
 
 const CountDownCard = () => {
   const [timeLeft, setTimeLeft] = useState({
@@ -9,83 +9,79 @@ const CountDownCard = () => {
     minutes: 0,
     seconds: 0,
   });
-
-  function calculateTimeLeft() {
-    const targetDate = new Date();
-    console.log(targetDate, "THIS IS THE TARGET DATE");
-    targetDate.setDate(targetDate.getDate() + 40); // 40 days from now
-
-    const difference = targetDate.getTime() - new Date().getTime();
-
-    if (difference <= 0) return { days: 0, hours: 0, minutes: 0, seconds: 0 };
-
-    const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((difference / (1000 * 60)) % 60);
-    const seconds = Math.floor((difference / 1000) % 60);
-
-    return { days, hours, minutes, seconds };
-  }
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Calculate the target date (40 days from now)
-    const targetDate = new Date();
-    targetDate.setDate(targetDate.getDate() + 40);
+    const deadline = new Date("2025-01-10T16:30:00");
 
     const calculateTimeLeft = () => {
-      const difference = +targetDate - +new Date();
+      const now = new Date();
+      const difference = deadline.getTime() - now.getTime();
 
-      if (difference > 0) {
-        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
-        const minutes = Math.floor((difference / 1000 / 60) % 60);
-        const seconds = Math.floor((difference / 1000) % 60);
+      if (difference <= 0) return { days: 0, hours: 0, minutes: 0, seconds: 0 };
 
-        return { days, hours, minutes, seconds };
-      }
+      const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((difference / (1000 * 60)) % 60);
+      const seconds = Math.floor((difference / 1000) % 60);
 
-      return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+      return { days, hours, minutes, seconds };
     };
 
-    // Set initial countdown
-    setTimeLeft(calculateTimeLeft());
+    const initialLoad = () => {
+      setTimeLeft(calculateTimeLeft());
+      setIsLoading(false);
+    };
 
-    // Update countdown every second
+    initialLoad();
+
     const timer = setInterval(() => {
       setTimeLeft(calculateTimeLeft());
     }, 1000);
 
-    // Clean up the interval on component unmount
     return () => clearInterval(timer);
   }, []);
 
   const padZero = (num) => num.toString().padStart(2, "0");
 
-  return (
-    <div>
-      <div className="flex flex-col gap-4 items-center">
-        <div className="flex gap-8 text-center">
-          <div className="w-1/4">
-            <div className="text-4xl font-bold text-blue-600">{padZero(timeLeft.days)}</div>
-            <div className="text-sm text-white">DAYS</div>
-          </div>
-          <div className="w-1/4">
-            <div className="text-4xl font-bold text-blue-600">{padZero(timeLeft.hours)}</div>
-            <div className="text-sm text-white">HOURS</div>
-          </div>
-          <div className="w-1/4">
-            <div className="text-4xl font-bold text-blue-600">{padZero(timeLeft.minutes)}</div>
-            <div className="text-sm text-white">MINUTES</div>
-          </div>
-          <div className="w-1/4">
-            <div className="text-4xl font-bold text-blue-600">{padZero(timeLeft.seconds)}</div>
-            <div className="text-sm text-white">SECONDS</div>
-          </div>
-        </div>
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-[200px] bg-gradient-to-r from-blue-900 to-blue-700 rounded-lg w-[30rem]">
+        <Spin size="large" />
+      </div>
+    );
+  }
 
-        <div className="flex flex-col items-center">
-          <div className="text-white">️Alert: Countdown until our Official Launch!</div>
-          <div className="text-white"> Limited-Time Offer: 20% Off for 2 Years Subscription</div>
+  return (
+    <div className="bg-gradient-to-r from-blue-900 to-blue-700 text-white rounded-xl shadow-2xl p-6 max-w-xl mx-auto space-y-6">
+      <div className="grid grid-cols-4 gap-3 sm:gap-4 md:gap-6">
+        {[
+          { label: "DAYS", value: timeLeft.days },
+          { label: "HOURS", value: timeLeft.hours },
+          { label: "MINUTES", value: timeLeft.minutes },
+          { label: "SECONDS", value: timeLeft.seconds },
+        ].map(({ label, value }) => (
+          <div
+            key={label}
+            className="bg-white/10 rounded-lg p-3 sm:p-4 text-center transform transition-all duration-300 hover:scale-105"
+          >
+            <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-1">
+              {padZero(value)}
+            </div>
+            <div className="text-[10px] sm:text-xs text-blue-200 uppercase tracking-wider">
+              {label}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="text-center space-y-2">
+        <div className="flex items-center justify-center gap-3 text-sm sm:text-base font-semibold">
+          <span className="text-xl">🚀</span>
+          <span>Countdown until our Official Launch!</span>
+        </div>
+        <div className="text-xs sm:text-sm opacity-80">
+          Limited-Time Offer: 20% Off for 2 Years Subscription
         </div>
       </div>
     </div>
