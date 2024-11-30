@@ -28,9 +28,7 @@ const tailwindConfig = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        'signin-background': "url('/vectors/auth/sign-in/LoginVectorSvg.svg')",
-      },
+      
       height: {
         'input-height': '43px', 
       },
@@ -53,6 +51,17 @@ const tailwindConfig = {
             boxShadow: '0 0 0 10px rgba(0, 255, 0, 0)', 
           },
         },
+      },
+      screens: {
+        'xxs':'240px',
+        'xs': '480px',    
+        'sm': '640px',    
+        'md': '768px',    
+        'lg': '1024px',   
+        'xl': '1280px',   
+        '2xl': '1536px',  
+        '3xl': '1920px',  
+        '4xl': '2560px',  
       },
     },
   },
