@@ -46,7 +46,7 @@ function StudentMain({ children }) {
     <>
       <AntdRegistry>
         <div>
-          <nav className="h-16 border-b-[1.2px] bg-white z-50 fixed inset-0 border-[#d9d9d9] px-4 shadow-sm w-full flex justify-between items-center z-50">
+          <nav className="h-16 border-b-[1.2px] bg-white fixed inset-0 border-[#d9d9d9] px-4 shadow-sm w-full flex justify-between items-center z-50">
             <div className="flex items-center gap-2">
               <div className="w-10 h-10 relative bg-gradient-to-br from-blue-500 to-blue-600 rounded-full ring-2 ring-blue-400 ring-offset-2 flex items-center justify-center">
                 <div className="text-center">
