@@ -28,17 +28,17 @@ function Home() {
     <div className="relative w-screen max-w-screen-2xl mx-auto h-full overflow-hidden">
 
       {showDonatePopup && (
-        <div className="fixed inset-0 bg-black bg-opacity-70 z-50 flex justify-center items-center">
+        <div className="fixed  inset-0 bg-black bg-opacity-70 !z-[9999] flex justify-center items-center">
           <div className="p-1 rounded-lg w-full items-center justify-center flex ">
             <Donate setShowDonatePopup={setShowDonatePopup} showDonatePopup={showDonatePopup}  />
           </div>
         </div>
       )}
 
-      <div className="relative w-screen max-w-screen-2xl mx-auto h-[100vh] xl:h-[90vh] 2xl:h-[70vh] overflow-hidden">
-        <Image src="/homepage_photo.png" layout="fill" objectFit="cover" alt="Gala Home" />
+      {/* <div className="relative w-screen max-w-screen-2xl mx-auto h-[100vh] xl:h-[90vh] 2xl:h-[70vh] overflow-hidden"> */}
+        {/* <Image src="/homepage_photo.png" layout="fill" objectFit="cover" alt="Gala Home" /> */}
 
-      <div className="relative w-screen max-w-screen-2xl mx-auto h-[60rem] sm:h-[44rem] overflow-hidden">
+       <div className="relative w-screen max-w-screen-2xl mx-auto h-[60rem] sm:h-[44rem] overflow-hidden">
         <Image
           src="/homepage_photo.png"
           layout="fill"
@@ -78,11 +78,7 @@ function Home() {
       </div>
       <div className="px-20  flex flex-col items-center">
 
-        <div className="relative w-screen h-[35rem]   overflow-hidden">
-
-
-
-
+        <div className="relative w-screen h-[35rem] overflow-hidden">
 
           <div className="relative h-[30rem]  bg-black/10   flex flex-col items-center  py-8  w-screen">
             <ChoosePlatformSvg />
@@ -513,6 +509,7 @@ function Home() {
           </div>
         </div>
       </div>
+    
     </div>
   );
 }
