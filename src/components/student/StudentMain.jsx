@@ -18,11 +18,13 @@ import { student_links } from "@/constants/navigation_links";
 import { Drawer } from "antd";
 import { Input } from "antd";
 import { IoMenu, IoSearch } from "react-icons/io5";
-
+import StudentSearch from "./Search";
+import useUser from "@/src/store/auth/user";
 
 function StudentMain({ children }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const {user} = useUser();
 
   useEffect(() => {
     const checkMobile = () => {
@@ -38,12 +40,7 @@ function StudentMain({ children }) {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const today = new Date();
-  const formattedDate = today.toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
+  
 
   return (
     <>
@@ -70,12 +67,12 @@ function StudentMain({ children }) {
               <li className="hover:text-blue-600 transition-colors">
                 <Link href="/about">About Us</Link>
               </li>
-              <li className="hover:text-blue-600 transition-colors">
+             { !user &&<> <li className="hover:text-blue-600 transition-colors">
                 <Link href="/signup">Register</Link>
               </li>
               <li className="hover:text-blue-600 transition-colors">
                 <Link href="/signin">Login</Link>
-              </li>
+              </li></>}
             </ul>
 
             <button
@@ -92,25 +89,7 @@ function StudentMain({ children }) {
           </nav>
 
           {/* Search Bar */}
-          <div className="top-16 h-[6rem] sm:h-16 z-40 fixed bg-white left-0 w-full border-b-[1.2px] border-[#d9d9d9]">
-            <div className="flex flex-col md:flex-row items-center justify-between px-4 py-2 gap-4">
-              <Input
-                className="!h-[34px] !px-4 !w-full !md:w-[503px] !rounded-lg !border-2 !border-[#030DFE] !focus:ring-2 !focus:ring-blue-200 !transition-all !outline-none"
-                placeholder="Hinted search text..."
-                suffix={<IoSearch color="gray"/>}
-                prefix={<IoMenu color="gray"/>}
-              />
-              <div className="flex w-full items-center justify-end gap-x-12 lg:gap-x-36">
-                <span className="text-[12px] font-extrabold whitespace-nowrap">
-                  {formattedDate}.
-                </span>
-                <div className="flex gap-3">
-                  <FaBell className="text-xl" />
-                  <FaUserCircle className="text-xl" />
-                </div>
-              </div>
-            </div>
-          </div>
+          <StudentSearch/> 
 
           <main className="flex flex-col lg:flex-row w-full mt-[110px]">
             <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
