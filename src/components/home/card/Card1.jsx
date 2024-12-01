@@ -5,7 +5,7 @@ import React from 'react'
 
 function Card1({image,title,desc}) {
   return (
-    <div className='flex-col flex w-[280px]  h-[12rem] 2xl:w-[400px] shadow-md shadow-black'>
+    <div className='flex-col flex min-w-[15rem] max-w-[15rem]   h-[12rem] 2xl:w-[400px]  shadow-[0px_2px_2px_rgba(0,0,0,0.3)]'>
   
   <div className='w-full h-[4rem]'>
     <Image 

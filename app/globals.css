@@ -120,9 +120,7 @@
     height: 40vh;
   }
 
-  .homepage-info-form {
-    grid-template-columns: repeat(1, minmax(0, 1fr));
-  }
+
 
   .register-as-text-card {
     height: 10vh;

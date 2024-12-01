@@ -46,15 +46,15 @@ const CountDownCard = () => {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center h-[200px] bg-gradient-to-r from-blue-900 to-blue-700 rounded-lg w-[30rem]">
+      <div className="flex justify-center items-center h-[100px] bg-gradient-to-r from-blue-900 to-blue-700 rounded-lg w-[30rem]">
         <Spin size="large" />
       </div>
     );
   }
 
   return (
-    <div className="bg-gradient-to-r from-blue-900 to-blue-700 text-white rounded-xl shadow-2xl p-6 max-w-xl mx-auto space-y-6">
-      <div className="grid grid-cols-4 gap-3 sm:gap-4 md:gap-6">
+    <div className=" text-white rounded-xl shadow-2xl  max-w-xl mx-auto space-y-2">
+      <div className="grid grid-cols-4 gap-3 sm:gap-4 ">
         {[
           { label: "DAYS", value: timeLeft.days },
           { label: "HOURS", value: timeLeft.hours },
@@ -63,12 +63,12 @@ const CountDownCard = () => {
         ].map(({ label, value }) => (
           <div
             key={label}
-            className="bg-white/10 rounded-lg p-3 sm:p-4 text-center transform transition-all duration-300 hover:scale-105"
+            className="rounded-lg   text-center transform transition-all duration-300 hover:scale-105"
           >
-            <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-1">
+            <div className="text-sm sm:text-lg md:text-xl font-bold text-[#030dfe] mb-1">
               {padZero(value)}
             </div>
-            <div className="text-[10px] sm:text-xs text-blue-200 uppercase tracking-wider">
+            <div className="text-xs sm:text-sm md:text-lg text-white uppercase tracking-wider">
               {label}
             </div>
           </div>
@@ -77,8 +77,8 @@ const CountDownCard = () => {
 
       <div className="text-center space-y-2">
         <div className="flex items-center justify-center gap-3 text-sm sm:text-base font-semibold">
-          <span className="text-xl">🚀</span>
-          <span>Countdown until our Official Launch!</span>
+
+          <span>Alert: Countdown until our Official Launch!</span>
         </div>
         <div className="text-xs sm:text-sm opacity-80">
           Limited-Time Offer: 20% Off for 2 Years Subscription
