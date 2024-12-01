@@ -4,4 +4,11 @@ const useNewClass = create((set) => ({
   setOpenNewClass: (state) => set(() => ({ openNewClass: state })),
 }));
 
-export { useNewClass };
+const useEnrolledTopics = create((set) => ({
+  enrolledTopics: [],
+  setEnrolledTopics: (topics) => set(() => ({ enrolledTopics: topics })),
+  loading: true,
+  setLoading: (isLoading) => set({ loading: isLoading }),
+}));
+
+export { useNewClass, useEnrolledTopics };

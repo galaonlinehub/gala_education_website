@@ -3,12 +3,15 @@
 import { useState, useRef, useEffect } from "react";
 import ReadMoreContainer from "@/components/layout/ui/ReadMore";
 import Image from "next/image";
-import { Calendar, theme, Spin, Skeleton } from "antd";
+import { Calendar, theme, Spin, Skeleton, Card, Empty } from "antd";
 import LeftTiltedBook from "@/components/vectors/LeftTiltedBook";
 import CalendarComponent from "@/src/components/student/CalendarComponent";
 import { useRouter } from "next/navigation";
 import useUser from "@/src/store/auth/user";
 import { decrypt } from "@/src/utils/constants/encryption";
+import Notification from "@/src/components/ui/notification/Notification";
+import { useEnrolledTopics } from "@/src/store/student/class";
+import { getUserSubject } from "@/src/utils/constants/global";
 
 export default function Component() {
   const reminders = [
@@ -95,12 +98,7 @@ export default function Component() {
     },
   ];
 
-  const subjects = [
-    { name: "English Grade 1", classSize: 10, days: 30 },
-    { name: "Mathematics Grade 7", classSize: 10, days: 30 },
-    { name: "Physics Form 1", classSize: 10, days: 30 },
-    { name: "Chemistry Form 4", classSize: 10, days: 30 },
-  ];
+  const { enrolledTopics, loading } = useEnrolledTopics();
 
   const router = useRouter();
   const { user, setUser } = useUser();
@@ -133,12 +131,16 @@ export default function Component() {
     if (userDecrypted) {
       setUser(userDecrypted);
     }
-  }, [setUser, user]);
+  }, [setUser]);
+
+  useEffect(() => {
+    getUserSubject();
+  }, []);
 
   return (
-    <div className="flex lg:gap-x-5 justify-center items-center flex-col lg:flex-row px-2">
+    <div className="flex lg:gap-x-5 justify-center items-center flex-col lg:flex-row px-2 mt-12">
       <div className="flex-col w-full lg:w-2/3 flex">
-        <div className="p-4 z-10 h-fit mt-20 w-full border-blue-600 border-2 rounded-xl flex flex-col relative">
+        <div className="p-4 z-10 h-fit  w-full border-blue-600 border-2 rounded-xl flex flex-col relative">
           <div>
             <div className="flex flex-col">
               <div className="font-bold text-sm">
@@ -196,64 +198,88 @@ export default function Component() {
         <div className="pt-5">
           <div className="flex justify-between items-center w-full">
             <span className="text-[16px] font-black">Your Subjects</span>
-            <div className="flex items-center justify-center gap-5">
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 18 18"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M9.00008 17.3333C5.07171 17.3333 3.10752 17.3333 1.88714 16.1129C0.666748 14.8925 0.666748 12.9283 0.666748 8.99996C0.666748 5.07158 0.666748 3.1074 1.88714 1.88702C3.10752 0.666626 5.07171 0.666626 9.00008 0.666626C12.9284 0.666626 14.8927 0.666626 16.113 1.88702C17.3334 3.1074 17.3334 5.07158 17.3334 8.99996C17.3334 12.9283 17.3334 14.8925 16.113 16.1129C14.8927 17.3333 12.9284 17.3333 9.00008 17.3333ZM9.00008 5.87496C9.34525 5.87496 9.62508 6.15478 9.62508 6.49996V8.37496H11.5001C11.8452 8.37496 12.1251 8.65479 12.1251 8.99996C12.1251 9.34513 11.8452 9.62496 11.5001 9.62496H9.62508V11.5C9.62508 11.8451 9.34525 12.125 9.00008 12.125C8.65491 12.125 8.37508 11.8451 8.37508 11.5V9.62496H6.50008C6.15491 9.62496 5.87508 9.34513 5.87508 8.99996C5.87508 8.65479 6.15491 8.37496 6.50008 8.37496H8.37508V6.49996C8.37508 6.15478 8.65491 5.87496 9.00008 5.87496Z"
-                  fill="#1C274C"
-                />
-              </svg>
-              <span
-                className="text-[12px] font-black text-[#030DFE] cursor-pointer"
-                onClick={() => router.push("/student/library")}
-              >
-                See All
-              </span>
-            </div>
-          </div>
-
-          <div className="">
-            <div className="flex items-center mt-2">
-              <div
-                ref={scrollRef}
-                className="flex overflow-x-auto space-x-4 pb-4"
-              >
-                {subjects.map((subject, index) => (
-                  <div
-                    key={index}
-                    className="flex-none flex-col text-xs font-bold rounded-md w-60 h-28 p-5 bg-[#001840] text-white"
-                  >
-                    <div className="mb-3">{subject.name}</div>
-                    <div>Class size: {subject.classSize}</div>
-                    <div>Days: {subject.days}</div>
-                  </div>
-                ))}
-              </div>
-              <button
-                onClick={scrollRight}
-                className="ml-2 p-2 rounded-full transition flex items-center justify-center"
-              >
+            {enrolledTopics.length > 0 && (
+              <div className="flex items-center justify-center gap-5">
                 <svg
-                  width="15"
-                  height="24"
-                  viewBox="0 0 15 24"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 18 18"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="M13.0595 10.9406C13.6454 11.5265 13.6454 12.4781 13.0595 13.064L5.55947 20.564C4.97353 21.15 4.02197 21.15 3.43604 20.564C2.8501 19.9781 2.8501 19.0265 3.43604 18.4406L9.87666 12L3.44072 5.55935C2.85479 4.97341 2.85479 4.02185 3.44072 3.43591C4.02666 2.84998 4.97822 2.84998 5.56416 3.43591L13.0642 10.9359L13.0595 10.9406Z"
-                    fill="black"
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M9.00008 17.3333C5.07171 17.3333 3.10752 17.3333 1.88714 16.1129C0.666748 14.8925 0.666748 12.9283 0.666748 8.99996C0.666748 5.07158 0.666748 3.1074 1.88714 1.88702C3.10752 0.666626 5.07171 0.666626 9.00008 0.666626C12.9284 0.666626 14.8927 0.666626 16.113 1.88702C17.3334 3.1074 17.3334 5.07158 17.3334 8.99996C17.3334 12.9283 17.3334 14.8925 16.113 16.1129C14.8927 17.3333 12.9284 17.3333 9.00008 17.3333ZM9.00008 5.87496C9.34525 5.87496 9.62508 6.15478 9.62508 6.49996V8.37496H11.5001C11.8452 8.37496 12.1251 8.65479 12.1251 8.99996C12.1251 9.34513 11.8452 9.62496 11.5001 9.62496H9.62508V11.5C9.62508 11.8451 9.34525 12.125 9.00008 12.125C8.65491 12.125 8.37508 11.8451 8.37508 11.5V9.62496H6.50008C6.15491 9.62496 5.87508 9.34513 5.87508 8.99996C5.87508 8.65479 6.15491 8.37496 6.50008 8.37496H8.37508V6.49996C8.37508 6.15478 8.65491 5.87496 9.00008 5.87496Z"
+                    fill="#1C274C"
                   />
                 </svg>
-              </button>
+                <span
+                  className="text-[12px] font-black text-[#030DFE] cursor-pointer"
+                  onClick={() => router.push("/student/library")}
+                >
+                  See All
+                </span>
+              </div>
+            )}
+          </div>
+
+          <div className="">
+            <div className="flex items-center mt-2 w-full">
+              <div
+                ref={scrollRef}
+                className="flex overflow-x-auto space-x-4 pb-4 w-full"
+              >
+                {loading ? (
+                  // Show skeletons while loading
+                  Array(3)
+                    .fill(0)
+                    .map((_, index) => <TopicSkeleton key={index} />)
+                ) : enrolledTopics && enrolledTopics.length > 0 ? (
+                  // Show topics if enrolledTopics are available
+                  <>
+                    {enrolledTopics.map((subject, index) => (
+                      <div
+                        key={index}
+                        className="flex-none flex-col text-xs font-bold rounded-md w-60 h-28 p-5 bg-[#001840] text-white"
+                      >
+                        <div className="mb-3">{subject.name}</div>
+                        <div>Class size: {subject.classSize}</div>
+                        <div>Days: {subject.days}</div>
+                      </div>
+                    ))}
+                    <button
+                      onClick={scrollRight}
+                      className="ml-2 p-2 rounded-full transition flex items-center justify-center"
+                    >
+                      <svg
+                        width="15"
+                        height="24"
+                        viewBox="0 0 15 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M13.0595 10.9406C13.6454 11.5265 13.6454 12.4781 13.0595 13.064L5.55947 20.564C4.97353 21.15 4.02197 21.15 3.43604 20.564C2.8501 19.9781 2.8501 19.0265 3.43604 18.4406L9.87666 12L3.44072 5.55935C2.85479 4.97341 2.85479 4.02185 3.44072 3.43591C4.02666 2.84998 4.97822 2.84998 5.56416 3.43591L13.0642 10.9359L13.0595 10.9406Z"
+                          fill="black"
+                        />
+                      </svg>
+                    </button>
+                  </>
+                ) : (
+                  // Show Empty component if no topics are available
+                  <div className="w-full flex justify-center items-center">
+                    <Empty
+                      description={
+                        <span className="!text-gray-500 !text-xs !italic ">
+                          You are not enrolled in any topics at the moment.!
+                        </span>
+                      }
+                      className="text-center"
+                    />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -305,6 +331,20 @@ export default function Component() {
         </div>
       </div>
       <CalendarComponent />
+      {user && <Notification showNotification={true} />}
     </div>
   );
 }
+
+const TopicSkeleton = () => (
+  <Card className="!w-60 !flex-none">
+    <Skeleton
+      active
+      title={false}
+      paragraph={{
+        rows: 3,
+        width: ["60%", "80%", "50%"],
+      }}
+    />
+  </Card>
+);
