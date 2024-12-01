@@ -6,13 +6,13 @@ import ReadMoreContainer from "@/components/layout/ui/ReadMore";
 import { useNewClass } from "@/src/store/student/class";
 import NewClass from "@/src/components/student/NewClass";
 import useUser from "@/src/store/auth/user";
-
+import { Skeleton } from "antd";
+import { IoIosAdd } from "react-icons/io";
 
 const Library = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const { setOpenNewClass } = useNewClass();
   const { user, setUser } = useUser();
-
 
   const mySubjects = [
     {
@@ -67,14 +67,48 @@ const Library = () => {
   ];
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 mt-12">
       <div className="flex flex-col lg:flex-row gap-20">
         <div className="w-full lg:w-2/3">
           <div className="p-4 z-10 h-fit mb-10 w-full border-blue-600 border-2 rounded-xl flex flex-col relative">
             <div>
               <div className="flex flex-col">
                 <div className="font-bold text-sm">
-                  Welcome back, {user?.first_name} {user?.last_name}!
+                  {user ? (
+                    `Welcome back, ${user.first_name} ${user.last_name}!`
+                  ) : (
+                    <>
+                      Welcome back,
+                      <Skeleton.Input
+                        active
+                        size="small"
+                        style={{
+                          width: 60,
+                          minWidth: 60,
+                          height: 16,
+                          display: "inline-block",
+                          verticalAlign: "middle",
+                          marginTop: "-4px",
+                          marginLeft: "10px",
+                          marginRight: "10px",
+                        }}
+                      />
+                      <Skeleton.Input
+                        active
+                        size="small"
+                        style={{
+                          width: 80,
+                          minWidth: 80,
+                          height: 16,
+                          display: "inline-block",
+                          verticalAlign: "middle",
+                          marginTop: "-4px",
+                          marginRight: "10px",
+                        }}
+                      />
+                      !
+                    </>
+                  )}
                 </div>
                 <div>
                   <ReadMoreContainer />
@@ -110,7 +144,7 @@ const Library = () => {
               }}
             >
               <button className="w-10 h-10 bg-gray-400 text-white text-2xl rounded-full flex items-center justify-center hover:bg-gray-500 transition-colors">
-                +
+                <IoIosAdd size={30} />
               </button>
             </div>
           </div>

@@ -78,7 +78,7 @@ const MailingList = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit, onError)}
-      className="bg-white px-5 py-3 w-[90vw] lg:w-[30vw] 2xl:w-[15vw] h-fit rounded-[15px]"
+      className="bg-white px-5 py-3 sm:w-[24rem] w-full  h-fit rounded-[15px]"
     >
       <h1 className="font-black sm:text-xs text-[10px] mb-2">
         Are you interested in a session and want to know more?
@@ -220,7 +220,7 @@ const MailingList = () => {
           {...register("more_details")}
         />
       </div>
-      <div className="gap-2 flex justify-center items-center">
+      <div className="gap-x-2 flex justify-center items-center">
         <Controller
           name="personal_data_consent"
           control={control}
@@ -246,7 +246,7 @@ const MailingList = () => {
         </span>
       </div>
 
-      <div className="gap-2 flex justify-center items-center">
+      <div className="gap-x-2 flex justify-center items-center">
         <Controller
           name="informative_material_consent"
           control={control}

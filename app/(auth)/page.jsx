@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
-import { Button, Checkbox, Input, Select } from "antd";
+import { IoMenu } from "react-icons/io5";
 import Card1 from "@/src/components/home/card/Card1";
 import RegisterCard from "@/src/components/home/card/RegisterCard";
 import PioneerCard from "@/src/components/home/card/PioneerCard";
@@ -12,6 +12,9 @@ import CountDownCard from "@/components/layout/ui/timer";
 import MailingList from "@/src/components/ui/auth/signup/MailingList";
 import TeacherDonate from "../teacher/donate/page";
 import Donate from "./donate";
+import {FaSearch} from "react-icons/fa";
+import ChoosePlatformSvg from "@/src/utils/vector-svg/ChoosePlatformSvg";
+
 
 function Home() {
   const [showDonatePopup, setShowDonatePopup] = useState(false);
@@ -20,11 +23,10 @@ function Home() {
     setShowDonatePopup(true);
   };
 
-  // const handleClose = () => {
-  //   setShowDonatePopup(false);
-  // };
+ 
   return (
     <div className="relative w-screen max-w-screen-2xl mx-auto h-full overflow-hidden">
+
       {showDonatePopup && (
         <div className="fixed inset-0 bg-black bg-opacity-70 z-50 flex justify-center items-center">
           <div className="p-1 rounded-lg w-full items-center justify-center flex ">
@@ -35,51 +37,90 @@ function Home() {
 
       <div className="relative w-screen max-w-screen-2xl mx-auto h-[100vh] xl:h-[90vh] 2xl:h-[70vh] overflow-hidden">
         <Image src="/homepage_photo.png" layout="fill" objectFit="cover" alt="Gala Home" />
+
+      <div className="relative w-screen max-w-screen-2xl mx-auto h-[60rem] sm:h-[44rem] overflow-hidden">
+        <Image
+          src="/homepage_photo.png"
+          layout="fill"
+          objectFit="cover"
+          alt="Gala Home"
+        />
+
         <div className="absolute inset-0 bg-black opacity-70 w-full" />
-        <div className="absolute inset-0 p-48 w-full  gap-12 flex md:flex-row flex-col lg:justify-between">
-          <div>
-            <div className="">
+        <div className="absolute inset-0 sm:py-24 py-12 w-full sm:px-24 px-2   flex md:flex-row flex-col lg:justify-between max-sm:gap-5">
+          <div className={''}>
               <CountDownCard />
 
-              <h1 className="text-white sm:text-[64px] mt-10 text-[40px]  sm:leading-[70px] leading-[35px] font-black">Gala</h1>
-              <h1 className="text-white sm:text-[64px] text-[40px]  sm:leading-[70px] leading-[35px] font-black">Education</h1>
+            <div className="">
+              <h1 className="text-white sm:text-[64px] mt-10 text-[35px]  sm:leading-[70px] leading-[30px] font-black">
+                Gala
+              </h1>
+              <h1 className="text-white sm:text-[64px] text-[35px]  sm:leading-[70px] leading-[30px] font-black">
+                Education
+              </h1>
             </div>
-            <h2 className="text-white font-bold sm:leading-[30px] leading-[15px] sm:text-[20px] text-[10px] pt-[4vh]">
-              &ldquo;Empowering minds,shaping <br /> futures - Gala Education, your
-              <br /> pathway to success.&ldquo;
+            <h2 className="text-white font-bold sm:leading-[30px] leading-[15px] sm:text-[20px] text-[10px]">
+              Empowering minds,shaping  futures - Gala Education,
+              your
+              <br /> pathway to success.
             </h2>
-            <h2 className="text-white font-bold leading-[30px] sm:text-[20px] text-[10px] sm:pt-[4vh] pt-[2vh]">Join Now to get 50% off</h2>
+
+            <div className={'rounded-[4rem] py-[2px] px-4 mt-[2rem] flex gap-2 items-center justify-between bg-[#00184080]/50 border-white border-[1px]  sm:w-2/3 w-full'}>
+              <IoMenu className={'text-white'} />
+              <input placeholder={"Search for information here"} className={'bg-transparent placeholder-white/85 placeholder:text-xs text-white focus:placeholder-white/85 border-none focus:outline-none'} />
+              <FaSearch className={'text-white'} />
+              <span className={'h-10 w-10 flex items-center justify-center rounded-full text-white text-center bg-purple-600'}>E</span>
+            </div>
+
           </div>
           <MailingList />
         </div>
       </div>
       <div className="px-20  flex flex-col items-center">
-        <div className="relative w-screen h-[45rem] overflow-hidden">
-          <svg viewBox="0 0 408 394" className="absolute sm:top-[18rem] top-[6rem] sm:left-[9rem] left-[6rem] w-[150px] h-[192px] sm:w-[300px] sm:h-[288px] md:w-[408px] md:h-[394px]" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M71.158 0.328125L111.576 40.7188L83.0182 69.3125C49.6225 102.75 49.6225 157.125 83.0182 190.563L204.117 311.734C237.512 345.172 291.819 345.172 325.215 311.734C358.611 278.297 358.611 223.922 325.215 190.484L279.647 144.859L319.909 104.469L365.477 150.094C421.111 205.797 421.111 296.422 365.477 352.125C337.699 379.938 301.105 393.922 264.588 393.922C228.071 393.922 191.476 380.016 163.698 352.125L42.6 230.875C-13.0335 175.172 -13.0335 84.5469 42.6 28.8438L71.158 0.328125Z" fill="#0F1F3C" fillOpacity="0.1" />
-          </svg>
-          <svg viewBox="0 0 407 394" className="absolute top-5 sm:left-0 left-[2rem] w-[150px] h-[192px] sm:w-[300px] sm:h-[288px] md:w-[407px] md:h-[394px]" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M41.757 41.7969C97.3904 -13.9063 187.902 -13.9063 243.536 41.7969L364.556 162.969C420.19 218.672 420.19 309.297 364.556 365L335.998 393.594L295.658 353.203L324.216 324.609C357.612 291.172 357.612 236.797 324.216 203.359L203.117 82.1094C169.722 48.6719 115.415 48.6719 82.019 82.1094C48.6234 115.547 48.6234 169.922 82.019 203.359L137.653 259.062L97.3124 299.453L41.6789 243.75C-13.8766 188.125 -13.8766 97.5 41.757 41.7969Z" fill="#0F1F3C" fillOpacity="0.1" />
-          </svg>
-          <svg viewBox="0 0 407 394" className="absolute sm:top-[18rem] top-[22rem] sm:right-[4rem] right-[3.5rem] w-[150px] h-[192px] sm:w-[300px] sm:h-[288px] md:w-[407px] md:h-[394px]" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M41.757 352.203C97.3904 407.906 187.902 407.906 243.536 352.203L364.556 231.031C420.19 175.328 420.19 84.7031 364.556 29L335.998 0.40625L295.658 40.7969L324.216 69.3906C357.612 102.828 357.612 157.203 324.216 190.641L203.117 311.891C169.722 345.328 115.415 345.328 82.019 311.891C48.6234 278.453 48.6234 224.078 82.019 190.641L137.653 134.938L97.3124 94.5469L41.6789 150.25C-13.8766 205.875 -13.8766 296.5 41.757 352.203Z" fill="#0F1F3C" fillOpacity="0.1" />
-          </svg>
-          <svg viewBox="0 0 408 394" className="absolute sm:top-5 top-[16rem] right-0 w-[150px] h-[192px] sm:w-[300px] sm:h-[288px] md:w-[408px] md:h-[394px]" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M71.158 393.672L111.576 353.281L83.0182 324.687C49.6225 291.25 49.6225 236.875 83.0182 203.437L204.117 82.2656C237.512 48.8281 291.819 48.8281 325.215 82.2656C358.611 115.703 358.611 170.078 325.215 203.516L279.647 249.141L319.909 289.531L365.477 243.906C421.111 188.203 421.111 97.5781 365.477 41.875C337.699 14.0625 301.105 0.078125 264.588 0.078125C228.071 0.078125 191.476 13.9844 163.698 41.875L42.6 163.125C-13.0335 218.828 -13.0335 309.453 42.6 365.156L71.158 393.672Z" fill="#0F1F3C" fillOpacity="0.1" />
-          </svg>
 
-          <div className="absolute top-0 left-0  sm:h-[35rem] bg-black/10 h-40vh   flex flex-col items-center  py-8  w-screen">
-            <h1 className="font-black text-[20px] sm:text-[40px]">Why choose our platform?</h1>
+        <div className="relative w-screen h-[35rem]   overflow-hidden">
+
+
+
+
+
+          <div className="relative h-[30rem]  bg-black/10   flex flex-col items-center  py-8  w-screen">
+            <ChoosePlatformSvg />
+            <h1 className="font-black text-[20px] sm:text-[40px]">
+              Why choose our platform?
+            </h1>
             <h2 className="text-[10px] sm:text-[15px] text-center py-6">
-              &ldquo;Choose Gala Education for personalized learning, innovative teaching methods, and a commitment to
+              Choose Gala Education for personalized learning, innovative
+              teaching methods, and a commitment to
+
               <br />
-              unlocking every student&apos;s full potential.&ldquo;
+              unlocking every student&apos;s full potential.
             </h2>
 
-            <div className="flex  gap-3 2xl:gap-24  h-[48rem] sm:h-[50rem] sm:justify-center  w-[98%] px-4  sm:w-full">
-              <Card1 image={"/card1img1.jpeg"} title={"Comprehensive Support"} desc={"Access 24/7 study assistance, academic tools, and a dedicated support team to guide you."} />
-              <Card1 image={"/card1img2.jpeg"} title={"Expert Instructors"} desc={"Learn from highly qualified educators with years of experience."} />
-              <Card1 image={"/card1img3.jpeg"} title={"Customized Learning"} desc={"Tailored lessons and resources that adapt to your learning style and pace."} />
+
+            <div className="flex  shrink-0 overflow-x-auto gap-x-6 2xl:gap-24    sm:justify-center   w-[98%] px-4  sm:w-full">
+              <Card1
+                image={"/card1img1.jpeg"}
+                title={"Comprehensive Support"}
+                desc={
+                  "Access 24/7 study assistance, academic tools, and a dedicated support team to guide you."
+                }
+              />
+              <Card1
+                image={"/card1img2.jpeg"}
+                title={"Expert Instructors"}
+                desc={
+                  "Learn from highly qualified educators with years of experience."
+                }
+              />
+              <Card1
+                image={"/card1img3.jpeg"}
+                title={"Customized Learning"}
+                desc={
+                  "Tailored lessons and resources that adapt to your learning style and pace."
+                }
+              />
+
             </div>
             <div>
               <div className="bg-[#b3b3b3]/40 flex justify-between items-center rounded-[15px] w-[40px] h-4 my-8 px-2">
@@ -90,22 +131,44 @@ function Home() {
           </div>
         </div>
 
-        <div className="relative w-full max-w-screen-2xl mx-auto px-4 py-6 sm:py-10 flex flex-col md:flex-row">
+        <div className="relative w-full max-w-screen-2xl mx-auto mt-4 px-4 py-6 sm:py-10 flex flex-col md:flex-row">
           <div className="md:w-1/2 w-full flex flex-col items-center gap-7 p-4">
-            <h1 className="text-black w-full font-bold text-center text-xl sm:text-[40px]">Register with us!</h1>
-            <h3 className="text-center text-sm sm:text-base leading-relaxed px-4">&ldquo;Join Gala Education today - register as a teacher or student and unlock endless learning opportunities!&ldquo;</h3>
+
+            <h1 className="text-black w-full font-bold text-center text-xl sm:text-[40px]">
+              Register with us!
+            </h1>
+            <h3 className="text-center text-sm sm:text-base leading-relaxed px-4">
+              Join Gala Education today - register as a teacher or
+              student and unlock endless learning opportunities!
+            </h3>
+
             <div className="flex flex-col sm:flex-row gap-5">
               <RegisterCard title={"Register as teacher"} image={"/register_teacher.jpeg"} desc={"Become part of our team of educators and help deliver exceptional learning experiences."} type={"instructor"} />
               <RegisterCard title={"Register as student"} image={"/register_student.jpeg"} desc={"Join our community of learners and be part of the journey to excellence in education!"} type={"student"} />
             </div>
           </div>
-          <div className="md:w-1/2 w-full relative h-[50vh] md:h-auto flex justify-center items-center mt-8 md:mt-0">
-            <div className="relative w-full max-w-md">
-              <Image alt="Donation image" src={"/donate1.jpeg"} fill className="absolute inset-0 object-cover rounded-br-[100px] bg-blue-400" />
-              <div className="relative z-10 bg-white p-6 mt-[40%] md:mt-[20%] mx-4 border rounded-lg shadow-lg">
-                <h1 className="text-xl font-bold mb-4">Donate today to support underfunded schools</h1>
-                <p className="text-sm text-gray-600 mb-4">Join our community and make a difference! Your donation supports quality education and empowers lives. Together, we can create a brighter future. Every contribution counts - be part of something impactful today!</p>
-                <button onClick={handleDonateVisibility} className="w-full md:w-auto border border-blue-600 text-blue-600 font-bold py-2 px-4 rounded-md hover:bg-blue-50 transition-colors">
+
+          <div className="md:w-1/2 w-full ">
+            <div className="relative w-full h-full">
+              <Image
+                alt="Donation image"
+                src={"/donate1.jpeg"}
+                width={100}
+                height={100}
+                className="absolute top-0 right-0 rounded-br-[100px] h-[20rem] w-[25rem] object-cover  "
+              />
+              <div className="absolute bottom-0 left-[2rem] w-2/3 !z-10 bg-white p-6  mx-4 border rounded-lg shadow-lg">
+                <h1 className="text-xl font-bold mb-4">
+                  Donate today to support underfunded schools
+                </h1>
+                <p className="text-sm text-gray-600 mb-4">
+                  Join our community and make a difference! Your donation
+                  supports quality education and empowers lives. Together, we
+                  can create a brighter future. Every contribution counts - be
+                  part of something impactful today!
+                </p>
+                <button  onClick={handleDonateVisibility} className="w-full md:w-auto border border-blue-600 text-blue-600 font-bold py-2 px-4 rounded-md hover:bg-blue-50 transition-colors">
+
                   Donate
                 </button>
               </div>
@@ -318,11 +381,28 @@ function Home() {
             <path d="M80 440C77 440 75 442 75 445V450C75 453 77 455 80 455C83 455 85 453 85 450V445C85 442 83 440 80 440Z" fill="black" fillOpacity="0.1" />
           </svg>
 
-          <div className="self-center flex flex-col sm:flex-row px-6 rounded-md shadow-md shadow-black w-[70vw] 2xl:w-[50vw] bg-[#F3F2F2] my-10">
-            <div className="basis-2/3  py-2 flex flex-col gap-y-4">
+          <div className="self-center rounded-[15px] flex flex-col sm:flex-row px-6  shadow-[0px_4px_4px_rgba(0,0,0,0.6)] w-[70vw] 2xl:w-[50vw] bg-[#F3F2F2] my-10">
+            <div className="basis-2/3  py-6 flex flex-col gap-y-1">
               <h1 className="font-bold ">Financial Aid</h1>
-              <p className="text-xs">At Gala Education, we understand that financial barriers can hinder access to quality education. To support students facing financial struggles, we offer a range of financial assistance options, including scholarships, flexible payment plans, and need-based grants. Our scholarship program is designed to recognize and support talented students who may not have the means to afford our courses. Additionally, we provide flexible payment plans that allow students to spread their tuition payments over time, making it easier to manage their finances. We are committed to ensuring that every student has the opportunity to pursue their educational goals, regardless of their financial situation.</p>
-              <div className="border-[1px] sm:w-2/5 w-fit text-xs text-center font-bold p-1  border-[#030DFE] rounded">Apply for financial aid</div>
+
+              <p className="text-[12px] leading-[15px]">
+                At Gala Education, we understand that financial barriers can
+                hinder access to quality education. To support students facing
+                financial struggles, we offer a range of financial assistance
+                options, including scholarships, flexible payment plans, and
+                need-based grants. Our scholarship program is designed to
+                recognize and support talented students who may not have the
+                means to afford our courses. Additionally, we provide flexible
+                payment plans that allow students to spread their tuition
+                payments over time, making it easier to manage their finances.
+                We are committed to ensuring that every student has the
+                opportunity to pursue their educational goals, regardless of
+                their financial situation.
+              </p>
+              <div className="border-[1px] sm:w-2/5 w-fit text-xs text-center font-bold p-1  border-[#030DFE] rounded">
+                Apply for financial aid
+              </div>
+
             </div>
             <div className="basis-1/3 flex sm:gap-x-5  gap-x-3 justify-between sm:justify-normal py-4 items-center">
               <svg className="w-[50px] sm:w-[70px] h-[50px] sm:h-[50px]" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
