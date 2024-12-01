@@ -2,7 +2,9 @@ import React from 'react'
 
 function Payments() {
   return (
-    <div>Payments</div>
+    <div>
+      <img src={"http://localhost:8000/storage/uploads/coffee-plantation.jpg"} alt={"pic"} />
+    </div>
   )
 }
 

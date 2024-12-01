@@ -3,6 +3,8 @@ import React from 'react'
 import DataTable from 'react-data-table-component';
 import Link from 'next/link';
 import Image from 'next/image'
+import {api} from "@/src/config/settings";
+import {useQuery} from "@tanstack/react-query";
 
 function Users() {
   const [selectedRows, setSelectedRows] = React.useState([]);
@@ -92,7 +94,16 @@ function Users() {
     }
   ]
 
-  const [data, setData] = React.useState(users);
+  const getUsers = async()=>{
+    const {data} = await api.get('users');
+    return data
+  }
+
+  const {data,error,isLoading} = useQuery({
+    queryFn:getUsers,
+    queryKey:['getUsers']
+  })
+
   const columns = [
     {
       name: "Username",
@@ -156,7 +167,7 @@ function Users() {
   }, [data, selectedRows, toggleCleared]);
   return (
     <div>
-      <DataTable title="Users" columns={columns} data={data} selectableRows contextActions={contextActions} onSelectedRowsChange={handleRowSelected} clearSelectedRows={toggleCleared} pagination />
+      <DataTable title="Users" columns={columns} data={data} striped contextActions={contextActions} onSelectedRowsChange={handleRowSelected} clearSelectedRows={toggleCleared} pagination />
 
 
     </div>

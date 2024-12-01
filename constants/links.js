@@ -1,4 +1,4 @@
-import { FaBook, FaNewspaper, FaUsers } from "react-icons/fa6";
+import {FaBook, FaInbox, FaNewspaper, FaUsers} from "react-icons/fa6";
 
 import { MdDashboard, MdEventAvailable, MdPayment } from "react-icons/md";
 
@@ -309,6 +309,11 @@ export const adminLinks = [
     name: "Dashboard",
     icon: MdDashboard,
     link: "/admin",
+  },
+  {
+    name: "Requests",
+    icon: FaInbox,
+    link: "/admin/requests",
   },
   {
     name: "Users",
