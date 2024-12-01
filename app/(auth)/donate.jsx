@@ -2,12 +2,15 @@
 
 import React, { useState } from "react";
 import { Tabs, Button, Input, Select, Row, Col, Typography, Space } from "antd";
+import { CloseOutlined } from "@ant-design/icons";
+import AcceptingHands from "@/components/vectors/AcceptingHands";
 
 const { TabPane } = Tabs;
 const { Title, Paragraph, Text } = Typography;
 const { Option } = Select;
 
-const TeacherDonate = () => {
+const Donate = ({ setShowDonatePopup, showDonatePopup }) => {
+  const [activeKey, setActiveKey] = useState("1");
   const [activeTab, setActiveTab] = useState("monthly");
   const [activePayTab, setActivePayTab] = useState("bank");
 
@@ -27,16 +30,75 @@ const TeacherDonate = () => {
     { key: "mobile", label: "Mobile" },
   ];
 
+  const handleDonateNow = () => {
+    // Navigate to the second tab
+    setActiveKey("2");
+  };
+
+  const handleClose = () => {
+    setShowDonatePopup(!showDonatePopup);
+  };
+
   return (
-    <div className="container" style={{ padding: "24px" }}>
-      <Tabs defaultActiveKey="1" centered>
-        <TabPane tab="Donate Now" key="1">
+    <div
+      className="container"
+      style={{
+        padding: "6px",
+        height: "calc(100vh - 100px)",
+        overflow: "auto",
+      }}
+    >
+      <Button
+        type="text"
+        icon={<CloseOutlined />}
+        style={{
+          position: "absolute",
+          top: "10px",
+          right: "10px",
+          color: "white",
+          fontSize: "16px",
+        }}
+        onClick={handleClose}
+      />
+
+      <Tabs
+        activeKey={activeKey}
+        onChange={setActiveKey}
+        defaultActiveKey="1"
+        centered
+        tabBarStyle={{
+          borderBottom: "none",
+        }}
+        style={{
+          "--ant-primary-color": "white",
+        }}
+        renderTabBar={(props, DefaultTabBar) => (
+          <DefaultTabBar
+            {...props}
+            style={{
+              ".ant-tabs-tab": {
+                color: "white",
+                fontWeight: "bold",
+              },
+              ".ant-tabs-tab-active": {
+                color: "white",
+              },
+              ".ant-tabs-ink-bar": {
+                backgroundColor: "white",
+                height: "4px",
+              },
+            }}
+          />
+        )}
+      >
+        <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
+          <div className="absolute left-1/2 top-20 w-52 h-52 hidden md:block">
+            <AcceptingHands />
+          </div>
+        </div>
+        <TabPane tab="Donate" key="1">
           <Space direction="vertical" size="large" style={{ width: "100%" }}>
-            <div style={{ textAlign: "center" }}>
-              <Title level={3}>Donate Now</Title>
-              <Paragraph>Welcome to our donation page, where your generosity helps transform lives through education and opportunity!</Paragraph>
-            </div>
-            <Row gutter={[24, 24]} style={{ backgroundColor: "#001840", padding: "24px", borderRadius: "16px" }}>
+            <Row gutter={[24, 24]} style={{ backgroundColor: "#001840", padding: "12px", borderRadius: "16px" }}>
               <Col xs={24} lg={12}>
                 <div style={{ background: "#001840", padding: "24px", borderRadius: "8px", height: "100%" }}>
                   <Title level={4} style={{ color: "white" }}>
@@ -48,7 +110,7 @@ const TeacherDonate = () => {
               </Col>
               <Col xs={24} lg={12}>
                 <Space direction="vertical" size="large" style={{ width: "100%", background: "#001840", padding: "2px" }}>
-                  <Text strong style={{ color: "white", fontSize: "12px" }}>
+                  <Text strong style={{ color: "white", fontSize: "10px" }}>
                     Choose donation frequency
                   </Text>
                   <div style={{ backgroundColor: "white", padding: "6px 6px", borderRadius: "24px", display: "inline-block" }}>
@@ -71,13 +133,13 @@ const TeacherDonate = () => {
                     </Space>
                   </div>
 
-                  <div style={{ background: "#001840", padding: "8px", borderRadius: "8px" }}>
+                  <div style={{ background: "#001840", padding: "8px", borderRadius: "8px" }} className="-mb-4">
                     <Space direction="vertical" size="middle" style={{ width: "100%" }}>
-                      <Text strong style={{ color: "white", fontSize: "12px" }}>
+                      <Text strong style={{ color: "white", fontSize: "10px" }}>
                         Select donation amount
                       </Text>
-                      <Space direction="horizontal" size="large">
-                        <Space wrap size="small">
+                      <div className="flex-col md:flex md:flex-row gap-4 ">
+                        <div className="flex gap-2 justify-start flex-row">
                           {[1000, 5000, 10000].map((amount) => (
                             <Button
                               key={amount}
@@ -93,30 +155,36 @@ const TeacherDonate = () => {
                               {amount}
                             </Button>
                           ))}
-                        </Space>
-                        <Space size="small">
-                          <Text style={{ color: "white" }}>or</Text>
-                          <Input placeholder="Enter amount" style={{ width: "120px" }} />
-                        </Space>
-                      </Space>
+                        </div>
 
-                      <Text strong style={{ color: "white" }}>
+                        <div className="mb-3 md:mb-0 md:mt-0 mt-3">
+                          <Text style={{ color: "white", fontSize: "13px" }}>or</Text>
+                        </div>
+
+                        <div>
+                          <Input placeholder="Enter amount" className="!placeholder-gray-400" style={{ width: "100%", color: "white", backgroundColor: "#001840", fontSize: "14px" }} />
+                        </div>
+                      </div>
+
+                      <Text strong style={{ color: "white", fontSize: "10px" }}>
                         Name
                       </Text>
                       <Input
                         placeholder="Enter your name"
+                        className="!placeholder-gray-400"
                         style={{
+                          fontSize: "12px",
                           color: "white",
                           borderColor: "white",
                           backgroundColor: "#001840",
                         }}
                       />
-                      <Text style={{ color: "white", fontSize: "12px" }}>
-                        <a style={{ color: "#1890ff" }}>Click here</a> to make a donation in honour of someone special.
+                      <Text style={{ color: "white", fontSize: "10px" }}>
+                        <a style={{ color: "#1890ff", textDecoration: "none" }}>Click here</a> to make a donation in honour of someone special.
                       </Text>
                     </Space>
                   </div>
-                  <Button type="primary" style={{ background: "#007AFF", fontWeight: "bold" }}>
+                  <Button type="primary" style={{ background: "#007AFF", fontWeight: "bold" }} onClick={handleDonateNow}>
                     Donate Now
                   </Button>
                 </Space>
@@ -124,12 +192,8 @@ const TeacherDonate = () => {
             </Row>
           </Space>
         </TabPane>
-        <TabPane tab="Payment Method" key="2">
+        <TabPane tab="Payment" key="2">
           <Space direction="vertical" size="large" style={{ width: "100%" }}>
-            <div style={{ textAlign: "center" }}>
-              <Title level={3}>Payment Method</Title>
-              <Paragraph>Welcome to our donation page, where your generosity helps transform lives through education and opportunity!</Paragraph>
-            </div>
             <Row gutter={[24, 24]} style={{ backgroundColor: "#001840", padding: "24px", borderRadius: "16px" }}>
               <Col xs={24} lg={12}>
                 <div style={{ background: "#001840", padding: "24px", borderRadius: "8px", height: "100%" }}>
@@ -137,15 +201,15 @@ const TeacherDonate = () => {
                     Help us do more
                   </Title>
 
-                  <Paragraph style={{ color: "white" }}>Dear members, many students are unable to afford the app charges, limiting their access to vital learning resources. We&apos;re stepping in to help cover these costs, ensuring every student has a chance to learn, no matter their financial situation. Your donation is crucial—it opens doors to education for those in need and helps us support underfunded rural schools, where students study under incredibly harsh conditions. Together, we can break the cycle of poverty and build a brighter future for these young minds.</Paragraph>
+                  <Paragraph style={{ color: "white", fontSize: "10px" }}>Dear members, many students are unable to afford the app charges, limiting their access to vital learning resources. We&apos;re stepping in to help cover these costs, ensuring every student has a chance to learn, no matter their financial situation. Your donation is crucial—it opens doors to education for those in need and helps us support underfunded rural schools, where students study under incredibly harsh conditions. Together, we can break the cycle of poverty and build a brighter future for these young minds.</Paragraph>
                 </div>
               </Col>
               <Col xs={24} lg={12}>
                 <Space direction="vertical" size="large" style={{ width: "100%" }}>
-                  <Text strong style={{ color: "white" }}>
+                  <Text strong style={{ color: "white", fontSize: "12px" }}>
                     Choose payment method
                   </Text>
-                  <Space wrap style={{ backgroundColor: "white", padding: "6px 6px", borderRadius: "24px" }}>
+                  <Space style={{ backgroundColor: "white", padding: "6px 6px", borderRadius: "24px" }}>
                     {paymentMethods.map((tab) => (
                       <Button
                         key={tab.key}
@@ -168,22 +232,22 @@ const TeacherDonate = () => {
                       <Space direction="vertical" size="middle" style={{ width: "100%" }}>
                         <Row gutter={[16, 16]}>
                           <Col xs={24} md={8}>
-                            <Input placeholder="Card Number" className="input-placeholder" style={{ color: "white", borderColor: "white" }} />
+                            <Input placeholder="Card Number" className="input-placeholder !placeholder-gray-400" style={{ color: "white", borderColor: "white", backgroundColor: "#001840" }} />
                           </Col>
 
                           <Col xs={24} md={8}>
-                            <Input placeholder="Expiration Date" style={{ color: "white", borderColor: "white" }} />
+                            <Input placeholder="Expiration Date" className="!placeholder-gray-400" style={{ color: "white", borderColor: "white", backgroundColor: "#001840" }} />
                           </Col>
                           <Col xs={24} md={8}>
-                            <Input placeholder="Security Code" style={{ color: "white", borderColor: "white" }} />
+                            <Input placeholder="Security Code" className="!placeholder-gray-400" style={{ color: "white", borderColor: "white", backgroundColor: "#001840" }} />
                           </Col>
                         </Row>
-                        <Select defaultValue="tanzania" style={{ width: "100%", background: "#001840" }}>
+                        <Select defaultValue="tanzania" className="custom-select-tag border border-white rounded-md w-full">
                           <Option value="tanzania">Tanzania</Option>
                           <Option value="kenya">Kenya</Option>
                           <Option value="uganda">Uganda</Option>
                         </Select>
-                        <Text style={{ color: "white" }}>By providing your card information, you allow Gala Education to charge your card for future payments in accordance with their terms.</Text>
+                        <Text style={{ color: "white", fontSize: "10px" }}>By providing your card information, you allow Gala Education to charge your card for future payments in accordance with their terms.</Text>
                         <Button type="primary" style={{ background: "#007AFF", fontWeight: "bold" }}>
                           Pay Now
                         </Button>
@@ -201,4 +265,4 @@ const TeacherDonate = () => {
   );
 };
 
-export default TeacherDonate;
+export default Donate;
