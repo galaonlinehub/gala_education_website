@@ -1,23 +1,22 @@
-
 .ant-tabs-ink-bar {
-    background-color: #030DFE !important;
-    height: 6px !important;
+  background-color: #030dfe !important;
+  height: 6px !important;
 }
 .ant-tabs-nav::before {
-    border-top: 0.4em solid #D9D9D9;
-    width: 32em;
-    margin: 0 auto;
+  border-top: 0.4em solid #d9d9d9;
+  width: 32em;
+  margin: 0 auto;
 }
 
 @media (max-width: 700px) {
-    .ant-tabs-nav::before {
-        width: 80%;
-    }
+  .ant-tabs-nav::before {
+    width: 80%;
+  }
 }
 
 .ant-select-selection {
-    background-color: #001840 !important;
-    width: 10em !important;
+  background-color: #001840 !important;
+  width: 10em !important;
 }
 
 /* signup.css */
@@ -51,74 +50,115 @@
   .tab-exit {
     animation: fadeSlideOut 0.5s ease forwards;
   } */
-  
 
-  /* signup.css */
+/* signup.css */
 
 @keyframes fadeSlideIn {
-    0% {
-      opacity: 0;
-      transform: translateX(40%); /* Start further away for a more noticeable effect */
-    }
-    60% {
-      opacity: 1;
-      transform: translateX(-5%); /* Slight overshoot for a smoother feel */
-    }
-    100% {
-      opacity: 1;
-      transform: translateX(0);
-    }
+  0% {
+    opacity: 0;
+    transform: translateX(
+      40%
+    ); /* Start further away for a more noticeable effect */
   }
-  
-  @keyframes fadeSlideOut {
-    0% {
-      opacity: 1;
-      transform: translateX(0);
-    }
-    40% {
-      opacity: 0.5;
-      transform: translateX(-10%); /* Slight undershoot for a smoother feel */
-    }
-    100% {
-      opacity: 0;
-      transform: translateX(-40%); /* End further back for more emphasis */
-    }
+  60% {
+    opacity: 1;
+    transform: translateX(-5%); /* Slight overshoot for a smoother feel */
   }
-  
-  .tab-enter {
-    animation: fadeSlideIn 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  100% {
+    opacity: 1;
+    transform: translateX(0);
   }
-  
-  .tab-exit {
-    animation: fadeSlideOut 0.6s cubic-bezier(0.75, -0.5, 0.5, 1) forwards;
-  }
+}
 
-  
+@keyframes fadeSlideOut {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  40% {
+    opacity: 0.5;
+    transform: translateX(-10%); /* Slight undershoot for a smoother feel */
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-40%); /* End further back for more emphasis */
+  }
+}
+
+.tab-enter {
+  animation: fadeSlideIn 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+.tab-exit {
+  animation: fadeSlideOut 0.6s cubic-bezier(0.75, -0.5, 0.5, 1) forwards;
+}
+
 /* EMAIL VERIFICATION INPUT SHAKE */
 
-  @keyframes shake {
-    0% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    50% { transform: translateX(5px); }
-    75% { transform: translateX(-5px); }
-    100% { transform: translateX(0); }
+@keyframes shake {
+  0% {
+    transform: translateX(0);
   }
-  
-  .input-shake {
-    animation: shake 0.5s ease-in-out;
+  25% {
+    transform: translateX(-5px);
   }
-  
-  .input-shake.success {
-    border-color: green !important;
-    animation-name: shake;
+  50% {
+    transform: translateX(5px);
   }
-  
-  .input-shake.failure {
-    border-color: red !important;
-    animation-name: shake;
+  75% {
+    transform: translateX(-5px);
   }
+  100% {
+    transform: translateX(0);
+  }
+}
 
+.input-shake {
+  animation: shake 0.5s ease-in-out;
+}
 
-  .login-bg {
-    background-image: url('/vectors/auth/sign-in/LoginVectorSvg.svg');
-  }
+.input-shake.success {
+  border-color: green !important;
+  animation-name: shake;
+}
+
+.input-shake.failure {
+  border-color: red !important;
+  animation-name: shake;
+}
+.special-disabilities-select .ant-select-selector {
+  background-color: #030dfe !important;
+  /* height: 34px !important; */
+  outline: none !important;
+  border: none !important;
+  border-radius: 5px !important;
+}
+.special-disabilities-select .ant-select-selection-placeholder {
+  color: white !important;
+  font-size: 14px !important;
+}
+
+.special-disabilities-select .ant-select-selection-item {
+  color: white !important;
+}
+
+.special-disabilities-select .ant-select-dropdown {
+  background-color: #001840 !important;
+}
+
+.special-disabilities-select .ant-select-item {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.special-disabilities-select .ant-select-item:hover {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  color: white !important;
+}
+
+.special-disabilities-select .ant-select-item-option-selected {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.special-disabilities-select .ant-select-arrow {
+  color: white !important;
+}
