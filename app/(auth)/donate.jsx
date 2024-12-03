@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import { Tabs, Button, Input, Select, Row, Col, Typography, Space } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 import AcceptingHands from "@/components/vectors/AcceptingHands";
+import Olive from "@/components/vectors/Olive";
+import Love from "@/components/vectors/Love";
 
 const { TabPane } = Tabs;
 const { Title, Paragraph, Text } = Typography;
@@ -91,16 +93,42 @@ const Donate = ({ setShowDonatePopup, showDonatePopup }) => {
           />
         )}
       >
+       
+        <TabPane tab="Donate" key="1">
         <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
-          <div className="absolute left-1/2 top-20 w-52 h-52 hidden md:block">
+          <div className="absolute left-44 top-44 w-52 h-52 hidden md:block">
             <AcceptingHands />
           </div>
         </div>
-        <TabPane tab="Donate" key="1">
+        <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
+          <div className="absolute right-80 top-44 w-52 h-52 hidden md:block">
+            <Olive />
+          </div>
+        </div>
+        <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
+          <div className="absolute left-32 top-32 w-52 h-52 hidden md:block">
+            <Love />
+          </div>
+        </div>
+        <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
+          <div className="absolute left-1/2 top-32 w-52 h-52 hidden md:block">
+            <Love />
+          </div>
+        </div>
+        <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
+          <div className="absolute left-1/2 top-96 w-52 h-52 hidden md:block">
+            <Love />
+          </div>
+        </div>
+        <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
+          <div className="absolute right-6 top-96 w-52 h-52 hidden md:block">
+            <Love />
+          </div>
+        </div>
           <Space direction="vertical" size="large" style={{ width: "100%" }}>
             <Row gutter={[24, 24]} style={{ backgroundColor: "#001840", padding: "12px", borderRadius: "16px" }}>
               <Col xs={24} lg={12}>
-                <div style={{ background: "#001840", padding: "24px", borderRadius: "8px", height: "100%" }}>
+                <div style={{  padding: "24px", borderRadius: "8px", height: "100%" }}>
                   <Title level={4} style={{ color: "white" }}>
                     Help us do more
                   </Title>
@@ -109,7 +137,7 @@ const Donate = ({ setShowDonatePopup, showDonatePopup }) => {
                 </div>
               </Col>
               <Col xs={24} lg={12}>
-                <Space direction="vertical" size="large" style={{ width: "100%", background: "#001840", padding: "2px" }}>
+                <Space direction="vertical" size="large" style={{ width: "100%", padding: "2px" }}>
                   <Text strong style={{ color: "white", fontSize: "10px" }}>
                     Choose donation frequency
                   </Text>
@@ -133,7 +161,7 @@ const Donate = ({ setShowDonatePopup, showDonatePopup }) => {
                     </Space>
                   </div>
 
-                  <div style={{ background: "#001840", padding: "8px", borderRadius: "8px" }} className="-mb-4">
+                  <div style={{padding: "8px", borderRadius: "8px" }} className="-mb-4">
                     <Space direction="vertical" size="middle" style={{ width: "100%" }}>
                       <Text strong style={{ color: "white", fontSize: "10px" }}>
                         Select donation amount
@@ -193,10 +221,45 @@ const Donate = ({ setShowDonatePopup, showDonatePopup }) => {
           </Space>
         </TabPane>
         <TabPane tab="Payment" key="2">
+        <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
+          <div className="absolute left-44 top-44 w-52 h-52 hidden md:block">
+            <AcceptingHands />
+          </div>
+        </div>
+        <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
+          <div className="absolute right-80 top-44 w-52 h-52 hidden md:block">
+            <Olive />
+          </div>
+        </div>
+        <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
+          <div className="absolute left-32 top-32 w-52 h-52 hidden md:block">
+            <Love />
+          </div>
+        </div>
+        <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
+          <div className="absolute left-1/2 top-32 w-52 h-52 hidden md:block">
+            <Love />
+          </div>
+        </div>
+        <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
+          <div className="absolute left-1/2 top-96 w-52 h-52 hidden md:block">
+            <Love />
+          </div>
+        </div>
+        <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
+          <div className="absolute right-6 top-96 w-52 h-52 hidden md:block">
+            <Love />
+          </div>
+        </div>
+        <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
+          <div className="absolute right-6 top-32 w-52 h-52 hidden md:block">
+            <Love />
+          </div>
+        </div>
           <Space direction="vertical" size="large" style={{ width: "100%" }}>
             <Row gutter={[24, 24]} style={{ backgroundColor: "#001840", padding: "24px", borderRadius: "16px" }}>
               <Col xs={24} lg={12}>
-                <div style={{ background: "#001840", padding: "24px", borderRadius: "8px", height: "100%" }}>
+                <div style={{ padding: "24px", borderRadius: "8px", height: "100%" }}>
                   <Title level={4} style={{ color: "white" }}>
                     Help us do more
                   </Title>
@@ -227,7 +290,7 @@ const Donate = ({ setShowDonatePopup, showDonatePopup }) => {
                     ))}
                   </Space>
 
-                  <div style={{ background: "#001840", padding: "8px", borderRadius: "8px" }}>
+                  <div style={{  padding: "8px", borderRadius: "8px" }}>
                     {activePayTab === "bank" && (
                       <Space direction="vertical" size="middle" style={{ width: "100%" }}>
                         <Row gutter={[16, 16]}>
