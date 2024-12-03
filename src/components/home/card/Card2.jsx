@@ -5,22 +5,22 @@ import React from 'react'
 
 function Card2({image,title,desc}) {
   return (
-    <div className='flex-col flex w-[250px] sm:w-[300px] shadow-md shadow-black'>
+    <div className='flex-col flex w-[300px] shrink-0 shadow-md shadow-black'>
   
-  <div className='w-full h-[12vh]'>
+  <div className=''>
     <Image 
       alt="image Data"
       src={image} 
-      className='w-full h-full border-white border-[1px] object-cover' 
-      width={100} 
-      height={100} 
+      className='w-[300px] h-[119px] object-cover border-white border-[1px] '
+      width={1920}
+      height={1080}
       
     />
   </div>
   
   
   
-  <div className='h-[10rem] 2xl:h-[10rem] bg-[#001840]  flex flex-col px-4 py-8'>
+  <div className='h-[181px] bg-[#001840]  flex flex-col px-8 py-10'>
     <span className='text-white font-black '>{title}</span>
     <span className='text-white text-[12px]'>{desc}</span>
   </div>
