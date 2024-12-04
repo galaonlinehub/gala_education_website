@@ -1,13 +1,15 @@
 import React from "react";
 import SignupPage from "@/app/(auth)/signup/page";
 import StudentSignUpVectorSvg from "@/src/utils/vector-svg/sign-up/StudentSignUpVectorSvg";
-import { message } from "antd";
+import { message, Select } from "antd";
 import { useForm } from "react-hook-form";
 import { api } from "@/src/config/settings";
 import LoadingState from "../../loading/LoadingSpinner";
 import EmailVerification from "./EmailVerification";
 import { useEmailVerificationModalOpen } from "@/src/store/auth/signup";
 import { encrypt } from "@/src/utils/constants/encryption";
+import { disabilities } from "@/src/utils/constants/disabilities";
+import "../../../../styles/auth/signup.css";
 
 const SignUpForm = () => {
   const {
@@ -93,15 +95,15 @@ const SignUpForm = () => {
               autoCorrect="off"
               placeholder="Enter Your First Name"
               className={`border-[1px] focus:border-[2.5px] w-full rounded-md border-[#030DFE] focus:border-[#030DFE] focus:outline-none h-input-height placeholder:font-semibold pl-3 placeholder:text-[14px] ${
-                errors.firstName ? "border-red-500 focus:border-red-500" : ""
+                errors.first_name ? "border-red-500 focus:border-red-500" : ""
               }`}
               {...register("first_name", {
                 required: "First name is required",
               })}
             />
-            {errors.firstName && (
+            {errors.first_name && (
               <span className="text-red-500 text-xs">
-                {errors.firstName.message}
+                {errors.first_name.message}
               </span>
             )}
           </div>
@@ -118,13 +120,13 @@ const SignUpForm = () => {
               autoCorrect="off"
               placeholder="Enter Your Last Name"
               className={`border-[1px] focus:border-[2.5px] w-full rounded-md border-[#030DFE] focus:outline-none h-input-height placeholder:font-semibold pl-3 placeholder:text-[14px] ${
-                errors.lastName ? "border-red-500 focus:border-red-500" : ""
+                errors.last_name ? "border-red-500 focus:border-red-500" : ""
               }`}
               {...register("last_name", { required: "Last name is required" })}
             />
-            {errors.lastName && (
+            {errors.last_name && (
               <span className="text-red-500 text-xs">
-                {errors.lastName.message}
+                {errors.last_name.message}
               </span>
             )}
           </div>
@@ -157,7 +159,7 @@ const SignUpForm = () => {
                 {errors.email.message}
               </span>
             )}
-            {emailExists && !errors.email  && (
+            {emailExists && !errors.email && (
               <span className="text-red-500 text-xs">{emailExists}</span>
             )}
           </div>
@@ -225,19 +227,29 @@ const SignUpForm = () => {
             )}
           </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-[117.46px] rounded-md h-[35px] bg-[#030DFE] self-center text-[14px] font-semibold !text-[#FFFFFF] mt-4 disabled:opacity-60 flex items-center justify-center"
-          >
-            {loading ? <LoadingState /> : "Sign Up"}
-          </button>
+          <div className="flex items-center justify-between w-2/3 self-start gap-4">
+            <Select
+              placeholder="Special Needs"
+              placement="bottomRight"
+              options={disabilities}
+              className="special-disabilities-select !w-[15rem] !h-[35px] !border-[#030DFE] !rounded-md"
+            />
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-[117.46px] rounded-md h-[35px] bg-[#030DFE] text-[14px] font-semibold !text-[#FFFFFF] disabled:opacity-60 flex items-center justify-center"
+            >
+              {loading ? <LoadingState /> : "Sign Up"}
+            </button>
+          </div>
         </form>
 
-        <span className="text-center text-[12px]">
-          Creating an account means you’re okay with our{" "}
-          <span className="text-[#030DFE] font-bold"> Terms of Service</span> &
-          <span className="text-[#030DFE] font-bold"> Privacy Policy</span>.
+        <span className="text-center text-[12px] space-x-2">
+          <span> Creating an account means you&apos;re okay with our</span>
+          <span className="text-[#030DFE] font-bold">Terms of Service</span>
+          <span>&</span>
+          <span className="text-[#030DFE] font-bold">Privacy Policy</span>.
         </span>
       </div>
 
