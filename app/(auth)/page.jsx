@@ -78,9 +78,9 @@ function Home() {
       </div>
       {/*<div className="px-20   flex flex-col items-center">*/}
 
-        <div className="relative w-screen h-[35rem] overflow-hidden">
+        <div className="relative w-full h-[35rem] overflow-hidden">
 
-          <div className="relative h-[30rem]  bg-black/10   flex flex-col items-center  py-8  w-screen">
+          <div className="relative h-[30rem]  bg-black/10   flex flex-col items-center  py-8  w-full">
             <ChoosePlatformSvg />
             <h1 className="font-black text-[20px] sm:text-[40px]">
               Why choose our platform?
