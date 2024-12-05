@@ -25,7 +25,7 @@ function Home() {
 
  
   return (
-    <div className="relative w-screen max-w-screen-2xl mx-auto h-full overflow-hidden">
+    <div className="relative w-screen max-w-screen-2xl mx-auto h-full overflow-hidden space-y-10">
 
       {showDonatePopup && (
         <div className="fixed  inset-0 bg-black bg-opacity-70 !z-[9999] flex justify-center items-center">
