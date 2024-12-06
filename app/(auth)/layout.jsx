@@ -3,6 +3,7 @@ import { AntdRegistry } from "@ant-design/nextjs-registry";
 import AuthMain from "@/src/components/layout/MainAuth";
 
 export const metadata = {
+
     title: "Gala Education",
     description: "Empowering minds, shaping future",
     icons: {
@@ -14,6 +15,7 @@ export const metadata = {
         apple: [{ url: '/apple-touch-icon.png', sizes: '180x180' }],
     },
     manifest: '/site.webmanifest',
+
 };
 
 export default function RootLayout({ children }) {
