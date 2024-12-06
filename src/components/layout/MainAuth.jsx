@@ -30,7 +30,7 @@ const AuthMain = ({ children }) => {
               width={200}
               height={200}
               src={'/gala-logo.png'}
-              className={'w-10 h-10 object-cover bg-white/45 rounded-full '}
+              className={'w-16 h-16 object-cover bg-white/45 rounded-full '}
           />
 
 

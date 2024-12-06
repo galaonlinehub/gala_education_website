@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { FaBell, FaUserCircle } from "react-icons/fa";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import Footer from "@/src/components/layout/footer";
 import Link from "next/link";
@@ -65,7 +64,7 @@ function StudentMain({ children }) {
                 width={200}
                 height={200}
                 src={'/gala-logo.png'}
-                className={'w-10 h-10 object-cover  rounded-full '}
+                className={'w-16 h-16 object-cover  rounded-full '}
             />
 
 

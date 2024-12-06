@@ -3,7 +3,7 @@ import { AntdRegistry } from "@ant-design/nextjs-registry";
 import AuthMain from "@/src/components/layout/MainAuth";
 
 export const metadata = {
-    title: "Galahub Education",
+    title: "Gala Education",
     description: "Empowering minds, shaping future",
     icons: {
         icon: [
