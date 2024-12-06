@@ -8,7 +8,7 @@ import ChooseAccont from "@/src/components/ui/auth/signup/ChooseAccount";
 import AuthMain from "@/src/components/layout/MainAuth";
 
 export const metadata = {
-  title: "Galahub education",
+  title: "Gala education",
   description: "Empowering minds shaping future",
 };
 
