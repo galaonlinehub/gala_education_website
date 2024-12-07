@@ -11,6 +11,7 @@ import "@/src/styles/auth/signup.css";
 import useUser from "@/src/store/auth/user";
 import { encrypt } from "@/src/utils/constants/encryption";
 import Cookies from "js-cookie";
+import { apiGet, apiPost } from "@/src/services/api_service";
 
 const SignInPage = () => {
   // const key = crypto.randomUUID();
@@ -36,17 +37,22 @@ const SignInPage = () => {
       setLoading(true);
       message.destroy();
 
-      const response = await api.post("/login", {
+      const response = await apiPost("/login", {
         email: data.email,
         password: data.password,
       });
 
       if (response.status === 200) {
-        const res = await api.get("/user", {
-          headers: {
-            Authorization: `Bearer ${response.data.token}`,
-          },
+        const encryptedToken = encrypt(response.data.token);
+
+        Cookies.set("9fb96164-a058-41e4-9456-1c2bbdbfbf8d", encryptedToken, {
+          expires: 7,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "strict",
+          path: "/",
         });
+
+        const res = await apiGet("/user");
 
         if (res.status === 200) {
           const encryptedData = encrypt(encrypt(res.data));
@@ -57,7 +63,7 @@ const SignInPage = () => {
               encryptedData
             );
           } else {
-            message.error("Encryption failed - encryptedData is null");
+            message.error("Encryption failed, EncryptedData is null");
           }
 
           const roleRedirects = {
@@ -78,15 +84,6 @@ const SignInPage = () => {
             });
             return;
           }
-
-          const encryptedToken = encrypt(response.data.token);
-
-          Cookies.set("9fb96164-a058-41e4-9456-1c2bbdbfbf8d", encryptedToken, {
-            expires: 7,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "strict",
-            path: "/",
-          });
         }
       }
     } catch (error) {
@@ -142,8 +139,8 @@ const SignInPage = () => {
         <span className="font-black">Login</span>
         <span className="font-black text-4xl">Welcome Back</span>
         <span className="text-sm font-medium text-center px-4 sm:px-8">
-          &quot; Welcome back! We&#39;re excited to see you again, let&#39;s
-          pick up where you left off and continue your learning journey!&quot;
+          Welcome back! We&#39;re excited to see you again, let&#39;s pick up
+          where you left off and continue your learning journey!
         </span>
 
         <form

@@ -1,4 +1,5 @@
-import { api } from "@/src/config/settings";
+// import { api } from "@/src/config/settings";
+import { apiGet } from "@/src/services/api_service";
 import { useEnrolledTopics } from "@/src/store/student/class";
 
 export const getUserSubject = async () => {
@@ -15,7 +16,7 @@ export const getUserSubject = async () => {
   try {
     setLoading(true);
 
-    const response = await api.get("/enrolled_topics");
+    const response = await apiGet("/enrolled_topics");
 
     if (response.status === 200 && response.data !== enrolledTopics) {
       setEnrolledTopics(response.data || fallbackSubjects);

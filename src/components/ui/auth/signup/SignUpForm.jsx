@@ -10,6 +10,7 @@ import { useEmailVerificationModalOpen } from "@/src/store/auth/signup";
 import { encrypt } from "@/src/utils/constants/encryption";
 import { disabilities } from "@/src/utils/constants/disabilities";
 import "../../../../styles/auth/signup.css";
+import { apiPost } from "@/src/services/api_service";
 
 const SignUpForm = () => {
   const {
@@ -44,7 +45,7 @@ const SignUpForm = () => {
     formData.append("country", "Tanzania");
 
     try {
-      const response = await api.post("/register", formData);
+      const response = await apiPost("/register", formData);
       if (response.status === 201) {
         message.success("Data Saved Successfully!");
         sessionStorage.setItem(
