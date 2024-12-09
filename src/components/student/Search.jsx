@@ -1,160 +1,355 @@
-import React, { useState } from "react";
-import { Input, Empty, Card, Typography, Tag, Divider } from "antd";
-import { FaBell, FaUserCircle } from "react-icons/fa";
+import React, { useState, useEffect, useRef } from "react";
+import { Input, Empty, Card, Typography, Tag, Skeleton, Result } from "antd";
+import { FaBell, FaUserCircle, FaSearch } from "react-icons/fa";
 import { IoMenu, IoSearch } from "react-icons/io5";
-import { useNewClass } from "@/src/store/student/class";
-import { useRouter } from "next/navigation";
-import { apiGet } from "@/src/services/api_service";
+
 import {
   BookOutlined,
   TagOutlined,
   UserOutlined,
   DollarOutlined,
+  LoadingOutlined,
+  InfoCircleOutlined,
+  CloseOutlined,
 } from "@ant-design/icons";
+import { AnimatePresence, motion } from "framer-motion";
+import { useNewClass } from "@/src/store/student/class";
+import { useRouter } from "next/navigation";
+import { apiGet } from "@/src/services/api_service";
 
-const { Title, Text, Paragraph } = Typography;
+const { Title, Text } = Typography;
+
+export const SearchResultCard = ({ data, onClick }) => {
+  const { subjects, topics, teachers } = data;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
+    >
+      {/* Subjects Section */}
+      {subjects && subjects.length > 0 && (
+        <div className="p-4 border-b border-gray-100">
+          <div className="flex items-center mb-3">
+            <BookOutlined className="mr-3 text-blue-500 text-xl" />
+            <h3 className="text-lg font-semibold text-gray-800">Subjects</h3>
+          </div>
+          <div className="grid gap-2">
+            {subjects.map((subject) => (
+              <div
+                key={subject.id}
+                className="bg-blue-50 rounded-lg p-3 
+                hover:bg-blue-100 transition-colors 
+                flex justify-between items-center group cursor-pointer"
+                onClick={() => onClick(subject)}
+              >
+                <div>
+                  <div
+                    className="font-medium text-blue-800 
+                    group-hover:text-blue-900 transition-colors"
+                  >
+                    {subject.name}
+                  </div>
+                  <div
+                    className="text-sm text-gray-600 
+                    line-clamp-2 mt-1"
+                  >
+                    {subject.description}
+                  </div>
+                </div>
+                <InfoCircleOutlined
+                  className="text-blue-400 hover:text-blue-600 
+                  transition-colors opacity-0 group-hover:opacity-100"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Topics Section */}
+      {topics && topics.length > 0 && (
+        <div className="p-4 border-b border-gray-100">
+          <div className="flex items-center mb-3">
+            <TagOutlined className="mr-3 text-green-500 text-xl" />
+            <h3 className="text-lg font-semibold text-gray-800">Topics</h3>
+          </div>
+          <div className="grid gap-2">
+            {topics.map((topic) => (
+              <div
+                key={topic.id}
+                className="bg-green-50 rounded-lg p-3 
+                flex justify-between items-center 
+                hover:bg-green-100 transition-colors group cursor-pointer"
+                onClick={() => onClick(topic)}
+              >
+                <span
+                  className="font-medium text-green-800 
+                  group-hover:text-green-900 transition-colors"
+                >
+                  {topic.title}
+                </span>
+                <Tag
+                  icon={<DollarOutlined />}
+                  color="green"
+                  className="font-semibold"
+                >
+                  ${topic.price}
+                </Tag>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Instructors Section */}
+      {teachers && teachers.length > 0 && (
+        <div className="p-4">
+          <div className="flex items-center mb-3">
+            <UserOutlined className="mr-3 text-purple-500 text-xl" />
+            <h3 className="text-lg font-semibold text-gray-800">Instructors</h3>
+          </div>
+          <div className="grid lg:grid-cols-2 gap-3">
+            {teachers.map((teacher) => (
+              <div
+                key={teacher.id}
+                className="bg-purple-50 rounded-lg p-3 
+                flex items-center space-x-3 
+                hover:bg-purple-100 transition-colors group cursor-pointer"
+                onClick={() => onClick(teacher)}
+              >
+                <div
+                  className="w-12 h-12 bg-purple-200 
+                  rounded-full flex items-center justify-center"
+                >
+                  <UserOutlined className="text-purple-600" />
+                </div>
+                <div>
+                  <div
+                    className="font-medium text-purple-800 
+                    group-hover:text-purple-900 transition-colors"
+                  >
+                    {teacher.user.first_name} {teacher.user.last_name}
+                  </div>
+                  <div className="text-xs text-gray-500">
+                    NIDA: {teacher.nida}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </motion.div>
+  );
+};
 
 const StudentSearch = () => {
   const [searchResults, setSearchResults] = useState([]);
-  const [isSearching, setIsSearching] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isSearching, setIsSearching] = useState({
+    loading: false,
+    resultsVisible: false,
+  });
   const { openNewClass, setOpenNewClass } = useNewClass();
   const router = useRouter();
+  const searchContainerRef = useRef(null);
+  const searchInputRef = useRef(null);
 
-  const today = new Date();
-  const formattedDate = today.toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
+  const clearSearch = () => {
+    setSearchTerm("");
+    setSearchResults([]);
+    setIsSearching((prev) => ({
+      ...prev,
+      loading: false,
+      resultsVisible: false,
+    }));
+  };
 
-  const handleSearch = async (value) => {
-    if (value.trim() !== "") {
-      try {
-        setIsSearching(true);
-        const r = await apiGet(`search?q=${value}`);
-        console.log(r.data);
-        setSearchResults(r.data);
-      } catch (e) {}
+  const performSearch = React.useCallback(async () => {
+    setIsSearching((prev) => ({
+      ...prev,
+      loading: true,
+      resultsVisible: true,
+    }));
+    try {
+      const response = await apiGet(`search?q=${searchTerm}`);
+      if (response.status === 200) {
+        setSearchResults(response.data);
+      }
+    } catch (error) {
+    } finally {
+      setIsSearching((prev) => ({
+        ...prev,
+        loading: false,
+        resultsVisible: searchTerm.trim().length > 0,
+      }));
+    }
+  }, [searchTerm]);
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      if (searchTerm.trim()) {
+        performSearch();
+      } else {
+        setSearchResults([]);
+        setIsSearching((prev) => ({ ...prev, resultsVisible: false }));
+      }
+    }, 500);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [performSearch, searchTerm]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        searchContainerRef.current &&
+        !searchContainerRef.current.contains(event.target)
+      ) {
+        clearSearch();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isSearching.resultsVisible) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
     }
 
-    // Example: setSearchResults(...)
-  };
+    return () => {
+      document.body.style.overflow = "auto";
+      document.body.style.filter = "none";
+    };
+  }, [isSearching.resultsVisible]);
 
-  const clickSearchResult = (index) => {
+  const handleResultClick = (item) => {
     router.push("/student/library");
     setOpenNewClass(true);
-    setIsSearching("");
+    setIsSearching((prev) => ({ ...prev, resultsVisible: false }));
   };
 
-  console.log(searchResults);
   return (
-    <div className="fixed top-16 left-0 w-full z-40 bg-white border-b border-gray-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="relative flex flex-col md:flex-row items-center justify-between py-3 gap-4">
+    <div
+      ref={searchContainerRef}
+      className="fixed top-16 left-0 w-full z-40 bg-white shadow-sm"
+    >
+      <div className="max-w-7xl mx-auto px-4 py-4">
+        <div className="relative flex justify-between w-full items-center space-x-4">
           <div className="w-full md:w-[653px] relative">
-            <Input
-              className="!h-8 !px-4 !w-full !rounded-lg !border-2 !border-blue-600 focus:!border-blue-900 !transition-all !outline-none"
+            <Input.Search
+              ref={searchInputRef}
+              // className="!h-12 !rounded-full !border-2 !border-gray-300 focus:!border-blue-500 !transition-all !duration-300 !outline-none"
               placeholder="Search subjects, teachers or topics..."
               prefix={<IoMenu className="text-gray-400 mr-2" />}
-              suffix={<IoSearch className="text-gray-400" />}
-              onChange={(e) => handleSearch(e.target.value)}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              loading={isSearching.loading}
+              // onBlur={() => {
+              //   setIsSearching((prevState) => ({
+              //     ...prevState,
+              //     loading: false,
+              //   }));
+              // }}
+              // onSearch={() => performSearch()}
+              allowClear={{
+                clearIcon: (
+                  <CloseOutlined
+                    className="text-gray-500 hover:text-red-500 transition-colors"
+                    onClick={clearSearch}
+                  />
+                ),
+              }}
             />
 
-            {true && (
-              <div className="absolute top-full left-0 w-full mt-1 bg-white shadow-lg rounded-b-lg border border-gray-200 max-h-[35rem] overflow-y-auto z-50">
-                {searchResults.length > 0 ? searchResults.map(({ subjects, topics, users }, index) => 
-                  <Card
-                    key={index}
-                    hoverable
-                    onClick={() => clickSearchResult(index)}
-                    className="transition-all duration-300 hover:shadow-md"
-                  >
-                    {/* Subjects Section */}
-                    {subjects && subjects.length > 0 && (
-                      <>
-                        <div className="flex items-center mb-2">
-                          <BookOutlined className="mr-2 text-blue-500" />
-                          <Title level={5} className="mb-0">
-                            Subjects
-                          </Title>
-                        </div>
-                        {subjects.map((subject) => (
-                          <Paragraph key={subject.id} className="mb-1">
-                            <Text strong>{subject.name}</Text>:
-                            <Text type="secondary" className="ml-2">
-                              {subject.description}
-                            </Text>
-                          </Paragraph>
-                        ))}
-                        <Divider className="my-3" />
-                      </>
-                    )}
-
-                    {/* Topics Section */}
-                    {topics && topics.length > 0 && (
-                      <>
-                        <div className="flex items-center mb-2">
-                          <TagOutlined className="mr-2 text-green-500" />
-                          <Title level={5} className="mb-0">
-                            Topics
-                          </Title>
-                        </div>
-                        {topics.map((topic) => (
-                          <div
-                            key={topic.id}
-                            className="flex justify-between items-center mb-1"
-                          >
-                            <Text>{topic.title}</Text>
-                            <Tag icon={<DollarOutlined />} color="volcano">
-                              ${topic.price}
-                            </Tag>
-                          </div>
-                        ))}
-                        <Divider className="my-3" />
-                      </>
-                    )}
-
-                    {/* Users Section */}
-                    {users && users.length > 0 && (
-                      <>
-                        <div className="flex items-center mb-2">
-                          <UserOutlined className="mr-2 text-purple-500" />
-                          <Title level={5} className="mb-0">
-                            Users
-                          </Title>
-                        </div>
-                        <div className="flex flex-wrap gap-2">
-                          {users.map((user, idx) => (
-                            <Tag key={idx} color="blue">
-                              {user.name}
-                            </Tag>
+            <AnimatePresence>
+              {isSearching.resultsVisible && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="absolute top-full w-full mt-2 z-50"
+                >
+                  <div className="bg-white rounded-xl shadow-2xl border border-gray-100 max-h-[70vh] overflow-y-auto">
+                    {isSearching.loading ? (
+                      <div className="p-6 text-center">
+                        {/* <Skeleton active paragraph={{ rows: 4 }} /> */}
+                        <div className="grid gap-2">
+                          {[...Array(3)].map((_, index) => (
+                            <div
+                              key={index}
+                              className="bg-blue-50 rounded-lg p-3 
+                                          flex justify-between items-center"
+                            >
+                              <div className="flex-grow pr-4">
+                                <Skeleton
+                                  active
+                                  title={{
+                                    width: "75%",
+                                  }}
+                                  paragraph={{
+                                    rows: 1,
+                                    width: "100%",
+                                  }}
+                                />
+                              </div>
+                              <Skeleton.Avatar
+                                active
+                                size="small"
+                                shape="circle"
+                              />
+                            </div>
                           ))}
                         </div>
+                      </div>
+                    ) : (
+                      <>
+                        {searchResults.length === 0 ||
+                        searchResults.every(
+                          (result) =>
+                            (!result.subjects ||
+                              result.subjects.length === 0) &&
+                            (!result.topics || result.topics.length === 0) &&
+                            (!result.teachers || result.teachers.length === 0)
+                        ) ? (
+                          <div className="p-4 text-center">
+                            <Empty
+                              image={Empty.PRESENTED_IMAGE_SIMPLE}
+                              description={
+                                <span className="text-gray-500">
+                                  No results found
+                                </span>
+                              }
+                            />
+                          </div>
+                        ) : (
+                          searchResults.map((result, index) => (
+                            <SearchResultCard
+                              key={index}
+                              data={result}
+                              onClick={handleResultClick}
+                            />
+                          ))
+                        )}
                       </>
                     )}
-                  </Card>
-                 ) : (
-                  <div className="p-4 text-center">
-                    <Empty
-                      image={Empty.PRESENTED_IMAGE_SIMPLE}
-                      description={
-                        <span className="text-gray-500">No results found</span>
-                      }
-                    />
                   </div>
-                )}
-              </div>
-            )}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
-          <div className="flex w-full md:w-auto items-center justify-end gap-x-6 lg:gap-x-12">
-            <span className="text-xs font-semibold text-gray-600 whitespace-nowrap">
-              {formattedDate}
-            </span>
-            <div className="flex items-center gap-4">
-              <FaBell className="text-xl text-gray-600 hover:text-blue-600 cursor-pointer transition-colors" />
-              <FaUserCircle className="text-xl text-gray-600 hover:text-blue-600 cursor-pointer transition-colors" />
-            </div>
+          <div className="lg:flex items-center space-x-4 hidden">
+            <FaBell className="text-xl text-gray-500 hover:text-blue-600 cursor-pointer transition-colors" />
+            <FaUserCircle className="text-xl text-gray-500 hover:text-blue-600 cursor-pointer transition-colors" />
           </div>
         </div>
       </div>
