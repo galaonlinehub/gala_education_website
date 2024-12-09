@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import localFont from "next/font/local";
 import { FaBell, FaUserCircle } from "react-icons/fa";
 import "../globals.css";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
@@ -15,8 +14,21 @@ import StudentsInClass from "@/components/vectors/StudentsInClass";
 import { teacher_links } from "@/constants/navigation_links";
 import Providers from "../providers";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 
-
+// export const metadata = {
+//   title: "Gala Education",
+//   description: "Gala Education",
+//   icons: {
+//     icon: [
+//       { url: '/favicon-96x96.png', sizes: '96x96', type: 'image/png' },
+//       { url: '/favicon.svg', type: 'image/svg+xml' },
+//     ],
+//     shortcut: [{ url: '/favicon.ico' }],
+//     apple: [{ url: '/apple-touch-icon.png', sizes: '180x180' }],
+//   },
+//   manifest: '/site.webmanifest',
+// };
 
 export default function RootLayout({ children }) {
   const pathname = usePathname();
@@ -44,14 +56,21 @@ export default function RootLayout({ children }) {
           <AntdRegistry>
             {/* Top Navigation */}
             <nav className="fixed top-0 left-0 right-0 h-16 px-4 bg-white shadow-sm flex justify-between items-center z-50">
-              <div className="flex items-center gap-2">
-                <div className="w-10 h-10 relative bg-gradient-to-br from-blue-500 to-blue-600 rounded-full ring-2 ring-blue-400 ring-offset-2 flex items-center justify-center">
-                  <div className="text-center">
-                    <p className="text-black text-[10px] font-bold leading-tight">Gala</p>
-                    <p className="text-black text-[10px] font-bold leading-tight">Education</p>
-                  </div>
-                </div>
-              </div>
+              {/*<div className="flex items-center gap-2 hidden">*/}
+              {/*  <div className="w-10 h-10 relative bg-gradient-to-br from-blue-500 to-blue-600 rounded-full ring-2 ring-blue-400 ring-offset-2 flex items-center justify-center">*/}
+              {/*    <div className="text-center">*/}
+              {/*      <p className="text-black text-[10px] font-bold leading-tight">Gala</p>*/}
+              {/*      <p className="text-black text-[10px] font-bold leading-tight">Education</p>*/}
+              {/*    </div>*/}
+              {/*  </div>*/}
+              {/*</div>*/}
+              <Image
+                  alt={"Gala logo"}
+                  width={1920}
+                  height={1080}
+                  src={'/gala-logo.png'}
+                  className={'w-10 h-10 object-cover bg-white rounded-full border-[1px] border-blue-800'}
+              />
 
               <ul className="hidden md:flex items-center text-xs font-bold gap-8 text-gray-700">
                 <li className="hover:text-blue-600 transition-colors">
