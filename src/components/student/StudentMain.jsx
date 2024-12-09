@@ -45,6 +45,21 @@ function StudentMain({ children }) {
     <>
       <AntdRegistry>
         <div>
+<<<<<<< HEAD
+          <nav className="h-16 border-b-[1.2px] bg-white fixed inset-0  border-[#d9d9d9] px-4 shadow-sm w-full flex justify-between items-center z-50">
+            <div className="flex items-center gap-2">
+              <div className="w-10 h-10 relative bg-gradient-to-br from-blue-500 to-blue-600 rounded-full ring-2 ring-blue-400 ring-offset-2 flex items-center justify-center">
+                <div className="text-center">
+                  <p className="text-white text-[10px] font-bold leading-tight">
+                    Gala
+                  </p>
+                  <p className="text-white text-[10px] font-bold leading-tight">
+                    Education
+                  </p>
+                </div>
+              </div>
+            </div>
+=======
           <nav className="h-16 border-b-[1.2px] bg-white fixed inset-0 border-[#d9d9d9] px-4 shadow-sm w-full flex justify-between items-center z-50">
             {/*<div className="flex items-center gap-2">*/}
             {/*  <div className="w-10 h-10 relative bg-gradient-to-br from-blue-500 to-blue-600 rounded-full ring-2 ring-blue-400 ring-offset-2 flex items-center justify-center">*/}
@@ -67,6 +82,7 @@ function StudentMain({ children }) {
                 className={'w-16 h-16 object-cover  rounded-full '}
             />
 
+>>>>>>> af1f28b455c8ef9186fa2f4d0cfb5657a0e7f959
 
             <ul className="hidden md:flex items-center text-xs font-bold gap-8 text-gray-700">
               <li className="hover:text-blue-600 transition-colors">
@@ -96,7 +112,6 @@ function StudentMain({ children }) {
             </button>
           </nav>
 
-          {/* Search Bar */}
           <StudentSearch/> 
 
           <main className="flex flex-col lg:flex-row w-full mt-[110px]">

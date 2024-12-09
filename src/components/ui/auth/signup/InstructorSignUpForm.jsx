@@ -7,10 +7,9 @@ import EmailVerification from "./EmailVerification";
 import { useEmailVerificationModalOpen } from "@/src/store/auth/signup";
 import InstructorSignUpPageSvg from "@/src/utils/vector-svg/sign-up/InstructorSignUpPageSvg";
 import { encrypt } from "@/src/utils/constants/encryption";
+import { apiPost } from "@/src/services/api_service";
 
 const InstructorSignUpForm = () => {
-  
-
   const {
     register,
     handleSubmit,
@@ -80,7 +79,7 @@ const InstructorSignUpForm = () => {
       formData.append("o_level_certificate", files.oLevelCertificate);
 
     try {
-      const response = await api.post("/register", formData, {
+      const response = await apiPost("/register", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
