@@ -131,7 +131,7 @@ const NewClass = () => {
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
-                      className="absolute top-full w-full mt-2 z-50"
+                      className=" top-full w-full mt-2"
                     >
                       <div className="bg-white rounded-xl shadow-2xl border border-gray-100 max-h-[70vh] overflow-y-auto">
                         {isSearching.loading ? (
