@@ -19,6 +19,7 @@ import { Input } from "antd";
 import { IoMenu, IoSearch } from "react-icons/io5";
 import StudentSearch from "./Search";
 import useUser from "@/src/store/auth/user";
+import Providers from "@/app/providers";
 
 function StudentMain({ children }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -43,6 +44,7 @@ function StudentMain({ children }) {
 
   return (
     <>
+     <Providers>
       <AntdRegistry>
         <div>
           <nav className="h-16 border-b-[1.2px] bg-white fixed inset-0 border-[#d9d9d9] px-4 shadow-sm w-full flex justify-between items-center z-50">
@@ -152,7 +154,7 @@ function StudentMain({ children }) {
           <Footer />
         </div>
       </AntdRegistry>
-
+      </Providers>
       {/* Drawer for Mobile Sidebar */}
       <Drawer
         title={

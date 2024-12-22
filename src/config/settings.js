@@ -3,7 +3,8 @@
 import axios from 'axios';
 
 export const api = axios.create({
-  baseURL:'https://galaweb.galahub.org/api',
+  baseURL:'http://localhost:8000/api',
+  // baseURL:'https://galaweb.galahub.org/api',
   headers: {
     'Content-Type': 'application/json',
     
