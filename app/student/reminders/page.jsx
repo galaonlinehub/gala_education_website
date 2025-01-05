@@ -175,7 +175,7 @@ const StudentReminders = () => {
       <div>
               <h1>Total {reminderData?.length}</h1>
       {
-        reminderData?.map((item,key)=><div>Title</div>) 
+        reminderData?.map((item,keyItem)=><div key={keyItem}>Title</div>) 
       }
       </div>
     </div>

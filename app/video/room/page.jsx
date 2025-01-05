@@ -58,15 +58,7 @@ const App = () => {
     const joinRoom = () => {
       socket.emit('joinRoom', { roomName }, (data) => {
         rtpCapabilities = data.rtpCapabilities;
-        createDevice().then(() => {
-          // Connect to existing producers after device is created
-          if (data.existingProducers && data.existingProducers.length > 0) {
-            data.existingProducers.forEach(({ producerId }) => {
-              signalNewConsumerTransport(producerId);
-            });
-          }
-        });
-      
+        createDevice();
       });
     };
 
@@ -75,13 +67,11 @@ const App = () => {
         device = new mediasoupClient.Device();
         await device.load({ routerRtpCapabilities: rtpCapabilities });
         createSendTransport();
-        return Promise.resolve();
       } catch (error) {
         console.log(error);
         if (error.name === 'UnsupportedError') {
           console.warn('browser not supported');
         }
-        return Promise.reject(error);
       }
     };
 
@@ -151,9 +141,8 @@ const App = () => {
       consumingTransports.push(remoteProducerId);
 
       socket.emit('createWebRtcTransport', { consumer: true }, ({ params }) => {
-       
-        if (!params || params.error) {
-          console.error('Failed to create WebRTC transport:', params?.error || 'Unknown error');
+        if (params.error) {
+          console.log(params.error);
           return;
         }
 
