@@ -1,16 +1,47 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef,useState } from 'react';
 import io from 'socket.io-client';
 import * as mediasoupClient from 'mediasoup-client';
+import Cookies from 'js-cookie';
+import { decrypt } from '@/src/utils/constants/encryption';
 
-const App = () => {
+const VideoComponent = ({params:{meeting_link}}) => {
   const localVideoRef = useRef(null);
   const videoContainerRef = useRef(null);
+  const [userName,setUserName] = useState("")
+  const [role,setRole] = useState("")
+  
+
+   const getToken = ()=>{
+  
+          const encryptedToken = Cookies.get("9fb96164-a058-41e4-9456-1c2bbdbfbf8d");
+    
+      if (!encryptedToken) {
+        console.error("No token found in cookies");
+        return null;
+      }
+    
+      try {
+        const decryptedToken = decrypt(encryptedToken);
+        console.log("Decrypted Token:", decryptedToken);
+        return decryptedToken;
+      } catch (error) {
+        console.error("Error decrypting token:", error);
+        return null;
+      }
+      }
 
   useEffect(() => {
-    const socket = io('http://localhost:3001/signaling');
-    const roomName = "room1";
+    const token = getToken()
+    const socket = io("http://localhost:3001/signaling", {
+      query: { token },
+      transports: ["websocket"],
+      reconnection: true,
+      reconnectionAttempts: 5,
+      reconnectionDelay: 1000,
+    });
+    const roomName = meeting_link;
 
     let device;
     let rtpCapabilities;
@@ -42,6 +73,24 @@ const App = () => {
       joinRoom();
     };
 
+    const addParticipant = (producerId, stream, participantRole) => {
+      const newParticipant = { producerId, stream, role: participantRole };
+      if (participantRole === 'instructor') {
+        setInstructor(newParticipant);
+      } else {
+        setParticipants((prev) => [...prev, newParticipant]);
+      }
+    };
+
+    const removeParticipant = (producerId) => {
+      setParticipants((prev) =>
+        prev.filter((participant) => participant.producerId !== producerId)
+      );
+      if (instructor && instructor.producerId === producerId) {
+        setInstructor(null);
+      }
+    };
+
     const getLocalStream = () => {
       navigator.mediaDevices
         .getUserMedia({
@@ -57,6 +106,12 @@ const App = () => {
 
     const joinRoom = () => {
       socket.emit('joinRoom', { roomName }, (data) => {
+        if (data.error) {
+          // Handle the error gracefully
+          console.error('Error joining room:', data.error);
+          alert(data.error)
+          return;
+        }
         rtpCapabilities = data.rtpCapabilities;
         createDevice().then(() => {
           // Connect to existing producers after device is created
@@ -138,12 +193,12 @@ const App = () => {
     };
 
     const getProducers = () => {
-        console.log("getProducers was called")
+        
         socket.emit('getProducers', (producerIds) => {
             console.log("Available producers", producerIds);
             producerIds.forEach(signalNewConsumerTransport);
         });
-        console.log("getProducers was called")
+        
     };
 
     const signalNewConsumerTransport = async (remoteProducerId) => {
@@ -186,12 +241,14 @@ const App = () => {
             console.log('Cannot Consume');
             return;
           }
-
+          console.log(params)
           const consumer = await consumerTransport.consume({
             id: params.id,
             producerId: params.producerId,
             kind: params.kind,
             rtpParameters: params.rtpParameters,
+            
+            
           });
 
           consumerTransports.push({
@@ -199,17 +256,23 @@ const App = () => {
             serverConsumerTransportId: params.id,
             producerId: remoteProducerId,
             consumer,
+            
           });
 
-          console.log("ready to consume video");
+          
           const newElem = document.createElement('div');
           newElem.setAttribute('id', `td-${remoteProducerId}`);
+          newElem.setAttribute('data-username', params?.user?.name);
+          
 
           if (params.kind === 'audio') {
             newElem.innerHTML = `<audio id="${remoteProducerId}" autoplay></audio>`;
           } else {
             newElem.setAttribute('className', 'remoteVideo');
-            newElem.innerHTML = `<video id="${remoteProducerId}" autoplay className="video"></video>`;
+            newElem.innerHTML = `<div>
+            <video id="${remoteProducerId}" autoplay className="video"></video> 
+            <p>${params.user.name} (${params?.user?.role})</p>
+            </div>`;
           }
 
           if (videoContainerRef.current) {
@@ -225,17 +288,21 @@ const App = () => {
     };
     socket.on('connect', () => {
         console.log('Connected to server');
+        
        
       });
 
-    socket.on('connection-success', ({ socketId }) => {
+    socket.on('connection-success', ({ socketId,role,name }) => {
       console.log(socketId);
+      setUserName(name);
+      setRole(role);
       getLocalStream();
     });
 
-    socket.on('new-producer', ({ producerId }) => {
+    socket.on('new-producer', ({ producerId,user }) => {
         console.log("New producer connected : "+producerId)
-        signalNewConsumerTransport(producerId)});
+        signalNewConsumerTransport(producerId,user)});
+
 
     socket.on('producer-closed', ({ remoteProducerId }) => {
       const producerToClose = consumerTransports.find((transportData) => transportData.producerId === remoteProducerId);
@@ -317,4 +384,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default VideoComponent;
