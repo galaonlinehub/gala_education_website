@@ -94,7 +94,7 @@ const TeacherSocial = () => {
     return filteredUsers.map((item, index) => (
       <div key={index} onClick={() => viewOnClickedUser(index)} className={`p-2 mb-3 bg-[#070B65] shadow-md flex items-center cursor-pointer gap-2 rounded-lg ${clickedUserIndex === index ? "bg-[#001840] text-white" : "bg-white"}`}>
         <div className="flex items-center justify-center">
-          <img src="/necklace.png" alt="avatar" className="w-10 object-cover rounded-full" />
+          <Image src="/necklace.png" width={80} height={80} alt="avatar" className="w-16 h-8 object-cover rounded-full" />
         </div>
 
         <div className="flex flex-col  w-72 flex-grow overflow-hidden">
@@ -118,7 +118,7 @@ const TeacherSocial = () => {
         <div className="flex justify-between w-full">
           <div className="flex gap-2">
             <div className="flex items-center justify-center">
-              <img src="/necklace.png" alt="avatar" className="w-8 h-8 object-cover rounded-full" />
+              <Image src="/necklace.png" alt="avatar" width={80} height={80} className="w-8 h-8 object-cover rounded-full" />
             </div>
             <div className="flex flex-col">
               <h2 style={{ fontSize: "10px" }}>{users[clickedUserIndex].name} </h2>
@@ -209,13 +209,13 @@ const TeacherSocial = () => {
 
         {(!isSmallScreen || clickedUserIndex === null) && (
           <div className="w-full lg:w-1/3">
-            <div className="bg-[#001840] rounded-xl p-6 max-h-[600px] overflow-y-auto">
+            <div className="bg-[#001840] rounded-xl p-6 max-h-[600px] overflow-y-auto scrollbar-hide">
               <h2 className="text-white text-xs font-bold mb-4">Notifications</h2>
-              <div className="space-y-4 mb-8 max-h-[300px] overflow-y-auto">
+              <div className="space-y-4 mb-8 max-h-[300px] overflow-y-auto scrollbar-hide">
                 {notifications.map((item, index) => (
                   <div key={index} className="bg-white rounded-md p-2 flex items-center gap-3 h-14">
                     <div className="flex items-center justify-center">
-                      <img src="/necklace.png" alt="avatar" className="w-8 h-8 object-cover rounded-full" />
+                      <Image src="/necklace.png" alt="avatar" width={80} height={80} className="w-8 h-8 object-cover rounded-full" />
                     </div>
                     <div>
                       <p style={{ fontSize: "10px" }} className="text-blue-600 font-bold truncate">
@@ -233,11 +233,11 @@ const TeacherSocial = () => {
               </div>
 
               <h2 className="text-white text-sm font-bold mb-4">Online Users</h2>
-              <div className="space-y-4 max-h-[300px] overflow-y-auto">
+              <div className="space-y-4 max-h-[300px] overflow-y-auto scrollbar-hide">
                 {onlineUsers.map((item, index) => (
                   <div key={index} className="bg-white rounded-md p-2 flex items-center gap-3">
                     <div className="flex items-center justify-center">
-                      <img src="/necklace.png" alt="avatar" className="w-8 h-8 object-cover rounded-full" />
+                      <Image src="/necklace.png" width={80} height={80} alt="avatar" className="w-8 h-8 object-cover rounded-full" />
                     </div>
                     <div>
                       <p className="text-xs font-bold">{item.name}</p>

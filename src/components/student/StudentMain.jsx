@@ -4,11 +4,7 @@ import { FaBell, FaUserCircle } from "react-icons/fa";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import Footer from "@/src/components/layout/footer";
 import Link from "next/link";
-import {
-  MenuOutlined,
-  CloseOutlined,
-  CloseCircleFilled,
-} from "@ant-design/icons";
+import { MenuOutlined, CloseOutlined, CloseCircleFilled } from "@ant-design/icons";
 import RightTiltedBook from "@/components/vectors/CombinedBlock";
 import KidInPicture from "@/components/vectors/KidInPicture";
 import Clock from "@/components/vectors/Clock";
@@ -16,15 +12,16 @@ import StudentsInClass from "@/components/vectors/StudentsInClass";
 import Image from "next/image";
 import { student_links } from "@/constants/navigation_links";
 import { Drawer } from "antd";
-import { Input } from "antd";
-import { IoMenu, IoSearch } from "react-icons/io5";
+import { usePathname } from "next/navigation";
 import StudentSearch from "./Search";
 import useUser from "@/src/store/auth/user";
+import Providers from "@/app/providers";
 
 function StudentMain({ children }) {
+  const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const {user} = useUser();
+  const { user } = useUser();
 
   useEffect(() => {
     const checkMobile = () => {
@@ -40,22 +37,16 @@ function StudentMain({ children }) {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  
-
   return (
-    <>
+    <Providers>
       <AntdRegistry>
         <div>
           <nav className="h-16 border-b-[1.2px] bg-white fixed inset-0 border-[#d9d9d9] px-4 shadow-sm w-full flex justify-between items-center z-50">
             <div className="flex items-center gap-2">
               <div className="w-10 h-10 relative bg-gradient-to-br from-blue-500 to-blue-600 rounded-full ring-2 ring-blue-400 ring-offset-2 flex items-center justify-center">
                 <div className="text-center">
-                  <p className="text-white text-[10px] font-bold leading-tight">
-                    Gala
-                  </p>
-                  <p className="text-white text-[10px] font-bold leading-tight">
-                    Education
-                  </p>
+                  <p className="text-white text-[10px] font-bold leading-tight">Gala</p>
+                  <p className="text-white text-[10px] font-bold leading-tight">Education</p>
                 </div>
               </div>
             </div>
@@ -67,29 +58,26 @@ function StudentMain({ children }) {
               <li className="hover:text-blue-600 transition-colors">
                 <Link href="/about">About Us</Link>
               </li>
-             { !user &&<> <li className="hover:text-blue-600 transition-colors">
-                <Link href="/signup">Register</Link>
-              </li>
-              <li className="hover:text-blue-600 transition-colors">
-                <Link href="/signin">Login</Link>
-              </li></>}
+              {!user && (
+                <>
+                  {" "}
+                  <li className="hover:text-blue-600 transition-colors">
+                    <Link href="/signup">Register</Link>
+                  </li>
+                  <li className="hover:text-blue-600 transition-colors">
+                    <Link href="/signin">Login</Link>
+                  </li>
+                </>
+              )}
             </ul>
 
-            <button
-              className="md:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
-              onClick={toggleSidebar}
-              aria-label="Toggle menu"
-            >
-              {isSidebarOpen ? (
-                <CloseOutlined style={{ fontSize: "20px" }} />
-              ) : (
-                <MenuOutlined style={{ fontSize: "20px" }} />
-              )}
+            <button className="md:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors" onClick={toggleSidebar} aria-label="Toggle menu">
+              {isSidebarOpen ? <CloseOutlined style={{ fontSize: "20px" }} /> : <MenuOutlined style={{ fontSize: "20px" }} />}
             </button>
           </nav>
 
           {/* Search Bar */}
-          <StudentSearch/> 
+          <StudentSearch />
 
           <main className="flex flex-col lg:flex-row w-full mt-[110px]">
             <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
@@ -109,20 +97,18 @@ function StudentMain({ children }) {
             {/* Sidebar */}
             <div className="hidden lg:block sticky top-32 left-0 w-[20vw] h-[calc(100vh-128px)] border-r border-[#d9d9d9] p-4">
               <ul className="space-y-4 ">
-                {student_links.map((item, i) => (
-                  <li key={i}>
-                    <Link
-                      href={item.link}
-                      className="flex items-center gap-4 p-1 rounded-lg hover:bg-blue-50 transition-colors"
-                      onClick={() => isMobile && setIsSidebarOpen(false)}
-                    >
-                      <span className="text-blue-600">{item.icon}</span>
-                      <span className="font-black text-xs text-black">
-                        {item.name}
-                      </span>
-                    </Link>
-                  </li>
-                ))}
+                {student_links.map((item, i) => {
+                  const href = `/student/${item.link}`;
+                  const isActive = pathname.startsWith(href);
+                  return (
+                    <li key={i}>
+                      <Link href={href} className={`flex items-center gap-1 p-1 rounded-lg transition-colors ${isActive ? "bg-[#001840] text-white hover:bg-[#001840]" : "text-gray-700 hover:bg-blue-50"}`} onClick={() => isMobile && setIsSidebarOpen(false)}>
+                        <span className={isActive ? "text-white" : "text-[#001840]"}>{item.icon}</span>
+                        <span className="font-medium text-xs">{item.name}</span>
+                      </Link>
+                    </li>
+                  );
+                })}
                 {/* <li className="absolute bottom-0 left-10">
                   <Image
                     src={"/svg/reminderIcon.svg"}
@@ -135,9 +121,7 @@ function StudentMain({ children }) {
             </div>
 
             {/* Main Content */}
-            <div className="flex-1 px-6 py-2 w-full lg:w-[80vw] overflow-hidden">
-              {children}
-            </div>
+            <div className="flex-1 px-6 py-2 w-full lg:w-[80vw] overflow-hidden">{children}</div>
           </main>
 
           {/* Footer */}
@@ -151,12 +135,8 @@ function StudentMain({ children }) {
           <div className="flex flex-col gap-2 items-center">
             <div className="w-10 h-10 relative bg-gradient-to-br from-blue-500 to-blue-600 rounded-full ring-2 ring-blue-400 ring-offset-2 flex items-center justify-center">
               <div className="text-center">
-                <p className="text-[#d9d9d9] text-[10px] font-bold leading-tight">
-                  Gala
-                </p>
-                <p className="text-[#d9d9d9] text-[10px] font-bold leading-tight">
-                  Education
-                </p>
+                <p className="text-[#d9d9d9] text-[10px] font-bold leading-tight">Gala</p>
+                <p className="text-[#d9d9d9] text-[10px] font-bold leading-tight">Education</p>
               </div>
             </div>
             <div>Gala Education</div>
@@ -171,27 +151,18 @@ function StudentMain({ children }) {
         <ul className="space-y-4">
           {student_links.map((item, i) => (
             <li key={i}>
-              <Link
-                href={item.link}
-                className="flex items-center gap-1 p-1 rounded-lg hover:bg-blue-50 transition-colors"
-                onClick={() => setIsSidebarOpen(false)}
-              >
+              <Link href={item.link} className="flex items-center gap-1 p-1 rounded-lg hover:bg-blue-50 transition-colors" onClick={() => setIsSidebarOpen(false)}>
                 <span className="text-blue-600">{item.icon}</span>
-                <span className="font-medium text-xs text-gray-700">
-                  {item.name}
-                </span>
+                <span className="font-medium text-xs text-gray-700">{item.name}</span>
               </Link>
             </li>
           ))}
           <li>
-            <CloseCircleFilled
-              onClick={() => setIsSidebarOpen(false)}
-              className="!text-red-500 absolute bottom-4 left-1/2 transform -translate-x-1/2 text-4xl p-3 cursor-pointer"
-            />
+            <CloseCircleFilled onClick={() => setIsSidebarOpen(false)} className="!text-red-500 absolute bottom-4 left-1/2 transform -translate-x-1/2 text-4xl p-3 cursor-pointer" />
           </li>
         </ul>
       </Drawer>
-    </>
+    </Providers>
   );
 }
 
