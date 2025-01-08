@@ -26,7 +26,7 @@ function RegisterCard({ image, title, desc, type }) {
 
   return (
     <div
-      className="flex-col flex w-[18rem] sm:w-[16rem] shadow-sm  shadow-black/30 cursor-pointer"
+      className="flex-col flex w-[18rem] sm:w-[16rem] shadow-sm shrink-0 shadow-black/30 cursor-pointer"
       onClick={handleRegister}
     >
       <div className="w-full h-[6rem]">

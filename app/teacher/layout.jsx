@@ -1,4 +1,3 @@
-
 import TeacherMain from "@/src/components/teacher/TeacherMain";
 import "../globals.css";
 

@@ -38,7 +38,7 @@ function Home() {
 
  
   return (
-    <div className="relative w-screen max-w-screen-2xl mx-auto h-full overflow-hidden">
+    <div className="relative w-screen max-w-screen-2xl mx-auto h-full overflow-hidden space-y-10">
 
       {showDonatePopup && (
         <div className="fixed  inset-0 bg-black bg-opacity-70 !z-[9999] flex justify-center items-center ">
@@ -89,11 +89,11 @@ function Home() {
           <MailingList />
         </div>
       </div>
-      <div className="px-20  flex flex-col items-center">
+      {/*<div className="px-20   flex flex-col items-center">*/}
 
-        <div className="relative w-screen h-[35rem] overflow-hidden">
+        <div className="relative w-full h-[35rem] overflow-hidden">
 
-          <div className="relative h-[30rem]  bg-black/10   flex flex-col items-center  py-8  w-screen">
+          <div className="relative h-[30rem]  bg-black/10   flex flex-col items-center  py-8  w-full">
             <ChoosePlatformSvg />
             <h1 className="font-black text-[20px] sm:text-[40px]">
               Why choose our platform?
@@ -140,52 +140,56 @@ function Home() {
           </div>
         </div>
 
-        <div className="relative w-full max-w-screen-2xl mx-auto mt-4 px-4 py-6 sm:py-10 flex flex-col md:flex-row">
+        <div className="relative  max-sm:w-screen h-[50rem] sm:h-[35rem]  w-full max-w-screen-2xl mx-auto mt-4 px-2 sm:px-4 py-6 sm:py-10 flex flex-col md:flex-row">
           <div className="md:w-1/2 w-full flex flex-col items-center gap-7 p-4">
 
             <h1 className="text-black w-full font-bold text-center text-xl sm:text-[40px]">
               Register with us!
             </h1>
-            <h3 className="text-center text-sm sm:text-base leading-relaxed px-4">
+            <h3 className="text-center text-sm sm:text-base leading-relaxed sm:px-4 ">
               Join Gala Education today - register as a teacher or
               student and unlock endless learning opportunities!
             </h3>
 
-            <div className="flex flex-col sm:flex-row gap-5">
+            <div className="flex sm:gap-5 gap-2 overflow-x-auto px-2 max-sm:w-[98%] ">
               <RegisterCard title={"Register as teacher"} image={"/register_teacher.jpeg"} desc={"Become part of our team of educators and help deliver exceptional learning experiences."} type={"instructor"} />
               <RegisterCard title={"Register as student"} image={"/register_student.jpeg"} desc={"Join our community of learners and be part of the journey to excellence in education!"} type={"student"} />
             </div>
           </div>
 
           <div className="md:w-1/2 w-full ">
-            <div className="relative w-full h-full">
+            <div className="relative w-full h-full  place-items-center">
               <Image
-                alt="Donation image"
-                src={"/donate1.jpeg"}
-                width={100}
-                height={100}
-                className="absolute top-0 right-0 rounded-br-[100px] h-[20rem] w-[25rem] object-cover  "
+                  alt="Donation image"
+                  src={"/donate1.jpeg"}
+                  width={100}
+                  height={100}
+                  className=" rounded-br-[100px] h-[259px] w-[266px] object-cover  sm:ml-24"
               />
-              <div className="absolute bottom-0 left-[2rem] w-2/3 !z-10 bg-white p-6  mx-4 border rounded-lg shadow-lg">
-                <h1 className="text-xl font-bold mb-4">
+              {/*<div className="absolute  bottom-24 left-[4rem] w-[20rem] !z-10 bg-white p-6  mx-4 border rounded-lg shadow-lg">*/}
+              <div
+                  className="absolute  sm:bottom-24 sm:left-[2rem] -bottom-[5rem] left-3 w-[15rem] sm:w-[20rem] !z-10 bg-white p-6  mxp-4 border rounded-lg shadow-lg">
+                <h1 className="sm:text-xl text-base font-bold mb-4">
                   Donate today to support underfunded schools
                 </h1>
-                <p className="text-sm text-gray-600 mb-4">
+                <p className="sm:text-sm text-xs text-gray-600 mb-4 ">
                   Join our community and make a difference! Your donation
                   supports quality education and empowers lives. Together, we
                   can create a brighter future. Every contribution counts - be
                   part of something impactful today!
                 </p>
-                <button  onClick={handleDonateVisibility} className="w-full md:w-auto border border-blue-600 text-blue-600 font-bold py-2 px-4 rounded-md hover:bg-blue-50 transition-colors">
+                <button onClick={handleDonateVisibility}
+                        className="w-full md:w-auto border border-blue-600 text-blue-600 font-bold py-2 px-4 rounded-md hover:bg-blue-50 transition-colors">
 
                   Donate
                 </button>
               </div>
             </div>
+
           </div>
         </div>
-        <div className="">
-          <div className="relative w-screen min-h-[100vh] ">
+
+          <div className="relative flex items-center  w-full h-[50rem] ">
             <svg className="w-[250px] md:w-[300px] h-[250px] md:h-[300px] my-[90px] mx-[20px] absolute -top-[26px] -left-[18px]" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
               <g clipPath="url(#clip0_101_202)">
                 <path
@@ -231,14 +235,14 @@ function Home() {
                 </clipPath>
               </defs>
             </svg>
-            <div className=" w-screen mt-12 py-12 flex gap-5 items-center flex-col h-fit sm:h-[120vh] 2xl:h-[80vh]   bg-black/10">
+            <div className=" w-full mt-12 py-12 flex gap-5 items-center justify-center flex-col h-fit    bg-black/10">
               <h1 className="font-black text-3xl">Our services</h1>
               <h2 className="text-center text-[14px]">
                 We aim to integrate AI to provide personalized, AI-powered tutoring and learning experiences
                 <br />
                 tailored to each student&apos;s unique needs and progress.
               </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 ">
+              <div className="sm:grid flex  max-sm:w-[98%]  overflow-x-auto sm:grid-cols-3 gap-8 ">
                 <Card2 title={"Personalized Subject Tutoring"} image={"/service1.jpeg"} desc={"Tailored one-on-one sessions in core subjects such as math, science, English, and social studies, focusing on the student's specific needs and learning pace."} />
                 <Card2 title={"STEM Enrichment Programs"} image={"/service2.jpeg"} desc={"Specialized tutoring in science, technology, engineering, and math for students interested in deepening their knowledge or exploring STEM fields."} />
                 <Card2 title={"Special Education Support"} image={"/service3.jpeg"} desc={"Customized sessions for students with learning disabilities or special needs, providing them with the tools and support to thrive academically."} />
@@ -247,10 +251,10 @@ function Home() {
                 <Card2 title={"Study Skills Coaching"} image={"/service6.jpeg"} desc={"CSessions aimed at improving time management, organization, and study techniques to enhance overall academic performance."} />
               </div>
             </div>
-          </div>
+          
         </div>
         {/* //relative w-screen max-w-screen-2xl mx-auto h-[100vh] overflow-hidden */}
-        <div className="relative flex flex-col sm:flex-row  mt-4 h-[100vh] w-screen">
+        <div className="relative flex flex-col gap-4 sm:flex-row mt-14 h-fit sm:h-[45rem] w-full ">
           <div className="absolute left-0 top-0 w-full">
             <svg className="sm:w-[250px] sm:h-[250px] w-[248px] h-[248px] absolute -top-[50vh]" viewBox="0 0 496 496" fill="none" xmlns="http://www.w3.org/2000/svg">
               <g clipPath="url(#clip0_101_211)">
@@ -283,17 +287,17 @@ function Home() {
             </svg>
           </div>
 
-          <div className="relative w-full h-full ">
-            <div className="sm:w-2/3 w-full h-3/4 absolute left-0 bg-black/10" />
-            <Image alt="image" src="/register_teacher.jpeg" width={200} height={200} quality={75} className="border-[14px] top-[20vh] sm:top-[15vh] w-2/3 h-1/2 object-cover left-[15vw] sm:left-[35vh] absolute  border-white" />
+          <div className="relative w-full sm:w-1/2 h-full max-sm:p-2">
+            <div className=" w-[521px] h-[549px] absolute left-0 bg-black/10" />
+            <Image alt="image" src="/register_teacher.jpeg" width={1920} height={1080} quality={75} className="border-[14px] top-[5rem]  left-[6rem] w-[542px] h-[378px] object-cover  sm:absolute  border-white" />
           </div>
-          <div className=" sm:px-20 px-2 sm:w-3/4  w-full space-y-6 sm:py-[15vh]">
+          <div className=" sm:px-20 px-2 sm:w-1/2  w-full space-y-6 sm:py-[15vh]">
             <h1 className="text-3xl font-black ">Here&apos;s more on what you need to know about Us!</h1>
             <h2 className="text-[12px]">At Gala Education, we offer personalized one-on-one tutoring in subjects like math, science, English, social studies, foreign languages, and more, with flexible scheduling tailored to your child&apos;s learning needs. Our experienced and qualified tutors provide targeted help with homework, test preparation, and standardized exams, as well as support for students with special needs. We ensure each student receives focused attention to build academic confidence and succeed in their studies. All you need is a device and a stable internet connection to access our tutoring sessions online</h2>
             <button className="px-2 py-1 border-[1px] rounded font-bold border-[#030DFE]">Request information</button>
           </div>
         </div>
-        <div className="relative flex flex-col sm:flex-row  mt-4 sm:h-[80vh] h-fit w-screen ">
+        <div className="relative flex flex-col sm:flex-row  mt-4  h-fit w-full ">
           <div className="absolute left-0 -top-[200px] w-full">
             <svg className="sm:w-[250px] sm:h-[250px] w-[150px] h-[150px]  !-z-10" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
@@ -310,12 +314,12 @@ function Home() {
             </svg>
           </div>
 
-          <div className="w-full flex py-8 bg-black/10 space-y-8  sm:h-[70vh] 2xl:h-[50vh] h-fit flex-col items-center">
+          <div className="w-full flex py-8 bg-black/10 space-y-8   h-fit flex-col items-center">
             <h1 className="text-3xl text-center font-black ">Pioneers in Digital Teaching</h1>
             <h1 className="text-center text-[14px]">
               &ldquo;Our platform offers personalized, AI-driven learning while teaching students healthy <br /> digital habits for balanced, responsible technology use.&ldquo;
             </h1>
-            <div className="flex items-center justify-around flex-col gap-y-10 sm:gap-x-4  sm:flex-row ">
+            <div className="flex items-center sm:justify-around max-sm:w-[98%]  gap-y-10 gap-x-4  overflow-x-auto ">
               <PioneerCard
                 icon={
                   <svg width="40" height="40" className="" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -371,7 +375,7 @@ function Home() {
             </div>
           </div>
         </div>
-      </div>
+      {/*</div>*/}
       <div className="relative">
         <div className="relative flex justify-center ">
           <svg className="sm:w-[350px] w-[150px]   sm:h-[350px] h-[150px] absolute -top-64 -z-[100] sm:-left-[5rem] left-0" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -390,7 +394,7 @@ function Home() {
             <path d="M80 440C77 440 75 442 75 445V450C75 453 77 455 80 455C83 455 85 453 85 450V445C85 442 83 440 80 440Z" fill="black" fillOpacity="0.1" />
           </svg>
 
-          <div className="self-center rounded-[15px] flex flex-col sm:flex-row px-6  shadow-[0px_4px_4px_rgba(0,0,0,0.6)] w-[70vw] 2xl:w-[50vw] bg-[#F3F2F2] my-10">
+          <div className="self-center rounded-[15px] flex flex-col sm:flex-row px-6  shadow-[0px_4px_4px_rgba(0,0,0,0.6)] w-[72rem]    bg-[#F3F2F2] my-10">
             <div className="basis-2/3  py-6 flex flex-col gap-y-1">
               <h1 className="font-bold ">Financial Aid</h1>
 
@@ -469,23 +473,23 @@ function Home() {
             <path d="M520.167 136C515.367 136 512.167 139.2 512.167 144V176C512.167 180.8 515.367 184 520.167 184C524.967 184 528.167 180.8 528.167 176V144C528.167 139.2 524.967 136 520.167 136Z" fill="black" fillOpacity="0.08" />
             <path d="M520.167 192C515.367 192 512.167 195.2 512.167 200V208C512.167 212.8 515.367 216 520.167 216C524.967 216 528.167 212.8 528.167 208V200C528.167 195.2 524.967 192 520.167 192Z" fill="black" fillOpacity="0.08" />
           </svg>
-          <div className="w-screen bg-black/10 sm:px-[60px] px-[30px] py-3">
+          <div className="w-full bg-black/10 sm:px-[60px] px-[30px] py-3">
             <div className="basis-1/2 space-y-2">
               <h1 className="font-bold text-lg">Latest news</h1>
-              <div className="flex gap-2 flex-col sm:flex-row 2xl:flex-col">
-                <div className="basis-1/2 flex flex-col  h-[316px]">
-                  <Image alt="image" src="/ai.jpeg" quality={75} width={200} height={200} className="w-full h-1/3 2xl:h-[25vh] object-cover" />
+              <div className="flex gap-2 flex-col sm:flex-row ">
+                <div className="basis-1/2 flex flex-col  ">
+                  <Image alt="image" src="/ai.jpeg" quality={75} width={200} height={200} className=" h-[127px] w-full object-cover" />
 
                   <div className="flex sm:flex-row flex-col bg-[#001840] ">
-                    <div className="basis-1/2 text-white sm:text-2xl text-lg p-4 font-black">Gala Education Launches AI-Powered Learning Platform</div>
+                    <div className="basis-1/2 text-white sm:text-lg text-lg p-4 font-black">Gala Education Launches AI-Powered Learning Platform</div>
                     <div className="basis-1/2 text-[10px] px-2 py-3 flex items-center justify-center text-white">Gala Education is excited to announce the launch of our AI-powered learning platform, offering personalized tutoring and adaptive learning experiences for K12 students.</div>
                   </div>
                   <button className="border border-[#030DFE] mt-4  sm:w-1/4 w-fit rounded p-1 text-xs">Read the Article</button>
                 </div>
                 <div className="basis-1/2 flex flex-col gap-1">
                   <NewsCard img={"/news1.jpeg"} title={"New Scholarships for Students Facing Financial Hardship."} desc={"In our commitment to making education accessible, Gala Education has introduced new scholarship opportunities for students struggling to afford our courses."} />
-                  <NewsCard img={"/news1.jpeg"} title={"New Scholarships for Students Facing Financial Hardship."} desc={"In our commitment to making education accessible, Gala Education has introduced new scholarship opportunities for students struggling to afford our courses."} />
-                  <NewsCard img={"/news1.jpeg"} title={"New Scholarships for Students Facing Financial Hardship."} desc={"In our commitment to making education accessible, Gala Education has introduced new scholarship opportunities for students struggling to afford our courses."} />
+                  <NewsCard img={"/news2.jpeg"} title={"Interactive STEM Workshops Coming Soon."} desc={"Gala Education is launching a series of interactive STEM workshops aimed at fostering innovation and critical thinking among young learners."} />
+                  <NewsCard img={"/news3.jpeg"} title={"Introducing Gala Learning Labs for Personalized Tutoring."} desc={"Our new Gala Learning Labs provide one-on-one tutoring sessions focused on student-specific needs, helping learners excel in subjects."} />
                 </div>
               </div>
             </div>
@@ -514,10 +518,10 @@ function Home() {
               />
             </svg>
 
-            <div className={"flex flex-col sm:flex-row justify-around items-center gap-y-2 gap-x-4"}>
-              <Events img={"/events1.jpeg"} title={'"Future of Learning" Summit'} desc={"A conference exploring cutting-edge technologies in education, featuring expert speakers on AI, personalized learning, and digital transformation in classrooms."} />
+            <div className={"flex flex-row max-sm:w-[98%] sm:justify-around items-center gap-y-2 gap-x-4 px-2 overflow-x-auto"}>
+              <Events img={"/events1.jpeg"} title={'Future of Learning Summit'} desc={"A conference exploring cutting-edge technologies in education, featuring expert speakers on AI, personalized learning, and digital transformation in classrooms."} />
               <Events img={"/events2.jpeg"} title={"Student Innovation Hackathon"} desc={"A conference exploring cutting-edge technologies in education, featuring expert speakers on AI, personalized learning, and digital transformation in classrooms."} />
-              <Events img={"/events3.jpeg"} title={'"Future of Learning" Summit'} desc={"A conference exploring cutting-edge technologies in education, featuring expert speakers on AI, personalized learning, and digital transformation in classrooms."} />
+              <Events img={"/events3.jpeg"} title={'Future of Learning Summit'} desc={"A conference exploring cutting-edge technologies in education, featuring expert speakers on AI, personalized learning, and digital transformation in classrooms."} />
             </div>
           </div>
         </div>
