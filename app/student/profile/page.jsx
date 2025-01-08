@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { Switch } from "antd";
+import Image from "next/image";
 
 const StudentProfile = () => {
   const onChange = (checked) => {
@@ -9,7 +10,7 @@ const StudentProfile = () => {
 
   return (
     <div className="flex flex-col justify-center w-full items-center p-8">
-      <img src="/avatar.png" alt="Avatar" width="72px" height="72px" />
+      <Image src="/avatar.png" alt="Avatar" width={72} height={72} />
       <div className="text-sm">Profile Settings</div>
       <div className=" w-full mt-5 text-xs md:flex justify-center px-20 flex-col md:flex-row ">
         <div className="flex w-full  border border-blue-700 p-6 flex-col gap-2">

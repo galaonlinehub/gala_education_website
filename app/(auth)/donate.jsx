@@ -33,7 +33,6 @@ const Donate = ({ setShowDonatePopup, showDonatePopup }) => {
   ];
 
   const handleDonateNow = () => {
-    // Navigate to the second tab
     setActiveKey("2");
   };
 
@@ -41,21 +40,58 @@ const Donate = ({ setShowDonatePopup, showDonatePopup }) => {
     setShowDonatePopup(!showDonatePopup);
   };
 
+  const showWatermarks = () => {
+    return (
+      <div className="relative">
+        <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
+          <div className="absolute left-44 top-44 w-52 h-52 lg:left-64 xl:left-1/4 hidden lg:block">
+            <AcceptingHands />
+          </div>
+        </div>
+        <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
+          <div className="absolute right-80 lg:right-80 top-40 w-52 h-52 xl:right-1/3 hidden lg:block">
+            <Olive />
+          </div>
+        </div>
+        <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
+          <div className="absolute left-32 top-32 w-52 h-52 lg:left-64 xl:left-96 hidden lg:block">
+            <Love />
+          </div>
+        </div>
+        <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
+          <div className="absolute left-1/2 top-32 w-52 h-52 lg:left-1/2 hidden lg:block">
+            <Love />
+          </div>
+        </div>
+        <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
+          <div className="absolute left-1/2 top-96 w-52 h-52 hidden lg:block">
+            <Love />
+          </div>
+        </div>
+        <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
+          <div className="absolute right-6 top-96 w-52 h-52  lg:right-28 xl:right-48 hidden lg:block">
+            <Love />
+          </div>
+        </div>
+        <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
+          <div className="absolute right-6 top-32 w-52 h-52  lg:right-28 xl:right-48 hidden lg:block">
+            <Love />
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+
+
   return (
-    <div
-      className="container"
-      style={{
-        padding: "6px",
-        height: "calc(100vh - 100px)",
-        overflow: "auto",
-      }}
-    >
+    <div className="p-10 md:px-44 z-50 lg:px-56 xl:px-80 h-screen overflow-y-auto scrollbar-hide">
       <Button
         type="text"
         icon={<CloseOutlined />}
         style={{
           position: "absolute",
-          top: "10px",
+          top: "20px",
           right: "10px",
           color: "white",
           fontSize: "16px",
@@ -93,42 +129,12 @@ const Donate = ({ setShowDonatePopup, showDonatePopup }) => {
           />
         )}
       >
-       
         <TabPane tab="Donate" key="1">
-        <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
-          <div className="absolute left-44 top-44 w-52 h-52 hidden md:block">
-            <AcceptingHands />
-          </div>
-        </div>
-        <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
-          <div className="absolute right-80 top-44 w-52 h-52 hidden md:block">
-            <Olive />
-          </div>
-        </div>
-        <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
-          <div className="absolute left-32 top-32 w-52 h-52 hidden md:block">
-            <Love />
-          </div>
-        </div>
-        <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
-          <div className="absolute left-1/2 top-32 w-52 h-52 hidden md:block">
-            <Love />
-          </div>
-        </div>
-        <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
-          <div className="absolute left-1/2 top-96 w-52 h-52 hidden md:block">
-            <Love />
-          </div>
-        </div>
-        <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
-          <div className="absolute right-6 top-96 w-52 h-52 hidden md:block">
-            <Love />
-          </div>
-        </div>
+          {showWatermarks()}
           <Space direction="vertical" size="large" style={{ width: "100%" }}>
             <Row gutter={[24, 24]} style={{ backgroundColor: "#001840", padding: "12px", borderRadius: "16px" }}>
               <Col xs={24} lg={12}>
-                <div style={{  padding: "24px", borderRadius: "8px", height: "100%" }}>
+                <div style={{ padding: "24px", borderRadius: "8px", height: "100%" }}>
                   <Title level={4} style={{ color: "white" }}>
                     Help us do more
                   </Title>
@@ -161,12 +167,12 @@ const Donate = ({ setShowDonatePopup, showDonatePopup }) => {
                     </Space>
                   </div>
 
-                  <div style={{padding: "8px", borderRadius: "8px" }} className="-mb-4">
+                  <div style={{ padding: "8px", borderRadius: "8px" }} className="-mb-4">
                     <Space direction="vertical" size="middle" style={{ width: "100%" }}>
                       <Text strong style={{ color: "white", fontSize: "10px" }}>
                         Select donation amount
                       </Text>
-                      <div className="flex-col md:flex md:flex-row gap-4 ">
+                      <div className="flex-col md:flex md:flex-row gap-4  ">
                         <div className="flex gap-2 justify-start flex-row">
                           {[1000, 5000, 10000].map((amount) => (
                             <Button
@@ -185,7 +191,7 @@ const Donate = ({ setShowDonatePopup, showDonatePopup }) => {
                           ))}
                         </div>
 
-                        <div className="mb-3 md:mb-0 md:mt-0 mt-3">
+                        <div className="mb-3 md:mb-0 md:mt-0 w-12 mt-3">
                           <Text style={{ color: "white", fontSize: "13px" }}>or</Text>
                         </div>
 
@@ -221,41 +227,7 @@ const Donate = ({ setShowDonatePopup, showDonatePopup }) => {
           </Space>
         </TabPane>
         <TabPane tab="Payment" key="2">
-        <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
-          <div className="absolute left-44 top-44 w-52 h-52 hidden md:block">
-            <AcceptingHands />
-          </div>
-        </div>
-        <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
-          <div className="absolute right-80 top-44 w-52 h-52 hidden md:block">
-            <Olive />
-          </div>
-        </div>
-        <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
-          <div className="absolute left-32 top-32 w-52 h-52 hidden md:block">
-            <Love />
-          </div>
-        </div>
-        <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
-          <div className="absolute left-1/2 top-32 w-52 h-52 hidden md:block">
-            <Love />
-          </div>
-        </div>
-        <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
-          <div className="absolute left-1/2 top-96 w-52 h-52 hidden md:block">
-            <Love />
-          </div>
-        </div>
-        <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
-          <div className="absolute right-6 top-96 w-52 h-52 hidden md:block">
-            <Love />
-          </div>
-        </div>
-        <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
-          <div className="absolute right-6 top-32 w-52 h-52 hidden md:block">
-            <Love />
-          </div>
-        </div>
+          {showWatermarks()}
           <Space direction="vertical" size="large" style={{ width: "100%" }}>
             <Row gutter={[24, 24]} style={{ backgroundColor: "#001840", padding: "24px", borderRadius: "16px" }}>
               <Col xs={24} lg={12}>
@@ -290,7 +262,7 @@ const Donate = ({ setShowDonatePopup, showDonatePopup }) => {
                     ))}
                   </Space>
 
-                  <div style={{  padding: "8px", borderRadius: "8px" }}>
+                  <div style={{ padding: "8px", borderRadius: "8px" }}>
                     {activePayTab === "bank" && (
                       <Space direction="vertical" size="middle" style={{ width: "100%" }}>
                         <Row gutter={[16, 16]}>
