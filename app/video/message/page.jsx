@@ -1,6 +1,6 @@
 // Install necessary packages
 // npm install socket.io-client axios react react-dom
-
+"use client"
 import { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 import axios from 'axios';
