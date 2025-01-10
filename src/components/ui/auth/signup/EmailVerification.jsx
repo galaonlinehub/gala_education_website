@@ -1,13 +1,13 @@
 import { Modal, Result } from "antd";
 import React, { useEffect, useState } from "react";
 import { api } from "@/src/config/settings";
-import LoadingState from "../../loading/LoadingSpinner";
+import LoadingState from "../../loading/template/LoadingSpinner";
 import { useEmailVerificationModalOpen } from "@/src/store/auth/signup";
 import { useTabNavigator } from "@/src/store/auth/signup";
-import { decrypt } from "@/src/utils/constants/encryption";
+import { decrypt } from "@/src/utils/fns/encryption";
 import { useRouter } from "next/navigation";
 import { message, Button, Alert } from "antd";
-import { maskEmail } from "@/src/utils/constants/mask_email";
+import { maskEmail } from "@/src/utils/fns/mask_email";
 import { ReloadOutlined } from "@ant-design/icons";
 
 const EmailVerification = () => {

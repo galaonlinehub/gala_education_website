@@ -6,8 +6,8 @@ import { message, Input, Button, Card, Typography, Space, Alert } from "antd";
 import { MailOutlined, SendOutlined, ReloadOutlined } from "@ant-design/icons";
 import { api } from "@/src/config/settings";
 import { FaKey } from "react-icons/fa6";
-import LoadingState from "@/src/components/ui/loading/LoadingSpinner";
-import { encrypt } from "@/src/utils/constants/encryption";
+import LoadingState from "@/src/components/ui/loading/template/LoadingSpinner";
+import { encrypt } from "@/src/utils/fns/encryption";
 
 const { Title, Text } = Typography;
 
@@ -281,7 +281,7 @@ const ForgotPassword = () => {
               <Button
                 type="link"
                 onClick={handleResendOtp}
-                disabled={resendCounter > 0  || isSendingOtp}
+                disabled={resendCounter > 0 || isSendingOtp}
                 icon={<ReloadOutlined />}
               >
                 {resendCounter > 0

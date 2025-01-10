@@ -6,11 +6,14 @@ import { useForm } from "react-hook-form";
 import { message, Alert } from "antd";
 import { api } from "@/src/config/settings";
 import GoogleSvg from "@/src/utils/vector-svg/sign-in/GoogleSvg";
-import LoadingState from "@/src/components/ui/loading/LoadingSpinner";
+import LoadingState from "@/src/components/ui/loading/template/LoadingSpinner";
 import "@/src/styles/auth/signup.css";
 import useUser from "@/src/store/auth/user";
-import { encrypt } from "@/src/utils/constants/encryption";
+import { encrypt } from "@/src/utils/fns/encryption";
 import Cookies from "js-cookie";
+import { apiGet, apiPost } from "@/src/services/api_service";
+import { cookieFn } from "@/src/utils/fns/client";
+import { getUser } from "@/src/utils/fns/global";
 
 const SignInPage = () => {
   // const key = crypto.randomUUID();
@@ -30,36 +33,22 @@ const SignInPage = () => {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm();
-
+  
   const onSubmit = async (data) => {
     try {
       setLoading(true);
       message.destroy();
 
-      const response = await api.post("/login", {
+      const response = await apiPost("/login", {
         email: data.email,
         password: data.password,
       });
 
       if (response.status === 200) {
-        const res = await api.get("/user", {
-          headers: {
-            Authorization: `Bearer ${response.data.token}`,
-          },
-        });
+        const encryptedToken = encrypt(response.data.token);
+        cookieFn.set("9fb96164-a058-41e4-9456-1c2bbdbfbf8d", encryptedToken, 7);
 
-        if (res.status === 200) {
-          const encryptedData = encrypt(encrypt(res.data));
-
-          if (encryptedData) {
-            localStorage.setItem(
-              "2171f701-2b0c-41f4-851f-318703867868",
-              encryptedData
-            );
-          } else {
-            message.error("Encryption failed - encryptedData is null");
-          }
-
+        if (getUser() === 1) {
           const roleRedirects = {
             student: "/student",
             instructor: "/teacher",
@@ -78,14 +67,11 @@ const SignInPage = () => {
             });
             return;
           }
-
-          const encryptedToken = encrypt(response.data.token);
-
-          Cookies.set("9fb96164-a058-41e4-9456-1c2bbdbfbf8d", encryptedToken, {
-            expires: 7,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "strict",
-            path: "/",
+        }else{
+          setLocalFeedback({
+            show: true,
+            type: "error",
+            message: "Unexpected Error. Try again.",
           });
         }
       }
@@ -142,8 +128,8 @@ const SignInPage = () => {
         <span className="font-black">Login</span>
         <span className="font-black text-4xl">Welcome Back</span>
         <span className="text-sm font-medium text-center px-4 sm:px-8">
-          &quot; Welcome back! We&#39;re excited to see you again, let&#39;s
-          pick up where you left off and continue your learning journey!&quot;
+          Welcome back! We&#39;re excited to see you again, let&#39;s pick up
+          where you left off and continue your learning journey!
         </span>
 
         <form
@@ -229,15 +215,9 @@ const SignInPage = () => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="text-white text-base h-12 bg-[#030DFE] rounded-md w-60 font-bold mt-5 disabled:opacity-60 flex items-center justify-center gap-2"
+            className="text-white text-base h-12 bg-[#030DFE] rounded-md w-3/4 lg:w-1/2 font-bold mt-5 disabled:opacity-60 flex items-center justify-center gap-2 disabled:cursor-not-allowed"
           >
-            {isSubmitting ? (
-              <>
-                <LoadingState /> Logging in...
-              </>
-            ) : (
-              "Login"
-            )}
+            {isSubmitting ? "Signing in..." : "Sign in"}
           </button>
         </form>
 
@@ -254,7 +234,7 @@ const SignInPage = () => {
         <button
           onClick={handleGoogleLogin}
           disabled={loading}
-          className="rounded-md h-12 w-3/4 md:w-full bg-[#001840] mt-10 text-white text-base font-black disabled:opacity-70 flex items-center justify-center gap-5"
+          className="rounded-md h-12 w-full lg:w-3/4 md:w-full bg-[#001840] mt-10 text-white lg:text-base font-black disabled:opacity-70 flex items-center justify-center gap-3 lg:gap-5 px-4 py-2 text-xs md:text-sm"
         >
           <GoogleSvg />
           Continue with Google
