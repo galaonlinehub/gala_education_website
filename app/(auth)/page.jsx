@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { IoMenu } from "react-icons/io5";
 import Card1 from "@/src/components/home/card/Card1";
@@ -24,12 +24,25 @@ function Home() {
     setShowDonatePopup(true);
   };
 
+  useEffect(() => {
+    if (showDonatePopup) {
+      document.body.classList.add("no-scroll");
+    } else {
+      document.body.classList.remove("no-scroll");
+    }
+
+    // Cleanup on unmount
+    return () => {
+      document.body.classList.remove("no-scroll");
+    };
+  }, [showDonatePopup]);
+
  
   return (
     <div className="relative w-screen max-w-screen-2xl mx-auto h-full overflow-hidden space-y-10">
 
       {showDonatePopup && (
-        <div className="fixed  inset-0 bg-black bg-opacity-70 !z-[9999] flex justify-center items-center">
+        <div className="fixed  inset-0 bg-black bg-opacity-70 !z-[9999] flex justify-center items-center ">
           <div className="p-1 rounded-lg w-full items-center justify-center flex ">
             <Donate setShowDonatePopup={setShowDonatePopup} showDonatePopup={showDonatePopup}  />
           </div>

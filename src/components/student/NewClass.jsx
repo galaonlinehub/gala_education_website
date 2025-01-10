@@ -52,7 +52,10 @@ const useStyle = createStyles(({ token }) => ({
 }));
 
 const NewClass = () => {
+  const queryClient = useQueryClient();
   const { openNewClass, setOpenNewClass } = useNewClass();
+  const [selectedClasses, setSelectedClasses] = useState([]);
+
   const onClose = () => {
     setOpenNewClass(false);
   };
@@ -176,6 +179,7 @@ const NewClass = () => {
 
   const enrollNow = () => {
     setEnroll(true);
+
   };
 
   return (
@@ -622,8 +626,10 @@ const NewClass = () => {
             )}
           </div>
         )}
+
       </Drawer>
     </>
   );
 };
+
 export default NewClass;

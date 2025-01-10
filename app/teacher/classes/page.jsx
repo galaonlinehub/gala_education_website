@@ -2,10 +2,45 @@
 
 import { useState, useRef } from "react";
 import ReadMoreContainer from "@/components/layout/ui/ReadMore";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
-import { Calendar, theme } from "antd";
+import { theme, Spin, Empty } from "antd";
+import { AiOutlinePlus } from "react-icons/ai";
+// import CalendarComponent from "@/src/components/student/CalendarComponent";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
+import { useRouter } from "next/navigation";
 
 export default function TeacherClasses() {
+  const [date, setDate] = useState(new Date());
+
+  const [seeAll, setSeeAll] = useState(false);
+
+  const queryClient = useQueryClient();
+
+  const router = useRouter();
+
+  const gotoCreateClass = () => {
+    router.push("/teacher/create-class");
+  };
+
+  const handleSeeAll = () => {
+    setSeeAll(!seeAll);
+  };
+
+  const {
+    data: subtopicData,
+    isLoading: isSubtopicLoading,
+    error: subtopicError,
+  } = useQuery({
+    queryKey: ["subtopics"],
+    queryFn: async () => {
+      const response = await fetch("https://galaweb.galahub.org/api/subtopics");
+      if (!response.ok) throw new Error("Network response was not ok");
+      return response.json();
+    },
+  });
+
   const reminders = [
     {
       name: "Eng - Speaking Test",
@@ -98,25 +133,70 @@ export default function TeacherClasses() {
           </div>
         </div>
         <div className="pt-5">
-          <h2 className="text-xs font-bold mb-2">Your Subjects</h2>
-          <div className="">
+          <div className="flex justify-between">
+            <h2 className="text-xs font-bold mb-2">Your Subjects</h2>
+            <div className="flex gap-4 items-center">
+              <button onClick={gotoCreateClass} className="p-1.5 h-5 w-5 flex items-center justify-center rounded-md bg-[#001840] text-white">
+                <AiOutlinePlus />
+              </button>
+
+              <button onClick={handleSeeAll} className="text-blue-700 font-bold text-xs">
+                {seeAll ? "See less" : "See All"}
+              </button>
+            </div>
+          </div>
+
+          {seeAll ? (
             <div className="flex items-center mt-2">
-              <div ref={scrollRef} className="flex overflow-x-auto space-x-4 pb-4">
-                {subjects.map((subject, index) => (
-                  <div key={index} className="flex-none flex-col text-xs font-bold rounded-md w-60 h-28 p-5 bg-[#001840] text-white">
-                    <div className="mb-3">{subject.name}</div>
-                    <div>Class size: {subject.classSize}</div>
-                    <div>Days: {subject.days}</div>
-                  </div>
-                ))}
-              </div>
+              {isSubtopicLoading ? (
+                <div className="w-full flex justify-center items-center">
+                  <Spin />
+                </div>
+              ) : subtopicData?.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  gap-2 mb-8">
+                  {subtopicData.map((subtopic, index) => (
+                    <div key={index} className="bg-[#001840] text-white text-xs font-bold w-48 h-28 p-4 rounded-lg cursor-pointer">
+                      <div className="mb-3">{subtopic.subtopic_name}</div>
+                      <div>Class size: {subtopic.class_size}</div>
+                      <div>Days: {subtopic.days_difference}</div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="w-full flex justify-center items-center">
+                  <Empty description={<span className="!text-gray-500 !text-xs !italic ">There are no live classes at the moment!</span>} className="text-center" />
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="flex items-center mt-2">
+              {isSubtopicLoading ? (
+                <div className="w-full flex justify-center items-center">
+                  <Spin />
+                </div>
+              ) : subtopicData?.length > 0 ? (
+                <div ref={scrollRef} className="flex overflow-x-auto space-x-4 pb-4">
+                  {subtopicData.map((subtopic, index) => (
+                    <div key={index} className="flex-none flex-col text-xs font-bold rounded-md w-60 h-28 p-5 bg-[#001840] text-white">
+                      <div className="mb-3">{subtopic.subtopic_name}</div>
+                      <div>Class size: {subtopic.class_size}</div>
+                      <div>Days: {subtopic.days_difference}</div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="w-full flex justify-center items-center">
+                  <Empty description={<span className="!text-gray-500 !text-xs !italic ">There are no live classes at the moment!</span>} className="text-center" />
+                </div>
+              )}
+
               <button onClick={scrollRight} className="ml-2 p-2 rounded-full transition flex items-center justify-center">
                 <svg width="15" height="24" viewBox="0 0 15 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M13.0595 10.9406C13.6454 11.5265 13.6454 12.4781 13.0595 13.064L5.55947 20.564C4.97353 21.15 4.02197 21.15 3.43604 20.564C2.8501 19.9781 2.8501 19.0265 3.43604 18.4406L9.87666 12L3.44072 5.55935C2.85479 4.97341 2.85479 4.02185 3.44072 3.43591C4.02666 2.84998 4.97822 2.84998 5.56416 3.43591L13.0642 10.9359L13.0595 10.9406Z" fill="black" />
                 </svg>
               </button>
             </div>
-          </div>
+          )}
         </div>
         <div className="pt-5 mb-20 w-full">
           <span className="text-xs font-bold">Your Classes</span>
@@ -148,15 +228,12 @@ export default function TeacherClasses() {
         {showSidebar ? "Hide" : "Show"} Sidebar
       </button>
 
-      <div className={`fixed inset-y-0 left-0 z-50 bg-[#001840] transform transition-transform duration-300 ease-in-out ${showSidebar ? "translate-x-0" : "-translate-x-full"} lg:relative lg:translate-x-0 lg:w-1/3`}>
+      <div className={`h-screen inset-y-0 left-0  bg-[#001840] transform transition-transform duration-300 ease-in-out z-0 ${showSidebar ? "translate-x-0" : "-translate-x-full"} lg:relative lg:translate-x-0 lg:w-1/3`}>
         <button onClick={() => setShowSidebar(false)} className="lg:hidden absolute top-4 right-4 text-white" aria-label="Close Sidebar">
           ✕
         </button>
         <div className="h-full overflow-y-auto flex flex-col items-center justify-center p-6">
-          <div style={wrapperStyle} className="mb-6 bg-gray-50">
-            <Calendar fullscreen={false} onPanelChange={onPanelChange} />
-          </div>
-          <hr className="bg-white w-5/6 mb-6" style={{ height: "0.4px", border: "none" }} />
+          <Calendar onChange={setDate} value={date} className=" !bg-[#001F52] text-white !border-none !w-full" tileClassName="text-white" />
 
           <div className="flex justify-between p-4 w-full">
             <div className="text-white text-sm p-1">Ends</div>

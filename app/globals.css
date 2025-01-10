@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+.no-scroll {
+  overflow: hidden;
+  height: 100vh;
+}
+
 .custom-select {
   background-color: #001840 !important;
 
