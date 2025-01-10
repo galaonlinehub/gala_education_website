@@ -4,11 +4,11 @@ import StudentSignUpVectorSvg from "@/src/utils/vector-svg/sign-up/StudentSignUp
 import { message, Select } from "antd";
 import { useForm } from "react-hook-form";
 import { api } from "@/src/config/settings";
-import LoadingState from "../../loading/LoadingSpinner";
+import LoadingState from "../../loading/template/LoadingSpinner";
 import EmailVerification from "./EmailVerification";
 import { useEmailVerificationModalOpen } from "@/src/store/auth/signup";
-import { encrypt } from "@/src/utils/constants/encryption";
-import { disabilities } from "@/src/utils/constants/disabilities";
+import { encrypt } from "@/src/utils/fns/encryption";
+import { disabilities } from "@/src/utils/data/disabilities";
 import "../../../../styles/auth/signup.css";
 import { apiPost } from "@/src/services/api_service";
 

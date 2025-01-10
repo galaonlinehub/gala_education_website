@@ -3,105 +3,23 @@
 import { useState, useRef, useEffect } from "react";
 import ReadMoreContainer from "@/components/layout/ui/ReadMore";
 import Image from "next/image";
-import { Calendar, theme, Spin, Skeleton, Card, Empty } from "antd";
-import LeftTiltedBook from "@/components/vectors/LeftTiltedBook";
+import { theme, Skeleton, Card, Empty } from "antd";
 import CalendarComponent from "@/src/components/student/CalendarComponent";
 import { useRouter } from "next/navigation";
 import useUser from "@/src/store/auth/user";
-import { decrypt } from "@/src/utils/constants/encryption";
+import { decrypt } from "@/src/utils/fns/encryption";
 import Notification from "@/src/components/ui/notification/Notification";
 import { useEnrolledTopics } from "@/src/store/student/class";
-import { getUserSubject } from "@/src/utils/constants/global";
+import { getUserSubject, getUserTopics } from "@/src/utils/fns/global";
+import { useUserTopcs } from "@/src/store/user_topics";
+import { TopicSkeleton } from "@/src/components/ui/loading/skeletons/ClassCard";
+import StudentDashboardSkeleton from "@/src/components/ui/loading/skeletons/StudentDashboard";
 
 export default function Component() {
-  const reminders = [
-    {
-      name: "Eng - Speaking Test",
-      time: "10.06.2026",
-      day: "Friday",
-      icon: (
-        <svg
-          width="20"
-          height="20"
-          viewBox="0 0 20 20"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M17.9391 0.763359H17.2533C17.271 0.706565 17.2893 0.649771 17.2893 0.58687C17.2893 0.263206 17.0255 0 16.7012 0C16.377 0 16.1144 0.263206 16.1144 0.58687C16.1144 0.649771 16.1315 0.706565 16.1504 0.763359H13.9031C13.9208 0.706565 13.9391 0.649771 13.9391 0.58687C13.9379 0.263206 13.6753 0 13.3504 0C13.0267 0 12.7635 0.263206 12.7635 0.58687C12.7635 0.649771 12.7812 0.706565 12.7995 0.763359H10.5516C10.5693 0.706565 10.587 0.649771 10.587 0.58687C10.587 0.263206 10.3244 0 10.0002 0C9.67588 0 9.41329 0.263206 9.41329 0.58687C9.41329 0.649771 9.43039 0.706565 9.44871 0.763359H7.20077C7.21848 0.706565 7.2368 0.649771 7.2368 0.58687C7.2368 0.263206 6.97359 0 6.64993 0C6.32565 0 6.06245 0.263206 6.06245 0.58687C6.06245 0.649771 6.07955 0.706565 6.09787 0.763359H3.85054C3.86886 0.706565 3.88657 0.649771 3.88657 0.58687C3.88657 0.262595 3.62397 0 3.2997 0C2.97542 0 2.71222 0.263206 2.71222 0.58687C2.71222 0.649771 2.72932 0.706565 2.74764 0.763359H2.06123C1.1342 0.763359 0.381836 1.51634 0.381836 2.44275V18.3206C0.381836 19.2476 1.1342 20 2.06123 20H16.0429L19.6185 16.4244V2.44275C19.6185 1.51695 18.8661 0.763359 17.9391 0.763359ZM18.7024 16.0446L18.5125 16.2345H17.0744C16.4014 16.2345 15.853 16.7841 15.853 17.4559V18.894L15.6631 19.084H2.06123C1.64046 19.084 1.29787 18.7414 1.29787 18.3206V3.05344H18.7024V16.0446Z"
-            fill="white"
-          />
-          <path
-            d="M3.89869 7.19387H4.72067V6.58379H5.08587V5.94074H4.72067V4.26807H3.91579L2.55029 5.89066V6.58379H3.89869V7.19387ZM3.20129 5.94074L3.89869 5.04852V5.94074H3.20129Z"
-            fill="white"
-          />
-          <path
-            d="M4.63281 9.2843C4.63281 9.2843 5.69419 11.1487 7.85052 13.3051C7.99587 13.4492 8.13938 13.589 8.28106 13.724C8.24197 13.7551 8.20106 13.7826 8.16442 13.8186C7.72167 14.262 7.72167 14.9802 8.16442 15.4235C8.609 15.8675 9.32655 15.8675 9.76991 15.4235C9.84503 15.3484 9.90243 15.2629 9.9519 15.1756C11.0841 16.0703 11.8633 16.5142 11.8633 16.5142C11.4615 14.5081 13.4395 12.011 14.3006 10.8666C15.6179 9.11575 14.9681 7.58353 14.2701 6.88552C13.5708 6.18689 12.0411 5.53895 10.289 6.85437C9.14335 7.71483 6.64808 9.69407 4.63281 9.2843ZM9.68808 8.27666C10.8221 7.14201 12.1589 6.64063 12.5192 7.00155C12.8801 7.36246 11.2997 7.62078 10.1656 8.75483C9.03159 9.88888 7.30152 10.0104 6.48075 9.72643C7.30457 9.68857 8.55342 9.41132 9.68808 8.27666Z"
-            fill="white"
-          />
-        </svg>
-      ),
-    },
-    {
-      name: "Eng - Vocabulary Test",
-      time: "10.06.2026",
-      day: "Friday",
-      icon: (
-        <svg
-          width="20"
-          height="20"
-          viewBox="0 0 20 20"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M17.9391 0.763359H17.2533C17.271 0.706565 17.2893 0.649771 17.2893 0.58687C17.2893 0.263206 17.0255 0 16.7012 0C16.377 0 16.1144 0.263206 16.1144 0.58687C16.1144 0.649771 16.1315 0.706565 16.1504 0.763359H13.9031C13.9208 0.706565 13.9391 0.649771 13.9391 0.58687C13.9379 0.263206 13.6753 0 13.3504 0C13.0267 0 12.7635 0.263206 12.7635 0.58687C12.7635 0.649771 12.7812 0.706565 12.7995 0.763359H10.5516C10.5693 0.706565 10.587 0.649771 10.587 0.58687C10.587 0.263206 10.3244 0 10.0002 0C9.67588 0 9.41329 0.263206 9.41329 0.58687C9.41329 0.649771 9.43039 0.706565 9.44871 0.763359H7.20077C7.21848 0.706565 7.2368 0.649771 7.2368 0.58687C7.2368 0.263206 6.97359 0 6.64993 0C6.32565 0 6.06245 0.263206 6.06245 0.58687C6.06245 0.649771 6.07955 0.706565 6.09787 0.763359H3.85054C3.86886 0.706565 3.88657 0.649771 3.88657 0.58687C3.88657 0.262595 3.62397 0 3.2997 0C2.97542 0 2.71222 0.263206 2.71222 0.58687C2.71222 0.649771 2.72932 0.706565 2.74764 0.763359H2.06123C1.1342 0.763359 0.381836 1.51634 0.381836 2.44275V18.3206C0.381836 19.2476 1.1342 20 2.06123 20H16.0429L19.6185 16.4244V2.44275C19.6185 1.51695 18.8661 0.763359 17.9391 0.763359ZM18.7024 16.0446L18.5125 16.2345H17.0744C16.4014 16.2345 15.853 16.7841 15.853 17.4559V18.894L15.6631 19.084H2.06123C1.64046 19.084 1.29787 18.7414 1.29787 18.3206V3.05344H18.7024V16.0446Z"
-            fill="white"
-          />
-          <path
-            d="M3.89869 7.19387H4.72067V6.58379H5.08587V5.94074H4.72067V4.26807H3.91579L2.55029 5.89066V6.58379H3.89869V7.19387ZM3.20129 5.94074L3.89869 5.04852V5.94074H3.20129Z"
-            fill="white"
-          />
-          <path
-            d="M4.63281 9.2843C4.63281 9.2843 5.69419 11.1487 7.85052 13.3051C7.99587 13.4492 8.13938 13.589 8.28106 13.724C8.24197 13.7551 8.20106 13.7826 8.16442 13.8186C7.72167 14.262 7.72167 14.9802 8.16442 15.4235C8.609 15.8675 9.32655 15.8675 9.76991 15.4235C9.84503 15.3484 9.90243 15.2629 9.9519 15.1756C11.0841 16.0703 11.8633 16.5142 11.8633 16.5142C11.4615 14.5081 13.4395 12.011 14.3006 10.8666C15.6179 9.11575 14.9681 7.58353 14.2701 6.88552C13.5708 6.18689 12.0411 5.53895 10.289 6.85437C9.14335 7.71483 6.64808 9.69407 4.63281 9.2843ZM9.68808 8.27666C10.8221 7.14201 12.1589 6.64063 12.5192 7.00155C12.8801 7.36246 11.2997 7.62078 10.1656 8.75483C9.03159 9.88888 7.30152 10.0104 6.48075 9.72643C7.30457 9.68857 8.55342 9.41132 9.68808 8.27666Z"
-            fill="white"
-          />
-        </svg>
-      ),
-    },
-    {
-      name: "Eng Test",
-      time: "10.06.2026",
-      day: "Friday",
-      icon: (
-        <svg
-          width="20"
-          height="20"
-          viewBox="0 0 20 20"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M17.9391 0.763359H17.2533C17.271 0.706565 17.2893 0.649771 17.2893 0.58687C17.2893 0.263206 17.0255 0 16.7012 0C16.377 0 16.1144 0.263206 16.1144 0.58687C16.1144 0.649771 16.1315 0.706565 16.1504 0.763359H13.9031C13.9208 0.706565 13.9391 0.649771 13.9391 0.58687C13.9379 0.263206 13.6753 0 13.3504 0C13.0267 0 12.7635 0.263206 12.7635 0.58687C12.7635 0.649771 12.7812 0.706565 12.7995 0.763359H10.5516C10.5693 0.706565 10.587 0.649771 10.587 0.58687C10.587 0.263206 10.3244 0 10.0002 0C9.67588 0 9.41329 0.263206 9.41329 0.58687C9.41329 0.649771 9.43039 0.706565 9.44871 0.763359H7.20077C7.21848 0.706565 7.2368 0.649771 7.2368 0.58687C7.2368 0.263206 6.97359 0 6.64993 0C6.32565 0 6.06245 0.263206 6.06245 0.58687C6.06245 0.649771 6.07955 0.706565 6.09787 0.763359H3.85054C3.86886 0.706565 3.88657 0.649771 3.88657 0.58687C3.88657 0.262595 3.62397 0 3.2997 0C2.97542 0 2.71222 0.263206 2.71222 0.58687C2.71222 0.649771 2.72932 0.706565 2.74764 0.763359H2.06123C1.1342 0.763359 0.381836 1.51634 0.381836 2.44275V18.3206C0.381836 19.2476 1.1342 20 2.06123 20H16.0429L19.6185 16.4244V2.44275C19.6185 1.51695 18.8661 0.763359 17.9391 0.763359ZM18.7024 16.0446L18.5125  16.2345H17.0744C16.4014  16.2345 15.853 16.7841 15.853 17.4559V18.894L15.6631 19.084H2.06123C1.64046 19.084 1.29787 18.7414 1.29787 18.3206V3.05344H18.7024V16.0446Z"
-            fill="white"
-          />
-          <path
-            d="M3.89869 7.19387H4.72067V6.58379H5.08587V5.94074H4.72067V4.26807H3.91579L2.55029 5.89066V6.58379H3.89869V7.19387ZM3.20129 5.94074L3.89869 5.04852V5.94074H3.20129Z"
-            fill="white"
-          />
-          <path
-            d="M4.63281 9.2843C4.63281 9.2843 5.69419 11.1487 7.85052 13.3051C7.99587 13.4492 8.13938 13.589 8.28106 13.724C8.24197 13.7551 8.20106 13.7826 8.16442 13.8186C7.72167 14.262 7.72167 14.9802 8.16442 15.4235C8.609 15.8675 9.32655 15.8675 9.76991 15.4235C9.84503 15.3484 9.90243 15.2629 9.9519 15.1756C11.0841 16.0703 11.8633 16.5142 11.8633 16.5142C11.4615 14.5081 13.4395 12.011 14.3006 10.8666C15.6179 9.11575 14.9681 7.58353 14.2701 6.88552C13.5708 6.18689 12.0411 5.53895 10.289 6.85437C9.14335 7.71483 6.64808 9.69407 4.63281 9.2843ZM9.68808 8.27666C10.8221 7.14201 12.1589 6.64063 12.5192 7.00155C12.8801 7.36246 11.2997 7.62078 10.1656 8.75483C9.03159 9.88888 7.30152 10.0104 6.48075 9.72643C7.30457 9.68857 8.55342 9.41132 9.68808 8.27666Z"
-            fill="white"
-          />
-        </svg>
-      ),
-    },
-  ];
-
-  const { enrolledTopics, loading } = useEnrolledTopics();
-
   const router = useRouter();
   const { user, setUser } = useUser();
+  const { enrolledTopics, loading } = useEnrolledTopics();
+  const { userTopics, topicsLoading } = useUserTopcs();
 
   const onPanelChange = (value, mode) => {
     console.log(value.format("YYYY-MM-DD"), mode);
@@ -135,17 +53,24 @@ export default function Component() {
 
   useEffect(() => {
     getUserSubject();
+    getUserTopics();
   }, []);
 
   return (
-    <div className="flex lg:gap-x-5 justify-center items-center flex-col lg:flex-row px-2 mt-12">
+    <div className="flex lg:gap-x-5 justify-center items-start flex-col lg:flex-row px-2 my-24">
       <div className="flex-col w-full lg:w-2/3 flex">
-        <div className="p-4 z-10 h-fit  w-full border-blue-600 border-2 rounded-xl flex flex-col relative">
+        <div className="p-4 z-10 h-fit w-full border-blue-600 border rounded-xl flex flex-col relative">
           <div>
             <div className="flex flex-col">
               <div className="font-bold text-sm">
                 {user ? (
-                  `Welcome back, ${user.first_name} ${user.last_name}!`
+                  <>
+                    Welcome back,{" "}
+                    <span className="text-blue-700">
+                      {user.first_name} {user.last_name}
+                    </span>{" "}
+                    !
+                  </>
                 ) : (
                   <>
                     Welcome back,
@@ -283,7 +208,7 @@ export default function Component() {
             </div>
           </div>
         </div>
-        <div className="pt-5 mb-20 w-full">
+        <div className="pt-5 mb-10 lg:mb-0 w-full">
           <span className="text-[16px] font-black mb-2">Your Classes</span>
           <div className="overflow-x-auto">
             <div className="min-w-[600px] flex flex-col gap-3">
@@ -301,50 +226,72 @@ export default function Component() {
                   </span>
                 ))}
               </div>
-              {["Math", "English"].map((subject, index) => (
-                <div
-                  key={index}
-                  className="border-2 border-blue-600 flex items-center justify-between font-bold text-xs rounded-md w-full p-2"
-                >
-                  <span className="text-center overflow-auto py-2 flex-1">
-                    {subject}
-                  </span>
-                  <span className="text-center overflow-auto py-2 flex-1">
-                    10
-                  </span>
-                  <span className="text-center overflow-auto py-2 flex-1">
-                    10.05.2026
-                  </span>
-                  <span className="text-center overflow-auto py-2 flex-1">
-                    10.06.2026
-                  </span>
-                  <span className="text-center overflow-auto py-2 flex-1">
-                    View
-                  </span>
-                  <span className="text-center overflow-auto py-2 flex-1">
-                    {index === 0 ? "45%" : "05%"}
-                  </span>
-                </div>
-              ))}
+              {topicsLoading ? (
+                Array(3)
+                  .fill(0)
+                  .map((_, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between font-bold text-xs px-2 w-full gap-2"
+                    >
+                      {Array(6)
+                        .fill(0)
+                        .map((_, idx) => (
+                          <span
+                            key={idx}
+                            className="text-center py-1 flex-1 animate-pulse bg-slate-600 h-3 rounded"
+                          ></span>
+                        ))}
+                    </div>
+                  ))
+              ) : userTopics && userTopics.length > 0 ? (
+                userTopics.map((topic, index) => (
+                  <div
+                    key={index}
+                    className="border border-blue-600 flex items-center justify-between text-xs rounded-md w-full p-2"
+                  >
+                    <span className="py-1 w-1/6 text-left truncate capitalize">
+                      {topic.subtopic_name}
+                    </span>
+                    <span className="py-1 w-1/6 text-center truncate capitalize">
+                      {topic.class_size}
+                    </span>
+                    <span className="py-1 w-1/6 text-center truncate capitalize">
+                      {topic.start_date}
+                    </span>
+                    <span className="py-1 w-1/6 text-center truncate capitalize">
+                      {topic.end_date}
+                    </span>
+                    <span className="py-1 w-1/6 text-center truncate capitalize">
+                      <span
+                        className="hover:cursor-pointer hover:font-black hover:animate-ping hover:text-blue-600"
+                        onClick={() => alert("View docs")}
+                      >
+                        View
+                      </span>
+                    </span>
+                    <span className="py-1 w-1/6 text-center truncate capitalize">
+                      {topic.progress}
+                    </span>
+                  </div>
+                ))
+              ) : (
+                <Empty
+                  description={
+                    <span className="!text-gray-500 !text-xs !italic ">
+                      No classes available at the moment.
+                    </span>
+                  }
+                  className="text-center"
+                />
+              )}
             </div>
           </div>
         </div>
       </div>
       <CalendarComponent />
-      {user && <Notification showNotification={true} />}
+
+      {/* {user && <Notification showNotification={true} />} */}
     </div>
   );
 }
-
-const TopicSkeleton = () => (
-  <Card className="!w-60 !flex-none">
-    <Skeleton
-      active
-      title={false}
-      paragraph={{
-        rows: 3,
-        width: ["60%", "80%", "50%"],
-      }}
-    />
-  </Card>
-);

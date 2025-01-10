@@ -16,6 +16,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useNewClass } from "@/src/store/student/class";
 import { useRouter } from "next/navigation";
 import { apiGet } from "@/src/services/api_service";
+import { FaBook } from "react-icons/fa";
+import { MdTopic } from "react-icons/md";
+import { getInstructorDetails } from "@/src/utils/fns/global";
 
 const { Title, Text } = Typography;
 
@@ -33,21 +36,21 @@ export const SearchResultCard = ({ data, onClick }) => {
       {subjects && subjects.length > 0 && (
         <div className="p-4 border-b border-gray-100">
           <div className="flex items-center mb-3">
-            <BookOutlined className="mr-3 text-blue-500 text-xl" />
+            <FaBook className="mr-3 text-xl" />
             <h3 className="text-lg font-semibold text-gray-800">Subjects</h3>
           </div>
           <div className="grid gap-2">
             {subjects.map((subject) => (
               <div
                 key={subject.id}
-                className="bg-blue-50 rounded-lg p-3 
+                className="rounded-lg p-3 
                 hover:bg-blue-100 transition-colors 
                 flex justify-between items-center group cursor-pointer"
                 onClick={() => onClick(subject)}
               >
                 <div>
                   <div
-                    className="font-medium text-blue-800 
+                    className="font-medium 
                     group-hover:text-blue-900 transition-colors"
                   >
                     {subject.name}
@@ -60,7 +63,7 @@ export const SearchResultCard = ({ data, onClick }) => {
                   </div>
                 </div>
                 <InfoCircleOutlined
-                  className="text-blue-400 hover:text-blue-600 
+                  className="hover:text-blue-600 
                   transition-colors opacity-0 group-hover:opacity-100"
                 />
               </div>
@@ -71,23 +74,23 @@ export const SearchResultCard = ({ data, onClick }) => {
 
       {/* Topics Section */}
       {topics && topics.length > 0 && (
-        <div className="p-4 border-b border-gray-100">
+        <div className="p-4 border-b">
           <div className="flex items-center mb-3">
-            <TagOutlined className="mr-3 text-green-500 text-xl" />
+            <MdTopic className="mr-3 text-xl" />
             <h3 className="text-lg font-semibold text-gray-800">Topics</h3>
           </div>
           <div className="grid gap-2">
             {topics.map((topic) => (
               <div
                 key={topic.id}
-                className="bg-green-50 rounded-lg p-3 
+                className="rounded-lg p-3 
                 flex justify-between items-center 
-                hover:bg-green-100 transition-colors group cursor-pointer"
+               transition-colors group cursor-pointer"
                 onClick={() => onClick(topic)}
               >
                 <span
-                  className="font-medium text-green-800 
-                  group-hover:text-green-900 transition-colors"
+                  className="font-medium 
+                   transition-colors"
                 >
                   {topic.title}
                 </span>
@@ -108,28 +111,28 @@ export const SearchResultCard = ({ data, onClick }) => {
       {teachers && teachers.length > 0 && (
         <div className="p-4">
           <div className="flex items-center mb-3">
-            <UserOutlined className="mr-3 text-purple-500 text-xl" />
+            <UserOutlined className="mr-3  text-xl" />
             <h3 className="text-lg font-semibold text-gray-800">Instructors</h3>
           </div>
           <div className="grid lg:grid-cols-2 gap-3">
             {teachers.map((teacher) => (
               <div
                 key={teacher.id}
-                className="bg-purple-50 rounded-lg p-3 
+                className="rounded-lg p-3 
                 flex items-center space-x-3 
-                hover:bg-purple-100 transition-colors group cursor-pointer"
+                transition-colors group cursor-pointer"
                 onClick={() => onClick(teacher)}
               >
                 <div
-                  className="w-12 h-12 bg-purple-200 
+                  className="w-12 h-12  
                   rounded-full flex items-center justify-center"
                 >
-                  <UserOutlined className="text-purple-600" />
+                  <UserOutlined className="" />
                 </div>
                 <div>
                   <div
-                    className="font-medium text-purple-800 
-                    group-hover:text-purple-900 transition-colors"
+                    className="font-medium  
+                     transition-colors"
                   >
                     {teacher.user.first_name} {teacher.user.last_name}
                   </div>
@@ -232,7 +235,8 @@ const StudentSearch = () => {
   }, [isSearching.resultsVisible]);
 
   const handleResultClick = (item) => {
-    router.push("/student/library");
+    // router.push(`/student/library`);
+    getInstructorDetails(item.id);
     setOpenNewClass(true);
     setIsSearching((prev) => ({ ...prev, resultsVisible: false }));
   };
@@ -240,7 +244,7 @@ const StudentSearch = () => {
   return (
     <div
       ref={searchContainerRef}
-      className="fixed top-16 left-0 w-full z-40 bg-white shadow-sm"
+      className="fixed top-14 left-0 w-full z-50 bg-white shadow-sm lg:px-32"
     >
       <div className="max-w-7xl mx-auto px-4 py-4">
         <div className="relative flex justify-between w-full items-center space-x-4">
@@ -281,29 +285,26 @@ const StudentSearch = () => {
                   <div className="bg-white rounded-xl shadow-2xl border border-gray-100 max-h-[70vh] overflow-y-auto">
                     {isSearching.loading ? (
                       <div className="p-6 text-center">
-                        {/* <Skeleton active paragraph={{ rows: 4 }} /> */}
                         <div className="grid gap-2">
                           {[...Array(3)].map((_, index) => (
                             <div
                               key={index}
-                              className="bg-blue-50 rounded-lg p-3 
+                              className="rounded-lg p-3 
                                           flex justify-between items-center"
                             >
                               <div className="flex-grow pr-4">
                                 <Skeleton
                                   active
-                                  title={{
-                                    width: "75%",
-                                  }}
+                                  title={false}
                                   paragraph={{
-                                    rows: 1,
-                                    width: "100%",
+                                    rows: 2,
+                                    width: ["80%", "100%", "100%"],
                                   }}
                                 />
                               </div>
                               <Skeleton.Avatar
                                 active
-                                size="small"
+                                size="large"
                                 shape="circle"
                               />
                             </div>
@@ -348,8 +349,15 @@ const StudentSearch = () => {
           </div>
 
           <div className="lg:flex items-center space-x-4 hidden">
-            <FaBell className="text-xl text-gray-500 hover:text-blue-600 cursor-pointer transition-colors" />
-            <FaUserCircle className="text-xl text-gray-500 hover:text-blue-600 cursor-pointer transition-colors" />
+            <div className="relative inline-flex items-center">
+              <FaBell className="text-xl text-black hover:text-blue-700 cursor-pointer transition-colors" />
+              <span className="absolute top-0 right-0 flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-sky-500"></span>
+              </span>
+            </div>
+
+            <FaUserCircle className="text-xl text-black hover:text-blue-700 cursor-pointer transition-colors" />
           </div>
         </div>
       </div>

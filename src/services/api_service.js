@@ -1,7 +1,7 @@
 import { message } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { decrypt } from "../utils/constants/encryption";
+import { decrypt } from "../utils/fns/encryption";
 
 export const api = axios.create({
   baseURL: "https://galaweb.galahub.org/api",
@@ -71,6 +71,35 @@ export const apiPost = async (endpoint, data, headers = {}) => {
     return response;
   } catch (error) {
     console.error(`POST ${endpoint} Error:`, error);
+    throw error;
+  }
+};
+
+export const apiPut = async (endpoint, data, headers = {}) => {
+  try {
+    const response = await api.post(endpoint, data, { headers });
+    return response;
+  } catch (error) {
+    console.error(`PUT ${endpoint} Error:`, error);
+    throw error;
+  }
+};
+export const apiPatch = async (endpoint, data, headers = {}) => {
+  try {
+    const response = await api.post(endpoint, data, { headers });
+    return response;
+  } catch (error) {
+    console.error(`PATCH ${endpoint} Error:`, error);
+    throw error;
+  }
+};
+
+export const apiDelete = async (endpoint, data, headers = {}) => {
+  try {
+    const response = await api.post(endpoint, data, { headers });
+    return response;
+  } catch (error) {
+    console.error(`DELETE ${endpoint} Error:`, error);
     throw error;
   }
 };

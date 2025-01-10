@@ -1,31 +1,14 @@
-import "../globals.css";
-import { AntdRegistry } from "@ant-design/nextjs-registry";
-import AuthMain from "@/src/components/layout/MainAuth";
+import Footer from "@/src/components/layout/footer";
+import Navbar from "@/src/components/layout/Navbar";
 
-export const metadata = {
-
-    title: "Gala Education",
-    description: "Empowering minds, shaping future",
-    icons: {
-        icon: [
-            { url: '/favicon-96x96.png', sizes: '96x96', type: 'image/png' },
-            { url: '/favicon.svg', type: 'image/svg+xml' },
-        ],
-        shortcut: [{ url: '/favicon.ico' }],
-        apple: [{ url: '/apple-touch-icon.png', sizes: '180x180' }],
-    },
-    manifest: '/site.webmanifest',
-
-};
-
-export default function RootLayout({ children }) {
-    return (
-        <html lang="en">
-        <body>
-        <AntdRegistry>
-            <AuthMain>{children}</AuthMain>
-        </AntdRegistry>
-        </body>
-        </html>
-    );
+export default function AuthLayout({ children }) {
+  return (
+    <>
+      <div className="w-screen max-w-screen-2xl mx-auto h-full">
+        <Navbar />
+        <main>{children}</main>
+      </div>
+      <Footer />
+    </>
+  );
 }

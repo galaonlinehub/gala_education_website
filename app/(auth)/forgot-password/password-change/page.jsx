@@ -11,7 +11,7 @@ import {
 import { api } from "@/src/config/settings";
 import { HiCheckCircle } from "react-icons/hi2";
 import { IoIosCloseCircle } from "react-icons/io";
-import { decrypt } from "@/src/utils/constants/encryption";
+import { decrypt } from "@/src/utils/fns/encryption";
 import Error from "../../error";
 
 const { Title, Text } = Typography;

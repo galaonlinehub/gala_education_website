@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { decrypt } from "./src/utils/constants/encryption";
+import { decrypt } from "./src/utils/fns/encryption";
 import { apiGet } from "./src/services/api_service";
 
 const AUTH_CONFIG = {
@@ -42,16 +42,15 @@ export async function middleware(request) {
     const response = await apiGet("/user", {
       Authorization: `Bearer ${token}`,
     });
-    if (response.status !== 200) {
+    if (response.status === 200) {
       return NextResponse.redirect(
-        new URL(AUTH_CONFIG.REDIRECT_ROUTES.notAuthenticated, request.url)
+        new URL(AUTH_CONFIG.REDIRECT_ROUTES.afterLogin.response['role'], request.url)
       );
     }
   } catch (error) {
-    console.log(error.message);
-    return NextResponse.redirect(
-      new URL(AUTH_CONFIG.REDIRECT_ROUTES.notAuthenticated, request.url)
-    );
+    // return NextResponse.redirect(
+    //   new URL(AUTH_CONFIG.REDIRECT_ROUTES.notAuthenticated, request.url)
+    // );
   }
 
   return NextResponse.next();

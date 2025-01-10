@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { message } from "antd";
 import { useForm } from "react-hook-form";
 import { api } from "@/src/config/settings";
-import LoadingState from "../../loading/LoadingSpinner";
+import LoadingState from "../../loading/template/LoadingSpinner";
 import EmailVerification from "./EmailVerification";
 import { useEmailVerificationModalOpen } from "@/src/store/auth/signup";
 import InstructorSignUpPageSvg from "@/src/utils/vector-svg/sign-up/InstructorSignUpPageSvg";
-import { encrypt } from "@/src/utils/constants/encryption";
+import { encrypt } from "@/src/utils/fns/encryption";
 import { apiPost } from "@/src/services/api_service";
 
 const InstructorSignUpForm = () => {

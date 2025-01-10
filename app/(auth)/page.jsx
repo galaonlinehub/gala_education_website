@@ -14,6 +14,7 @@ import TeacherDonate from "../teacher/donate/page";
 import Donate from "./donate";
 import {FaSearch} from "react-icons/fa";
 import ChoosePlatformSvg from "@/src/utils/vector-svg/ChoosePlatformSvg";
+import AcceptCookies from '@/src/components/layout/Cookies';
 
 
 function Home() {
@@ -513,7 +514,7 @@ function Home() {
           </div>
         </div>
       </div>
-    
+      <AcceptCookies/>
     </div>
   );
 }

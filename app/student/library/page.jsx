@@ -4,10 +4,10 @@ import { useState } from "react";
 import Image from "next/image";
 import ReadMoreContainer from "@/components/layout/ui/ReadMore";
 import { useNewClass } from "@/src/store/student/class";
-import NewClass from "@/src/components/student/NewClass";
 import useUser from "@/src/store/auth/user";
 import { Skeleton } from "antd";
 import { IoIosAdd } from "react-icons/io";
+import { ClassCard, TopicSkeleton } from "@/src/components/ui/loading/skeletons/ClassCard";
 
 const Library = () => {
   const [showSidebar, setShowSidebar] = useState(false);
@@ -67,10 +67,12 @@ const Library = () => {
   ];
 
   return (
-    <div className="container mx-auto px-4 py-8 mt-12">
+    <div className="px-2 py-8 mt-12">
+      <ClassCard/>
+      <TopicSkeleton/>
       <div className="flex flex-col lg:flex-row gap-20">
         <div className="w-full lg:w-2/3">
-          <div className="p-4 z-10 h-fit mb-10 w-full border-blue-600 border-2 rounded-xl flex flex-col relative">
+          {/* <div className="p-4 z-10 h-fit mb-10 w-full border-blue-600 border-2 rounded-xl flex flex-col relative">
             <div>
               <div className="flex flex-col">
                 <div className="font-bold text-sm">
@@ -124,7 +126,7 @@ const Library = () => {
                 />
               </div>
             </div>
-          </div>
+          </div> */}
           <h3 className="text-sm font-bold mb-4">My Subjects</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
             {mySubjects.map((subject, index) => (
@@ -186,7 +188,8 @@ const Library = () => {
           </div>
         </div>
       </div>
-      <NewClass />
+     
+     
     </div>
   );
 };
