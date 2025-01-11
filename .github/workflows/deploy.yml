@@ -1,0 +1,60 @@
+# .github/workflows/deploy.yml
+name: Deploy to VPS
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+
+jobs:
+  deploy:
+    name: Deploy to VPS
+    # Only run if quality checks pass
+    if: github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.17.0'
+          cache: 'npm'
+
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.8.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add SSH Known Hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to VPS
+        env:
+          DEPLOY_PATH: ${{ secrets.PROJECT_PATH }}
+          NODE_ENV: production
+        run: |
+          ssh ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
+            # Navigate to project directory
+            cd ${{ secrets.PROJECT_PATH }}
+            
+            # Pull latest changes
+            git fetch origin ${GITHUB_REF#refs/heads/}
+            git reset --hard origin/${GITHUB_REF#refs/heads/}
+            
+            # Install dependencies
+            npm ci
+            
+            # Build the application
+            npm run build
+            
+            # Restart PM2 process
+            pm2 restart nextjs-app || pm2 start npm --name "nextjs-app" -- start
+            
+            # Clear Next.js cache
+            rm -rf .next/cache
