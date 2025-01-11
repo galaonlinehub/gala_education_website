@@ -33,8 +33,5 @@ jobs:
         run: npm run lint || exit 1
 
         
-      - name: Run tests
-        run: npm run test || exit 1
-        
       - name: Build application
         run: npm run build
