@@ -1,17 +1,15 @@
-# .github/workflows/deploy.yml
 name: Deploy to VPS
 
 on:
-  workflow_run:
-    workflows: ["Code Quality Check"]  # Must match the name in check.yml exactly
-    types:
-      - completed
-    branches:
-      - develop
-      - main
-  workflow_dispatch:  # Allows manual triggering when needed
+  push:
+  #   workflows: ["Code Quality Check"]  
+  #   types:
+  #     - completed
+  #   branches:
+  #     - develop
+  #     - main
+  # workflow_dispatch:  # Allows manual triggering when needed
 
-# Environment variables available to all jobs
 env:
   NODE_VERSION: '18.17.0'
   PM2_APP_NAME: 'nextjs'
