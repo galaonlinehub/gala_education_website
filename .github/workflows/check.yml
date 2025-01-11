@@ -1,5 +1,5 @@
 # .github/workflows/check.yml
-name: Quality
+name: Code Quality Check
 
 on:
   pull_request:
@@ -31,5 +31,6 @@ jobs:
 
       - name: Run ESLint
         run: npm run lint || exit 1
-
-  
+        
+      - name: Build application
+        run: npm run build

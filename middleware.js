@@ -2,6 +2,19 @@ import { NextResponse } from "next/server";
 import { decrypt } from "./src/utils/fns/encryption";
 import { apiGet } from "./src/services/api_service";
 
+export const config = {
+  matcher: [
+    "/",
+    "/signin",
+    "/signup",
+    "/teacher/:path*",
+    "/student/:path*",
+    "/admin/:path*",
+    "/parent/:path*",
+  ],
+  runtime: 'nodejs'
+};
+
 const AUTH_CONFIG = {
   PUBLIC_ROUTES: ["/", "/signin", "/signup"],
   REDIRECT_ROUTES: {
@@ -18,10 +31,6 @@ const AUTH_CONFIG = {
 export async function middleware(request) {
   const path = request.nextUrl.pathname;
   const isPublicPath = AUTH_CONFIG.PUBLIC_ROUTES.includes(path);
-
-  // if (Object.values(AUTH_CONFIG.REDIRECT_ROUTES.afterLogin).includes(path)) {
-  //   return NextResponse.next();
-  // }
 
   const cookieToken = request.cookies.get(
     "9fb96164-a058-41e4-9456-1c2bbdbfbf8d"
@@ -44,10 +53,11 @@ export async function middleware(request) {
     });
     if (response.status === 200) {
       return NextResponse.redirect(
-        new URL(AUTH_CONFIG.REDIRECT_ROUTES.afterLogin.response['role'], request.url)
+        new URL(AUTH_CONFIG.REDIRECT_ROUTES.afterLogin[response.data.role], request.url)
       );
     }
   } catch (error) {
+    // If you want to redirect on error, uncomment the following:
     // return NextResponse.redirect(
     //   new URL(AUTH_CONFIG.REDIRECT_ROUTES.notAuthenticated, request.url)
     // );
@@ -55,15 +65,3 @@ export async function middleware(request) {
 
   return NextResponse.next();
 }
-
-export const config = {
-  matcher: [
-    "/",
-    "/signin",
-    "/signup",
-    "/teacher/:path*",
-    "/student/:path*",
-    "/admin/:path*",
-    "/parent/:path*",
-  ],
-};

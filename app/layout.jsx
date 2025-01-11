@@ -3,6 +3,8 @@ import "./globals.css";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import ClientWrapper from "@/src/components/layout/MainAuth";
 
+// export const runtime = "nodejs";
+
 export const metadata = {
   title: "Gala Education",
   description: "Empowering minds, shaping future",
@@ -15,13 +17,18 @@ export const metadata = {
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
   },
   manifest: "/manifest.json",
-  viewport: "width=device-width, initial-scale=1, maximum-scale=1",
   other: {
     "mobile-web-app-capable": "yes",
     "apple-mobile-web-app-capable": "yes",
     "apple-mobile-web-app-status-bar-style": "default",
     "format-detection": "telephone=no",
   },
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 export default function RootLayout({ children }) {

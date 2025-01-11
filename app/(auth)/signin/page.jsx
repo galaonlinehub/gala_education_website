@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { message, Alert } from "antd";
-import { api } from "@/src/config/settings";
 import GoogleSvg from "@/src/utils/vector-svg/sign-in/GoogleSvg";
 import LoadingState from "@/src/components/ui/loading/template/LoadingSpinner";
 import "@/src/styles/auth/signup.css";
@@ -102,7 +101,7 @@ const SignInPage = () => {
   const handleGoogleLogin = async () => {
     try {
       setLoading(true);
-      const response = await api.get("/auth/google");
+      const response = await apiGet("/auth/google");
       window.location.href = response.data.authUrl;
     } catch (error) {
       setLocalFeedback({

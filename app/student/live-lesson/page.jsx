@@ -1,8 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
-import ReadMoreContainer from "@/components/layout/ui/ReadMore";
 
 const LiveLesson = () => {
   const [showSidebar, setShowSidebar] = useState(false);
