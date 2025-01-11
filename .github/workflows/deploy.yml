@@ -61,23 +61,36 @@ jobs:
           # Create deployment script
           cat << 'EOF' > deploy.sh
             set -e  # Exit on any error
-
+            
+            echo "Checking environment variables:"
+            echo "DEPLOY_PATH: $DEPLOY_PATH"
+            echo "DEPLOY_BRANCH: $DEPLOY_BRANCH"
+            echo "DEPLOY_USER: $DEPLOY_USER"
+            echo "DEPLOY_HOST: $DEPLOY_HOST"
             echo "DEPLOY_PATH: ${DEPLOY_PATH}"
             echo "DEPLOY_BRANCH: ${DEPLOY_BRANCH}"
             
             echo "🚀 Starting deployment for branch ${DEPLOY_BRANCH}..."
             
-            # Navigate to project directory
-            cd $DEPLOY_PATH
             
-            # Backup current .env file if it exists
+            if [ -d "${DEPLOY_PATH}/.git" ]; then
+              cd ${DEPLOY_PATH}
+              echo "📥 Pulling latest changes..."
+              git fetch origin ${DEPLOY_BRANCH}
+              git reset --hard origin/${DEPLOY_BRANCH}
+            else
+              # If it's not a git repository, clone it
+              echo "🔄 Cloning repository..."
+              rm -rf ${DEPLOY_PATH}
+              git clone -b ${DEPLOY_BRANCH} git@github.com:galaonlinehub/gala_education_website.git ${DEPLOY_PATH}
+              cd ${DEPLOY_PATH}
+            fi
+
+             # Backup current .env file if it exists
             if [ -f .env ]; then
               cp .env .env.backup
             fi
             
-            echo "📥 Pulling latest changes..."
-            git fetch origin ${DEPLOY_BRANCH}
-            git reset --hard origin/${DEPLOY_BRANCH}
             
             echo "📦 Installing dependencies..."
             npm ci --production
