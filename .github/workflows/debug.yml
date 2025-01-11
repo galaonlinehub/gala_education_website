@@ -1,0 +1,25 @@
+# .github/workflows/debug.yml
+name: Debug Workflow Trigger
+
+# This workflow helps debug why deploy.yml isn't triggering
+on:
+  workflow_run:
+    workflows: ["Code Quality Check"]
+    types: [completed]
+    branches: [develop, main]
+
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Debug Info
+        run: |
+          echo "Triggered by workflow: ${{ github.event.workflow_run.name }}"
+          echo "Workflow conclusion: ${{ github.event.workflow_run.conclusion }}"
+          echo "Source branch: ${{ github.event.workflow_run.head_branch }}"
+          echo "Event type: ${{ github.event.workflow_run.event }}"
+          
+      - name: Check Workflow Run Details
+        run: |
+          # Print full event payload for debugging
+          echo '${{ toJSON(github.event.workflow_run) }}'
