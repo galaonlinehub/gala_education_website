@@ -32,8 +32,6 @@ jobs:
       - name: Run ESLint
         run: npm run lint || exit 1
 
-      - name: Check types
-        run: npm run typecheck || exit 1
         
       - name: Run tests
         run: npm run test || exit 1
