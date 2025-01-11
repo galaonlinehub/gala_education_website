@@ -1,7 +1,7 @@
 # .github/workflows/debug.yml
 name: Debug Workflow Trigger
 
-# This workflow helps debug why deploy.yml isn't triggering
+# This workflow helps debug why deploy.yml isn't triggerin
 on:
   workflow_run:
     workflows: ["Code Quality Check"]
