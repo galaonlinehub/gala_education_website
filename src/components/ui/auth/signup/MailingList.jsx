@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Alert, Button, Checkbox, Input, message, Select } from "antd";
-import { api } from "@/src/config/settings";
+import { apiPost } from "@/src/services/api_service";
 
 const MailingList = () => {
 
@@ -28,7 +28,7 @@ const MailingList = () => {
         formData.append(key, data[key]);
       });
 
-      const response = await api.post("/mailing-list", formData, {
+      const response = await apiPost("/mailing-list", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

@@ -1,34 +1,48 @@
-// /** @type {import('next').NextConfig} */
-// const nextConfig = {
-//     images: {
-//         domains: ['source.unsplash.com'],
-//       },
-// };
 
-// export default nextConfig;
-
-
-
-
-
-
-import withPWA from 'next-pwa';
+import withPWA from "next-pwa";
 
 const pwaConfig = withPWA({
-  dest: 'public',
+  dest: "public",
   register: true,
   skipWaiting: true,
-  // disable:false,
-  disable: process.env.NODE_ENV === 'development',
-  sw: '/sw.js',
+  disable: process.env.NODE_ENV === "development",
+  sw: "/sw.js",
 });
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['source.unsplash.com'],
+    domains: ["source.unsplash.com"],
   },
 };
 
-// Using the function returned by withPWA
 export default pwaConfig(nextConfig);
+
+
+
+// import withPWA from "next-pwa";
+
+// const pwaConfig = withPWA({
+//   dest: "public",
+//   register: true,
+//   skipWaiting: true,
+//   disable: process.env.NODE_ENV === "development",
+//   sw: "/sw.js",
+// });
+
+// /** @type {import('next').NextConfig} */
+// const nextConfig = {
+//   images: {
+//     domains: ["source.unsplash.com"],
+//   },
+//   // Add these to suppress warnings
+//   eslint: {
+//     ignoreDuringBuilds: true,
+//   },
+//   // Suppress TypeScript errors during build
+//   typescript: {
+//     ignoreBuildErrors: true,
+//   }
+// };
+
+// export default pwaConfig(nextConfig);

@@ -153,7 +153,7 @@ function Users() {
                 Delete
             </button>
             </div>;
-  }, [data, selectedRows, toggleCleared]);
+  }, []);
   return (
     <div>
       <DataTable title="Users" columns={columns} data={data} selectableRows contextActions={contextActions} onSelectedRowsChange={handleRowSelected} clearSelectedRows={toggleCleared} pagination />

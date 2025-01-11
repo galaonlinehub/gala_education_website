@@ -1,3 +1,5 @@
+"use client"
+
 import {
   Drawer,
   Spin,
@@ -52,7 +54,6 @@ const useStyle = createStyles(({ token }) => ({
 }));
 
 const NewClass = () => {
-  const queryClient = useQueryClient();
   const { openNewClass, setOpenNewClass } = useNewClass();
   const [selectedClasses, setSelectedClasses] = useState([]);
 

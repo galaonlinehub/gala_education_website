@@ -1,8 +1,8 @@
-// ClientWrapper.jsx
 "use client";
 import { useEffect } from "react";
 import { getUser } from "@/src/utils/fns/global";
 import useUser from "@/src/store/auth/user";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 export default function ClientWrapper({ children }) {
   const { loading } = useUser();
@@ -14,5 +14,7 @@ export default function ClientWrapper({ children }) {
     }
   }, [loading]);
 
-  return <>{children}</>;
+  return (
+    <QueryClientProvider client={QueryClient}>{children}</QueryClientProvider>
+  );
 }

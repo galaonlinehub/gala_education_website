@@ -1,28 +1,43 @@
-# .github/workflows/deploy.yml
+#deploy.yml
 name: Deploy to VPS
 
 on:
-  push:
+  workflow_run:
+    workflows: ["Code Quality Check"]
+    types:
+      - completed
     branches:
       - develop
       - main
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: "18.17.0"
+  PM2_APP_NAME: "nextjs"
+
+permissions:
+  actions: read
+  contents: read
+  id-token: write
 
 jobs:
   deploy:
     name: Deploy to VPS
-    # Only run if quality checks pass
-    if: github.event.workflow_run.conclusion == 'success'
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
-    
+    environment:
+      name: ${{ github.event.workflow_run.head_branch }}
+
+    concurrency:
+      group: deploy-${{ github.event.workflow_run.head_branch }}
+      cancel-in-progress: true
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
         with:
-          node-version: '18.17.0'
-          cache: 'npm'
+          ref: ${{ github.event.workflow_run.head_branch }}
+          fetch-depth: 0
 
       - name: Setup SSH
         uses: webfactory/ssh-agent@v0.8.0
@@ -33,28 +48,76 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
 
       - name: Deploy to VPS
         env:
           DEPLOY_PATH: ${{ secrets.PROJECT_PATH }}
           NODE_ENV: production
+          DEPLOY_USER: ${{ secrets.VPS_USER }}
+          DEPLOY_HOST: ${{ secrets.VPS_HOST }}
+          DEPLOY_BRANCH: ${{ github.event.workflow_run.head_branch }}
         run: |
-          ssh ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
+          # Create deployment script
+          cat << 'EOF' > deploy.sh
+            set -e  # Exit on any error
+            
+            echo "🚀 Starting deployment for branch ${DEPLOY_BRANCH}..."
+            
             # Navigate to project directory
-            cd ${{ secrets.PROJECT_PATH }}
+            cd $DEPLOY_PATH
             
-            # Pull latest changes
-            git fetch origin ${GITHUB_REF#refs/heads/}
-            git reset --hard origin/${GITHUB_REF#refs/heads/}
+            # Backup current .env file if it exists
+            if [ -f .env ]; then
+              cp .env .env.backup
+            fi
             
-            # Install dependencies
-            npm ci
+            echo "📥 Pulling latest changes..."
+            git fetch origin ${DEPLOY_BRANCH}
+            git reset --hard origin/${DEPLOY_BRANCH}
             
-            # Build the application
+            echo "📦 Installing dependencies..."
+            npm ci --production
+            
+            # Restore .env file
+            if [ -f .env.backup ]; then
+              mv .env.backup .env
+            fi
+            
+            echo "🏗️ Building application..."
             npm run build
             
-            # Restart PM2 process
-            pm2 restart nextjs-app || pm2 start npm --name "nextjs-app" -- start
-            
-            # Clear Next.js cache
+            echo "🧹 Clearing Next.js cache..."
             rm -rf .next/cache
+            
+            echo "🔄 Restarting PM2 process..."
+            if pm2 list | grep -q "${PM2_APP_NAME}"; then
+              pm2 reload ${PM2_APP_NAME} --update-env
+            else
+              pm2 start npm --name "${PM2_APP_NAME}" -- start
+            fi
+            
+            echo "✅ Deployment completed successfully!"
+          EOF
+
+          # Make script executable
+          chmod +x deploy.sh
+
+          # Copy and execute script on remote server
+          scp ./deploy.sh $DEPLOY_USER@$DEPLOY_HOST:/tmp/deploy.sh
+          ssh $DEPLOY_USER@$DEPLOY_HOST "bash /tmp/deploy.sh"
+
+          # Cleanup
+          ssh $DEPLOY_USER@$DEPLOY_HOST "rm /tmp/deploy.sh"
+
+      - name: Verify Deployment
+        run: |
+          echo "🔍 Verifying deployment..."
+          sleep 10  # Wait for service to start
+          curl --fail --silent --head ${{ secrets.APP_URL }} || (echo "❌ Deployment verification failed" && exit 1)
+          echo "✅ Deployment verified successfully!"
+
+      - name: Notify on Failure
+        if: failure()
+        run: |
+          echo "::error::Deployment failed! Please check the logs for more details."
