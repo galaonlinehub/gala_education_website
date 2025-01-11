@@ -1,4 +1,3 @@
-# .github/workflows/check.yml
 name: Code Quality Check
 
 on:
@@ -9,6 +8,10 @@ on:
 
 env:
   NODE_VERSION: '18.17.0'
+
+permissions:
+  actions: read
+  contents: read
 
 jobs:
   quality:
