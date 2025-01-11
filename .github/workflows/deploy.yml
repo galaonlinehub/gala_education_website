@@ -61,6 +61,9 @@ jobs:
           # Create deployment script
           cat << 'EOF' > deploy.sh
             set -e  # Exit on any error
+
+            echo "DEPLOY_PATH: ${DEPLOY_PATH}"
+            echo "DEPLOY_BRANCH: ${DEPLOY_BRANCH}"
             
             echo "🚀 Starting deployment for branch ${DEPLOY_BRANCH}..."
             
