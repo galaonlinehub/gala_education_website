@@ -5,8 +5,8 @@ const isValidKey = (key) => typeof key === "string" && key.length > 0;
 
 export const cookieFn = {
   set: (key, value, days = 7) => {
-    if (!isValidKey(key)) return false;
-    if (!isValidValue(value)) return false;
+    if (!isValidKey(key)) throw new Error("Invalid key");
+    if (!isValidValue(value)) throw new Error("Invalid value");
 
     try {
       Cookies.set(key, value, {

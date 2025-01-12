@@ -132,7 +132,7 @@ export default function ManageClass() {
           return (
             <div key={i} className="flex mb-4 justify-evenly flex-col gap-3 lg:flex-row items-center">
               <div className="flex flex-col font-semibold gap-1">
-                <button className="p-1 rounded-2xl border border-blue-600">{item["subject_name"]}</button>
+                <button className="p-1 rounded-2xl w-56 border border-blue-600">{item["subject_name"]}</button>
                 <span className="text-green-600 font-semibold">
                   {item["start_date"]} - {item["end_date"]}
                 </span>

@@ -9,12 +9,14 @@ export const getUser = async () => {
   const { setUser, setLoading } = useUser.getState();
   
   try {
-    setLoading(true); // Start loading
+    // setLoading(true); 
     const response = await apiGet("/user");
 
     if (response.status === 200) {
-      setUser(response.data); // This sets loading to false
-      return true;
+      console.log("User data:", response.data);
+      setUser(response.data); 
+      
+      return {status:true,role:response.data.role};
     } else {
       // Explicitly set loading to false when there's no user
       setUser(null);
