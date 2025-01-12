@@ -7,14 +7,14 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 export default function ClientWrapper({ children }) {
   const { loading } = useUser();
 
-  useEffect(() => {
-    console.log("ClientWrapper loading:", loading);
-    if (loading) {
-      getUser();
-    }
-  }, [loading]);
+  // useEffect(() => {
+  //   console.log("ClientWrapper loading:", loading);
+  //   if (loading) {
+  //     getUser();
+  //   }
+  // }, [loading]);
 
   return (
-    <QueryClientProvider client={QueryClient}>{children}</QueryClientProvider>
+    <QueryClientProvider client={new QueryClient}>{children}</QueryClientProvider>
   );
 }
