@@ -546,6 +546,7 @@ const VideoConference = ({ params: { id: roomId } }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const { user,setUser } = useUser();
+  const socketRef = useRef(null);
   
   // Refs
   const mainVideoRef = useRef(null);
@@ -573,18 +574,26 @@ const VideoConference = ({ params: { id: roomId } }) => {
   const sendMessage = () => {
     if (newMessage.trim()) {
       // Emit message to socket
-      socketRef.current?.emit('chat-message', {
+      socketRef.current?.emit('message', {
         roomId,
         message: newMessage,
         sender: userName
       });
       
       // Add message to local state
-      setMessages(prev => [...prev, {
-        sender: userName,
-        content: newMessage,
-        timestamp: new Date().toISOString()
-      }]);
+    //   setMessages(prev => [...prev, {
+    //     sender: userName,
+    //     content: newMessage,
+    //     timestamp: new Date().toISOString()
+    //   }]);
+
+    // setMessages(prev => [...prev, {
+    //     sender: userName,
+    //     content: newMessage,
+    //     timestamp: new Date().toISOString()
+    //   }]);
+
+    setMessages(prev=>[...prev,newMessage])
       
       setNewMessage("");
     }
@@ -631,6 +640,8 @@ const VideoConference = ({ params: { id: roomId } }) => {
       reconnectionAttempts: 5,
       reconnectionDelay: 1000,
     });
+
+    socketRef.current = socket;
     const roomName = roomId;
 
     let device;
@@ -899,6 +910,11 @@ const VideoConference = ({ params: { id: roomId } }) => {
       getLocalStream(role);
     });
 
+    socket.on('message',({senderId,message})=>{
+        
+        setMessages(prev=>[...prev,message])
+    })
+
     socket.on('new-producer', ({ producerId,user }) => {
         console.log("New producer connected : "+producerId)
         signalNewConsumerTransport(producerId,user)});
@@ -1106,8 +1122,8 @@ const VideoConference = ({ params: { id: roomId } }) => {
             <div className="flex-1 overflow-y-auto mb-4">
               {messages.map((msg, idx) => (
                 <div key={idx} className="mb-2">
-                  <span className="font-semibold">{msg.sender}: </span>
-                  <span>{msg.content}</span>
+                  {/* <span className="font-semibold">{msg.sender}: </span> */}
+                  <span>{msg}</span>
                 </div>
               ))}
             </div>
