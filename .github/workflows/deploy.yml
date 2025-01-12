@@ -155,7 +155,7 @@ jobs:
            fi
            
            echo "📦 Installing dependencies..."
-           npm ci --production
+           npm ci 
            
            # Restore .env file
            if [ -f .env.backup ]; then
