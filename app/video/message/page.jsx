@@ -15,7 +15,7 @@ const Message = () => {
 
     useEffect(() => {
         // Connect to the signaling server
-        const newSocket = io('http://localhost:3001/chat');
+        const newSocket = io('https://edusockets.galahub.org/chat');
         setSocket(newSocket);
 
         // Handle incoming messages
@@ -46,7 +46,7 @@ const Message = () => {
 
     const fetchMessages = async () => {
         try {
-            const response = await api.get(`http://localhost/api/messages`);
+            const response = await api.get(`https://galaweb.galahub.org/api/messages`);
             setMessages(response.data);
         } catch (err) {
             console.error('Error fetching messages:', err);

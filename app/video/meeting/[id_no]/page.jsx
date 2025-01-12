@@ -488,7 +488,7 @@ const VideoConference = ({ params: { id_no: roomId } }) => {
   // Rest of the existing mediasoup implementation...
     useEffect(() => {
     const token = getToken()
-    const socket = io("http://localhost:3001/signaling", {
+    const socket = io("https://edusockets.galahub.org/signaling", {
       query: { token },
       transports: ["websocket"],
       reconnection: true,
