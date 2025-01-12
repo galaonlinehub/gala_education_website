@@ -36,7 +36,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <ClientWrapper>
-          <TemplateLoader />
+          {/* <TemplateLoader /> */}
           <AntdRegistry>{children}</AntdRegistry>
         </ClientWrapper>
       </body>

@@ -74,22 +74,22 @@ const TemplateLoader = () => {
   const { user, loading } = useUser();
   const [show, setShow] = useState(false);
 
-  useEffect(() => {
-    if (!loading && user) {
-      setShow(false);
-    }
+  // useEffect(() => {
+  //   if (!loading && user) {
+  //     setShow(false);
+  //   }
 
-    const handleBeforeUnload = () => {
-      if (cookieFn.get("9fb96164-a058-41e4-9456-1c2bbdbfbf8d")) {
-        setShow(true);
-      }
-    };
+  //   const handleBeforeUnload = () => {
+  //     if (cookieFn.get("9fb96164-a058-41e4-9456-1c2bbdbfbf8d")) {
+  //       setShow(true);
+  //     }
+  //   };
 
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
-  }, [user, loading]);
+  //   window.addEventListener("beforeunload", handleBeforeUnload);
+  //   return () => {
+  //     window.removeEventListener("beforeunload", handleBeforeUnload);
+  //   };
+  // }, [user, loading]);
 
   if (!loading && !user) return null;
   if (!show) return null;

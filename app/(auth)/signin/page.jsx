@@ -19,7 +19,6 @@ const SignInPage = () => {
   // console.log(key);
 
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
   const setUser = useUser((state) => state.setUser);
   const [localFeedback, setLocalFeedback] = useState({
     show: false,
@@ -34,20 +33,30 @@ const SignInPage = () => {
   } = useForm();
   
   const onSubmit = async (data) => {
+    console.log(data);
+   
     try {
-      setLoading(true);
       message.destroy();
 
+      
       const response = await apiPost("/login", {
+
         email: data.email,
         password: data.password,
       });
-
       if (response.status === 200) {
+        console.log(response.data);
+       
         const encryptedToken = encrypt(response.data.token);
         cookieFn.set("9fb96164-a058-41e4-9456-1c2bbdbfbf8d", encryptedToken, 7);
 
-        if (getUser() === 1) {
+        
+        console.log(response.data.role);
+        console.log("123456789876543212345678")
+        
+        const res = await getUser();
+        console.log("the value of getuser is",res)
+        if (res.status === true) {
           const roleRedirects = {
             student: "/student",
             instructor: "/teacher",
@@ -55,14 +64,14 @@ const SignInPage = () => {
             parent: "/parent",
           };
 
-          const redirectTo = roleRedirects[res.data.role] || "/signin";
+          const redirectTo = roleRedirects[res.role] || "/signin";
           router.push(redirectTo);
 
           if (redirectTo === "/signin") {
             setLocalFeedback({
               show: true,
               type: "error",
-              message: "Unexpected Error. Try again.",
+              message: "Unexpected Error. Try again. user fetched though",
             });
             return;
           }
@@ -70,11 +79,12 @@ const SignInPage = () => {
           setLocalFeedback({
             show: true,
             type: "error",
-            message: "Unexpected Error. Try again.",
+            message: "Unexpected Error. Try again. user not fetched",
           });
         }
       }
     } catch (error) {
+      alert(error.message);
       const errorMessage =
         error.response?.data?.message || "Login failed. Please try again.";
       setLocalFeedback({
@@ -82,8 +92,9 @@ const SignInPage = () => {
         type: "error",
         message: errorMessage,
       });
-    } finally {
-      setLoading(false);
+    }
+     finally {
+
       setTimeout(() => {
         setLocalFeedback({
           show: false,
@@ -92,6 +103,10 @@ const SignInPage = () => {
         });
       }, 10000);
     }
+
+   
+
+
   };
 
   const preventCopyPaste = (event) => {
@@ -100,17 +115,16 @@ const SignInPage = () => {
 
   const handleGoogleLogin = async () => {
     try {
-      setLoading(true);
       const response = await apiGet("/auth/google");
       window.location.href = response.data.authUrl;
     } catch (error) {
+
       setLocalFeedback({
         show: true,
         type: "error",
         message: "Google login failed. Please try again later.",
       });
     } finally {
-      setLoading(false);
       setTimeout(() => {
         setLocalFeedback({
           show: false,
@@ -232,7 +246,7 @@ const SignInPage = () => {
 
         <button
           onClick={handleGoogleLogin}
-          disabled={loading}
+          disabled={isSubmitting}
           className="rounded-md h-12 w-full lg:w-3/4 md:w-full bg-[#001840] mt-10 text-white lg:text-base font-black disabled:opacity-70 flex items-center justify-center gap-3 lg:gap-5 px-4 py-2 text-xs md:text-sm"
         >
           <GoogleSvg />
