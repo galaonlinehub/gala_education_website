@@ -40,12 +40,12 @@ const Navbar = () => {
 
       <ul className="text-black font-black flex sm:gap-x-4 gap-x-2 sm:text-xs text-[8px] leading-[5px] items-center justify-center">
         <li>
-          <Link href={"/"} className="hover:cursor-pointer text-blue-500">
+          <Link href={"/"} className="hover:cursor-pointer">
             Home
           </Link>
         </li>
         <li>
-          <Link href={"#"} className="hover:cursor-pointer text-yellow-500">
+          <Link href={"#"} className="hover:cursor-pointer">
             About Us
           </Link>
         </li>

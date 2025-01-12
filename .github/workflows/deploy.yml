@@ -155,6 +155,7 @@ jobs:
            fi
            
            echo "📦 Installing dependencies..."
+           rm -f package-lock.json
            npm ci 
            
            # Restore .env file
