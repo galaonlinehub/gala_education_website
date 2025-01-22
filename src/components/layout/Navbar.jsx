@@ -58,10 +58,10 @@ const Navbar = () => {
         </li>
 
         {!user && (
-          <div className="flex gap-3" onClick={() => {}}>
+          <div className="flex gap-2" onClick={() => {}}>
             <ChooseAccont />
             <Link href={""} className="hover:cursor-pointer">
-              <li>Sign in</li>
+              <li>Sign In</li>
             </Link>
           </div>
         )}
