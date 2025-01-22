@@ -1,5 +1,6 @@
 import { FaChalkboardTeacher, FaDonate, FaUsers, FaBook  } from "react-icons/fa";
 import { MdNotes, MdLiveTv, MdSettings, MdAnalytics, MdDashboard, MdLibraryAdd } from "react-icons/md";
+import { LuGift } from "react-icons/lu";
 
 export const footer_links = {
   Services: [
@@ -143,7 +144,7 @@ export const teacher_links = [
 export const student_links = [
     {
         "name":"Dashboard",
-        "link":"dashboard",
+        "link":".",
         "icon":<MdDashboard />
         
         
@@ -178,14 +179,11 @@ export const student_links = [
         
     },
     
-    {
-        "name":"Donate",
-        "link":"donate",
-        "icon":<FaDonate />
-
-
-        
-    },
+    // {
+    //     "name":"Donate",
+    //     "link":"donate",
+    //     "icon":<LuGift />
+    // },
    
 
 ]

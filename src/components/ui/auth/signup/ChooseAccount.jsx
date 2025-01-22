@@ -88,7 +88,7 @@ const ChooseAccont = () => {
           }`}
           onClick={showPopconfirm}
         >
-          Register
+          Sign up
         </span>
       </Popconfirm>
     </section>

@@ -8,12 +8,12 @@ import React, { useState, useEffect } from "react";
 import { MenuOutlined, CloseOutlined } from "@ant-design/icons";
 import ChooseAccont from "@/src/components/ui/auth/signup/ChooseAccount";
 import { LuLogOut } from "react-icons/lu";
+import { Signout } from "../ui/auth/signup/Signout";
 
 const Navbar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const { user } = useUser();
-  const [openLogout, setOpenLogout] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -29,7 +29,7 @@ const Navbar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
   return (
-    <nav className="h-14 bg-white flex justify-between max-w-screen items-center fixed top-0 inset-x-0 z-50 lg:px-24 px-2 ">
+    <nav className="h-14 bg-white flex justify-between max-w-screen items-center fixed top-0 inset-x-0 z-50 lg:px-24 px-2 shadow-md">
       <Image
         alt={"Gala logo"}
         width={200}
@@ -44,6 +44,13 @@ const Navbar = () => {
             Home
           </Link>
         </li>
+        {user && (
+          <li>
+            <Link href={`${user.role}`} className="hover:cursor-pointer">
+              Dashboard
+            </Link>
+          </li>
+        )}
         <li>
           <Link href={"#"} className="hover:cursor-pointer">
             About Us
@@ -51,10 +58,10 @@ const Navbar = () => {
         </li>
 
         {!user && (
-          <div className="flex gap-3 pointer-events-none" onClick={() => {}}>
+          <div className="flex gap-3" onClick={() => {}}>
             <ChooseAccont />
             <Link href={""} className="hover:cursor-pointer">
-              <li>Login</li>
+              <li>Sign in</li>
             </Link>
           </div>
         )}
@@ -73,76 +80,10 @@ const Navbar = () => {
           </button>
         )}
 
-        {user && (
-          <div className="">
-            <Popconfirm
-              // zIndex={1000}
-              placement="bottom"
-              title="Are you sure you want to logout?"
-              open={openLogout}
-              onConfirm={() => {}}
-              okButtonProps={{
-                loading: false,
-              }}
-              onCancel={() => {
-                setOpenLogout(false);
-              }}
-              destroyTooltipOnHide={true}
-              // getPopupContainer={(trigger) => trigger.parentElement} 
-            >
-              <Tooltip color="black" title="Logout" placement="right">
-                <LuLogOut
-                  onClick={() => setOpenLogout(true)}
-                  className="hover:cursor-pointer hover:bg-transparent/10 p-1 hover:rounded-md text-2xl"
-                />
-              </Tooltip>
-            </Popconfirm>
-          </div>
-        )}
+        {user && <Signout />}
       </ul>
     </nav>
   );
 };
-
-{
-  /* <Popconfirm
-  title="Title"
-  description="Open Popconfirm with async logic"
-  open={open}
-  onConfirm={handleOk}
-  okButtonProps={{
-    loading: confirmLoading,
-  }}
-  onCancel={handleCancel}
->
-  <Button type="primary" onClick={showPopconfirm}>
-    Open Popconfirm with async logic
-  </Button>
-</Popconfirm>; */
-}
-
-// const WaitForLaunch = () => {
-//   return (
-//     <div className="flex items-center justify-center h-screen">
-//       <h1 className="text-4xl font-bold text-center">Launching soon...</h1>
-//     </div>
-//   );
-// };
-
-// const steps = [
-//   {
-//     title: "Launch Information",
-//     content: <WaitForLaunch />,
-//     target: ".some-target-class",
-//   },
-// ];
-
-// <Tour
-//   open={true}
-//   onClose={() => setOpen(false)}
-//   mask={false}
-//   type="primary"
-//   steps={steps}
-// />;
 
 export default Navbar;

@@ -13,6 +13,8 @@ import Cookies from "js-cookie";
 import { apiGet, apiPost } from "@/src/services/api_service";
 import { cookieFn } from "@/src/utils/fns/client";
 import { getUser } from "@/src/utils/fns/global";
+import { handleGoogleLogin, login } from "@/src/utils/fns/auth";
+import { roleRedirects } from "@/src/utils/data/redirect";
 
 const SignInPage = () => {
   // const key = crypto.randomUUID();
@@ -26,113 +28,51 @@ const SignInPage = () => {
     message: "",
   });
 
+  const errorMessage = "Unexpected Error. Try again later.";
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm();
-  
+
   const onSubmit = async (data) => {
-    console.log(data);
-   
     try {
       message.destroy();
+      const res = await login(data);
+      const redirectTo = roleRedirects[res.data?.role] || "/signin";
 
-      
-      const response = await apiPost("/login", {
-
-        email: data.email,
-        password: data.password,
-      });
-      if (response.status === 200) {
-        console.log(response.data);
-       
-        const encryptedToken = encrypt(response.data.token);
-        cookieFn.set("9fb96164-a058-41e4-9456-1c2bbdbfbf8d", encryptedToken, 7);
-
-        
-        console.log(response.data.role);
-        console.log("123456789876543212345678")
-        
-        const res = await getUser();
-        console.log("the value of getuser is",res)
-        if (res.status === true) {
-          const roleRedirects = {
-            student: "/student",
-            instructor: "/teacher",
-            admin: "/admin",
-            parent: "/parent",
-          };
-
-          const redirectTo = roleRedirects[res.role] || "/signin";
-          router.push(redirectTo);
-
-          if (redirectTo === "/signin") {
-            setLocalFeedback({
-              show: true,
-              type: "error",
-              message: "Unexpected Error. Try again. user fetched though",
-            });
-            return;
-          }
-        }else{
-          setLocalFeedback({
-            show: true,
-            type: "error",
-            message: "Unexpected Error. Try again. user not fetched",
-          });
-        }
+      if (res.status === 200 && redirectTo !== "/signin") {
+        router.push(redirectTo);
+        return;
       }
+
+      showError(errorMessage);
     } catch (error) {
-      alert(error.message);
-      const errorMessage =
-        error.response?.data?.message || "Login failed. Please try again.";
-      setLocalFeedback({
-        show: true,
-        type: "error",
-        message: errorMessage,
-      });
+      showError(error.response?.data?.message || errorMessage);
+    } finally {
+      setTimeout(() => clearFeedback(), 10000);
     }
-     finally {
+  };
 
-      setTimeout(() => {
-        setLocalFeedback({
-          show: false,
-          type: "",
-          message: "",
-        });
-      }, 10000);
-    }
+  const showError = (message) => {
+    setLocalFeedback({
+      show: true,
+      type: "error",
+      message,
+    });
+  };
 
-   
-
-
+  const clearFeedback = () => {
+    setLocalFeedback({
+      show: false,
+      type: "",
+      message: "",
+    });
   };
 
   const preventCopyPaste = (event) => {
     event.preventDefault();
-  };
-
-  const handleGoogleLogin = async () => {
-    try {
-      const response = await apiGet("/auth/google");
-      window.location.href = response.data.authUrl;
-    } catch (error) {
-
-      setLocalFeedback({
-        show: true,
-        type: "error",
-        message: "Google login failed. Please try again later.",
-      });
-    } finally {
-      setTimeout(() => {
-        setLocalFeedback({
-          show: false,
-          type: "",
-          message: "",
-        });
-      }, 10000);
-    }
   };
 
   return (

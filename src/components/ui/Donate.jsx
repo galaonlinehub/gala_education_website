@@ -3,9 +3,9 @@
 import React, { useState } from "react";
 import { Tabs, Button, Input, Select, Row, Col, Typography, Space } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
-import AcceptingHands from "@/components/vectors/AcceptingHands";
-import Olive from "@/components/vectors/Olive";
-import Love from "@/components/vectors/Love";
+import AcceptingHands from "@/src/utils/vector-svg/vectors/AcceptingHands";
+import Olive from "@/src/utils/vector-svg/vectors/Olive";
+import Love from "@/src/utils/vector-svg/vectors/Love";
 
 const { TabPane } = Tabs;
 const { Title, Paragraph, Text } = Typography;
@@ -82,8 +82,6 @@ const Donate = ({ setShowDonatePopup, showDonatePopup }) => {
     );
   };
 
-
-
   return (
     <div className="p-10 md:px-44 z-50 lg:px-56 xl:px-80 h-screen overflow-y-auto scrollbar-hide">
       <Button
@@ -132,22 +130,57 @@ const Donate = ({ setShowDonatePopup, showDonatePopup }) => {
         <TabPane tab="Donate" key="1">
           {showWatermarks()}
           <Space direction="vertical" size="large" style={{ width: "100%" }}>
-            <Row gutter={[24, 24]} style={{ backgroundColor: "#001840", padding: "12px", borderRadius: "16px" }}>
+            <Row
+              gutter={[24, 24]}
+              style={{
+                backgroundColor: "#001840",
+                padding: "12px",
+                borderRadius: "16px",
+              }}
+            >
               <Col xs={24} lg={12}>
-                <div style={{ padding: "24px", borderRadius: "8px", height: "100%" }}>
+                <div
+                  style={{
+                    padding: "24px",
+                    borderRadius: "8px",
+                    height: "100%",
+                  }}
+                >
                   <Title level={4} style={{ color: "white" }}>
                     Help us do more
                   </Title>
 
-                  <Paragraph style={{ color: "white", fontSize: "10px" }}>Dear members, many students are unable to afford the app charges, limiting their access to vital learning resources. We&apos;re stepping in to help cover these costs, ensuring every student has a chance to learn, no matter their financial situation. Your donation is crucial—it opens doors to education for those in need and helps us support underfunded rural schools, where students study under incredibly harsh conditions. Together, we can break the cycle of poverty and build a brighter future for these young minds.</Paragraph>
+                  <Paragraph style={{ color: "white", fontSize: "10px" }}>
+                    Dear members, many students are unable to afford the app
+                    charges, limiting their access to vital learning resources.
+                    We&apos;re stepping in to help cover these costs, ensuring
+                    every student has a chance to learn, no matter their
+                    financial situation. Your donation is crucial—it opens doors
+                    to education for those in need and helps us support
+                    underfunded rural schools, where students study under
+                    incredibly harsh conditions. Together, we can break the
+                    cycle of poverty and build a brighter future for these young
+                    minds.
+                  </Paragraph>
                 </div>
               </Col>
               <Col xs={24} lg={12}>
-                <Space direction="vertical" size="large" style={{ width: "100%", padding: "2px" }}>
+                <Space
+                  direction="vertical"
+                  size="large"
+                  style={{ width: "100%", padding: "2px" }}
+                >
                   <Text strong style={{ color: "white", fontSize: "10px" }}>
                     Choose donation frequency
                   </Text>
-                  <div style={{ backgroundColor: "white", padding: "6px 6px", borderRadius: "24px", display: "inline-block" }}>
+                  <div
+                    style={{
+                      backgroundColor: "white",
+                      padding: "6px 6px",
+                      borderRadius: "24px",
+                      display: "inline-block",
+                    }}
+                  >
                     <Space wrap>
                       {donationFrequencies.map((tab) => (
                         <Button
@@ -156,7 +189,8 @@ const Donate = ({ setShowDonatePopup, showDonatePopup }) => {
                           onClick={() => setActiveTab(tab.key)}
                           shape="round"
                           style={{
-                            backgroundColor: activeTab === tab.key ? "#001840" : "white",
+                            backgroundColor:
+                              activeTab === tab.key ? "#001840" : "white",
                             color: activeTab === tab.key ? "white" : "#001840",
                             borderColor: "#001840",
                           }}
@@ -167,8 +201,15 @@ const Donate = ({ setShowDonatePopup, showDonatePopup }) => {
                     </Space>
                   </div>
 
-                  <div style={{ padding: "8px", borderRadius: "8px" }} className="-mb-4">
-                    <Space direction="vertical" size="middle" style={{ width: "100%" }}>
+                  <div
+                    style={{ padding: "8px", borderRadius: "8px" }}
+                    className="-mb-4"
+                  >
+                    <Space
+                      direction="vertical"
+                      size="middle"
+                      style={{ width: "100%" }}
+                    >
                       <Text strong style={{ color: "white", fontSize: "10px" }}>
                         Select donation amount
                       </Text>
@@ -181,8 +222,12 @@ const Donate = ({ setShowDonatePopup, showDonatePopup }) => {
                               style={{
                                 width: "50px",
                                 fontSize: "12px",
-                                backgroundColor: selectedAmount === amount ? "white" : "#001840",
-                                color: selectedAmount === amount ? "black" : "white",
+                                backgroundColor:
+                                  selectedAmount === amount
+                                    ? "white"
+                                    : "#001840",
+                                color:
+                                  selectedAmount === amount ? "black" : "white",
                                 borderColor: "white",
                               }}
                             >
@@ -192,11 +237,22 @@ const Donate = ({ setShowDonatePopup, showDonatePopup }) => {
                         </div>
 
                         <div className="mb-3 md:mb-0 md:mt-0 w-12 mt-3">
-                          <Text style={{ color: "white", fontSize: "13px" }}>or</Text>
+                          <Text style={{ color: "white", fontSize: "13px" }}>
+                            or
+                          </Text>
                         </div>
 
                         <div>
-                          <Input placeholder="Enter amount" className="!placeholder-gray-400" style={{ width: "100%", color: "white", backgroundColor: "#001840", fontSize: "14px" }} />
+                          <Input
+                            placeholder="Enter amount"
+                            className="!placeholder-gray-400"
+                            style={{
+                              width: "100%",
+                              color: "white",
+                              backgroundColor: "#001840",
+                              fontSize: "14px",
+                            }}
+                          />
                         </div>
                       </div>
 
@@ -214,11 +270,18 @@ const Donate = ({ setShowDonatePopup, showDonatePopup }) => {
                         }}
                       />
                       <Text style={{ color: "white", fontSize: "10px" }}>
-                        <a style={{ color: "#1890ff", textDecoration: "none" }}>Click here</a> to make a donation in honour of someone special.
+                        <a style={{ color: "#1890ff", textDecoration: "none" }}>
+                          Click here
+                        </a>{" "}
+                        to make a donation in honour of someone special.
                       </Text>
                     </Space>
                   </div>
-                  <Button type="primary" style={{ background: "#007AFF", fontWeight: "bold" }} onClick={handleDonateNow}>
+                  <Button
+                    type="primary"
+                    style={{ background: "#007AFF", fontWeight: "bold" }}
+                    onClick={handleDonateNow}
+                  >
                     Donate Now
                   </Button>
                 </Space>
@@ -229,22 +292,56 @@ const Donate = ({ setShowDonatePopup, showDonatePopup }) => {
         <TabPane tab="Payment" key="2">
           {showWatermarks()}
           <Space direction="vertical" size="large" style={{ width: "100%" }}>
-            <Row gutter={[24, 24]} style={{ backgroundColor: "#001840", padding: "24px", borderRadius: "16px" }}>
+            <Row
+              gutter={[24, 24]}
+              style={{
+                backgroundColor: "#001840",
+                padding: "24px",
+                borderRadius: "16px",
+              }}
+            >
               <Col xs={24} lg={12}>
-                <div style={{ padding: "24px", borderRadius: "8px", height: "100%" }}>
+                <div
+                  style={{
+                    padding: "24px",
+                    borderRadius: "8px",
+                    height: "100%",
+                  }}
+                >
                   <Title level={4} style={{ color: "white" }}>
                     Help us do more
                   </Title>
 
-                  <Paragraph style={{ color: "white", fontSize: "10px" }}>Dear members, many students are unable to afford the app charges, limiting their access to vital learning resources. We&apos;re stepping in to help cover these costs, ensuring every student has a chance to learn, no matter their financial situation. Your donation is crucial—it opens doors to education for those in need and helps us support underfunded rural schools, where students study under incredibly harsh conditions. Together, we can break the cycle of poverty and build a brighter future for these young minds.</Paragraph>
+                  <Paragraph style={{ color: "white", fontSize: "10px" }}>
+                    Dear members, many students are unable to afford the app
+                    charges, limiting their access to vital learning resources.
+                    We&apos;re stepping in to help cover these costs, ensuring
+                    every student has a chance to learn, no matter their
+                    financial situation. Your donation is crucial—it opens doors
+                    to education for those in need and helps us support
+                    underfunded rural schools, where students study under
+                    incredibly harsh conditions. Together, we can break the
+                    cycle of poverty and build a brighter future for these young
+                    minds.
+                  </Paragraph>
                 </div>
               </Col>
               <Col xs={24} lg={12}>
-                <Space direction="vertical" size="large" style={{ width: "100%" }}>
+                <Space
+                  direction="vertical"
+                  size="large"
+                  style={{ width: "100%" }}
+                >
                   <Text strong style={{ color: "white", fontSize: "12px" }}>
                     Choose payment method
                   </Text>
-                  <Space style={{ backgroundColor: "white", padding: "6px 6px", borderRadius: "24px" }}>
+                  <Space
+                    style={{
+                      backgroundColor: "white",
+                      padding: "6px 6px",
+                      borderRadius: "24px",
+                    }}
+                  >
                     {paymentMethods.map((tab) => (
                       <Button
                         key={tab.key}
@@ -252,7 +349,8 @@ const Donate = ({ setShowDonatePopup, showDonatePopup }) => {
                         onClick={() => setActivePayTab(tab.key)}
                         shape="round"
                         style={{
-                          backgroundColor: activePayTab === tab.key ? "#001840" : "white",
+                          backgroundColor:
+                            activePayTab === tab.key ? "#001840" : "white",
                           color: activePayTab === tab.key ? "white" : "#001840",
                           borderColor: "#001840",
                         }}
@@ -264,31 +362,71 @@ const Donate = ({ setShowDonatePopup, showDonatePopup }) => {
 
                   <div style={{ padding: "8px", borderRadius: "8px" }}>
                     {activePayTab === "bank" && (
-                      <Space direction="vertical" size="middle" style={{ width: "100%" }}>
+                      <Space
+                        direction="vertical"
+                        size="middle"
+                        style={{ width: "100%" }}
+                      >
                         <Row gutter={[16, 16]}>
                           <Col xs={24} md={8}>
-                            <Input placeholder="Card Number" className="input-placeholder !placeholder-gray-400" style={{ color: "white", borderColor: "white", backgroundColor: "#001840" }} />
+                            <Input
+                              placeholder="Card Number"
+                              className="input-placeholder !placeholder-gray-400"
+                              style={{
+                                color: "white",
+                                borderColor: "white",
+                                backgroundColor: "#001840",
+                              }}
+                            />
                           </Col>
 
                           <Col xs={24} md={8}>
-                            <Input placeholder="Expiration Date" className="!placeholder-gray-400" style={{ color: "white", borderColor: "white", backgroundColor: "#001840" }} />
+                            <Input
+                              placeholder="Expiration Date"
+                              className="!placeholder-gray-400"
+                              style={{
+                                color: "white",
+                                borderColor: "white",
+                                backgroundColor: "#001840",
+                              }}
+                            />
                           </Col>
                           <Col xs={24} md={8}>
-                            <Input placeholder="Security Code" className="!placeholder-gray-400" style={{ color: "white", borderColor: "white", backgroundColor: "#001840" }} />
+                            <Input
+                              placeholder="Security Code"
+                              className="!placeholder-gray-400"
+                              style={{
+                                color: "white",
+                                borderColor: "white",
+                                backgroundColor: "#001840",
+                              }}
+                            />
                           </Col>
                         </Row>
-                        <Select defaultValue="tanzania" className="custom-select-tag border border-white rounded-md w-full">
+                        <Select
+                          defaultValue="tanzania"
+                          className="custom-select-tag border border-white rounded-md w-full"
+                        >
                           <Option value="tanzania">Tanzania</Option>
                           <Option value="kenya">Kenya</Option>
                           <Option value="uganda">Uganda</Option>
                         </Select>
-                        <Text style={{ color: "white", fontSize: "10px" }}>By providing your card information, you allow Gala Education to charge your card for future payments in accordance with their terms.</Text>
-                        <Button type="primary" style={{ background: "#007AFF", fontWeight: "bold" }}>
+                        <Text style={{ color: "white", fontSize: "10px" }}>
+                          By providing your card information, you allow Gala
+                          Education to charge your card for future payments in
+                          accordance with their terms.
+                        </Text>
+                        <Button
+                          type="primary"
+                          style={{ background: "#007AFF", fontWeight: "bold" }}
+                        >
                           Pay Now
                         </Button>
                       </Space>
                     )}
-                    {activePayTab === "mobile" && <Text style={{ color: "white" }}>Mobile payment </Text>}
+                    {activePayTab === "mobile" && (
+                      <Text style={{ color: "white" }}>Mobile payment </Text>
+                    )}
                   </div>
                 </Space>
               </Col>

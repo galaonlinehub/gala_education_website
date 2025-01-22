@@ -1,6 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Input, Empty, Card, Typography, Tag, Skeleton, Result } from "antd";
-import { FaBell, FaUserCircle, FaSearch } from "react-icons/fa";
+import {
+  Input,
+  Empty,
+  Card,
+  Typography,
+  Tag,
+  Skeleton,
+  Result,
+  Tooltip,
+} from "antd";
+// import { FaBell, FaUserCircle, FaSearch } from "react-icons/fa";
 import { IoMenu, IoSearch } from "react-icons/io5";
 
 import {
@@ -12,136 +21,191 @@ import {
   InfoCircleOutlined,
   CloseOutlined,
 } from "@ant-design/icons";
+
+import {
+  FaBook,
+  FaUserTie,
+  FaTags,
+  FaInfoCircle,
+  FaDollarSign,
+  FaUserCircle,
+  FaBell,
+  FaGraduationCap,
+  FaChalkboardTeacher,
+  FaBookReader,
+  FaArrowRight,
+  FaStar,
+} from "react-icons/fa";
 import { AnimatePresence, motion } from "framer-motion";
 import { useNewClass } from "@/src/store/student/class";
 import { useRouter } from "next/navigation";
 import { apiGet } from "@/src/services/api_service";
-import { FaBook } from "react-icons/fa";
 import { MdTopic } from "react-icons/md";
 import { getInstructorDetails } from "@/src/utils/fns/global";
 
 const { Title, Text } = Typography;
 
-export const SearchResultCard = ({ data, onClick }) => {
+const SearchResultCard = ({ data, onClick }) => {
   const { subjects, topics, teachers } = data;
+
+  const formatPrice = (price) => {
+    return new Intl.NumberFormat("sw-TZ", {
+      style: "currency",
+      currency: "TZS",
+      maximumFractionDigits: 0,
+    }).format(price);
+  };
+
+  const cardVariants = {
+    hover: { y: -8, transition: { duration: 0.3 } },
+  };
+
+  const itemVariants = {
+    hover: { x: 8, transition: { duration: 0.2 } },
+  };
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-      className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
+      // whileHover="hover"
+      variants={cardVariants}
+      // className="rounded-2xl overflow-hidden shadow-lg"
     >
       {/* Subjects Section */}
       {subjects && subjects.length > 0 && (
-        <div className="p-4 border-b border-gray-100">
-          <div className="flex items-center mb-3">
-            <FaBook className="mr-3 text-xl" />
-            <h3 className="text-lg font-semibold text-gray-800">Subjects</h3>
-          </div>
-          <div className="grid gap-2">
-            {subjects.map((subject) => (
-              <div
-                key={subject.id}
-                className="rounded-lg p-3 
-                hover:bg-blue-100 transition-colors 
-                flex justify-between items-center group cursor-pointer"
-                onClick={() => onClick(subject)}
-              >
-                <div>
-                  <div
-                    className="font-medium 
-                    group-hover:text-blue-900 transition-colors"
-                  >
-                    {subject.name}
-                  </div>
-                  <div
-                    className="text-sm text-gray-600 
-                    line-clamp-2 mt-1"
-                  >
-                    {subject.description}
-                  </div>
-                </div>
-                <InfoCircleOutlined
-                  className="hover:text-blue-600 
-                  transition-colors opacity-0 group-hover:opacity-100"
-                />
+        <div className="relative">
+          <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-purple-500 to-blue-500" />
+          <div className="p-6">
+            <div className="flex items-center mb-4">
+              <div className="bg-gradient-to-r from-purple-500 to-blue-500 p-2 rounded-lg">
+                <FaGraduationCap className="text-xl text-white" />
               </div>
-            ))}
+              <h3 className="ml-3 text-xl font-bold bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">
+                Subjects
+              </h3>
+            </div>
+            <div className="space-y-3">
+              {subjects.map((subject) => (
+                <motion.div
+                  key={subject.id}
+                  variants={itemVariants}
+                  whileHover="hover"
+                  className="rounded-xl p-4 bg-gradient-to-r from-purple-50 to-blue-50
+                  border border-transparent hover:border-blue-200 cursor-pointer
+                  transform transition-all duration-300"
+                  onClick={() => onClick(subject)}
+                >
+                  <div className="flex justify-between items-start">
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-gray-800 mb-2">
+                        {subject.name}
+                      </h4>
+                      <p className="text-sm text-gray-600 line-clamp-2">
+                        {subject.description}
+                      </p>
+                    </div>
+                    <FaArrowRight className="text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
       )}
 
       {/* Topics Section */}
       {topics && topics.length > 0 && (
-        <div className="p-4 border-b">
-          <div className="flex items-center mb-3">
-            <MdTopic className="mr-3 text-xl" />
-            <h3 className="text-lg font-semibold text-gray-800">Topics</h3>
-          </div>
-          <div className="grid gap-2">
-            {topics.map((topic) => (
-              <div
-                key={topic.id}
-                className="rounded-lg p-3 
-                flex justify-between items-center 
-               transition-colors group cursor-pointer"
-                onClick={() => onClick(topic)}
-              >
-                <span
-                  className="font-medium 
-                   transition-colors"
-                >
-                  {topic.title}
-                </span>
-                <Tag
-                  icon={<DollarOutlined />}
-                  color="green"
-                  className="font-semibold"
-                >
-                  ${topic.price}
-                </Tag>
+        <div className="relative bg-gray-50">
+          <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-blue-500 to-cyan-500" />
+          <div className="p-6">
+            <div className="flex items-center mb-4">
+              <div className="bg-gradient-to-r from-blue-500 to-cyan-500 p-2 rounded-lg">
+                <FaBookReader className="text-xl text-white" />
               </div>
-            ))}
+              <h3 className="ml-3 text-xl font-bold bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent">
+                Topics
+              </h3>
+            </div>
+            <div className="grid gap-3">
+              {topics.map((topic) => (
+                <motion.div
+                  key={topic.id}
+                  variants={itemVariants}
+                  whileHover="hover"
+                  className="rounded-xl p-4 shadow-sm hover:shadow-md  
+                  border-l-4 border-transparent hover:border-l-cyan-500
+                  transform transition-all duration-300"
+                  onClick={() => onClick(topic)}
+                >
+                  <div className="flex justify-between items-center">
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-gray-800">
+                        {topic.title}
+                      </h4>
+                      <div className="flex items-center mt-2 space-x-2">
+                        <Tag className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white border-0 px-3 py-1 rounded-full">
+                          {formatPrice(topic.price ?? 60000)}
+                        </Tag>
+                        {/* <div className="flex items-center text-yellow-400">
+                          <FaStar className="text-sm" />
+                          <span className="ml-1 text-sm text-gray-600">
+                            4.8
+                          </span>
+                        </div> */}
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
       )}
 
       {/* Instructors Section */}
       {teachers && teachers.length > 0 && (
-        <div className="p-4">
-          <div className="flex items-center mb-3">
-            <UserOutlined className="mr-3  text-xl" />
-            <h3 className="text-lg font-semibold text-gray-800">Instructors</h3>
-          </div>
-          <div className="grid lg:grid-cols-2 gap-3">
-            {teachers.map((teacher) => (
-              <div
-                key={teacher.id}
-                className="rounded-lg p-3 
-                flex items-center space-x-3 
-                transition-colors group cursor-pointer"
-                onClick={() => onClick(teacher)}
-              >
-                <div
-                  className="w-12 h-12  
-                  rounded-full flex items-center justify-center"
-                >
-                  <UserOutlined className="" />
-                </div>
-                <div>
-                  <div
-                    className="font-medium  
-                     transition-colors"
-                  >
-                    {teacher.user.first_name} {teacher.user.last_name}
-                  </div>
-                  <div className="text-xs text-gray-500">
-                    NIDA: {teacher.nida}
-                  </div>
-                </div>
+        <div className="relative bg-gray-50">
+          <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-cyan-500 to-teal-500" />
+          <div className="p-6">
+            <div className="flex items-center mb-4">
+              <div className="bg-gradient-to-r from-violet-500 to-violet-500 p-2 rounded-lg">
+                <FaChalkboardTeacher className="text-xl text-white" />
               </div>
-            ))}
+              <h3 className="ml-3 text-xl font-bold bg-gradient-to-r from-violet-500 to-violet-500 bg-clip-text text-transparent">
+                Instructors
+              </h3>
+            </div>
+            <div className="grid lg:grid-cols-2 gap-4">
+              {teachers.map((teacher) => (
+                <motion.div
+                  key={teacher.id}
+                  variants={itemVariants}
+                  whileHover="hover"
+                  className="rounded-xl p-4 bg-gradient-to-r from-violet-50 to-violet-50
+                  hover:shadow-md cursor-pointer transform transition-all duration-300"
+                  onClick={() => onClick(teacher)}
+                >
+                  <div className="flex items-center space-x-4">
+                    <div className="">
+                      <div className="w-16 h-16 rounded-full bg-gradient-to-r from-violet-500 to-violet-500 flex items-center justify-center">
+                        <FaUserCircle className="text-3xl text-white" />
+                      </div>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-800 capitalize">
+                        {teacher.user.first_name} {teacher.user.last_name}
+                      </h4>
+                      {/* <div className="flex items-center mt-1">
+                        <span className="text-sm text-gray-500 bg-white px-2 py-0.5 rounded-full border border-gray-200">
+                          NIDA: {teacher.nida}
+                        </span>
+                      </div> */}
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
       )}
@@ -244,7 +308,7 @@ const StudentSearch = () => {
   return (
     <div
       ref={searchContainerRef}
-      className="fixed top-14 left-0 w-full z-50 bg-white shadow-sm lg:px-32"
+      className="fixed top-14 left-0 w-full z-10 bg-white shadow-sm lg:px-32"
     >
       <div className="max-w-7xl mx-auto px-4 py-4">
         <div className="relative flex justify-between w-full items-center space-x-4">
@@ -357,7 +421,12 @@ const StudentSearch = () => {
               </span>
             </div>
 
-            <FaUserCircle className="text-xl text-black hover:text-blue-700 cursor-pointer transition-colors" />
+            <Tooltip placement="top" title="My Profile">
+              <FaUserCircle
+                className="text-xl text-black hover:text-blue-700 cursor-pointer transition-colors"
+                onClick={() => router.push("/student/profile")}
+              />
+            </Tooltip>
           </div>
         </div>
       </div>

@@ -28,6 +28,10 @@ const tailwindConfig = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
+        heading: ['var(--font-poppins)', 'system-ui', 'sans-serif'],
+      },
       
       height: {
         'input-height': '43px', 

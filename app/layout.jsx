@@ -1,9 +1,21 @@
-import TemplateLoader from "@/src/components/ui/loading/template/TemplateLoader";
 import "./globals.css";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import ClientWrapper from "@/src/components/layout/MainAuth";
+import { Inter, Poppins } from 'next/font/google';
 
-// export const runtime = "nodejs";
+// Configure fonts
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+});
+
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  display: 'swap',
+  variable: '--font-poppins',
+});
 
 export const metadata = {
   title: "Gala Education",
@@ -33,10 +45,9 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body>
+    <html lang="en" className={`${inter.variable} ${poppins.variable}`}>
+      <body className="font-sans">
         <ClientWrapper>
-          {/* <TemplateLoader /> */}
           <AntdRegistry>{children}</AntdRegistry>
         </ClientWrapper>
       </body>

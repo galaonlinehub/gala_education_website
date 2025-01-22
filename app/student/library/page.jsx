@@ -1,19 +1,29 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
-import ReadMoreContainer from "@/components/layout/ui/ReadMore";
-import { useNewClass } from "@/src/store/student/class";
+import ReadMoreContainer from "@/src/components/ui/ReadMore";
+import { useEnrolledTopics, useNewClass } from "@/src/store/student/class";
 import useUser from "@/src/store/auth/user";
 import { Skeleton } from "antd";
 import { IoIosAdd } from "react-icons/io";
-import { ClassCard, TopicSkeleton } from "@/src/components/ui/loading/skeletons/ClassCard";
+import {
+  ClassCard,
+  TopicSkeleton,
+} from "@/src/components/ui/loading/skeletons/ClassCard";
+import { getUserTopics } from "@/src/utils/fns/global";
 
 const Library = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const { setOpenNewClass } = useNewClass();
   const { user, setUser } = useUser();
+  const { enrolledTopincs } = useEnrolledTopics();
 
+  useEffect(() => {
+    getUserTopics();
+  }, []);
+
+  console.log(enrolledTopincs, "THIS IS MEMEME");
   const mySubjects = [
     {
       name: "Mathematics Grade 7",
@@ -68,66 +78,9 @@ const Library = () => {
 
   return (
     <div className="px-2 py-8 mt-12">
-      <ClassCard/>
-      <TopicSkeleton/>
       <div className="flex flex-col lg:flex-row gap-20">
         <div className="w-full lg:w-2/3">
-          {/* <div className="p-4 z-10 h-fit mb-10 w-full border-blue-600 border-2 rounded-xl flex flex-col relative">
-            <div>
-              <div className="flex flex-col">
-                <div className="font-bold text-sm">
-                  {user ? (
-                    `Welcome back, ${user.first_name} ${user.last_name}!`
-                  ) : (
-                    <>
-                      Welcome back,
-                      <Skeleton.Input
-                        active
-                        size="small"
-                        style={{
-                          width: 60,
-                          minWidth: 60,
-                          height: 16,
-                          display: "inline-block",
-                          verticalAlign: "middle",
-                          marginTop: "-4px",
-                          marginLeft: "10px",
-                          marginRight: "10px",
-                        }}
-                      />
-                      <Skeleton.Input
-                        active
-                        size="small"
-                        style={{
-                          width: 80,
-                          minWidth: 80,
-                          height: 16,
-                          display: "inline-block",
-                          verticalAlign: "middle",
-                          marginTop: "-4px",
-                          marginRight: "10px",
-                        }}
-                      />
-                      !
-                    </>
-                  )}
-                </div>
-                <div>
-                  <ReadMoreContainer />
-                </div>
-              </div>
-              <div className="absolute sm:-top-16 -top-8 sm:right-4 right-2">
-                <Image
-                  className="h-[8rem] w-[8rem] sm:w-[12rem] sm:h-[12rem] "
-                  src="/sitting_on_books.png"
-                  alt="An image of a character sitting on books"
-                  width={150}
-                  height={150}
-                />
-              </div>
-            </div>
-          </div> */}
-          <h3 className="text-sm font-bold mb-4">My Subjects</h3>
+          <h3 className="text-lg font-black mb-4">My Classes</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
             {mySubjects.map((subject, index) => (
               <div
@@ -188,8 +141,6 @@ const Library = () => {
           </div>
         </div>
       </div>
-     
-     
     </div>
   );
 };

@@ -2,21 +2,22 @@
 import Link from "next/link";
 import { Drawer } from "antd";
 import useUser from "@/src/store/auth/user";
-import Clock from "@/components/vectors/Clock";
+import Clock from "@/src/utils/vector-svg/vectors/Clock";
 import React, { useState, useEffect } from "react";
 import Footer from "@/src/components/layout/footer";
 import Navbar from "@/src/components/layout/Navbar";
 import { CloseCircleFilled } from "@ant-design/icons";
 import StudentSearch from "@/src/components/student/Search";
-import KidInPicture from "@/components/vectors/KidInPicture";
-import { student_links } from "@/constants/navigation_links";
-import RightTiltedBook from "@/components/vectors/CombinedBlock";
-import StudentsInClass from "@/components/vectors/StudentsInClass";
+import KidInPicture from "@/src/utils/vector-svg/vectors/KidInPicture";
+import { student_links } from "@/src/utils/data/navigation_links";
+import RightTiltedBook from "@/src/utils/vector-svg/vectors/CombinedBlock";
+import StudentsInClass from "@/src/utils/vector-svg/vectors/StudentsInClass";
 import { FloatingActionButton } from "@/src/components/ui/Fab";
 import useInstallPrompt from "@/src/hooks/useInstallPrompt";
 import NewClass from "@/src/components/student/NewClass";
 import { useNewClass } from "@/src/store/student/class";
 import { getUser } from "@/src/utils/fns/global";
+import { usePathname, useSearchParams } from "next/navigation";
 
 export default function StudentLayout({ children }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -34,7 +35,7 @@ export default function StudentLayout({ children }) {
   }, []);
 
   const { installPrompt, isInstalled, handleInstallClick } = useInstallPrompt();
-
+  const currentUrl = usePathname();
 
   return (
     <>
@@ -61,14 +62,17 @@ export default function StudentLayout({ children }) {
             {student_links.map((item, i) => (
               <li key={i}>
                 <Link
-                  href={item.link}
-                  className="flex items-center gap-4 py-2 px-2 rounded-lg hover:bg-blue-950/20 transition-colors"
+                  href={`/student/${item.link}`} // Generate the correct href
+                  className={`flex items-center gap-4 py-2 px-2 rounded-lg transition-colors ${
+                    currentUrl.replace(/\/$/, "") ===
+                    `/student${item.link === "." ? "" : `/${item.link}`}`
+                      ? "bg-[#001840] text-white" // Active item styles
+                      : "hover:bg-blue-950/20" // Hover styles for unselected items
+                  }`}
                   onClick={() => isMobile && setIsSidebarOpen(false)}
                 >
-                  <span className="text-blue-600">{item.icon}</span>
-                  <span className="font-black text-xs text-black">
-                    {item.name}
-                  </span>
+                  <span className="">{item.icon}</span>
+                  <span className="font-black text-sm ">{item.name}</span>
                 </Link>
               </li>
             ))}
@@ -90,7 +94,7 @@ export default function StudentLayout({ children }) {
       )}
 
       {/* Footer */}
-      <Footer />
+      {/* <Footer /> */}
 
       <Drawer
         title={

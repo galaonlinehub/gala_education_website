@@ -6,7 +6,7 @@ export default function AuthLayout({ children }) {
     <>
       <div className="w-screen max-w-screen-2xl mx-auto h-full">
         <Navbar />
-        <main>{children}</main>
+        <main className="mt-14">{children}</main>
       </div>
       <Footer />
     </>

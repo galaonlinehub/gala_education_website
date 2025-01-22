@@ -124,7 +124,7 @@ const InstructorSignUpForm = () => {
         >
           <div className="flex flex-col gap-3 w-full lg:w-8/12">
             <div className="flex flex-col gap-1 items-start justify-center">
-              <label for="first-name" className="font-bold text-[13px]">
+              <label htmlFor="first-name" className="font-bold text-[13px]">
                 First Name *
               </label>
               <input
@@ -146,7 +146,7 @@ const InstructorSignUpForm = () => {
               )}
             </div>
             <div className="flex flex-col gap-1 items-start justify-center">
-              <label for="last-name" className="font-bold text-[13px]">
+              <label htmlFor="last-name" className="font-bold text-[13px]">
                 Last Name *
               </label>
               <input
@@ -169,7 +169,7 @@ const InstructorSignUpForm = () => {
             </div>
 
             <div className="flex flex-col gap-1 justify-center items-start">
-              <label for="email" className="font-bold text-[13px]">
+              <label htmlFor="email" className="font-bold text-[13px]">
                 Email *
               </label>
               <input
@@ -196,7 +196,7 @@ const InstructorSignUpForm = () => {
             </div>
 
             <div className="flex flex-col gap-1 justify-center items-start">
-              <label for="password" className="font-bold text-[13px]">
+              <label htmlFor="password" className="font-bold text-[13px]">
                 Password *
               </label>
               <input
@@ -225,7 +225,10 @@ const InstructorSignUpForm = () => {
               )}
             </div>
             <div className="flex flex-col gap-1 justify-center items-start">
-              <label for="confirm_password" className="font-bold text-[13px]">
+              <label
+                htmlFor="confirm_password"
+                className="font-bold text-[13px]"
+              >
                 Confirm Password *
               </label>
               <input
@@ -253,7 +256,10 @@ const InstructorSignUpForm = () => {
             </div>
 
             <div className="flex flex-col gap-1 justify-center items-start">
-              <label for="nida-number" className="font-bold text-[13px]">
+              <label
+                htmlhtmlFor="nida-number"
+                className="font-bold text-[13px]"
+              >
                 National ID Number (NIDA) *
               </label>
               <input

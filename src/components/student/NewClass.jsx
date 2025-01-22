@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   Drawer,
@@ -26,13 +26,13 @@ import { FaRegMessage, FaRegClock } from "react-icons/fa6";
 import { GoShieldCheck } from "react-icons/go";
 import { BsGlobe } from "react-icons/bs";
 import { LuUsers } from "react-icons/lu";
-import { useUserTopcs } from "@/src/store/user_topics";
+import { useUserTopics } from "@/src/store/user_topics";
 
 import { createStyles, useTheme } from "antd-style";
 import { getInstructorDetails } from "@/src/utils/fns/global";
 import { useSearchResult } from "@/src/store/search_result";
 import RootLoading from "@/app/loading";
-import Pay from "../Pay/Pay";
+import Pay from "../pay/Pay";
 import { TopicCard } from "@/src/components/ui/TopicCard";
 
 const useStyle = createStyles(({ token }) => ({
@@ -180,7 +180,6 @@ const NewClass = () => {
 
   const enrollNow = () => {
     setEnroll(true);
-
   };
 
   return (
@@ -193,8 +192,8 @@ const NewClass = () => {
         styles={drawerStyles}
       >
         <TopicCard />
-        {false && <Pay />}
-        {false && (
+        {!false && <Pay />}
+        {!false && (
           <div>
             <div ref={searchContainerRef}>
               <div className="mx-auto px-4 py-4">
@@ -216,64 +215,6 @@ const NewClass = () => {
                         ),
                       }}
                     />
-
-                    {/* <AnimatePresence>
-                  {isSearching.resultsVisible && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      className=" top-full w-full mt-2"
-                    >
-                      <div className="bg-white rounded-xl shadow-2xl border border-gray-100 max-h-[70vh] overflow-y-auto">
-                        {isSearching.loading ? (
-                          <div className="p-6 text-center flex items-center justify-center">
-                            <Spin
-                              indicator={
-                                <LoadingOutlined
-                                  style={{ fontSize: 28 }}
-                                  spin
-                                />
-                              }
-                            />
-                          </div>
-                        ) : (
-                          <>
-                            {searchResults.length === 0 ||
-                            searchResults.every(
-                              (result) =>
-                                (!result.subjects ||
-                                  result.subjects.length === 0) &&
-                                (!result.topics ||
-                                  result.topics.length === 0) &&
-                                (!result.teachers ||
-                                  result.teachers.length === 0)
-                            ) ? (
-                              <div className="p-4 text-center">
-                                <Empty
-                                  image={Empty.PRESENTED_IMAGE_SIMPLE}
-                                  description={
-                                    <span className="text-gray-500">
-                                      No results found
-                                    </span>
-                                  }
-                                />
-                              </div>
-                            ) : (
-                              searchResults.map((result, index) => (
-                                <SearchResultCard
-                                  key={index}
-                                  data={result}
-                                  onClick={() => {}}
-                                />
-                              ))
-                            )}
-                          </>
-                        )}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence> */}
                   </div>
                 </div>
               </div>
@@ -627,7 +568,6 @@ const NewClass = () => {
             )}
           </div>
         )}
-
       </Drawer>
     </>
   );
