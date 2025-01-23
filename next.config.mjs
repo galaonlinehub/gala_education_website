@@ -14,6 +14,7 @@ const nextConfig = {
   images: {
     domains: ["source.unsplash.com"],
   },
+  productionBrowserSourceMaps: true
 };
 
 export default pwaConfig(nextConfig);

@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { message } from "antd";
 import { useForm } from "react-hook-form";
-import { api } from "@/src/config/settings";
 import LoadingState from "../../loading/template/LoadingSpinner";
 import EmailVerification from "./EmailVerification";
 import { useEmailVerificationModalOpen } from "@/src/store/auth/signup";
 import InstructorSignUpPageSvg from "@/src/utils/vector-svg/sign-up/InstructorSignUpPageSvg";
 import { encrypt } from "@/src/utils/fns/encryption";
 import { apiPost } from "@/src/services/api_service";
+import { preventCopyPaste } from "@/src/utils/fns/general";
 
 const InstructorSignUpForm = () => {
   const {
@@ -57,6 +57,9 @@ const InstructorSignUpForm = () => {
     message.destroy();
     const formData = new FormData();
 
+    console.log(data)
+
+
     const keysToRemove = [
       "o_level_certificate",
       "a_level_certificate",
@@ -65,11 +68,16 @@ const InstructorSignUpForm = () => {
     ];
     const cleanedData = dropKeys(data, keysToRemove);
 
+    console.log(cleanedData, "clean")
+
     Object.keys(cleanedData).forEach((key) => {
       formData.append(key, cleanedData[key]);
     });
 
     formData.append("role", "instructor");
+
+    console.log(formData)
+    
 
     if (files.cv) formData.append("curriculum_vitae", files.cv);
     if (files.transcript) formData.append("transcript", files.transcript);
@@ -77,6 +85,7 @@ const InstructorSignUpForm = () => {
       formData.append("a_level_certificate", files.aLevelCertificate);
     if (files.oLevelCertificate)
       formData.append("o_level_certificate", files.oLevelCertificate);
+
 
     try {
       const response = await apiPost("/register", formData, {
@@ -100,9 +109,6 @@ const InstructorSignUpForm = () => {
     }
   };
 
-  const preventCopyPaste = (event) => {
-    event.preventDefault();
-  };
 
   return (
     <main className="flex justify-center items-center w-full pb-24 mt-6">
@@ -161,9 +167,9 @@ const InstructorSignUpForm = () => {
                   required: "Last name is required",
                 })}
               />
-              {errors.lastName && (
+              {errors.last_name && (
                 <span className="text-red-500 text-xs">
-                  {errors.lastName.message}
+                  {errors.last_name.message}
                 </span>
               )}
             </div>

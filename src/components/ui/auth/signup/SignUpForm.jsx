@@ -71,9 +71,9 @@ const SignUpForm = () => {
   };
 
   return (
-    <section className="flex flex-col items-center justify-center h-full w-screen py-12">
-      <div className="flex flex-col items-center justify-center h-full w-screen lg:w-1/2 gap-4">
-        <span className="font-bold text-[16px]">Sign Up</span>
+    <section className="flex flex-col items-center justify-center h-full w-screen overflow-hidden">
+      <div className="flex flex-col items-center justify-center h-full w-screen  lg:w-1/2 gap-4">
+        <span className="font-black text-[16px]">Sign Up</span>
         <span className={"text-center text-[12px] leading-5 font-semibold"}>
           Step into the realm of endless possibilities! Your adventure in
           knowledge begins here—unlock doors to boundless learning, forge your
@@ -228,7 +228,7 @@ const SignUpForm = () => {
             )}
           </div>
 
-          <div className="flex items-center justify-between w-2/3 self-start gap-4">
+          <div className="flex items-center justify-between w-3/3 self-start gap-4">
             <Select
               placeholder="Special Needs"
               placement="bottomRight"
@@ -239,7 +239,7 @@ const SignUpForm = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-[117.46px] rounded-md h-[35px] bg-[#030DFE] text-[14px] font-semibold !text-[#FFFFFF] disabled:opacity-60 flex items-center justify-center"
+              className="rounded-md h-[35px] bg-[#030DFE] text-[14px] font-semibold !text-[#FFFFFF] disabled:opacity-60 flex items-center justify-center p-2 w-1/2"
             >
               {loading ? <LoadingState /> : "Sign Up"}
             </button>
