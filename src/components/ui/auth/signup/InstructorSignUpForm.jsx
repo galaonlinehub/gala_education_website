@@ -57,9 +57,6 @@ const InstructorSignUpForm = () => {
     message.destroy();
     const formData = new FormData();
 
-    console.log(data)
-
-
     const keysToRemove = [
       "o_level_certificate",
       "a_level_certificate",
@@ -68,16 +65,11 @@ const InstructorSignUpForm = () => {
     ];
     const cleanedData = dropKeys(data, keysToRemove);
 
-    console.log(cleanedData, "clean")
-
     Object.keys(cleanedData).forEach((key) => {
       formData.append(key, cleanedData[key]);
     });
 
     formData.append("role", "instructor");
-
-    console.log(formData)
-    
 
     if (files.cv) formData.append("curriculum_vitae", files.cv);
     if (files.transcript) formData.append("transcript", files.transcript);
@@ -86,6 +78,15 @@ const InstructorSignUpForm = () => {
     if (files.oLevelCertificate)
       formData.append("o_level_certificate", files.oLevelCertificate);
 
+    // for (var pair of formData.entries()) {
+    //   if (pair[1] instanceof File) {
+    //     console.log(
+    //       `${pair[0]}: ${pair[1].name}, size: ${pair[1].size}, type: ${pair[1].type}`
+    //     );
+    //   } else {
+    //     console.log(pair[0] + ", " + pair[1]);
+    //   }
+    // }
 
     try {
       const response = await apiPost("/register", formData, {
@@ -108,7 +109,6 @@ const InstructorSignUpForm = () => {
       setLoading(false);
     }
   };
-
 
   return (
     <main className="flex justify-center items-center w-full pb-24 mt-6">
@@ -262,10 +262,7 @@ const InstructorSignUpForm = () => {
             </div>
 
             <div className="flex flex-col gap-1 justify-center items-start">
-              <label
-                htmlhtmlFor="nida-number"
-                className="font-bold text-[13px]"
-              >
+              <label htmlFor="nida-number" className="font-bold text-[13px]">
                 National ID Number (NIDA) *
               </label>
               <input

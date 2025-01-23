@@ -71,7 +71,7 @@ const SignUpForm = () => {
   };
 
   return (
-    <section className="flex flex-col items-center justify-center h-full w-screen overflow-hidden">
+    <section className="flex flex-col items-center justify-center h-full w-screen overflow-hidden mt-8">
       <div className="flex flex-col items-center justify-center h-full w-screen  lg:w-1/2 gap-4">
         <span className="font-black text-[16px]">Sign Up</span>
         <span className={"text-center text-[12px] leading-5 font-semibold"}>

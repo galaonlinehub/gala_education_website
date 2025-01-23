@@ -5,17 +5,20 @@ import { useEnrolledTopics } from "@/src/store/student/class";
 import { useUserTopics } from "@/src/store/user_topics";
 
 export const getUser = async () => {
-  const { setUser } = useUser.getState();
   try {
     const response = await apiGet("/user");
 
     if (response.status === 200) {
-      setUser(response.data);
-      return response;
+      return {
+        status: true,
+        data: response.data,
+        role: response.data.role
+      };
     }
   } catch (error) {
     console.error("Error fetching user:", error);
   }
+  
   return {
     status: false,
     data: null,

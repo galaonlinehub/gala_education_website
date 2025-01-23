@@ -1,7 +1,5 @@
 "use client";
 import Image from "next/image";
-import { useEffect } from "react";
-import useUser from "@/src/store/auth/user";
 
 const TemplateLoader = () => {
   return (

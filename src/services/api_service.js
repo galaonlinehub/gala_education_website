@@ -66,9 +66,11 @@ export const apiGet = async (endpoint, headers = {}) => {
   }
 };
 
-export const apiPost = async (endpoint, data, headers = {}) => {
+export const apiPost = async (endpoint, data, headers = {}) => { 
   try {
+    console.log("apiPost", endpoint, data, headers);
     const response = await api.post(endpoint, data, { headers });
+    console.log(response);
     return response;
   } catch (error) {
     console.error(`POST ${endpoint} Error:`, error);

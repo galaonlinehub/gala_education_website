@@ -58,12 +58,8 @@ export const getCohortsFn = async () => {
 const transformFormDataForAPI = (formData) => {
   const daily_slots = formData.days.map((day, index) => ({
     day_of_week: DAYS_MAP[day],
-    times: [
-      {
-        start_time: formData.times[index] + ":00",
-        duration: formData.durations[index],
-      },
-    ],
+    start_time: formData.times[index],
+    duration: formData.durations[index],
   }));
 
   return {
