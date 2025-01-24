@@ -4,7 +4,7 @@ import { Modal, Spin } from "antd";
 import { PiWarningCircleBold } from "react-icons/pi";
 import { logout } from "@/src/utils/fns/auth";
 import { useRouter } from "next/navigation";
-import useUser from "@/src/store/auth/user";
+import { useUser } from "@/src/hooks/useUser";
 
 const Signout = () => {
   const [signoutVisible, setSignoutVisible] = useState(false);

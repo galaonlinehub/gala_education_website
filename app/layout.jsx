@@ -1,20 +1,21 @@
 import "./globals.css";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
-import ClientWrapper from "@/src/components/layout/MainAuth";
-import { Inter, Poppins } from 'next/font/google';
+import ClientWrapper from "@/src/components/layout/ClientWrapper";
+import { Inter, Poppins } from "next/font/google";
+import QueryWrapper from "@/src/components/layout/QueryWrapper";
 
 // Configure fonts
 const inter = Inter({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-inter',
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
 });
 
 const poppins = Poppins({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  display: 'swap',
-  variable: '--font-poppins',
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+  variable: "--font-poppins",
 });
 
 export const metadata = {
@@ -47,9 +48,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${inter.variable} ${poppins.variable}`}>
       <body className="font-sans">
-        <ClientWrapper>
+        <QueryWrapper>
           <AntdRegistry>{children}</AntdRegistry>
-        </ClientWrapper>
+        </QueryWrapper>
       </body>
     </html>
   );

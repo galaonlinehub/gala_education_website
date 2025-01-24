@@ -3,6 +3,8 @@ import { message } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { decrypt } from "../utils/fns/encryption";
+import { USER_COOKIE_KEY } from "../config/settings";
+import { cookieFn } from "../utils/fns/client";
 
 export const api = axios.create({
   baseURL: "https://galaweb.galahub.org/api",
@@ -11,71 +13,98 @@ export const api = axios.create({
   },
 });
 
-const publicEndpoints = ["/login", "/register"];
+const publicEndpoints = new Set(["login", "register"]);
 
 api.interceptors.request.use(
   (config) => {
-    const isPublic = publicEndpoints.some((endpoint) =>
-      config.url.includes(endpoint)
-    );
+    if (!config.url) return config; // Ensure URL exists
 
-    if (!isPublic) {
-      const encryptedToken = Cookies.get(
-        "9fb96164-a058-41e4-9456-1c2bbdbfbf8d"
-      );
-      if (encryptedToken) {
-        const decryptedToken = decrypt(encryptedToken);
-        config.headers.Authorization = `Bearer ${decryptedToken}`;
-      }
+    // Skip token validation for public endpoints
+    if (
+      [...publicEndpoints].some((endpoint) => config.url.includes(endpoint))
+    ) {
+      return config;
     }
 
-    return config;
-  },
-  (error) => {
-    console.error("Request Interceptor Error:", error);
-    return Promise.reject(error);
-  }
-);
-
-api.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  (error) => {
-    console.error("Response Interceptor Error:", error);
-
-    if (error.response?.status === 401) {
-      console.warn("Unauthorized! Redirecting to login...");
-
+    // Check for token
+    const encryptedToken = cookieFn.get(USER_COOKIE_KEY);
+    if (!encryptedToken) {
       if (typeof window !== "undefined") {
         window.location.href = "/signin";
       }
+      return Promise.reject(new Error("No authentication token"));
     }
 
-    return Promise.reject(error);
-  }
+    // Attach token to Authorization header
+    config.headers.Authorization = `Bearer ${decrypt(encryptedToken)}`;
+    return config;
+  },
+  (error) => Promise.reject(error)
 );
 
+// const publicEndpoints = ["/login", "/register"];
+
+// api.interceptors.request.use(
+//   (config) => {
+//     const isPublic = publicEndpoints.some((endpoint) =>
+//       config.url.includes(endpoint)
+//     );
+
+//     if (!isPublic) {
+//       const encryptedToken = Cookies.get(
+//         "9fb96164-a058-41e4-9456-1c2bbdbfbf8d"
+//       );
+//       if (encryptedToken) {
+//         const decryptedToken = decrypt(encryptedToken);
+//         config.headers.Authorization = `Bearer ${decryptedToken}`;
+//       }
+//     }
+
+//     return config;
+//   },
+//   (error) => {
+//     console.error("Request Interceptor Error:", error);
+//     return Promise.reject(error);
+//   }
+// );
+
+// api.interceptors.response.use(
+//   (response) => {
+//     return response;
+//   },
+//   (error) => {
+//     console.error("Response Interceptor Error:", error);
+
+//     if (error.response?.status === 401) {
+//       console.warn("Unauthorized! Redirecting to login...");
+
+//       if (typeof window !== "undefined") {
+//         window.location.href = "/signin";
+//       }
+//     }
+
+//     return Promise.reject(error);
+//   }
+// );
+
+// export const apiGet = async (endpoint, headers = {}) => {
+//   try {
+//     const response = await api.get(endpoint, { headers });
+//     return response;
+//   } catch (error) {
+//     console.error(`GET ${endpoint} Error:`, error);
+//     throw error;
+//   }
+// };
+
 export const apiGet = async (endpoint, headers = {}) => {
-  try {
-    const response = await api.get(endpoint, { headers });
-    return response;
-  } catch (error) {
-    console.error(`GET ${endpoint} Error:`, error);
-    throw error;
-  }
+  const response = await api.get(endpoint, { headers });
+  return response;
 };
 
-export const apiPost = async (endpoint, data, headers = {}) => { 
-  try {
-    console.log("apiPost", endpoint, data, headers);
-    const response = await api.post(endpoint, data, { headers });
-    console.log(response);
-    return response;
-  } catch (error) {
-    console.error(`POST ${endpoint} Error:`, error);
-    throw error;
-  }
+export const apiPost = async (endpoint, data, headers = {}) => {
+  const response = await api.post(endpoint, data, { headers });
+  return response;
 };
 
 export const apiPut = async (endpoint, data, headers = {}) => {

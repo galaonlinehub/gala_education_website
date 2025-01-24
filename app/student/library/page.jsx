@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import ReadMoreContainer from "@/src/components/ui/ReadMore";
 import { useEnrolledTopics, useNewClass } from "@/src/store/student/class";
-import useUser from "@/src/store/auth/user";
+import { useUser } from "@/src/hooks/useUser";
 import { Skeleton } from "antd";
 import { IoIosAdd } from "react-icons/io";
 import {

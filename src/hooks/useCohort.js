@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiGet, apiPost } from "../services/api_service";
 import { DAYS_MAP } from "../utils/data/days_of_the_week";
+import { Princess_Sofia } from "next/font/google";
 
 export const useCohort = () => {
   const queryClient = useQueryClient();
@@ -32,7 +33,7 @@ export const useCohort = () => {
 export const postCohortFn = async (data) => {
   try {
     const r = await apiPost("/cohorts", data);
-    if (r.status === 200) {
+    if (r.status === 201) {
       return r.data;
     }
     throw new Error("Failed to create cohort");
@@ -67,5 +68,7 @@ const transformFormDataForAPI = (formData) => {
     start_date: formData.startDate,
     end_date: formData.endDate,
     daily_slots,
+    description: "denis mgaya",
+    price: formData.price,
   };
 };

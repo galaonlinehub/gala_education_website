@@ -5,23 +5,14 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { message, Alert } from "antd";
 import GoogleSvg from "@/src/utils/vector-svg/sign-in/GoogleSvg";
-import LoadingState from "@/src/components/ui/loading/template/LoadingSpinner";
-import "@/src/styles/auth/signup.css";
-import useUser from "@/src/store/auth/user";
-import { encrypt } from "@/src/utils/fns/encryption";
-import Cookies from "js-cookie";
-import { apiGet, apiPost } from "@/src/services/api_service";
-import { cookieFn } from "@/src/utils/fns/client";
-import { getUser } from "@/src/utils/fns/global";
 import { handleGoogleLogin, login } from "@/src/utils/fns/auth";
-import { roleRedirects } from "@/src/utils/data/redirect";
+import { preventCopyPaste } from "@/src/utils/fns/general";
 
 const SignInPage = () => {
   // const key = crypto.randomUUID();
   // console.log(key);
 
   const router = useRouter();
-  const setUser = useUser((state) => state.setUser);
   const [localFeedback, setLocalFeedback] = useState({
     show: false,
     type: "",
@@ -38,16 +29,7 @@ const SignInPage = () => {
 
   const onSubmit = async (data) => {
     try {
-      message.destroy();
-      const res = await login(data);
-      const redirectTo = roleRedirects[res.data?.role] || "/signin";
-
-      if (res.status === 200 && redirectTo !== "/signin") {
-        router.push(redirectTo);
-        return;
-      }
-
-      showError(errorMessage);
+      await login(data);
     } catch (error) {
       showError(error.response?.data?.message || errorMessage);
     } finally {
@@ -69,10 +51,6 @@ const SignInPage = () => {
       type: "",
       message: "",
     });
-  };
-
-  const preventCopyPaste = (event) => {
-    event.preventDefault();
   };
 
   return (

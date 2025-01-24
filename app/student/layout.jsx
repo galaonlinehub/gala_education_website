@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import { Drawer } from "antd";
-import useUser from "@/src/store/auth/user";
 import Clock from "@/src/utils/vector-svg/vectors/Clock";
 import React, { useState, useEffect } from "react";
 import Footer from "@/src/components/layout/footer";
@@ -18,6 +17,7 @@ import NewClass from "@/src/components/student/NewClass";
 import { useNewClass } from "@/src/store/student/class";
 import { getUser } from "@/src/utils/fns/global";
 import { usePathname, useSearchParams } from "next/navigation";
+import { useUser } from "@/src/hooks/useUser";
 
 export default function StudentLayout({ children }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);

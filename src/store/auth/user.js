@@ -1,9 +1,9 @@
-import { create } from "zustand";
+// import { create } from "zustand";
 
-const useUser = create((set) => ({
-  user: null,
-  setUser: (user) => set({ user }),
-  clearUser: () => set({ user: null }),
-}));
+// const useUser = create((set) => ({
+//   user: null,
+//   setUser: (user) => set({ user }),
+//   clearUser: () => set({ user: null }),
+// }));
 
-export default useUser;
+// export default useUser;

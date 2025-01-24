@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import {
-  Card,
   Steps,
   Select,
   DatePicker,
   TimePicker,
   InputNumber,
   Button,
-  Modal,
   Drawer,
 } from "antd";
 import {
@@ -17,16 +15,11 @@ import {
   FiArrowLeft,
   FiCalendar,
   FiClock,
-  FiDollar,
   FiBook,
   FiBookOpen,
   FiCreditCard,
-  FiDollarSign,
 } from "react-icons/fi";
 import dayjs from "dayjs";
-import Image from "next/image";
-import { apiPost } from "@/src/services/api_service";
-import { formatDate } from "react-calendar/dist/cjs/shared/dateFormatter";
 import { useSubject } from "@/src/hooks/useSubject";
 import { useGrade } from "@/src/hooks/useGrade";
 import { useTopic } from "@/src/hooks/useTopic";
@@ -131,6 +124,7 @@ const ClassCreationWizard = () => {
       console.error("Failed to create cohort:", error);
     }
   };
+
 
   const steps = [
     {
@@ -392,7 +386,7 @@ const ClassCreationWizard = () => {
 
   return (
     <Drawer
-      open={true}
+      open={false}
       onCancel={() => {}}
       footer={null}
       width={850}
@@ -450,18 +444,10 @@ const ClassCreationWizard = () => {
             <Button
               type="primary"
               onClick={handleSubmit}
-              disabled={
-                !canProceed() ||
-                createCohort.isPending ||
-                createCohort.isSuccess
-              }
+              disabled={!canProceed() || createCohort.isPending}
               className={`!bg-black !border-none !text-white !px-6 !flex !items-center !gap-2 hover:!bg-[#01840]/90 ${
-                !canProceed() ||
-                createCohort.isPending ||
-                createCohort.isSuccess
-                  ? "!bg-black/30"
-                  : ""
-              }`}
+                !canProceed() || createCohort.isPending ? "!bg-black/30" : ""
+              } ${createCohort.isSuccess ? "!bg-green-600 !cursor-not-allowed !pointer-events-none" : ""}`}
             >
               {createCohort.isPending ? (
                 <div className="flex items-center gap-2">
@@ -469,12 +455,12 @@ const ClassCreationWizard = () => {
                   Creating...
                 </div>
               ) : createCohort.isSuccess ? (
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1">
                   <FiCheck />
                   Created!
                 </div>
               ) : (
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1">
                   Create Class
                   <FiCheck />
                 </div>

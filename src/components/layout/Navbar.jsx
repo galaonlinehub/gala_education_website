@@ -3,18 +3,17 @@
 import { Tooltip, Tour, Popconfirm } from "antd";
 import Link from "next/link";
 import Image from "next/image";
-import useUser from "@/src/store/auth/user";
 import React, { useState, useEffect } from "react";
 import { MenuOutlined, CloseOutlined } from "@ant-design/icons";
 import ChooseAccont from "@/src/components/ui/auth/signup/ChooseAccount";
 import { LuLogOut } from "react-icons/lu";
 import { Signout } from "../ui/auth/signup/Signout";
+import { useUser } from "@/src/hooks/useUser";
 
 const Navbar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const { user } = useUser();
-
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);

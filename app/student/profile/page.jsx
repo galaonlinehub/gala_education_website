@@ -230,7 +230,7 @@ import {
   CheckCircleOutlined,
   ClockCircleOutlined,
 } from "@ant-design/icons";
-import useUser from "@/src/store/auth/user";
+import { useUser } from "@/src/hooks/useUser";
 
 const { Title, Text } = Typography;
 
@@ -256,6 +256,7 @@ const StudentProfile = () => {
     ],
   };
 
+  console.log(user)
   return (
     <div className="mt-20">
       <Row gutter={[24, 24]} justify="center">

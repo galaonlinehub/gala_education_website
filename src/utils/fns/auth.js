@@ -9,7 +9,6 @@ export const logout = async () => {
     const response = await apiPost("logout");
     if (response.status === 200) {
       cookieFn.remove(USER_COOKIE_KEY);
-      // cookieFn.clearAll();
     }
   } catch (e) {
     alert("Error logging out");
@@ -22,12 +21,21 @@ export const login = async (data) => {
     if (response.status === 200) {
       const encryptedToken = encrypt(response.data.token);
       cookieFn.set(USER_COOKIE_KEY, encryptedToken, 7);
-      const res = await getUser();
-      return res;
+      return 1;
     }
-  } catch (e) {
-    console.log(e);
-    console.log("THIS IS THE ERROR");
+  } catch (error) {
+    alert(
+      JSON.stringify({
+        message: error.message,
+        response: error.response
+          ? {
+              data: error.response.data,
+              status: error.response.status,
+              statusText: error.response.statusText,
+            }
+          : null,
+      })
+    );
   }
 };
 

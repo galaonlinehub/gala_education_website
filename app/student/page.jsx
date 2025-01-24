@@ -6,7 +6,7 @@ import Image from "next/image";
 import { theme, Skeleton, Card, Empty, Tooltip } from "antd";
 import CalendarComponent from "@/src/components/student/CalendarComponent";
 import { useRouter } from "next/navigation";
-import useUser from "@/src/store/auth/user";
+import { useUser } from "@/src/hooks/useUser";
 import { useEnrolledTopics } from "@/src/hooks/useEnrolledTopics";
 import { useUserTopics } from "@/src/store/user_topics";
 import { TopicSkeleton } from "@/src/components/ui/loading/skeletons/ClassCard";
