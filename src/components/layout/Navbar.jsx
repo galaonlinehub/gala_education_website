@@ -51,7 +51,7 @@ const Navbar = () => {
         </li>
 
         {!user && (
-          <div className="flex gap-3 pointer-events-none" onClick={() => {}}>
+          <div className="flex gap-3" onClick={() => {}}>
             <ChooseAccont />
             <Link href={""} className="hover:cursor-pointer">
               <li>Login</li>

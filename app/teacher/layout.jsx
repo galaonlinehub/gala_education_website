@@ -74,9 +74,8 @@ export default function TeacherLayout({ children }) {
             </nav> */}
 
             {/* Search Bar */}
-            <div className="fixed top-16 left-0 bg-white right-0 z-40 border-b">
+            <div className="fixed top-14 left-0 bg-white right-0 z-40 border-b">
               <div className="flex flex-col md:flex-row items-center justify-between px-4 py-2 gap-4">
-                <input className="h-10 px-4 w-full md:w-1/3 rounded-lg border-2 border-blue-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none" placeholder="Search..." />
                 <span className="text-sm text-gray-600 whitespace-nowrap">October 14, 2024</span>
                 <div className="flex gap-3">
                   <FaBell className="text-xl" />
@@ -113,7 +112,7 @@ export default function TeacherLayout({ children }) {
 
               {/* Sidebar */}
               <aside
-                className={`fixed border mt-16 md:mt-28 bg-white md:bg-transparent z-50 h-[calc(120vh-7rem)] overflow-y-auto transition-transform duration-300 ease-in-out
+                className={`fixed flex border mt-16 md:mt-28 bg-white md:bg-transparent z-50 h-[calc(120vh-7rem)] overflow-y-auto transition-transform duration-300 ease-in-out
                   md:translate-x-0 md:relative md:w-56 md:z-0
                   ${isMobile ? "w-64 top-0 left-0" : ""}
                   ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
@@ -145,7 +144,7 @@ export default function TeacherLayout({ children }) {
               </aside>
 
               {/* Main Content */}
-              <div className="flex-1 relative mt-32 overflow-y-auto h-screen p-6">
+              <div className="flex-1 relative mt-32 p-6">
                 {children}
               </div>
             </main>
