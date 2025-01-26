@@ -134,7 +134,7 @@ function Home() {
       <div className="relative flex items-center w-full  ">
         <div className=" w-full mt-1 py-4 flex gap-5 items-center justify-center flex-col h-fit">
           <h1 className="font-black text-center text-4xl">What Our Clients Are Saying</h1>
-          <h2 className="text-center w-2/3 text-[14px]">Our clients' feedback is at the heart of what we do. We’re proud to share their experiences and the positive impact our platform has had on their learning journey. Here’s what they have to say about Gala Education.</h2>
+          <h2 className="text-center w-2/3 text-[14px]">Our clients&apos; feedback is at the heart of what we do. We’re proud to share their experiences and the positive impact our platform has had on their learning journey. Here’s what they have to say about Gala Education.</h2>
           <div className="sm:grid flex max-sm:w-[80%] overflow-x-auto sm:grid-cols-3 gap-20 ">
             <ClientReviews clientImage={"/client_images/client.jpg"} clientName={"Amani Juma"} clientMessage={"Gala Education has transformed my child's learning experience with personalized tutoring that truly meets their needs."} />
             <ClientReviews clientImage={"/client_images/client2.jpg"} clientName={"Zahra Mchome"} clientMessage={"Thanks to Gala Education, my children now have access to top-notch teachers and resources, right from home."} />
@@ -177,7 +177,7 @@ function Home() {
 
       <div className="flex flex-col items-center">
         <h1 className="font-black text-[20px] text-center sm:text-[40px]">Donations & Funding</h1>
-        <h2 className="text-[10px] sm:text-sm w-2/3 flex text-center py-4">Your donations directly support our mission in philanthropic activities, helping to meet children's educational needs, especially those from poor backgrounds. You don't have to be a user to contribute—every donation makes a difference in providing quality education for all.</h2>
+        <h2 className="text-[10px] sm:text-sm w-2/3 flex text-center py-4">Your donations directly support our mission in philanthropic activities, helping to meet children&apos;s educational needs, especially those from poor backgrounds. You don&apos;t have to be a user to contribute—every donation makes a difference in providing quality education for all.</h2>
         <div className="relative flex flex-col gap-4 sm:flex-row mt-3 h-fit sm:h-[37rem] w-full ">
           <div className="relative  w-full sm:w-1/2 h-full max-sm:p-2">
             <div className=" w-[521px] h-[549px] hidden md:block left-0 bg-[#001840]" />
@@ -207,9 +207,9 @@ function Home() {
             <div className="flex justify-between items-center gap-4 mb-4 w-full">
               <p className="text-[12px] leading-[15px] basis-2/3">At Gala Education, we recognize that financial barriers can limit access to quality education. To support students facing financial struggles, we offer scholarships, flexible payment plans, and need-based grants. Our scholarship program supports talented students, while flexible payment plans make tuition more manageable. We are committed to ensuring every student can pursue their educational goals, regardless of their financial situation.</p>
               <div className="flex gap-6 mr-6">
-                <Image src="/person_computer.png" width={50} height={50} />
-                <Image src="/world.png" width={50} height={50} />
-                <Image src="/pdf_image.png" width={50} height={50} />
+                <Image src="/person_computer.png" width={50} height={50} alt="person image" />
+                <Image src="/world.png" width={50} height={50} alt="world image" />
+                <Image src="/pdf_image.png" width={50} height={50} alt="pdf image" />
               </div>
             </div>
             <div className="border-[1px] sm:w-2/5 w-fit text-xs text-center font-bold p-1  border-[#030DFE] rounded">Apply for financial aid</div>
@@ -285,7 +285,7 @@ function Home() {
           <div className="w-full sm:px-[60px] px-[30px] py-3">
             <div className="basis-1/2 space-y-2 items-center gap-4 flex flex-col">
               <h1 className="text-3xl text-center font-black ">Latest News</h1>
-              <h1 className="text-center text-sm w-2/3">Stay updated with the latest developments at Gala Education. Here, we share exciting announcements, new initiatives, and progress on our mission to make quality education accessible to all. Follow our journey as we continue to make a difference in Tanzania's educational landscape.</h1>
+              <h1 className="text-center text-sm w-2/3">Stay updated with the latest developments at Gala Education. Here, we share exciting announcements, new initiatives, and progress on our mission to make quality education accessible to all. Follow our journey as we continue to make a difference in Tanzania&apos;s educational landscape.</h1>
               <div className="flex flex-col shadow-xl p-6 ">
                 <div className="flex gap-2 flex-col sm:flex-row ">
                   <div className="basis-1/2 flex flex-col h-80">
@@ -323,7 +323,7 @@ function Home() {
 
         <div className="py-12 items-center gap-4 flex flex-col">
           <h1 className="text-3xl text-center font-black ">Frequently Asked Questions (FAQs)</h1>
-          <h1 className="text-center text-sm w-2/3">Here you’ll find answers to common questions about Gala Education’s services, donations, and how our platform works. Whether you're a student, parent, or supporter, we’ve provided helpful information to guide you. If you don’t find what you’re looking for, feel free to reach out to us!</h1>
+          <h1 className="text-center text-sm w-2/3">Here you’ll find answers to common questions about Gala Education’s services, donations, and how our platform works. Whether you&apos;re a student, parent, or supporter, we&apos;ve provided helpful information to guide you. If you don&apos;t find what you&apos;re looking for, feel free to reach out to us!</h1>
           <div className="relative w-2/3 py-8">
             <FaqCard faqQn={"What is Gala Education?"} faqAns={"Gala Education is an online platform dedicated to providing high-quality tutoring for Primary, Secondary, and High School students across Tanzania. In addition to tutoring, we offer short courses designed to equip Tanzanian youth with self-employable skills. Our platform is powered by AI, which helps deliver personalized learning experiences tailored to each student’s individual needs and progress. We also reinvest profits into philanthropic activities, including building classrooms and libraries for under-served communities"} />
             <FaqCard faqQn={"Is there a money-back guarantee?"} faqAns={"Gala Education does not offer refunds unless there is a verified technical issue that prevents you from accessing our services. If you encounter such a problem, please contact our support team, and we will assist you in resolving the issue or processing a refund if necessary."} />

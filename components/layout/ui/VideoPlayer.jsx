@@ -69,7 +69,7 @@ const VideoPlayer = ({videoSrc}) => {
       setDuration(videoRef.current.duration);
       videoRef.current.volume = volume;
     }
-  }, []);
+  }, [volume]);
 
   const formatTime = (time) => {
     const minutes = Math.floor(time / 60);
