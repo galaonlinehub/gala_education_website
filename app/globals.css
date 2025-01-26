@@ -147,3 +147,18 @@
 .ant-card-body {
   padding: 24px !important;
 }
+
+/* Ensure consistent width of the panel content */
+
+
+
+.collapse-container .ant-collapse {
+  margin-bottom: 16px; /* Adjust the margin as needed */
+}
+
+/* Optional: Add padding or styling to individual panels */
+.panel-content {
+  padding: 8px;
+  background-color: #f5f5f5; /* Example: Add a background color */
+  border-radius: 4px; /* Add rounded corners */
+}

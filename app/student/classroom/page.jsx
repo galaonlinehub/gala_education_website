@@ -1,199 +1,251 @@
-"use client"
+"use client";
 import React, { useState } from "react";
+import { Layout, Menu, Card, List, Button, Tag, Upload, Progress, Space, Typography, Tabs, Badge, Drawer, Input, Empty, message } from "antd";
+import { ClockCircleOutlined, FileTextOutlined, CheckCircleOutlined, UploadOutlined, CalendarOutlined, BookOutlined, FilterOutlined, FileOutlined } from "@ant-design/icons";
 
-export default function StudentClassroom() {
-  const [showSidebar, setShowSidebar] = useState(false);
+const { Header, Content } = Layout;
+const { Title, Text } = Typography;
+const { Search } = Input;
 
-  const reminders = [
-    { name: "Eng - Speaking Test", time: "10.06.2026", day: "Friday" },
-    { name: "Eng - Vocabulary Test", time: "10.06.2026", day: "Friday" },
-    { name: "Eng Test", time: "10.06.2026", day: "Friday" },
+const StudentAssignmentInterface = () => {
+  const [selectedAssignment, setSelectedAssignment] = useState(null);
+  const [drawerVisible, setDrawerVisible] = useState(false);
+
+  // Mock data for assignments
+  const assignments = [
+    {
+      id: 1,
+      title: "Mathematics: Calculus Integration",
+      subject: "Mathematics",
+      dueDate: "2025-01-25",
+      status: "pending",
+      points: 100,
+      description: "Complete the following integration problems. Show all your work and explain your steps.",
+      attachments: ["Calculus_Assignment.pdf"],
+    },
+    {
+      id: 2,
+      title: "English Literature Essay",
+      subject: "English",
+      dueDate: "2025-01-22",
+      status: "completed",
+      points: 50,
+      description: "Write a 1000-word essay analyzing the themes in Shakespeare's Macbeth.",
+      attachments: ["Essay_Guidelines.pdf"],
+    },
+    {
+      id: 3,
+      title: "Physics Lab Report Physics Lab Report Physics Lab Report Physics Lab Report",
+      subject: "Physics",
+      dueDate: "2025-01-20",
+      status: "overdue",
+      points: 75,
+      description: "Write a detailed lab report on the pendulum experiment conducted in class.",
+      attachments: ["Lab_Template.docx"],
+    },
+    {
+      id: 4,
+      title: "Physics Lab Report Physics Lab Report Physics Lab Report Physics Lab Report",
+      subject: "Physics",
+      dueDate: "2025-01-20",
+      status: "overdue",
+      points: 75,
+      description: "Write a detailed lab report on the pendulum experiment conducted in class.",
+      attachments: ["Lab_Template.docx"],
+    },
+    {
+      id: 5,
+      title: "Physics Lab Report Physics Lab Report Physics Lab Report Physics Lab Report",
+      subject: "Physics",
+      dueDate: "2025-01-20",
+      status: "overdue",
+      points: 75,
+      description: "Write a detailed lab report on the pendulum experiment conducted in class.",
+      attachments: ["Lab_Template.docx"],
+    },
   ];
 
-  const pdfDownloads = [
-    { name: "Descriptive Writing", size: "2.5MB", type: "PDF" },
-    { name: "Essay Structure", size: "1.8MB", type: "DOC" },
-  ];
+  const getStatusTag = (status) => {
+    const statusColors = {
+      pending: "blue",
+      completed: "green",
+      overdue: "red",
+    };
+    return <Tag color={statusColors[status]}>{status.toUpperCase()}</Tag>;
+  };
 
-  const schedule = [
-    { time: "19:00", monday: "ICT", tuesday: "Science", wednesday: "", thursday: "Art", friday: "", saturday: "Science" },
-    { time: "20:00", monday: "", tuesday: "", wednesday: "", thursday: "", friday: "Geog", saturday: "" },
-    { time: "21:00", monday: "English", tuesday: "", wednesday: "History", thursday: "", friday: "", saturday: "Math" },
-  ];
+  const uploadProps = {
+    name: "file",
+    action: "https://your-upload-endpoint.com/upload",
+    onChange(info) {
+      if (info.file.status === "done") {
+        message.success(`${info.file.name} file uploaded successfully`);
+      } else if (info.file.status === "error") {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+  };
 
-  const ReminderIcon = () => (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <g clipPath="url(#clip0_277_3603)">
-        <path d="M17.9391 0.763359H17.2533C17.271 0.706565 17.2893 0.649771 17.2893 0.58687C17.2893 0.263206 17.0255 0 16.7012 0C16.377 0 16.1144 0.263206 16.1144 0.58687C16.1144 0.649771 16.1315 0.706565 16.1504 0.763359H13.9031C13.9208 0.706565 13.9391 0.649771 13.9391 0.58687C13.9379 0.263206 13.6753 0 13.3504 0C13.0267 0 12.7635 0.263206 12.7635 0.58687C12.7635 0.649771 12.7812 0.706565 12.7995 0.763359H10.5516C10.5693 0.706565 10.587 0.649771 10.587 0.58687C10.587 0.263206 10.3244 0 10.0002 0C9.67588 0 9.41329 0.263206 9.41329 0.58687C9.41329 0.649771 9.43039 0.706565 9.44871 0.763359H7.20077C7.21848 0.706565 7.2368 0.649771 7.2368 0.58687C7.2368 0.263206 6.97359 0 6.64993 0C6.32565 0 6.06245 0.263206 6.06245 0.58687C6.06245 0.649771 6.07955 0.706565 6.09787 0.763359H3.85054C3.86886 0.706565 3.88657 0.649771 3.88657 0.58687C3.88657 0.262595 3.62397 0 3.2997 0C2.97542 0 2.71222 0.263206 2.71222 0.58687C2.71222 0.649771 2.72932 0.706565 2.74764 0.763359H2.06123C1.1342 0.763359 0.381836 1.51634 0.381836 2.44275V18.3206C0.381836 19.2476 1.1342 20 2.06123 20H16.0429L19.6185 16.4244V2.44275C19.6185 1.51695 18.8661 0.763359 17.9391 0.763359ZM18.7024 16.0446L18.5125 16.2345H17.0744C16.4014 16.2345 15.853 16.7841 15.853 17.4559V18.894L15.6631 19.084H2.06123C1.64046 19.084 1.29787 18.7414 1.29787 18.3206V3.05344H18.7024V16.0446Z" fill="white"/>
-        <path d="M3.89869 7.19387H4.72067V6.58379H5.08587V5.94074H4.72067V4.26807H3.91579L2.55029 5.89066V6.58379H3.89869V7.19387ZM3.20129 5.94074L3.89869 5.04852V5.94074H3.20129Z" fill="white"/>
-        <path d="M4.63281 9.2843C4.63281 9.2843 5.69419 11.1487 7.85052 13.3051C7.99587 13.4492 8.13938 13.589 8.28106 13.724C8.24197 13.7551 8.20106 13.7826 8.16442 13.8186C7.72167 14.262 7.72167 14.9802 8.16442 15.4235C8.609 15.8675 9.32655 15.8675 9.76991 15.4235C9.84503 15.3484 9.90243 15.2629 9.9519 15.1756C11.0841 16.0703 11.8633 16.5142 11.8633 16.5142C11.4615 14.5081 13.4395 12.011 14.3006 10.8666C15.6179 9.11575 14.9681 7.58353 14.2701 6.88552C13.5708 6.18689 12.0411 5.53895 10.289 6.85437C9.14335 7.71483 6.64808 9.69407 4.63281 9.2843ZM9.68808 8.27666C10.8221 7.14201 12.1589 6.64063 12.5192 7.00155C12.8801 7.36246 11.2997 7.62078 10.1656 8.75483C9.03159 9.88888 7.30152 10.0104 6.48075 9.72643C7.30457 9.68857 8.55342 9.41132 9.68808 8.27666Z" fill="white"/>
-      </g>
-      <defs>
-        <clipPath id="clip0_277_3603">
-          <rect width="20" height="20" fill="white"/>
-        </clipPath>
-      </defs>
-    </svg>
-  );
-
-  const AddIcon = () => (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path fillRule="evenodd" clipRule="evenodd" d="M9.99984 18.3333C6.07146 18.3333 4.10728 18.3333 2.8869 17.1129C1.6665 15.8925 1.6665 13.9283 1.6665 9.99996C1.6665 6.07158 1.6665 4.1074 2.8869 2.88702C4.10728 1.66663 6.07146 1.66663 9.99984 1.66663C13.9282 1.66663 15.8924 1.66663 17.1128 2.88702C18.3332 4.1074 18.3332 6.07158 18.3332 9.99996C18.3332 13.9283 18.3332 15.8925 17.1128 17.1129C15.8924 18.3333 13.9282 18.3333 9.99984 18.3333ZM9.99984 6.87496C10.345 6.87496 10.6248 7.15478 10.6248 7.49996V9.37496H12.4998C12.845 9.37496 13.1248 9.65479 13.1248 9.99996C13.1248 10.3451 12.845 10.625 12.4998 10.625H10.6248V12.5C10.6248 12.8451 10.345 13.125 9.99984 13.125C9.65467 13.125 9.37484 12.8451 9.37484 12.5V10.625H7.49984C7.15466 10.625 6.87484 10.3451 6.87484 9.99996C6.87484 9.65479 7.15466 9.37496 7.49984 9.37496H9.37484V7.49996C9.37484 7.15478 9.65467 6.87496 9.99984 6.87496Z" fill="white"/>
-    </svg>
-  );
-
-  const DownloadIcon = () => (
-    <svg width="14" height="16" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M5.625 0.806396C5.625 0.460693 5.3457 0.181396 5 0.181396C4.6543 0.181396 4.375 0.460693 4.375 0.806396V5.54663L2.94141 4.11304C2.69727 3.8689 2.30078 3.8689 2.05664 4.11304C1.8125 4.35718 1.8125 4.75366 2.05664 4.9978L4.55664 7.4978C4.80078 7.74194 5.19727 7.74194 5.44141 7.4978L7.94141 4.9978C8.18555 4.75366 8.18555 4.35718 7.94141 4.11304C7.69727 3.8689 7.30078 3.8689 7.05664 4.11304L5.625 5.54663V0.806396ZM1.25 7.0564C0.560547 7.0564 0 7.61694 0 8.3064V8.9314C0 9.62085 0.560547 10.1814 1.25 10.1814H8.75C9.43945 10.1814 10 9.62085 10 8.9314V8.3064C10 7.61694 9.43945 7.0564 8.75 7.0564H6.76758L5.88281 7.94116C5.39453 8.42944 4.60352 8.42944 4.11523 7.94116L3.23242 7.0564H1.25ZM8.4375 8.15015C8.56182 8.15015 8.68105 8.19953 8.76896 8.28744C8.85686 8.37535 8.90625 8.49458 8.90625 8.6189C8.90625 8.74322 8.85686 8.86244 8.76896 8.95035C8.68105 9.03826 8.56182 9.08765 8.4375 9.08765C8.31318 9.08765 8.19395 9.03826 8.10604 8.95035C8.01814 8.86244 7.96875 8.74322 7.96875 8.6189C7.96875 8.49458 8.01814 8.37535 8.10604 8.28744C8.19395 8.19953 8.31318 8.15015 8.4375 8.15015Z" fill="white"/>
-    </svg>
-  );
-
-  const FileIcon = ({ type }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" fill="white" stroke={type === "PDF" ? "red" : "#2B579A"} strokeWidth="2"/>
-      <polyline points="14 2 14 8 20 8" fill="white" stroke={type === "PDF" ? "red" : "#2B579A"} strokeWidth="2"/>
-      <text x="50%" y="65%" fontSize="6" fill={type === "PDF" ? "red" : "#2B579A"} textAnchor="middle" fontFamily="Arial, sans-serif" fontWeight="bold">
-        {type}
-      </text>
-    </svg>
-  );
+  const getGridConfig = () => ({
+    gutter: [16, 16],
+    xs: 1, // <576px - 1 column
+    sm: 1, // ≥576px - 1 column
+    md: 2, // ≥768px - 2 columns
+    lg: 2, // ≥992px - 2 columns
+    xl: 3, // ≥1200px - 3 columns
+    xxl: 4, // ≥1600px - 4 columns
+  });
 
   return (
-    <div className="min-h-screen w-full bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 w-full lg:px-8 py-6">
-        <div className="flex flex-col w-full lg:justify-between lg:flex-row gap-12">
-          {/* Main Content */}
-          <div className="w-full lg:w-2/3 space-y-6 ">
-            <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Welcome to your class, Diana Malle</h1>
-            
-            {/* Schedule Section */}
-            <section className="bg-white rounded-xl shadow-sm overflow-hidden">
-              <h2 className="text-lg font-semibold p-4 border-b">Your Schedule</h2>
-              <div className="p-4 overflow-x-auto">
-                <div className="min-w-max">
-                  <div className="grid grid-cols-7 gap-2 mb-4">
-                    {["Block", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day, index) => (
-                      <div key={index} className="h-12 bg-blue-950 text-white rounded-lg flex items-center justify-center text-sm font-medium">
-                        {day}
-                      </div>
-                    ))}
-                  </div>
-                  {schedule.map((row, rowIndex) => (
-                    <div key={rowIndex} className="grid grid-cols-7 gap-2 mb-2">
-                      <div className="h-12 bg-blue-950 text-white rounded-lg flex items-center justify-center text-sm">
-                        {row.time}
-                      </div>
-                      {["monday", "tuesday", "wednesday", "thursday", "friday", "saturday"].map((day, dayIndex) => (
-                        <><div
-                          key={dayIndex} /><div
-                            key={dayIndex}
-                            className={`h-12 rounded-lg flex items-center justify-center text-sm ${row[day] ? "bg-blue-500 text-white" : "bg-gray-100"}`}
-                          >
-                            {row[day]}
-                          </div></>
-                      ))}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </section>
-
-            {/* Homework Section */}
-            <section className="bg-white rounded-xl shadow-sm">
-              <h2 className="text-lg font-semibold p-4 border-b">Homework Download/Submission</h2>
-              <div className="p-4">
-                <div className="grid sm:grid-cols-2 gap-4">
-                  {/* Download Section */}
-                  <div className="space-y-3">
-                    <h3 className="text-sm font-semibold text-gray-700">Download</h3>
-                    {pdfDownloads.map((item, index) => (
-                      <div key={index} className="bg-[#0C6667] rounded-lg p-3 flex items-center justify-between group hover:bg-[#0a5758] transition-colors">
-                        <div className="flex items-center gap-3">
-                          <FileIcon type={item.type} />
-                          <div className="text-white">
-                            <p className="text-sm font-medium">{item.name}</p>
-                            <p className="text-xs text-gray-200">{item.size}</p>
-                          </div>
-                        </div>
-                        <button className="text-white hover:scale-110 transition-transform">
-                          <DownloadIcon />
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Upload Section */}
-                  <div className="space-y-3">
-                    <h3 className="text-sm font-semibold text-gray-700">Upload Assignment</h3>
-                    {pdfDownloads.map((item, index) => (
-                      <div key={index} className="bg-[#0C6667] rounded-lg p-3 flex items-center justify-between group hover:bg-[#0a5758] transition-colors">
-                        <div className="flex items-center gap-3">
-                          <FileIcon type={item.type} />
-                          <div className="text-white">
-                            <p className="text-sm font-medium">{item.name}</p>
-                            <p className="text-xs text-gray-200">{item.size}</p>
-                          </div>
-                        </div>
-                        <button className="text-white hover:scale-110 transition-transform">
-                          <DownloadIcon />
-                        </button>
-                      </div>
-                    ))}
-                    <button className="w-full bg-[#0C6667] hover:bg-[#0a5758] text-white rounded-lg p-3 flex items-center justify-center gap-2 transition-colors">
-                      <AddIcon />
-                      <span className="text-sm font-medium">Add New</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </section>
-          </div>
-
-          {/* Sidebar */}
-          <div className="w-full lg:w-1/3">
-            <button
-              onClick={() => setShowSidebar(!showSidebar)}
-              className="lg:hidden w-full bg-blue-600 hover:bg-blue-700 text-white rounded-lg p-3 mb-4 flex items-center justify-center gap-2 transition-colors"
-            >
-              <span className="text-sm font-medium">
-                {showSidebar ? "Hide Sidebar" : "Show Sidebar"}
-              </span>
-            </button>
-
-            <div className={`space-y-6 transition-all duration-300 ${showSidebar ? 'block' : 'hidden lg:block'}`}>
-              {/* Announcements */}
-              <section className="bg-white rounded-xl shadow-sm p-4">
-                <h2 className="text-lg font-semibold mb-3">Announcements</h2>
-                <p className="text-sm text-gray-600 italic">
-                  This is where you will find important updates on assignments, subjects, and homework. 
-                  Stay tuned for new announcements to keep track of any changes or additional tasks!
-                </p>
-              </section>
-
-              {/* Reminders */}
-              <section className="bg-blue-950 rounded-xl shadow-sm p-4">
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-semibold text-white">Reminders</h2>
-                  <button className="text-white hover:scale-110 transition-transform">
-                    <AddIcon />
-                  </button>
-                </div>
-                <div className="space-y-3">
-                  {reminders.map((item, index) => (
-                    <div key={index} className="border border-white/20 rounded-lg p-3 flex items-center gap-3 hover:bg-white/5 transition-colors">
-                      <ReminderIcon />
-                      <div className="text-white">
-                        <p className="text-sm font-medium">{item.name}</p>
-                        <p className="text-xs text-gray-400">{item.time} • {item.day}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </section>
-            </div>
-          </div>
-        </div>
+    <Layout>
+      <div className="bg-white border-b mt-8">
+        <Menu mode="horizontal" defaultSelectedKeys={["1"]} className="max-w-7xl mx-auto px-6">
+          <Menu.Item key="1" icon={<FileTextOutlined />}>
+            All Assignments
+          </Menu.Item>
+          <Menu.Item key="2" icon={<CheckCircleOutlined />}>
+            Completed
+          </Menu.Item>
+          <Menu.Item key="3" icon={<ClockCircleOutlined />}>
+            Pending
+          </Menu.Item>
+        </Menu>
       </div>
-    </div>
+
+      <Content className="p-6">
+        <Tabs defaultActiveKey="1">
+          <Tabs.TabPane
+            tab={
+              <span>
+                <CalendarOutlined />
+                Current Assignments
+              </span>
+            }
+            key="1"
+          >
+            <List
+              grid={getGridConfig()}
+              dataSource={assignments}
+              renderItem={(item) => (
+                <List.Item>
+                  <Card
+                    hoverable
+                    onClick={() => {
+                      setSelectedAssignment(item);
+                      setDrawerVisible(true);
+                    }}
+                  >
+                    <div className="flex flex-col h-40">
+                      <div className="flex justify-between items-start mb-4 flex-wrap gap-2">
+                        <div className="flex-1 min-w-[200px]">
+                          <Title level={5} ellipsis={{ rows: 2 }} style={{ marginBottom: "8px" }}>
+                            {item.title}
+                          </Title>
+                          <Text type="secondary" style={{ display: "block" }}>
+                            {item.subject}
+                          </Text>
+                        </div>
+                        <div className="flex-shrink-0">{getStatusTag(item.status)}</div>
+                      </div>
+
+                      <div className="mt-auto">
+                        <Space direction="vertical" className="w-full">
+                          <div className="flex flex-wrap gap-2 justify-between">
+                            <Text>
+                              <ClockCircleOutlined /> Due: {item.dueDate}
+                            </Text>
+                            <Text>Points: {item.points}</Text>
+                          </div>
+                      
+                        </Space>
+                      </div>
+                    </div>
+                  </Card>
+                </List.Item>
+              )}
+            />
+          </Tabs.TabPane>
+        </Tabs>
+
+        <Drawer title={selectedAssignment?.title} placement="right" width={600} onClose={() => setDrawerVisible(false)} visible={drawerVisible}>
+          {selectedAssignment && (
+            <Space direction="vertical" className="w-full">
+              <Card title="Assignment Details">
+                <Space direction="vertical" className="w-full">
+                  <div>
+                    <Text type="secondary">Subject:</Text>
+                    <Text strong> {selectedAssignment.subject}</Text>
+                  </div>
+                  <div>
+                    <Text type="secondary">Due Date:</Text>
+                    <Text strong> {selectedAssignment.dueDate}</Text>
+                  </div>
+                  <div>
+                    <Text type="secondary">Points:</Text>
+                    <Text strong> {selectedAssignment.points}</Text>
+                  </div>
+                </Space>
+              </Card>
+
+              <Card title="Description">
+                <Text>{selectedAssignment.description}</Text>
+              </Card>
+
+              <Card title="Assignment Materials">
+                <List
+                  dataSource={selectedAssignment.attachments}
+                  renderItem={(file) => (
+                    <List.Item>
+                      <Space>
+                        <FileOutlined />
+                        <Text>{file}</Text>
+                        <Button size="small" type="link">
+                          Download
+                        </Button>
+                      </Space>
+                    </List.Item>
+                  )}
+                />
+              </Card>
+
+              <Card title="Your Submission">
+                {selectedAssignment.status === "completed" ? (
+                  <Space direction="vertical" className="w-full">
+                    <Text type="success">
+                      <CheckCircleOutlined /> Submitted successfully
+                    </Text>
+                    <List
+                      dataSource={["Your_Submission.pdf"]}
+                      renderItem={(file) => (
+                        <List.Item>
+                          <Space>
+                            <FileOutlined />
+                            <Text>{file}</Text>
+                            <Button size="small" type="link">
+                              View
+                            </Button>
+                          </Space>
+                        </List.Item>
+                      )}
+                    />
+                  </Space>
+                ) : (
+                  <Space direction="vertical" className="w-full">
+                    <Upload {...uploadProps}>
+                      <Button icon={<UploadOutlined />}>Upload Submission</Button>
+                    </Upload>
+                    <Button type="primary" block>
+                      Submit Assignment
+                    </Button>
+                  </Space>
+                )}
+              </Card>
+            </Space>
+          )}
+        </Drawer>
+      </Content>
+    </Layout>
   );
-}
+};
+
+export default StudentAssignmentInterface;
