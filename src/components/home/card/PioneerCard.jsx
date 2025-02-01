@@ -2,7 +2,7 @@ import React from 'react'
 
 function PioneerCard({icon,title,desc}) {
   return (
-    <div className='w-[259px] shrink-0  !z-[70] px-2 border-gray-300 h-[200px] gap-y-2  flex items-center flex-col justify-center bg-white shadow-[0px_4px_4px_rgba(0,0,0,0.2)]  border-[1px]'>
+    <div className='w-[259px] shrink-0 px-2 border-gray-300 h-[200px] gap-y-2  flex items-center flex-col justify-center bg-white shadow-[0px_4px_4px_rgba(0,0,0,0.2)]  border-[1px]'>
         <span>
         {icon}
         </span>

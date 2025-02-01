@@ -6,7 +6,7 @@ import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import { MdCheckCircle } from "react-icons/md";
 import { notification } from "antd";
 import { SmileOutlined } from "@ant-design/icons";
-import { apiGet } from "@/src/services/api_service";
+import { api, apiGet } from "@/src/services/api_service";
 
 const queryClient = new QueryClient();
 
@@ -135,7 +135,7 @@ export default function CreateClass() {
     if (showSuccess) {
       openNotification();
     }
-  }, [showSuccess]);
+  }, [showSuccess, formData.subject]);
 
   const {
     data: gradeData,
@@ -197,22 +197,24 @@ export default function CreateClass() {
     },
   });
 
+  const getTopics = async () => {
+    const response = await api.get(`/topics/subject/${formData?.subject}`);
+
+    console.log("The response is here:", response.data);
+    return response.data;
+  };
+
   const {
     data: topicData,
     isLoading: isTopicLoading,
     error: topicError,
   } = useQuery({
     queryKey: ["topics"],
-    queryFn: async () => {
-      const response = await apiGet(`/topics/subject/${formData.subject}`);
-      if (!response.ok) throw new Error("Network response was not ok");
-      return response.json();
-      // const response = await fetch(`https://galaweb.galahub.org/api/topics/subject/${formData.subject}`);
-      // if (!response.ok) throw new Error("Network response was not ok");
-      // return response.json();
-    },
+    queryFn: getTopics,
     enabled: !!formData.subject,
   });
+
+  console.log("the error is data is", topicError);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -279,7 +281,7 @@ export default function CreateClass() {
   };
 
   const isLoading = mutation.isPending;
-
+  console.log(formData)
   return (
     <div className="min-h-screen w-full p-4 md:p-6 lg:p-8">
       {isRedirecting && <RedirectingOverlay />}
@@ -321,17 +323,7 @@ export default function CreateClass() {
 
           <div className="mb-4">
             <label className="block mb-2 font-bold">Available to</label>
-            <select
-              name="availableTo"
-              value={formData.availableTo}
-              onChange={(e) => {
-                handleChange(e);
-                // handleTopicFetch(e); // Call this on change
-              }}
-              onBlur={handleBlur}
-              className={`w-full border-2 ${touched.availableTo && errors.availableTo ? "border-red-500" : "border-blue-700"} p-2`}
-              disabled={isLoading || isRedirecting}
-            >
+            <select name="availableTo" value={formData.availableTo} onChange={handleChange} onBlur={handleBlur} className={`w-full border-2 ${touched.availableTo && errors.availableTo ? "border-red-500" : "border-blue-700"} p-2`} disabled={isLoading || isRedirecting}>
               <option value="">Select a Class</option>
               {gradeData?.map((grade) => (
                 <option key={grade.id} value={grade.id}>

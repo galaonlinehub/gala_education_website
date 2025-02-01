@@ -1,5 +1,5 @@
-import { FaChalkboardTeacher, FaDonate, FaUsers, FaBook  } from "react-icons/fa";
-import { MdNotes, MdLiveTv, MdSettings, MdAnalytics, MdDashboard, MdLibraryAdd } from "react-icons/md";
+import { FaChalkboardTeacher, FaDonate, FaUsers, FaBook } from "react-icons/fa";
+import { MdNotes, MdLiveTv, MdSettings, MdAnalytics, MdAssignment, MdDashboard, MdLibraryAdd } from "react-icons/md";
 
 export const footer_links = {
   Services: [
@@ -87,106 +87,112 @@ export const footer_links = {
 };
 
 export const teacher_links = [
-    {
-        "name":"Classes",
-        "link":"classes",
-        "icon":<FaChalkboardTeacher />
-        
-    },
-    {
-        "name":"Notes",
-        "link":"notes",
-        "icon":<MdNotes />
-        
-    },
-    {
-        "name":"Live",
-        "link":"live",
-        "icon":<MdLiveTv />
-        
-    },
-    {
-        "name":"Analytics",
-        "link":"analytics",
-        "icon":<MdAnalytics />
-        
-    }  
-    ,
-    {
-        "name":"Social",
-        "link":"social",
-        "icon":<FaUsers />
-        
-    },
-    
-    {
-        "name":"Donate",
-        "link":"donate",
-        "icon":<FaDonate />
-        
-    },
-    {
-        "name":"Manage Class",
-        "link":"manage-class",
-        "icon":<MdSettings />
-        
-    },
-    {
-        "name":"Create Class",
-        "link":"create-class",
-        "icon":<MdLibraryAdd />
-        
-    },
+  {
+    "name": "Dashboard",
+    "link": "dashboard",
+    "icon": <FaChalkboardTeacher />
+
+  },
+  {
+    "name": "Notes",
+    "link": "notes",
+    "icon": <MdNotes />
+
+  },
+  {
+    "name": "Live",
+    "link": "live",
+    "icon": <MdLiveTv />
+
+  },
+  {
+    "name": "Analytics",
+    "link": "analytics",
+    "icon": <MdAnalytics />
+
+  }
+  ,
+  {
+    "name": "Social",
+    "link": "social",
+    "icon": <FaUsers />
+
+  },
+
+  {
+    "name": "Donate",
+    "link": "donate",
+    "icon": <FaDonate />
+
+  },
+  {
+    "name": "Manage Class",
+    "link": "manage-class",
+    "icon": <MdSettings />
+
+  },
+  {
+    "name": "Create Class",
+    "link": "create-class",
+    "icon": <MdLibraryAdd />
+
+  },
+  {
+    "name": "Assignments",
+    "link": "assignments",
+    "icon": <MdAssignment />
+
+  },
 ]
 
 
 export const student_links = [
-    {
-        "name":"Dashboard",
-        "link":"dashboard",
-        "icon":<MdDashboard />
-        
-        
-        
-    },
-    {
-        "name":"Classroom",
-        "link":"classroom",
-        "icon":<FaChalkboardTeacher />
-        
-        
-    },
-    {
-        "name":"Live Lesson",
-        "link":"live-lesson",
-        "icon":<MdLiveTv />
-        
-    },
-    {
-        "name":"Library",
-        "link":"library",
-        "icon":
-        <FaBook />
-        
-    }
-    ,
-    {
-        "name":"Social",
-        "link":"social",
-        "icon":<FaUsers />
-
-        
-    },
-    
-    {
-        "name":"Donate",
-        "link":"donate",
-        "icon":<FaDonate />
+  {
+    "name": "Dashboard",
+    "link": "dashboard",
+    "icon": <MdDashboard />
 
 
-        
-    },
-   
+
+  },
+  {
+    "name": "Classroom",
+    "link": "classroom",
+    "icon": <FaChalkboardTeacher />
+
+
+  },
+  {
+    "name": "Live Lesson",
+    "link": "live-lesson",
+    "icon": <MdLiveTv />
+
+  },
+  {
+    "name": "Library",
+    "link": "library",
+    "icon":
+      <FaBook />
+
+  }
+  ,
+  {
+    "name": "Social",
+    "link": "social",
+    "icon": <FaUsers />
+
+
+  },
+
+  {
+    "name": "Donate",
+    "link": "donate",
+    "icon": <FaDonate />
+
+
+
+  },
+
 
 ]
 
