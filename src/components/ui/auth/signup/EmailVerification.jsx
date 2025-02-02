@@ -1,14 +1,14 @@
 import { Modal, Result } from "antd";
 import React, { useEffect, useState } from "react";
-import { api } from "@/src/config/settings";
-import LoadingState from "../../loading/LoadingSpinner";
+import LoadingState from "../../loading/template/LoadingSpinner";
 import { useEmailVerificationModalOpen } from "@/src/store/auth/signup";
 import { useTabNavigator } from "@/src/store/auth/signup";
-import { decrypt } from "@/src/utils/constants/encryption";
+import { decrypt } from "@/src/utils/fns/encryption";
 import { useRouter } from "next/navigation";
 import { message, Button, Alert } from "antd";
-import { maskEmail } from "@/src/utils/constants/mask_email";
+import { maskEmail } from "@/src/utils/fns/mask_email";
 import { ReloadOutlined } from "@ant-design/icons";
+import { apiPost } from "@/src/services/api_service";
 
 const EmailVerification = () => {
   const openEmailVerificationModal = useEmailVerificationModalOpen(
@@ -104,7 +104,7 @@ const EmailVerification = () => {
       formData.append("email", email);
 
       try {
-        const response = await api.post("/verify-otp", formData);
+        const response = await apiPost("/verify-otp", formData);
 
         if (response.status === 200) {
           setHasVerified(true);
@@ -142,7 +142,7 @@ const EmailVerification = () => {
     if (resendCounter > 0) return;
     try {
       setIsSendingOtp(true);
-      const response = await api.post("/request-otp", {
+      const response = await apiPost("/request-otp", {
         email: email,
       });
       if (response.status === 200) {

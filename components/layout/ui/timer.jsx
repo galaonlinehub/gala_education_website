@@ -12,7 +12,7 @@ const CountDownCard = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const deadline = new Date("2025-01-10T16:30:00");
+    const deadline = new Date("2025-02-01T16:30:00");
 
     const calculateTimeLeft = () => {
       const now = new Date();
@@ -46,7 +46,7 @@ const CountDownCard = () => {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center h-[100px] bg-gradient-to-r from-blue-900 to-blue-700 rounded-lg w-[30rem]">
+      <div className="flex justify-center items-center h-[100px] rounded-lg w-[30rem]">
         <Spin size="large" />
       </div>
     );
@@ -77,7 +77,6 @@ const CountDownCard = () => {
 
       <div className="text-center space-y-2">
         <div className="flex items-center justify-center gap-3 text-sm sm:text-base font-semibold">
-
           <span>Alert: Countdown until our Official Launch!</span>
         </div>
         <div className="text-xs sm:text-sm opacity-80">

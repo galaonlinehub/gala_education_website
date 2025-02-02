@@ -8,11 +8,11 @@ import {
   EyeOutlined,
   EyeInvisibleOutlined,
 } from "@ant-design/icons";
-import { api } from "@/src/config/settings";
 import { HiCheckCircle } from "react-icons/hi2";
 import { IoIosCloseCircle } from "react-icons/io";
-import { decrypt } from "@/src/utils/constants/encryption";
+import { decrypt } from "@/src/utils/fns/encryption";
 import Error from "../../error";
+import { apiPost } from "@/src/services/api_service";
 
 const { Title, Text } = Typography;
 
@@ -123,7 +123,7 @@ const ChangePassword = () => {
       formData.append("email", email);
       formData.append("newPassword", data.password);
       console.log(data, email);
-      const response = await api.post("/reset-password", formData);
+      const response = await apiPost("/reset-password", formData);
 
       if (response.data.success) {
         message.success("Password changed successfully");
