@@ -1,30 +1,17 @@
 "use client"
-import React, { useEffect, useRef, useState } from 'react';
+import BottomVideoControls from '@/src/components/websockets/video/BottomVideoControls'
+import WhiteBoard from '@/src/components/websockets/video/WhiteBoard'
+import useUser from '@/src/store/auth/user';
+import useControlStore from '@/src/store/video/contols';
+import { decrypt } from '@/src/utils/constants/encryption';
+import Cookies from 'js-cookie';
+import React, { useEffect,useState,useRef, useMemo, useCallback } from 'react'
 import io from 'socket.io-client';
 import * as mediasoupClient from 'mediasoup-client';
-import Cookies from 'js-cookie';
-import { decrypt } from '@/src/utils/constants/encryption';
-import { Badge } from "antd";
-import { 
-  FaExpand, 
-  FaExpandArrowsAlt, 
-  FaMicrophone, 
-  FaMicrophoneSlash,
-  FaDesktop, 
-  FaPhoneSlash, 
-  FaSmile, 
-  FaUser, 
-  FaUserAltSlash, 
-  FaUsers, 
-  FaVideo,
-  FaVideoSlash 
-} from "react-icons/fa";
-import { FaPhoneFlip } from "react-icons/fa6";
-import useUser from '@/src/store/auth/user';
 import { ChatSection } from '@/src/components/websockets/video/ChatSection';
 
-const VideoConference = ({ params: { id_no: roomId } }) => {
-  const [sectionPage, setSectionPage] = useState("participants");
+
+export default  function Lesson({ params }){
   const [userName, setUserName] = useState("");
   const [role, setRole] = useState("");
   const [isAudioEnabled, setIsAudioEnabled] = useState(true);
@@ -43,22 +30,36 @@ const VideoConference = ({ params: { id_no: roomId } }) => {
   const screenProducerRef = useRef(null);
   const videoProducerRef = useRef(null);
   const audioProducerRef = useRef(null);
+  // const roomId = "zh8bL2WebxzUxDid"
 
-  
+  const [roomId, setRoomId] = useState(null);
+
+  const roomIdFn = async () => {
+    const roomId = (await params).lesson_id; // Assuming `params` is a promise
+    return roomId;
+  };
+
+  useEffect(() => {
+    const fetchRoomId = async () => {
+      const resolvedRoomId = await roomIdFn();
+      setRoomId(resolvedRoomId);
+      console.log("The roomId is", resolvedRoomId); // Log after resolving
+    };
+
+    fetchRoomId();
+  }, []);
+
+
   // Refs
-  const mainVideoRef = useRef(null);
+  // const mainVideoRef = useRef(null);
   const localVideoRef = useRef(null);
   const participantsRef = useRef(null);
   const containerRef = useRef(null);
+  const {setControlVisibility, controls:{audio,video,board,raise,materials,end,attendees,chat,share} } = useControlStore();
 
-  const navigation_links = [
-    { id: "participants", icon: FaUsers, label: "Participants" },
-    { id: "chatting", icon: FaSmile, label: "Chat" },
-    { id: "board", icon: FaExpand, label: "Board" },
-    { id: "materials", icon: FaUser, label: "Materials" },
-  ];
+  
 
- 
+    
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
       containerRef.current.requestFullscreen();
@@ -68,7 +69,6 @@ const VideoConference = ({ params: { id_no: roomId } }) => {
       setIsFullscreen(false);
     }
   };
-
 
   const toggleScreenShare = async () => {
     try {
@@ -120,35 +120,7 @@ const VideoConference = ({ params: { id_no: roomId } }) => {
       setIsScreenSharing(false);
     }
   };
-
-  const sendMessage = () => {
-    if (newMessage.trim()) {
-      // Emit message to socket
-      socketRef.current?.emit('message', {
-        roomId,
-        message: newMessage,
-        sender: userName
-      });
-      
-      // Add message to local state
-    //   setMessages(prev => [...prev, {
-    //     sender: userName,
-    //     content: newMessage,
-    //     timestamp: new Date().toISOString()
-    //   }]);
-
-    // setMessages(prev => [...prev, {
-    //     sender: userName,
-    //     content: newMessage,
-    //     timestamp: new Date().toISOString()
-    //   }]);
-
-    setMessages(prev=>[...prev,newMessage])
-      
-      setNewMessage("");
-    }
-  };
-
+  
     const getToken = ()=>{
 
         const encryptedToken = Cookies.get("9fb96164-a058-41e4-9456-1c2bbdbfbf8d");
@@ -179,11 +151,10 @@ const VideoConference = ({ params: { id_no: roomId } }) => {
           setUser(userDecrypted);
         }
       }, []);
+  
+  useEffect(() => {
 
-  // Rest of the existing mediasoup implementation...
-    useEffect(() => {
-
-    if(!user){
+    if(!user || !roomId){
       return
     }
 
@@ -496,8 +467,7 @@ const VideoConference = ({ params: { id_no: roomId } }) => {
 
     socket.on('connect', () => {
         console.log('Connected to server');
-        
-       
+         
       });
 
     socket.on('connection-success', ({ socketId,role,name }) => {
@@ -540,41 +510,42 @@ const VideoConference = ({ params: { id_no: roomId } }) => {
     return () => {
       socket.disconnect();
     };
-  }, [user]);
+  }, [user,roomId]);
 
 
-  const renderInstructorVideo = () => {
+
+  const renderInstructorVideo = useMemo(() => {
     if (!instructorStream) return null;
-
+  
     const { stream, user } = instructorStream;
     return (
-      <div className="w-full h-full relative">
+      <div className={`w-full h-full ${(chat || attendees) ? 'basis-2/3':'basis-11/12'} relative `}>
         <video
-          key={user.isLocal ? 'local-instructor' : 'remote-instructor'}
+          key={user.id}
           autoPlay
           muted={user.isLocal}
           playsInline
-          className="w-full h-full object-cover rounded-lg outline-none focus:outline-none border-none shadow-none bg-transparent"
+          className={`w-full h-full object-cover rounded-2xl outline-none focus:outline-none border-none shadow-none bg-transparent ${!isScreenSharing  ? 'transform scale-x-[-1]' : ''}`}
           ref={el => {
             if (el) el.srcObject = stream;
           }}
-        />
+        /> 
         <div className="absolute bottom-2 left-2 bg-black/50 text-white px-2 py-1 rounded">
           {user.name} (Instructor) {user.isLocal ? "(You)" : ""}
         </div>
       </div>
     );
-  };
+  }, [instructorStream]);
 
-  // Render student videos
-  const renderStudentVideos = () => {
+  
+  const renderStudentVideos = useMemo(() => {
     return Array.from(studentStreams.entries()).map(([producerId, { stream, user }]) => (
       <div key={producerId} className="relative w-full h-40 rounded-md overflow-hidden">
         <video
           autoPlay
           muted={user.isLocal}
           playsInline
-          className="w-full h-full object-cover outline-none focus:outline-none  border-none shadow-none bg-transparent"
+          className="w-full h-full object-cover outline-none focus:outline-none border-none shadow-none bg-transparent transform scale-x-[-1]"
           ref={el => {
             if (el) el.srcObject = stream;
           }}
@@ -584,154 +555,49 @@ const VideoConference = ({ params: { id_no: roomId } }) => {
         </div>
       </div>
     ));
-  };
-
-  console.log("the student streams are ",studentStreams)
-  console.log("the instructor stream is ",instructorStream)
-
-
-
+  }, [studentStreams]);
+  
   return (
-    <div ref={containerRef} className="flex bg-[#747476]  w-screen gap-x-3 max-h-screen overflow-auto p-4 ">
-      <div className="basis-2/3 h-screen flex flex-col gap-y-2">
-        <div className="flex w-full basis-3/5 p-5">
-          <div className="w-full">
-            <div className="flex justify-between items-center mb-4">
-              <div className="flex items-center gap-x-2">
-                <h2 className="text-xs font-light">Week 5</h2>
-                <Badge variant="secondary" className="bg-blue-200 text-blue-600">
-                  class A
-                </Badge>
+    <div className='w-screen h-screen flex   overflow-hidden justify-center  bg-[#747487] relative'>
+    { !board ?
+    <div className='flex w-full items-center  gap-x-5 px-5'>
+    {video ?  renderInstructorVideo : <div className={`w-[80%] h-[90%] flex items-center justify-center ${(chat || attendees)?"basis-2/3":"basis-11/12"}   bg-[#232333] rounded-2xl`}>
+              <div className="bg-[#747487] w-48 h-48 rounded-full text-white flex items-center justify-center font-bold">
+                {user?.name} (Instructor)
               </div>
-              <div>
-                <h2 className="text-gray-400">Time remaining</h2>
-                <div className="space-x-2">
-                  <Badge variant="destructive" className="animate-pulse" />
-                  <span className="text-gray-600">2:48:20</span>
-                </div>
-              </div>
-            </div>
-            
-            <h1 className="text-xl font-semibold mb-4">Science - Introduction to astronomy</h1>
-            
-            <div className="relative rounded-2xl overflow-hidden">
-            
-            {renderInstructorVideo()}
-           
-              
-              {user?.role === "instructor" && <div className="absolute bottom-3 flex items-center justify-center w-full gap-x-4">
-                <button
-                  onClick={() => setIsAudioEnabled(!isAudioEnabled)}
-                  className={`p-2 ${isAudioEnabled ? 'bg-black/30' : 'bg-red-500'} h-12 w-12 rounded-full text-white flex items-center justify-center`}
-                >
-                  {isAudioEnabled ? <FaMicrophone /> : <FaMicrophoneSlash />}
-                </button>
-                <button
-          onClick={toggleScreenShare}
-          disabled={!videoProducerRef.current}
-          className={`p-2 ${isScreenSharing ? 'bg-blue-500' : 'bg-black/30'} h-12 w-12 rounded-full text-white flex items-center justify-center`}
-        >
-          <FaDesktop />         </button>
-                <button
-                  onClick={() => setIsVideoEnabled(!isVideoEnabled)}
-                  className={`p-2 ${isVideoEnabled ? 'bg-black/30' : 'bg-red-500'} h-12 w-12 rounded-full text-white`}
-                >
-                  {isVideoEnabled ? <FaVideo /> : <FaVideoSlash />}
-                </button>
-                <button className="p-2 bg-red-500 h-12 w-12 flex items-center justify-center rounded-full text-white">
-                  <FaPhoneFlip />
-                </button>
-                <button className="p-2 bg-black/30 h-12 w-12 rounded-full flex items-center justify-center text-white">
-                  <FaSmile />
-                </button>
-                <button
-                  onClick={toggleFullscreen}
-                  className="p-2 bg-black/30 h-12 w-12 rounded-full flex items-center justify-center text-white"
-                  
-                >
-                  <FaExpandArrowsAlt />
-                </button>
-              </div>}
-            </div>
-          </div>
-        </div>
-
-        <div className="flex w-full basis-2/5 p-5">
-          <div className="w-full">
-            <div className="flex items-center gap-x-5 mb-4">
-              <div className="flex items-center gap-x-2">
-                <FaUser />
-                <span className="text-xs">Attendee</span>
-                <Badge variant="secondary" className="bg-green-300 px-2 py-1 text-green-800 text-xs">
-                  27
-                </Badge>
-              </div>
-              <div className="flex items-center gap-x-2">
-                <FaUserAltSlash />
-                <span className="text-xs">Absentee:</span>
-                <Badge variant="destructive" className="bg-red-300 px-2 py-1 text-red-800 text-xs">
-                  3
-                </Badge>
-              </div>
-            </div>
-
-            <div className="flex justify-between">
-              {navigation_links.map(({ id, icon: Icon, label }) => (
-                <button
-                  key={id}
-                  onClick={() => setSectionPage(id)}
-                  className="flex flex-col items-center gap-y-1"
-                >
-                  <div className={`w-14 h-10 p-3 rounded flex items-center justify-center ${
-                    sectionPage === id ? "bg-blue-200" : "bg-blue-50"
-                  }`}>
-                    <Icon className={`${
-                      sectionPage === id ? "text-blue-800" : "text-gray-400"
-                    } h-6 w-6`} />
-                  </div>
-                  <span className={`text-xs ${
-                    sectionPage === id ? "text-blue-800" : "text-gray-400"
-                  }`}>
-                    {label}
-                  </span>
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
+        </div>}
+        <>
+  {chat ? (
+    <div className={`bg-[#232333] p-5 rounded-xl h-[90vh] basis-1/3`}>
+      <div className={"text-white text-center border-b-2 py-2"}>
+        Room Group Chat
       </div>
-
-      <div className="basis-1/3 p-4">
-        {sectionPage === "participants" && (
-            <div className="grid grid-cols-1 gap-4 max-h-[calc(100vh-2rem)] overflow-y-auto">
-            {renderStudentVideos()}
-          </div>
-        )}
-
-        {sectionPage === "chatting" && (
-           <ChatSection 
-           socketRef={socketRef}
-           roomId={roomId}
-           sender={user}
-           messages={messages}
-           setMessages={setMessages}
-         />
-        )}
-
-        {sectionPage === "board" && (
-          <div className="h-full flex items-center justify-center">
-            <span className="text-gray-500">Whiteboard feature coming soon</span>
-          </div>
-        )}
-
-        {sectionPage === "materials" && (
-          <div className="h-full flex items-center justify-center">
-            <span className="text-gray-500">Course materials feature coming soon</span>
-          </div>
-        )}
-      </div>
+      <ChatSection 
+        socketRef={socketRef}
+        roomId={roomId}
+        sender={user}
+        messages={messages}
+        setMessages={setMessages}
+      />
     </div>
-  );
-};
+  ) : attendees ? (
+    <div className={"bg-[#232333] p-5 rounded-xl h-[90vh] basis-1/3 flex flex-col overflow-y-scroll"}>
+    {renderStudentVideos}
+    </div>
+  ) : (
+    <div></div>
+  )}
+  
+</>
+    </div>:
+    <WhiteBoard
+    socketRef={socketRef} 
+    roomId={roomId} 
+    role={role}
+    />
+    }
+    <BottomVideoControls audioProducerRef={audioProducerRef} videoProducerRef={videoProducerRef} role={role} toggleScreenShare={toggleScreenShare} />
+    </div>
+  )
+}
 
-export default VideoConference;
