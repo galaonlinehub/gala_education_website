@@ -4,7 +4,8 @@
 import { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 import axios from 'axios';
-import { api } from '@/src/config/settings';
+import { apiGet } from '@/src/services/api_service';
+
 
 const Message = () => {
     const [socket, setSocket] = useState(null);
@@ -46,7 +47,7 @@ const Message = () => {
 
     const fetchMessages = async () => {
         try {
-            const response = await api.get(`https://galaweb.galahub.org/api/messages`);
+            const response = await apiGet(`https://galaweb.galahub.org/api/messages`);
             setMessages(response.data);
         } catch (err) {
             console.error('Error fetching messages:', err);

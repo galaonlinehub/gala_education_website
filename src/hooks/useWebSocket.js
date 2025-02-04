@@ -91,8 +91,9 @@ import Cookies from "js-cookie";
 import { io } from "socket.io-client";
 import { useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { decrypt } from "../utils/constants/encryption";
+import { decrypt } from "../utils/fns/encryption";
 import { api } from "../config/settings";
+import { apiGet } from "../services/api_service";
 
 const useWebSocket = () => {
     const [socket, setSocket] = useState(null);
@@ -125,7 +126,7 @@ const useWebSocket = () => {
 
             try {
                 // Fetch topics (rooms) from the backend
-                const { data: topics } = await api.get("user_topics", {
+                const { data: topics } = await apiGet("user_topics", {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
