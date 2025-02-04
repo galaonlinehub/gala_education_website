@@ -1,6 +1,22 @@
+"use client"
+import { api } from "@/src/config/settings";
+import useWebSocket from "@/src/hooks/useWebSocket";
+import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
 const StudentReminders = () => {
+  
+  const getReminders = async()=>{
+    const {data} = await api.get('reminders');
+    return data 
+  }
+
+  const {data:reminderData} = useQuery({
+    queryKey:['getReminders'],
+    queryFn:getReminders
+  })
+
+  useWebSocket();
   const reminders = [
     {
       name: "Eng - Speaking Test",
@@ -155,6 +171,12 @@ const StudentReminders = () => {
             </div>
           </div>
         </div>
+      </div>
+      <div>
+              <h1>Total {reminderData?.length}</h1>
+      {
+        reminderData?.map((item,keyItem)=><div key={keyItem}>Title</div>) 
+      }
       </div>
     </div>
   );

@@ -14,6 +14,7 @@ import { getUserSubject, getUserTopics } from "@/src/utils/fns/global";
 import { useUserTopcs } from "@/src/store/user_topics";
 import { TopicSkeleton } from "@/src/components/ui/loading/skeletons/ClassCard";
 import StudentDashboardSkeleton from "@/src/components/ui/loading/skeletons/StudentDashboard";
+import Cookies from "js-cookie";
 
 export default function Component() {
   const router = useRouter();
@@ -42,6 +43,7 @@ export default function Component() {
   };
 
   useEffect(() => {
+    
     const userDecrypted = decrypt(
       decrypt(localStorage.getItem("2171f701-2b0c-41f4-851f-318703867868"))
     );
