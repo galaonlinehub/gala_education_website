@@ -3,7 +3,7 @@ import BottomVideoControls from '@/src/components/websockets/video/BottomVideoCo
 import WhiteBoard from '@/src/components/websockets/video/WhiteBoard'
 import useUser from '@/src/store/auth/user';
 import useControlStore from '@/src/store/video/contols';
-import { decrypt } from '@/src/utils/constants/encryption';
+import {decrypt} from "@/src/utils/fns/encryption"
 import Cookies from 'js-cookie';
 import React, { useEffect,useState,useRef, useMemo, useCallback } from 'react'
 import io from 'socket.io-client';
@@ -143,8 +143,13 @@ export default  function Lesson({ params }){
     
 
     useEffect(() => {
-        const userDecrypted = decrypt(
-          decrypt(localStorage.getItem("2171f701-2b0c-41f4-851f-318703867868"))
+      const userToken = Cookies.get("9fb96164-a058-41e4-9456-1c2bbdbfbf8d")
+      if(!userToken){
+        return
+      }
+      
+      const userDecrypted = decrypt(
+          userToken
         );
     
         if (userDecrypted) {

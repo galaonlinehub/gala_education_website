@@ -1,5 +1,4 @@
-import Providers from "../providers"
-import "../globals.css";
+
 
 export const metadata = {
     title: "Gala Education",
@@ -19,11 +18,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className="bg-[#d5d5c9]">
-        <Providers>
+     
           
         {children}
         
-        </Providers>
       </body>
     </html>
   )
