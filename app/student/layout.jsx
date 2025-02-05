@@ -41,7 +41,7 @@ export default function StudentLayout({ children }) {
     <>
       <Navbar />
       <StudentSearch />
-      <main className="flex flex-col lg:flex-row w-full mt-[90px]">
+      <main className="flex flex-col lg:flex-row w-full">
         <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
           <div className="absolute left-1/2 top-20 w-52 h-52 hidden md:block">
             <RightTiltedBook />
@@ -62,12 +62,12 @@ export default function StudentLayout({ children }) {
             {student_links.map((item, i) => (
               <li key={i}>
                 <Link
-                  href={`/student/${item.link}`} // Generate the correct href
+                  href={`/student/${item.link}`}
                   className={`flex items-center gap-4 py-2 px-2 rounded-lg transition-colors ${
                     currentUrl.replace(/\/$/, "") ===
                     `/student${item.link === "." ? "" : `/${item.link}`}`
-                      ? "bg-[#001840] text-white" // Active item styles
-                      : "hover:bg-blue-950/20" // Hover styles for unselected items
+                      ? "bg-[#001840] text-white" 
+                      : "hover:bg-blue-950/20" 
                   }`}
                   onClick={() => isMobile && setIsSidebarOpen(false)}
                 >

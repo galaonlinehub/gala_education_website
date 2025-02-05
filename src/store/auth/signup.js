@@ -7,7 +7,7 @@ const useEmailVerificationModalOpen = create((set) => ({
 }));
 
 const useTabNavigator = create((set) => ({
-  activeTab: 0,
+  activeTab: 1,
   setActiveTab: (state) => set(() => ({ activeTab: state })),
 }));
 

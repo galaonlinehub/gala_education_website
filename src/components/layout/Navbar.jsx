@@ -28,13 +28,13 @@ const Navbar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
   return (
-    <nav className="h-14 bg-white flex justify-between max-w-screen items-center fixed top-0 inset-x-0 z-50 lg:px-24 px-2 shadow-md">
+    <nav className="h-14 flex justify-between max-w-screen items-center fixed top-0 inset-x-0 z-50 lg:px-24 px-2 bg-white">
       <Image
         alt={"Gala logo"}
-        width={200}
-        height={200}
+        width={150}
+        height={150}
         src={"/gala-logo.png"}
-        className={"w-16 h-16 object-cover bg-white/45 rounded-full "}
+        className={"w-16 h-16 object-cover rounded-full "}
       />
 
       <ul className="text-black font-black flex sm:gap-x-4 gap-x-2 sm:text-xs text-[8px] leading-[5px] items-center justify-center">

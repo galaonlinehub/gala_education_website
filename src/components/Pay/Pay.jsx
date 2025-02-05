@@ -16,6 +16,8 @@ const Pay = () => {
   const { width } = useDevice();
   const { mobilePay } = usePay();
 
+
+
   const steps = [
     {
       title: "Pay",

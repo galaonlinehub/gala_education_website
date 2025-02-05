@@ -89,11 +89,13 @@ const InstructorSignUpForm = () => {
     // }
 
     try {
-      const response = await apiPost("/register", formData, {
-        headers: {
+      const response = await apiPost(
+        "/register",
+        formData,
+        {
           "Content-Type": "multipart/form-data",
-        },
-      });
+        }
+      );
       if (response.status === 201) {
         message.success("Data Saved Successfully!");
         sessionStorage.setItem(
@@ -396,7 +398,7 @@ const InstructorSignUpForm = () => {
         </form>
       </div>
       <EmailVerification />
-      <InstructorSignUpPageSvg />
+      {/* <InstructorSignUpPageSvg /> */}
     </main>
   );
 };

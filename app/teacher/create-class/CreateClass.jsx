@@ -386,7 +386,7 @@ const ClassCreationWizard = () => {
 
   return (
     <Drawer
-      open={false}
+      open={true}
       onCancel={() => {}}
       footer={null}
       width={850}

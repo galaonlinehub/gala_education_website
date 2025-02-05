@@ -54,18 +54,18 @@ const SignInPage = () => {
   };
 
   return (
-    <div className="login-bg bg-cover bg-center flex lg:items-center justify-center h-screen px-3 md:px-8 lg:px-12 xl:px-16">
-      <div className="flex flex-col items-center justify-center gap-3 w-full max-w-xl">
-        <span className="font-black">Login</span>
-        <span className="font-black text-4xl">Welcome Back</span>
-        <span className="text-sm font-medium text-center px-4 sm:px-8">
+    <div className="h-screen px-6 md:px-8 lg:px-12 xl:px-16 flex justify-center">
+      <div className="flex flex-col items-center justify-center gap-2 lg:gap-3 w-full max-w-xl">
+        <span className="font-black text-xs md:text-base">Sign In</span>
+        <span className="font-black text-2xl md:text-4xl">Welcome Back</span>
+        <span className="text-xs md:text-sm font-medium text-center px-4 sm:px-8">
           Welcome back! We&#39;re excited to see you again, let&#39;s pick up
           where you left off and continue your learning journey!
         </span>
 
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col items-center justify-center w-full gap-4"
+          className="flex flex-col items-center justify-center w-full gap-2 md:gap-3 lg:gap-4"
         >
           {localFeedback.show && (
             <Alert
@@ -77,7 +77,7 @@ const SignInPage = () => {
             />
           )}
           <div className="flex flex-col gap-1 w-full">
-            <label htmlFor="email" className="font-black">
+            <label htmlFor="email" className="font-black text-xs lg:text-sm">
               Email *
             </label>
             <input
@@ -92,19 +92,19 @@ const SignInPage = () => {
               })}
               autoComplete="off"
               autoCorrect="off"
-              className={`h-input-height border-[1px] focus:border-[2.5px] rounded-md focus:outline-none p-2 border-[#030DFE] w-full ${
+              className={`h-input-height border-[0.5px] focus:border-[1.5px] rounded-md focus:outline-none p-2 border-[#030DFE] w-full text-xs ${
                 errors.email ? "border-red-500" : ""
               }`}
             />
             {errors.email && (
-              <span className="text-red-500 text-sm">
+              <span className="text-red-500 text-[10px] font-light">
                 {errors.email.message}
               </span>
             )}
           </div>
 
           <div className="flex flex-col gap-1 w-full">
-            <label htmlFor="password" className="font-black">
+            <label htmlFor="password" className="font-black text-xs lg:text-sm">
               Password *
             </label>
             <input
@@ -122,12 +122,12 @@ const SignInPage = () => {
               })}
               autoComplete="off"
               autoCorrect="off"
-              className={`h-input-height border-[1px] focus:border-[2.5px] rounded-md focus:outline-none p-2 border-[#030DFE] w-full ${
+              className={`h-input-height border-[0.5px] focus:border-[1.5px] rounded-md focus:outline-none p-2 border-[#030DFE] w-full text-xs ${
                 errors.password ? "border-red-500" : ""
               }`}
             />
             {errors.password && (
-              <span className="text-red-500 text-sm">
+              <span className="text-red-500 text-[10px] font-light">
                 {errors.password.message}
               </span>
             )}
@@ -136,7 +136,7 @@ const SignInPage = () => {
           <span className="font-bold text-sm self-end">
             Forgot
             <span
-              className="font-bold text-sm text-[#030DFE] ml-2 cursor-pointer"
+              className="font-bold sm:text-sm text-[#030DFE] ml-2 cursor-pointer"
               onClick={() => router.push("/forgot-password")}
             >
               Password?
@@ -146,13 +146,13 @@ const SignInPage = () => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="text-white text-base h-12 bg-[#030DFE] rounded-md w-3/4 lg:w-1/2 font-bold mt-5 disabled:opacity-60 flex items-center justify-center gap-2 disabled:cursor-not-allowed"
+            className="text-white text-base py-2 bg-[#030DFE] rounded-md w-3/4 lg:w-1/2 font-bold mt-5 disabled:opacity-60 flex items-center justify-center gap-2 text-xsdisabled:cursor-not-allowed"
           >
-            {isSubmitting ? "Signing in..." : "Sign in"}
+            {isSubmitting ? "Signing in..." : "Sign In"}
           </button>
         </form>
 
-        <span className="text-sm font-semibold mt-3">
+        <span className="text-xs font-semibold mt-1 md:mt-2">
           Don&#39;t have an account?{" "}
           <span
             className="text-[#030DFE] cursor-pointer"
@@ -172,7 +172,7 @@ const SignInPage = () => {
         </button>
       </div>
 
-      <LoginVectorSvg />
+      {/* <LoginVectorSvg /> */}
     </div>
   );
 };

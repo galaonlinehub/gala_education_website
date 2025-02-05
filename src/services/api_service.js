@@ -1,7 +1,6 @@
-//api
-import { message } from "antd";
+// "use server"
+
 import axios from "axios";
-import Cookies from "js-cookie";
 import { decrypt } from "../utils/fns/encryption";
 import { USER_COOKIE_KEY } from "../config/settings";
 import { cookieFn } from "../utils/fns/client";
@@ -17,16 +16,14 @@ const publicEndpoints = new Set(["login", "register"]);
 
 api.interceptors.request.use(
   (config) => {
-    if (!config.url) return config; // Ensure URL exists
+    if (!config.url) return config; 
 
-    // Skip token validation for public endpoints
     if (
       [...publicEndpoints].some((endpoint) => config.url.includes(endpoint))
     ) {
       return config;
     }
 
-    // Check for token
     const encryptedToken = cookieFn.get(USER_COOKIE_KEY);
     if (!encryptedToken) {
       if (typeof window !== "undefined") {
@@ -35,7 +32,6 @@ api.interceptors.request.use(
       return Promise.reject(new Error("No authentication token"));
     }
 
-    // Attach token to Authorization header
     config.headers.Authorization = `Bearer ${decrypt(encryptedToken)}`;
     return config;
   },
@@ -87,15 +83,6 @@ api.interceptors.request.use(
 //   }
 // );
 
-// export const apiGet = async (endpoint, headers = {}) => {
-//   try {
-//     const response = await api.get(endpoint, { headers });
-//     return response;
-//   } catch (error) {
-//     console.error(`GET ${endpoint} Error:`, error);
-//     throw error;
-//   }
-// };
 
 export const apiGet = async (endpoint, headers = {}) => {
   const response = await api.get(endpoint, { headers });

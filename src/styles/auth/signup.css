@@ -127,8 +127,8 @@
   animation-name: shake;
 }
 .special-disabilities-select .ant-select-selector {
-  background-color: #030dfe !important;
-  /* height: 34px !important; */
+  background-color: #030DFE !important;
+  /* height: 30px !important; */
   outline: none !important;
   border: none !important;
   border-radius: 5px !important;
