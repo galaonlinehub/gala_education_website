@@ -36,7 +36,7 @@ function Home() {
   }, [showDonatePopup]);
 
   return (
-    <div className="relative w-screen max-w-screen-2xl mx-auto h-full overflow-hidden space-y-10">
+    <div className="relative w-screen max-w-screen-2xl mx-auto h-full overflow-hidden space-y-10 -mt-[6rem] ">
       {showDonatePopup && (
         <div className="fixed  inset-0 bg-black bg-opacity-70 !z-[9999] flex justify-center items-center ">
           <div className="p-1 rounded-lg w-full items-center justify-center flex ">
@@ -51,7 +51,7 @@ function Home() {
       {/* <div className="relative w-screen max-w-screen-2xl mx-auto h-[100vh] xl:h-[90vh] 2xl:h-[70vh] overflow-hidden"> */}
       {/* <Image src="/homepage_photo.png" layout="fill" objectFit="cover" alt="Gala Home" /> */}
 
-      <div className="relative w-screen max-w-screen-2xl mx-auto h-[60rem] sm:h-[44rem] overflow-hidden">
+      <div className="relative w-screen max-w-screen-2xl mx-auto h-[60rem] sm:h-[44rem] overflow-hidden pt-[-6rem]">
         <Image
           src="/homepage_photo.png"
           layout="fill"
@@ -60,7 +60,7 @@ function Home() {
         />
 
         <div className="absolute inset-0 bg-black opacity-70 w-full" />
-        <div className="absolute inset-0 sm:py-24 py-12 w-full sm:px-24 px-2   flex md:flex-row flex-col lg:justify-between max-sm:gap-5">
+        <div className="absolute inset-0 sm:py-24 py-12 w-full sm:px-24 px-2  flex md:flex-row flex-col lg:justify-between max-sm:gap-5">
           <div className={""}>
             <CountDownCard />
 

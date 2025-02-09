@@ -1,7 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiGet, apiPost } from "../services/api_service";
 import { DAYS_MAP } from "../utils/data/days_of_the_week";
-import { Princess_Sofia } from "next/font/google";
 
 export const useCohort = () => {
   const queryClient = useQueryClient();

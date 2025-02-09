@@ -1,21 +1,33 @@
 //Student sign up
 
 import { CheckCircleFilled } from "@ant-design/icons";
-import { apiPost } from "@/src/services/api_service";
+import { apiGet, apiPost } from "@/src/services/api_service";
 import { encrypt } from "@/src/utils/fns/encryption";
 import { useState } from "react";
 import { App } from "antd";
-import { useMutation } from "@tanstack/react-query";
-
-
-
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { sessionStorageFn } from "../utils/fns/client";
+import { EMAIL_VERIFICATION_KEY } from "../config/settings";
+import {
+  useAccountType,
+  useEmailVerificationModalOpen,
+} from "../store/auth/signup";
+import { globalOptions } from "../config/tanstack";
 
 export const useAuth = (password) => {
   const [emailExists, setEmailExists] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [passwordFocused, setPasswordFocused] = useState(false);
   const { message } = App.useApp();
+  const [fileList, setFileList] = useState({
+    cv: [],
+    transcript: [],
+    oLevelCertificate: [],
+    aLevelCertificate: [],
+  });
 
+  const { setOpenEmailVerificationModal } = useEmailVerificationModalOpen();
+  const { accountType } = useAccountType();
 
   const calculatePasswordStrength = (password) => {
     let strength = 0;
@@ -49,51 +61,102 @@ export const useAuth = (password) => {
     setPasswordStrength(strength);
   };
 
-  const onSubmit = async (values) => {
+  const onFinish = async (values) => {
+    const isInstructor = values.role === "instructor";
     const formData = new FormData();
 
-    Object.keys(values).forEach((key) => {
-      formData.append(key, values[key]);
+    const fileMapping = {
+      cv: "curriculum_vitae",
+      transcript: "transcript",
+      oLevelCertificate: "o_level_certificate",
+      aLevelCertificate: "a_level_certificate",
+    };
+
+    Object.entries(values).forEach(([key, value]) => {
+      if (!Object.keys(fileMapping).includes(key)) {
+        formData.append(key, value);
+      }
     });
 
-    formData.append("role", "student");
+    if (isInstructor) {
+      Object.entries(fileMapping).forEach(([key, formKey]) => {
+        if (fileList[key]?.[0]) {
+          formData.append(formKey, fileList[key][0].originFileObj);
+        }
+      });
+    }
+
     formData.append("country", "Tanzania");
 
     try {
-      const response = await mutation.mutateAsync(formData);
+      const headers = isInstructor
+        ? { "Content-Type": "multipart/form-data" }
+        : { "Content-Type": "application/json" };
 
-      if (response.status === 201) {
+      const { status, data } = await mutation.mutateAsync({
+        formData,
+        headers,
+      });
+
+      if (status === 201) {
         message.success({
           content: "Account created successfully!",
           icon: <CheckCircleFilled style={{ color: "#52c41a" }} />,
         });
-        sessionStorage.setItem(
-          "e67e4931-4518-4369-b011-fa078beefac1",
-          encrypt(values.email)
-        );
+
+        sessionStorageFn.set(EMAIL_VERIFICATION_KEY, encrypt(values.email));
         setOpenEmailVerificationModal(true);
       }
     } catch (error) {
-      if (error.response?.data?.email?.[0]) {
-        setEmailExists(error.response.data.email[0]);
+      const errorMessage = error.response?.data?.email?.[0]
+        ? error.response.data.email[0]
+        : "Something went wrong. Please try again later.";
+
+      if (error.response?.data?.email) {
+        setEmailExists(errorMessage);
       } else {
-        message.error("Something went wrong. Please try again later.");
+        message.error(errorMessage);
       }
     }
   };
+
   const mutation = useMutation({
-    mutationFn: async (formData) => {
-      const response = await apiPost("/register", formData);
-      return response;
-    },
+    mutationFn: ({ formData, headers }) =>
+      apiPost("/register", formData, headers),
   });
+
+  const {
+    data: plans,
+    isFetching: isFetchingPlans,
+    error: errorOnFetchingPlans,
+  } = useQuery({
+    queryKey: ["payment-plan", accountType],
+    queryFn: async () => {
+      const response = await apiGet(`payment-plans?type=${accountType}`);
+      return response.data;
+    },
+    enabled: !!accountType,
+    retry: 1,
+    ...globalOptions,
+  });
+
+  const savingsPercentage = (plans) =>{
+    const monthlyCost = plans[0]?.amount * 12;
+    const annualCost = plans[1]?.amount;
+    const savingsPercentage = Math.round(
+      ((monthlyCost - annualCost) / monthlyCost) * 100
+    );
+
+    return savingsPercentage;
+  }
+
 
   return {
     calculatePasswordStrength,
     getPasswordStatus,
     getPasswordRequirements,
     handlePasswordChange,
-    onSubmit,
+    onFinish,
     emailExists,
     passwordStrength,
     passwordFocused,
@@ -101,6 +164,11 @@ export const useAuth = (password) => {
     setPasswordFocused,
     setEmailExists,
     loading: mutation.isPending,
-
+    setFileList,
+    fileList,
+    plans,
+    isFetchingPlans,
+    errorOnFetchingPlans,
+    savingsPercentage
   };
 };

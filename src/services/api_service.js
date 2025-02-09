@@ -16,7 +16,7 @@ const publicEndpoints = new Set(["login", "register"]);
 
 api.interceptors.request.use(
   (config) => {
-    if (!config.url) return config; 
+    if (!config.url) return config;
 
     if (
       [...publicEndpoints].some((endpoint) => config.url.includes(endpoint))
@@ -25,12 +25,12 @@ api.interceptors.request.use(
     }
 
     const encryptedToken = cookieFn.get(USER_COOKIE_KEY);
-    if (!encryptedToken) {
-      if (typeof window !== "undefined") {
-        window.location.href = "/signin";
-      }
-      return Promise.reject(new Error("No authentication token"));
-    }
+    // if (!encryptedToken) {
+    //   if (typeof window !== "undefined") {
+    //     window.location.href = "/signin";
+    //   }
+    //   return Promise.reject(new Error("No authentication token"));
+    // }
 
     config.headers.Authorization = `Bearer ${decrypt(encryptedToken)}`;
     return config;
@@ -82,7 +82,6 @@ api.interceptors.request.use(
 //     return Promise.reject(error);
 //   }
 // );
-
 
 export const apiGet = async (endpoint, headers = {}) => {
   const response = await api.get(endpoint, { headers });

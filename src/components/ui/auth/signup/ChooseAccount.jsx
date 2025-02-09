@@ -12,19 +12,24 @@ const ChooseAccont = () => {
   const buttonWidth = 80;
 
   const router = useRouter();
-  const { setAccountType } = useAccountType();
   const [open, setOpen] = React.useState(false);
-  const { activeTab } = useTabNavigator();
+
+  const { activeTab, setActiveTab } = useTabNavigator();
+  const {accountType, setAccountType} = useAccountType();
 
   const handleTeacherClick = () => {
+    setActiveTab(0);
     setAccountType("instructor");
     handleCancel();
+
     router.push("/signup");
   };
 
   const handleStudentClick = () => {
+    setActiveTab(0);
     setAccountType("student");
     handleCancel();
+
     router.push("/signup");
   };
 
@@ -37,7 +42,7 @@ const ChooseAccont = () => {
     setOpen(false);
   };
 
-  const isDisabled = activeTab > 0;
+  const isDisabled = activeTab > 0 ;
 
   return (
     <section>
@@ -51,7 +56,7 @@ const ChooseAccont = () => {
         okText="Teacher"
         cancelText="Student"
         okButtonProps={{
-          disabled: isDisabled,
+          // disabled: isDisabled,
           onClick: handleTeacherClick,
           style: {
             width: 50,
@@ -66,7 +71,7 @@ const ChooseAccont = () => {
           },
         }}
         cancelButtonProps={{
-          disabled: isDisabled,
+          // disabled: isDisabled,
           onClick: handleStudentClick,
           style: {
             width: 50,

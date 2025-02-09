@@ -6,9 +6,6 @@ import { IoHomeOutline } from "react-icons/io5";
 import { IoRefreshOutline } from "react-icons/io5";
 
 export default function Error({ error }) {
-  useEffect(() => {
-    console.error(error);
-  }, [error]);
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center p-4">

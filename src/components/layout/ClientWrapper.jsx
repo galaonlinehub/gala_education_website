@@ -5,19 +5,25 @@ import { useUser } from "@/src/hooks/useUser";
 import { cookieFn } from "@/src/utils/fns/client";
 import {  useEffect } from "react";
 import { USER_COOKIE_KEY } from "@/src/config/settings";
+import { useLoading } from "@/src/store/loading";
 
 
 const ClientWrapper = ({ children }) => {
-  const { userLoading, userError, user } = useUser();
+  // const { userLoading, userError, user } = useUser();
+  const {loading,toggleLoading} = useLoading();
 
 
-  useEffect(() => {
-    if (userError) {
-      cookieFn.remove(USER_COOKIE_KEY);
-    }
-  }, [userError]);
+  // useEffect(() => {
+  //   if (userError) {
+  //     cookieFn.remove(USER_COOKIE_KEY);
+  //   }
+  // }, [userError]);
 
-  if (userLoading) {
+  useEffect(()=>{
+    toggleLoading();
+  },[toggleLoading])
+
+  if (loading) {
     return <TemplateLoader />;
   }
 

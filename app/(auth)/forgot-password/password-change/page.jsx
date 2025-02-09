@@ -147,7 +147,7 @@ const ChangePassword = () => {
 
   //NORMAL FLOW
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100 p-3 lg:p-0">
+    <div className="flex items-center justify-center h-screen p-3 lg:p-0">
       <Card
         className="!w-full !max-w-xl !bg-white !p-8 !rounded-lg !shadow-sm"
         title={

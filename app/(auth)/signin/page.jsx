@@ -9,8 +9,8 @@ import { handleGoogleLogin, login } from "@/src/utils/fns/auth";
 import { preventCopyPaste } from "@/src/utils/fns/general";
 
 const SignInPage = () => {
-  // const key = crypto.randomUUID();
-  // console.log(key);
+  const key = crypto.randomUUID();
+  console.log(key);
 
   const router = useRouter();
   const [localFeedback, setLocalFeedback] = useState({
@@ -54,7 +54,7 @@ const SignInPage = () => {
   };
 
   return (
-    <div className="h-screen px-6 md:px-8 lg:px-12 xl:px-16 flex justify-center">
+    <div className="px-6 md:px-8 lg:px-12 xl:px-16 flex justify-center">
       <div className="flex flex-col items-center justify-center gap-2 lg:gap-3 w-full max-w-xl">
         <span className="font-black text-xs md:text-base">Sign In</span>
         <span className="font-black text-2xl md:text-4xl">Welcome Back</span>
