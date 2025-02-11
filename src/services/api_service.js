@@ -12,25 +12,26 @@ export const api = axios.create({
   },
 });
 
-const publicEndpoints = new Set(["login", "register"]);
+const publicEndpoints = new Set(["login", "register", "verify-otp", "payment"]);
 
 api.interceptors.request.use(
   (config) => {
     if (!config.url) return config;
+    const baseUrl = config.url.split("?")[0];
 
     if (
-      [...publicEndpoints].some((endpoint) => config.url.includes(endpoint))
+      [...publicEndpoints].some((endpoint) => baseUrl.includes(endpoint))
     ) {
       return config;
     }
 
     const encryptedToken = cookieFn.get(USER_COOKIE_KEY);
-    // if (!encryptedToken) {
-    //   if (typeof window !== "undefined") {
-    //     window.location.href = "/signin";
-    //   }
-    //   return Promise.reject(new Error("No authentication token"));
-    // }
+    if (!encryptedToken) {
+      if (typeof window !== "undefined") {
+        // window.location.href = "/signin";
+      }
+      return Promise.reject(new Error("No authentication token"));
+    }
 
     config.headers.Authorization = `Bearer ${decrypt(encryptedToken)}`;
     return config;
@@ -38,31 +39,6 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// const publicEndpoints = ["/login", "/register"];
-
-// api.interceptors.request.use(
-//   (config) => {
-//     const isPublic = publicEndpoints.some((endpoint) =>
-//       config.url.includes(endpoint)
-//     );
-
-//     if (!isPublic) {
-//       const encryptedToken = Cookies.get(
-//         "9fb96164-a058-41e4-9456-1c2bbdbfbf8d"
-//       );
-//       if (encryptedToken) {
-//         const decryptedToken = decrypt(encryptedToken);
-//         config.headers.Authorization = `Bearer ${decryptedToken}`;
-//       }
-//     }
-
-//     return config;
-//   },
-//   (error) => {
-//     console.error("Request Interceptor Error:", error);
-//     return Promise.reject(error);
-//   }
-// );
 
 // api.interceptors.response.use(
 //   (response) => {

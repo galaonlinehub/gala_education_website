@@ -21,24 +21,13 @@ export const login = async (data) => {
     const response = await apiPost("login", data);
     
     if (response.status === 200) {
-      console.log(response.data.token, "THIS IS THE TOKEN");
       const encryptedToken = encrypt(response.data.token);
       cookieFn.set(USER_COOKIE_KEY, encryptedToken, 7);
       return 1;
     }
   } catch (error) {
-    // alert(
-    //   JSON.stringify({
-    //     message: error.message,
-    //     response: error.response
-    //       ? {
-    //           data: error.response.data,
-    //           status: error.response.status,
-    //           statusText: error.response.statusText,
-    //         }
-    //       : null,
-    //   })
-    // );
+    return 0;
+   
   }
 };
 

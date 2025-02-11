@@ -4,6 +4,7 @@ import { Popconfirm } from "antd";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
+import { usePathname } from "next/navigation";
 
 const ChooseAccont = () => {
   const description = "Delete the task";
@@ -13,9 +14,12 @@ const ChooseAccont = () => {
 
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
+  const pathname = usePathname();
+
 
   const { activeTab, setActiveTab } = useTabNavigator();
   const {accountType, setAccountType} = useAccountType();
+  const isDisabled = pathname === "/signup";
 
   const handleTeacherClick = () => {
     setActiveTab(0);
@@ -34,7 +38,7 @@ const ChooseAccont = () => {
   };
 
   const showPopconfirm = () => {
-    if (activeTab > 0) return;
+    if (isDisabled) return;
     setOpen(true);
   };
 
@@ -42,7 +46,7 @@ const ChooseAccont = () => {
     setOpen(false);
   };
 
-  const isDisabled = activeTab > 0 ;
+  
 
   return (
     <section>

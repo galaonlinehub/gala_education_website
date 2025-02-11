@@ -4,7 +4,6 @@ import { CheckCircleFilled } from "@ant-design/icons";
 import { apiGet, apiPost } from "@/src/services/api_service";
 import { encrypt } from "@/src/utils/fns/encryption";
 import { useState } from "react";
-import { App } from "antd";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { sessionStorageFn } from "../utils/fns/client";
 import { EMAIL_VERIFICATION_KEY } from "../config/settings";
@@ -13,12 +12,12 @@ import {
   useEmailVerificationModalOpen,
 } from "../store/auth/signup";
 import { globalOptions } from "../config/tanstack";
+import { message } from "antd";
 
 export const useAuth = (password) => {
   const [emailExists, setEmailExists] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [passwordFocused, setPasswordFocused] = useState(false);
-  const { message } = App.useApp();
   const [fileList, setFileList] = useState({
     cv: [],
     transcript: [],
@@ -113,7 +112,7 @@ export const useAuth = (password) => {
         : "Something went wrong. Please try again later.";
 
       if (error.response?.data?.email) {
-        setEmailExists(errorMessage);
+        setEmailExists("This email is already registered!😔");
       } else {
         message.error(errorMessage);
       }
@@ -140,7 +139,7 @@ export const useAuth = (password) => {
     ...globalOptions,
   });
 
-  const savingsPercentage = (plans) =>{
+  const savingsPercentage = (plans) => {
     const monthlyCost = plans[0]?.amount * 12;
     const annualCost = plans[1]?.amount;
     const savingsPercentage = Math.round(
@@ -148,8 +147,7 @@ export const useAuth = (password) => {
     );
 
     return savingsPercentage;
-  }
-
+  };
 
   return {
     calculatePasswordStrength,
@@ -169,6 +167,6 @@ export const useAuth = (password) => {
     plans,
     isFetchingPlans,
     errorOnFetchingPlans,
-    savingsPercentage
+    savingsPercentage,
   };
 };

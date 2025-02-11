@@ -68,7 +68,6 @@ const SignupPage = () => {
           current={activeTab}
           onChange={handleStepChange}
           items={items}
-          // className="mb-8"
         />
 
         {steps[activeTab].content}

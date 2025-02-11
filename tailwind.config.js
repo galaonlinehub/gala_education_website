@@ -34,7 +34,7 @@ const tailwindConfig = {
       },
       
       height: {
-        'input-height': '34px', 
+        'input-height': '38px', 
       },
       colors: {
         background: "var(--background)",

@@ -23,7 +23,6 @@ const Library = () => {
     getUserTopics();
   }, []);
 
-  console.log(enrolledTopincs, "THIS IS MEMEME");
   const mySubjects = [
     {
       name: "Mathematics Grade 7",

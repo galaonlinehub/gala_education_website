@@ -7,12 +7,17 @@ import { message, Alert } from "antd";
 import GoogleSvg from "@/src/utils/vector-svg/sign-in/GoogleSvg";
 import { handleGoogleLogin, login } from "@/src/utils/fns/auth";
 import { preventCopyPaste } from "@/src/utils/fns/general";
+import { useQueryClient } from '@tanstack/react-query';
+import { getUser } from "@/src/utils/fns/global";
+import { roleRedirects } from "@/src/utils/data/redirect";
 
 const SignInPage = () => {
   const key = crypto.randomUUID();
-  console.log(key);
+  // alert(key);
 
   const router = useRouter();
+  const queryClient = useQueryClient();
+
   const [localFeedback, setLocalFeedback] = useState({
     show: false,
     type: "",
@@ -29,8 +34,22 @@ const SignInPage = () => {
 
   const onSubmit = async (data) => {
     try {
-      await login(data);
+      const res = await login(data);
+      if (res === 1) {
+        // await queryClient.invalidateQueries({ queryKey: ['auth-user'] });
+        const userData = await queryClient.fetchQuery({
+          queryKey: ["auth-user"],
+          queryFn: getUser,
+          staleTime: Infinity,
+        });
+
+        if (userData?.role) {
+          const redirectPath = roleRedirects[userData.role] || "/";
+          router.push(redirectPath);
+        }
+      }
     } catch (error) {
+      alert(JSON.stringify(error))
       showError(error.response?.data?.message || errorMessage);
     } finally {
       setTimeout(() => clearFeedback(), 10000);
@@ -54,7 +73,7 @@ const SignInPage = () => {
   };
 
   return (
-    <div className="px-6 md:px-8 lg:px-12 xl:px-16 flex justify-center">
+    <div className="px-6 md:px-8 lg:px-12 xl:px-16 flex justify-center items-center h-full">
       <div className="flex flex-col items-center justify-center gap-2 lg:gap-3 w-full max-w-xl">
         <span className="font-black text-xs md:text-base">Sign In</span>
         <span className="font-black text-2xl md:text-4xl">Welcome Back</span>

@@ -1,36 +1,41 @@
 import React from "react";
-import { Card, Button, Typography, Tag } from "antd";
-import { CheckCircleOutlined, LoadingOutlined } from "@ant-design/icons";
-import { useTabNavigator, useSelectedPlan } from "@/src/store/auth/signup";
 import { useAuth } from "@/src/hooks/useAuth";
+import { Card, Button, Typography, Tag } from "antd";
+import { encrypt } from "@/src/utils/fns/encryption";
+import { localStorageFn } from "@/src/utils/fns/client";
+import { useTabNavigator } from "@/src/store/auth/signup";
+import { PLAN_CONFIRMED_KEY } from "@/src/config/settings";
+import { CheckCircleOutlined, LoadingOutlined } from "@ant-design/icons";
+import { useRouter } from "next/navigation";
 
 const { Text, Title } = Typography;
 
 const ConfirmPlan = () => {
-  const setSelectedPlan = useSelectedPlan((state) => state.setSelectedPlan);
   const { setActiveTab } = useTabNavigator();
+  const router = useRouter();
   const { plans, isFetchingPlans, errorOnFetchingPlans, savingsPercentage } =
     useAuth();
 
   const handleConfirmPayClick = (plan) => {
-    setSelectedPlan(plan);
+    const encriptedPlan = encrypt(plan);
+    const res = localStorageFn.set(PLAN_CONFIRMED_KEY, encriptedPlan);
     setActiveTab(2);
   };
 
   return (
     <div className="!py-16 !px-4 flex flex-col lg:flex-row gap-8 lg:gap-12 justify-center items-center mt-4 lg:mt-8">
       {isFetchingPlans ? (
-        <LoadingOutlined className="text-xl !text-blue-600"  />
-      ) : (
+        <LoadingOutlined className="text-xl !text-blue-600" />
+      ) : plans ? (
         plans.map((plan) => (
           <Card
             key={plan?.id}
             bordered
-            className="!rounded-xl !shadow-xs !transition-all !duration-300 hover:!shadow-none !w-full sm:!w-[400px] relative !border-[#010798]"
+            className="!rounded-xl !shadow-xs !transition-all !duration-300 hover:!shadow-none !w-full sm:!w-[370px] relative !border-[#010798]"
           >
             {plan?.number_of_months === 12 && (
               <div className="absolute -top-3 right-4">
-                <Tag color="blue" className="!px-3 !py-1 !text-sm !font-medium">
+                <Tag color="blue" className="!px-3 !py-1 !text-xs !font-medium">
                   Save up to {savingsPercentage(plans)}%
                 </Tag>
               </div>
@@ -70,7 +75,7 @@ const ConfirmPlan = () => {
               <div className="!mt-auto w-full flex items-center justify-center">
                 <Button
                   type="primary"
-                  onClick={() => handleConfirmPayClick(plan.planId)}
+                  onClick={() => handleConfirmPayClick(plan)}
                   className="!bg-[#010798] !rounded-lg !px-8 !font-semibold !text-xs !h-9 !min-w-[160px] !flex !items-center !justify-center hover:!opacity-90 !transition-all !duration-300"
                   icon={<CheckCircleOutlined />}
                 >
@@ -80,6 +85,12 @@ const ConfirmPlan = () => {
             </div>
           </Card>
         ))
+      ) : (
+        <div className="flex flex-col items-center justify-center gap-4">
+         <span className="font-bold text-sm md:text-2xl"> No any payment plan for a moment!!</span>
+         <Button type="link" className="text-xs text">Contact Support</Button>
+         <Button onClick={()=>router.push("/")}>Return Home</Button>
+        </div>
       )}
     </div>
   );

@@ -2,7 +2,7 @@ import {
   useEmailVerificationModalOpen,
   useTabNavigator,
 } from "@/src/store/auth/signup";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Form,
   Input,
@@ -23,18 +23,17 @@ import {
   EyeInvisibleOutlined,
   EyeTwoTone,
   CheckCircleFilled,
-  InfoCircleOutlined,
 } from "@ant-design/icons";
 import { disabilities } from "@/src/utils/data/disabilities";
 import { GoShieldCheck } from "react-icons/go";
 import { useAuth } from "@/src/hooks/useAuth";
+import EmailVerification from "./EmailVerification";
 
 const { Title, Text, Paragraph } = Typography;
 
 const SignUpForm = () => {
   const [form] = Form.useForm();
   const [password, setPassword] = useState("");
-  const { activeTab, setActiveTab } = useTabNavigator();
 
   const {
     getPasswordStatus,
@@ -56,9 +55,9 @@ const SignUpForm = () => {
         <div className="text-center mb-8">
           <Title
             level={2}
-            className="!text-2xl !font-bold !text-gray-900 !mb-2"
+            className="!text-2xl !font-black !text-gray-900 !mb-2"
           >
-            Create Your Account
+            Sign Up
           </Title>
           <Paragraph className="!text-sm !text-gray-600">
             Step into the realm of endless possibilities! Your adventure in
@@ -73,87 +72,82 @@ const SignUpForm = () => {
           layout="vertical"
           className="!space-y-4"
         >
-          <div className="!grid !grid-cols-2 !gap-4">
+          <div className="!grid !grid-cols-1 lg:!grid-cols-2 !gap-4">
             <Form.Item
               name="first_name"
               rules={[
-                { required: true, message: "Please input your first name!" },
+                { required: true, message: "Please enter your first name" },
               ]}
               className="!mb-0"
             >
               <Input
                 prefix={<UserOutlined className="!text-gray-400" />}
                 placeholder="First Name"
-                className="!rounded-lg !h-11 hover:!border-blue-400 focus:!border-blue-500 !transition-colors"
+                className="!h-11 signup-input"
               />
             </Form.Item>
 
             <Form.Item
               name="last_name"
               rules={[
-                { required: true, message: "Please input your last name!" },
+                { required: true, message: "Please enter your last name" },
               ]}
               className="!mb-0"
             >
               <Input
                 prefix={<UserOutlined className="!text-gray-400" />}
                 placeholder="Last Name"
-                className="!rounded-lg !h-11 hover:!border-blue-400 focus:!border-blue-500 !transition-colors"
+                className="!h-11 signup-input"
               />
             </Form.Item>
           </div>
 
           <Form.Item
             name="email"
+            validateTrigger={["onBlur", "onChange", "onSubmit"]}
             rules={[
-              {
-                required: true,
-                message: "Please input your email!",
-              },
-              {
-                type: "email",
-                message: "Please enter a valid email!",
-              },
-              {
-                validator: async (_, value) => {
-                  if (emailExists) {
-                    return Promise.reject(new Error(emailExists));
-                  }
-                  return Promise.resolve();
-                },
-              },
+              { required: true, message: "Please enter your email address" },
+              { type: "email", message: "Invalid email address" },
             ]}
             validateStatus={emailExists ? "error" : undefined}
-            help={emailExists}
           >
-            <Input
-              prefix={<MailOutlined className="!text-gray-400" />}
-              suffix={
-                <Tooltip title="This will be your login email">
-                  <InfoCircleOutlined className="!text-gray-400" />
-                </Tooltip>
-              }
-              placeholder="Email Address"
-              className="!rounded-lg !h-11 hover:!border-blue-400 focus:!border-blue-500 !transition-colors"
-              onChange={() => {
-                setEmailExists(false);
-                form.validateFields(["email"]);
-              }}
-            />
+            <div>
+              <Input
+              autoComplete="off"
+                prefix={<MailOutlined className="!text-gray-400" />}
+                placeholder="Email Address"
+                className="!h-11 signup-input"
+                onChange={() => {
+                  setEmailExists(false);
+                }}
+              />
+              {emailExists && (
+                <div className="ant-form-item-explain-error">{emailExists}</div>
+              )}
+            </div>
           </Form.Item>
-
           <Form.Item
             name="password"
             rules={[
               { required: true, message: "Please input your password!" },
-              { min: 8, message: "Password must be at least 8 characters!" },
+              // { min: 8, message: "Password must be at least 8 characters!" },
+              {
+                validator: (_, value) => {
+                  if (value && passwordStrength < 100) {
+                    return Promise.reject(
+                      "Password must meet all requirements"
+                    );
+                  }
+                  return Promise.resolve();
+                },
+              },
             ]}
           >
             <div className="space-y-2">
               <Input.Password
                 prefix={<LockOutlined className="!text-gray-400" />}
                 placeholder="Password"
-                className="!rounded-lg !h-11 hover:!border-blue-400 focus:!border-blue-500 !transition-colors"
+                className="!h-11 signup-input"
                 onChange={(e) => {
                   handlePasswordChange(e);
                   setPassword(e.target.value);
@@ -203,7 +197,7 @@ const SignUpForm = () => {
                   if (!value || getFieldValue("password") === value) {
                     return Promise.resolve();
                   }
-                  return Promise.reject("Passwords do not match!");
+                  return Promise.reject("Passwords do not match");
                 },
               }),
             ]}
@@ -211,7 +205,7 @@ const SignUpForm = () => {
             <Input.Password
               prefix={<SafetyOutlined className="!text-gray-400" />}
               placeholder="Confirm Password"
-              className="!rounded-lg !h-11 hover:!border-blue-400 focus:!border-blue-500 !transition-colors"
+              className="!h-11 signup-input"
               iconRender={(visible) => (
                 <span className="hover:!text-blue-500 !transition-colors">
                   {visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />}
@@ -219,7 +213,6 @@ const SignUpForm = () => {
               )}
             />
           </Form.Item>
-          <Form.Item hidden name="role" initialValue="student" />
 
           <Form.Item name="special_needs">
             <Select
@@ -229,16 +222,19 @@ const SignUpForm = () => {
             />
           </Form.Item>
 
+          <Form.Item initialValue="student" name="role" hidden>
+            <Input type="hidden" />
+          </Form.Item>
           <Form.Item className="!mb-0">
             <Button
-             onClick={()=>setActiveTab(1)}
+              disabled={loading}
               type="primary"
               htmlType="submit"
               loading={loading}
-              className="!w-full !h-11 !rounded-lg !bg-[#010798] hover:!bg-[#010798]/80 !transition-colors !text-base !font-medium"
+              className="!w-full !h-11 !rounded-lg !bg-[#010798] hover:!bg-[#010798]/80 !transition-colors !text-base !text-white !font-medium"
               icon={<GoShieldCheck />}
             >
-              Create Account
+              {!loading && "Create Account"}
             </Button>
           </Form.Item>
         </Form>
@@ -260,6 +256,7 @@ const SignUpForm = () => {
           </Button>
         </div>
       </Card>
+      <EmailVerification />
     </div>
   );
 };

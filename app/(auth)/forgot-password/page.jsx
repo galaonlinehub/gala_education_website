@@ -46,8 +46,8 @@ const ForgotPassword = () => {
   const onSubmit = async (data) => {
     try {
       setIsSendingOtp(true);
-      message.destroy();
-      const response = await api.post("/password/reset-request", {
+      // message.destroy();
+      const response = await apiPost("/password/reset-request", {
         email: data.email,
       });
       if (response.status === 200) {
@@ -153,11 +153,11 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen p-3 lg:p-0">
+    <div className="flex items-center justify-center h-full p-3 lg:p-0">
       <Card
         className="!w-full !max-w-xl !bg-white !p-8 !rounded-lg !shadow-sm"
         title={
-          <div className="!flex !justify-start !items-center !gap-3">
+          <div className="flex justify-start items-center gap-3">
             <Title level={3} className="!self-center !m-0">
               {!otpSent ? "Forgot Password" : "Verify Email"}
             </Title>

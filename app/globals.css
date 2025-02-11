@@ -145,9 +145,23 @@
 }
 
 .ant-card-body {
-  padding: 24px !important;
+  padding: 2px !important;
 }
 
+.ant-upload.ant-upload-select {
+  width: 100%;
+}
+.ant-form-item-explain-error{
+  font-size: 12px;
+}
+.signup-input{
+  outline: 0.5px solid #030DFE !important; 
+  border: 0.5px solid #030DFE !important;
+}
+.signup-input:focus{
+  outline: 0.5px solid #030DFE !important; 
+  border: 0.5px solid #030DFE !important;
+}
 /* 
 @layer base {
   html {
