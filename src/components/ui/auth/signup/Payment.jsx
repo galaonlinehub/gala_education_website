@@ -12,6 +12,8 @@ import { useMutation } from "@tanstack/react-query";
 import { apiPost } from "@/src/services/api_service";
 import { PaymentStatus } from "@/src/config/settings";
 import { PaymentPending } from "./PaymentStatus";
+import io from 'socket.io-client';
+
 
 const MobilePay = () => {
   const [validationMessage, setValidationMessage] = useState("");
@@ -124,6 +126,24 @@ const MobilePay = () => {
     getEmail();
   }, []);
 
+  useEffect(() => {
+    const socket = io("https://edusockets.galahub.org/payment");
+    socket.on("connect", () => {
+      socket.emit("join", { email: "frankndagula@outlook.com" });
+      console.log("Conneted");
+    });
+
+    socket.on("paymentResponse", (msg) => {
+      console.log("Message", msg);
+    });
+
+    socket.on("error", (error) => {
+      console.error("Socket error:", error);
+    });
+
+    return () => socket.close();
+  },[email]);
+
   let getPlan = () => {
     const localStorageText = localStorageFn.get(PLAN_CONFIRMED_KEY);
     const decryptedPlan = decrypt(localStorageText);
@@ -143,7 +163,6 @@ const MobilePay = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-[35rem] md:p-8">
       <Card
-        bordered
         className="w-full lg:w-3/4 max-w-3xl bg-white rounded-xl p-6 md:p-8"
       >
         <div className="mb-8">
@@ -233,7 +252,5 @@ const MobilePay = () => {
     </div>
   );
 };
-
-
 
 export default MobilePay;

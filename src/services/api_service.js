@@ -12,16 +12,22 @@ export const api = axios.create({
   },
 });
 
-const publicEndpoints = new Set(["login", "register", "verify-otp", "payment"]);
+const publicEndpoints = new Set([
+  "login",
+  "register",
+  "verify-otp",
+  "resend-otp",
+  "payment",
+  "password/reset-request",
+  "reset-password"
+]);
 
 api.interceptors.request.use(
   (config) => {
     if (!config.url) return config;
     const baseUrl = config.url.split("?")[0];
 
-    if (
-      [...publicEndpoints].some((endpoint) => baseUrl.includes(endpoint))
-    ) {
+    if ([...publicEndpoints].some((endpoint) => baseUrl.includes(endpoint))) {
       return config;
     }
 
@@ -38,7 +44,6 @@ api.interceptors.request.use(
   },
   (error) => Promise.reject(error)
 );
-
 
 // api.interceptors.response.use(
 //   (response) => {

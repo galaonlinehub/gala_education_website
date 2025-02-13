@@ -104,7 +104,7 @@ export default function Component() {
         </div>
         <div className="pt-5">
           <div className="flex justify-between items-center w-full">
-            <span className="text-[16px] font-black">Your Subjects</span>
+            <span className="text-[16px] font-black">Upcoming Lessons</span>
             <div className="flex items-center justify-center gap-5">
               <Tooltip
                 title="Add a new subject"

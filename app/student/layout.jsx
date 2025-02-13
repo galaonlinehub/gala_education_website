@@ -41,7 +41,7 @@ export default function StudentLayout({ children }) {
     <>
       <Navbar />
       <StudentSearch />
-      <main className="flex flex-col lg:flex-row w-full">
+      <main className="flex flex-col lg:flex-row w-full mt-24">
         <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
           <div className="absolute left-1/2 top-20 w-52 h-52 hidden md:block">
             <RightTiltedBook />
