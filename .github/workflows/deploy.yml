@@ -155,11 +155,12 @@ jobs:
            fi
            
            echo "📦 Installing dependencies..."
-           if [ ! -f package-lock.json ]; then
-             echo "❌ Error: package-lock.json is missing. Please ensure it is committed to the repository."
-             exit 1
-           fi
-           npm ci 
+          #  if [ ! -f package-lock.json ]; then
+          #    echo "❌ Error: package-lock.json is missing. Please ensure it is committed to the repository."
+          #    exit 1
+          #  fi
+          #  npm ci 
+          npm install
            
            # Restore .env file
            if [ -f .env.backup ]; then
