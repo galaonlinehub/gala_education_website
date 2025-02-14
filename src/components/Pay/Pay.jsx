@@ -1,5 +1,5 @@
 import { Divider, Steps, Result, Button } from "antd";
-import { LoadingOutlined, SmileOutlined } from "@ant-design/icons";
+import { LoadingOutlined } from "@ant-design/icons";
 import {
   PaymentDetails,
   PayForm,
@@ -11,7 +11,7 @@ import { usePay, usePaySteps } from "@/src/store/pay";
 
 const { Step } = Steps;
 
-const Pay = () => {
+export const Pay = () => {
   const { currentStep, setCurrentStep } = usePaySteps();
   const { width } = useDevice();
   const { mobilePay } = usePay();
@@ -70,4 +70,4 @@ const Pay = () => {
   );
 };
 
-export default Pay;
+
