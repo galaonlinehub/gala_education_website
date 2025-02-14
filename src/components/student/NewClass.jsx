@@ -3,19 +3,7 @@
 import { Drawer, Input, Avatar, Badge, Card, Button, Skeleton } from "antd";
 import { useNewClass } from "@/src/store/student/class";
 import React, { useState, useEffect, useRef } from "react";
-import { IoMenu } from "react-icons/io5";
-import { CloseOutlined } from "@ant-design/icons";
-import { AnimatePresence, motion } from "framer-motion";
-import { useSearchParams } from "next/navigation";
-import { FaUsers, FaStar, FaClock } from "react-icons/fa";
-import { GoVerified, GoBook } from "react-icons/go";
-import { FaRegStar } from "react-icons/fa";
-import { FaRegMessage, FaRegClock } from "react-icons/fa6";
-import { GoShieldCheck } from "react-icons/go";
-import { BsGlobe } from "react-icons/bs";
-import { LuUsers } from "react-icons/lu";
 import { createStyles, useTheme } from "antd-style";
-import Pay from "../pay/Pay";
 import { TopicCard, TopicCardSkeleton } from "@/src/components/ui/TopicCard";
 import { useSearch } from "@/src/hooks/useSearch";
 import {
@@ -24,6 +12,7 @@ import {
 } from "../ui/InstructorSearchResult";
 import { useEnrollMe } from "@/src/store/student/useEnrollMe";
 import { usePaySteps } from "@/src/store/pay";
+import Pay from "../pay/Pay";
 
 const useStyle = createStyles(({ token }) => ({
   "my-drawer-body": {
