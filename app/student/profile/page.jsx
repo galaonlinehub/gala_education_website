@@ -1,150 +1,222 @@
-'use client';
-import React from 'react';
+"use client";
+import React from "react";
 import {
   Card,
-  Avatar,
-  Form,
-  Input,
-  Button,
-  Switch,
-  Typography,
   Row,
   Col,
+  Avatar,
+  Typography,
+  Statistic,
+  Tag,
+  Timeline,
   Divider,
-  Space
-} from 'antd';
-import { UserOutlined } from '@ant-design/icons';
+} from "antd";
+import {
+  BookOutlined,
+  TrophyOutlined,
+  MailOutlined,
+  PhoneOutlined,
+  EnvironmentOutlined,
+  CalendarOutlined,
+  StarOutlined,
+  CheckCircleOutlined,
+  ClockCircleOutlined,
+} from "@ant-design/icons";
+import { useUser } from "@/src/hooks/useUser";
 
 const { Title, Text } = Typography;
 
 const StudentProfile = () => {
-  const [form] = Form.useForm();
 
-  const handleFormSubmit = (values) => {
-    console.log('Form values:', values);
-  };
-
-  const handleSwitchChange = (checked) => {
-    console.log(`switch to ${checked}`);
+  const {user} = useUser();
+  const student = {
+    name: "Sarah Johnson",
+    email: "sarah.johnson@email.com",
+    phone: "+1 (555) 123-4567",
+    classesBought: 12,
+    joinedDate: "January 2024",
+    location: "New York, USA",
+    achievements: 5,
+    completedClasses: 8,
+    inProgressClasses: 4,
+    skills: ["JavaScript", "React", "Python", "Data Science"],
+    recentActivity: [
+      { date: "2024-01-15", action: "Completed Advanced React Course" },
+      { date: "2024-01-10", action: "Earned 'Top Performer' Badge" },
+      { date: "2024-01-05", action: "Started Machine Learning Basics" },
+      { date: "2024-01-01", action: "Joined Platform" },
+    ],
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-8">
-      <Row justify="center">
-        <Col xs={24} md={20} lg={16} xl={14}>
-          <div className="text-center mb-8">
-            <Avatar
-              size={80}
-              src="/avatar.png"
-              icon={<UserOutlined />}
-              className="mb-4"
-            />
-            <Title level={2}>Profile Settings</Title>
-          </div>
-
-          <Row gutter={[16, 16]}>
-            {/* Personal Information Card */}
-            <Col xs={24} md={12}>
-              <Card>
-                <Form
-                  form={form}
-                  layout="vertical"
-                  onFinish={handleFormSubmit}
-                  initialValues={{
-                    username: '',
-                    fullName: '',
-                    email: '',
-                    password: ''
-                  }}
+    <div className="mt-20">
+      <Row gutter={[24, 24]} justify="center">
+        <div className="w-full px-4 lg:px-12">
+          <Card
+            bordered={true}
+            style={{ marginBottom: "24px" }}
+            className="profile-header"
+          >
+            <Row align="middle" justify="space-between">
+              <Col xs={24} md={12}>
+                <div
+                  style={{ display: "flex", alignItems: "center", gap: "16px" }}
                 >
-                  <Form.Item
-                    label="Username"
-                    name="username"
-                    rules={[{ required: true, message: 'Please input your username!' }]}
-                  >
-                    <Input placeholder="Enter your username" />
-                  </Form.Item>
+                  <Avatar
+                    size={96}
+                    src="/api/placeholder/96/96"
+                    style={{ border: "4px solid #1890ff" }}
+                  />
+                  <div>
+                    <Title level={2} className="capitalize">
+                      {user?.first_name}{" "}{user?.last_name}
+                    </Title>
+                    <Tag color="blue" icon={<StarOutlined />}>
+                      Active Student
+                    </Tag>
+                  </div>
+                </div>
+              </Col>
+              <Col xs={24} md={12}>
+                <Row gutter={[16, 16]} justify="end">
+                  <Col>
+                    <Statistic
+                      title="Classes Bought"
+                      value={student.classesBought}
+                      prefix={<BookOutlined />}
+                    />
+                  </Col>
+                  <Col>
+                    <Statistic
+                      title="Achievements"
+                      value={student.achievements}
+                      prefix={<TrophyOutlined />}
+                    />
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+          </Card>
 
-                  <Form.Item
-                    label="Full Name"
-                    name="fullName"
-                    rules={[{ required: true, message: 'Please input your full name!' }]}
-                  >
-                    <Input placeholder="Enter your full name" />
-                  </Form.Item>
+          {/* Main Content */}
+          <Row gutter={[24, 24]}>
+            {/* Left Column */}
+            <Col xs={24} md={16}>
+              {/* Progress Card */}
+              <Card
+                title={<Title level={4}>Learning Progress</Title>}
+                bordered={true}
+                style={{ marginBottom: "24px" }}
+              >
+                <Row gutter={[16, 16]}>
+                  <Col span={8}>
+                    <Statistic
+                      title="Completed"
+                      value={student.completedClasses}
+                      prefix={
+                        <CheckCircleOutlined style={{ color: "#52c41a" }} />
+                      }
+                    />
+                  </Col>
+                  <Col span={8}>
+                    <Statistic
+                      title="In Progress"
+                      value={student.inProgressClasses}
+                      prefix={
+                        <ClockCircleOutlined style={{ color: "#1890ff" }} />
+                      }
+                    />
+                  </Col>
+                  <Col span={8}>
+                    <Statistic
+                      title="Completion Rate"
+                      value={Math.round(
+                        (student.completedClasses / student.classesBought) * 100
+                      )}
+                      suffix="%"
+                    />
+                  </Col>
+                </Row>
+              </Card>
 
-                  <Form.Item
-                    label="Email"
-                    name="email"
-                    rules={[
-                      { required: true, message: 'Please input your email!' },
-                      { type: 'email', message: 'Please enter a valid email!' }
-                    ]}
-                  >
-                    <Input placeholder="Enter your email" />
-                  </Form.Item>
-
-                  <Form.Item
-                    label="Password"
-                    name="password"
-                    rules={[{ required: true, message: 'Please input your password!' }]}
-                  >
-                    <Input.Password placeholder="Enter your password" />
-                  </Form.Item>
-
-                  <Form.Item>
-                    <Space>
-                      <Button type="primary" htmlType="submit">
-                        Save Changes
-                      </Button>
-                    </Space>
-                  </Form.Item>
-                </Form>
+              {/* Recent Activity */}
+              <Card
+                title={<Title level={4}>Recent Activity</Title>}
+                bordered={true}
+              >
+                <Timeline>
+                  {student.recentActivity.map((activity, index) => (
+                    <Timeline.Item key={index} color="blue">
+                      <Text strong>{activity.action}</Text>
+                      <br />
+                      <Text type="secondary">{activity.date}</Text>
+                    </Timeline.Item>
+                  ))}
+                </Timeline>
               </Card>
             </Col>
 
-            {/* Notifications Card */}
-            <Col xs={24} md={12}>
-              <Card className="bg-blue-900">
-                <div className="text-white">
-                  <Title level={4} className="text-white mb-4">
-                    Account Notifications
-                  </Title>
-                  <Space direction="vertical" className="w-full">
-                    {[
-                      'New Courses',
-                      'New Instructors',
-                      'Course Updates',
-                    
-                    ].map((item) => (
-                      <div key={item} className="flex justify-between items-center">
-                        <Text className="text-white">{item}</Text>
-                        <Switch defaultChecked onChange={handleSwitchChange} />
-                      </div>
-                    ))}
-                  </Space>
-
-                  <Divider className="bg-gray-600" />
-
-                  <Title level={4} className="text-white mb-4">
-                    Course Notifications
-                  </Title>
-                  <Space direction="vertical" className="w-full">
-                    {[
-                    
-                      'Homework/Assignment Reminders'
-                    ].map((item) => (
-                      <div key={item} className="flex justify-between items-center">
-                        <Text className="text-white">{item}</Text>
-                        <Switch defaultChecked onChange={handleSwitchChange} />
-                      </div>
-                    ))}
-                  </Space>
+            {/* Right Column */}
+            <Col xs={24} md={8}>
+              {/* Contact Information */}
+              <Card
+                title={<Title level={4}>Contact Information</Title>}
+                bordered={true}
+                style={{ marginBottom: "24px" }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "16px",
+                  }}
+                >
+                  <div>
+                    <Text type="secondary">
+                      <MailOutlined /> Email
+                    </Text>
+                    <div>
+                      <Text strong>{user?.email}</Text>
+                    </div>
+                  </div>
+                  <div>
+                    <Text type="secondary">
+                      <PhoneOutlined /> Phone
+                    </Text>
+                    <div>
+                      <Text strong>{student.phone}</Text>
+                    </div>
+                  </div>
+                  <div>
+                    <Text type="secondary">
+                      <EnvironmentOutlined /> Location
+                    </Text>
+                    <div>
+                      <Text strong>{student.location}</Text>
+                    </div>
+                  </div>
+                  <div>
+                    <Text type="secondary">
+                      <CalendarOutlined /> Joined
+                    </Text>
+                    <div>
+                      <Text strong>{student.joinedDate}</Text>
+                    </div>
+                  </div>
                 </div>
+              </Card>
+
+              {/* Skills */}
+              <Card title={<Title level={4}>Skills</Title>} bordered={true}>
+                {student.skills.map((skill, index) => (
+                  <Tag key={index} color="blue" style={{ margin: "4px" }}>
+                    {skill}
+                  </Tag>
+                ))}
               </Card>
             </Col>
           </Row>
-        </Col>
+        </div>
       </Row>
     </div>
   );

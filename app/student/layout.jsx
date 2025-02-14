@@ -1,22 +1,23 @@
 "use client";
 import Link from "next/link";
 import { Drawer } from "antd";
-import useUser from "@/src/store/auth/user";
-import Clock from "@/components/vectors/Clock";
+import Clock from "@/src/utils/vector-svg/vectors/Clock";
 import React, { useState, useEffect } from "react";
 import Footer from "@/src/components/layout/footer";
 import Navbar from "@/src/components/layout/Navbar";
 import { CloseCircleFilled } from "@ant-design/icons";
 import StudentSearch from "@/src/components/student/Search";
-import KidInPicture from "@/components/vectors/KidInPicture";
-import { student_links } from "@/constants/navigation_links";
-import RightTiltedBook from "@/components/vectors/CombinedBlock";
-import StudentsInClass from "@/components/vectors/StudentsInClass";
+import KidInPicture from "@/src/utils/vector-svg/vectors/KidInPicture";
+import { student_links } from "@/src/utils/data/navigation_links";
+import RightTiltedBook from "@/src/utils/vector-svg/vectors/CombinedBlock";
+import StudentsInClass from "@/src/utils/vector-svg/vectors/StudentsInClass";
 import { FloatingActionButton } from "@/src/components/ui/Fab";
 import useInstallPrompt from "@/src/hooks/useInstallPrompt";
 import NewClass from "@/src/components/student/NewClass";
 import { useNewClass } from "@/src/store/student/class";
 import { getUser } from "@/src/utils/fns/global";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useUser } from "@/src/hooks/useUser";
 
 export default function StudentLayout({ children }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -34,12 +35,13 @@ export default function StudentLayout({ children }) {
   }, []);
 
   const { installPrompt, isInstalled, handleInstallClick } = useInstallPrompt();
+  const currentUrl = usePathname();
 
   return (
     <>
       <Navbar />
       <StudentSearch />
-      <main className="flex flex-col lg:flex-row w-full mt-[90px] h-[calc(100vh-90px)] overflow-hidden">
+      <main className="flex flex-col lg:flex-row w-full mt-24">
         <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
           <div className="absolute left-1/2 top-20 w-52 h-52 hidden md:block">
             <RightTiltedBook />
@@ -58,17 +60,23 @@ export default function StudentLayout({ children }) {
         {/* Sidebar */}
         <div className="hidden lg:block sticky top-[90px] left-0 w-[16vw] h-[calc(100vh-90px)] border-r border-[#d9d9d9] p-4 overflow-y-auto">
           <ul className="space-y-4 pt-16">
-            {student_links.map((item, i) => {
-              const href = `/student/${item.link}`;
-              return (
-                <li key={i}>
-                  <Link href={href} className="flex items-center gap-4 py-2 px-2 rounded-lg hover:bg-blue-950/20 transition-colors" onClick={() => isMobile && setIsSidebarOpen(false)}>
-                    <span className="text-blue-600">{item.icon}</span>
-                    <span className="font-black text-xs text-black">{item.name}</span>
-                  </Link>
-                </li>
-              );
-            })}
+            {student_links.map((item, i) => (
+              <li key={i}>
+                <Link
+                  href={`/student/${item.link}`}
+                  className={`flex items-center gap-4 py-2 px-2 rounded-lg transition-colors ${
+                    currentUrl.replace(/\/$/, "") ===
+                    `/student${item.link === "." ? "" : `/${item.link}`}`
+                      ? "bg-[#001840] text-white" 
+                      : "hover:bg-blue-950/20" 
+                  }`}
+                  onClick={() => isMobile && setIsSidebarOpen(false)}
+                >
+                  <span className="">{item.icon}</span>
+                  <span className="font-black text-sm ">{item.name}</span>
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
 

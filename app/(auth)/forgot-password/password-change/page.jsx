@@ -122,16 +122,15 @@ const ChangePassword = () => {
       const formData = new FormData();
       formData.append("email", email);
       formData.append("newPassword", data.password);
-      console.log(data, email);
       const response = await apiPost("/reset-password", formData);
-
-      if (response.data.success) {
+      if (response.status === 200) {
         message.success("Password changed successfully");
         router.push("/signin");
       } else {
         message.error(response.data.message);
       }
     } catch (error) {
+      alert(JSON.stringify(error))
       message.error(`Failed to change password: ${error.message}`);
     }
   };
@@ -140,14 +139,13 @@ const ChangePassword = () => {
     event.preventDefault();
   };
 
-  //ERROR RETURNED IF DECRYPTION FAILS
+
   if (error) {
     return <Error error={{ message: error }} />;
   }
 
-  //NORMAL FLOW
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100 p-3 lg:p-0">
+    <div className="flex items-center justify-center h-5/6 p-3 lg:p-0">
       <Card
         className="!w-full !max-w-xl !bg-white !p-8 !rounded-lg !shadow-sm"
         title={
@@ -265,7 +263,7 @@ const ChangePassword = () => {
             disabled={!allChecksPassed}
             className="!w-full !bg-[#030DFE] !text-white !font-bold !py-5 !px-4 !rounded disabled:opacity-50"
           >
-            {isSubmitting ? "Changing Password..." : "Change Password"}
+            {!isSubmitting && "Change Password"}
           </Button>
         </form>
       </Card>

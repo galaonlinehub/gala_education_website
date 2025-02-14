@@ -1,4 +1,4 @@
-import { Button, Input, Card, Switch } from "antd";
+import { Button, Input, Card, Switch, Spin } from "antd";
 import { CiCreditCard1, CiMobile4, CiCreditCardOff } from "react-icons/ci";
 import {
   FaRegClock,
@@ -15,8 +15,50 @@ import {
   CalendarOutlined,
   LockOutlined,
 } from "@ant-design/icons";
+import { useEnroll } from "@/src/hooks/useEnroll";
 
 const PaymentDetails = () => {
+  const { enrollMeCohort, enrollMeCohortIsFetching, enrollMeCohortError } =
+    useEnroll();
+
+  if (enrollMeCohortIsFetching) {
+    return (
+      <Card className="!flex !flex-col !items-center !justify-center !w-full !lg:w-1/2 !border-none">
+        <>
+          <div className="loader"></div>
+          <style>
+            {`
+          .loader {
+            width: 50px;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            border: 8px solid #001840;
+            animation:
+              l20-1 0.8s infinite linear alternate,
+              l20-2 1.6s infinite linear;
+          }
+          @keyframes l20-1 {
+            0%    { clip-path: polygon(50% 50%, 0 0, 50% 0%, 50% 0%, 50% 0%, 50% 0%, 50% 0%); }
+            12.5% { clip-path: polygon(50% 50%, 0 0, 50% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%); }
+            25%   { clip-path: polygon(50% 50%, 0 0, 50% 0%, 100% 0%, 100% 100%, 100% 100%, 100% 100%); }
+            50%   { clip-path: polygon(50% 50%, 0 0, 50% 0%, 100% 0%, 100% 100%, 50% 100%, 0% 100%); }
+            62.5% { clip-path: polygon(50% 50%, 100% 0, 100% 0%, 100% 0%, 100% 100%, 50% 100%, 0% 100%); }
+            75%   { clip-path: polygon(50% 50%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 50% 100%, 0% 100%); }
+            100%  { clip-path: polygon(50% 50%, 50% 100%, 50% 100%, 50% 100%, 50% 100%, 50% 100%, 0% 100%); }
+          }
+          @keyframes l20-2 {
+            0%    { transform: scaleY(1) rotate(0deg); }
+            49.99%{ transform: scaleY(1) rotate(135deg); }
+            50%   { transform: scaleY(-1) rotate(0deg); }
+            100%  { transform: scaleY(-1) rotate(-135deg); }
+          }
+        `}
+          </style>
+        </>
+      </Card>
+    );
+  }
+
   return (
     <Card className="!flex !flex-col !items-start !justify-start !w-full !lg:w-1/2 !border-none">
       <div className="w-full mb-8">
@@ -24,7 +66,7 @@ const PaymentDetails = () => {
           <span className="text-sm text-gray-500">Total Amount</span>
           <div className="flex items-baseline">
             <span className="text-3xl lg:text-5xl font-black bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-gray-600">
-              Tsh 25,000
+              Tshs {enrollMeCohort?.price}
             </span>
             <span className="text-xl text-gray-600 ml-1">/=</span>
           </div>
@@ -38,8 +80,7 @@ const PaymentDetails = () => {
             <span className="text-sm font-medium">Topic</span>
           </div>
           <span className="font-bold text-xl line-clamp-2 w-full text-gray-800">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic ea modi
-            sed asperiores delectus rerum tempore.
+            {enrollMeCohort?.topic_title}
           </span>
         </div>
 
@@ -48,7 +89,9 @@ const PaymentDetails = () => {
             <FaGraduationCap className="w-4 h-4" />
             <span className="text-sm font-medium">Subject</span>
           </div>
-          <div className="font-semibold text-lg text-gray-800">Mathematics</div>
+          <div className="font-semibold text-lg text-gray-800">
+            {enrollMeCohort?.subject}
+          </div>
         </div>
 
         <div className="">
@@ -58,15 +101,17 @@ const PaymentDetails = () => {
                 <FaUser className="w-4 h-4" />
                 <span className="text-sm font-medium">Instructor</span>
               </span>
-              <div className="font-semibold text-lg text-gray-800">
-                Denis Mgaya
+              <div className="font-semibold text-lg text-gray-800 capitalize">
+                {enrollMeCohort?.instructor_name}
               </div>
             </div>
 
             <div className="flex items-center space-x-2 text-gray-600 pt-2 border-t border-gray-200">
               <FaRegClock className="w-4 h-4" />
               <div className="flex items-baseline">
-                <span className="font-semibold text-lg">12</span>
+                <span className="font-semibold text-lg">
+                  {enrollMeCohort?.total_weeks}
+                </span>
                 <span className="ml-1 text-sm">Weeks</span>
               </div>
             </div>
@@ -152,7 +197,6 @@ const MobilePay = () => {
         return;
       }
 
-      
       setCurrentStep(1);
     } catch (e) {
       console.error(e);

@@ -46,8 +46,8 @@ const ForgotPassword = () => {
   const onSubmit = async (data) => {
     try {
       setIsSendingOtp(true);
-      message.destroy();
-      const response = await api.post("/password/reset-request", {
+      // message.destroy();
+      const response = await apiPost("/password/reset-request", {
         email: data.email,
       });
       if (response.status === 200) {
@@ -90,13 +90,13 @@ const ForgotPassword = () => {
       const response = await apiPost("/resend-otp", {
         email: email,
       });
-      if (response.data.success) {
+      alert(JSON.stringify(response));
+      if (response.status === 200) {
         setResendCounter(30);
         message.success("OTP resent to your email");
-      } else {
-        message.error(response.data.message);
       }
     } catch (e) {
+      alert(JSON.stringify(e));
       message.error(`Failed to resend OTP, ${e.message}`);
     } finally {
       setIsSendingOtp(false);
@@ -153,11 +153,11 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100 p-3 lg:p-0">
+    <div className="flex items-center justify-center h-5/6 p-3 lg:p-0">
       <Card
         className="!w-full !max-w-xl !bg-white !p-8 !rounded-lg !shadow-sm"
         title={
-          <div className="!flex !justify-start !items-center !gap-3">
+          <div className="flex justify-start items-center gap-3">
             <Title level={3} className="!self-center !m-0">
               {!otpSent ? "Forgot Password" : "Verify Email"}
             </Title>
@@ -180,7 +180,7 @@ const ForgotPassword = () => {
                 name="email"
                 control={control}
                 rules={{
-                  required: "Email is required",
+                  required: "Please enter email registered with your account",
                   pattern: {
                     value: /^\S+@\S+$/i,
                     message: "Please enter a valid email",
@@ -228,7 +228,10 @@ const ForgotPassword = () => {
               <label className="text-gray-700 font-bold mb-4 flex justify-center items-center">
                 <FaKey className="mr-2" /> Enter OTP
               </label>
-              <Space size="small" className="!w-full !justify-center">
+              <Space
+                size="small"
+                className="!w-full !justify-center !flex !flex-wrap"
+              >
                 {otpValues.map((value, index) => (
                   <Input
                     key={index}
@@ -241,12 +244,12 @@ const ForgotPassword = () => {
                       }
                     }}
                     onKeyDown={(e) => handleKeyDown(e, index)}
-                    className={`!w-12 !h-12 !text-center !text-lg !border-2 !ring-2 ${
+                    className={`!w-12 !h-12 !text-center !text-2xl !border-4 !font-black ${
                       otpStatus === "success"
-                        ? "!border-green-500 !ring-green-500/70"
+                        ? "!border-green-500"
                         : otpStatus === "error"
-                        ? "!border-red-500 !ring-red-500/70"
-                        : "!border-[#030DFE] !ring-[#030DFE]/70"
+                        ? "!border-red-500"
+                        : "!border-[#030DFE]"
                     }`}
                     maxLength={1}
                   />
@@ -262,12 +265,12 @@ const ForgotPassword = () => {
                   </div>
                 )}
                 {isVerifyingOtp === "error" && (
-                  <div className="w-full flex flex-col items-center justify-center my-6 text-red-700">
+                  <div className="w-full flex flex-col items-center justify-center my-6 text-red-500">
                     <span>Verification Failed, Incorrect OTP provided!</span>
                   </div>
                 )}
                 {isVerifyingOtp === "success" && (
-                  <div className="w-full flex flex-col items-center justify-center my-6 text-green-700">
+                  <div className="w-full flex flex-col items-center justify-center my-6 text-green-500">
                     <span>Successfully Verified!</span>
                     <span>
                       Hold on a moment. You&#39;ll be directed to the next
@@ -277,14 +280,14 @@ const ForgotPassword = () => {
                 )}
               </>
             )}
-            <div className="text-center">
+            <div className="text-center overflow-hidden">
               <Button
                 type="link"
                 onClick={handleResendOtp}
                 disabled={resendCounter > 0 || isSendingOtp}
                 icon={<ReloadOutlined />}
               >
-                {resendCounter > 0
+                {resendCounter > 0 
                   ? `Resend OTP in ${resendCounter}s`
                   : "Resend OTP"}
               </Button>

@@ -1,9 +1,9 @@
 import { create } from "zustand";
-const useUserTopcs = create((set) => ({
+const useUserTopics = create((set) => ({
   userTopics: [],
-  topicsLoading: false,
+  topicsLoading: true,
   setUserTopics: (topics) => set(() => ({ userTopics: topics })),
   setTopicsLoading: (isLoading) => set({ topicsLoading: isLoading }),
 }));
 
-export { useUserTopcs };
+export { useUserTopics };
