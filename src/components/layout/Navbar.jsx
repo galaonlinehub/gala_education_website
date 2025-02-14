@@ -62,7 +62,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="h-14 flex justify-between max-w-screen items-center fixed top-0 inset-x-0 z-50 lg:px-16 px-2 bg-white">
+    <nav className="h-14 flex justify-between max-w-screen items-center fixed top-0 inset-x-0 z-50 lg:px-24 px-2 bg-white">
       <Image
         alt={"Gala logo"}
         width={150}
