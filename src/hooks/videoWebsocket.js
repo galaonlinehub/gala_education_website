@@ -53,7 +53,7 @@ export const useVideoRoom = ({ meetingLink, localVideoRef }) => {
     });
 
     return socket;
-  }, [getToken]);
+  }, [getToken, getLocalStream, joinRoom]);
 
   // Get local media stream
   const getLocalStream = useCallback(async () => {

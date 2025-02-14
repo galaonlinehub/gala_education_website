@@ -39,7 +39,7 @@ export default function StudentLayout({ children }) {
     <>
       <Navbar />
       <StudentSearch />
-      <main className="flex flex-col lg:flex-row w-full mt-[90px]">
+      <main className="flex flex-col lg:flex-row w-full mt-[90px] h-[calc(100vh-90px)] overflow-hidden">
         <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
           <div className="absolute left-1/2 top-20 w-52 h-52 hidden md:block">
             <RightTiltedBook />
@@ -54,8 +54,9 @@ export default function StudentLayout({ children }) {
             <StudentsInClass />
           </div>
         </div>
+
         {/* Sidebar */}
-        <div className="hidden lg:block sticky top-0 left-0 w-[16vw] h-[calc(100vh-128px)] border-r border-[#d9d9d9] p-4">
+        <div className="hidden lg:block sticky top-[90px] left-0 w-[16vw] h-[calc(100vh-90px)] border-r border-[#d9d9d9] p-4 overflow-y-auto">
           <ul className="space-y-4 pt-16">
             {student_links.map((item, i) => {
               const href = `/student/${item.link}`;
@@ -71,7 +72,8 @@ export default function StudentLayout({ children }) {
           </ul>
         </div>
 
-        <div className="flex-1 px-2 lg:px-6 py-2 w-full lg:w-[80vw] overflow-hidden">{children}</div>
+        {/* Main Content */}
+        <div className="flex-1 px-2 lg:px-6 py-2 w-full lg:w-[80vw] overflow-y-auto h-[calc(100vh-90px)]">{children}</div>
       </main>
 
       {!isInstalled && installPrompt && (
@@ -80,9 +82,7 @@ export default function StudentLayout({ children }) {
         </FloatingActionButton>
       )}
 
-      {/* Footer */}
-      <Footer />
-
+    
       <Drawer
         title={
           <div className="flex flex-col gap-2 items-center">

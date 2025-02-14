@@ -34,20 +34,19 @@ export default  function Lesson({ params }){
 
   const [roomId, setRoomId] = useState(null);
 
-  const roomIdFn = async () => {
-    const roomId = (await params).lesson_id; // Assuming `params` is a promise
+  const roomIdFn = useCallback(async () => {
+    const roomId = (await params).lesson_id; 
     return roomId;
-  };
-
+  }, [params]); 
+  
   useEffect(() => {
     const fetchRoomId = async () => {
       const resolvedRoomId = await roomIdFn();
       setRoomId(resolvedRoomId);
-      console.log("The roomId is", resolvedRoomId); // Log after resolving
+      console.log("The roomId is", resolvedRoomId);
     };
-
     fetchRoomId();
-  }, []);
+  }, [roomIdFn]); 
 
 
   // Refs
@@ -155,7 +154,7 @@ export default  function Lesson({ params }){
         if (userDecrypted) {
           setUser(userDecrypted);
         }
-      }, []);
+      }, [setUser]);
   
   useEffect(() => {
 
@@ -515,7 +514,7 @@ export default  function Lesson({ params }){
     return () => {
       socket.disconnect();
     };
-  }, [user,roomId]);
+  }, [user,roomId, userName]);
 
 
 
@@ -540,7 +539,7 @@ export default  function Lesson({ params }){
         </div>
       </div>
     );
-  }, [instructorStream]);
+  }, [instructorStream, attendees, chat, isScreenSharing]);
 
   
   const renderStudentVideos = useMemo(() => {
