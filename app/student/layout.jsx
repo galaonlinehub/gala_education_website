@@ -56,8 +56,9 @@ export default function StudentLayout({ children }) {
             <StudentsInClass />
           </div>
         </div>
+
         {/* Sidebar */}
-        <div className="hidden lg:block sticky top-0 left-0 w-[16vw] h-[calc(100vh-128px)] border-r border-[#d9d9d9] p-4">
+        <div className="hidden lg:block sticky top-[90px] left-0 w-[16vw] h-[calc(100vh-90px)] border-r border-[#d9d9d9] p-4 overflow-y-auto">
           <ul className="space-y-4 pt-16">
             {student_links.map((item, i) => (
               <li key={i}>
@@ -79,34 +80,24 @@ export default function StudentLayout({ children }) {
           </ul>
         </div>
 
-        <div className="flex-1 px-2 lg:px-6 py-2 w-full lg:w-[80vw] overflow-hidden">
-          {children}
-        </div>
+        {/* Main Content */}
+        <div className="flex-1 px-2 lg:px-6 py-2 w-full lg:w-[80vw] overflow-y-auto h-[calc(100vh-90px)]">{children}</div>
       </main>
 
       {!isInstalled && installPrompt && (
-        <FloatingActionButton
-          position="bottom-center"
-          onClick={handleInstallClick}
-        >
+        <FloatingActionButton position="bottom-center" onClick={handleInstallClick}>
           {/* &gt; Install Gala Education in Your device */}
         </FloatingActionButton>
       )}
 
-      {/* Footer */}
-      {/* <Footer /> */}
-
+    
       <Drawer
         title={
           <div className="flex flex-col gap-2 items-center">
             <div className="w-10 h-10 relative bg-gradient-to-br from-blue-500 to-blue-600 rounded-full ring-2 ring-blue-400 ring-offset-2 flex items-center justify-center">
               <div className="text-center">
-                <p className="text-[#d9d9d9] text-[10px] font-bold leading-tight">
-                  Gala
-                </p>
-                <p className="text-[#d9d9d9] text-[10px] font-bold leading-tight">
-                  Education
-                </p>
+                <p className="text-[#d9d9d9] text-[10px] font-bold leading-tight">Gala</p>
+                <p className="text-[#d9d9d9] text-[10px] font-bold leading-tight">Education</p>
               </div>
             </div>
             <div>Gala Education</div>
@@ -119,25 +110,19 @@ export default function StudentLayout({ children }) {
         className="!lg:hidden !relative"
       >
         <ul className="space-y-4">
-          {student_links.map((item, i) => (
-            <li key={i}>
-              <Link
-                href={item.link}
-                className="flex items-center gap-1 p-1 rounded-lg hover:bg-blue-50 transition-colors"
-                onClick={() => setIsSidebarOpen(false)}
-              >
-                <span className="text-blue-600">{item.icon}</span>
-                <span className="font-medium text-xs text-gray-700">
-                  {item.name}
-                </span>
-              </Link>
-            </li>
-          ))}
+          {student_links.map((item, i) => {
+            const href = `/student/${item.link}`;
+            return (
+              <li key={i}>
+                <Link href={href} className="flex items-center gap-1 p-1 rounded-lg hover:bg-blue-50 transition-colors" onClick={() => setIsSidebarOpen(false)}>
+                  <span className="text-blue-600">{item.icon}</span>
+                  <span className="font-medium text-xs text-gray-700">{item.name}</span>
+                </Link>
+              </li>
+            );
+          })}
           <li>
-            <CloseCircleFilled
-              onClick={() => setIsSidebarOpen(false)}
-              className="!text-red-500 absolute bottom-4 left-1/2 transform -translate-x-1/2 text-4xl p-3 cursor-pointer"
-            />
+            <CloseCircleFilled onClick={() => setIsSidebarOpen(false)} className="!text-red-500 absolute bottom-4 left-1/2 transform -translate-x-1/2 text-4xl p-3 cursor-pointer" />
           </li>
         </ul>
       </Drawer>

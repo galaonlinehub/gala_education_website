@@ -12,7 +12,7 @@ const CountDownCard = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const deadline = new Date("2025-01-10T16:30:00");
+    const deadline = new Date("2025-02-01T16:30:00");
 
     const calculateTimeLeft = () => {
       const now = new Date();

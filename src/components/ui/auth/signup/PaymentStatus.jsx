@@ -51,7 +51,7 @@ const PaymentPending = ({ open, onClose, status }) => {
           className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors duration-200"
         >
           Done
-        </button>,
+        </button>
       ]}
     />
   );
@@ -67,7 +67,7 @@ const PaymentPending = ({ open, onClose, status }) => {
       subTitle={
         <div className="space-y-2 mt-4">
           <p className="text-gray-600">
-            We couldn't process your payment at this time.
+            We couldn&apos;t process your payment at this time.
           </p>
           <p className="text-gray-500 text-sm">
             Please try again or contact support if the issue persists.

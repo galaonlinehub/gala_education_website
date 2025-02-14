@@ -2,10 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap');
+@import url('@tldraw/tldraw/tldraw.css');
+
+
 .no-scroll {
   overflow: hidden;
   height: 100vh;
 }
+
 
 .custom-select {
   background-color: #001840 !important;
@@ -144,6 +150,20 @@
   }
 }
 
+
+
+
+.tldraw__editor {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	bottom: 0px;
+	right: 0px;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
 .ant-card-body {
   padding: 24px !important;
 }
@@ -187,3 +207,18 @@
     @apply text-2xl font-heading font-medium;
   }
 } */
+/* Ensure consistent width of the panel content */
+
+
+
+.collapse-container .ant-collapse {
+  margin-bottom: 16px; /* Adjust the margin as needed */
+}
+
+/* Optional: Add padding or styling to individual panels */
+.panel-content {
+  padding: 8px;
+  background-color: #f5f5f5; /* Example: Add a background color */
+  border-radius: 4px; /* Add rounded corners */
+}
+

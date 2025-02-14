@@ -3,13 +3,13 @@ import React from 'react'
 
 function Events({img,title,desc}) {
   return (
-    <div className='flex flex-col w-[332px]  h-[396px] shrink-0'>
-        <Image  src={img} width={200} height={200} alt="event pic" className='h-[170px] w-[332px] object-cover' />
-        <div className='bg-[#001840] flex-col justify-around flex items-center p-10 gap-y-4 '>
+    <div className='flex flex-col w-full md:w-[220px] lg:w-[332px] md:h-[440px] shrink-0'>
+        <Image  src={img} width={200} height={200} alt="event pic" className='md:h-[120px] lg:h-[170px] h-[120px] w-full md:w-[332px] object-cover' />
+        <div className='bg-[#001840] flex-col justify-around  flex p-10 gap-y-4 '>
             <h1 className='text-white font-black text-xs'>{title}</h1>
-            <div className='text-xs text-white text-center'>{desc}</div>
+            <div className='text-xs text-white md:h-[130px] h-[70px] lg:h-[70px]'>{desc}</div>
         </div>
-        <div className={'font-extrabold mt-2 rounded border-[1px] w-[141px] border-[#030DFE] p-2'}>
+        <div className={'font-extrabold mt-4 rounded border-[1px] text-center w-[141px] border-[#030DFE] p-1'}>
             Go to Event
         </div>
     </div>
