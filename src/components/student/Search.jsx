@@ -215,7 +215,7 @@ const StudentSearch = () => {
   //   resultsVisible: false,
   // });
   // const { openNewClass, setOpenNewClass } = useNewClass();
-  // const router = useRouter();
+  const router = useRouter();
   // const searchContainerRef = useRef(null);
   // const searchInputRef = useRef(null);
 

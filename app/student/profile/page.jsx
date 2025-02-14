@@ -256,7 +256,6 @@ const StudentProfile = () => {
     ],
   };
 
-  console.log(user)
   return (
     <div className="mt-20">
       <Row gutter={[24, 24]} justify="center">
@@ -278,7 +277,7 @@ const StudentProfile = () => {
                   />
                   <div>
                     <Title level={2} className="capitalize">
-                      {user.first_name}{" "}{user.last_name}
+                      {user?.first_name}{" "}{user?.last_name}
                     </Title>
                     <Tag color="blue" icon={<StarOutlined />}>
                       Active Student
@@ -385,7 +384,7 @@ const StudentProfile = () => {
                       <MailOutlined /> Email
                     </Text>
                     <div>
-                      <Text strong>{user.email}</Text>
+                      <Text strong>{user?.email}</Text>
                     </div>
                   </div>
                   <div>

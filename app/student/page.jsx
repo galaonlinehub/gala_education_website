@@ -18,9 +18,9 @@ export default function Component() {
   const { enrolledTopics, enrolledTopicsLoading, enrolledToicsError } =
     useEnrolledTopics();
 
-  const onPanelChange = (value, mode) => {
-    console.log(value.format("YYYY-MM-DD"), mode);
-  };
+  // const onPanelChange = (value, mode) => {
+  //   console.log(value.format("YYYY-MM-DD"), mode);
+  // };
 
   const { token } = theme.useToken();
   const wrapperStyle = {
