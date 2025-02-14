@@ -9,13 +9,76 @@ const VideoPlayer = ({videoSrc}) => {
   const [volume, setVolume] = useState(1);
   const [isMuted, setIsMuted] = useState(false);
   const [hasInteracted, setHasInteracted] = useState(false);
+  const [isInViewport, setIsInViewport] = useState(false);
+  const [autoplayAttempted, setAutoplayAttempted] = useState(false);
   const videoRef = useRef(null);
+  const containerRef = useRef(null);
+
+  // Setup Intersection Observer
+  useEffect(() => {
+    const options = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.5
+    };
+
+    const observer = new IntersectionObserver(([entry]) => {
+      setIsInViewport(entry.isIntersecting);
+    }, options);
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => {
+      if (containerRef.current) {
+        observer.unobserve(containerRef.current);
+      }
+    };
+  }, []);
+
+  // Handle autoplay when video enters/leaves viewport
+  useEffect(() => {
+    if (videoRef.current && !hasInteracted && isInViewport && !autoplayAttempted) {
+      setAutoplayAttempted(true);
+      
+      // Try to play unmuted first
+      videoRef.current.play()
+        .then(() => {
+          setIsPlaying(true);
+          videoRef.current.volume = volume;
+          setIsMuted(false);
+        })
+        .catch(() => {
+          // If unmuted autoplay fails, try muted autoplay as fallback
+          videoRef.current.muted = true;
+          setIsMuted(true);
+          videoRef.current.play()
+            .then(() => {
+              setIsPlaying(true);
+            })
+            .catch(() => {
+              // If both attempts fail, reset to initial state
+              setIsPlaying(false);
+              videoRef.current.muted = false;
+              setIsMuted(false);
+            });
+        });
+    } else if (!isInViewport && videoRef.current && !hasInteracted) {
+      videoRef.current.pause();
+      setIsPlaying(false);
+    }
+  }, [isInViewport, hasInteracted, volume, autoplayAttempted]);
 
   const togglePlay = () => {
     if (videoRef.current) {
       if (isPlaying) {
         videoRef.current.pause();
       } else {
+        // When user manually plays, ensure volume is restored
+        videoRef.current.muted = false;
+        setIsMuted(false);
+        videoRef.current.volume = volume;
         videoRef.current.play();
       }
       setIsPlaying(!isPlaying);
@@ -50,10 +113,11 @@ const VideoPlayer = ({videoSrc}) => {
   const toggleMute = () => {
     if (videoRef.current) {
       if (isMuted) {
+        videoRef.current.muted = false;
         videoRef.current.volume = volume;
         setIsMuted(false);
       } else {
-        videoRef.current.volume = 0;
+        videoRef.current.muted = true;
         setIsMuted(true);
       }
     }
@@ -62,6 +126,7 @@ const VideoPlayer = ({videoSrc}) => {
   const handleVideoEnded = () => {
     setIsPlaying(false);
     setHasInteracted(false);
+    setAutoplayAttempted(false);
   };
 
   useEffect(() => {
@@ -77,15 +142,12 @@ const VideoPlayer = ({videoSrc}) => {
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   };
 
-  // Show play button if:
-  // 1. Video hasn't been interacted with yet (initial state)
-  // 2. Video is paused
-  // 3. Video is playing AND user is hovering
   const showPlayButton = !hasInteracted || !isPlaying || (isPlaying && isHovering);
 
   return (
     <div 
-      className="relative w-full max-w-4xl mx-auto"
+      ref={containerRef}
+      className="relative w-full h-full max-w-4xl mx-auto"
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     >
@@ -96,6 +158,7 @@ const VideoPlayer = ({videoSrc}) => {
           src={videoSrc}
           onTimeUpdate={handleTimeUpdate}
           onEnded={handleVideoEnded}
+          playsInline
         >
           Your browser does not support the video tag.
         </video>
