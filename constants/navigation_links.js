@@ -89,7 +89,7 @@ export const footer_links = {
 export const teacher_links = [
   {
     "name": "Dashboard",
-    "link": "dashboard",
+    "link": ".",
     "icon": <FaChalkboardTeacher />
 
   },
@@ -105,12 +105,12 @@ export const teacher_links = [
     "icon": <MdLiveTv />
 
   },
-  {
-    "name": "Analytics",
-    "link": "analytics",
-    "icon": <MdAnalytics />
+  // {
+  //   "name": "Analytics",
+  //   "link": "analytics",
+  //   "icon": <MdAnalytics />
 
-  }
+  // }
   ,
   {
     "name": "Social",
@@ -119,24 +119,24 @@ export const teacher_links = [
 
   },
 
-  {
-    "name": "Donate",
-    "link": "donate",
-    "icon": <FaDonate />
+  // {
+  //   "name": "Donate",
+  //   "link": "donate",
+  //   "icon": <FaDonate />
 
-  },
-  {
-    "name": "Manage Class",
-    "link": "manage-class",
-    "icon": <MdSettings />
+  // },
+  // {
+  //   "name": "Manage Class",
+  //   "link": "manage-class",
+  //   "icon": <MdSettings />
 
-  },
-  {
-    "name": "Create Class",
-    "link": "create-class",
-    "icon": <MdLibraryAdd />
+  // },
+  // {
+  //   "name": "Create Class",
+  //   "link": "create-class",
+  //   "icon": <MdLibraryAdd />
 
-  },
+  // },
   {
     "name": "Assignments",
     "link": "assignments",

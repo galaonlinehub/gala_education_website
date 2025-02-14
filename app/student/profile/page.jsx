@@ -1,74 +1,151 @@
-"use client";
-import React from "react";
-import { Switch } from "antd";
-import Image from "next/image";
+'use client';
+import React from 'react';
+import {
+  Card,
+  Avatar,
+  Form,
+  Input,
+  Button,
+  Switch,
+  Typography,
+  Row,
+  Col,
+  Divider,
+  Space
+} from 'antd';
+import { UserOutlined } from '@ant-design/icons';
+
+const { Title, Text } = Typography;
 
 const StudentProfile = () => {
-  const onChange = (checked) => {
+  const [form] = Form.useForm();
+
+  const handleFormSubmit = (values) => {
+    console.log('Form values:', values);
+  };
+
+  const handleSwitchChange = (checked) => {
     console.log(`switch to ${checked}`);
   };
 
   return (
-    <div className="flex flex-col justify-center w-full items-center p-8">
-      <Image src="/avatar.png" alt="Avatar" width={72} height={72} />
-      <div className="text-sm">Profile Settings</div>
-      <div className=" w-full mt-5 text-xs md:flex justify-center px-20 flex-col md:flex-row ">
-        <div className="flex w-full  border border-blue-700 p-6 flex-col gap-2">
-          <div className="flex flex-col">
-            <span>Username</span>
-            <input type="text" className="p-2 border border-blue-700" />
-          </div>
-          <div className="flex flex-col">
-            <span>Full Name </span>
-            <input type="text" className="p-2 border border-blue-700" />
-          </div>
-          <div className="flex flex-col">
-            <span>Email</span>
-            <input type="text" className="p-2 border border-blue-700" />
-          </div>
-          <div className="flex flex-col">
-            <span>Password</span>
-            <input type="text" className="p-2 border border-blue-700" />
+    <div className="min-h-screen bg-gray-50 p-4 md:p-8">
+      <Row justify="center">
+        <Col xs={24} md={20} lg={16} xl={14}>
+          <div className="text-center mb-8">
+            <Avatar
+              size={80}
+              src="/avatar.png"
+              icon={<UserOutlined />}
+              className="mb-4"
+            />
+            <Title level={2}>Profile Settings</Title>
           </div>
 
-          <div className="flex gap-5 mt-2">
-            <button className="p-1.5 bg-blue-700 text-white w-24">Cancel</button>
-            <button className="p-1.5 bg-blue-700 text-white w-24">Save Changes</button>
-          </div>
-        </div>
-        <div className="bg-[#001840] border border-blue-700 w-full  p-6  text-white">
-          <span className="text-white font-semibold mb-2 flex">Toggle account functionalities</span>
-          <div className="flex flex-col gap-2">
-            <div className="flex justify-between items-center">
-              <span>New Courses</span>
-              <Switch defaultChecked onChange={onChange} size="small" className="border border-white" />
-            </div>
-            <div className="flex justify-between items-center">
-              <span>New Instructors</span>
-              <Switch defaultChecked onChange={onChange} size="small" className="border border-white" />
-            </div>
-            <div className="flex justify-between items-center">
-              <span>Course Updates</span>
-              <Switch defaultChecked onChange={onChange} size="small" className="border border-white" />
-            </div>
-            <div className="flex justify-between items-center">
-              <span>Sales</span>
-              <Switch defaultChecked onChange={onChange} size="small" className="border border-white" />
-            </div>
-          </div>
-          <span className="text-white font-semibold mt-6 mb-2 flex">Toggle course experience</span>
-          <div className="flex flex-col gap-2">
-            <div className="flex justify-between items-center">
-              <span>Lesson quizzes</span>
-              <Switch defaultChecked onChange={onChange} size="small" className="border border-white" />
-            </div>
-            <div className="flex justify-between items-center">
-              <span>Homework/Assignment Reminders</span>
-              <Switch defaultChecked onChange={onChange} size="small" className="border border-white" />
-            </div>
-          </div>
-        </div>
-      </div>
+          <Row gutter={[16, 16]}>
+            {/* Personal Information Card */}
+            <Col xs={24} md={12}>
+              <Card>
+                <Form
+                  form={form}
+                  layout="vertical"
+                  onFinish={handleFormSubmit}
+                  initialValues={{
+                    username: '',
+                    fullName: '',
+                    email: '',
+                    password: ''
+                  }}
+                >
+                  <Form.Item
+                    label="Username"
+                    name="username"
+                    rules={[{ required: true, message: 'Please input your username!' }]}
+                  >
+                    <Input placeholder="Enter your username" />
+                  </Form.Item>
+
+                  <Form.Item
+                    label="Full Name"
+                    name="fullName"
+                    rules={[{ required: true, message: 'Please input your full name!' }]}
+                  >
+                    <Input placeholder="Enter your full name" />
+                  </Form.Item>
+
+                  <Form.Item
+                    label="Email"
+                    name="email"
+                    rules={[
+                      { required: true, message: 'Please input your email!' },
+                      { type: 'email', message: 'Please enter a valid email!' }
+                    ]}
+                  >
+                    <Input placeholder="Enter your email" />
+                  </Form.Item>
+
+                  <Form.Item
+                    label="Password"
+                    name="password"
+                    rules={[{ required: true, message: 'Please input your password!' }]}
+                  >
+                    <Input.Password placeholder="Enter your password" />
+                  </Form.Item>
+
+                  <Form.Item>
+                    <Space>
+                      <Button type="primary" htmlType="submit">
+                        Save Changes
+                      </Button>
+                    </Space>
+                  </Form.Item>
+                </Form>
+              </Card>
+            </Col>
+
+            {/* Notifications Card */}
+            <Col xs={24} md={12}>
+              <Card className="bg-blue-900">
+                <div className="text-white">
+                  <Title level={4} className="text-white mb-4">
+                    Account Notifications
+                  </Title>
+                  <Space direction="vertical" className="w-full">
+                    {[
+                      'New Courses',
+                      'New Instructors',
+                      'Course Updates',
+                    
+                    ].map((item) => (
+                      <div key={item} className="flex justify-between items-center">
+                        <Text className="text-white">{item}</Text>
+                        <Switch defaultChecked onChange={handleSwitchChange} />
+                      </div>
+                    ))}
+                  </Space>
+
+                  <Divider className="bg-gray-600" />
+
+                  <Title level={4} className="text-white mb-4">
+                    Course Notifications
+                  </Title>
+                  <Space direction="vertical" className="w-full">
+                    {[
+                    
+                      'Homework/Assignment Reminders'
+                    ].map((item) => (
+                      <div key={item} className="flex justify-between items-center">
+                        <Text className="text-white">{item}</Text>
+                        <Switch defaultChecked onChange={handleSwitchChange} />
+                      </div>
+                    ))}
+                  </Space>
+                </div>
+              </Card>
+            </Col>
+          </Row>
+        </Col>
+      </Row>
     </div>
   );
 };
