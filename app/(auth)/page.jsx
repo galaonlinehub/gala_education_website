@@ -46,9 +46,9 @@ function Home() {
   }, [showDonatePopup]);
 
   return (
-    <div className="relative w-screen max-w-screen-2xl mx-auto h-full overflow-hidden space-y-10">
+    <div className="relative w-screen max-w-screen-2xl mx-auto h-full">
       {showDonatePopup && (
-        <div className="fixed  inset-0 bg-black bg-opacity-70 !z-[9999] flex justify-center items-center ">
+        <div className="fixed inset-0 bg-black bg-opacity-70 !z-[9999] flex justify-center items-center">
           <div className="p-1 rounded-lg w-full items-center justify-center flex ">
             <Donate setShowDonatePopup={setShowDonatePopup} showDonatePopup={showDonatePopup} />
           </div>
@@ -58,7 +58,7 @@ function Home() {
       {/* <div className="relative w-screen max-w-screen-2xl mx-auto h-[100vh] xl:h-[90vh] 2xl:h-[70vh] overflow-hidden"> */}
       {/* <Image src="/homepage_photo.png" layout="fill" objectFit="cover" alt="Gala Home" /> */}
 
-      <div className="relative w-screen mt-20 max-w-screen-2xl mx-auto h-[60rem] sm:h-[44rem] overflow-hidden">
+      <div className="relative w-screen max-w-screen-2xl mx-auto h-[60rem] sm:h-[44rem] overflow-hidden -mt-12">
         <Image src="/homepage_photo.png" layout="fill" objectFit="cover" alt="Gala Home" />
 
         <div className="absolute inset-0 bg-black opacity-70 w-full" />
