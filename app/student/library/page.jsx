@@ -1,27 +1,20 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import ReadMoreContainer from "@/src/components/ui/ReadMore";
 import { useEnrolledTopics, useNewClass } from "@/src/store/student/class";
 import { useUser } from "@/src/hooks/useUser";
-import { Skeleton } from "antd";
+
 import { IoIosAdd } from "react-icons/io";
-import {
-  ClassCard,
-  TopicSkeleton,
-} from "@/src/components/ui/loading/skeletons/ClassCard";
-import { getUserTopics } from "@/src/utils/fns/global";
+
 
 const Library = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const { setOpenNewClass } = useNewClass();
-  const { user, setUser } = useUser();
+  const { user } = useUser();
   const { enrolledTopincs } = useEnrolledTopics();
 
-  useEffect(() => {
-    getUserTopics();
-  }, []);
+ 
 
   const mySubjects = [
     {

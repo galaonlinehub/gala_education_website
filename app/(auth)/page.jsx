@@ -9,13 +9,10 @@ import NewsCard from "@/src/components/home/card/NewsCard";
 import Events from "@/src/components/home/card/Events";
 import Card2 from "@/src/components/home/card/Card2";
 import MailingList from "@/src/components/ui/auth/signup/MailingList";
-import Donate from "./donate";
 import { FaSearch } from "react-icons/fa";
 import ChoosePlatformSvg from "@/src/utils/vector-svg/ChoosePlatformSvg";
 import AcceptCookies from "@/src/components/layout/Cookies";
-import VideoPlayer from "@/components/layout/ui/VideoPlayer";
 import ClientReviews from "@/src/components/home/card/ClientReviews";
-import ScrollableContent from "@/components/layout/ui/TeachersCard";
 import FaqCard from "@/src/components/home/card/FaqCard";
 import OurServicesCard from "@/src/components/home/card/OurServicesCard";
 import RegisterWithUs from "@/src/components/home/card/RegisterWithUs";
@@ -24,6 +21,9 @@ import Platform from "@/src/components/home/card/Platform";
 import Pioneers from "@/src/components/home/card/Pioneers";
 import LatestNews from "@/src/components/home/card/LatestNews";
 import AboutUs from "@/src/components/home/modals/AboutUs";
+import Donate from "@/src/components/ui/Donate";
+import VideoPlayer from "@/src/components/ui/VideoPlayer";
+import ScrollableContent from "@/src/components/ui/TeachersCard";
 
 function Home() {
   const [showDonatePopup, setShowDonatePopup] = useState(false);

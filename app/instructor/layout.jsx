@@ -4,15 +4,15 @@ import { useState, useEffect } from "react";
 import { FaBell, FaUserCircle } from "react-icons/fa";
 import "../globals.css";
 import Link from "next/link";
-import RightTiltedBook from "@/components/vectors/CombinedBlock";
-import KidInPicture from "@/components/vectors/KidInPicture";
-import Clock from "@/components/vectors/Clock";
-import StudentsInClass from "@/components/vectors/StudentsInClass";
-import { teacher_links } from "@/constants/navigation_links";
 import { usePathname } from "next/navigation";
 import Navbar from "@/src/components/layout/Navbar";
 import { FloatingActionButton } from "@/src/components/ui/Fab";
 import useInstallPrompt from "@/src/hooks/useInstallPrompt";
+import RightTiltedBook from "@/src/utils/vector-svg/vectors/CombinedBlock";
+import KidInPicture from "@/src/utils/vector-svg/vectors/KidInPicture";
+import Clock from "@/src/utils/vector-svg/vectors/Clock";
+import StudentsInClass from "@/src/utils/vector-svg/vectors/StudentsInClass";
+import { teacher_links } from "@/src/utils/data/navigation_links";
 
 export default function TeacherLayout({ children }) {
   const pathname = usePathname();
