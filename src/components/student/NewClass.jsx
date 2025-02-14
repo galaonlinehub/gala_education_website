@@ -12,7 +12,7 @@ import {
 } from "../ui/InstructorSearchResult";
 import { useEnrollMe } from "@/src/store/student/useEnrollMe";
 import { usePaySteps } from "@/src/store/pay";
-import { Pay } from "../pay/Pay";
+import { Payment } from "../pay/Payment";
 
 const useStyle = createStyles(({ token }) => ({
   "my-drawer-body": {
@@ -105,7 +105,7 @@ const NewClass = () => {
                 ))}
           </>
         )}
-        {enrollMe && <Pay/>}
+        {enrollMe && <Payment/>}
 
         {!true && (
           <>

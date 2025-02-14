@@ -11,7 +11,7 @@ import { usePay, usePaySteps } from "@/src/store/pay";
 
 const { Step } = Steps;
 
-export const Pay = () => {
+export const Payment = () => {
   const { currentStep, setCurrentStep } = usePaySteps();
   const { width } = useDevice();
   const { mobilePay } = usePay();
