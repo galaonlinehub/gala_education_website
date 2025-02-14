@@ -12,7 +12,7 @@ import {
 } from "../ui/InstructorSearchResult";
 import { useEnrollMe } from "@/src/store/student/useEnrollMe";
 import { usePaySteps } from "@/src/store/pay";
-import { Payment } from "../pay/Payment";
+import { Payment } from "../Pay/Payment";
 
 const useStyle = createStyles(({ token }) => ({
   "my-drawer-body": {
