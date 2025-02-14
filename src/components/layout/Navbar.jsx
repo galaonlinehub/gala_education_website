@@ -101,7 +101,7 @@ const Navbar = () => {
             />
           }
         >
-          <Image width={200} height={200} src={"/language_translate.png"} className={"w-5 h-5 object-cover bg-white/45 cursor-pointer"} />
+          <Image width={200} height={200} alt="Language translate image" src={"/language_translate.png"} className={"w-5 h-5 object-cover bg-white/45 cursor-pointer"} />
         </Popconfirm>
 
         <li>

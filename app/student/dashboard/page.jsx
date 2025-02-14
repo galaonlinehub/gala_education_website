@@ -1,12 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { theme, Card, Empty, Typography, Row, Col, Table, Button, Progress, Space, Statistic, Calendar, List, Avatar, Badge, Tag, Divider } from "antd";
 import { RightOutlined, BookOutlined, ClockCircleOutlined, TrophyOutlined, BellOutlined, CheckCircleOutlined, WarningOutlined, UserOutlined } from "@ant-design/icons";
 import useUser from "@/src/store/auth/user";
-import { decrypt } from "@/src/utils/fns/encryption";
 import { useEnrolledTopics } from "@/src/store/student/class";
 import { getUserSubject, getUserTopics } from "@/src/utils/fns/global";
 import { useUserTopcs } from "@/src/store/user_topics";
@@ -126,9 +123,9 @@ export default function Component() {
   const DeadlinesCard = () => (
     <Card title="Upcoming Reminders" extra={<Button type="link">View All</Button>}>
       {upcomingDeadlines &&
-        upcomingDeadlines.map((item) => {
+        upcomingDeadlines.map((item, index) => {
           return (
-            <div className="flex flex-col border-b p-2">
+            <div key={index} className="flex flex-col border-b p-2">
               <span className=" line-clamp-1 w-full text-xs">{item.title}</span>
               <span className="text-xs mb-1 mt-1">{item.due}</span>
 
@@ -143,9 +140,9 @@ export default function Component() {
   const ActivityCard = () => (
     <Card title="Recent Activity">
       {recentActivities &&
-        recentActivities.map((item) => {
+        recentActivities.map((item, index) => {
           return (
-            <div className="flex gap-2 border-b p-2">
+            <div key={index} className="flex gap-2 border-b p-2">
             <CheckCircleOutlined style={{ color: '#90EE90' }} />
               <div className="flex flex-col">
                 <span className=" line-clamp-1 w-full text-xs">{item.title}</span>

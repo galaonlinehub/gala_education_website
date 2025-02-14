@@ -21,18 +21,21 @@ const VideoPlayer = ({videoSrc}) => {
       rootMargin: '0px',
       threshold: 0.5
     };
-
+  
     const observer = new IntersectionObserver(([entry]) => {
       setIsInViewport(entry.isIntersecting);
     }, options);
-
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
+  
+    // Store the current value of containerRef in a variable
+    const containerElement = containerRef.current;
+  
+    if (containerElement) {
+      observer.observe(containerElement);
     }
-
+  
     return () => {
-      if (containerRef.current) {
-        observer.unobserve(containerRef.current);
+      if (containerElement) {
+        observer.unobserve(containerElement);
       }
     };
   }, []);

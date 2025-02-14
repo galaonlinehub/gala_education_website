@@ -80,7 +80,7 @@ const StudentReminders = () => {
         <Col span={24}>
           <Title level={3}>Reminders</Title>
           <Text type="secondary">
-            Reminders help students stay organized, ensuring they don't miss important sessions, deadlines, or updates.
+            Reminders help students stay organized, ensuring they don&apos;t miss important sessions, deadlines, or updates.
           </Text>
         </Col>
       </Row>
