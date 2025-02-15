@@ -50,7 +50,7 @@ const SignUpForm = () => {
   } = useAuth(password);
 
   return (
-    <div className="min-h-scree  flex justify-center lg:px-8 mt-12">
+    <div className="flex justify-center lg:px-8 lg:mt-4">
       <Card className="!w-full max-w-3xl !border-0">
         <div className="text-center mb-8">
           <Title

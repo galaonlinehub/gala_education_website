@@ -1,16 +1,14 @@
 import React, { useState } from "react";
 import { LuLogOut } from "react-icons/lu";
-import { Modal, Spin } from "antd";
+import { Modal} from "antd";
 import { PiWarningCircleBold } from "react-icons/pi";
 import { logout } from "@/src/utils/fns/auth";
 import { useRouter } from "next/navigation";
-import { useUser } from "@/src/hooks/useUser";
 
 const Signout = () => {
   const [signoutVisible, setSignoutVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const { setUser } = useUser();
 
   const handleCancel = () => {
     setSignoutVisible(false);
@@ -20,8 +18,8 @@ const Signout = () => {
     setLoading(true);
     try {
       await logout();
-      setUser(null);
       router.push("/");
+      window.location.reload();
     } catch (e) {
       console.error(e.message);
     } finally {
