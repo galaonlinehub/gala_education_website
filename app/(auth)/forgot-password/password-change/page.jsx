@@ -79,7 +79,7 @@ const ChangePassword = () => {
   const allChecksPassed = Object.values(passwordChecks).every(Boolean);
 
   const PasswordRequirement = ({ satisfied, label }) => (
-    <div className="flex items-center gap-2 text-sm">
+    <div className="flex items-center gap-2 text-[10px] sm:text-xs">
       {satisfied ? (
         <HiCheckCircle className="text-green-500" />
       ) : (
@@ -147,7 +147,7 @@ const ChangePassword = () => {
   return (
     <div className="flex items-center justify-center h-5/6 p-3 lg:p-0">
       <Card
-        className="!w-full !max-w-xl !bg-white !p-8 !rounded-lg !shadow-sm"
+        className="!w-full !max-w-xl !bg-white !rounded-lg  !border-0"
         title={
           <div className="flex justify-start items-center gap-3">
             <Title className="self-center" level={3}>

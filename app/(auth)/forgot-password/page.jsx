@@ -153,9 +153,9 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-5/6 p-3 lg:p-0">
+    <div className="flex items-center justify-center px-2 h-5/6">
       <Card
-        className="!w-full !max-w-xl !bg-white !p-8 !rounded-lg !shadow-sm"
+        className="!w-full !max-w-xl !bg-white !rounded-lg !border-0"
         title={
           <div className="flex justify-start items-center gap-3">
             <Title level={3} className="!self-center !m-0">
@@ -198,7 +198,7 @@ const ForgotPassword = () => {
                 )}
               />
               {errors.email && (
-                <Text type="danger" className="text-sm mt-2">
+                <Text type="danger" className="text-[10px] mt-2">
                   {errors.email.message}
                 </Text>
               )}
@@ -210,7 +210,7 @@ const ForgotPassword = () => {
               icon={<SendOutlined />}
               className="!w-full !bg-[#030DFE] !text-white !font-bold !py-5 px-4 !rounded"
             >
-              {isSendingOtp ? "Sending OTP" : "Send OTP"}
+              {!isSendingOtp && "Send OTP"}
             </Button>
           </form>
         ) : (
@@ -244,7 +244,7 @@ const ForgotPassword = () => {
                       }
                     }}
                     onKeyDown={(e) => handleKeyDown(e, index)}
-                    className={`!w-12 !h-12 !text-center !text-2xl !border-4 !font-black ${
+                    className={`!w-12 !h-12 md:!w-16 md:!h-16 !text-center !text-2xl md:!text-4xl !border-4 !font-black ${
                       otpStatus === "success"
                         ? "!border-green-500"
                         : otpStatus === "error"
@@ -265,12 +265,12 @@ const ForgotPassword = () => {
                   </div>
                 )}
                 {isVerifyingOtp === "error" && (
-                  <div className="w-full flex flex-col items-center justify-center my-6 text-red-500">
+                  <div className="w-full flex text-xs flex-col items-center justify-center my-6 text-red-500">
                     <span>Verification Failed, Incorrect OTP provided!</span>
                   </div>
                 )}
                 {isVerifyingOtp === "success" && (
-                  <div className="w-full flex flex-col items-center justify-center my-6 text-green-500">
+                  <div className="w-full flex text-xs flex-col items-center justify-center my-6 text-green-500">
                     <span>Successfully Verified!</span>
                     <span>
                       Hold on a moment. You&#39;ll be directed to the next

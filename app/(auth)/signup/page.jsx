@@ -28,7 +28,12 @@ const SignupPage = () => {
   const steps = [
     {
       title: "Sign Up",
-      content: accountType === "instructor" ? <InstructorSignUpForm /> : <SignUpForm />,
+      content:
+        accountType === "instructor" ? (
+          <InstructorSignUpForm />
+        ) : (
+          <SignUpForm />
+        ),
     },
     {
       title: "Confirm Plan",
@@ -65,9 +70,12 @@ const SignupPage = () => {
     <main className="p-3 w-screen flex flex-col items-center ">
       <div className="w-full max-w-4xl">
         <Steps
+          className="!w-full !overflow-x-scroll"
           current={activeTab}
           onChange={handleStepChange}
           items={items}
+          responsive={false}
+          direction={"horizontal"}
         />
 
         {steps[activeTab].content}

@@ -73,8 +73,8 @@ const SignInPage = () => {
   };
 
   return (
-    <div className="px-6 md:px-8 lg:px-12 xl:px-16 flex justify-center items-center h-full">
-      <div className="flex flex-col items-center justify-center gap-2 lg:gap-3 w-full max-w-xl">
+    <div className="px-6 md:px-8 lg:px-12 xl:px-16 flex justify-center h-full">
+      <div className="flex flex-col items-center pt-14 gap-2 lg:gap-3 w-full max-w-xl">
         <span className="font-black text-xs md:text-base">Sign In</span>
         <span className="font-black text-2xl md:text-4xl">Welcome Back</span>
         <span className="text-xs md:text-sm font-medium text-center px-4 sm:px-8">
@@ -89,7 +89,7 @@ const SignInPage = () => {
           {localFeedback.show && (
             <Alert
               showIcon
-              // closable
+              closable
               message={localFeedback.message}
               type={localFeedback.type}
               className="!my-2 !w-full"

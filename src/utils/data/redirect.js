@@ -1,6 +1,6 @@
 export const roleRedirects = {
-  student: "/student",
-  instructor: "/teacher",
+  student: "/student/dashboard",
+  instructor: "/instructor",
   admin: "/admin",
   parent: "/parent",
 };
