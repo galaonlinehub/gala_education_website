@@ -203,7 +203,7 @@ export default function Component() {
                   },
                 ]}
                 dataSource={userTopics}
-                loading={topicsLoading}
+                // loading={topicsLoading}
                 pagination={false}
                 size="small"
                 scroll={{ x: 500 }}

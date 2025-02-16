@@ -19,7 +19,8 @@ const publicEndpoints = new Set([
   "resend-otp",
   "payment",
   "password/reset-request",
-  "reset-password"
+  "reset-password",
+  "subscribe-plan"
 ]);
 
 api.interceptors.request.use(

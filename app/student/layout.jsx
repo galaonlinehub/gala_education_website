@@ -42,7 +42,7 @@ export default function StudentLayout({ children }) {
       <Navbar />
       <StudentSearch />
       <main className="flex flex-col lg:flex-row w-full mt-24">
-        <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
+        {/* <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
           <div className="absolute left-1/2 top-20 w-52 h-52 hidden md:block">
             <RightTiltedBook />
           </div>
@@ -55,7 +55,7 @@ export default function StudentLayout({ children }) {
           <div className="absolute left-0 top-2/3 w-20 h-20 hidden sm:block">
             <StudentsInClass />
           </div>
-        </div>
+        </div> */}
 
         {/* Sidebar */}
         <div className="hidden lg:block sticky top-[90px] left-0 w-[16vw] h-[calc(100vh-90px)] border-r border-[#d9d9d9] p-4 overflow-y-auto">

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { LuLogOut } from "react-icons/lu";
-import { Modal} from "antd";
+import { Modal } from "antd";
 import { PiWarningCircleBold } from "react-icons/pi";
 import { logout } from "@/src/utils/fns/auth";
 import { useRouter } from "next/navigation";
@@ -19,7 +19,9 @@ const Signout = () => {
     try {
       await logout();
       router.push("/");
-      window.location.reload();
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     } catch (e) {
       console.error(e.message);
     } finally {
