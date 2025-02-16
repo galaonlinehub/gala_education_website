@@ -258,6 +258,7 @@ const MobilePay = () => {
           open={isModalOpen}
           status={paymentStatus}
           reference={reference ?? null}
+          amount={plan.amount ?? null}
           onClose={() => setIsModalOpen(false)}
         />
       )}

@@ -13,9 +13,7 @@ import {
 import { HiMiniDevicePhoneMobile } from "react-icons/hi2";
 import { useDevice } from "@/src/hooks/useDevice";
 
-
-
-const PaymentPending = ({ open, onClose, status, reference }) => {
+const PaymentPending = ({ open, onClose, status, reference, amount }) => {
   const { type, width, height } = useDevice();
 
   const [modalSize, setModalSize] = useState({ width: 520, height: 520 });
@@ -23,15 +21,15 @@ const PaymentPending = ({ open, onClose, status, reference }) => {
   useEffect(() => {
     const updateSize = () => {
       if (width < 600) {
-        setModalSize({ width: 400, height: 400 }); 
+        setModalSize({ width: 400, height: 400 });
       } else {
-        setModalSize({ width: 460, height: 460 }); 
+        setModalSize({ width: 460, height: 460 });
       }
     };
 
-    updateSize(); 
+    updateSize();
     window.addEventListener("resize", updateSize);
-    
+
     return () => window.removeEventListener("resize", updateSize);
   }, [width]);
 
@@ -121,7 +119,7 @@ const PaymentPending = ({ open, onClose, status, reference }) => {
                   3. Enter Amount for plan selected
                 </span>
                 <p className="text-lg text-[#001840] font-black mt-1">
-                  15,000 TZS
+                  {amount.toLocaleString()}{" "}TZS
                 </p>
               </div>
             </div>
@@ -201,9 +199,6 @@ const PaymentPending = ({ open, onClose, status, reference }) => {
         return null;
     }
   };
-
-
-  
 
   return (
     <Modal
