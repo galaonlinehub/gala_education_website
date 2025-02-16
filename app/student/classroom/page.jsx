@@ -97,7 +97,7 @@ const StudentAssignmentInterface = () => {
   });
 
   return (
-    <Layout>
+    <>
       <div className="bg-white border-b mt-8">
         <Menu mode="horizontal" defaultSelectedKeys={["1"]} className="max-w-7xl mx-auto px-6">
           <Menu.Item key="1" icon={<FileTextOutlined />}>
@@ -244,7 +244,7 @@ const StudentAssignmentInterface = () => {
           )}
         </Drawer>
       </Content>
-    </Layout>
+    </>
   );
 };
 

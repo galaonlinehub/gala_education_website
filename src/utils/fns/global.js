@@ -1,59 +1,33 @@
 import { apiGet, apiPost } from "@/src/services/api_service";
-import useUser from "@/src/store/auth/user";
 import { useSearchResult } from "@/src/store/search_result";
 import { useEnrolledTopics } from "@/src/store/student/class";
-import { useUserTopcs } from "@/src/store/user_topics";
+import { useUserTopics } from "@/src/store/user_topics";
 
-// src/utils/fns/global.js
 export const getUser = async () => {
-  const { setUser, setLoading } = useUser.getState();
+  const response = await apiGet("/user");
   
-  try {
-    // setLoading(true); 
-    const response = await apiGet("/user");
-
-    if (response.status === 200) {
-      console.log("User data:", response.data);
-      setUser(response.data); 
-      
-      return {status:true,role:response.data.role};
-    } else {
-      // Explicitly set loading to false when there's no user
-      setUser(null);
-      setLoading(false);
-    }
-  } catch (error) {
-    console.error("Error fetching user:", error);
-    setUser(null);
-    setLoading(false); // Make sure to set loading to false on error
-  } finally{
-    setLoading(false);
-    }
-    return false;
+  if (response.status !== 200) {
+    throw new Error("Failed to fetch user");
   }
   
- 
+  return response.data;
+};
 
-export const getUserSubject = async () => {
-  const { setEnrolledTopics, setLoading, enrolledTopics } =
-    useEnrolledTopics.getState();
-
+export const getEnrolledTopics = async () => {
   try {
-    setLoading(true);
-    const response = await apiGet("/enrolled_topics");
+    const response = await apiGet("/enrolled_cohorts");
 
-    if (response.status === 200 && response.data !== enrolledTopics) {
-      setEnrolledTopics(response.data);
+    if (response.status === 200) {
+      return response.data;
     }
   } catch (error) {
     console.error("Error fetching enrolled topics:", error);
   } finally {
-    setLoading(false);
   }
 };
 
-export const getUserTopics = async () => {
-  const { setTopicsLoading, setUserTopics } = useUserTopcs.getState();
+export const getUserSubTopics = async () => {
+  const { setTopicsLoading, setUserTopics } = useUserTopics.getState();
   try {
     setTopicsLoading(true);
     const r = await apiGet("/subtopics");
@@ -81,12 +55,4 @@ export const getInstructorDetails = async (idx) => {
   } finally {
     setSearchLoading(false);
   }
-};
-
-export const logout = async () => {
-  try {
-    const response = await apiPost("logout");
-    if (response.status === 200) {
-    }
-  } catch (e) {}
 };

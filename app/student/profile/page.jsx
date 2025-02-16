@@ -1,74 +1,223 @@
 "use client";
 import React from "react";
-import { Switch } from "antd";
-import Image from "next/image";
+import {
+  Card,
+  Row,
+  Col,
+  Avatar,
+  Typography,
+  Statistic,
+  Tag,
+  Timeline,
+  Divider,
+} from "antd";
+import {
+  BookOutlined,
+  TrophyOutlined,
+  MailOutlined,
+  PhoneOutlined,
+  EnvironmentOutlined,
+  CalendarOutlined,
+  StarOutlined,
+  CheckCircleOutlined,
+  ClockCircleOutlined,
+} from "@ant-design/icons";
+import { useUser } from "@/src/hooks/useUser";
+
+const { Title, Text } = Typography;
 
 const StudentProfile = () => {
-  const onChange = (checked) => {
-    console.log(`switch to ${checked}`);
+
+  const {user} = useUser();
+  const student = {
+    name: "Sarah Johnson",
+    email: "sarah.johnson@email.com",
+    phone: "+1 (555) 123-4567",
+    classesBought: 12,
+    joinedDate: "January 2024",
+    location: "New York, USA",
+    achievements: 5,
+    completedClasses: 8,
+    inProgressClasses: 4,
+    skills: ["JavaScript", "React", "Python", "Data Science"],
+    recentActivity: [
+      { date: "2024-01-15", action: "Completed Advanced React Course" },
+      { date: "2024-01-10", action: "Earned 'Top Performer' Badge" },
+      { date: "2024-01-05", action: "Started Machine Learning Basics" },
+      { date: "2024-01-01", action: "Joined Platform" },
+    ],
   };
 
   return (
-    <div className="flex flex-col justify-center w-full items-center p-8">
-      <Image src="/avatar.png" alt="Avatar" width={72} height={72} />
-      <div className="text-sm">Profile Settings</div>
-      <div className=" w-full mt-5 text-xs md:flex justify-center px-20 flex-col md:flex-row ">
-        <div className="flex w-full  border border-blue-700 p-6 flex-col gap-2">
-          <div className="flex flex-col">
-            <span>Username</span>
-            <input type="text" className="p-2 border border-blue-700" />
-          </div>
-          <div className="flex flex-col">
-            <span>Full Name </span>
-            <input type="text" className="p-2 border border-blue-700" />
-          </div>
-          <div className="flex flex-col">
-            <span>Email</span>
-            <input type="text" className="p-2 border border-blue-700" />
-          </div>
-          <div className="flex flex-col">
-            <span>Password</span>
-            <input type="text" className="p-2 border border-blue-700" />
-          </div>
+    <div className="mt-20">
+      <Row gutter={[24, 24]} justify="center">
+        <div className="w-full px-4 lg:px-12">
+          <Card
+            bordered={true}
+            style={{ marginBottom: "24px" }}
+            className="profile-header"
+          >
+            <Row align="middle" justify="space-between">
+              <Col xs={24} md={12}>
+                <div
+                  style={{ display: "flex", alignItems: "center", gap: "16px" }}
+                >
+                  <Avatar
+                    size={96}
+                    src="/api/placeholder/96/96"
+                    style={{ border: "4px solid #1890ff" }}
+                  />
+                  <div>
+                    <Title level={2} className="capitalize">
+                      {user?.first_name}{" "}{user?.last_name}
+                    </Title>
+                    <Tag color="blue" icon={<StarOutlined />}>
+                      Active Student
+                    </Tag>
+                  </div>
+                </div>
+              </Col>
+              <Col xs={24} md={12}>
+                <Row gutter={[16, 16]} justify="end">
+                  <Col>
+                    <Statistic
+                      title="Classes Bought"
+                      value={student.classesBought}
+                      prefix={<BookOutlined />}
+                    />
+                  </Col>
+                  <Col>
+                    <Statistic
+                      title="Achievements"
+                      value={student.achievements}
+                      prefix={<TrophyOutlined />}
+                    />
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+          </Card>
 
-          <div className="flex gap-5 mt-2">
-            <button className="p-1.5 bg-blue-700 text-white w-24">Cancel</button>
-            <button className="p-1.5 bg-blue-700 text-white w-24">Save Changes</button>
-          </div>
+          {/* Main Content */}
+          <Row gutter={[24, 24]}>
+            {/* Left Column */}
+            <Col xs={24} md={16}>
+              {/* Progress Card */}
+              <Card
+                title={<Title level={4}>Learning Progress</Title>}
+                bordered={true}
+                style={{ marginBottom: "24px" }}
+              >
+                <Row gutter={[16, 16]}>
+                  <Col span={8}>
+                    <Statistic
+                      title="Completed"
+                      value={student.completedClasses}
+                      prefix={
+                        <CheckCircleOutlined style={{ color: "#52c41a" }} />
+                      }
+                    />
+                  </Col>
+                  <Col span={8}>
+                    <Statistic
+                      title="In Progress"
+                      value={student.inProgressClasses}
+                      prefix={
+                        <ClockCircleOutlined style={{ color: "#1890ff" }} />
+                      }
+                    />
+                  </Col>
+                  <Col span={8}>
+                    <Statistic
+                      title="Completion Rate"
+                      value={Math.round(
+                        (student.completedClasses / student.classesBought) * 100
+                      )}
+                      suffix="%"
+                    />
+                  </Col>
+                </Row>
+              </Card>
+
+              {/* Recent Activity */}
+              <Card
+                title={<Title level={4}>Recent Activity</Title>}
+                bordered={true}
+              >
+                <Timeline>
+                  {student.recentActivity.map((activity, index) => (
+                    <Timeline.Item key={index} color="blue">
+                      <Text strong>{activity.action}</Text>
+                      <br />
+                      <Text type="secondary">{activity.date}</Text>
+                    </Timeline.Item>
+                  ))}
+                </Timeline>
+              </Card>
+            </Col>
+
+            {/* Right Column */}
+            <Col xs={24} md={8}>
+              {/* Contact Information */}
+              <Card
+                title={<Title level={4}>Contact Information</Title>}
+                bordered={true}
+                style={{ marginBottom: "24px" }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "16px",
+                  }}
+                >
+                  <div>
+                    <Text type="secondary">
+                      <MailOutlined /> Email
+                    </Text>
+                    <div>
+                      <Text strong>{user?.email}</Text>
+                    </div>
+                  </div>
+                  <div>
+                    <Text type="secondary">
+                      <PhoneOutlined /> Phone
+                    </Text>
+                    <div>
+                      <Text strong>{student.phone}</Text>
+                    </div>
+                  </div>
+                  <div>
+                    <Text type="secondary">
+                      <EnvironmentOutlined /> Location
+                    </Text>
+                    <div>
+                      <Text strong>{student.location}</Text>
+                    </div>
+                  </div>
+                  <div>
+                    <Text type="secondary">
+                      <CalendarOutlined /> Joined
+                    </Text>
+                    <div>
+                      <Text strong>{student.joinedDate}</Text>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+
+              {/* Skills */}
+              <Card title={<Title level={4}>Skills</Title>} bordered={true}>
+                {student.skills.map((skill, index) => (
+                  <Tag key={index} color="blue" style={{ margin: "4px" }}>
+                    {skill}
+                  </Tag>
+                ))}
+              </Card>
+            </Col>
+          </Row>
         </div>
-        <div className="bg-[#001840] border border-blue-700 w-full  p-6  text-white">
-          <span className="text-white font-semibold mb-2 flex">Toggle account functionalities</span>
-          <div className="flex flex-col gap-2">
-            <div className="flex justify-between items-center">
-              <span>New Courses</span>
-              <Switch defaultChecked onChange={onChange} size="small" className="border border-white" />
-            </div>
-            <div className="flex justify-between items-center">
-              <span>New Instructors</span>
-              <Switch defaultChecked onChange={onChange} size="small" className="border border-white" />
-            </div>
-            <div className="flex justify-between items-center">
-              <span>Course Updates</span>
-              <Switch defaultChecked onChange={onChange} size="small" className="border border-white" />
-            </div>
-            <div className="flex justify-between items-center">
-              <span>Sales</span>
-              <Switch defaultChecked onChange={onChange} size="small" className="border border-white" />
-            </div>
-          </div>
-          <span className="text-white font-semibold mt-6 mb-2 flex">Toggle course experience</span>
-          <div className="flex flex-col gap-2">
-            <div className="flex justify-between items-center">
-              <span>Lesson quizzes</span>
-              <Switch defaultChecked onChange={onChange} size="small" className="border border-white" />
-            </div>
-            <div className="flex justify-between items-center">
-              <span>Homework/Assignment Reminders</span>
-              <Switch defaultChecked onChange={onChange} size="small" className="border border-white" />
-            </div>
-          </div>
-        </div>
-      </div>
+      </Row>
     </div>
   );
 };

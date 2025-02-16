@@ -1,222 +1,269 @@
+import { useState, useEffect } from "react";
+import { Button, Input, Card, Modal } from "antd";
+import { localStorageFn, sessionStorageFn } from "@/src/utils/fns/client";
+import {
+  EMAIL_VERIFICATION_KEY,
+  PLAN_CONFIRMED_KEY,
+} from "@/src/config/settings";
+import { decrypt } from "@/src/utils/fns/encryption";
+import { LoadingOutlined } from "@ant-design/icons";
+import { useTabNavigator } from "@/src/store/auth/signup";
+import { useMutation } from "@tanstack/react-query";
+import { apiPost } from "@/src/services/api_service";
+import { PaymentStatus } from "@/src/config/settings";
+import { PaymentPending } from "./PaymentStatus";
+import io from "socket.io-client";
 
-import { useState } from 'react';
-import axios from 'axios';
-import "../../../../styles/auth/signup.css";
-import countryList from 'country-list';
-import { useRouter } from 'next/navigation';
-import { useSelectedPlan } from '@/src/store/auth/signup';
+const MobilePay = () => {
+  const [validationMessage, setValidationMessage] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [plan, setPlan] = useState({});
+  const [email, setEmail] = useState("");
+  const setActiveTab = useTabNavigator((state) => state.setActiveTab);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [paymentStatus, setPaymentStatus] = useState("");
+  const [reference, setReference] = useState(null);
 
-const Payment = () => {
-
-  const selectedPlan = useSelectedPlan(state=>state.selectedPlan)
-
-  const [formData, setFormData] = useState({
-    cardNumber: '',
-    expirationDate: '',
-    securityCode: '',
-    country: '',
-  });
-
-  const [errors, setErrors] = useState({
-    cardNumber: '',
-    expirationDate: '',
-    securityCode: '',
-    country: '',
-  });
-
-  const router = useRouter();
-
-  const handleInputChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-    setErrors({
-      ...errors,
-      [e.target.name]: '',
-    });
+  const messages = {
+    required: "Phone number is required",
+    invalid: "Please enter valid phone number",
   };
 
-  const handleSubmit = async (e) => {
+  const isValidPhoneNumber = (number) => {
+    if (!number || number.length !== 9) return false;
+    if (!["6", "7"].includes(number[0])) return false;
+    if (!["1", "2", "3", "4", "5", "6"].includes(number[1])) return false;
+    if (!["1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(number[2]))
+      return false;
+    return true;
+  };
+
+  const validateInput = (value) => {
+    if (!value) return messages.required;
+    if (!isValidPhoneNumber(value)) return messages.invalid;
+    return "";
+  };
+
+  const handleKeyPress = (e) => {
+    if (
+      [
+        "Enter",
+        "Shift",
+        "CapsLock",
+        "Tab",
+        "Control",
+        "Alt",
+        "Meta",
+        "ArrowLeft",
+        "ArrowRight",
+        "Backspace",
+        "Delete",
+        "ArrowUp",
+        "ArrowDown",
+        "Home",
+      ].includes(e.key)
+    ) {
+      return;
+    }
+
+    if (!/^\d$/.test(e.key) || e.target.value.length >= 9) {
+      e.preventDefault();
+      setValidationMessage(messages.invalid);
+      return;
+    }
+
+    const newValue = e.target.value;
+    setPhoneNumber(newValue);
+    setValidationMessage(validateInput(newValue));
+  };
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setPhoneNumber(value);
+    setValidationMessage(validateInput(value));
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-
     try {
-      // Validate form fields
-      let hasErrors = false;
-      const newErrors = { ...errors };
-
-      if (!/^\d{16}$/.test(formData.cardNumber)) {
-        newErrors.cardNumber = 'Invalid card number';
-        hasErrors = true;
+      const validationResult = validateInput(phoneNumber);
+      if (validationResult) {
+        setValidationMessage(validationResult);
+        return;
       }
-
-      if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(formData.expirationDate)) {
-        newErrors.expirationDate = 'Invalid expiration date';
-        hasErrors = true;
+      if (plan) {
+        setIsModalOpen(true);
+        setPaymentStatus(PaymentStatus.LOADING);
+        mutation.mutate();
       }
-
-      if (!/^\d{3}$/.test(formData.securityCode)) {
-        newErrors.securityCode = 'Invalid security code';
-        hasErrors = true;
-      }
-
-      if (!formData.country) {
-        newErrors.country = 'Country is required';
-        hasErrors = true;
-      }
-
-      setErrors(newErrors);
-      if (hasErrors) return;
-
-      // Submit form data to API
-      await axios.post('/api/payment', formData);
-      console.log('Payment successful');
-    } catch (error) {
-      console.error('Error submitting payment:', error);
+    } catch (e) {
+      console.error(e);
+    } finally {
     }
   };
 
-  const countries = countryList.getData();
+  const mutation = useMutation({
+    mutationFn: async () => {
+      const data = {
+        email: email ?? "denis.mgya@gmail.com",
+        phone_number: `255${phoneNumber}`,
+        payment_plan_id: plan?.id ?? 3,
+      };
+
+      try {
+        const response = await apiPost("subscribe-plan", data);
+        return response.data;
+      } catch (error) {
+        console.error("API call failed:", error);
+        throw error;
+      }
+    },
+    onSuccess: (data) => {
+      console.log(data);
+      if (data.order_response.resultcode === "000") {
+        setReference(data.order_response.data[0].payment_token);
+      }
+      setTimeout(() => {
+        setPaymentStatus(PaymentStatus.REFERENCE);
+      }, 5000);
+    },
+    onError: (error) => {
+      setTimeout(() => {
+        setPaymentStatus(PaymentStatus.FAILURE);
+      }, 5000);
+    },
+  });
+
+  useEffect(() => {
+    getPlan();
+    getEmail();
+  }, []);
+
+  useEffect(() => {
+    const socket = io("https://edusockets.galahub.org/payment",);
+    socket.on("connect", () => {
+      socket.emit("join", { email: "frankndagula@outlook.com" });
+      console.log("Conneted");
+    });
+
+    socket.on("paymentResponse", (msg) => {
+      console.log("Message", msg);
+    });
+
+    socket.on("error", (error) => {
+      console.error("Socket error:", error);
+    });
+
+    return () => socket.close();
+  }, [email]);
+
+  let getPlan = () => {
+    const localStorageText = localStorageFn.get(PLAN_CONFIRMED_KEY);
+    const decryptedPlan = decrypt(localStorageText);
+    setPlan(decryptedPlan);
+  };
+
+  var getEmail = () => {
+    const sessionStorageText = sessionStorageFn.get(EMAIL_VERIFICATION_KEY);
+    const decryptedEmail = decrypt(sessionStorageText);
+    setEmail(decryptedEmail);
+  };
+
+  const goBack = () => {
+    setActiveTab(1);
+  };
 
   return (
-    <section className="py-12">
-      <div className="flex flex-col items-center justify-center w-full sm:px-0">
-        <span className="font-black text-[16px]">Payment</span>
-        
-        <span className="flex flex-col items-center">
-          <span className="font-black text-[16px] leading-5">{selectedPlan === 1 ? "3,000":"10,000" }TSH</span>
-          <span className="font-bold text-[12px] leading-5">{selectedPlan === 1 ? "(Billed Monthly)" : "(Billed Annually)"}</span>
-        </span>
-        <span className="font-semibold text-[14px]">
-          Your subscription will auto-renew {selectedPlan === 1 ? "monthly":"yearly"} until cancelled
-        </span>
+    <div className="flex flex-col items-center justify-center min-h-[35rem] md:p-8">
+      <Card className="w-full lg:w-3/4 max-w-3xl bg-white rounded-xl p-6 md:p-8">
+        <div className="mb-8">
+          <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">
+            Payment Details
+          </h2>
 
-        <div className="hidden lg:flex gap-6 w-full sm:w-auto mt-6">
-          <button className="h-input-height w-full sm:w-[328.9px] bg-[#001840] rounded-[5px] text-[16px] text-white font-black">
-            Bank A/C
-          </button>
-          <button className="h-input-height w-full sm:w-[328.9px] bg-[#001840] rounded-[5px] text-[16px] text-white font-black">
-            Mobile Payment
-          </button>
-        </div> 
-
-        <div className="flex flex-col items-center justify-center w-full sm:w-[684.12px] mt-6">
-          <form onSubmit={handleSubmit} className="w-full">
-            <div className="flex flex-col items-start gap-3">
-              <div className="flex flex-col items-start gap-1 w-full">
-                <label htmlFor="cardNumber" className="text-[16px] font-extrabold text-black">
-                  Card Number
-                </label>
-                <input
-                  type="text"
-                  id="cardNumber"
-                  name="cardNumber"
-                  value={formData.cardNumber}
-                  onChange={handleInputChange}
-                  placeholder="1234 1234 1234 1234"
-                  className={`h-input-height w-full bg-[#001840] rounded-[5px] placeholder-[#8C8B8D] placeholder:font-semibold placeholder:text-[13px] text-white pl-4 ${
-                    errors.cardNumber ? 'border-red-500' : ''
-                  }`}
-                />
-                {errors.cardNumber && (
-                  <span className="text-red-500 text-sm">{errors.cardNumber}</span>
-                )}
-              </div>
-
-              <div className="flex gap-3 w-full">
-                <div className="flex flex-col items-start gap-1 w-1/2">
-                  <label htmlFor="expirationDate" className="text-[16px] font-extrabold text-black">
-                    Expiration Date
-                  </label>
-                  <input
-                    type="text"
-                    id="expirationDate"
-                    name="expirationDate"
-                    value={formData.expirationDate}
-                    onChange={handleInputChange}
-                    placeholder="MM/YY"
-                    className={`w-full h-input-height bg-[#001840] rounded-[5px] placeholder-[#8C8B8D] placeholder:font-semibold placeholder:text-[13px] text-white pl-4 ${
-                      errors.expirationDate ? 'border-red-500' : ''
-                    }`}
-                  />
-                  {errors.expirationDate && (
-                    <span className="text-red-500 text-sm">{errors.expirationDate}</span>
-                  )}
-                </div>
-
-                <div className="flex flex-col items-start gap-1 w-1/2">
-                  <label htmlFor="securityCode" className="text-[16px] font-extrabold text-black">
-                    Security Code
-                  </label>
-                  <input
-                    type="text"
-                    id="securityCode"
-                    name="securityCode"
-                    value={formData.securityCode}
-                    onChange={handleInputChange}
-                    placeholder="CVC"
-                    className={`w-full h-input-height bg-[#001840] rounded-[5px] placeholder-[#8C8B8D] placeholder:font-semibold placeholder:text-[13px] text-white pl-4 ${
-                      errors.securityCode ? 'border-red-500' : ''
-                    }`}
-                  />
-                  {errors.securityCode && (
-                    <span className="text-red-500 text-sm">{errors.securityCode}</span>
-                  )}
-                </div>
-              </div>
-
-              <div className="flex flex-col items-start gap-1 w-full">
-                <label htmlFor="country" className="text-[16px] font-extrabold text-black">
-                  Country
-                </label>
-                <div className="relative w-full">
-                  <input
-                    type="text"
-                    id="country"
-                    name="country"
-                    value={formData.country}
-                    onChange={handleInputChange}
-                    placeholder="Select Country"
-                    className={`h-input-height w-full bg-[#001840] rounded-[5px] placeholder-[#8C8B8D] placeholder:font-semibold placeholder:text-[13px] text-white pl-4 pr-8 ${
-                      errors.country ? 'border-red-500' : ''
-                    }`}
-                  />
-                  <div className="absolute top-1/2 transform -translate-y-1/2 right-4 text-white">
-                    {formData.country && (
-                      <span>
-                        {countries.find((c) => c.name === formData.country).emoji}{' '}
-                        {formData.country}
-                      </span>
-                    )}
-                  </div>
-                </div>
-                {errors.country && (
-                  <span className="text-red-500 text-sm">{errors.country}</span>
-                )}
-              </div>
-
-              <span className="text-[12px] font-bold text-center w-full">
-                By providing your card information, you allow Gala Education to charge your card for
-                future payments in accordance with their terms.
-              </span>
-
-              <div className="flex items-center justify-center w-full">
-                <button
-                  onClick={()=>router.push('/signin')}
-                  type="submit"
-                  className="bg-[#030DFE] w-[117.46px] h-[42.27px] rounded-[5px] font-black text-[16px] text-white my-6"
-                >
-                  Pay
-                </button>
-              </div>
+          <div className="bg-gray-50 rounded-lg p-4 space-y-2">
+            <div className="flex justify-between items-center">
+              <span className="">Amount</span>
+              {plan ? (
+                <span className="text-xl font-black">
+                  {Number(plan.amount).toLocaleString()} TZS
+                </span>
+              ) : (
+                <LoadingOutlined spin className="text-xs" />
+              )}
             </div>
-          </form>
+
+            <div className="flex justify-between items-center">
+              <span className="">Plan</span>
+              {plan ? (
+                <span className="text-gray-900 font-black">{plan.name}</span>
+              ) : (
+                <LoadingOutlined spin className="text-xs" />
+              )}
+            </div>
+          </div>
         </div>
-      </div>
-    </section>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-gray-700">
+              Phone Number
+            </label>
+            <Input
+              className="w-full rounded-lg"
+              addonBefore={
+                <span className="text-gray-600 font-medium">255</span>
+              }
+              value={phoneNumber}
+              onChange={handleChange}
+              onKeyDown={handleKeyPress}
+              onPaste={(e) => {
+                e.preventDefault();
+                setValidationMessage(messages.invalid);
+              }}
+              autoComplete="off"
+              maxLength={9}
+              placeholder="752451811"
+            />
+
+            <div className="flex justify-between items-center text-xs mt-1">
+              {validationMessage && (
+                <span className="text-red-500">{validationMessage}</span>
+              )}
+              <span className="text-gray-500">Example: 752451811</span>
+            </div>
+          </div>
+
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="w-full !h-10 flex items-center justify-center gap-2 text-white 
+                !bg-[#010798] !hover:bg-[#010798] !border-transparent !font-semibold
+                rounded-lg transition-colors duration-200"
+          >
+            Request Payment
+          </Button>
+        </form>
+        <div className="w-full mt-6">
+          <span
+            onClick={goBack}
+            className="font-bold text-[#010798] text-xs cursor-pointer border border-[#010798] p-2 rounded-md"
+          >
+            Change plan
+          </span>
+        </div>
+      </Card>
+      {isModalOpen && (
+        <PaymentPending
+          open={isModalOpen}
+          status={paymentStatus}
+          reference={reference ?? null}
+          amount={plan.amount ?? null}
+          onClose={() => setIsModalOpen(false)}
+        />
+      )}
+    </div>
   );
 };
 
-export default Payment;
-
-
+export default MobilePay;

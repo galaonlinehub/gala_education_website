@@ -78,7 +78,7 @@ const MailingList = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit, onError)}
-      className="bg-white px-5 py-3 sm:w-[24rem] w-full  h-fit rounded-[15px]"
+      className="bg-white px-6 py-4 sm:w-[24rem] md:w-[29rem] w-full mt-4  h-fit rounded-[15px]"
     >
       <h1 className="font-black sm:text-xs text-[10px] mb-2">
         Are you interested in a session and want to know more?
@@ -220,7 +220,7 @@ const MailingList = () => {
           {...register("more_details")}
         />
       </div>
-      <div className="gap-x-2 flex justify-center items-center">
+      <div className="gap-x-2 flex justify-start items-center">
         <Controller
           name="personal_data_consent"
           control={control}
@@ -240,13 +240,13 @@ const MailingList = () => {
             />
           )}
         />
-        <span className="text-[10px] py-3">
+        <span className="text-[10px]  py-3">
           I authorize the processing of personal data for purposes related to
           the performance of institutional activities * ( Information)
         </span>
       </div>
 
-      <div className="gap-x-2 flex justify-center items-center">
+      <div className="gap-x-2 flex justify-start items-center">
         <Controller
           name="informative_material_consent"
           control={control}

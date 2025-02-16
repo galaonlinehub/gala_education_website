@@ -9,6 +9,8 @@ import { message, Button, Alert } from "antd";
 import { maskEmail } from "@/src/utils/fns/mask_email";
 import { ReloadOutlined } from "@ant-design/icons";
 import { apiPost } from "@/src/services/api_service";
+import { sessionStorageFn } from "@/src/utils/fns/client";
+import { EMAIL_VERIFICATION_KEY, EMAIL_VERIFICATION_MODAL_KEY } from "@/src/config/settings";
 
 const EmailVerification = () => {
   const openEmailVerificationModal = useEmailVerificationModalOpen(
@@ -35,38 +37,36 @@ const EmailVerification = () => {
 
   const [loading, setLoading] = React.useState(false);
 
-  useEffect(() => {
-    if (openEmailVerificationModal) {
-      const handleKeyDownRefresh = (event) => {
-        if ((event.ctrlKey || event.metaKey) && event.key === "r") {
-          event.preventDefault();
-        }
+  // useEffect(() => {
+  //   if (openEmailVerificationModal) {
+  //     const handleKeyDownRefresh = (event) => {
+  //       if ((event.ctrlKey || event.metaKey) && event.key === "r") {
+  //         event.preventDefault();
+  //       }
 
-        if (event.key === "F5" || event.key === "F12") {
-          event.preventDefault();
-        }
-      };
+  //       if (event.key === "F5" || event.key === "F12") {
+  //         event.preventDefault();
+  //       }
+  //     };
 
-      const handleBeforeUnload = (event) => {
-        event.preventDefault();
-        event.returnValue = "";
-      };
+  //     const handleBeforeUnload = (event) => {
+  //       event.preventDefault();
+  //       event.returnValue = "";
+  //     };
 
-      window.addEventListener("keydown", handleKeyDownRefresh);
-      window.addEventListener("beforeunload", handleBeforeUnload);
+  //     window.addEventListener("keydown", handleKeyDownRefresh);
+  //     window.addEventListener("beforeunload", handleBeforeUnload);
 
-      return () => {
-        window.removeEventListener("keydown", handleKeyDownRefresh);
-        window.removeEventListener("beforeunload", handleBeforeUnload);
-      };
-    }
-  }, [openEmailVerificationModal]);
+  //     return () => {
+  //       window.removeEventListener("keydown", handleKeyDownRefresh);
+  //       window.removeEventListener("beforeunload", handleBeforeUnload);
+  //     };
+  //   }
+  // }, [openEmailVerificationModal]);
 
   useEffect(() => {
     const getEmail = () => {
-      const encryptedEmail = sessionStorage.getItem(
-        "e67e4931-4518-4369-b011-fa078beefac1"
-      );
+      const encryptedEmail = sessionStorageFn.get(EMAIL_VERIFICATION_KEY);
       if (encryptedEmail) {
         const decryptedEmail = decrypt(encryptedEmail);
         setEmail(decryptedEmail);
@@ -114,7 +114,7 @@ const EmailVerification = () => {
           }, 5000);
         }
       } catch (e) {
-        // console.error(e.response?.data || e.message);
+        console.error(e.response?.data || e.message);
         setHasVerified(false);
       } finally {
         setLoading(false);

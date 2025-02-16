@@ -76,52 +76,48 @@ const VideoConference = ({ roomId }) => {
     }
 
     useEffect(() => {
-        const token = getToken()
-        console.log("the token in the signaling is",token)
-
+        const token = getToken();
+        console.log("The token in the signaling is", token);
+    
         const socket = io("http://localhost:3001/signaling", {
             query: { token: token },
         });
         socketRef.current = socket;
-
+    
         socket.on('connect', () => {
             console.log('Connected to Signalling server');
-            socket.emit('newConnection', { 
-                userId: 1, 
-                roomId: roomId 
+            socket.emit('newConnection', {
+                userId: 1,
+                roomId: roomId,
             });
-        
         });
-
+    
         socket.on('newConnectionConfirmed', (data) => {
             console.log('New Connection Confirmed by Server:', data);
         });
-
-        
-
+    
         const getMediaStream = async () => {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({
                     video: true,
                     audio: true,
                 });
-
+    
                 setLocalStream(stream);
-
+    
                 if (localVideoRef.current) {
                     localVideoRef.current.srcObject = stream;
                 }
-
+    
                 console.log("Attempting to join room with ID:", roomId);
                 socket.emit("joinRoom", roomId);
                 console.log("joinRoom event emitted");
-
-
+    
                 socket.on("roomDetails", ({ isCreator, userList }) => {
                     setIsRoomCreator(isCreator);
                     setUserList(userList);
                 });
-
+    
                 socket.on("offer", async ({ user, offer }) => {
                     if (!peersRef.current[user]) {
                         const peer = createPeer(user, localStream, false);
@@ -129,25 +125,25 @@ const VideoConference = ({ roomId }) => {
                     }
                     peersRef.current[user].signal(offer);
                 });
-
+    
                 socket.on("answer", ({ user, answer }) => {
                     peersRef.current[user]?.signal(answer);
                 });
-
+    
                 socket.on("iceCandidate", ({ user, candidate }) => {
                     peersRef.current[user]?.signal(candidate);
                 });
-
+    
                 socket.on("userJoined", ({ userId }) => {
                     const peer = createPeer(userId, localStream, true);
                     peersRef.current[userId] = peer;
-
+    
                     setUserList((prev) => [
                         ...prev,
                         { id: userId, isCreator: false },
                     ]);
                 });
-
+    
                 socket.on("userLeft", ({ userId }) => {
                     const peer = peersRef.current[userId];
                     if (peer) {
@@ -160,16 +156,16 @@ const VideoConference = ({ roomId }) => {
                         });
                     }
                 });
-
+    
                 socket.on("chatMessage", ({ userId, message }) => {
-                    console.log("A message was sent here")
+                    console.log("A message was sent here");
                     setChatMessages((prev) => [...prev, { userId, message }]);
                 });
-
+    
                 socket.on('connect_error', (error) => {
                     console.error('Connection Error:', error);
                 });
-                
+    
                 socket.on('error', (error) => {
                     console.error('Socket Error:', error);
                 });
@@ -177,14 +173,18 @@ const VideoConference = ({ roomId }) => {
                 console.error("Media stream error:", error);
             }
         };
-
+    
         getMediaStream();
-
+    
+        // Store the current value of peersRef in a variable
+        const currentPeers = peersRef.current;
+    
         return () => {
             socket.disconnect();
-            Object.values(peersRef.current).forEach((peer) => peer.destroy());
+            // Use the variable in the cleanup function
+            Object.values(currentPeers).forEach((peer) => peer.destroy());
         };
-    }, [roomId, createPeer]);
+    }, [roomId, createPeer, localStream]);
     
     return (
         <div className="flex w-screen h-screen items-center p-4 bg-[#f0eecd]">
