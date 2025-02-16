@@ -55,7 +55,7 @@ const SignUpForm = () => {
         <div className="text-center mb-8">
           <Title
             level={2}
-            className="!text-2xl !font-black !text-gray-900 !mb-2"
+            className="!text-2xl !font-bold !text-gray-900 !mb-2"
           >
             Sign Up
           </Title>

@@ -1,10 +1,8 @@
 import "./globals.css";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
-import ClientWrapper from "@/src/components/layout/ClientWrapper";
-import { Inter, Poppins } from "next/font/google";
+import { Inter, Poppins, Urbanist, Outfit, DM_Sans } from "next/font/google";
 import QueryWrapper from "@/src/components/layout/QueryWrapper";
 
-// Configure fonts
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
@@ -13,9 +11,23 @@ const inter = Inter({
 
 const poppins = Poppins({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
   display: "swap",
   variable: "--font-poppins",
+});
+
+const urbanist = Urbanist({
+  subsets: ["latin"],
+  display: "swap",
+});
+const outfit = Outfit({
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const dmSans = DM_Sans({
+  subsets: ['latin'],
+  display: 'swap',
 });
 
 export const metadata = {
@@ -46,7 +58,8 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${inter.variable} ${poppins.variable}`}>
+    <html lang="en" className={`${inter.className} ${poppins.variable}`}>
+      {" "}
       <body className="font-sans">
         <QueryWrapper>
           <AntdRegistry>{children}</AntdRegistry>

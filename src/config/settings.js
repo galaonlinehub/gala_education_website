@@ -12,4 +12,5 @@ export const PaymentStatus = {
   LOADING: "loading",
   SUCCESS: "success",
   FAILURE: "failure",
+  REFERENCE: "reference"
 };

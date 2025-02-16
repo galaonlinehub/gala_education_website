@@ -95,7 +95,7 @@ const InstructorRegistrationForm = () => {
     <>
       <Card className="!border-0 !mt-12">
         <div className="flex flex-col gap-2 justify-center items-center w-full mb-6">
-          <span className="font-black text-2xl">Sign Up</span>
+          <span className="font-bold text-2xl">Sign Up</span>
           <span className="font-medium text-[12px] w-full text-center">
             {" "}
             When registering with Gala, teachers undergo a vetting process to

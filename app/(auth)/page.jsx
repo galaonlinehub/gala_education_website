@@ -69,7 +69,7 @@ function Home() {
               <h1 className="text-white sm:text-[64px] text-[35px]  sm:leading-[70px] leading-[30px] font-black">Education</h1>
             </div>
             <h2 className="text-white font-bold sm:leading-[30px] leading-[15px] sm:text-[20px] text-[10px]">
-              Empowering minds,shaping futures - Gala Education, your
+              Empowering minds, shaping futures - Gala Education, your
               <br /> pathway to success.
             </h2>
 

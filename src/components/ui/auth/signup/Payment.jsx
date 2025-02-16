@@ -12,8 +12,7 @@ import { useMutation } from "@tanstack/react-query";
 import { apiPost } from "@/src/services/api_service";
 import { PaymentStatus } from "@/src/config/settings";
 import { PaymentPending } from "./PaymentStatus";
-import io from 'socket.io-client';
-
+import io from "socket.io-client";
 
 const MobilePay = () => {
   const [validationMessage, setValidationMessage] = useState("");
@@ -23,6 +22,7 @@ const MobilePay = () => {
   const setActiveTab = useTabNavigator((state) => state.setActiveTab);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [paymentStatus, setPaymentStatus] = useState("");
+  const [reference, setReference] = useState(null);
 
   const messages = {
     required: "Phone number is required",
@@ -103,21 +103,34 @@ const MobilePay = () => {
   };
 
   const mutation = useMutation({
-    mutationFn: () => {
+    mutationFn: async () => {
       const data = {
-        email: email ?? "frankndagula@outlook.com",
+        email: email ?? "denis.mgya@gmail.com",
         phone_number: `255${phoneNumber}`,
-        payment_plan_id: plan.id ?? 3,
+        payment_plan_id: plan?.id ?? 3,
       };
 
-      const response = apiPost("subscribe-plan", data);
-      return response.data;
+      try {
+        const response = await apiPost("subscribe-plan", data);
+        return response.data;
+      } catch (error) {
+        console.error("API call failed:", error);
+        throw error;
+      }
     },
     onSuccess: (data) => {
-      setPaymentStatus(PaymentStatus.SUCCESS);
+      console.log(data);
+      if (data.order_response.resultcode === "000") {
+        setReference(data.order_response.data[0].payment_token);
+      }
+      setTimeout(() => {
+        setPaymentStatus(PaymentStatus.REFERENCE);
+      }, 5000);
     },
     onError: (error) => {
-      setPaymentStatus(PaymentStatus.FAILURE);
+      setTimeout(() => {
+        setPaymentStatus(PaymentStatus.FAILURE);
+      }, 5000);
     },
   });
 
@@ -127,7 +140,7 @@ const MobilePay = () => {
   }, []);
 
   useEffect(() => {
-    const socket = io("https://edusockets.galahub.org/payment");
+    const socket = io("https://edusockets.galahub.org/payment",);
     socket.on("connect", () => {
       socket.emit("join", { email: "frankndagula@outlook.com" });
       console.log("Conneted");
@@ -142,7 +155,7 @@ const MobilePay = () => {
     });
 
     return () => socket.close();
-  },[email]);
+  }, [email]);
 
   let getPlan = () => {
     const localStorageText = localStorageFn.get(PLAN_CONFIRMED_KEY);
@@ -162,9 +175,7 @@ const MobilePay = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[35rem] md:p-8">
-      <Card
-        className="w-full lg:w-3/4 max-w-3xl bg-white rounded-xl p-6 md:p-8"
-      >
+      <Card className="w-full lg:w-3/4 max-w-3xl bg-white rounded-xl p-6 md:p-8">
         <div className="mb-8">
           <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">
             Payment Details
@@ -236,7 +247,7 @@ const MobilePay = () => {
         <div className="w-full mt-6">
           <span
             onClick={goBack}
-            className="font-bold text-[#010798] text-xs cursor-pointer hover:border border-[#010798] p-2 rounded-md"
+            className="font-bold text-[#010798] text-xs cursor-pointer border border-[#010798] p-2 rounded-md"
           >
             Change plan
           </span>
@@ -246,6 +257,7 @@ const MobilePay = () => {
         <PaymentPending
           open={isModalOpen}
           status={paymentStatus}
+          reference={reference ?? null}
           onClose={() => setIsModalOpen(false)}
         />
       )}
