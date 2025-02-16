@@ -524,7 +524,7 @@ export default  function Lesson({ params }){
   
     const { stream, user } = instructorStream;
     return (
-      <div className={`w-full h-full ${(chat || attendees) ? 'basis-2/3':'basis-11/12'} relative `}>
+      <div className={`w-full h-[80%] ${(chat || attendees) ? 'basis-2/3':'basis-11/12'} relative `}>
         <video
           key={user.id}
           autoPlay
@@ -561,19 +561,21 @@ export default  function Lesson({ params }){
       </div>
     ));
   }, [studentStreams]);
+
+  
   
   return (
-    <div className='w-screen h-screen flex   overflow-hidden justify-center  bg-[#747487] relative'>
+    <div className='w-screen h-screen flex   overflow-hidden justify-center  bg-[#202124] relative'>
     { !board ?
     <div className='flex w-full items-center  gap-x-5 px-5'>
-    {video ?  renderInstructorVideo : <div className={`w-[80%] h-[90%] flex items-center justify-center ${(chat || attendees)?"basis-2/3":"basis-11/12"}   bg-[#232333] rounded-2xl`}>
+    {video ?  renderInstructorVideo : <div className={`sm:w-[80%] w-full h-[70%] flex items-center justify-center ${(chat || attendees)?"sm:basis-2/3":"sm:basis-11/12"}   bg-[#232333] rounded-2xl`}>
               <div className="bg-[#747487] w-48 h-48 rounded-full text-white flex items-center justify-center font-bold">
                 {user?.name} (Instructor)
               </div>
         </div>}
         <>
   {chat ? (
-    <div className={`bg-[#232333] p-5 rounded-xl h-[90vh] basis-1/3`}>
+    <div className={` p-5 rounded-xl h-[90vh] basis-1/3`}>
       <div className={"text-white text-center border-b-2 py-2"}>
         Room Group Chat
       </div>
@@ -586,7 +588,7 @@ export default  function Lesson({ params }){
       />
     </div>
   ) : attendees ? (
-    <div className={"bg-[#232333] p-5 rounded-xl h-[90vh] basis-1/3 flex flex-col overflow-y-scroll"}>
+    <div className={" p-5 rounded-xl max-h-[10rem] basis-1/3 flex flex-col overflow-y-scroll"}>
     {renderStudentVideos}
     </div>
   ) : (
