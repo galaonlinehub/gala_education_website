@@ -41,11 +41,16 @@ jobs:
             echo "PM2_APP_NAME=nextjs-main" >> $GITHUB_ENV
             echo "DOMAIN=edu.galahub.org" >> $GITHUB_ENV
             echo "PORT=3457" >> $GITHUB_ENV
+            echo "OTHER_PM2_APP=nextjs-dev" >> $GITHUB_ENV
+            echo "OTHER_PORT=3347" >> $GITHUB_ENV
+
           else
             echo "DEPLOY_PATH=/var/www/next" >> $GITHUB_ENV
             echo "PM2_APP_NAME=nextjs-dev" >> $GITHUB_ENV
             echo "DOMAIN=edutz.galahub.org" >> $GITHUB_ENV
             echo "PORT=3347" >> $GITHUB_ENV
+            echo "OTHER_PM2_APP=nextjs-main" >> $GITHUB_ENV
+            echo "OTHER_PORT=3457" >> $GITHUB_ENV
 
           fi
 
@@ -132,14 +137,22 @@ jobs:
             
             echo "🔄 Restarting PM2 process..."
             if pm2 list | grep -q "${PM2_APP_NAME}"; then
-              # pm2 reload ${PM2_APP_NAME} --update-env
-              PORT=$PORT pm2 reload ${PM2_APP_NAME} --update-env
+              # PORT=$PORT pm2 reload ${PM2_APP_NAME} --update-env
+              pm2 stop ${PM2_APP_NAME}
+              cd ${DEPLOY_PATH}
+              PORT=${PORT} pm2 restart ${PM2_APP_NAME} --update-env
             else
               cd ${DEPLOY_PATH}
-              # pm2 start npm --name "${PM2_APP_NAME}" -- start
               PORT=$PORT pm2 start npm --name "${PM2_APP_NAME}" -- start
-              pm2 save
+              # pm2 save
             fi
+
+            if pm2 list | grep -q "${OTHER_PM2_APP}"; then
+              echo "🔄 Ensuring correct port for other application..."
+              PORT=${OTHER_PORT} pm2 restart ${OTHER_PM2_APP} --update-env
+            fi
+
+            pm2 save
             
             echo "✅ Deployment completed successfully!"
           EOF
@@ -153,6 +166,8 @@ jobs:
              export PM2_APP_NAME='${PM2_APP_NAME}' && \
              export DOMAIN='${DOMAIN}' && \
              export PORT='${PORT}' && \
+             export OTHER_PM2_APP='${OTHER_PM2_APP}' && \
+             export OTHER_PORT='${OTHER_PORT}' && \
              bash /tmp/deploy.sh"
 
           ssh $DEPLOY_USER@$DEPLOY_HOST "rm /tmp/deploy.sh"

@@ -138,6 +138,7 @@ const MobilePay = () => {
     getEmail();
   }, []);
 
+
   useEffect(() => {
     const socket = io("https://edusockets.galahub.org/payment",);
     socket.on("connect", () => {
@@ -153,6 +154,9 @@ const MobilePay = () => {
     socket.on("error", (error) => {
       console.error("Socket error:", error);
     });
+
+    console.log(email)
+
 
     return () => socket.close();
   }, [email]);
