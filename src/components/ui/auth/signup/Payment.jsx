@@ -119,7 +119,6 @@ const MobilePay = () => {
       }
     },
     onSuccess: (data) => {
-      console.log(data);
       if (data.order_response.resultcode === "000") {
         setReference(data.order_response.data[0].payment_token);
       }
@@ -148,6 +147,7 @@ const MobilePay = () => {
 
     socket.on("paymentResponse", (msg) => {
       console.log("Message", msg);
+      alert(JSON.stringify(msg))
     });
 
     socket.on("error", (error) => {

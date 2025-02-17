@@ -1,220 +1,170 @@
-#deploy
+
+
 name: Deploy to VPS
 
 on:
- workflow_run:
-   workflows: ["Code Quality Check"]
-   types:
-     - completed
-   branches:
-     - develop
-     - main
- workflow_dispatch:
+  workflow_run:
+    workflows: ["Code Quality Check"]
+    types:
+      - completed
+    branches:
+      - develop
+      - main
+  workflow_dispatch:
 
 env:
- NODE_VERSION: "18.17.0"
- PM2_APP_NAME: "nextjs"
+  NODE_VERSION: "18.17.0"
 
 permissions:
- actions: read
- contents: read
- id-token: write
+  actions: read
+  contents: read
+  id-token: write
 
 jobs:
- deploy:
-   name: Deploy to VPS
-   if: ${{ github.event.workflow_run.conclusion == 'success' }}
-  #  runs-on: ubuntu-latest
-   runs-on: ubuntu-22.04
-   environment:
-     name: ${{ github.event.workflow_run.head_branch }}
+  deploy:
+    name: Deploy to VPS
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-22.04
+    environment:
+      name: ${{ github.event.workflow_run.head_branch }}
 
-   concurrency:
-     group: deploy-${{ github.event.workflow_run.head_branch }}
-     cancel-in-progress: true
+    concurrency:
+      group: deploy-${{ github.event.workflow_run.head_branch }}
+      cancel-in-progress: true
 
-   steps:
-     - name: Verify Secrets Configuration
-       run: |
-         if [ -z "${{ secrets.SSH_PRIVATE_KEY }}" ]; then
-           echo "::error::SSH_PRIVATE_KEY is not set"
-           exit 1
-         fi
-         if [ -z "${{ secrets.VPS_HOST }}" ]; then
-           echo "::error::VPS_HOST is not set"
-           exit 1
-         fi
-         if [ -z "${{ secrets.VPS_USER }}" ]; then
-           echo "::error::VPS_USER is not set"
-           exit 1
-         fi
-         if [ -z "${{ secrets.PROJECT_PATH }}" ]; then
-           echo "::error::PROJECT_PATH is not set"
-           exit 1
-         fi
+    steps:
+      - name: Set deployment variables
+        id: set-vars
+        run: |
+          if [ "${{ github.event.workflow_run.head_branch }}" = "main" ]; then
+            echo "DEPLOY_PATH=/var/www/next-main" >> $GITHUB_ENV
+            echo "PM2_APP_NAME=nextjs-main" >> $GITHUB_ENV
+            echo "DOMAIN=edu.galahub.org" >> $GITHUB_ENV
+            echo "PORT=3457" >> $GITHUB_ENV
+          else
+            echo "DEPLOY_PATH=/var/www/next" >> $GITHUB_ENV
+            echo "PM2_APP_NAME=nextjs-dev" >> $GITHUB_ENV
+            echo "DOMAIN=edutz.galahub.org" >> $GITHUB_ENV
+            echo "PORT=3347" >> $GITHUB_ENV
 
-     - name: Checkout code
-       uses: actions/checkout@v4
-       with:
-         ref: ${{ github.event.workflow_run.head_branch }}
-         fetch-depth: 0
+          fi
 
-     - name: Setup SSH
-       uses: webfactory/ssh-agent@v0.8.0
-       with:
-         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Verify Secrets Configuration
+        run: |
+          if [ -z "${{ secrets.SSH_PRIVATE_KEY }}" ]; then
+            echo "::error::SSH_PRIVATE_KEY is not set"
+            exit 1
+          fi
+          if [ -z "${{ secrets.VPS_HOST }}" ]; then
+            echo "::error::VPS_HOST is not set"
+            exit 1
+          fi
+          if [ -z "${{ secrets.VPS_USER }}" ]; then
+            echo "::error::VPS_USER is not set"
+            exit 1
+          fi
 
-     - name: Debug SSH Setup
-       run: |
-         echo "Testing SSH agent configuration..."
-         ssh-add -l
-         echo "Testing connection to GitHub..."
-         ssh -T git@github.com || true
-         echo "Testing connection to VPS..."
-         ssh -T ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} || true
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_branch }}
+          fetch-depth: 0
 
-     - name: Add SSH Known Hosts
-       run: |
-         mkdir -p ~/.ssh
-         ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
-         ssh-keyscan -H github.com >> ~/.ssh/known_hosts
-         chmod 600 ~/.ssh/known_hosts
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.8.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-     - name: Verify Variables
-       run: |
-         echo "Verifying required variables..."
-         [[ ! -z "${{ secrets.PROJECT_PATH }}" ]] && echo "PROJECT_PATH is set" || echo "PROJECT_PATH is empty"
-         [[ ! -z "${{ secrets.VPS_USER }}" ]] && echo "VPS_USER is set" || echo "VPS_USER is empty"
-         [[ ! -z "${{ secrets.VPS_HOST }}" ]] && echo "VPS_HOST is set" || echo "VPS_HOST is empty"
-         [[ ! -z "${{ github.event.workflow_run.head_branch }}" ]] && echo "BRANCH is set" || echo "BRANCH is empty"
+      - name: Add SSH Known Hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+          ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
 
-     - name: Deploy to VPS
-       env:
-         DEPLOY_PATH: ${{ secrets.PROJECT_PATH }}
-         NODE_ENV: production
-         DEPLOY_USER: ${{ secrets.VPS_USER }}
-         DEPLOY_HOST: ${{ secrets.VPS_HOST }}
-         DEPLOY_BRANCH: ${{ github.event.workflow_run.head_branch }}
-         PM2_APP_NAME: ${{ env.PM2_APP_NAME }}
-       run: |
-         # Create deployment script with variable expansion
-         cat << EOF > deploy.sh
-           #!/bin/bash
-           set -e  # Exit on any error
-           
-           # Export variables for the script
-           DEPLOY_PATH="${DEPLOY_PATH}"
-           DEPLOY_BRANCH="${DEPLOY_BRANCH}"
-           DEPLOY_USER="${DEPLOY_USER}"
-           DEPLOY_HOST="${DEPLOY_HOST}"
-           PM2_APP_NAME="${PM2_APP_NAME}"
-           
-           echo "Environment variables:"
-           echo "DEPLOY_PATH: \${DEPLOY_PATH}"
-           echo "DEPLOY_BRANCH: \${DEPLOY_BRANCH}"
-           echo "DEPLOY_USER: \${DEPLOY_USER}"
-           echo "DEPLOY_HOST: \${DEPLOY_HOST}"
-           echo "PM2_APP_NAME: \${PM2_APP_NAME}"
-           
-           # Verify variables are set
-           if [ -z "\${DEPLOY_PATH}" ]; then
-             echo "Error: DEPLOY_PATH is not set"
-             exit 1
-           fi
-           
-           if [ -z "\${DEPLOY_BRANCH}" ]; then
-             echo "Error: DEPLOY_BRANCH is not set"
-             exit 1
-           fi
-           
-           echo "🚀 Starting deployment for branch \${DEPLOY_BRANCH}..."
-           
-           # Check directory permissions
-           echo "Checking directory permissions..."
-           ls -la /var/www/
-           ls -la \${DEPLOY_PATH} 2>/dev/null || echo "Directory does not exist yet"
-           
-           # Ensure parent directory exists
-           mkdir -p \$(dirname \${DEPLOY_PATH})
-           
-           if [ -d "\${DEPLOY_PATH}/.git" ]; then
-             cd \${DEPLOY_PATH}
-             echo "📥 Pulling latest changes..."
-             git fetch origin \${DEPLOY_BRANCH}
-             git reset --hard origin/\${DEPLOY_BRANCH}
-           else
-             echo "🔄 Cloning repository..."
-             rm -rf \${DEPLOY_PATH}
-             git clone -b \${DEPLOY_BRANCH} git@github.com:galaonlinehub/gala_education_website.git \${DEPLOY_PATH}
-             cd \${DEPLOY_PATH}
-           fi
+      - name: Deploy to VPS
+        env:
+          DEPLOY_USER: ${{ secrets.VPS_USER }}
+          DEPLOY_HOST: ${{ secrets.VPS_HOST }}
+          DEPLOY_BRANCH: ${{ github.event.workflow_run.head_branch }}
+        run: |
+          cat << 'EOF' > deploy.sh
+            #!/bin/bash
+            set -e
 
-           # Backup current .env file if it exists
-           if [ -f .env ]; then
-             cp .env .env.backup
-           fi
-           
-           echo "📦 Installing dependencies..."
-           if [ ! -f package-lock.json ]; then
-             echo "❌ Error: package-lock.json is missing. Please ensure it is committed to the repository."
-             exit 1
-           fi
-           npm ci 
-           
-           # Restore .env file
-           if [ -f .env.backup ]; then
-             mv .env.backup .env
-           fi
-           
-           echo "🏗️ Building application..."
-           npm run build
-           
-           echo "🧹 Clearing Next.js cache..."
-           rm -rf .next/cache
-           
-           echo "🔄 Restarting PM2 process..."
-           if pm2 list | grep -q "\${PM2_APP_NAME}"; then
-             pm2 reload \${PM2_APP_NAME} --update-env
-           else
-             pm2 start npm --name "\${PM2_APP_NAME}" -- start
-           fi
-           
-           echo "✅ Deployment completed successfully!"
-         EOF
+            echo "🚀 Starting deployment for branch ${DEPLOY_BRANCH} to ${DEPLOY_PATH}..."
+            echo "🎯 Target domain: ${DOMAIN}"
+            echo "🔄 PM2 Process: ${PM2_APP_NAME}"
+            
+            # Ensure parent directory exists
+            mkdir -p $(dirname ${DEPLOY_PATH})
+            
+            if [ -d "${DEPLOY_PATH}/.git" ]; then
+              cd ${DEPLOY_PATH}
+              echo "📥 Pulling latest changes..."
+              git fetch origin ${DEPLOY_BRANCH}
+              git reset --hard origin/${DEPLOY_BRANCH}
+            else
+              echo "🔄 Cloning repository..."
+              rm -rf ${DEPLOY_PATH}
+              git clone -b ${DEPLOY_BRANCH} git@github.com:galaonlinehub/gala_education_website.git ${DEPLOY_PATH}
+              cd ${DEPLOY_PATH}
+            fi
 
-         # Make script executable
-         chmod +x deploy.sh
+            # Backup current .env file if it exists
+            if [ -f .env ]; then
+              cp .env .env.backup
+            fi
+            
+            echo "📦 Installing dependencies..."
+            npm ci
+            
+            # Restore .env file
+            if [ -f .env.backup ]; then
+              mv .env.backup .env
+            fi
+            
+            echo "🏗️ Building application..."
+            npm run build
+            
+            echo "🧹 Clearing Next.js cache..."
+            rm -rf .next/cache
+            
+            echo "🔄 Restarting PM2 process..."
+            if pm2 list | grep -q "${PM2_APP_NAME}"; then
+              # pm2 reload ${PM2_APP_NAME} --update-env
+              PORT=$PORT pm2 reload ${PM2_APP_NAME} --update-env
+            else
+              cd ${DEPLOY_PATH}
+              # pm2 start npm --name "${PM2_APP_NAME}" -- start
+              PORT=$PORT pm2 start npm --name "${PM2_APP_NAME}" -- start
+              pm2 save
+            fi
+            
+            echo "✅ Deployment completed successfully!"
+          EOF
 
-         # Debug: Show script content
-         echo "Deployment script content:"
-         cat deploy.sh
+          chmod +x deploy.sh
+          
+          scp ./deploy.sh $DEPLOY_USER@$DEPLOY_HOST:/tmp/deploy.sh
+          ssh $DEPLOY_USER@$DEPLOY_HOST \
+            "export DEPLOY_PATH='${DEPLOY_PATH}' && \
+             export DEPLOY_BRANCH='${DEPLOY_BRANCH}' && \
+             export PM2_APP_NAME='${PM2_APP_NAME}' && \
+             export DOMAIN='${DOMAIN}' && \
+             export PORT='${PORT}' && \
+             bash /tmp/deploy.sh"
 
-         # Copy script and execute with environment variables
-         scp -v ./deploy.sh $DEPLOY_USER@$DEPLOY_HOST:/tmp/deploy.sh
-         ssh -v $DEPLOY_USER@$DEPLOY_HOST \
-           "export DEPLOY_PATH='${DEPLOY_PATH}' && \
-            export DEPLOY_BRANCH='${DEPLOY_BRANCH}' && \
-            export DEPLOY_USER='${DEPLOY_USER}' && \
-            export DEPLOY_HOST='${DEPLOY_HOST}' && \
-            export PM2_APP_NAME='${PM2_APP_NAME}' && \
-            bash /tmp/deploy.sh"
+          ssh $DEPLOY_USER@$DEPLOY_HOST "rm /tmp/deploy.sh"
 
-         # Cleanup
-         ssh $DEPLOY_USER@$DEPLOY_HOST "rm /tmp/deploy.sh"
+      - name: Verify Deployment
+        run: |
+          echo "🔍 Verifying deployment..."
+          sleep 10
+          curl --fail --silent --head https://${DOMAIN} || (echo "❌ Deployment verification failed" && exit 1)
+          echo "✅ Deployment verified successfully!"
 
-     - name: Verify Deployment
-       if: success()
-       run: |
-         echo "🔍 Verifying deployment..."
-         sleep 10  # Wait for service to start
-         if [ ! -z "${{ secrets.APP_URL }}" ]; then
-           curl --fail --silent --head ${{ secrets.APP_URL }} || (echo "❌ Deployment verification failed" && exit 1)
-           echo "✅ Deployment verified successfully!"
-         else
-           echo "⚠️ APP_URL not set, skipping verification"
-         fi
-
-     - name: Notify on Failure
-       if: failure()
-       run: |
-         echo "::error::Deployment failed! Please check the logs for more details."
+      - name: Notify on Failure
+        if: failure()
+        run: |
+          echo "::error::Deployment failed! Please check the logs for more details."

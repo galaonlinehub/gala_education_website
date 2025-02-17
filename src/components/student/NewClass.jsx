@@ -107,7 +107,7 @@ const NewClass = () => {
         )}
         {enrollMe && <Payment/>}
 
-        {!true && (
+        {true && (
           <>
             {true ? (
               <InstructorSearchResult />
