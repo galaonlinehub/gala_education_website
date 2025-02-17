@@ -78,7 +78,7 @@ const MailingList = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit, onError)}
-      className="bg-white px-5 py-3 sm:w-[24rem] md:w-[40rem] w-full mt-4  h-fit rounded-[15px]"
+      className="bg-white px-6 py-4 sm:w-[24rem] md:w-[29rem] w-full mt-4  h-fit rounded-[15px]"
     >
       <h1 className="font-black sm:text-xs text-[10px] mb-2">
         Are you interested in a session and want to know more?

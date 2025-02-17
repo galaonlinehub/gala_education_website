@@ -4,6 +4,7 @@ import { Popconfirm } from "antd";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
+import { usePathname } from "next/navigation";
 
 const ChooseAccont = () => {
   const description = "Delete the task";
@@ -12,24 +13,32 @@ const ChooseAccont = () => {
   const buttonWidth = 80;
 
   const router = useRouter();
-  const { setAccountType } = useAccountType();
   const [open, setOpen] = React.useState(false);
-  const { activeTab } = useTabNavigator();
+  const pathname = usePathname();
+
+
+  const { activeTab, setActiveTab } = useTabNavigator();
+  const {accountType, setAccountType} = useAccountType();
+  const isDisabled = pathname === "/signup";
 
   const handleTeacherClick = () => {
+    setActiveTab(0);
     setAccountType("instructor");
     handleCancel();
+
     router.push("/signup");
   };
 
   const handleStudentClick = () => {
+    setActiveTab(0);
     setAccountType("student");
     handleCancel();
+
     router.push("/signup");
   };
 
   const showPopconfirm = () => {
-    if (activeTab > 0) return;
+    if (isDisabled) return;
     setOpen(true);
   };
 
@@ -37,7 +46,7 @@ const ChooseAccont = () => {
     setOpen(false);
   };
 
-  const isDisabled = activeTab > 0;
+  
 
   return (
     <section>
@@ -51,7 +60,7 @@ const ChooseAccont = () => {
         okText="Teacher"
         cancelText="Student"
         okButtonProps={{
-          disabled: isDisabled,
+          // disabled: isDisabled,
           onClick: handleTeacherClick,
           style: {
             width: 50,
@@ -66,7 +75,7 @@ const ChooseAccont = () => {
           },
         }}
         cancelButtonProps={{
-          disabled: isDisabled,
+          // disabled: isDisabled,
           onClick: handleStudentClick,
           style: {
             width: 50,
@@ -88,7 +97,7 @@ const ChooseAccont = () => {
           }`}
           onClick={showPopconfirm}
         >
-          Register
+          Sign Up
         </span>
       </Popconfirm>
     </section>

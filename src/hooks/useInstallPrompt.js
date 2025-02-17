@@ -6,7 +6,7 @@ const useInstallPrompt = () => {
 
   useEffect(() => {
     // Debug logs
-    console.log('Current display mode:', window.matchMedia('(display-mode: standalone)').matches);
+    // console.log('Current display mode:', window.matchMedia('(display-mode: standalone)').matches);
 
     if (window.matchMedia('(display-mode: standalone)').matches) {
       setIsInstalled(true);
@@ -14,17 +14,17 @@ const useInstallPrompt = () => {
     }
 
     const handleBeforeInstallPrompt = (e) => {
-      console.log('beforeinstallprompt event fired');
+      // console.log('beforeinstallprompt event fired');
       e.preventDefault();
       setInstallPrompt(e);
     };
 
     // Check if PWA criteria are met
-    console.log('PWA criteria:', {
-      https: window.location.protocol === 'https:',
-      serviceWorker: 'serviceWorker' in navigator,
-      manifest: !!document.querySelector('link[rel="manifest"]')
-    });
+    // console.log('PWA criteria:', {
+    //   https: window.location.protocol === 'https:',
+    //   serviceWorker: 'serviceWorker' in navigator,
+    //   manifest: !!document.querySelector('link[rel="manifest"]')
+    // });
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
 

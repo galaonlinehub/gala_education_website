@@ -6,35 +6,40 @@ import { FaRegStar, FaRegMessage, FaRegClock } from "react-icons/fa6";
 import { GoShieldCheck } from "react-icons/go";
 import { BsGlobe } from "react-icons/bs";
 import { LuUsers } from "react-icons/lu";
+import { useEnrollMe } from "@/src/store/student/useEnrollMe";
+import { useEnroll } from "@/src/hooks/useEnroll";
 
-const TopicCard = ({ loading = !true }) => {
+const TopicCard = ({ classInfo }) => {
+  const { setEnrollMe, setEnrollCohort } = useEnrollMe();
+
   return (
     <Card
-      loading={loading}
-      className="!text-black !text-[12px] hover:shadow-lg transition-all !w-1/2 !self-center"
+      loading={false}
+      className="!text-black !text-[12px] hover:shadow-lg transition-all !self-center !mb-3"
     >
       <Card.Meta
         title={
           <div className="flex gap-2 items-center">
-            <div className="bg-blue-500/90 !text-white p-2 rounded-lg">
+            <div className="bg-[#001840] !text-white p-2 rounded-lg">
               <BsGlobe size={20} />
             </div>
             <div className="flex justify-between items-center w-full">
               <div className="flex flex-col gap-1">
                 <span className="font-bold text-base">
-                  Cloud Computing Mastery
+                  {classInfo?.cohort_name}
                 </span>
                 <span className="text-[10px] text-gray-600">
-                  Master cloud computing from basics to advanced concepts
+                  {classInfo?.description}
                 </span>
               </div>
-              <Badge
-                count={
-                  <span className="flex items-center justify-center text-white !text-[8px] bg-black p-1 rounded-sm">
-                    15,000 Tsh
+              <Badge>
+                <span className="flex items-center justify-center text-white bg-[#001840] p-1 rounded-sm gap-1">
+                  <span className="font-extrabold">Tshs</span>
+                  <span className="font-black text-sm">
+                    {classInfo?.price.toLocaleString()}/=
                   </span>
-                }
-              />
+                </span>
+              </Badge>
             </div>
           </div>
         }
@@ -43,32 +48,32 @@ const TopicCard = ({ loading = !true }) => {
             {/* Course Content Section */}
             <div className="!rounded-md !w-full !text-black !p-2 space-y-2">
               <div className="w-full flex justify-between items-center">
-                <span className="text-[13px] font-bold">
-                  AWS Solutions Architecture
+                <span className="text-[13px] font-bold capitalize">
+                  {classInfo?.topic_title}
                 </span>
-                <div className="flex items-center gap-1 text-yellow-500">
+                {/* <div className="flex items-center gap-1 text-yellow-500">
                   <FaStar size={12} />
                   <span className="text-[10px]">4.9</span>
-                </div>
+                </div> */}
               </div>
 
               <div className="text-[10px] text-gray-600">
-                Complete guide to building scalable systems on AWS
+                {classInfo?.topic_description}
               </div>
 
               {/* Course Stats */}
               <div className="flex gap-2">
                 <div className="flex border-[0.009rem] border-black/20 bg-gray-50 px-2 py-1 items-center justify-center text-[8px] rounded-sm gap-1 font-medium">
                   <FaRegClock size={10} />
-                  <span>12 Weeks</span>
+                  <span>{classInfo?.total_weeks} Weeks</span>
                 </div>
                 <div className="flex border-[0.009rem] border-black/20 bg-gray-50 px-2 py-1 items-center justify-center text-[8px] rounded-sm gap-1 font-medium">
                   <LuUsers size={10} />
-                  <span>19 Enrolled</span>
+                  <span>{classInfo?.total_enrolled_students} Enrolled</span>
                 </div>
                 <div className="flex border-[0.009rem] border-black/20 bg-gray-50 px-2 py-1 items-center justify-center text-[8px] rounded-sm gap-1 font-medium">
                   <GoBook size={10} />
-                  <span>Starts Feb 15</span>
+                  <span>Starts {classInfo?.start_date}</span>
                 </div>
               </div>
 
@@ -78,8 +83,8 @@ const TopicCard = ({ loading = !true }) => {
                   <Avatar size={32} src="/api/placeholder/32/32" />
                   <div className="flex flex-col">
                     <div className="flex items-center gap-1">
-                      <span className="text-[11px] font-bold">
-                        Dr. Sarah Mitchell
+                      <span className="text-[11px] font-bold capitalize">
+                        {classInfo?.instructor_name}
                       </span>
                       <GoVerified className="text-blue-500" size={12} />
                     </div>
@@ -98,14 +103,20 @@ const TopicCard = ({ loading = !true }) => {
                   <div className="flex items-center gap-1">
                     <FaUsers size={10} className="text-gray-500" />
                     <span className="text-[9px] text-gray-600">
-                      2.5k Students
+                      {classInfo?.instructor_total_students} Students
                     </span>
                   </div>
                 </div>
               </div>
 
               {/* Action Button */}
-              <Button className="!w-full !bg-black !mt-2 !text-white !border-transparent hover:!border-transparent !text-xs hover:!opacity-90">
+              <Button
+                className="!w-full !bg-[#001840] !mt-2 !text-white !border-transparent hover:!border-transparent !text-xs hover:!opacity-90 !font-bold"
+                onClick={() => {
+                  setEnrollMe(true);
+                  setEnrollCohort(classInfo?.cohort_id);
+                }}
+              >
                 Enroll Now
               </Button>
             </div>
@@ -116,4 +127,98 @@ const TopicCard = ({ loading = !true }) => {
   );
 };
 
-export { TopicCard };
+const TopicCardSkeleton = () => (
+  <Card className="!text-black !text-[12px] !self-center !mb-3">
+    <Card.Meta
+      title={
+        <div className="flex gap-2 items-center">
+          <Skeleton.Avatar
+            active
+            size={24}
+            shape="square"
+            className="!rounded-lg"
+          />
+          <div className="flex justify-between items-center w-full">
+            <div className="flex flex-col gap-1 w-full">
+              <Skeleton.Input
+                active
+                size="small"
+                className="!w-[200px] !h-[20px]"
+              />
+              <Skeleton.Input
+                active
+                size="small"
+                className="!w-[150px] !h-[12px]"
+              />
+            </div>
+            <Skeleton.Button
+              active
+              size="small"
+              className="!w-[70px] !h-[20px]"
+            />
+          </div>
+        </div>
+      }
+      description={
+        <div className="flex flex-col gap-3 mt-3">
+          <div className="!rounded-md !w-full !text-black !p-2 space-y-2">
+            <div className="w-full flex justify-between">
+              <Skeleton.Input
+                active
+                size="small"
+                className="!w-[180px] !h-[16px]"
+              />
+            </div>
+
+            <Skeleton.Input active size="small" className="!w-full !h-[12px]" />
+
+            <div className="flex gap-2">
+              {[1, 2, 3].map((_, i) => (
+                <Skeleton.Button
+                  key={i}
+                  active
+                  size="small"
+                  className="!w-[80px] !h-[20px]"
+                />
+              ))}
+            </div>
+
+            <div className="flex items-center justify-between mt-3 bg-gray-50 p-2 rounded-lg">
+              <div className="flex items-center gap-2">
+                <Skeleton.Avatar active size={32} />
+                <div className="flex flex-col gap-1">
+                  <Skeleton.Input
+                    active
+                    size="small"
+                    className="!w-[100px] !h-[12px]"
+                  />
+                  <Skeleton.Input
+                    active
+                    size="small"
+                    className="!w-[80px] !h-[10px]"
+                  />
+                </div>
+              </div>
+              <div className="flex flex-col items-end gap-1">
+                <Skeleton.Input
+                  active
+                  size="small"
+                  className="!w-[90px] !h-[12px]"
+                />
+                <Skeleton.Input
+                  active
+                  size="small"
+                  className="!w-[70px] !h-[10px]"
+                />
+              </div>
+            </div>
+
+            <Skeleton.Button active block className="!h-[32px] !mt-2" />
+          </div>
+        </div>
+      }
+    />
+  </Card>
+);
+
+export { TopicCard, TopicCardSkeleton };

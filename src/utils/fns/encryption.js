@@ -66,7 +66,6 @@ export const decrypt = (encryptedText) => {
       console.error("No encrypted text provided");
       return null;
     }
-
     // Decode the URL encoded string
     const decodedText = decodeURIComponent(encryptedText);
 

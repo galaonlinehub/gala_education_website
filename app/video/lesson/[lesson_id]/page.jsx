@@ -1,7 +1,6 @@
 "use client"
 import BottomVideoControls from '@/src/components/websockets/video/BottomVideoControls'
 import WhiteBoard from '@/src/components/websockets/video/WhiteBoard'
-import useUser from '@/src/store/auth/user';
 import useControlStore from '@/src/store/video/contols';
 import {decrypt} from "@/src/utils/fns/encryption"
 import Cookies from 'js-cookie';
@@ -9,6 +8,7 @@ import React, { useEffect,useState,useRef, useMemo, useCallback } from 'react'
 import io from 'socket.io-client';
 import * as mediasoupClient from 'mediasoup-client';
 import { ChatSection } from '@/src/components/websockets/video/ChatSection';
+import { useUser } from '@/src/hooks/useUser';
 
 
 export default  function Lesson({ params }){
@@ -24,7 +24,7 @@ export default  function Lesson({ params }){
   const [participants, setParticipants] = useState([]);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  const { user,setUser } = useUser();
+  const { user } = useUser();
   const socketRef = useRef(null);
   const [isScreenSharing, setIsScreenSharing] = useState(false);
   const screenProducerRef = useRef(null);
@@ -141,20 +141,20 @@ export default  function Lesson({ params }){
 
     
 
-    useEffect(() => {
-      const userToken = Cookies.get("9fb96164-a058-41e4-9456-1c2bbdbfbf8d")
-      if(!userToken){
-        return
-      }
+    // useEffect(() => {
+    //   const userToken = Cookies.get("9fb96164-a058-41e4-9456-1c2bbdbfbf8d")
+    //   if(!userToken){
+    //     return
+    //   }
       
-      const userDecrypted = decrypt(
-          userToken
-        );
+    //   const userDecrypted = decrypt(
+    //       userToken
+    //     );
     
-        if (userDecrypted) {
-          setUser(userDecrypted);
-        }
-      }, [setUser]);
+    //     if (userDecrypted) {
+    //       setUser(userDecrypted);
+    //     }
+    //   }, [setUser]);
   
   useEffect(() => {
 
@@ -300,7 +300,7 @@ export default  function Lesson({ params }){
 
         producerTransport.on('connect', async ({ dtlsParameters }, callback, errback) => {
           try {
-            await socket.emit('transport-connect', { dtlsParameters,transportId:params.id });
+            socket.emit('transport-connect', { dtlsParameters, transportId: params.id });
             callback();
           } catch (error) {
             errback(error);
@@ -311,14 +311,14 @@ export default  function Lesson({ params }){
           
           console.log("producer transport produce was called here ",params)
             try {
-            await socket.emit(
-              'transport-produce',
-              { kind: parameters.kind, rtpParameters: parameters.rtpParameters, appData: parameters.appData,transportId:params.id },
-              ({ id, producersExist }) => {
-                callback({ id });
-                if (producersExist) getProducers();
-              }
-            );
+            socket.emit(
+                'transport-produce',
+                { kind: parameters.kind, rtpParameters: parameters.rtpParameters, appData: parameters.appData, transportId: params.id },
+                ({ id, producersExist }) => {
+                  callback({ id });
+                  if (producersExist) getProducers();
+                }
+              );
           } catch (error) {
             errback(error);
           }
@@ -375,10 +375,10 @@ export default  function Lesson({ params }){
           console.log('consumer transport connected');
           
             try {
-            await socket.emit('transport-recv-connect', {
-              dtlsParameters,
-              serverConsumerTransportId: params.id,
-            });
+            socket.emit('transport-recv-connect', {
+                dtlsParameters,
+                serverConsumerTransportId: params.id,
+              });
             callback();
           } catch (error) {
             errback(error);
@@ -439,9 +439,6 @@ export default  function Lesson({ params }){
     };
 
 
-   
-
-
     const handleStopScreenShare = async (originalTrack) => {
       try {
         // Get new camera stream
@@ -462,6 +459,7 @@ export default  function Lesson({ params }){
         console.error('Error stopping screen share:', error);
       }
     };
+  
 
     socket.on("message",(data)=>{
       console.log(data)

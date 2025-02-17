@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useCallback } from "react";
 import { SmileOutlined } from "@ant-design/icons";
 import { notification } from "antd";
-import useUser from "@/src/store/auth/user";
+import { useUser } from "@/src/hooks/useUser";
 
 const Notification = ({ showNotification }) => {
   const [api, contextHolder] = notification.useNotification();

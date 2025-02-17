@@ -168,6 +168,45 @@
   padding: 24px !important;
 }
 
+.ant-upload.ant-upload-select {
+  width: 100%;
+}
+.ant-form-item-explain-error{
+  font-size: 12px;
+}
+.signup-input{
+  outline: 0.5px solid #030DFE !important; 
+  border: 0.5px solid #030DFE !important;
+}
+.signup-input:focus{
+  outline: 0.5px solid #030DFE !important; 
+  border: 0.5px solid #030DFE !important;
+}
+/* 
+@layer base {
+  html {
+    @apply font-sans;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+}*/
+
+/* Optional: Add custom styles for specific heading levels */
+/*@layer components {
+  h1 {
+    @apply text-4xl font-heading font-bold;
+  }
+  
+  h2 {
+    @apply text-3xl font-heading font-semibold;
+  }
+  
+  h3 {
+    @apply text-2xl font-heading font-medium;
+  }
+} */
 /* Ensure consistent width of the panel content */
 
 
@@ -183,3 +222,29 @@
   border-radius: 4px; /* Add rounded corners */
 }
 
+:root {
+  --font-poppins: 'Poppins', sans-serif;
+}
+
+/* Override ant-design components */
+/* .ant-btn,
+.ant-input,
+.ant-select,
+.ant-dropdown-menu,
+.ant-modal-content,
+.ant-form,
+.ant-table,
+.ant-typography,
+.ant-menu,
+.ant-notification,
+.ant-message,
+.ant-tabs,
+.ant-popover,
+.ant-card-body {
+  font-family: 'Urbanist', sans-serif !important;
+} */
+
+/* For specific Poppins usage */
+.font-poppins {
+  font-family: var(--font-poppins);
+}

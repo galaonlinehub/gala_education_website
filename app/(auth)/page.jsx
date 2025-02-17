@@ -8,16 +8,11 @@ import PioneerCard from "@/src/components/home/card/PioneerCard";
 import NewsCard from "@/src/components/home/card/NewsCard";
 import Events from "@/src/components/home/card/Events";
 import Card2 from "@/src/components/home/card/Card2";
-import CountDownCard from "@/components/layout/ui/timer";
 import MailingList from "@/src/components/ui/auth/signup/MailingList";
-import TeacherDonate from "../instructor/donate/page";
-import Donate from "./donate";
 import { FaSearch } from "react-icons/fa";
 import ChoosePlatformSvg from "@/src/utils/vector-svg/ChoosePlatformSvg";
 import AcceptCookies from "@/src/components/layout/Cookies";
-import VideoPlayer from "@/components/layout/ui/VideoPlayer";
 import ClientReviews from "@/src/components/home/card/ClientReviews";
-import ScrollableContent from "@/components/layout/ui/TeachersCard";
 import FaqCard from "@/src/components/home/card/FaqCard";
 import OurServicesCard from "@/src/components/home/card/OurServicesCard";
 import RegisterWithUs from "@/src/components/home/card/RegisterWithUs";
@@ -26,6 +21,9 @@ import Platform from "@/src/components/home/card/Platform";
 import Pioneers from "@/src/components/home/card/Pioneers";
 import LatestNews from "@/src/components/home/card/LatestNews";
 import AboutUs from "@/src/components/home/modals/AboutUs";
+import Donate from "@/src/components/ui/Donate";
+import VideoPlayer from "@/src/components/ui/VideoPlayer";
+import ScrollableContent from "@/src/components/ui/TeachersCard";
 
 function Home() {
   const [showDonatePopup, setShowDonatePopup] = useState(false);
@@ -48,9 +46,9 @@ function Home() {
   }, [showDonatePopup]);
 
   return (
-    <div className="relative w-screen max-w-screen-2xl mx-auto h-full overflow-hidden space-y-10">
+    <div className="relative w-screen max-w-screen-2xl mx-auto h-full">
       {showDonatePopup && (
-        <div className="fixed  inset-0 bg-black bg-opacity-70 !z-[9999] flex justify-center items-center ">
+        <div className="fixed inset-0 bg-black bg-opacity-70 !z-[9999] flex justify-center items-center">
           <div className="p-1 rounded-lg w-full items-center justify-center flex ">
             <Donate setShowDonatePopup={setShowDonatePopup} showDonatePopup={showDonatePopup} />
           </div>
@@ -60,7 +58,7 @@ function Home() {
       {/* <div className="relative w-screen max-w-screen-2xl mx-auto h-[100vh] xl:h-[90vh] 2xl:h-[70vh] overflow-hidden"> */}
       {/* <Image src="/homepage_photo.png" layout="fill" objectFit="cover" alt="Gala Home" /> */}
 
-      <div className="relative w-screen mt-20 max-w-screen-2xl mx-auto h-[60rem] sm:h-[44rem] overflow-hidden">
+      <div className="relative w-screen max-w-screen-2xl mx-auto h-[60rem] sm:h-[44rem] overflow-hidden -mt-12">
         <Image src="/homepage_photo.png" layout="fill" objectFit="cover" alt="Gala Home" />
 
         <div className="absolute inset-0 bg-black opacity-70 w-full" />
@@ -71,7 +69,7 @@ function Home() {
               <h1 className="text-white sm:text-[64px] text-[35px]  sm:leading-[70px] leading-[30px] font-black">Education</h1>
             </div>
             <h2 className="text-white font-bold sm:leading-[30px] leading-[15px] sm:text-[20px] text-[10px]">
-              Empowering minds,shaping futures - Gala Education, your
+              Empowering minds, shaping futures - Gala Education, your
               <br /> pathway to success.
             </h2>
 

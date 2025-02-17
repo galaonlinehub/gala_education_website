@@ -3,19 +3,18 @@
 import { useRouter } from "next/navigation";
 import { theme, Card, Empty, Typography, Row, Col, Table, Button, Progress, Space, Statistic, Calendar, List, Avatar, Badge, Tag, Divider } from "antd";
 import { RightOutlined, BookOutlined, ClockCircleOutlined, TrophyOutlined, BellOutlined, CheckCircleOutlined, WarningOutlined, UserOutlined } from "@ant-design/icons";
-import useUser from "@/src/store/auth/user";
 import { useEnrolledTopics } from "@/src/store/student/class";
-import { getUserSubject, getUserTopics } from "@/src/utils/fns/global";
-import { useUserTopcs } from "@/src/store/user_topics";
+import { useUserTopics } from "@/src/store/user_topics";
 import Link from "next/link";
+import { useUser } from "@/src/hooks/useUser";
 
 const { Title, Text } = Typography;
 
 export default function Component() {
   const router = useRouter();
-  const { user, setUser } = useUser();
+  const { user } = useUser();
   const { enrolledTopics, loading } = useEnrolledTopics();
-  const { userTopics, topicsLoading } = useUserTopcs();
+  const { userTopics, topicsLoading } = useUserTopics();
   const { token } = theme.useToken();
 
   // Simulated data for new components
@@ -204,7 +203,7 @@ export default function Component() {
                   },
                 ]}
                 dataSource={userTopics}
-                loading={topicsLoading}
+                // loading={topicsLoading}
                 pagination={false}
                 size="small"
                 scroll={{ x: 500 }}
