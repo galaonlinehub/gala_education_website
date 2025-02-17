@@ -1,4 +1,5 @@
 
+
 name: Deploy to VPS
 
 on:
@@ -39,10 +40,13 @@ jobs:
             echo "DEPLOY_PATH=/var/www/next-main" >> $GITHUB_ENV
             echo "PM2_APP_NAME=nextjs-main" >> $GITHUB_ENV
             echo "DOMAIN=edu.galahub.org" >> $GITHUB_ENV
+            echo "PORT=3457" >> $GITHUB_ENV
           else
             echo "DEPLOY_PATH=/var/www/next" >> $GITHUB_ENV
             echo "PM2_APP_NAME=nextjs-dev" >> $GITHUB_ENV
             echo "DOMAIN=edutz.galahub.org" >> $GITHUB_ENV
+            echo "PORT=3347" >> $GITHUB_ENV
+
           fi
 
       - name: Verify Secrets Configuration
@@ -128,10 +132,12 @@ jobs:
             
             echo "🔄 Restarting PM2 process..."
             if pm2 list | grep -q "${PM2_APP_NAME}"; then
-              pm2 reload ${PM2_APP_NAME} --update-env
+              # pm2 reload ${PM2_APP_NAME} --update-env
+              pm2 reload ${PM2_APP_NAME} --update-env --port ${PORT}
             else
               cd ${DEPLOY_PATH}
-              pm2 start npm --name "${PM2_APP_NAME}" -- start
+              # pm2 start npm --name "${PM2_APP_NAME}" -- start
+              pm2 start npm --name "${PM2_APP_NAME}" -- start --port ${PORT}
               pm2 save
             fi
             
@@ -146,6 +152,7 @@ jobs:
              export DEPLOY_BRANCH='${DEPLOY_BRANCH}' && \
              export PM2_APP_NAME='${PM2_APP_NAME}' && \
              export DOMAIN='${DOMAIN}' && \
+             export PORT='${PORT}' && \
              bash /tmp/deploy.sh"
 
           ssh $DEPLOY_USER@$DEPLOY_HOST "rm /tmp/deploy.sh"
