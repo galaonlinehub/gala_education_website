@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { LuLogOut } from "react-icons/lu";
 import { Modal } from "antd";
-import { PiWarningCircleBold } from "react-icons/pi";
 import { logout } from "@/src/utils/fns/auth";
 import { useRouter } from "next/navigation";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
+import notificationService from "../../notification/Notification";
 
 const Signout = () => {
   const [signoutVisible, setSignoutVisible] = useState(false);
@@ -19,12 +19,13 @@ const Signout = () => {
     setLoading(true);
     try {
       await logout();
-      router.push("/");
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
+      window.location.href = "/";
     } catch (e) {
-      console.error(e.message);
+      notificationService.error({
+        message: "Sign Out Failed",
+        description: e.message,
+        position: "top",
+      });
     } finally {
       setLoading(false);
       setSignoutVisible(false);
@@ -39,6 +40,7 @@ const Signout = () => {
         className="cursor-pointer"
         onClick={() => setSignoutVisible(true)}
       />
+
       <Modal
         width={400}
         title={

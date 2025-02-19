@@ -22,7 +22,6 @@ const ClientWrapper = ({ children }) => {
   useEffect(()=>{
     toggleLoading();
   },[toggleLoading])
-  console.log(loading)
 
 
   if (loading) {

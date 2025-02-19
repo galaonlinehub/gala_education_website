@@ -23,6 +23,8 @@ const MobilePay = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [paymentStatus, setPaymentStatus] = useState("");
   const [reference, setReference] = useState(null);
+  const [success, setSuccess] = useState(false);
+  const [timeoutId, setTimeoutId] = useState(null);
 
   const messages = {
     required: "Phone number is required",
@@ -105,7 +107,7 @@ const MobilePay = () => {
   const mutation = useMutation({
     mutationFn: async () => {
       const data = {
-        email: email ?? "denis.mgya@gmail.com",
+        email: "denis.mgaya@outlook.com",
         phone_number: `255${phoneNumber}`,
         payment_plan_id: plan?.id ?? 3,
       };
@@ -122,9 +124,13 @@ const MobilePay = () => {
       if (data.order_response.resultcode === "000") {
         setReference(data.order_response.data[0].payment_token);
       }
-      setTimeout(() => {
-        setPaymentStatus(PaymentStatus.REFERENCE);
-      }, 5000);
+      const timer = setTimeout(() => {
+        if (!success) {
+          setPaymentStatus(PaymentStatus.REFERENCE);
+        }
+      }, 45000);
+
+      setTimeoutId(timer);
     },
     onError: (error) => {
       setTimeout(() => {
@@ -134,32 +140,40 @@ const MobilePay = () => {
   });
 
   useEffect(() => {
-    getPlan();
-    getEmail();
-  }, []);
-
-
-  useEffect(() => {
-    const socket = io("https://edusockets.galahub.org/payment",);
+    const socket = io("https://edusockets.galahub.org/payment");
     socket.on("connect", () => {
-      socket.emit("join", { email: "frankndagula@outlook.com" });
-      console.log("Conneted");
+      socket.emit("join", { email: "denis.mgaya@outlook.com" });
+      console.log("connected successfully");
     });
 
     socket.on("paymentResponse", (msg) => {
-      console.log("Message", msg);
-      alert(JSON.stringify(msg))
+      console.log(msg);
+      if (msg) {
+        setPaymentStatus(PaymentStatus.SUCCESS);
+        setSuccess(true);
+        if (timeoutId) {
+          clearTimeout(timeoutId);
+        }
+
+        // setTimeout(() => {
+        //   window.location.href = '/signin';
+        // }, 4000);
+      } else {
+        setPaymentStatus(PaymentStatus.REFERENCE);
+      }
     });
 
     socket.on("error", (error) => {
       console.error("Socket error:", error);
     });
 
-    console.log(email)
-
-
     return () => socket.close();
-  }, [email]);
+  }, [email, timeoutId]);
+
+  useEffect(() => {
+    getPlan();
+    getEmail();
+  }, []);
 
   let getPlan = () => {
     const localStorageText = localStorageFn.get(PLAN_CONFIRMED_KEY);
