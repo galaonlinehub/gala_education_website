@@ -227,7 +227,7 @@
 }
 
 /* Override ant-design components */
-.ant-btn,
+/* .ant-btn,
 .ant-input,
 .ant-select,
 .ant-dropdown-menu,
@@ -242,7 +242,7 @@
 .ant-popover,
 .ant-card-body {
   font-family: 'Urbanist', sans-serif !important;
-}
+} */
 
 /* For specific Poppins usage */
 .font-poppins {

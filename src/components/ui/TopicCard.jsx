@@ -36,7 +36,7 @@ const TopicCard = ({ classInfo }) => {
                 <span className="flex items-center justify-center text-white bg-[#001840] p-1 rounded-sm gap-1">
                   <span className="font-extrabold">Tshs</span>
                   <span className="font-black text-sm">
-                    {classInfo?.price}/=
+                    {classInfo?.price.toLocaleString()}/=
                   </span>
                 </span>
               </Badge>

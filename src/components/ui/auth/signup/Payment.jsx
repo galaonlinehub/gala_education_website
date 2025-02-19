@@ -119,7 +119,6 @@ const MobilePay = () => {
       }
     },
     onSuccess: (data) => {
-      console.log(data);
       if (data.order_response.resultcode === "000") {
         setReference(data.order_response.data[0].payment_token);
       }
@@ -139,6 +138,7 @@ const MobilePay = () => {
     getEmail();
   }, []);
 
+
   useEffect(() => {
     const socket = io("https://edusockets.galahub.org/payment",);
     socket.on("connect", () => {
@@ -148,11 +148,15 @@ const MobilePay = () => {
 
     socket.on("paymentResponse", (msg) => {
       console.log("Message", msg);
+      alert(JSON.stringify(msg))
     });
 
     socket.on("error", (error) => {
       console.error("Socket error:", error);
     });
+
+    console.log(email)
+
 
     return () => socket.close();
   }, [email]);
@@ -258,6 +262,7 @@ const MobilePay = () => {
           open={isModalOpen}
           status={paymentStatus}
           reference={reference ?? null}
+          amount={plan.amount ?? null}
           onClose={() => setIsModalOpen(false)}
         />
       )}
