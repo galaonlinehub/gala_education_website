@@ -48,21 +48,7 @@ const StudentReminders = () => {
       time: "10.06.2026",
       day: "Friday"
     },
-    {
-      name: "Eng Test",
-      time: "10.06.2026",
-      day: "Friday"
-    },
-    {
-      name: "Eng - Speaking Test",
-      time: "10.06.2026",
-      day: "Friday"
-    },
-    {
-      name: "Eng - Speaking Test",
-      time: "10.06.2026",
-      day: "Friday"
-    }
+
   ];
 
   const handleFormSubmit = (values) => {
@@ -102,16 +88,13 @@ const StudentReminders = () => {
                 <Input placeholder="Enter reminder title" />
               </Form.Item>
 
+             
               <Form.Item
-                label="Assigned to"
-                name="assignedTo"
-                rules={[{ required: true, message: 'Please select assignee' }]}
+                label="Reminder Date"
+                name="reminderDate"
+                rules={[{ required: true, message: 'Please select reminder date' }]}
               >
-                <Select placeholder="Select assignee">
-                  <Option value="student1">Student 1</Option>
-                  <Option value="student2">Student 2</Option>
-                  <Option value="student3">Student 3</Option>
-                </Select>
+                <DatePicker className="w-full" format="MM/DD/YYYY" />
               </Form.Item>
 
               <Form.Item
@@ -126,13 +109,6 @@ const StudentReminders = () => {
                 </Select>
               </Form.Item>
 
-              <Form.Item
-                label="Due Date"
-                name="dueDate"
-                rules={[{ required: true, message: 'Please select due date' }]}
-              >
-                <DatePicker className="w-full" format="MM/DD/YYYY" />
-              </Form.Item>
 
               <Form.Item>
                 <Space>
@@ -153,7 +129,7 @@ const StudentReminders = () => {
           <Card
             title="All Reminders"
             bordered={false}
-            className="bg-blue-900 text-white"
+            className="bg-[#001840] text-white"
             headStyle={{ color: 'white', borderBottom: '1px solid rgba(255,255,255,0.1)' }}
             bodyStyle={{ maxHeight: '500px', overflowY: 'auto' }}
           >

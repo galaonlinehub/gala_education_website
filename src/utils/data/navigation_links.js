@@ -156,19 +156,19 @@ export const student_links = [
     icon: <MdDashboard />,
   },
   {
-    name: "Classroom",
-    link: "classroom",
-    icon: <FaChalkboardTeacher />,
-  },
-  {
     name: "Live Lesson",
     link: "live-lesson",
     icon: <MdLiveTv />,
   },
+  // {
+    //   name: "Library",
+  //   link: "library",
+  //   icon: <FaBook />,
+  // },
   {
-    name: "Library",
-    link: "library",
-    icon: <FaBook />,
+    name: "Assignments",
+    link: "classroom",
+    icon: <FaChalkboardTeacher />,
   },
   {
     name: "Social",

@@ -58,35 +58,29 @@ function Home() {
       {/* <div className="relative w-screen max-w-screen-2xl mx-auto h-[100vh] xl:h-[90vh] 2xl:h-[70vh] overflow-hidden"> */}
       {/* <Image src="/homepage_photo.png" layout="fill" objectFit="cover" alt="Gala Home" /> */}
 
-      <div className="relative w-screen max-w-screen-2xl mx-auto h-[60rem] sm:h-[44rem] overflow-hidden -mt-12">
+      <div className="relative w-screen max-w-screen-2xl mx-auto h-[60rem] sm:h-[60rem] sm:items-center md:h-[50rem] lg:h-[44rem] overflow-hidden -mt-12">
         <Image src="/homepage_photo.png" layout="fill" objectFit="cover" alt="Gala Home" />
 
         <div className="absolute inset-0 bg-black opacity-70 w-full" />
         <div className="absolute inset-0 sm:py-12 py-12 w-full sm:px-24 md:px-10 px-2 flex md:flex-row flex-col lg:justify-between md:gap-10 max-sm:gap-5">
           <div className={"mt-8"}>
-            <div className="">
-              <h1 className="text-white sm:text-[64px] mt-10 text-[35px]  sm:leading-[70px] leading-[30px] font-black">Gala</h1>
-              <h1 className="text-white sm:text-[64px] text-[35px]  sm:leading-[70px] leading-[30px] font-black">Education</h1>
+            <div className="xxs:gap-8 mb-6 sm:gap-0 sm:mb-0 flex flex-col">
+              <h1 className="text-white xxs:text-[64px] mt-10 text-[35px]  sm:leading-[70px] leading-[30px] font-black">Gala</h1>
+              <h1 className="text-white xxs:text-[64px] text-[35px]  sm:leading-[70px] leading-[30px] font-black">Education</h1>
             </div>
-            <h2 className="text-white font-bold sm:leading-[30px] leading-[15px] sm:text-[20px] text-[10px]">
+            <h2 className="text-white font-bold sm:leading-[30px] leading-[15px] sm:text-[20px] text-[12px]">
               Empowering minds, shaping futures - Gala Education, your
               <br /> pathway to success.
             </h2>
 
-            <div className={"rounded-[4rem] py-[10px] px-4 mt-[2rem] flex gap-2 items-center justify-between bg-[#00184080]/50 border-white border-[1px]  sm:w-2/3 w-full"}>
-              <div className="flex flex-row gap-2 w-full">
-                <IoMenu className={"text-white"} />
-                <input placeholder={"Search for information here"} className={"bg-transparent placeholder-white/85 placeholder:text-xs text-xs text-white focus:placeholder-white/85 w-full border-none focus:outline-none"} />
-              </div>
-              <FaSearch className={"text-white"} />
-            </div>
+    
           </div>
           <MailingList />
         </div>
       </div>
 
-      <div className="relative flex items-center flex-col gap-2 md:gap-12 sm:flex-row px-6 h-[45rem] sm:px-12 xs:h-[45rem] sm:h-[30rem] w-full ">
-        <div className="relative w-full sm:w-1/2 mt-14 h-fit  max-sm:p-2">
+      <div className="relative flex items-center flex-col gap-2 md:gap-12 md:flex-row px-6 h-[45rem] sm:px-12 xs:h-[45rem] sm:h-[43rem] w-full ">
+        <div className="relative w-full md:w-1/2 mt-14 h-fit  max-sm:p-2">
           <VideoPlayer videoSrc="/videos/gala_intro.mp4" />
         </div>
         <div className="md:w-1/2 w-full mb-20">
@@ -123,7 +117,7 @@ function Home() {
         </div>
       </div>
 
-      <div className="relative  max-sm:w-screen h-[28rem] w-full max-w-screen-2xl mx-auto mt-4 md:mt-8 lg:mt-4 px-6 sm:px-4 py-6 sm:py-10 flex flex-col md:flex-row">
+      <div className="relative  max-sm:w-screen h-[32rem] w-full max-w-screen-2xl mx-auto mt-4 md:mt-8 lg:mt-4 px-6 sm:px-4 py-6 sm:py-10 flex flex-col md:flex-row">
         <div className="hidden md:block w-full">
           <div className=" w-full flex flex-col items-center gap-3 p-4">
             <h1 className="font-black w-full text-center px-3 !text-3xl">Register with us!</h1>
@@ -136,7 +130,7 @@ function Home() {
           </div>
         </div>
         <div className="w-full block md:hidden gap-2 ">
-          <h1 className="font-black w-full text-center lg:text-4xl text-4xl mb-3">Register with us!</h1>
+          <h1 className="font-black w-full text-center lg:text-4xl text-3xl mb-3">Register with us!</h1>
           <RegisterWithUs />
         </div>
       </div>
@@ -211,7 +205,7 @@ function Home() {
               />
             </div>
           </div>
-          <div className="block h-64 md:hidden w-full">
+          <div className="block md:hidden w-full">
             <Platform />
           </div>
         </div>
@@ -219,19 +213,19 @@ function Home() {
 
       {/* //relative w-screen max-w-screen-2xl mx-auto h-[100vh] overflow-hidden */}
 
-      <div className="flex flex-col items-center">
-        <h1 className="font-black text-3xl text-center">Donations & Funding</h1>
+      <div className="flex flex-col items-center ">
+        <h1 className="font-black text-3xl text-center xxs:mt-12 md:mt-0">Donations & Funding</h1>
         <h2 className="text-xs md:w-2/3 w-full px-3 flex text-center py-4">Your donations directly support our mission in philanthropic activities, helping to meet children&apos;s educational needs, especially those from poor backgrounds. You don&apos;t have to be a user to contribute—every donation makes a difference in providing quality education for all.</h2>
         <div className="relative flex flex-col gap-4 sm:flex-row mt-3 h-fit sm:h-[37rem] w-full ">
-          <div className="relative  w-full sm:w-1/2 h-full max-sm:p-2">
-            <div className=" md:w-[300px] lg:w-[521px] h-[549px] hidden md:block left-0 bg-[#001840]" />
+          <div className="relative  w-full sm:w-2/3 h-full max-sm:p-2">
+            <div className=" md:w-[300px] lg:w-[521px] h-[549px] hidden sm:block left-0 bg-[#001840]" />
             <Image alt="image" src="/register_teacher.jpeg" width={1920} height={1080} quality={75} className="border-[14px] top-[5rem]  left-[6rem] md:w-[300px] lg:w-[542px] h-[378px] object-cover  sm:absolute  border-white" />
           </div>
           <div className="md:w-1/2 w-full ">
             <div className="relative w-full h-3/4  place-items-center">
               <Image alt="Donation image" src={"/donate1.jpeg"} width={100} height={100} className=" rounded-br-[100px] h-[259px] w-[266px] object-cover  sm:ml-24" />
               {/*<div className="absolute  bottom-24 left-[4rem] w-[20rem] !z-10 bg-white p-6  mx-4 border rounded-lg shadow-lg">*/}
-              <div className="absolute  sm:bottom-24 sm:left-[2rem] -bottom-[5rem] left-3 w-[15rem] sm:w-[20rem] !z-10 bg-white p-6  mxp-4 border rounded-lg shadow-lg">
+              <div className="absolute  sm:bott:om-24 sm:left-[2rem] -bottom-[5rem] left-3 w-[15rem] sm:w-[20rem] !z-10 bg-white p-6  mxp-4 border rounded-lg shadow-lg">
                 <h1 className="sm:text-xl text-base font-bold mb-4">Donate today to support underfunded schools</h1>
                 <p className="sm:text-sm text-xs text-gray-600 mb-4 ">Join our community and make a difference! Your donation supports quality education and empowers lives. Together, we can create a brighter future. Every contribution counts - be part of something impactful today!</p>
                 <button onClick={handleDonateVisibility} className="w-full md:w-auto border border-blue-600 text-blue-600 font-bold py-2 px-4 rounded-md hover:bg-blue-50 transition-colors">
@@ -264,7 +258,7 @@ function Home() {
       <div className="relative flex flex-col sm:flex-row  mt-4  h-fit w-full ">
         <div className="w-full flex  space-y-8   h-fit flex-col items-center">
           <h1 className="text-3xl px-3   text-center font-black leading-tight ">Pioneers in Digital Teaching</h1>
-          <h1 className="text-center text-xs">
+          <h1 className="text-center text-xs px-4">
             &ldquo;Our platform offers personalized, AI-driven learning while teaching students healthy <br /> digital habits for balanced, responsible technology use.&ldquo;
           </h1>
           <div className="hidden md:block">
@@ -336,7 +330,7 @@ function Home() {
               <h1 className="text-3xl text-center font-black ">Latest News</h1>
               <h1 className="text-center text-xs w-full px-3 md:w-2/3">Stay updated with the latest developments at Gala Education. Here, we share exciting announcements, new initiatives, and progress on our mission to make quality education accessible to all. Follow our journey as we continue to make a difference in Tanzania&apos;s educational landscape.</h1>
               <div className="flex flex-col p-6 ">
-                <div className="flex gap-2 flex-col sm:flex-row ">
+                <div className="flex gap-2 flex-col md:flex-row ">
                   <div className="basis-1/2 flex flex-col h-80">
                     <Image alt="image" src="/ai.jpeg" quality={75} width={200} height={200} className=" h-[127px] w-full object-cover" />
 
