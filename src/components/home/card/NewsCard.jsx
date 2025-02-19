@@ -3,7 +3,7 @@ import React from "react";
 
 function NewsCard({ img, title, desc }) {
   return (
-    <div className="flex sm:flex-row flex-col sm:gap-y-2 gap-y-3">
+    <div className="flex md:flex-row flex-col sm:gap-y-2 gap-y-3">
       <div className="flex  bg-[#001840] text-white flex-col md:h-[130px] lg:h-[85px] h-[85px] w-full basis-1/3 ">
         <div className="h-44 md:h-10 w-full flex">
           <Image

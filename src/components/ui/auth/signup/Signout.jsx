@@ -32,7 +32,7 @@ const Signout = () => {
   };
 
   return (
-    <div>
+    <div className="hidden md:block">
       <LuLogOut
         size={18}
         style={{ strokeWidth: 3 }}
