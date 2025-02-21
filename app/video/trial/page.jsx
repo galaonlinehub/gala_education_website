@@ -9,7 +9,7 @@ function TrialSocket() {
         
         newSocket.on('connect', () => {
             // Emit join event with email
-            newSocket.emit('join', { email: 'user@example.com' });  // Replace with actual email
+            newSocket.emit('join', { email: 'frankndagula@outlook.com' });  // Replace with actual email
             console.log('Connected to payment namespace');
         });
         
