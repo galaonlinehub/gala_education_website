@@ -23,12 +23,13 @@ import {
   ClockCircleOutlined,
 } from "@ant-design/icons";
 import { useUser } from "@/src/hooks/useUser";
+import { useDevice } from "@/src/hooks/useDevice";
 
 const { Title, Text } = Typography;
 
 const StudentProfile = () => {
-
-  const {user} = useUser();
+  const { user } = useUser();
+  const { width, height } = useDevice();
   const student = {
     name: "Sarah Johnson",
     email: "sarah.johnson@email.com",
@@ -52,27 +53,25 @@ const StudentProfile = () => {
     <div className="mt-20">
       <Row gutter={[24, 24]} justify="center">
         <div className="w-full px-4 lg:px-12">
-          <Card
-            bordered={true}
-            style={{ marginBottom: "24px" }}
-            className="profile-header"
-          >
+          <Card className="profile-header mb-[24px]">
             <Row align="middle" justify="space-between">
               <Col xs={24} md={12}>
-                <div
-                  style={{ display: "flex", alignItems: "center", gap: "16px" }}
-                >
+                <div className="flex items-center gap-[10px]">
                   <Avatar
-                    size={96}
-                    src="/api/placeholder/96/96"
-                    style={{ border: "4px solid #1890ff" }}
+                    size={width > 768 ? 96 : 52}
+                    src={`${user?.first_name.at(0)}`}
+                    className="border-4 border-[#1890ff]"
                   />
                   <div>
-                    <Title level={2} className="capitalize">
-                      {user?.first_name}{" "}{user?.last_name}
+                    <Title level={width > 768 ? 2 : 4} className="capitalize">
+                      {user?.first_name} {user?.last_name}
                     </Title>
-                    <Tag color="blue" icon={<StarOutlined />}>
-                      Active Student
+                    <Tag
+                      className="capitalize"
+                      color="blue"
+                      icon={<StarOutlined />}
+                    >
+                      {user?.role}
                     </Tag>
                   </div>
                 </div>

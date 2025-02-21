@@ -1,4 +1,4 @@
-import { Button, Input, Card, Switch, Spin } from "antd";
+import { Button, Input, Card, Switch } from "antd";
 import { CiCreditCard1, CiMobile4, CiCreditCardOff } from "react-icons/ci";
 import {
   FaRegClock,
@@ -16,6 +16,12 @@ import {
   LockOutlined,
 } from "@ant-design/icons";
 import { useEnroll } from "@/src/hooks/useEnroll";
+import { useMutation } from "@tanstack/react-query";
+import io from "socket.io-client";
+import { PaymentStatus } from "@/src/config/settings";
+import notificationService from "../ui/notification/Notification";
+import { apiPost } from "@/src/services/api_service";
+import { useUser } from "@/src/hooks/useUser";
 
 const PaymentDetails = () => {
   const { enrollMeCohort, enrollMeCohortIsFetching, enrollMeCohortError } =
@@ -94,7 +100,7 @@ const PaymentDetails = () => {
           </div>
         </div>
 
-        <div className="">
+        <div>
           <div className="space-y-4">
             <div className="space-y-2">
               <span className="text-sm text-gray-600 flex items-center space-x-2">
@@ -126,7 +132,11 @@ const MobilePay = () => {
   const [validationMessage, setValidationMessage] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const { currentStep, setCurrentStep } = usePaySteps();
-  const [loading, setLoading] = useState(false);
+  const [paymentStatus, setPaymentStatus] = useState("");
+  const [reference, setReference] = useState(null);
+  const [success, setSuccess] = useState(false);
+  const [timeoutId, setTimeoutId] = useState(null);
+  const { user } = useUser();
 
   const messages = {
     required: "Phone number is required",
@@ -189,21 +199,87 @@ const MobilePay = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setLoading(true);
     try {
       const validationResult = validateInput(phoneNumber);
       if (validationResult) {
         setValidationMessage(validationResult);
         return;
       }
-
-      setCurrentStep(1);
+      mutation.mutate();
     } catch (e) {
-      console.error(e);
     } finally {
-      setLoading(false);
     }
   };
+
+  const mutation = useMutation({
+    mutationFn: async () => {
+      const data = {
+        user_id: user?.id,
+        phone_number: `255${phoneNumber}`,
+        cohort_id: 3,
+      };
+
+      try {
+        const response = await apiPost("subscribe-plan", data);
+        return response.data;
+      } catch (error) {
+        console.error("API call failed:", error);
+        throw error;
+      }
+    },
+    onSuccess: (data) => {
+      if (data.order_response.resultcode === "000") {
+        setCurrentStep(1);
+        setReference(data.order_response.data[0].payment_token);
+      }
+      const timer = setTimeout(() => {
+        if (!success) {
+          setPaymentStatus(PaymentStatus.REFERENCE);
+        }
+      }, 60000);
+
+      setTimeoutId(timer);
+    },
+    onError: (error) => {
+      notificationService.error({
+        message: "",
+        description: `${error?.message},\tFailed to process payment please try again later`,
+        duration: 10,
+        customStyle: { paddingTop: "0px" },
+      });
+      setTimeout(() => {
+        setPaymentStatus(PaymentStatus.FAILURE);
+      }, 5000);
+    },
+  });
+
+  useEffect(() => {
+    const socket = io("https://edusockets.galahub.org/payment");
+    socket.on("connect", () => {
+      socket.emit("join", { email: "denis.mgaya@outlook.com" });
+      console.log("connected successfully");
+    });
+
+    socket.on("paymentResponse", (msg) => {
+      console.log(msg);
+      console.log("DENIS MGAYA");
+      if (msg) {
+        setPaymentStatus(PaymentStatus.SUCCESS);
+        setSuccess(true);
+        if (timeoutId) {
+          clearTimeout(timeoutId);
+        }
+      } else {
+        setPaymentStatus(PaymentStatus.REFERENCE);
+      }
+    });
+
+    socket.on("error", (error) => {
+      console.error("Socket error:", error);
+    });
+
+    return () => socket.close();
+  }, [timeoutId]);
 
   return (
     <Card className="!border-none !w-full !lg:w-1/2 !h-full !bg-transparent ">
@@ -239,7 +315,7 @@ const MobilePay = () => {
           </div>
         </div>
         <Button
-          loading={loading}
+          loading={mutation.isPending}
           type="primary"
           htmlType="submit"
           className="!flex !w-full !items-center !justify-center !gap-2 !text-white !bg-gradient-to-r from-gray-800 to-gray-600 !text-[10px] !border-transparent !hover:border-transparent"

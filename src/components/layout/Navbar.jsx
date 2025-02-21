@@ -113,7 +113,7 @@ const Navbar = () => {
         </li>
         {user && (
           <li>
-            <Link href={`${user.role}/dashboard`} className="hover:cursor-pointer">
+            <Link href={`${user.role}`} className="hover:cursor-pointer">
               Dashboard
             </Link>
           </li>

@@ -1,3 +1,4 @@
+"use client"
 import { Divider, Steps, Result, Button } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import {
