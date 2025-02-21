@@ -38,6 +38,27 @@ const StudentSocial = () => {
     }
   };
 
+  const handleEmojiButtonClick = (e) => {
+    e.preventDefault();
+    const input = document.createElement("input");
+    input.setAttribute("type", "text");
+    input.setAttribute("inputmode", "none");
+    input.classList.add("emoji-input");
+    input.style.position = "fixed";
+    input.style.opacity = "0";
+    input.style.pointerEvents = "none";
+    document.body.appendChild(input);
+
+    input.addEventListener("input", (event) => {
+      if (event.data) {
+        setNewMessage((prev) => prev + event.data);
+      }
+      input.remove();
+    });
+
+    input.focus();
+  };
+
   const users = [
     { name: "Sarah Mwangi", message: "Hi, just confirming the meeting time" },
     { name: "Peter Kimaro", message: "Can I reschedule my appointment for next week?" },
@@ -92,12 +113,12 @@ const StudentSocial = () => {
     const filteredUsers = users.filter((user) => user.name.toLowerCase().includes(searchValue.toLowerCase()) || user.message.toLowerCase().includes(searchValue.toLowerCase()));
 
     return filteredUsers.map((item, index) => (
-      <div key={index} onClick={() => viewOnClickedUser(index)} className={`p-2 mb-3 bg-[#070B65] shadow-md flex items-center cursor-pointer gap-2 rounded-lg ${clickedUserIndex === index ? "bg-[#001840] text-white" : "bg-white"}`}>
-        <div className="flex basis-1/6">
+      <div key={index} onClick={() => viewOnClickedUser(index)} className={`p-2 mb-3 bg-[#001840] shadow-md flex items-center cursor-pointer rounded-lg ${clickedUserIndex === index ? "bg-[#001840] text-white" : "bg-white"}`}>
+        <div className="flex pr-3">
           <Image src="/necklace.png" alt="avatar" width={100} height={100} className="w-8 h-8 object-cover rounded-full" />
         </div>
 
-        <div className="flex flex-col  basis-5/6 flex-grow overflow-hidden">
+        <div className="flex flex-col basis-5/6 flex-grow overflow-hidden">
           <div className="text-xs font-bold truncate">{item.name}</div>
           <div className="text-xs truncate text-gray-400">{item.message}</div>
         </div>
@@ -127,17 +148,7 @@ const StudentSocial = () => {
               </h2>
             </div>
           </div>
-          <div className="flex gap-3">
-            <button>
-              <PhoneOutlined />
-            </button>
-            <button>
-              <VideoCameraOutlined />
-            </button>
-            <button>
-              <EllipsisOutlined />
-            </button>
-          </div>
+          <div className="flex gap-3"></div>
         </div>
       </div>
       <div className="flex-grow overflow-y-auto p-4 space-y-2">
@@ -150,16 +161,10 @@ const StudentSocial = () => {
       </div>
       <form onSubmit={sendMessage} className="p-4 bg-white border-t">
         <div className="flex items-center gap-2">
-          <Tooltip title="Attach file">
-            <Button icon={<PaperClipOutlined />} onClick={handleAttachment} />
-          </Tooltip>
           <input type="file" ref={fileInputRef} onChange={handleFileChange} style={{ display: "none" }} />
           <Input value={newMessage} onChange={(e) => setNewMessage(e.target.value)} placeholder="Type a message here..." className="flex-grow" />
           <Tooltip title="Emoji">
-            <Button icon={<SmileOutlined />} />
-          </Tooltip>
-          <Tooltip title="Voice message">
-            <Button icon={<AudioOutlined />} />
+            <Button icon={<SmileOutlined />} className="text-gray-500" onClick={handleEmojiButtonClick} />
           </Tooltip>
           <Button type="primary" icon={<SendOutlined />} onClick={sendMessage} />
         </div>
@@ -168,19 +173,18 @@ const StudentSocial = () => {
   );
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="w-full items-center px-4 py-8">
       <div className="flex flex-col lg:flex-row gap-8">
-        <div className="w-full lg:w-3/4">
-          <div className=" rounded-lg shadow-md overflow-hidden h-[600px]">
+        <div className="w-full flex">
+          <div className=" rounded-lg shadow-md w-full overflow-hidden h-[600px]">
             {(!isSmallScreen || clickedUserIndex === null) && (
-              <div className="flex flex-col md:flex-row h-full">
-                <div className="w-full md:w-1/3 p-4 pl-3 border-r bg-gray-100 border-gray-300">
+              <div className="flex flex-col w-full md:flex-row h-full">
+                <div className="w-full md:w-1/3 p-4 pl-3 border-r  border-gray-300">
                   <h2 className="font-bold text-sm mb-4">Chats</h2>
                   <div className="flex justify-evenly gap-1 mb-4">
                     {["Direct", "Groups", "Public"].map((tab) => (
-                      <button key={tab} onClick={() => setCurrentTab(tab.toLowerCase())} className={`px-2 text-xs py-1 font-bold items-center rounded ${currentTab === tab.toLowerCase() ? " text-black" : "text-gray-400"}`}>
+                      <button key={tab} onClick={() => setCurrentTab(tab.toLowerCase())} className={`px-2 text-xs py-1 font-bold  items-center rounded ${currentTab === tab.toLowerCase() ? " text-white bg-[#001840]" : "text-white bg-gray-400"}`}>
                         <span>{tab}</span>
-                        <span className="text-red-500">*</span>
                       </button>
                     ))}
                   </div>
@@ -192,12 +196,12 @@ const StudentSocial = () => {
                   </div>
                   <div className="overflow-y-auto h-96">{renderContent()}</div>
                 </div>
-                <div className="w-full md:w-2/3">
+                <div className="w-full md:w-full">
                   {clickedUserIndex !== null ? (
                     renderChat()
                   ) : (
                     <div className="flex items-center justify-center h-full">
-                      <p className="text-center text-gray-500">Select a chat to start messaging</p>
+                      <p className="text-center md:block hidden text-gray-500">Select a chat to start messaging</p>
                     </div>
                   )}
                 </div>
@@ -206,49 +210,6 @@ const StudentSocial = () => {
             {isSmallScreen && clickedUserIndex !== null && renderChat()}
           </div>
         </div>
-
-        {(!isSmallScreen || clickedUserIndex === null) && (
-          <div className="w-full lg:w-1/3">
-            <div className="bg-[#001840] rounded-xl p-6 max-h-[600px] overflow-y-auto scrollbar-hide">
-              <h2 className="text-white text-xs font-bold mb-4">Notifications</h2>
-              <div className="space-y-4 mb-8 max-h-[300px] overflow-y-auto scrollbar-hide">
-                {notifications.map((item, index) => (
-                  <div key={index} className="bg-white rounded-md p-2 flex items-center gap-3 h-14">
-                    <div className="flex items-center justify-center">
-                      <Image src="/necklace.png" width={70} height={70} alt="avatar" className="w-8 h-8 object-cover rounded-full" />
-                    </div>
-                    <div>
-                      <p style={{ fontSize: "10px" }} className="text-blue-600 font-bold truncate">
-                        {item.name}
-                      </p>
-                      <p style={{ fontSize: "10px" }} className="text-xs font-bold truncate">
-                        {item.head}
-                      </p>
-                      <p style={{ fontSize: "10px" }} className="truncate max-w-[150px]">
-                        {item.msg}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <h2 className="text-white text-sm font-bold mb-4">Online Users</h2>
-              <div className="space-y-4 max-h-[300px] overflow-y-auto scrollbar-hide">
-                {onlineUsers.map((item, index) => (
-                  <div key={index} className="bg-white rounded-md p-2 flex items-center gap-3">
-                    <div className="flex items-center justify-center">
-                      <Image src="/necklace.png" width={70} height={70} alt="avatar" className="w-8 h-8 object-cover rounded-full" />
-                    </div>
-                    <div>
-                      <p className="text-xs font-bold">{item.name}</p>
-                      <p className="text-xs font-bold text-green-500">{item.status}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

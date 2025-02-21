@@ -133,7 +133,7 @@ const StudentSearch = () => {
       ref={searchContainerRef}
       className="fixed top-14 left-0 right-0 w-full z-10 bg-white shadow-sm lg:px-32"
     >
-      <div className="max-w-7xl mx-auto px-4 py-4">
+      <div className=" mx-auto lg:px-20 px-4 py-4 bg-white ">
         <div className="relative flex justify-between w-full items-center space-x-4">
           <div className="w-full md:w-[653px] relative">
             <Input.Search
