@@ -46,8 +46,8 @@ const Signout = () => {
         title={
           !loading && (
             <div className="flex items-center gap-1">
-              <AiOutlineQuestionCircle size={24} className="text-black" />
-              <span className="text-black font-extrabold text-xl">
+              <AiOutlineQuestionCircle size={24} className="text-[#001840]" />
+              <span className="text-[#001840] font-extrabold text-xl">
                 Sign Out
               </span>
             </div>
@@ -59,7 +59,7 @@ const Signout = () => {
         okButtonProps={{
           disabled: loading,
           className:
-            "[&.ant-btn-primary]:!bg-[#000] [&.ant-btn-primary]:!border-[#000] [&.ant-btn-primary:not(:disabled):hover]:!bg-[#000]/80 [&.ant-btn]:!text-white [&.ant-btn-primary:disabled]:!bg-gray-300 [&.ant-btn-primary:disabled]:!border-gray-300",
+            "[&.ant-btn-primary]:!bg-[#001840] [&.ant-btn-primary]:!border-[#000] [&.ant-btn-primary:not(:disabled):hover]:!bg-[#000]/80 [&.ant-btn]:!text-white [&.ant-btn-primary:disabled]:!bg-gray-300 [&.ant-btn-primary:disabled]:!border-gray-300",
         }}
         cancelButtonProps={{
           disabled: loading,
@@ -68,11 +68,11 @@ const Signout = () => {
         }}
       >
         {loading ? (
-          <div className="flex justify-center items-center font-black text-xl pt-6 pb-2 animate-pulse">
+          <div className="flex justify-center items-center font-black text-xl pt-6 pb-2 animate-pulse text-[#001840]">
             Signing out... 😔
           </div>
         ) : (
-          <p className="text-xs">Are you sure you want to sign out?</p>
+          <p className="text-xs text-[#001840]">Are you sure you want to sign out?</p>
         )}
       </Modal>
     </div>

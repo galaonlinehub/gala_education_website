@@ -43,7 +43,7 @@ const MobilePay = () => {
   const validateInput = (value) => {
     if (!value) return messages.required;
     if (!isValidPhoneNumber(value)) return messages.invalid;
-    return "";
+    return 1;
   };
 
   const handleKeyPress = (e) => {
@@ -128,7 +128,7 @@ const MobilePay = () => {
         if (!success) {
           setPaymentStatus(PaymentStatus.REFERENCE);
         }
-      }, 45000);
+      }, 60000);
 
       setTimeoutId(timer);
     },
@@ -148,6 +148,7 @@ const MobilePay = () => {
 
     socket.on("paymentResponse", (msg) => {
       console.log(msg);
+      console.log("DENIS MGAYA")
       if (msg) {
         setPaymentStatus(PaymentStatus.SUCCESS);
         setSuccess(true);

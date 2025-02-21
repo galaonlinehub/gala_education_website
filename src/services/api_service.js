@@ -20,7 +20,7 @@ const publicEndpoints = new Set([
   "payment",
   "password/reset-request",
   "reset-password",
-  "subscribe-plan"
+  "subscribe-plan",
 ]);
 
 api.interceptors.request.use(
@@ -66,8 +66,10 @@ api.interceptors.request.use(
 // );
 
 export const apiGet = async (endpoint, headers = {}) => {
-  const response = await api.get(endpoint, { headers });
-  return response;
+  try {
+    const response = await api.get(endpoint, { headers });
+    return response;
+  } catch (e) {}
 };
 
 export const apiPost = async (endpoint, data, headers = {}) => {

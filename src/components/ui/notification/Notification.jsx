@@ -18,8 +18,8 @@ const baseStyle = {
   padding: "16px",
   paddingLeft:"0px",
   borderRadius: "8px",
-  width: "450px", 
-  minHeight: "60px", 
+  width: "400px", 
+  minHeight: "30px", 
 };
 
 const themes = {
@@ -43,7 +43,7 @@ const themes = {
 
 const formatContent = (text, isMessage, textColor) => (
   <span 
-    className={`text-${textColor} ${isMessage ? "text-base font-bold" : "text-sm"}`}
+    className={`text-${textColor} ${isMessage ? "text-sm" : "text-xs"}`}
   >
     {text}
   </span>
