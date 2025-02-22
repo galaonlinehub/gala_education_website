@@ -5,9 +5,9 @@ import Card1 from "./Card1";
 
 const Platform = () => {
   const contentStyle = {
-    height: "300px",
+    height: "250px",
     color: "#fff",
-    lineHeight: "160px",
+    lineHeight: "25px",
     textAlign: "center",
     width: "100%",
   };

@@ -6,7 +6,7 @@ const OurServicesCard = () => {
   const contentStyle = {
     height: "300px",
     color: "#fff",
-    lineHeight: "160px",
+    lineHeight: "20px",
     textAlign: "center",
     background: "#364d79",
     width: "100%",

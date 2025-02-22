@@ -12,25 +12,28 @@ import { useUser } from "@/src/hooks/useUser";
 import AboutUs from "../home/modals/AboutUs";
 import { FaLanguage } from "react-icons/fa6";
 import MobileSideBar from "./MobileSideBar";
+import { useDevice } from "@/src/hooks/useDevice";
 
 const Navbar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  // const [isMobile, setIsMobile] = useState(false);
   const { user } = useUser();
+  const { width } = useDevice();
+
   const [openLogout, setOpenLogout] = useState(false);
 
   const [showLanguage, setShowLanguage] = useState(false);
   const [language, setLanguage] = useState("english");
 
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
+  // useEffect(() => {
+  //   const checkMobile = () => {
+  //     setIsMobile(window.innerWidth < 768);
+  //   };
 
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
+  //   checkMobile();
+  //   window.addEventListener("resize", checkMobile);
+  //   return () => window.removeEventListener("resize", checkMobile);
+  // }, []);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -113,7 +116,7 @@ const Navbar = () => {
         </li>
         {user && (
           <li>
-            <Link href={`${user.role}/dashboard`} className="hover:cursor-pointer">
+            <Link href={`${user.role}`} className="hover:cursor-pointer">
               Dashboard
             </Link>
           </li>
@@ -139,7 +142,8 @@ const Navbar = () => {
 
         {user && <Signout />}
       </ul>
-      <MobileSideBar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+      {width < 768 &&  <MobileSideBar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />}
+      
     </nav>
   );
 };
