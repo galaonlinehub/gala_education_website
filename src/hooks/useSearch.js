@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { apiGet } from "../services/api_service";
@@ -15,7 +15,7 @@ export const useSearch = () => {
   const searchContainerRef = useRef(null);
 
   // External store hooks
-  const {openNewClass, setOpenNewClass } = useNewClass();
+  const { openNewClass, setOpenNewClass } = useNewClass();
   const { selectedItemId, setSelectedItemId } = useSearchResult();
 
   // Search query
@@ -30,7 +30,7 @@ export const useSearch = () => {
       return response.data;
     },
     enabled: false,
-    staleTime: 5000,
+    staleTime: Infinity,
   });
 
   // Results query
@@ -60,30 +60,31 @@ export const useSearch = () => {
     enabled: !!selectedItemId.id && !!selectedItemId.type,
   });
 
-  // Clear search functionality
   const clearSearch = useCallback(() => {
     setSearchTerm("");
     setIsSearching({ loading: false, resultsVisible: false });
     if (!openNewClass) {
       setSelectedItemId({ id: null, type: null });
-    }  }, [setSelectedItemId, openNewClass]);
+    }
+  }, [setSelectedItemId, openNewClass]);
 
-  // Perform search with debounce
   const performSearch = useCallback(() => {
-    setIsSearching((prev) => ({
-      ...prev,
-      loading: true,
-      resultsVisible: true,
-    }));
-
-    refetchSearch().finally(() => {
+    if (!openNewClass) {
       setIsSearching((prev) => ({
         ...prev,
-        loading: false,
-        resultsVisible: searchTerm.trim().length > 0,
+        loading: true,
+        resultsVisible: true,
       }));
-    });
-  }, [refetchSearch, searchTerm]);
+
+      refetchSearch().finally(() => {
+        setIsSearching((prev) => ({
+          ...prev,
+          loading: false,
+          resultsVisible: searchTerm.trim().length > 0,
+        }));
+      });
+    }
+  }, [openNewClass, refetchSearch, searchTerm]);
 
   // Search debounce effect
   useEffect(() => {
@@ -98,12 +99,11 @@ export const useSearch = () => {
     return () => clearTimeout(delayDebounceFn);
   }, [searchTerm, performSearch, clearSearch]);
 
-  // Click outside handler
   const handleClickOutside = useCallback(
     (event) => {
       if (
         searchContainerRef.current &&
-        !searchContainerRef.current.contains(event.target) 
+        !searchContainerRef.current.contains(event.target)
       ) {
         clearSearch();
       }
@@ -111,7 +111,6 @@ export const useSearch = () => {
     [clearSearch]
   );
 
-  // Click outside effect
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
@@ -119,7 +118,6 @@ export const useSearch = () => {
     };
   }, [handleClickOutside]);
 
-  // Handle result click
   const handleResultClick = useCallback(
     (item) => {
       const type = item.user ? "instructor" : "topic";

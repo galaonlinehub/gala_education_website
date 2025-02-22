@@ -7,6 +7,9 @@ import { useEnrolledTopics } from "@/src/store/student/class";
 import { useUserTopics } from "@/src/store/user_topics";
 import Link from "next/link";
 import { useUser } from "@/src/hooks/useUser";
+import { GiBookCover } from "react-icons/gi";
+import { MdOutlineAssignment } from "react-icons/md";
+
 
 const { Title, Text } = Typography;
 
@@ -54,24 +57,24 @@ export default function Component() {
   const SelectedSubjects = () => (
     <Card title="Selected subjects" size="small">
       <Space direction="vertical" className=" w-44 items-start">
-        <div className="flex gap-2">
-          <BookOutlined />
+        <div className="flex gap-2  items-center justify-center">
+          <GiBookCover />
           <div className="w-32 line-clamp-1"> Mathematics </div>
-        </div>
-        <div className="flex gap-2">
-          <BookOutlined />
+        </div> 
+        <div className="flex gap-2 items-center justify-center">
+          <GiBookCover />
           <div className="w-32 line-clamp-1"> English </div>
         </div>
-        <div className="flex gap-2">
-          <BookOutlined />
+        <div className="flex gap-2 items-center justify-center">
+          <GiBookCover />
           <div className="w-32 line-clamp-1"> Physics </div>
         </div>
-        <div className="flex gap-2">
-          <BookOutlined />
+        <div className="flex gap-2 items-center justify-center">
+          <GiBookCover />
           <div className="w-32 line-clamp-1"> Biology </div>
         </div>
-        <div className="flex gap-2">
-          <BookOutlined />
+        <div className="flex gap-2 items-center justify-center">
+          <GiBookCover />
           <div className="w-32 line-clamp-1"> Art </div>
         </div>
       </Space>
@@ -85,7 +88,7 @@ export default function Component() {
         <Col xs={24} md={16}>
           <Space direction="vertical">
             <Title level={4} style={{ margin: 0 }}>
-              Welcome back, {user?.first_name} {user?.last_name}!
+              Welcome back, <span className="font-black">{user?.first_name} {user?.last_name}</span>!
             </Title>
             <Text type="secondary">Your learning dashboard - Track your progress and stay organized</Text>
           </Space>
@@ -156,7 +159,7 @@ export default function Component() {
   );
 
   return (
-    <div className="h-fit mt-12 overflow-hidden">
+    <div className="h-fit mt-8 overflow-hidden">
       <Row
         className="max-w-[1920px] mx-auto p-4 md:p-6 h-full"
         gutter={[

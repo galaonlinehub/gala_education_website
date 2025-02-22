@@ -12,11 +12,13 @@ import {
 
 import { HiMiniDevicePhoneMobile } from "react-icons/hi2";
 import { useDevice } from "@/src/hooks/useDevice";
+import { useRouter } from "next/navigation";
 
 const PaymentPending = ({ open, onClose, status, reference, amount }) => {
-  const { type, width, height } = useDevice();
+  const { width } = useDevice();
 
   const [modalSize, setModalSize] = useState({ width: 520, height: 520 });
+  const router = useRouter();
 
   useEffect(() => {
     const updateSize = () => {
@@ -47,7 +49,7 @@ const PaymentPending = ({ open, onClose, status, reference, amount }) => {
           <div className="h-2 w-64 bg-gray-200 rounded-full overflow-hidden">
             <div className="h-full bg-[#010798] animate-pulse rounded-full" />
           </div>
-          <p className="text-xs text-gray-500">This may take a few moments</p>
+          <p className="text-xs text-gray-500">This may take a few seconds</p>
         </div>
       </div>
     </div>
@@ -62,11 +64,11 @@ const PaymentPending = ({ open, onClose, status, reference, amount }) => {
         </span>
       }
       subTitle={
-        <div className="space-y-2 mt-2">
-          <p className="text-gray-600">
+        <div className="space-y-4 mt-4 md:mt-6 lg:mt-8">
+          <p className="text-gray-600 text-xs md:text-sm">
             Your transaction has been completed successfully.
           </p>
-          <p className="text-gray-500 text-sm">
+          <p className="text-gray-500 text-xs md:text-sm">
             A confirmation email will be sent shortly.
           </p>
         </div>
@@ -119,7 +121,7 @@ const PaymentPending = ({ open, onClose, status, reference, amount }) => {
                   3. Enter Amount for plan selected
                 </span>
                 <p className="text-lg text-[#001840] font-black mt-1">
-                  {amount.toLocaleString()}{" "}TZS
+                  {amount.toLocaleString()} TZS
                 </p>
               </div>
             </div>
