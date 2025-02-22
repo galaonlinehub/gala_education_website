@@ -101,14 +101,14 @@ export const teacher_links = [
     link: ".",
     icon: <FaChalkboardTeacher />,
   },
+  // {
+  //   name: "Notes",
+  //   link: "notes",
+  //   icon: <MdNotes />,
+  // },
   {
-    name: "Notes",
-    link: "notes",
-    icon: <MdNotes />,
-  },
-  {
-    name: "Live",
-    link: "live",
+    name: "Live Class",
+    link: "live-class",
     icon: <MdLiveTv />,
   },
   ,
@@ -167,7 +167,7 @@ export const student_links = [
   // },
   {
     name: "Assignments",
-    link: "classroom",
+    link: "assignments",
     icon: <FaChalkboardTeacher />,
   },
   {

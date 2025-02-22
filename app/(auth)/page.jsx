@@ -25,6 +25,7 @@ import Donate from "@/src/components/ui/Donate";
 import VideoPlayer from "@/src/components/ui/VideoPlayer";
 import ScrollableContent from "@/src/components/ui/TeachersCard";
 import { useUser } from "@/src/hooks/useUser";
+import Footer from "@/src/components/layout/footer";
 
 function Home() {
   const [showDonatePopup, setShowDonatePopup] = useState(false);
@@ -828,6 +829,7 @@ function Home() {
         </div>
       </div>
       {/* <AcceptCookies/> */}
+      <Footer/>
     </div>
   );
 }

@@ -41,14 +41,9 @@ const MobileSideBar = ({ isOpen, onClose }) => {
       label: <Link href="/instructor/">Dashboard</Link>,
     },
     {
-      key: "notes",
-      icon: <MdNotes />,
-      label: <Link href="/instructor/notes">Notes</Link>,
-    },
-    {
-      key: "live",
+      key: "live-class",
       icon: <MdLiveTv />,
-      label: <Link href="/instructor/live">Live Lesson</Link>,
+      label: <Link href="/instructor/live-class">Live Class</Link>,
     },
     {
       key: "social",
