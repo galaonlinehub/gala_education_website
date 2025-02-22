@@ -84,7 +84,7 @@ const InstructorClasses = () => {
               hoverable
               style={{ height: "100%" }}
               actions={[
-                <Button type="link" icon={<EyeOutlined />}>
+                <Button key="view" type="link" icon={<EyeOutlined />}>
                   View Details
                 </Button>,
               ]}
@@ -130,7 +130,7 @@ const InstructorClasses = () => {
       </Row>
 
       <ClassCreationWizard openAddNewClass={openAddNewClass} setOpenAddNewClass={setOpenAddNewClass} />
-      
+
     </div>
   );
 };

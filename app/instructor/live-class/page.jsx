@@ -104,7 +104,7 @@ const InstructorVideoDashboard = () => {
                           {/* Status and Action */}
                           <Col xs={24} sm={8} md={7} lg={6}>
                             <div className="flex flex-col sm:items-end gap-3">
-                              <Tag bordered className="py-1 bg-white text-orange-400 to-orange-200 shadow-md">
+                              <Tag color="warning" bordered className="py-1 bg-white shadow-md">
                                 {item.status}
                               </Tag>
 
