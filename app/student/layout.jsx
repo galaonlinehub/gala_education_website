@@ -73,7 +73,7 @@ export default function StudentLayout({ children }) {
                   onClick={() => isMobile && setIsSidebarOpen(false)}
                 >
                   <span className="">{item.icon}</span>
-                  <span className="font-black text-sm ">{item.name}</span>
+                  <span className="text-sm ">{item.name}</span>
                 </Link>
               </li>
             ))}

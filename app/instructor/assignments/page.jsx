@@ -63,30 +63,32 @@ const AssignmentUpload = () => {
   };
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen">
-      <div className="max-w-4xl mx-auto">
-        <Row gutter={24}>
-          <Col span={16}>
+    <div className="p-4 md:p-8 bg-white">
+      <div className="max-w-7xl mx-auto">
+        <Row gutter={[16, 16]}>
+          {/* Main form column - full width on mobile, 2/3 on larger screens */}
+          <Col xs={24} lg={16}>
             <Card 
               title={
                 <Space>
                   <BookOutlined />
-                  Assignment Details
+                  <span className="text-lg">Assignment Details</span>
                 </Space>
               }
-              className="mb-6"
+              className="mb-4 md:mb-0"
             >
               <Form
                 form={form}
                 layout="vertical"
                 onFinish={onFinish}
+                className="space-y-4"
               >
                 <Form.Item
                   label="Assignment Title"
                   name="title"
                   rules={[{ required: true, message: 'Please input the title!' }]}
                 >
-                  <Input placeholder="Enter assignment title" />
+                  <Input placeholder="Enter assignment title" className="w-full" />
                 </Form.Item>
 
                 <Form.Item
@@ -94,7 +96,7 @@ const AssignmentUpload = () => {
                   name="lesson"
                   rules={[{ required: true, message: 'Please select a lesson!' }]}
                 >
-                  <Select placeholder="Select lesson">
+                  <Select placeholder="Select lesson" className="w-full">
                     {lessons.map(lesson => (
                       <Option key={lesson} value={lesson.toLowerCase()}>
                         {lesson}
@@ -111,6 +113,7 @@ const AssignmentUpload = () => {
                   <TextArea
                     rows={4}
                     placeholder="Enter assignment description and instructions"
+                    className="w-full"
                   />
                 </Form.Item>
 
@@ -118,24 +121,28 @@ const AssignmentUpload = () => {
                   label="Assignment Materials"
                   name="materials"
                 >
-                  <Upload {...uploadProps}>
-                    <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                  <Upload {...uploadProps} className="w-full">
+                    <Button icon={<UploadOutlined />} className="w-full md:w-auto">
+                      Click to Upload
+                    </Button>
                   </Upload>
                 </Form.Item>
               </Form>
             </Card>
           </Col>
 
-          <Col span={8}>
+          {/* Settings column - full width on mobile, 1/3 on larger screens */}
+          <Col xs={24} lg={8}>
             <Card
               title={
                 <Space>
                   <ClockCircleOutlined />
-                  Settings
+                  <span className="text-lg">Settings</span>
                 </Space>
               }
+              className="h-full"
             >
-              <Form layout="vertical">
+              <Form layout="vertical" className="space-y-4">
                 <Form.Item
                   label="Due Date"
                   name="dueDate"
@@ -144,17 +151,7 @@ const AssignmentUpload = () => {
                   <DatePicker className="w-full" />
                 </Form.Item>
 
-                <Form.Item
-                  label="Points"
-                  name="points"
-                  rules={[{ required: true, message: 'Please input the points!' }]}
-                >
-                  <InputNumber
-                    min={0}
-                    placeholder="Enter maximum points"
-                    className="w-full"
-                  />
-                </Form.Item>
+               
 
                 <Alert
                   message="Note"
@@ -165,14 +162,12 @@ const AssignmentUpload = () => {
                   className="mb-4"
                 />
 
-                <Space className="w-full mt-4">
-                  <Button type="default" block>
-                    Save Draft
-                  </Button>
-                  <Button type="primary" block>
+                <div className="flex flex-col sm:flex-row gap-2 mt-4">
+               
+                  <Button type="primary" block className="flex-1">
                     Publish
                   </Button>
-                </Space>
+                </div>
               </Form>
             </Card>
           </Col>

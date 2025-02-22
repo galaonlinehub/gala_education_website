@@ -61,7 +61,7 @@ const componentStyles = {
   },
 };
 
-const ClassCreationWizard = () => {
+const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
   const [step, setStep] = useState(0);
 
   const {
@@ -386,8 +386,8 @@ const ClassCreationWizard = () => {
 
   return (
     <Drawer
-      open={true}
-      onCancel={() => {}}
+      open={openAddNewClass}
+      onClose={() => setOpenAddNewClass(false)}
       footer={null}
       width={850}
       styles={{
@@ -395,7 +395,6 @@ const ClassCreationWizard = () => {
           padding: 0,
         },
       }}
-      className="!rounded-lg"
     >
       <div className="p-8">
         <Steps
