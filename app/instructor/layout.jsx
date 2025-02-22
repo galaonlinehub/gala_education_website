@@ -34,6 +34,15 @@ export default function TeacherLayout({ children }) {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  const getCurrentDate = () => {
+    const date = new Date();
+    return date.toLocaleDateString('en-US', {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric'
+    });
+  };
+
   return (
     <>
       <Navbar />
@@ -70,8 +79,8 @@ export default function TeacherLayout({ children }) {
 
       {/* Search Bar */}
       <div className="fixed top-14 left-0 bg-white right-0 z-40 border-b">
-        <div className="flex flex-col md:flex-row items-center justify-between px-4 py-2 gap-4">
-          <span className="text-sm text-gray-600 whitespace-nowrap">October 14, 2024</span>
+        <div className="flex items-center justify-between px-4 py-2 gap-4">
+          <span className="text-sm text-gray-600 whitespace-nowrap font-extralight">{getCurrentDate()}</span>
           <div className="flex gap-3">
             <FaBell className="text-xl" />
             <FaUserCircle className="text-xl" />

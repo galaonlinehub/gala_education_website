@@ -23,8 +23,6 @@ const MobilePay = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [paymentStatus, setPaymentStatus] = useState("");
   const [reference, setReference] = useState(null);
-  const [success, setSuccess] = useState(false);
-  const [timeoutId, setTimeoutId] = useState(null);
 
   const messages = {
     required: "Phone number is required",
@@ -34,7 +32,7 @@ const MobilePay = () => {
   const isValidPhoneNumber = (number) => {
     if (!number || number.length !== 9) return false;
     if (!["6", "7"].includes(number[0])) return false;
-    if (!["1", "2", "3", "4", "5", "6"].includes(number[1])) return false;
+    if (!["1", "2", "3", "4", "5", "6", "8"].includes(number[1])) return false;
     if (!["1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(number[2]))
       return false;
     return true;
@@ -43,7 +41,7 @@ const MobilePay = () => {
   const validateInput = (value) => {
     if (!value) return messages.required;
     if (!isValidPhoneNumber(value)) return messages.invalid;
-    return 1;
+    return "";
   };
 
   const handleKeyPress = (e) => {
@@ -107,7 +105,7 @@ const MobilePay = () => {
   const mutation = useMutation({
     mutationFn: async () => {
       const data = {
-        email: "denis.mgaya@outlook.com",
+        email: "Denis.mgaya@outlook.com",
         phone_number: `255${phoneNumber}`,
         payment_plan_id: plan?.id ?? 3,
       };
@@ -124,13 +122,6 @@ const MobilePay = () => {
       if (data.order_response.resultcode === "000") {
         setReference(data.order_response.data[0].payment_token);
       }
-      const timer = setTimeout(() => {
-        if (!success) {
-          setPaymentStatus(PaymentStatus.REFERENCE);
-        }
-      }, 60000);
-
-      setTimeoutId(timer);
     },
     onError: (error) => {
       setTimeout(() => {
@@ -142,23 +133,16 @@ const MobilePay = () => {
   useEffect(() => {
     const socket = io("https://edusockets.galahub.org/payment");
     socket.on("connect", () => {
-      socket.emit("join", { email: "denis.mgaya@outlook.com" });
-      console.log("connected successfully");
+      socket.emit("join", { email: "Denis.mgaya@outlook.com" });
     });
 
     socket.on("paymentResponse", (msg) => {
-      console.log(msg);
-      console.log("DENIS MGAYA")
-      if (msg) {
+      if (msg.status === "success") {
         setPaymentStatus(PaymentStatus.SUCCESS);
-        setSuccess(true);
-        if (timeoutId) {
-          clearTimeout(timeoutId);
-        }
 
-        // setTimeout(() => {
-        //   window.location.href = '/signin';
-        // }, 4000);
+        setTimeout(() => {
+          window.location.href = "/signin";
+        }, 10000);
       } else {
         setPaymentStatus(PaymentStatus.REFERENCE);
       }
@@ -169,7 +153,7 @@ const MobilePay = () => {
     });
 
     return () => socket.close();
-  }, [email, timeoutId]);
+  }, [email]);
 
   useEffect(() => {
     getPlan();

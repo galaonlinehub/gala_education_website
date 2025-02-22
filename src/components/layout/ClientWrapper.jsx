@@ -18,14 +18,14 @@ const ClientWrapper = ({ children }) => {
     if (userError) {
       notificationService.error({
         message: "",
-        description: "Fatal error occurred, Redirecting to home page... ",
+        description:
+          "Fatal error occurred,\n Please try again later!, \t  Redirecting to home page... ",
         duration: 5,
         closable: true,
-        customStyle: { padddingTop: "0px" },
+        customStyle: { paddingTop: "0px" },
       });
 
       cookieFn.remove(USER_COOKIE_KEY);
-
       router.push("/");
     }
   }, [router, userError]);
