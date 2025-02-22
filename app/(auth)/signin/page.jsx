@@ -7,7 +7,7 @@ import { message, Alert } from "antd";
 import GoogleSvg from "@/src/utils/vector-svg/sign-in/GoogleSvg";
 import { handleGoogleLogin, login } from "@/src/utils/fns/auth";
 import { preventCopyPaste } from "@/src/utils/fns/general";
-import { useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from "@tanstack/react-query";
 import { getUser } from "@/src/utils/fns/global";
 import { roleRedirects } from "@/src/utils/data/redirect";
 
@@ -49,8 +49,7 @@ const SignInPage = () => {
         }
       }
     } catch (error) {
-      alert(JSON.stringify(error))
-      showError(error.response?.data?.message || errorMessage);
+      showError(error?.message);
     } finally {
       setTimeout(() => clearFeedback(), 10000);
     }
@@ -152,7 +151,7 @@ const SignInPage = () => {
             )}
           </div>
 
-          <span className="font-bold text-sm self-end">
+          <span className="font-bold text-sm self-end pointer-events-none">
             Forgot
             <span
               className="font-bold sm:text-sm text-[#030DFE] ml-2 cursor-pointer"
@@ -171,7 +170,7 @@ const SignInPage = () => {
           </button>
         </form>
 
-        <span className="text-xs font-semibold mt-1 md:mt-2">
+        <span className="text-xs font-semibold mt-1 md:mt-2 pointer-events-none">
           Don&#39;t have an account?{" "}
           <span
             className="text-[#030DFE] cursor-pointer"
@@ -183,7 +182,7 @@ const SignInPage = () => {
 
         <button
           onClick={handleGoogleLogin}
-          disabled={isSubmitting}
+          disabled={true}
           className="rounded-md h-12 w-full lg:w-3/4 md:w-full bg-[#001840] mt-10 text-white lg:text-base font-black disabled:opacity-70 flex items-center justify-center gap-3 lg:gap-5 px-4 py-2 text-xs md:text-sm"
         >
           <GoogleSvg />

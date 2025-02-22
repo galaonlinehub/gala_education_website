@@ -1,16 +1,18 @@
 "use client";
 
-import { Tooltip, Tour, Popconfirm, Select, Button, message } from "antd";
+import { Popconfirm, message } from "antd";
 import Link from "next/link";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
-import { MenuOutlined, CloseOutlined, SettingOutlined } from "@ant-design/icons";
+import {
+  MenuOutlined,
+  CloseOutlined,
+  SettingOutlined,
+} from "@ant-design/icons";
 import ChooseAccont from "@/src/components/ui/auth/signup/ChooseAccount";
-import { LuLogOut } from "react-icons/lu";
 import { Signout } from "../ui/auth/signup/Signout";
 import { useUser } from "@/src/hooks/useUser";
 import AboutUs from "../home/modals/AboutUs";
-import { FaLanguage } from "react-icons/fa6";
 import MobileSideBar from "./MobileSideBar";
 import { useDevice } from "@/src/hooks/useDevice";
 
@@ -66,8 +68,14 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="h-14 flex justify-between max-w-screen items-center fixed top-0 inset-x-0 z-50 lg:px-4 px-2 bg-white">
-      <Image alt={"Gala logo"} width={150} height={150} src={"/gala-logo.png"} className={"w-16 h-16 object-cover rounded-full "} />
+    <nav className="h-14 flex justify-between max-w-screen items-center fixed top-0 inset-x-0 z-50 lg:px-4 px-2 bg-white pointer-events-none">
+      <Image
+        alt={"Gala logo"}
+        width={150}
+        height={150}
+        src={"/gala-logo.png"}
+        className={"w-16 h-16 object-cover rounded-full "}
+      />
 
       <ul className="text-black font-black flex sm:gap-x-4 gap-x-2 sm:text-xs text-[8px] leading-[5px] items-center justify-center">
         <Popconfirm
@@ -106,7 +114,13 @@ const Navbar = () => {
             />
           }
         >
-          <Image width={200} height={200} alt="Language translate image" src={"/language_translate.png"} className={"w-5 h-5 object-cover bg-white/45 cursor-pointer"} />
+          <Image
+            width={200}
+            height={200}
+            alt="Language translate image"
+            src={"/language_translate.png"}
+            className={"w-5 h-5 object-cover bg-white/45 cursor-pointer"}
+          />
         </Popconfirm>
 
         <li>
@@ -135,13 +149,22 @@ const Navbar = () => {
         )}
 
         {user && (
-          <button className="md:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors" onClick={toggleSidebar} aria-label="Toggle menu">
-            {isSidebarOpen ? <CloseOutlined style={{ fontSize: "20px" }} /> : <MenuOutlined style={{ fontSize: "20px" }} />}
+          <button
+            className="md:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            onClick={toggleSidebar}
+            aria-label="Toggle menu"
+          >
+            {isSidebarOpen ? (
+              <CloseOutlined style={{ fontSize: "20px" }} />
+            ) : (
+              <MenuOutlined style={{ fontSize: "20px" }} />
+            )}
           </button>
         )}
 
         {user && <Signout />}
       </ul>
+
       {width < 768 &&  <MobileSideBar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />}
       
     </nav>
