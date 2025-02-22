@@ -343,7 +343,7 @@ const InstructorRegistrationForm = () => {
           </div>
           <Form.Item className="w-full lg:w-2/12">
             <Button
-              disabled={true}
+              disabled={loading}
               type="primary"
               htmlType="submit"
               className="!flex !items-center !justify-center !w-full !font-semibold !bg-[#030DFE] !hover:bg-blue-700 !h-[40px] !text-white"
