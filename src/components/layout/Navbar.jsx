@@ -11,25 +11,29 @@ import { Signout } from "../ui/auth/signup/Signout";
 import { useUser } from "@/src/hooks/useUser";
 import AboutUs from "../home/modals/AboutUs";
 import { FaLanguage } from "react-icons/fa6";
+import MobileSideBar from "./MobileSideBar";
+import { useDevice } from "@/src/hooks/useDevice";
 
 const Navbar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  // const [isMobile, setIsMobile] = useState(false);
   const { user } = useUser();
+  const { width } = useDevice();
+
   const [openLogout, setOpenLogout] = useState(false);
 
   const [showLanguage, setShowLanguage] = useState(false);
   const [language, setLanguage] = useState("english");
 
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
+  // useEffect(() => {
+  //   const checkMobile = () => {
+  //     setIsMobile(window.innerWidth < 768);
+  //   };
 
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
+  //   checkMobile();
+  //   window.addEventListener("resize", checkMobile);
+  //   return () => window.removeEventListener("resize", checkMobile);
+  // }, []);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -62,17 +66,11 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="h-14 flex justify-between max-w-screen items-center fixed top-0 inset-x-0 z-50 lg:px-24 px-2 bg-white">
-      <Image
-        alt={"Gala logo"}
-        width={150}
-        height={150}
-        src={"/gala-logo.png"}
-        className={"w-16 h-16 object-cover rounded-full "}
-      />
+    <nav className="h-14 flex justify-between max-w-screen items-center fixed top-0 inset-x-0 z-50 lg:px-4 px-2 bg-white">
+      <Image alt={"Gala logo"} width={150} height={150} src={"/gala-logo.png"} className={"w-16 h-16 object-cover rounded-full "} />
 
       <ul className="text-black font-black flex sm:gap-x-4 gap-x-2 sm:text-xs text-[8px] leading-[5px] items-center justify-center">
-        <Popconfirm 
+        <Popconfirm
           title={<div className="text-xs font-light mt-1">Choose language</div>}
           open={open}
           onOpenChange={handleOpenChange}
@@ -118,7 +116,7 @@ const Navbar = () => {
         </li>
         {user && (
           <li>
-            <Link href={`${user.role}/dashboard`} className="hover:cursor-pointer">
+            <Link href={`${user.role}`} className="hover:cursor-pointer">
               Dashboard
             </Link>
           </li>
@@ -144,6 +142,8 @@ const Navbar = () => {
 
         {user && <Signout />}
       </ul>
+      {width < 768 &&  <MobileSideBar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />}
+      
     </nav>
   );
 };

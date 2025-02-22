@@ -78,12 +78,12 @@ const MailingList = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit, onError)}
-      className="bg-white px-6 py-4 sm:w-[24rem] md:w-[29rem] w-full mt-4  h-fit rounded-[15px]"
+      className="bg-white px-6 py-4 md:w-[29rem] w-full mt-4  h-fit rounded-[15px]"
     >
-      <h1 className="font-black sm:text-xs text-[10px] mb-2">
+      <h1 className="font-black sm:text-xs text-[12px] mb-2">
         Are you interested in a session and want to know more?
       </h1>
-      <h2 className="sm:text-xs text-[8px]">
+      <h2 className="sm:text-xs text-[10px]">
         Fill out the form and you will be contacted as soon as <br />
         possible by our office
       </h2>
