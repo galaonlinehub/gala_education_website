@@ -4,6 +4,8 @@ import { apiPost, apiGet } from "@/src/services/api_service";
 import { encrypt } from "./encryption";
 import { getUser } from "./global";
 
+const errorMessage = "Something went wrong, Please try again later!";
+
 export const logout = async () => {
   try {
     const response = await apiPost("logout");
@@ -11,23 +13,26 @@ export const logout = async () => {
       cookieFn.remove(USER_COOKIE_KEY);
     }
   } catch (e) {
-    alert("Error logging out");
+    throw new Error(`${errorMessage}\t`, +e?.message);
   }
 };
 
 export const login = async (data) => {
   try {
-    
     const response = await apiPost("login", data);
-    
+
     if (response.status === 200) {
       const encryptedToken = encrypt(response.data.token);
       cookieFn.set(USER_COOKIE_KEY, encryptedToken, 7);
       return 1;
     }
   } catch (error) {
-    return 0;
-   
+    if (error?.status === 401) {
+      throw new Error(
+        "Oops! Wrong credentials. Please check and try again. 🙄🔐"
+      );
+    }
+    throw new Error(`${errorMessage}😬`);
   }
 };
 

@@ -32,7 +32,7 @@ const MobilePay = () => {
   const isValidPhoneNumber = (number) => {
     if (!number || number.length !== 9) return false;
     if (!["6", "7"].includes(number[0])) return false;
-    if (!["1", "2", "3", "4", "5", "6"].includes(number[1])) return false;
+    if (!["1", "2", "3", "4", "5", "6", "8"].includes(number[1])) return false;
     if (!["1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(number[2]))
       return false;
     return true;
@@ -105,7 +105,7 @@ const MobilePay = () => {
   const mutation = useMutation({
     mutationFn: async () => {
       const data = {
-        email: email ?? "denis.mgya@gmail.com",
+        email: "Denis.mgaya@outlook.com",
         phone_number: `255${phoneNumber}`,
         payment_plan_id: plan?.id ?? 3,
       };
@@ -122,9 +122,6 @@ const MobilePay = () => {
       if (data.order_response.resultcode === "000") {
         setReference(data.order_response.data[0].payment_token);
       }
-      setTimeout(() => {
-        setPaymentStatus(PaymentStatus.REFERENCE);
-      }, 5000);
     },
     onError: (error) => {
       setTimeout(() => {
@@ -134,32 +131,34 @@ const MobilePay = () => {
   });
 
   useEffect(() => {
-    getPlan();
-    getEmail();
-  }, []);
-
-
-  useEffect(() => {
-    const socket = io("https://edusockets.galahub.org/payment",);
+    const socket = io("https://edusockets.galahub.org/payment");
     socket.on("connect", () => {
-      socket.emit("join", { email: "frankndagula@outlook.com" });
-      console.log("Conneted");
+      socket.emit("join", { email: "Denis.mgaya@outlook.com" });
     });
 
     socket.on("paymentResponse", (msg) => {
-      console.log("Message", msg);
-      alert(JSON.stringify(msg))
+      if (msg.status === "success") {
+        setPaymentStatus(PaymentStatus.SUCCESS);
+
+        setTimeout(() => {
+          window.location.href = "/signin";
+        }, 10000);
+      } else {
+        setPaymentStatus(PaymentStatus.REFERENCE);
+      }
     });
 
     socket.on("error", (error) => {
       console.error("Socket error:", error);
     });
 
-    console.log(email)
-
-
     return () => socket.close();
   }, [email]);
+
+  useEffect(() => {
+    getPlan();
+    getEmail();
+  }, []);
 
   let getPlan = () => {
     const localStorageText = localStorageFn.get(PLAN_CONFIRMED_KEY);

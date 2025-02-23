@@ -1,8 +1,9 @@
+"use client"
 import { create } from "zustand";
 
 const useSearchResult = create((set) => ({
-  selectedItemId:null,
-    setSelectedItemId: (id) => set({ selectedItemId: id }),
+  selectedItemId: { id: null, type: null },
+  setSelectedItemId: (id) => set({ selectedItemId: id }),
 }));
 
 export { useSearchResult };

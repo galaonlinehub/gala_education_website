@@ -1,18 +1,25 @@
+"use client";
 import React from "react";
 import { Card, Avatar, Badge, Button, Skeleton } from "antd";
-import { FaUsers, FaStar, FaClock } from "react-icons/fa";
+import { FaUsers } from "react-icons/fa";
 import { GoVerified, GoBook } from "react-icons/go";
-import { FaRegStar, FaRegMessage, FaRegClock } from "react-icons/fa6";
+import { FaRegClock } from "react-icons/fa6";
 import { GoShieldCheck } from "react-icons/go";
 import { BsGlobe } from "react-icons/bs";
 import { LuUsers } from "react-icons/lu";
 import { useEnrollMe } from "@/src/store/student/useEnrollMe";
-import { useEnroll } from "@/src/hooks/useEnroll";
 
 const TopicCard = ({ classInfo }) => {
   const { setEnrollMe, setEnrollCohort } = useEnrollMe();
 
+
+  const handleEnroll = () => {
+    setEnrollMe(true);
+    setEnrollCohort(classInfo?.cohort_id);
+  };
+
   return (
+    
     <Card
       loading={false}
       className="!text-black !text-[12px] hover:shadow-lg transition-all !self-center !mb-3"
@@ -112,10 +119,7 @@ const TopicCard = ({ classInfo }) => {
               {/* Action Button */}
               <Button
                 className="!w-full !bg-[#001840] !mt-2 !text-white !border-transparent hover:!border-transparent !text-xs hover:!opacity-90 !font-bold"
-                onClick={() => {
-                  setEnrollMe(true);
-                  setEnrollCohort(classInfo?.cohort_id);
-                }}
+                onClick={handleEnroll}
               >
                 Enroll Now
               </Button>
