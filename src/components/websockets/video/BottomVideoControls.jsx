@@ -9,9 +9,9 @@ import useControlStore from "@/src/store/video/contols";
 
 function ControlItem({ icon: Icon, label, iconClass, labelClass,onClick }) {
   return (
-    <li onClick={onClick} className="flex flex-col items-center cursor-pointer">
-      <Icon className={`text-2xl ${iconClass}`} />
-      <span className={`text-base ${labelClass}`}>{label}</span>
+    <li onClick={onClick} className="flex flex-col items-center justify-center sm:h-20 sm:w-20 w-14 h-14 rounded-full  cursor-pointer bg-[#333537]">
+      <Icon className={`text-sm sm:text-2xl ${iconClass}`} />
+      {/* <span className={`text-base ${labelClass}`}>{label}</span> */}
     </li>
   );
 }
@@ -58,15 +58,8 @@ function BottomVideoControls({toggleScreenShare,role,audioProducerRef,videoProdu
 
   return (
     <div
-      className={`w-screen h-20 !z-[99] bottom-0 absolute rounded-t-xl bg-[#232333] transition-transform duration-500 ${
-        isAnimating
-          ? "translate-y-full opacity-0" 
-          : "translate-y-0 opacity-100" 
-      }`}
-      onMouseEnter={() => setIsFocused(true)} 
-      onMouseLeave={() => setIsFocused(false)} 
-    >
-      <ul className="flex items-center justify-between h-full px-10">
+      className={`w-screen h-20 !z-[99] bottom-0 absolute   duration-500`}>
+      <ul className="flex items-center  gap-2 justify-between h-full px-10">
         <ControlItem
           icon={controls.audio ? FaMicrophone : FaMicrophoneSlash}
           label="Audio"
