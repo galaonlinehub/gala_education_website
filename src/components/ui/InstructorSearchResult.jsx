@@ -1,3 +1,4 @@
+"use client"
 import React from "react";
 import { GoVerified, GoBook } from "react-icons/go";
 import { FaUsers, FaStar, FaClock } from "react-icons/fa";
@@ -7,8 +8,9 @@ import { FaRegMessage, FaRegClock } from "react-icons/fa6";
 import { GoShieldCheck } from "react-icons/go";
 import { BsGlobe } from "react-icons/bs";
 import { LuUsers } from "react-icons/lu";
+import { useEnrollMe } from "@/src/store/student/useEnrollMe";
 
-const InstructorSearchResult = () => {
+const InstructorSearchResult = ({details}) => {
   const certifications = [
     "AWS Solutions Architect",
     "Google Cloud Professional",
@@ -19,18 +21,18 @@ const InstructorSearchResult = () => {
     "Computer",
     "Logos",
   ];
+  const { setEnrollMe, setEnrollCohort } = useEnrollMe();
 
-  const [enroll, setEnroll] = React.useState(false);
-
-  const enrollNow = () => {
-    setEnroll(true);
+  const handleEnroll = () => {
+    setEnrollMe(true);
+    setEnrollCohort(classInfo?.cohort_id);
   };
   return (
     <div className="mx-auto space-y-8 text-xs">
       <div className="bg-black backdrop-blur-md rounded-full py-3 px-6 flex items-center justify-center gap-6 text-white">
         <div className="flex items-center gap-2">
           <FaUsers size={16} />
-          <span>{200} Students</span>
+          <span>{details.student_count} Students</span>
         </div>
         <div className="flex items-center gap-2">
           <FaStar size={16} className="text-yellow-400" />
@@ -58,9 +60,8 @@ const InstructorSearchResult = () => {
           title={
             <div className="flex gap-3 items-center">
               <div className="flex items-center gap-1">
-                <span className="font-extrabold">
-                  {/* {searchResults?.user?.first_name}{" "}
-                    {searchResults?.user?.last_name} */}
+                <span className="font-extrabold capitalize">
+                  {details?.name}{" "}
                 </span>
                 <Badge
                   count={
@@ -115,7 +116,7 @@ const InstructorSearchResult = () => {
           </div>
 
           <div className="flex flex-wrap gap-2">
-            {certifications.map((cert, index) => (
+            {certifications?.map((cert, index) => (
               <Badge
                 key={index}
                 count={
@@ -130,9 +131,8 @@ const InstructorSearchResult = () => {
       </Card>
 
       <Card
-        // loading={searchLoading}
         className="!text-black !text-[12px]"
-      >
+       >
         <Card.Meta
           title={
             <>
@@ -182,7 +182,7 @@ const InstructorSearchResult = () => {
                   </div>
                 </div>
                 <Button
-                  onClick={enrollNow}
+                  onClick={handleEnroll}
                   className="!w-full !bg-black !mt-2 !text-white !border-transparent hover:!border-transparent !text-xs"
                 >
                   Enroll Now
@@ -262,7 +262,6 @@ const InstructorSearchResult = () => {
           }
         />
 
-        <div></div>
       </Card>
     </div>
   );

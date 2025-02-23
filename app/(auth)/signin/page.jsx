@@ -7,7 +7,7 @@ import { message, Alert } from "antd";
 import GoogleSvg from "@/src/utils/vector-svg/sign-in/GoogleSvg";
 import { handleGoogleLogin, login } from "@/src/utils/fns/auth";
 import { preventCopyPaste } from "@/src/utils/fns/general";
-import { useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from "@tanstack/react-query";
 import { getUser } from "@/src/utils/fns/global";
 import { roleRedirects } from "@/src/utils/data/redirect";
 
@@ -49,8 +49,7 @@ const SignInPage = () => {
         }
       }
     } catch (error) {
-      alert(JSON.stringify(error))
-      showError(error.response?.data?.message || errorMessage);
+      showError(error?.message);
     } finally {
       setTimeout(() => clearFeedback(), 10000);
     }
