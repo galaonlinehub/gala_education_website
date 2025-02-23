@@ -303,13 +303,18 @@ export default function TeacherClasses() {
                         },
                         {
                           validator: async (_, value) => {
-                            const phoneRegex = /^\+255[67]\d{8}$/;
+                            const phoneRegex = /^255[67]\d{8}$/;  // Removed the backslash before 255
                             if (!value) return Promise.resolve();
                             if (!phoneRegex.test(value)) {
-                              return Promise.reject(<span className="text-xs italic">Phone number must start with +255 and be followed by 9 digits starting with 6 or 7</span>);
+                              return Promise.reject(
+                                <span className="text-xs italic">
+                                  Phone number must start with 255 and be followed by 9 digits starting with 6 or 7
+                                </span>
+                              );
                             }
+                            return Promise.resolve();
                           },
-                        },
+                        }
                       ]}
                     >
                       <Input />

@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { LuLogOut } from "react-icons/lu";
-import { Modal } from "antd";
+import { Modal, Button } from "antd";
 import { PiWarningCircleBold } from "react-icons/pi";
 import { logout } from "@/src/utils/fns/auth";
 import { useRouter } from "next/navigation";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
+import { LogoutOutlined } from "@ant-design/icons";
 
-const Signout = () => {
+const Signout = ({signOutWord}) => {
   const [signoutVisible, setSignoutVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -32,13 +33,16 @@ const Signout = () => {
   };
 
   return (
-    <div className="hidden md:block">
+    <div className="">
       <LuLogOut
         size={18}
         style={{ strokeWidth: 3 }}
-        className="cursor-pointer"
+        className="cursor-pointer hidden md:block"
         onClick={() => setSignoutVisible(true)}
       />
+       <Button type="default" danger icon={<LogoutOutlined />} onClick={() => setSignoutVisible(true)} className="w-full block md:hidden items-center justify-center">
+           {signOutWord}
+       </Button>
       <Modal
         width={400}
         title={
