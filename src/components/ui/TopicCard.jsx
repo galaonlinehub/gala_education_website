@@ -155,10 +155,9 @@ const TopicCardSkeleton = () => (
                 className="!w-[150px] !h-[12px]"
               />
             </div>
-            <Skeleton.Button
+            <Skeleton.Avatar
               active
-              size="small"
-              className="!w-[70px] !h-[20px]"
+              size={64}
             />
           </div>
         </div>

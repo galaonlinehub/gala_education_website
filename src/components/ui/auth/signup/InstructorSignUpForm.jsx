@@ -85,7 +85,7 @@ const InstructorRegistrationForm = () => {
       >
         {text}
       </Button>
-      <Text className="text-[10px] font-extralight text-gray-500 flex items-center gap-1">
+      <Text className="text-[10px] font-normal text-gray-500 flex items-center gap-1">
         <FilePdfOutlined /> PDF only, max 2MB
       </Text>
     </div>

@@ -16,10 +16,10 @@ const NOTIFICATION_KEY = "app-notification";
 
 const baseStyle = {
   padding: "16px",
-  paddingLeft:"0px",
+  paddingLeft: "0px",
   borderRadius: "8px",
-  width: "400px", 
-  minHeight: "30px", 
+  width: "400px",
+  minHeight: "30px",
 };
 
 const themes = {
@@ -42,9 +42,7 @@ const themes = {
 };
 
 const formatContent = (text, isMessage, textColor) => (
-  <span 
-    className={`text-${textColor} ${isMessage ? "text-sm" : "text-xs"}`}
-  >
+  <span className={`text-${textColor} ${isMessage ? "text-sm" : "text-xs"}`}>
     {text}
   </span>
 );
@@ -54,24 +52,26 @@ const notificationService = {
    * Display error notification
    * @param {NotificationConfig} config - Notification configuration
    */
-  error: ({ 
-    message, 
-    description = "", 
-    duration = null, 
+  error: ({
+    message,
+    description = "Unexpected error occurred, Please try again later",
+    duration = null,
     closable = false,
     position = "top",
-    customStyle = {}
+    customStyle = {},
   }) => {
     notification.destroy();
     notification.error({
       key: NOTIFICATION_KEY,
       message: formatContent(message, true, themes.error.textColor),
-      description: description ? formatContent(description, false, themes.error.textColor) : null,
+      description: description
+        ? formatContent(description, false, themes.error.textColor)
+        : null,
       placement: position,
       style: {
         ...baseStyle,
         backgroundColor: themes.error.backgroundColor,
-        ...customStyle
+        ...customStyle,
       },
       closable,
       duration,
@@ -85,24 +85,26 @@ const notificationService = {
    * Display success notification
    * @param {NotificationConfig} config - Notification configuration
    */
-  success: ({ 
-    message, 
-    description = "", 
-    duration = 3, 
+  success: ({
+    message,
+    description = "",
+    duration = 3,
     closable = false,
     position = "top",
-    customStyle = {}
+    customStyle = {},
   }) => {
     notification.destroy();
     notification.success({
       key: NOTIFICATION_KEY,
       message: formatContent(message, true, themes.success.textColor),
-      description: description ? formatContent(description, false, themes.success.textColor) : null,
+      description: description
+        ? formatContent(description, false, themes.success.textColor)
+        : null,
       placement: position,
       style: {
         ...baseStyle,
         backgroundColor: themes.success.backgroundColor,
-        ...customStyle
+        ...customStyle,
       },
       closable,
       duration,
@@ -115,24 +117,26 @@ const notificationService = {
    * Display warning notification
    * @param {NotificationConfig} config - Notification configuration
    */
-  warning: ({ 
-    message, 
-    description = "", 
-    duration = 5, 
+  warning: ({
+    message,
+    description = "",
+    duration = 5,
     closable = true,
     position = "top",
-    customStyle = {}
+    customStyle = {},
   }) => {
     notification.destroy();
     notification.warning({
       key: NOTIFICATION_KEY,
       message: formatContent(message, true, themes.warning.textColor),
-      description: description ? formatContent(description, false, themes.warning.textColor) : null,
+      description: description
+        ? formatContent(description, false, themes.warning.textColor)
+        : null,
       placement: position,
       style: {
         ...baseStyle,
         backgroundColor: themes.warning.backgroundColor,
-        ...customStyle
+        ...customStyle,
       },
       closable,
       duration,
@@ -145,24 +149,26 @@ const notificationService = {
    * Display info notification
    * @param {NotificationConfig} config - Notification configuration
    */
-  info: ({ 
-    message, 
-    description = "", 
-    duration = 3, 
+  info: ({
+    message,
+    description = "",
+    duration = 3,
     closable = true,
     position = "top",
-    customStyle = {}
+    customStyle = {},
   }) => {
     notification.destroy();
     notification.info({
       key: NOTIFICATION_KEY,
       message: formatContent(message, true, themes.info.textColor),
-      description: description ? formatContent(description, false, themes.info.textColor) : null,
+      description: description
+        ? formatContent(description, false, themes.info.textColor)
+        : null,
       placement: position,
       style: {
         ...baseStyle,
         backgroundColor: themes.info.backgroundColor,
-        ...customStyle
+        ...customStyle,
       },
       closable,
       duration,
@@ -171,7 +177,6 @@ const notificationService = {
     });
   },
 
- 
   closeAll: () => {
     notification.destroy();
   },

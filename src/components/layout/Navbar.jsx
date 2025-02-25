@@ -15,6 +15,7 @@ import { useUser } from "@/src/hooks/useUser";
 import AboutUs from "../home/modals/AboutUs";
 import MobileSideBar from "./MobileSideBar";
 import { useDevice } from "@/src/hooks/useDevice";
+import { BiWifi, BiWifiOff } from "react-icons/bi";
 
 const Navbar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -26,16 +27,6 @@ const Navbar = () => {
 
   const [showLanguage, setShowLanguage] = useState(false);
   const [language, setLanguage] = useState("english");
-
-  // useEffect(() => {
-  //   const checkMobile = () => {
-  //     setIsMobile(window.innerWidth < 768);
-  //   };
-
-  //   checkMobile();
-  //   window.addEventListener("resize", checkMobile);
-  //   return () => window.removeEventListener("resize", checkMobile);
-  // }, []);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -59,7 +50,6 @@ const Navbar = () => {
       setOpen(newOpen);
       return;
     }
-    console.log(condition);
     if (condition) {
       confirm();
     } else {
@@ -78,6 +68,11 @@ const Navbar = () => {
       />
 
       <ul className="text-black font-black flex sm:gap-x-4 gap-x-2 sm:text-xs text-[8px] leading-[5px] items-center justify-center">
+        {true ? (
+          <BiWifi className="text-green-600 text-xl" />
+        ) : (
+          <BiWifiOff className="text-red-600 text-xl" />
+        )}
         <Popconfirm
           title={<div className="text-xs font-light mt-1">Choose language</div>}
           open={open}
@@ -155,9 +150,9 @@ const Navbar = () => {
             aria-label="Toggle menu"
           >
             {isSidebarOpen ? (
-              <CloseOutlined style={{ fontSize: "20px" }} />
+              <CloseOutlined className="text-[20px]" />
             ) : (
-              <MenuOutlined style={{ fontSize: "20px" }} />
+              <MenuOutlined className="text-[20px]" />
             )}
           </button>
         )}
@@ -165,8 +160,12 @@ const Navbar = () => {
         {user && <Signout />}
       </ul>
 
-      {width < 768 &&  <MobileSideBar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />}
-      
+      {width < 768 && (
+        <MobileSideBar
+          isOpen={isSidebarOpen}
+          onClose={() => setIsSidebarOpen(false)}
+        />
+      )}
     </nav>
   );
 };

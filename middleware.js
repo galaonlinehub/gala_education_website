@@ -23,6 +23,22 @@ const safeRedirect = (url, request) => {
   }
 };
 
+const isNetworkError = (error) => {
+  const networkErrorMessages = [
+    "Request timeout",
+    "Network Error",
+    "Failed to fetch",
+    "Connection refused",
+  ];
+  const message = error.message?.toLowerCase() || "";
+  return (
+    networkErrorMessages.some((msg) => message.includes(msg.toLowerCase())) ||
+    (error.status && error.status >= 500) || 
+    error.code === "ECONNRESET" || 
+    error.code === "ENOTFOUND" 
+  );
+};
+
 export async function middleware(request) {
   try {
     const path = request.nextUrl.pathname;
@@ -45,7 +61,38 @@ export async function middleware(request) {
     }
 
     try {
-      const response = await apiGet("/user", {}, token);
+      let retryCount = 0;
+      const maxRetries = 2;
+      let response;
+
+      while (retryCount < maxRetries) {
+        try {
+          response = await Promise.race([
+            apiGet("/user", {}, token),
+            new Promise((_, reject) =>
+              setTimeout(() => reject(new Error("Request timeout")), 5000)
+            ),
+          ]);
+
+          if (response?.data) {
+            break; 
+          }
+          throw new Error("Invalid response");
+        } catch (error) {
+          retryCount++;
+          const isLastRetry = retryCount === maxRetries;
+
+          if (isNetworkError(error)) {
+            if (isLastRetry) {
+              return NextResponse.next();
+            }
+            await new Promise(resolve => setTimeout(resolve, 1000));
+          } else {
+            throw error;
+          }
+        }
+      }
+
       const user = response?.data;
 
       if (!user?.role || !AUTH_CONFIG.ROLE_PREFIXES[user.role]) {

@@ -34,7 +34,7 @@ const NetworkMonitor = () => {
           description:
             "Please check your internet connection, make sure you have stable internet connection.",
           duration: null,
-          position: "bottomRight",
+          position: "top",
           closable: true,
           customStyle: { padding: "10px" },
         });
@@ -44,7 +44,7 @@ const NetworkMonitor = () => {
           description:
             "Your internet connection is unstable. Some features may not work properly.",
           duration: null,
-          position: "bottomRight",
+          position: "top",
           customStyle: { },
         });
       } else if (quality === "moderate" && prevQuality === "weak") {
@@ -52,7 +52,7 @@ const NetworkMonitor = () => {
           message: "Connection Improved",
           description: "Your connection has improved to moderate speed.",
           duration: null,
-          position: "bottomRight",
+          position: "top",
           customStyle: { },
         });
       } else if (
@@ -63,7 +63,7 @@ const NetworkMonitor = () => {
           message: "Strong Connection",
           description: "Your internet connection is stable.",
           duration: null,
-          position: "bottomRight",
+          position: "top",
           customStyle: { },
         });
       } else if (prevQuality === "offline" && isOnline) {
@@ -71,7 +71,7 @@ const NetworkMonitor = () => {
           message: "Back Online",
           description: "Your internet connection has been restored.",
           duration: null,
-          position: "bottomRight",
+          position: "top",
         });
       }
     };
@@ -115,14 +115,15 @@ const NetworkMonitor = () => {
     const checkConnection = async () => {
       const startTime = Date.now();
       try {
-        await api.head("", {
+        await api.head("/health", {
           timeout: 5000,
           headers: { "Cache-Control": "no-cache" },
         });
 
         const latency = Date.now() - startTime;
+        console.log(latency, "this is latency")
         const newQuality =
-          latency < 200 ? "good" : latency < 600 ? "moderate" : "weak";
+          latency < 700 ? "good" : latency < 800 ? "moderate" : "weak";
         if (newQuality !== previousStatus.connectionQuality) {
           showConnectionNotification(
             true,

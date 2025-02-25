@@ -25,8 +25,8 @@ const ClientWrapper = ({ children }) => {
         customStyle: { paddingTop: "0px" },
       });
 
-      cookieFn.remove(USER_COOKIE_KEY);
-      router.push("/");
+      // cookieFn.remove(USER_COOKIE_KEY);
+      // router.push("/");
     }
   }, [router, userError]);
 

@@ -8,7 +8,7 @@ const queryClient = new QueryClient();
 export default function QueryWrapper({ children }) {
   return (
     <QueryClientProvider client={queryClient}>
-      <NetworkMonitor />
+      {/* <NetworkMonitor /> */}
       <ClientWrapper>{children}</ClientWrapper>
     </QueryClientProvider>
   );

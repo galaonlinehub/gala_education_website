@@ -36,7 +36,7 @@ const useStyle = createStyles(({ token }) => ({
 const NewClass = () => {
   const { openNewClass, setOpenNewClass } = useNewClass();
   const { isFetchingResults, detailedResults } = useSearch();
-  const { enrollMe, setEnrollMe } = useEnrollMe();
+  const { enrollMe, setEnrollMe, setEnrollCohort } = useEnrollMe();
   const { currentStep, setCurrentStep } = usePaySteps();
   const { selectedItemId } = useSearchResult();
 
@@ -44,6 +44,7 @@ const NewClass = () => {
     setOpenNewClass(false);
     setEnrollMe(false);
     setCurrentStep(0);
+    setEnrollCohort(null);
   };
 
   useEffect(() => {
