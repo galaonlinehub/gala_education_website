@@ -1,33 +1,15 @@
 import React from "react";
+import { Card, Progress, Avatar, Tooltip, Skeleton } from "antd";
 import {
-  Card,
-  Button,
-  Drawer,
-  Progress,
-  Avatar,
-  Tooltip,
-  Skeleton,
-} from "antd";
-import {
-  UserOutlined,
-  BookOutlined,
-  CalendarOutlined,
-  ClockCircleOutlined,
   RightOutlined,
-  BookFilled,
   ExclamationCircleOutlined,
   TeamOutlined,
 } from "@ant-design/icons";
-import { FaAtom, FaDna, FaFlask } from "react-icons/fa";
 import { GoBook } from "react-icons/go";
 
 const TopicCard = ({ details }) => {
   return (
-    <Card
-      key={details.id}
-      className="!overflow-hidden group cursor-pointer"
-      onClick={() => showDrawer(details)}
-    >
+    <Card key={details.id} className="!overflow-hidden group cursor-pointer hover:shadow-lg transition-shadow">
       <div className="text-xl font-black text-[#001840] group-hover:text-[#2563eb] transition-colors mb-2">
         {details.cohort_name}
       </div>
