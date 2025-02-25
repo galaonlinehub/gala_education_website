@@ -17,7 +17,7 @@
 //   `;
 
 //   return (
-//     <div className="max-w-screen max-h-screen mt-[18rem] ml-[28rem]">
+//     <div className=" w-screen h-screen flex justify-center items-center">
 //       <style>{styles}</style>
 //       <div className="loader"></div>
 //     </div>
@@ -25,6 +25,7 @@
 // };
 
 // export default RootLoading;
+
 
 const RootLoading = () => {
   const styles = `
@@ -55,7 +56,7 @@ const RootLoading = () => {
   `;
 
   return (
-    <div className="flex flex-col items-center justify-center w-full h-full">
+    <div className="!flex !flex-col !items-center !justify-center !lg:w-1/2 !border-none w-screen h-screen">
       <style>{styles}</style>
       <div className="loader" />
     </div>

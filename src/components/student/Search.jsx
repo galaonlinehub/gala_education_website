@@ -7,11 +7,13 @@ import {
   FaBell,
   FaChalkboardTeacher,
   FaBookReader,
+  FaSave,
 } from "react-icons/fa";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useSearch } from "@/src/hooks/useSearch";
 import StickyNotification from "../ui/notification/StickyNotification";
+import { FaBookmark } from "react-icons/fa6";
 
 const SearchResultCard = ({ data, onClick }) => {
   const { topics, teachers } = data;
@@ -219,6 +221,11 @@ const StudentSearch = () => {
           </div>
 
           <div className="lg:flex items-center space-x-4 hidden">
+          <Tooltip placement="top" title="Saved Classes">
+              <FaBookmark
+                className="text-lg text-black hover:text-blue-700 cursor-pointer transition-colors"
+              />
+            </Tooltip>
             <div className="relative inline-flex items-center">
               <FaBell className="text-xl text-black hover:text-blue-700 cursor-pointer transition-colors" />
               <span className="absolute top-0 right-0 flex h-2 w-2">
@@ -236,7 +243,7 @@ const StudentSearch = () => {
           </div>
         </div>
       </div>
-      <StickyNotification />
+      {/* <StickyNotification /> */}
     </div>
   );
 };

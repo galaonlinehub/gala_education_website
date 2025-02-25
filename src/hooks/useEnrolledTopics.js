@@ -5,13 +5,15 @@ import { getEnrolledTopics } from "../utils/fns/global";
 export const useEnrolledTopics = () => {
   const {
     data: enrolledTopics,
-    enrolledTopicsLoading,
-    enrolledToicsError,
+    isFetching: enrolledTopicsLoading,
+    error: enrolledToicsError,
   } = useQuery({
     queryKey: ["enrolledTopics"],
     queryFn: getEnrolledTopics,
-    ...globalOptions,
+    // ...globalOptions,
   });
+
+  console.log(typeof enrolledTopics);
 
   return {
     enrolledTopics,
