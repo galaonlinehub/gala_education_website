@@ -150,7 +150,8 @@ const MobilePay = () => {
   const isValidPhoneNumber = (number) => {
     if (!number || number.length !== 9) return false;
     if (!["6", "7"].includes(number[0])) return false;
-    if (!["1", "2", "3", "4", "5", "6"].includes(number[1])) return false;
+    if (!["1", "2", "3", "4", "5", "6", "7", "8"].includes(number[1]))
+      return false;
     if (!["1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(number[2]))
       return false;
     return true;
