@@ -34,7 +34,7 @@ const ClientWrapper = ({ children }) => {
     !userLoading && toggleLoading();
   }, [toggleLoading, userLoading]);
 
-  if (true) {
+  if (loading) {
     return <TemplateLoader />;
   }
 
