@@ -16,12 +16,14 @@ import AboutUs from "../home/modals/AboutUs";
 import MobileSideBar from "./MobileSideBar";
 import { useDevice } from "@/src/hooks/useDevice";
 import { BiWifi, BiWifiOff } from "react-icons/bi";
+import useNetwork from "@/src/hooks/useNetwork";
 
 const Navbar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  // const [isMobile, setIsMobile] = useState(false);
   const { user } = useUser();
   const { width } = useDevice();
+
+  const { isOnline, connectionQuality } = useNetwork();
 
   const [openLogout, setOpenLogout] = useState(false);
 
@@ -57,6 +59,22 @@ const Navbar = () => {
     }
   };
 
+  const getIcon = () => {
+    if (!isOnline) {
+      return <BiWifiOff className="text-red-600 text-xl animate-bounce" />;
+    }
+    switch (connectionQuality) {
+      case "good":
+        return <BiWifi className="text-green-600 text-xl animate-pulse" />;
+      case "moderate":
+        return <BiWifi className="text-yellow-600 text-xl" />;
+      case "weak":
+        return <BiWifi className="text-orange-600 text-xl animate-bounce" />;
+      default:
+        return <BiWifi className="text-gray-600 text-xl" />;
+    }
+  };
+
   return (
     <nav className="h-14 flex justify-between max-w-screen items-center fixed top-0 inset-x-0 z-50 lg:px-4 px-2 bg-white">
       <Image
@@ -68,11 +86,8 @@ const Navbar = () => {
       />
 
       <ul className="text-black font-black flex sm:gap-x-4 gap-x-2 sm:text-xs text-[8px] leading-[5px] items-center justify-center">
-        {true ? (
-          <BiWifi className="text-green-600 text-xl" />
-        ) : (
-          <BiWifiOff className="text-red-600 text-xl" />
-        )}
+        <div className="mr-2 lg:mr-6">{getIcon()}</div>
+
         <Popconfirm
           title={<div className="text-xs font-light mt-1">Choose language</div>}
           open={open}
