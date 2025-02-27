@@ -16,17 +16,17 @@ const LatestNews = () => {
     <Carousel autoplay={true} dotPosition="bottom" dots={true} className="w-full">
       <div className="w-full p-3 items-center flex">
         <div style={contentStyle}>
-        <Events img={"/events2.jpeg"} title={"Future of Learning Summit"} desc={"A conference exploring cutting-edge technologies in education, featuring expert speakers on AI, personalized learning, and digital transformation in classrooms."} />
+        <Events img={"/learning_summit.jpeg"} title={"Future of Learning Summit"} desc={"A conference exploring cutting-edge technologies in education, featuring expert speakers on AI, personalized learning, and digital transformation in classrooms."} />
         </div>
       </div>
       <div className="w-full p-3 items-center flex">
         <div style={contentStyle}>
-        <Events img={"/events3.jpeg"} title={"Student Innovation Hackathon"} desc={"A conference exploring cutting-edge technologies in education, featuring expert speakers on AI, personalized learning, and digital transformation in classrooms."} />
+        <Events img={"/hackathon.jpeg"} title={"Student Innovation Hackathon"} desc={"A conference exploring cutting-edge technologies in education, featuring expert speakers on AI, personalized learning, and digital transformation in classrooms."} />
         </div>
       </div>
       <div className="w-full p-3 items-center flex">
         <div style={contentStyle}>
-        <Events img={"/events1.jpeg"} title={"Interactive Career Guidance Fair"} desc={"A workshop-focused event connecting students with industry professionals, offering career advice, mentorship, and guidance on education pathways for future success."} />
+        <Events img={"/career_guidance.jpeg"} title={"Interactive Career Guidance Fair"} desc={"A workshop-focused event connecting students with industry professionals, offering career advice, mentorship, and guidance on education pathways for future success."} />
         </div>
       </div>
     </Carousel>
