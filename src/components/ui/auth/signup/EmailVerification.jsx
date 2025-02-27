@@ -37,33 +37,6 @@ const EmailVerification = () => {
 
   const [loading, setLoading] = React.useState(false);
 
-  // useEffect(() => {
-  //   if (openEmailVerificationModal) {
-  //     const handleKeyDownRefresh = (event) => {
-  //       if ((event.ctrlKey || event.metaKey) && event.key === "r") {
-  //         event.preventDefault();
-  //       }
-
-  //       if (event.key === "F5" || event.key === "F12") {
-  //         event.preventDefault();
-  //       }
-  //     };
-
-  //     const handleBeforeUnload = (event) => {
-  //       event.preventDefault();
-  //       event.returnValue = "";
-  //     };
-
-  //     window.addEventListener("keydown", handleKeyDownRefresh);
-  //     window.addEventListener("beforeunload", handleBeforeUnload);
-
-  //     return () => {
-  //       window.removeEventListener("keydown", handleKeyDownRefresh);
-  //       window.removeEventListener("beforeunload", handleBeforeUnload);
-  //     };
-  //   }
-  // }, [openEmailVerificationModal]);
-
   useEffect(() => {
     const getEmail = () => {
       const encryptedEmail = sessionStorageFn.get(EMAIL_VERIFICATION_KEY);
@@ -249,12 +222,6 @@ const EmailVerification = () => {
                 status="error"
                 title="Email Verification Failed!"
                 subTitle="Incorrect Code Provided."
-                // extra={[
-                //   <Button type="primary" key="console">
-                //     Go Console
-                //   </Button>,
-                //   <Button key="buy">Buy Again</Button>,
-                // ]}
               ></Result>
             ))}
           <div className="flex flex-wrap gap-2 text-xs w-full items-center justify-end overflow-hidden">

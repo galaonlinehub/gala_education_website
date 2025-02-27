@@ -1,0 +1,387 @@
+import React, { useState, useEffect } from "react";
+import { Modal, Input, Button, Form, message } from "antd";
+import {
+  LoadingOutlined,
+  CheckOutlined,
+  CameraOutlined,
+  ArrowRightOutlined,
+  CheckCircleOutlined,
+  CheckCircleFilled,
+} from "@ant-design/icons";
+import { useUser } from "@/src/hooks/useUser";
+import { FaUserCircle, FaUser } from "react-icons/fa";
+import Image from "next/image";
+import {
+  handlePhoneInput,
+  mask_phone_number,
+} from "@/src/utils/fns/format_phone_number";
+
+const Stage = {
+  SAVE: "save",
+  VERIFY: "verify",
+  SUCCESS: "succuss",
+  FAILURE: "failure",
+};
+
+const CompleteProfile = () => {
+  const [status, setStatus] = useState(Stage.SAVE);
+  const { user } = useUser();
+  const [phoneNumber, setPhoneNumber] = useState(null);
+
+  const render = () => {
+    switch (status) {
+      case Stage.SAVE:
+        return <Save setStatus={setStatus} setPhoneNumber={setPhoneNumber} />;
+      case Stage.VERIFY:
+        return <Verify phone_number={phoneNumber} setStatus={setStatus} />;
+      case Stage.SUCCESS:
+        return <Success />;
+    }
+  };
+  return (
+    <Modal
+      open={!user?.phone_number}
+      footer={null}
+      styles={{ body: { height: "400px", overflowY: "auto" } }}
+      title={
+        <div className="flex items-center">
+          <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+            {status === Stage.SAVE
+              ? "Quick Setup"
+              : status === Stage.VERIFY
+              ? "Verify Phone Number"
+              : "Profile Complete! 🎉"}
+          </span>
+        </div>
+      }
+      width={450}
+      maskClosable={false}
+      closable={false}
+      className="rounded-xl overflow-hidden"
+      //   bodyStyle={{ overflow: "hidden" }}
+      //   maskStyle={{ background: "rgba(0, 0, 0, 0.65)" }}
+    >
+      {render()}
+    </Modal>
+  );
+};
+
+const Save = ({ setStatus, setPhoneNumber }) => {
+  const [form] = Form.useForm();
+  const [imageUrl, setImageUrl] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [uploadLoading, setUploadLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [verifyPhone, setVerifyPhone] = useState(false);
+  const fileInputRef = React.useRef(null);
+
+  const handleFinish = (values) => {
+    setPhoneNumber(`+255${values.phone_number}`);
+    setLoading(true);
+    setTimeout(() => {
+      console.log("Submitted values:", {
+        ...values,
+        phone_number: `+255${values.phone_number}`,
+        avatar: imageUrl,
+      });
+      setIsSuccess(true);
+      setLoading(false);
+      setStatus(Stage.VERIFY);
+      setTimeout(() => {
+        message.success("Profile saved successfully!");
+      }, 500);
+    }, 800);
+  };
+
+  const handleImageClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
+    if (!isJpgOrPng) {
+      message.error("You can only upload JPG/PNG files!");
+      return;
+    }
+
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isLt2M) {
+      message.error("Image must be smaller than 2MB!");
+      return;
+    }
+
+    setUploadLoading(true);
+    const reader = new FileReader();
+    reader.onload = () => {
+      setImageUrl(reader.result);
+      setUploadLoading(false);
+      message.success("Photo uploaded successfully!");
+    };
+    reader.onerror = () => {
+      message.error("Failed to load image");
+      setUploadLoading(false);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const validateTanzanianNumber = (_, value) => {
+    if (!value) return Promise.reject("Phone number is required");
+    const numberRegex = /^[0-9]{11}$/;
+    if (!numberRegex.test(value)) {
+      return Promise.reject("Please enter 11 digits (e.g., 752451811)");
+    }
+    return Promise.resolve();
+  };
+
+  return (
+    <div className="py-4 flex flex-col items-center">
+      <div className="mb-6 w-full">
+        <div
+          className="relative cursor-pointer transition-all duration-300 mx-auto w-32 h-32"
+          onClick={handleImageClick}
+        >
+          <input
+            type="file"
+            ref={fileInputRef}
+            className="hidden"
+            accept="image/jpeg,image/png"
+            onChange={handleFileChange}
+          />
+
+          {imageUrl ? (
+            <div className="w-32 h-32 rounded-full border-4 border-indigo-100 shadow-lg mx-auto transform hover:scale-105 transition-transform duration-300">
+              <Image
+                width={200}
+                height={200}
+                src={imageUrl}
+                alt="Profile"
+                className="w-full h-full rounded-full object-cover"
+              />
+              {uploadLoading && (
+                <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-full">
+                  <LoadingOutlined className="text-white text-xl" />
+                </div>
+              )}
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-0 hover:opacity-60 flex items-center justify-center rounded-full transition-all duration-300">
+                <CameraOutlined className="text-white text-2xl" />
+              </div>
+              {imageUrl && !uploadLoading && (
+                <div className="absolute bottom-3 right-1 bg-green-500 rounded-full h-6 w-6 flex items-center justify-center p-1 border-2 border-white shadow-md">
+                  <CheckOutlined className="text-white text-xs" />
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="w-32 h-32 rounded-full flex flex-col items-center justify-center border border-gray-200 hover:border-blue-300 transition-all duration-300 mx-auto shadow-sm hover:shadow-md transform hover:scale-105 bg-gradient-to-br from-gray-50 to-blue-50 relative group">
+              {uploadLoading ? (
+                <LoadingOutlined className="text-blue-500 text-xl" />
+              ) : (
+                <>
+                  <div className="flex flex-col items-center transition-opacity duration-300 group-hover:opacity-0">
+                    <FaUser className="text-[#001840] text-3xl mb-2" />
+                    <span className="text-[10px] font-light px-2 py-1 rounded-full">
+                      Upload Photo
+                    </span>
+                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-0 group-hover:opacity-60 flex items-center justify-center rounded-full transition-all duration-300">
+                    <CameraOutlined className="text-white text-2xl" />
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+        </div>
+
+        <div className="mt-3 flex items-center justify-center">
+          <span className="text-xs px-2 py-1 bg-blue-50 text-blue-700 rounded-full font-medium">
+            Optional
+          </span>
+        </div>
+      </div>
+
+      <Form
+        form={form}
+        layout="vertical"
+        onFinish={handleFinish}
+        requiredMark={true}
+        className="w-full"
+      >
+        <Form.Item
+          name="phone_number"
+          label={
+            <span className="text-gray-700 font-medium text-sm">
+              Phone Number
+            </span>
+          }
+          //   rules={[{ validator: validateTanzanianNumber }]}
+          className="mb-8"
+        >
+          <Input
+            addonBefore={
+              <span className="text-gray-700 font-medium py-1 bg-gray-50 border-r-0">
+                +255
+              </span>
+            }
+            placeholder="752-451-811"
+            maxLength={11}
+            onChange={(e) =>
+              handlePhoneInput(e, (value) =>
+                form.setFieldsValue({ phone_number: value })
+              )
+            }
+            //   className="h-12 rounded-xl"
+          />
+        </Form.Item>
+
+        <Button
+          type="primary"
+          htmlType="submit"
+          loading={loading}
+          disabled={isSuccess}
+          className={`w-full h-10 text-base font-bold rounded-xl shadow-md transition-all duration-300 flex items-center justify-center ${
+            isSuccess
+              ? "bg-green-500 hover:bg-green-600 border-0"
+              : "bg-[#001840] hover:!bg-[#001840]/80"
+          }`}
+        >
+          {loading ? (
+            <span className="flex items-center">
+              <LoadingOutlined className="mr-2" />
+              Processing...
+            </span>
+          ) : isSuccess ? (
+            <span className="flex items-center">
+              <CheckOutlined className="mr-2" />
+              Profile Saved!
+            </span>
+          ) : (
+            <span className="flex items-center">
+              Continue
+              <ArrowRightOutlined className="ml-2" />
+            </span>
+          )}
+        </Button>
+
+        <p className="text-center text-gray-500 text-xs mt-4">
+          You can update your details anytime in your profile
+        </p>
+      </Form>
+    </div>
+  );
+};
+
+const Verify = ({ phone_number, setStatus }) => {
+  const [hasVerified, setHasVerified] = useState(null);
+  const inputs = React.useRef([]);
+  const [values, setValues] = useState(Array(6).fill(""));
+
+  const handleChange = async (value, index) => {
+    if (isNaN(value) || value.length > 1) return;
+
+    setHasVerified(null);
+
+    const newValues = [...values];
+    newValues[index] = value;
+    setValues(newValues);
+
+    if (value && index < 5) {
+      inputs.current[index + 1]?.focus();
+    }
+
+    if (newValues.length === 6 && newValues.every((val) => val !== "")) {
+      setStatus(Stage.SUCCESS);
+      const code = Number(newValues.join(""));
+      setLoading(true);
+
+      const formData = new FormData();
+      formData.append("otp", code);
+      formData.append("email", email);
+
+      try {
+        const response = await apiPost("/verify-otp", formData);
+
+        if (response.status === 200) {
+          setHasVerified(true);
+          setTimeout(() => {
+            setActiveTab(1);
+            setOpenEmailVerificationModal(false);
+          }, 5000);
+        }
+      } catch (e) {
+        console.error(e.response?.data || e.message);
+        setHasVerified(false);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+  return (
+    <div className={"flex flex-col gap-6 items-center  h-full pt-24 pb-4"}>
+      <div className="text-base font-medium">
+        Enter code sent to this{" "}
+        <span className="text-blue-700 font-extrabold">
+          {mask_phone_number(phone_number)}
+        </span>{" "}
+        via sms
+      </div>
+      <div className="flex flex-wrap gap-2">
+        {Array(6)
+          .fill()
+          .map((_, index) => (
+            <input
+              key={index}
+              ref={(e) => (inputs.current[index] = e)}
+              type="text"
+              inputMode={"numeric"}
+              maxLength="1"
+              onInput={(e) => {
+                const value = e.target.value;
+                if (!/^[0-9]$/.test(value)) {
+                  e.target.value = "";
+                }
+              }}
+              onChange={(e) => handleChange(e.target.value, index)}
+              onKeyDown={(e) => handleKeyDown(e, index)}
+              className={`${
+                hasVerified !== null
+                  ? hasVerified
+                    ? "border border-green-500 focus:ring-green-800 focus:outline-green-600 input-shake hasVerified"
+                    : "border border-red-500 focus:ring-red-800 focus:outline-red-600 input-shake failure"
+                  : "text-2xl font-black w-12 h-12 text-center text-black border border-[#030DFE] rounded-md focus:outline-none focus:ring focus:ring-[#030DFE]"
+              } text-2xl font-black w-12 h-12 text-center text-black rounded-md focus:outline-none focus:ring`}
+            />
+          ))}
+      </div>
+      <div className="w-full flex justify-end mr-4">
+        <Button type="link">Resend</Button>
+      </div>
+    </div>
+  );
+};
+
+const Success = () => {
+  return (
+    <div className="flex flex-col items-center justify-center h-3/4 bg-white p-6 rounded-lg">
+      <div className="p-4 rounded-full mb-4">
+        <CheckCircleFilled className="text-5xl text-green-500" />
+      </div>
+      <h2 className="text-xl font-semibold text-gray-800">
+        Verification Complete
+      </h2>
+      <p className="text-gray-500 text-center mt-2 mb-6">
+        Your phone number has been successfully verified
+      </p>
+      <div className="w-full max-w-xs">
+        <button className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-200">
+          Continue
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default CompleteProfile;
