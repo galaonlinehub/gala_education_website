@@ -40,6 +40,37 @@ const VideoPlayer = ({videoSrc}) => {
     };
   }, []);
 
+  // Add event listener for loadedmetadata to get the duration
+  useEffect(() => {
+    const videoElement = videoRef.current;
+    
+    const handleLoadedMetadata = () => {
+      if (videoElement) {
+        setDuration(videoElement.duration);
+      }
+    };
+    
+    if (videoElement) {
+      // If metadata is already loaded, set duration immediately
+      if (videoElement.readyState >= 1) {
+        setDuration(videoElement.duration);
+      }
+      
+      // Add event listener for when metadata loads
+      videoElement.addEventListener('loadedmetadata', handleLoadedMetadata);
+      
+      // Also add a durationchange listener as a backup
+      videoElement.addEventListener('durationchange', handleLoadedMetadata);
+    }
+    
+    return () => {
+      if (videoElement) {
+        videoElement.removeEventListener('loadedmetadata', handleLoadedMetadata);
+        videoElement.removeEventListener('durationchange', handleLoadedMetadata);
+      }
+    };
+  }, [videoSrc]); // Re-run if video source changes
+
   // Handle autoplay when video enters/leaves viewport
   useEffect(() => {
     if (videoRef.current && !hasInteracted && isInViewport && !autoplayAttempted) {
@@ -134,12 +165,12 @@ const VideoPlayer = ({videoSrc}) => {
 
   useEffect(() => {
     if (videoRef.current) {
-      setDuration(videoRef.current.duration);
       videoRef.current.volume = volume;
     }
   }, [volume]);
 
   const formatTime = (time) => {
+    if (isNaN(time)) return "0:00";
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;

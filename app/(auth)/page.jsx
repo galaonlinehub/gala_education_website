@@ -73,7 +73,7 @@ function Home() {
 
         <div className="absolute inset-0 bg-black opacity-70 w-full" />
         <div className="absolute inset-0 sm:py-12 py-12 w-full sm:px-24 md:px-10 px-2 flex md:flex-row flex-col lg:justify-between md:gap-10 max-sm:gap-5">
-          <div className={"mt-8"}>
+          <div className={"mt-14"}>
             <div className="xxs:gap-8 mb-6 sm:gap-0 sm:mb-0 flex flex-col">
               <h1 className="text-white xxs:text-[64px] mt-10 text-[35px]  sm:leading-[70px] leading-[30px] font-black">
                 Gala
@@ -181,7 +181,7 @@ function Home() {
       </div>
 
       {!user && (
-        <div className="pointer-events-none relative max-sm:w-screen h-[32rem] w-full max-w-screen-2xl mx-auto mt-4 md:mt-8 lg:mt-4 px-6 sm:px-4 py-6 sm:py-10 flex flex-col md:flex-row">
+        <div className="relative max-sm:w-screen h-[32rem] w-full max-w-screen-2xl mx-auto mt-4 md:mt-8 lg:mt-4 px-6 sm:px-4 py-6 sm:py-10 flex flex-col md:flex-row">
           <div className="hidden md:block w-full">
             <div className=" w-full flex flex-col items-center gap-3 p-4">
               <h1 className="font-black w-full text-center px-3 !text-3xl">
@@ -195,7 +195,7 @@ function Home() {
               <div className="flex sm:gap-5 gap-2 overflow-x-auto px-2 max-sm:w-[98%] ">
                 <RegisterCard
                   title={"Register as teacher"}
-                  image={"/register_teacher.jpeg"}
+                  image={"/donate_and_funds.jpeg"}
                   desc={
                     "Become part of our team of educators and help deliver exceptional learning experiences."
                   }
@@ -428,7 +428,7 @@ function Home() {
             <div className=" md:w-[300px] lg:w-[521px] h-[549px] hidden sm:block left-0 bg-[#001840]" />
             <Image
               alt="image"
-              src="/register_teacher.jpeg"
+              src="/donate_and_funds.jpeg"
               width={1920}
               height={1080}
               quality={75}
@@ -439,7 +439,7 @@ function Home() {
             <div className="relative w-full h-3/4  place-items-center">
               <Image
                 alt="Donation image"
-                src={"/donate1.jpeg"}
+                src={"/poor_school.jpeg"}
                 width={100}
                 height={100}
                 className=" rounded-br-[100px] h-[259px] w-[266px] object-cover  sm:ml-24"
@@ -715,21 +715,21 @@ function Home() {
                 }
               >
                 <Events
-                  img={"/events2.jpeg"}
+                  img={"/hackathon.jpeg"}
                   title={"Future of Learning Summit"}
                   desc={
                     "A conference exploring cutting-edge technologies in education, featuring expert speakers on AI, personalized learning, and digital transformation in classrooms."
                   }
                 />
                 <Events
-                  img={"/events3.jpeg"}
+                  img={"/career_guidance.jpeg"}
                   title={"Student Innovation Hackathon"}
                   desc={
                     "A conference exploring cutting-edge technologies in education, featuring expert speakers on AI, personalized learning, and digital transformation in classrooms."
                   }
                 />
                 <Events
-                  img={"/events1.jpeg"}
+                  img={"/learning_summit.jpeg"}
                   title={"Interactive Career Guidance Fair"}
                   desc={
                     "A workshop-focused event connecting students with industry professionals, offering career advice, mentorship, and guidance on education pathways for future success."

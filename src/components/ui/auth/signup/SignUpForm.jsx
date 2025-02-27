@@ -227,7 +227,7 @@ const SignUpForm = () => {
           </Form.Item>
           <Form.Item className="!mb-0">
             <Button
-              disabled={true}
+              disabled={loading}
               type="primary"
               htmlType="submit"
               loading={loading}

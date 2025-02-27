@@ -151,7 +151,7 @@ const SignInPage = () => {
             )}
           </div>
 
-          <span className="font-bold text-sm self-end pointer-events-none">
+          <span className="font-bold text-sm self-end">
             Forgot
             <span
               className="font-bold sm:text-sm text-[#030DFE] ml-2 cursor-pointer"
@@ -170,7 +170,7 @@ const SignInPage = () => {
           </button>
         </form>
 
-        <span className="text-xs font-semibold mt-1 md:mt-2 pointer-events-none">
+        <span className="text-xs font-semibold mt-1 md:mt-2">
           Don&#39;t have an account?{" "}
           <span
             className="text-[#030DFE] cursor-pointer"
@@ -182,7 +182,7 @@ const SignInPage = () => {
 
         <button
           onClick={handleGoogleLogin}
-          disabled={true}
+          disabled={isSubmitting}
           className="rounded-md h-12 w-full lg:w-3/4 md:w-full bg-[#001840] mt-10 text-white lg:text-base font-black disabled:opacity-70 flex items-center justify-center gap-3 lg:gap-5 px-4 py-2 text-xs md:text-sm"
         >
           <GoogleSvg />

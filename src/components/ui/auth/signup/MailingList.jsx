@@ -274,7 +274,7 @@ const MailingList = () => {
 
       <div className="py-4">
         <button
-          disabled={true}
+          disabled={isSubmitting}
           type="submit"
           className="!bg-[#800000] rounded-md !text-white text-xs sm:!px-5 !px-3 !py-2 disabled:opacity-70"
         >
