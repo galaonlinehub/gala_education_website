@@ -22,13 +22,13 @@ function RegisterCard({ image, title, desc, type }) {
 
 
   return (
-    <div className="flex-col flex w-full md:w-[16rem] shadow-sm shrink-0 shadow-black/30 cursor-pointer" onClick={handleRegister}>
+    <div className="flex-col flex w-full md:w-[16rem] shadow-sm shrink-0 shadow-black/30 pointer-events-none" onClick={handleRegister}>
       <div className="w-full md:h-[6rem] h-[10rem]">
         <Image alt="image Data" src={image} className="w-full h-full border-white border-[1px] object-cover" width={100} height={100} />
       </div>
 
       <div className="h-[10rem] bg-[#001840] flex flex-col items-center px-6 py-4">
-        <span className="text-white font-black text-sm">{title}</span>
+        <span className="text-white font-black text-sm mt-6">{title}</span>
         <span className="text-white text-xs text-center">{desc}</span>
       </div>
     </div>

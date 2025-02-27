@@ -63,7 +63,7 @@ const ScrollableContent = () => {
       <div ref={scrollContainerRef} className="flex w-full h-full overflow-x-auto scrollbar-hide" style={{ scrollSnapType: "x mandatory" }}>
         <div className="flex flex-col gap-3 sm:gap-6 md:gap-12 sm:flex-row items-center px-6 md:px-20 h-fit sm:h-[30rem] w-full flex-shrink-0" style={{ scrollSnapAlign: "start" }}>
           <div className="relative w-full sm:w-1/2 items-center rounded-full  mt-14 h-64 md:h-4/5 max-sm:p-2">
-            <Image src="/teacher.png" alt="Profile picture" fill className="object-cover" />
+            <Image src="/teacherOne.jpeg" alt="Profile picture" fill className="object-cover" />
           </div>
           <div className="md:w-1/2 w-full mt-1">
             <div className="flex flex-col gap-2 w-full h-3/4">
@@ -75,7 +75,7 @@ const ScrollableContent = () => {
 
         <div className="flex flex-col gap-3 sm:gap-6 md:gap-12 sm:flex-row  items-center px-6 md:px-20 h-fit sm:h-[30rem] w-full flex-shrink-0" style={{ scrollSnapAlign: "start" }}>
           <div className="relative w-full sm:w-1/2 items-center  rounded-full mt-14 h-64 md:h-4/5 max-sm:p-2">
-            <Image src="/teacher3.jpeg" alt="Profile picture" fill className="object-cover" />
+            <Image src="/teacherTwo.jpeg" alt="Profile picture" fill className="object-cover" />
           </div>
           <div className="md:w-1/2 w-full mt-1">
             <div className="flex flex-col gap-2 w-full h-3/4">
@@ -87,7 +87,7 @@ const ScrollableContent = () => {
 
         <div className="flex flex-col gap-3 sm:gap-6 md:gap-12 sm:flex-row items-center px-6 md:px-20 h-fit sm:h-[30rem] w-full flex-shrink-0" style={{ scrollSnapAlign: "start" }}>
           <div className="relative w-full sm:w-1/2 items-center  rounded-full mt-14 h-64 md:h-4/5 max-sm:p-2">
-            <Image src="/teacher2.jpeg" alt="Profile picture" fill className="object-cover" />
+            <Image src="/teacherThree.jpeg" alt="Profile picture" fill className="object-cover" />
           </div>
           <div className="md:w-1/2 w-full mt-1">
             <div className="flex flex-col gap-2 w-full h-3/4">

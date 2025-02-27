@@ -19,7 +19,7 @@ const RegisterWithUs = () => {
       
       <div className="w-full p-3 items-center flex">
         <div style={contentStyle}>
-        <RegisterCard title={"Register as teacher"} image={"/register_teacher.jpeg"} desc={"Become part of our team of educators and help deliver exceptional learning experiences."} type={"instructor"} />
+        <RegisterCard title={"Register as teacher"} image={"/donate_and_funds.jpeg"} desc={"Become part of our team of educators and help deliver exceptional learning experiences."} type={"instructor"} />
         </div>
       </div>
       <div className="w-full p-3 items-center flex">

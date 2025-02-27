@@ -7,6 +7,8 @@ import { logout } from "@/src/utils/fns/auth";
 import { useRouter } from "next/navigation";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 import { LogoutOutlined } from "@ant-design/icons";
+import notificationService from "../../notification/Notification";
+
 
 
 const Signout = ({signOutWord}) => {
