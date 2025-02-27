@@ -23,7 +23,7 @@ function RegisterCard({ image, title, desc, type }) {
   console.log("Rendering RegisterCard with type:", type);
 
   return (
-    <div className="flex-col flex w-full md:w-[16rem] shadow-sm shrink-0 shadow-black/30 cursor-pointer" onClick={handleRegister}>
+    <div className="flex-col flex w-full md:w-[16rem] shadow-sm shrink-0 shadow-black/30 pointer-events-none" onClick={handleRegister}>
       <div className="w-full md:h-[6rem] h-[10rem]">
         <Image alt="image Data" src={image} className="w-full h-full border-white border-[1px] object-cover" width={100} height={100} />
       </div>

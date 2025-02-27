@@ -73,7 +73,7 @@ function Home() {
 
         <div className="absolute inset-0 bg-black opacity-70 w-full" />
         <div className="absolute inset-0 sm:py-12 py-12 w-full sm:px-24 md:px-10 px-2 flex md:flex-row flex-col lg:justify-between md:gap-10 max-sm:gap-5">
-          <div className={"mt-8"}>
+          <div className={"mt-14"}>
             <div className="xxs:gap-8 mb-6 sm:gap-0 sm:mb-0 flex flex-col">
               <h1 className="text-white xxs:text-[64px] mt-10 text-[35px]  sm:leading-[70px] leading-[30px] font-black">
                 Gala
@@ -195,7 +195,7 @@ function Home() {
               <div className="flex sm:gap-5 gap-2 overflow-x-auto px-2 max-sm:w-[98%] ">
                 <RegisterCard
                   title={"Register as teacher"}
-                  image={"/register_teacher.jpeg"}
+                  image={"/donate_and_funds.jpeg"}
                   desc={
                     "Become part of our team of educators and help deliver exceptional learning experiences."
                   }
