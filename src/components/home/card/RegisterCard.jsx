@@ -29,7 +29,7 @@ function RegisterCard({ image, title, desc, type }) {
       </div>
 
       <div className="h-[10rem] bg-[#001840] flex flex-col items-center px-6 py-4">
-        <span className="text-white font-black text-sm">{title}</span>
+        <span className="text-white font-black text-sm mt-6">{title}</span>
         <span className="text-white text-xs text-center">{desc}</span>
       </div>
     </div>

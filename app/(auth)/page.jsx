@@ -428,7 +428,7 @@ function Home() {
             <div className=" md:w-[300px] lg:w-[521px] h-[549px] hidden sm:block left-0 bg-[#001840]" />
             <Image
               alt="image"
-              src="/register_teacher.jpeg"
+              src="/donate_and_funds.jpeg"
               width={1920}
               height={1080}
               quality={75}
@@ -439,7 +439,7 @@ function Home() {
             <div className="relative w-full h-3/4  place-items-center">
               <Image
                 alt="Donation image"
-                src={"/donate1.jpeg"}
+                src={"/poor_school.jpeg"}
                 width={100}
                 height={100}
                 className=" rounded-br-[100px] h-[259px] w-[266px] object-cover  sm:ml-24"
@@ -715,21 +715,21 @@ function Home() {
                 }
               >
                 <Events
-                  img={"/events2.jpeg"}
+                  img={"/hackathon.jpeg"}
                   title={"Future of Learning Summit"}
                   desc={
                     "A conference exploring cutting-edge technologies in education, featuring expert speakers on AI, personalized learning, and digital transformation in classrooms."
                   }
                 />
                 <Events
-                  img={"/events3.jpeg"}
+                  img={"/career_guidance.jpeg"}
                   title={"Student Innovation Hackathon"}
                   desc={
                     "A conference exploring cutting-edge technologies in education, featuring expert speakers on AI, personalized learning, and digital transformation in classrooms."
                   }
                 />
                 <Events
-                  img={"/events1.jpeg"}
+                  img={"/learning_summit.jpeg"}
                   title={"Interactive Career Guidance Fair"}
                   desc={
                     "A workshop-focused event connecting students with industry professionals, offering career advice, mentorship, and guidance on education pathways for future success."
