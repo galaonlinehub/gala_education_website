@@ -63,7 +63,7 @@ const useNetwork = () => {
 
         const latency = Date.now() - startTime;
         const newQuality =
-          latency < 300 ? "good" : latency < 600 ? "moderate" : "weak";
+          latency < 500 ? "good" : latency < 700 ? "moderate" : "weak";
         if (newQuality !== previousStatus.connectionQuality) {
           previousStatus = { isOnline: true, connectionQuality: newQuality };
           setNetworkStatus({ isOnline: true, connectionQuality: newQuality });

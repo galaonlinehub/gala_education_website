@@ -17,7 +17,7 @@ const TopicCard = ({ details }) => {
       <div className="flex justify-between items-start mb-3">
         <div className="max-w-[70%]">
           <p className="text-gray-600 text-[10px] mb-1">{details?.subject}</p>
-          <p className="text-gray-600 font-bold text-sm line-clamp-2">
+          <p className="text-gray-600 font-bold text-sm line-clamp-1">
             {details?.topic_name}
           </p>
         </div>

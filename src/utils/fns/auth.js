@@ -28,9 +28,7 @@ export const login = async (data) => {
     }
   } catch (error) {
     if (error?.status === 401) {
-      throw new Error(
-        "Oops! Wrong credentials. Please check and try again. 🙄🔐"
-      );
+      throw new Error("Oops! Wrong credentials. Please check and try again.");
     }
     throw new Error(`${errorMessage}😬`);
   }

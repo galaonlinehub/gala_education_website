@@ -37,6 +37,8 @@ import { useUser } from "@/src/hooks/useUser";
 import { GiBookCover } from "react-icons/gi";
 import { MdOutlineAssignment } from "react-icons/md";
 import CompleteProfile from "@/src/components/student/CompleteProfile";
+import { LuBookOpenCheck } from "react-icons/lu";
+
 
 const { Title, Text } = Typography;
 
@@ -74,7 +76,7 @@ export default function Component() {
 
   // Quick Links Component
   const QuickLinks = () => (
-    <Card title="Quick Links" size="small">
+    <Card title="Quick Links" size="small" className="overflow-hidden">
       <Space direction="vertical" className="w-full items-start">
         <Button type="link" icon={<UserOutlined />} block className="text-left">
           <Link href="/student/profile">Profile</Link>
@@ -101,7 +103,7 @@ export default function Component() {
   );
 
   const SelectedSubjects = () => (
-    <Card title="Selected subjects" size="small">
+    <Card title="Selected subjects" size="small" className="overflow-hidden">
       <Space direction="vertical" className=" w-44 items-start">
         <div className="flex gap-2  items-center justify-center">
           <GiBookCover />
@@ -170,17 +172,23 @@ export default function Component() {
         {
           title: "Completed Assignments",
           value: stats.completedAssignments,
-          icon: <BookOutlined />,
+          icon: <LuBookOpenCheck />,
+
         },
       ].map((stat, index) => (
-        <Col xs={12} md={12} key={index}>
-          <Card>
+        <Col xs={24} sm={12} key={index}>
+          <Card className="h-28">
             <Statistic
+               
               title={stat.title}
               value={stat.value}
-              suffix={stat.suffix}
-              prefix={stat.icon}
               valueStyle={{ color: token.colorPrimary }}
+              formatter={(value) => (
+                <div className="flex items-center space-x-2">
+                  {stat.icon}
+                  <span>{value}{stat.suffix}</span>
+                </div>
+              )}
             />
           </Card>
         </Col>
@@ -231,7 +239,7 @@ export default function Component() {
   );
 
   return (
-    <div className="h-fit mt-8 overflow-hidden">
+    <div className="h-fit  overflow-hidden">
       <CompleteProfile />
 
       <Row
