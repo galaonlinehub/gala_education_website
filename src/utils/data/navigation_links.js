@@ -10,6 +10,8 @@ import {
   MdListAlt,
 } from "react-icons/md";
 import { LuGift } from "react-icons/lu";
+import { LuClock4 } from "react-icons/lu";
+
 
 export const footer_links = {
   Services: [
@@ -177,6 +179,11 @@ export const student_links = [
     name: "Social",
     link: "social",
     icon: <FaUsers />,
+  },
+  {
+    name: "Pending Payments",
+    link: "pending-payments",
+    icon: <LuClock4 />,
   },
 
   // {

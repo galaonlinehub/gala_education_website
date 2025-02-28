@@ -249,3 +249,11 @@
   font-family: var(--font-poppins);
 }
 
+
+
+.ant-tooltip-inner {
+  background-color: #001840 !important;
+}
+.ant-tooltip-arrow::before {
+  background-color: #001840 !important;
+}

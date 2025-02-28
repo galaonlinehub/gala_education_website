@@ -15,6 +15,9 @@ import {
   handlePhoneInput,
   mask_phone_number,
 } from "@/src/utils/fns/format_phone_number";
+import { FiUser } from "react-icons/fi";
+
+import { LuUser } from "react-icons/lu";
 
 const Stage = {
   SAVE: "save",
@@ -40,7 +43,7 @@ const CompleteProfile = () => {
   };
   return (
     <Modal
-      open={!user?.phone_number}
+      open={user?.phone_number}
       footer={null}
       styles={{ body: { height: "400px", overflowY: "auto" } }}
       title={
@@ -139,6 +142,10 @@ const Save = ({ setStatus, setPhoneNumber }) => {
   return (
     <div className="py-4 flex flex-col items-center">
       <div className="mb-6 w-full">
+        <div className="flex gap-2 justify-start items-center mb-5 font-medium">
+          <span>Upload your profile picture</span>
+          <span className="text-xs font-light">Optional</span>
+        </div>
         <div
           className="relative cursor-pointer transition-all duration-300 mx-auto w-32 h-32"
           onClick={handleImageClick}
@@ -175,16 +182,13 @@ const Save = ({ setStatus, setPhoneNumber }) => {
               )}
             </div>
           ) : (
-            <div className="w-32 h-32 rounded-full flex flex-col items-center justify-center border border-gray-200 hover:border-blue-300 transition-all duration-300 mx-auto shadow-sm hover:shadow-md transform hover:scale-105 bg-gradient-to-br from-gray-50 to-blue-50 relative group">
+            <div className="w-32 h-32 rounded-full flex flex-col items-center justify-center border-2 border-gray-900 hover:border-blue-700 transition-all duration-300 mx-auto shadow-sm hover:shadow-md transform hover:scale-105  relative group">
               {uploadLoading ? (
                 <LoadingOutlined className="text-blue-500 text-xl" />
               ) : (
                 <>
                   <div className="flex flex-col items-center transition-opacity duration-300 group-hover:opacity-0">
-                    <FaUser className="text-[#001840] text-3xl mb-2" />
-                    <span className="text-[10px] font-light px-2 py-1 rounded-full">
-                      Upload Photo
-                    </span>
+                    <LuUser className="text-[#001840] text-6xl" />
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-0 group-hover:opacity-60 flex items-center justify-center rounded-full transition-all duration-300">
                     <CameraOutlined className="text-white text-2xl" />
@@ -194,14 +198,7 @@ const Save = ({ setStatus, setPhoneNumber }) => {
             </div>
           )}
         </div>
-
-        <div className="mt-3 flex items-center justify-center">
-          <span className="text-xs px-2 py-1 bg-blue-50 text-blue-700 rounded-full font-medium">
-            Optional
-          </span>
-        </div>
       </div>
-
       <Form
         form={form}
         layout="vertical"
@@ -373,7 +370,7 @@ const Success = () => {
         Verification Complete
       </h2>
       <p className="text-gray-500 text-center mt-2 mb-6">
-        Your phone number has been successfully verified
+        Your phone number has been successfully verified !!
       </p>
       <div className="w-full max-w-xs">
         <button className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-200">
