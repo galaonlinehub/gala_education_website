@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Steps, Select, DatePicker, TimePicker, InputNumber, Button, Drawer, Alert } from "antd";
+import { Steps, Select, DatePicker, TimePicker, InputNumber, Button, Drawer, Alert, Skeleton, Tag, Input } from "antd";
 import { FiCheck, FiArrowRight, FiArrowLeft, FiCalendar, FiClock, FiBook, FiBookOpen, FiCreditCard } from "react-icons/fi";
 import dayjs from "dayjs";
 import { useSubject } from "@/src/hooks/useSubject";
@@ -8,9 +8,10 @@ import { useGrade } from "@/src/hooks/useGrade";
 import { useTopic } from "@/src/hooks/useTopic";
 import { DAYS_MAP } from "@/src/utils/data/days_of_the_week";
 import { useCohort } from "@/src/hooks/useCohort";
-import {
-  InfoCircleOutlined
-} from '@ant-design/icons';
+import { InfoCircleOutlined } from "@ant-design/icons";
+import { weekOptions } from "@/src/utils/data/weekData";
+import notificationService from "@/src/components/ui/notification/Notification";
+import { apiGet } from "@/src/services/api_service";
 
 const componentStyles = {
   select: {
@@ -52,56 +53,13 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
 
   const tomorrow = Date.now();
 
-  const weekOptions = [
-    {
-      value: 1,
-      label: "1 week",
-    },
-    {
-      value: 2,
-      label: "2 weeks",
-    },
-    {
-      value: 3,
-      label: "3 weeks",
-    },
-    {
-      value: 4,
-      label: "4 weeks",
-    },
-    {
-      value: 5,
-      label: "5 weeks",
-    },
-    {
-      value: 6,
-      label: "6 weeks",
-    },
-    {
-      value: 7,
-      label: "7 weeks",
-    },
-    {
-      value: 8,
-      label: "8 weeks",
-    },
-    {
-      value: 9,
-      label: "9 weeks",
-    },
-    {
-      value: 10,
-      label: "10 weeks",
-    },
-    {
-      value: 11,
-      label: "11 weeks",
-    },
-    {
-      value: 12,
-      label: "12 weeks",
-    },
-  ];
+  const [loading, setLoading] = useState(false);
+  const [cohortName, setCohortName] = useState("");
+
+  const [value, setValueData] = useState("");
+  const [isValid, setIsValid] = useState(true);
+
+  const { TextArea } = Input;
 
   const {
     watch,
@@ -167,6 +125,56 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
     }
   };
 
+  const getGeneratedCohort = async (topicId, section) => {
+    switch (section) {
+      case "subject_section":
+        setLoading(false);
+        break;
+      case "level_section":
+        setLoading(false);
+        break;
+      case "topic_section":
+        setLoading(true);
+        try {
+          var cohort = await apiGet(`/get_cohort_name/${topicId}`);
+
+          setLoading(false);
+          setCohortName(cohort.data);
+        } catch (error) {
+          notificationService.error("Failed to retrieve cohort name", 3);
+          setLoading(false);
+        }
+        break;
+
+      default:
+        break;
+    }
+  };
+
+  const handleChange = (e) => {
+    const newValue = e.target.value;
+    setValueData(newValue);
+
+    // Count words by splitting on whitespace and filtering out empty strings
+    const wordCount = newValue
+      .trim()
+      .split(/\s+/)
+      .filter((word) => word.length > 0).length;
+
+    // Check if the word count is at least 10
+    setIsValid(wordCount >= 10);
+  };
+
+  const handleBlur = () => {
+    const wordCount = value
+      .trim()
+      .split(/\s+/)
+      .filter((word) => word.length > 0).length;
+    if (wordCount < 10) {
+      message.error("Please enter at least 10 words");
+    }
+  };
+
   const steps = [
     {
       title: "Subject & Topic Details",
@@ -184,6 +192,7 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
                   updateForm("subject", v);
                   updateForm("level", "");
                   updateForm("topic", "");
+                  getGeneratedCohort("null_id", "subject_section");
                 }}
                 placeholder="Select a subject"
                 suffixIcon={<FiBook className="text-gray-400" />}
@@ -206,6 +215,7 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
                   onChange={(v) => {
                     updateForm("level", v);
                     updateForm("topic", "");
+                    getGeneratedCohort("null_id", "level_section");
                   }}
                   placeholder="Select a subject"
                   suffixIcon={<FiBook className="text-gray-400" />}
@@ -223,7 +233,16 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
             {formData.level && formData.subject && (
               <div className="w-full">
                 <label className="block text-[12px] font-medium text-gray-700 mb-1">Topic</label>
-                <Select style={componentStyles.select} value={formData.topic} onChange={(v) => updateForm("topic", v)} placeholder="Select a topic" suffixIcon={<FiBookOpen className="text-gray-400" />}>
+                <Select
+                  style={componentStyles.select}
+                  value={formData.topic}
+                  onChange={(v) => {
+                    updateForm("topic", v);
+                    getGeneratedCohort(v, "topic_section");
+                  }}
+                  placeholder="Select a topic"
+                  suffixIcon={<FiBookOpen className="text-gray-400" />}
+                >
                   {isTopicLoadig ? (
                     <Select.Option value="loading">Loading...</Select.Option>
                   ) : isTopicError ? (
@@ -238,12 +257,24 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
                 </Select>
               </div>
             )}
+
+            {
+              <div className="w-full">
+                {loading ? (
+                  <Skeleton.Input active size={32} />
+                ) : formData.level && formData.subject && formData.topic ? (
+                  <Tag color="success" className="text-xs">
+                    Class name:<span className="font-black ml-2 !text-lg mt-5">{cohortName}</span>
+                  </Tag>
+                ) : null}
+              </div>
+            }
           </div>
         </div>
       ),
     },
     {
-      title: "Schedule",
+      title: `Schedule (${cohortName})`,
       subtitle: "Set your class schedule",
       icon: <FiClock />,
       content: (
@@ -333,7 +364,7 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
       icon: <FiCreditCard />,
       content: (
         <div className="space-y-6">
-          <Alert message="Note" description="Students will be notified once the assignment is published." type="info" showIcon icon={<InfoCircleOutlined />} className="mb-4" />
+          <Alert message="Note" description="The End date will be auto-selected according to the chosen Start date and number of weeks." type="info" showIcon icon={<InfoCircleOutlined />} className="mb-4" />
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-[11px] font-medium text-gray-700 mb-1">Start Date</label>
@@ -394,6 +425,22 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
               formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
               parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
             />
+          </div>
+
+          <div>
+            <label className="block text-[12px] font-medium text-gray-700 mb-1">Description</label>
+
+            <TextArea rows={4} placeholder="Please enter at least 10 words" maxLength={6000} value={value} onChange={handleChange} onBlur={handleBlur} status={isValid ? "" : "error"} />
+            <div style={{ marginTop: "8px" }}>
+              Word count:{" "}
+              {value.trim()
+                ? value
+                    .trim()
+                    .split(/\s+/)
+                    .filter((word) => word.length > 0).length
+                : 0}
+              /10 minimum
+            </div>
           </div>
         </div>
       ),

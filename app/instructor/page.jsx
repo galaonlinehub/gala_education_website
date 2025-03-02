@@ -23,7 +23,6 @@ export default function TeacherClasses() {
   // States
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isProfileCompleted, setIsProfileCompleted] = useState(true);
-  const [isLoading, setIsLoading] = useState(true);
   const [showOtpModal, setShowOtpModal] = useState(false);
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [specials, setSpecials] = useState([]);
@@ -110,7 +109,7 @@ export default function TeacherClasses() {
 
   useEffect(() => {
     const fetchData = async () => {
-      setIsLoading(true);
+     
       try {
         const [userRes, levelsRes, subjectsRes, specialsRes] = await Promise.all([apiGet("/user"), apiGet("/grade_levels"), apiGet("/subjects"), apiGet("/special_needs")]);
 
@@ -125,7 +124,7 @@ export default function TeacherClasses() {
       } catch (error) {
         console.error(error);
       } finally {
-        setIsLoading(false);
+       
       }
     };
 
@@ -210,14 +209,7 @@ export default function TeacherClasses() {
 
   return (
     <>
-      {isLoading ? (
-        <div className="fixed inset-0 bg-white z-50 flex flex-col items-center justify-center">
-          <div className="relative">
-            <Image alt="Gala logo" width={device === "mobile" ? 200 : 400} height={device === "mobile" ? 200 : 400} src="/gala-logo.png" className="w-24 md:w-32 h-24 md:h-32 object-cover rounded-full" />
-            <div className="absolute inset-0 bg-white/40 rounded-full animate-pulse" />
-          </div>
-        </div>
-      ) : (
+      
         <Layout className=" bg-white">
           <Content className="p-3 md:p-6">
             <div className={`space-y-4 md:space-y-6 ${!isProfileCompleted ? "pointer-events-none opacity-30" : ""}`}>
@@ -402,7 +394,6 @@ export default function TeacherClasses() {
             </Modal>
           </Content>
         </Layout>
-      )}
     </>
   );
 }
