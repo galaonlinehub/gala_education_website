@@ -13,8 +13,6 @@ export const useEnrolledTopics = () => {
     // ...globalOptions,
   });
 
-  console.log(typeof enrolledTopics);
-
   return {
     enrolledTopics,
     enrolledTopicsLoading,

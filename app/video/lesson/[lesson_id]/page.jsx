@@ -533,7 +533,7 @@ export default  function Lesson({ params }){
           }}
         /> 
         <div className="absolute bottom-2 left-2 bg-black/50 text-white px-2 py-1 rounded">
-          {user.name} (Instructor) {user.isLocal ? "(You)" : ""}
+          {user?.name} (Instructor) {user.isLocal ? "(You)" : ""}
         </div>
       </div>
     );
@@ -553,7 +553,7 @@ export default  function Lesson({ params }){
           }}
         />
         <div className="absolute bottom-2 left-2 bg-black/50 text-white px-2 py-1 rounded text-sm">
-          {user.name} (Student)
+          {user?.name} (Student)
         </div>
       </div>
     ));

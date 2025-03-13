@@ -1,15 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { Drawer, Menu, Avatar, Typography, Divider, Button } from "antd";
-import { HomeOutlined, DashboardOutlined, LogoutOutlined, UserOutlined } from "@ant-design/icons";
+import { LogoutOutlined, UserOutlined } from "@ant-design/icons";
 import { useUser } from "@/src/hooks/useUser";
-import { MdNotes, MdLiveTv, MdSettings, MdAnalytics, MdDashboard, MdLibraryAdd, MdAssignment } from "react-icons/md";
-import { FaChalkboardTeacher, FaDonate, FaUsers, FaBook } from "react-icons/fa";
+import { MdLiveTv, MdDashboard } from "react-icons/md";
+import { FaChalkboardTeacher, FaUsers } from "react-icons/fa";
+import { Signout } from "../ui/auth/signup/Signout";
 
 const { Text, Title } = Typography;
 
 const MobileSideBar = ({ isOpen, onClose }) => {
   const { user } = useUser();
+
+  const [showSignOutModal, setShowSignOutModal] = useState(false);
+
+  const handleSignOut = () =>{
+    setShowSignOutModal(true);
+  }
 
   const studentMenuItems = [
     {
@@ -55,43 +62,43 @@ const MobileSideBar = ({ isOpen, onClose }) => {
       icon: <FaChalkboardTeacher />,
       label: <Link href="/instructor/assignments">Assignments</Link>,
     },
-    
   ];
 
   return (
-    <Drawer
-      title={
-        <div className="flex items-center space-x-3">
-          <Avatar size="small" icon={<UserOutlined />} />
-          <div className="flex flex-col">
-            <Text className="text-xs font-extralight">{user?.email}</Text>
-            <Text className="text-xs capitalize text-gray-500 font-thin">{user?.role}</Text>
+    <>
+      <Drawer
+        title={
+          <div className="flex items-center space-x-3">
+            <Avatar size="small" icon={<UserOutlined />} />
+            <div className="flex flex-col">
+              <Text className="text-xs font-extralight">{user?.email}</Text>
+              <Text className="text-xs capitalize text-gray-500 font-thin">{user?.role}</Text>
+            </div>
           </div>
+        }
+        placement="left"
+        onClose={onClose}
+        open={isOpen}
+        width={280}
+        body={{ padding: 0 }}
+        header={{ padding: "12px 16px" }}
+      >
+        <Menu mode="inline" items={user?.role == "student" ? studentMenuItems : instructorMenuItems} defaultSelectedKeys={["home"]} onClick={onClose} />
+
+        <Divider style={{ margin: "12px 0" }} />
+
+        <div className="px-4 pb-4">
+            {user && <Signout signOutWord={" Sign Out"} />}
         </div>
-      }
-      placement="left"
-      onClose={onClose}
-      open={isOpen}
-      width={280}
-      body={{ padding: 0 }}
-      header={{ padding: "12px 16px" }}
-    >
-      <Menu mode="inline" items={user?.role == 'student' ? studentMenuItems : instructorMenuItems} defaultSelectedKeys={["home"]} onClick={onClose} />
 
-      <Divider style={{ margin: "12px 0" }} />
-
-      <div className="px-4 pb-4">
-        <Button type="default" danger icon={<LogoutOutlined />} onClick={onClose} className="w-full flex items-center justify-center">
-          Sign Out
-        </Button>
-      </div>
-
-      <div className="px-4 pt-4 mt-auto">
-        <Text type="secondary" className="text-xs">
-          © 2025 Gala. All rights reserved.
-        </Text>
-      </div>
-    </Drawer>
+        <div className="px-4 pt-4 mt-auto">
+          <Text type="secondary" className="text-xs">
+            © 2025 Gala. All rights reserved.
+          </Text>
+        </div>
+      </Drawer>
+      
+    </>
   );
 };
 

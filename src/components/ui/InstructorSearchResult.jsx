@@ -2,20 +2,49 @@
 import React from "react";
 import { GoVerified, GoBook } from "react-icons/go";
 import { FaUsers, FaStar, FaClock } from "react-icons/fa";
-import { Avatar, Badge, Card, Button, Skeleton } from "antd";
+import { FaMessage } from "react-icons/fa6";
+import { Avatar, Badge, Card, Button, Skeleton, Tooltip } from "antd";
 import { FaRegStar } from "react-icons/fa";
 import { FaRegMessage, FaRegClock } from "react-icons/fa6";
 import { GoShieldCheck } from "react-icons/go";
 import { BsGlobe } from "react-icons/bs";
 import { LuUsers } from "react-icons/lu";
 import { useEnrollMe } from "@/src/store/student/useEnrollMe";
+import { useRouter } from "next/navigation";
+import { useUser } from "@/src/hooks/useUser";
+import { useNewClass } from "@/src/store/student/class";
+import { sessionStorageFn } from "@/src/utils/fns/client";
+import { encrypt } from "@/src/utils/fns/encryption";
+import { PREVIEW_CHAT_KEY } from "@/src/config/settings";
+import useChatStore from "@/src/store/chat/chat";
+
 
 const InstructorSearchResult = ({ details }) => {
   const { setEnrollMe, setEnrollCohort } = useEnrollMe();
+  const { setOpenNewClass } = useNewClass();
+  const { setCurrentChatId } = useChatStore();
+
+  const { user } = useUser();
+  const router = useRouter();
 
   const handleEnroll = (idx) => {
     setEnrollMe(true);
     setEnrollCohort(idx);
+  };
+
+  let makeChat = () => {
+    const names = details?.name.split(" ");
+    const preview_chat = {
+      first_name: names[0],
+      last_name: names[1],
+      recepient_id: details?.id,
+    };
+    const encryptedPreviewChat = encrypt(preview_chat);
+    sessionStorageFn.set(PREVIEW_CHAT_KEY, encryptedPreviewChat);
+
+    setCurrentChatId("preview");
+    router.push(`/${user?.role}/social`);
+    setOpenNewClass(false);
   };
 
   return (
@@ -82,9 +111,6 @@ const InstructorSearchResult = ({ details }) => {
               consequatur sequi voluptates a adipisci laborum cum impedit nam
               architecto iusto! Facilis quasi dolore debitis! Impedit a sit et
               reprehenderit corrupti fuga officiis iure, nesciunt iusto
-              architecto maiores eligendi dolorum. Eveniet repudiandae assumenda
-              et nihil ipsam quod esse temporibus similique. Nemo beatae ad
-              dolore consequatur praesentium provident dolorem nostrum
               inventore!
             </span>
           </div>
@@ -103,17 +129,27 @@ const InstructorSearchResult = ({ details }) => {
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-2">
-            {details?.subjects?.map((sub, index) => (
-              <Badge
-                key={index}
-                count={
-                  <div className="bg-black text-white text-[8px] p-1 rounded-sm">
-                    {sub?.name}
-                  </div>
-                }
-              />
-            ))}
+          <div className="w-full flex">
+            <div className="flex flex-wrap gap-2 w-3/4">
+              {details?.subjects?.map((sub, index) => (
+                <Badge
+                  key={index}
+                  count={
+                    <div className="bg-black text-white text-[8px] p-1 rounded-sm">
+                      {sub?.name}
+                    </div>
+                  }
+                />
+              ))}
+            </div>
+            <div className="w-1/4 self-end flex justify-end">
+              <Tooltip title="Chat with instructor">
+                <FaMessage
+                  className="text-xl cursor-pointer"
+                  onClick={makeChat}
+                />
+              </Tooltip>
+            </div>
           </div>
         </div>
       </Card>

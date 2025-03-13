@@ -5,17 +5,14 @@ import {
   CheckOutlined,
   CameraOutlined,
   ArrowRightOutlined,
-  CheckCircleOutlined,
   CheckCircleFilled,
 } from "@ant-design/icons";
 import { useUser } from "@/src/hooks/useUser";
-import { FaUserCircle, FaUser } from "react-icons/fa";
 import Image from "next/image";
 import {
   handlePhoneInput,
   mask_phone_number,
 } from "@/src/utils/fns/format_phone_number";
-import { FiUser } from "react-icons/fi";
 
 import { LuUser } from "react-icons/lu";
 
@@ -28,7 +25,7 @@ const Stage = {
 
 const CompleteProfile = () => {
   const [status, setStatus] = useState(Stage.SAVE);
-  const { user } = useUser();
+  const { user, updateProfile, isUpdatingProfile } = useUser();
   const [phoneNumber, setPhoneNumber] = useState(null);
 
   const render = () => {
@@ -41,9 +38,10 @@ const CompleteProfile = () => {
         return <Success />;
     }
   };
+  console.log(user)
   return (
     <Modal
-      open={user?.phone_number}
+      open={!user?.profile_picture}
       footer={null}
       styles={{ body: { height: "400px", overflowY: "auto" } }}
       title={
@@ -61,8 +59,6 @@ const CompleteProfile = () => {
       maskClosable={false}
       closable={false}
       className="rounded-xl overflow-hidden"
-      //   bodyStyle={{ overflow: "hidden" }}
-      //   maskStyle={{ background: "rgba(0, 0, 0, 0.65)" }}
     >
       {render()}
     </Modal>
@@ -77,23 +73,32 @@ const Save = ({ setStatus, setPhoneNumber }) => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [verifyPhone, setVerifyPhone] = useState(false);
   const fileInputRef = React.useRef(null);
+  const { user, updateProfile, isUpdatingProfile, updateProfileSuccess } =
+    useUser();
 
   const handleFinish = (values) => {
     setPhoneNumber(`+255${values.phone_number}`);
-    setLoading(true);
-    setTimeout(() => {
-      console.log("Submitted values:", {
-        ...values,
-        phone_number: `+255${values.phone_number}`,
-        avatar: imageUrl,
-      });
-      setIsSuccess(true);
-      setLoading(false);
-      setStatus(Stage.VERIFY);
-      setTimeout(() => {
-        message.success("Profile saved successfully!");
-      }, 500);
-    }, 800);
+    const formData = new FormData();
+    formData.append("phone_number", `+255${values.phone_number}`);
+    if (imageUrl) {
+      const blob = dataURLtoBlob(imageUrl);
+      formData.append("profile_picture", blob, "profile-pic.jpg");
+    }
+
+    updateProfile(formData);
+  };
+  console.log("user", user);
+
+  const dataURLtoBlob = (dataurl) => {
+    const arr = dataurl.split(",");
+    const mime = arr[0].match(/:(.*?);/)[1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new Blob([u8arr], { type: mime });
   };
 
   const handleImageClick = () => {
@@ -236,25 +241,13 @@ const Save = ({ setStatus, setPhoneNumber }) => {
         <Button
           type="primary"
           htmlType="submit"
-          loading={loading}
-          disabled={isSuccess}
-          className={`w-full h-10 text-base font-bold rounded-xl shadow-md transition-all duration-300 flex items-center justify-center ${
-            isSuccess
-              ? "bg-green-500 hover:bg-green-600 border-0"
-              : "bg-[#001840] hover:!bg-[#001840]/80"
-          }`}
+          loading={isUpdatingProfile}
+          disabled={updateProfileSuccess}
+          className={`!w-full h-10 text-base font-bold rounded-xl shadow-md transition-all duration-300 flex items-center justify-center 
+              bg-[#001840] hover:!bg-[#001840]/80
+         `}
         >
-          {loading ? (
-            <span className="flex items-center">
-              <LoadingOutlined className="mr-2" />
-              Processing...
-            </span>
-          ) : isSuccess ? (
-            <span className="flex items-center">
-              <CheckOutlined className="mr-2" />
-              Profile Saved!
-            </span>
-          ) : (
+          {!isUpdatingProfile && (
             <span className="flex items-center">
               Continue
               <ArrowRightOutlined className="ml-2" />

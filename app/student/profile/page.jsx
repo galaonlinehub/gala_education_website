@@ -34,6 +34,7 @@ import {
 } from "@ant-design/icons";
 import { useUser } from "@/src/hooks/useUser";
 import { useDevice } from "@/src/hooks/useDevice";
+import { img_base_url } from "@/src/config/settings";
 
 const { Title, Text } = Typography;
 const { TextArea } = Input;
@@ -150,11 +151,11 @@ const StudentProfile = () => {
                 <div className="flex items-center gap-[10px]">
                   <Avatar
                     size={width > 768 ? 96 : 64}
-                    src={user?.profilePicture || undefined}
+                    src={`${img_base_url}${user?.profile_picture}` || undefined}
                     className="border-2 border-[#001840]"
                   >
                     <span className="text-xl md:text-3xl lg:text-5xl font-black text-[#001840]">
-                      {!user?.profilePicture &&
+                      {!user?.profile_picture &&
                         user?.first_name?.charAt(0)?.toUpperCase()}
                     </span>
                   </Avatar>

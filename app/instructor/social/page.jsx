@@ -110,7 +110,7 @@ const InstructorSocial = () => {
   };
 
   const renderContent = () => {
-    const filteredUsers = users.filter((user) => user.name.toLowerCase().includes(searchValue.toLowerCase()) || user.message.toLowerCase().includes(searchValue.toLowerCase()));
+    const filteredUsers = users.filter((user) => user?.name.toLowerCase().includes(searchValue.toLowerCase()) || user.message.toLowerCase().includes(searchValue.toLowerCase()));
 
     return filteredUsers.map((item, index) => (
       <div key={index} onClick={() => viewOnClickedUser(index)} className={`p-2 mb-3 bg-[#001840] shadow-md flex items-center cursor-pointer rounded-lg ${clickedUserIndex === index ? "bg-[#001840] text-white" : "bg-white"}`}>

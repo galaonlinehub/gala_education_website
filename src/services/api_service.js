@@ -4,7 +4,7 @@ import { USER_COOKIE_KEY } from "../config/settings";
 import { cookieFn } from "../utils/fns/client";
 
 export const api = axios.create({
-  baseURL: "https://galaweb.galahub.org/api",
+  baseURL: "http://localhost:8000/api/",
   headers: {
     "Content-Type": "application/json",
   },
@@ -66,7 +66,6 @@ export const apiGet = async (endpoint, headers = {}, directToken = null) => {
       });
       return response;
     }
-    console.log("Intercepting for:", endpoint);
     const response = await api.get(endpoint, { headers });
     return response;
   } catch (e) {
@@ -93,7 +92,7 @@ export const apiPut = async (endpoint, data, headers = {}) => {
 
 export const apiPatch = async (endpoint, data, headers = {}) => {
   try {
-    const response = await api.post(endpoint, data, { headers });
+    const response = await api.put(endpoint, data, { headers });
     return response;
   } catch (error) {
     console.error(`PATCH ${endpoint} Error:`, error);

@@ -1,7 +1,7 @@
 import React from "react";
 
 function PendingPayment() {
-  return <div className="mt-14">PendingPayment</div>;
+  return <div className="">PendingPayment</div>;
 }
 
 export default PendingPayment;

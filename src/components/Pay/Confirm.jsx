@@ -31,7 +31,6 @@ export const ConfirmEnrollPay = () => {
     });
 
     socket.on("paymentResponse", (msg) => {
-      console.log(msg);
       if (isMounted) {
         if (msg.status === "success") {
           setEnrollPayStatus(PaymentStatus.SUCCESS);

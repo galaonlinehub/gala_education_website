@@ -18,6 +18,7 @@ import { useNewClass } from "@/src/store/student/class";
 import { getUser } from "@/src/utils/fns/global";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useUser } from "@/src/hooks/useUser";
+import CompleteProfile from "@/src/components/student/CompleteProfile";
 
 export default function StudentLayout({ children }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -58,8 +59,8 @@ export default function StudentLayout({ children }) {
         </div> */}
 
         {/* Sidebar */}
-        <div className="hidden lg:block sticky top-[90px] left-0 w-[16vw] h-[calc(100vh-90px)] border-r border-[#d9d9d9] p-4 overflow-y-auto">
-          <ul className="space-y-4 pt-16">
+        <div className="hidden lg:block sticky top-[90px] left-0 w-[16vw] h-[calc(100vh-80px)] border-r border-[#d9d9d9] p-4 overflow-y-auto">
+          <ul className="space-y-4 pt-6">
             {student_links.map((item, i) => (
               <li key={i}>
                 <Link
@@ -73,7 +74,7 @@ export default function StudentLayout({ children }) {
                   onClick={() => isMobile && setIsSidebarOpen(false)}
                 >
                   <span className="">{item.icon}</span>
-                  <span className="text-sm font-black">{item.name}</span>
+                  <span className="text-sm font-normal">{item.name}</span>
                 </Link>
               </li>
             ))}
@@ -90,9 +91,7 @@ export default function StudentLayout({ children }) {
         <FloatingActionButton
           position="bottom-center"
           onClick={handleInstallClick}
-        >
-          {/* &gt; Install Gala Education in Your device */}
-        </FloatingActionButton>
+        ></FloatingActionButton>
       )}
 
       <Drawer
@@ -144,6 +143,7 @@ export default function StudentLayout({ children }) {
         </ul>
       </Drawer>
       <NewClass />
+      {/* <CompleteProfile /> */}
     </>
   );
 }

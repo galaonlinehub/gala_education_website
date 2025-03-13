@@ -6,6 +6,7 @@ import { UserOutlined, BookOutlined, ClockCircleOutlined, CalendarOutlined, Team
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { apiGet, apiPost } from "@/src/services/api_service";
+import { useUser } from "@/src/hooks/useUser";
 import { useDevice } from "@/src/hooks/useDevice";
 
 
@@ -16,6 +17,8 @@ export default function TeacherClasses() {
   const [form] = Form.useForm();
   const router = useRouter();
   const device = useDevice();
+
+  const {user} = useUser();
 
   // States
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -223,7 +226,7 @@ export default function TeacherClasses() {
                 <Row align="middle" justify="space-between" gutter={[16, 16]}>
                   <Col xs={24} md={18}>
                     <Space direction="vertical" size="small" className="w-full">
-                      <Title level={device === "mobile" ? 5 : 4}>Welcome back, Diana Malle!</Title>
+                      <Title level={device === "mobile" ? 5 : 4}>Welcome back, <span className="capitalize">{user?.first_name} {" "} {user?.last_name}</span></Title>
                       <Text type="secondary" className="text-sm md:text-base">
                         Ready to inspire and educate? Your virtual classroom awaits!
                       </Text>
@@ -303,13 +306,18 @@ export default function TeacherClasses() {
                         },
                         {
                           validator: async (_, value) => {
-                            const phoneRegex = /^\+255[67]\d{8}$/;
+                            const phoneRegex = /^255[67]\d{8}$/;  // Removed the backslash before 255
                             if (!value) return Promise.resolve();
                             if (!phoneRegex.test(value)) {
-                              return Promise.reject(<span className="text-xs italic">Phone number must start with +255 and be followed by 9 digits starting with 6 or 7</span>);
+                              return Promise.reject(
+                                <span className="text-xs italic">
+                                  Phone number must start with 255 and be followed by 9 digits starting with 6 or 7
+                                </span>
+                              );
                             }
+                            return Promise.resolve();
                           },
-                        },
+                        }
                       ]}
                     >
                       <Input />

@@ -8,9 +8,14 @@ export const PLAN_CONFIRMED_KEY = "b6694dca-72a9-41c1-82e9-befd10a51d5e";
 export const EMAIL_VERIFICATION_MODAL_KEY =
   "1a56cd1c-ba85-48cf-ac45-0991bc732fb2";
 
+export const PREVIEW_CHAT_KEY = "fb991dff-db78-4972-baa3-f7068fd06359"
+
 export const PaymentStatus = {
   LOADING: "loading",
   SUCCESS: "success",
   FAILURE: "failure",
-  REFERENCE: "reference"
+  REFERENCE: "reference",
 };
+
+// export const img_base_url = "https://galaweb.galahub.org/storage/";
+export const img_base_url = "http://localhost:8000/storage/";
