@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { Input } from "antd";
+import { Avatar } from "antd";
 import {
   PaperClipOutlined,
   SmileOutlined,
@@ -46,11 +46,11 @@ const RenderChat = ({
     .join(", ") || "Chat";
 
   // Debug logging
-  console.log("Chats:", chats);
-  console.log("Current Chat ID:", currentChatId);
-  console.log("Current Chat:", currentChat);
-  console.log("Is Preview Chat:", isPreviewChat);
-  console.log("Recipient:", recipient);
+  // console.log("Chats:", chats);
+  // console.log("Current Chat ID:", currentChatId);
+  // console.log("Current Chat:", currentChat);
+  // console.log("Is Preview Chat:", isPreviewChat);
+  // console.log("Recipient:", recipient);
 
   useEffect(() => {
     if (chatContainerRef.current) {
@@ -102,7 +102,7 @@ const RenderChat = ({
       }
 
       if (isPreviewChat) {
-        chatId = null; // Force creation of a new chat for preview
+        chatId = null; 
       }
 
       console.log("Sending message with:", { content: newMessage, recipientId, chatId });
@@ -136,7 +136,7 @@ const RenderChat = ({
         <div className="flex justify-between items-center w-full">
           <div className="flex items-center gap-3">
             <div className="relative">
-              <Image
+              <Avatar
                 src={
                   recipient?.user.profile_picture
                     ? `${img_base_url}${recipient.user.profile_picture}`
@@ -196,15 +196,15 @@ const RenderChat = ({
           >
             {message.sender_id !== user.id && (
               <div className="mr-2 self-end mb-1">
-                <Image
+                <Avatar
                   src={
                     recipient?.user.profile_picture
                       ? `${img_base_url}${recipient.user.profile_picture}`
                       : "/default-avatar.png"
                   }
                   alt={getSenderName(message.sender_id)}
-                  width={28}
-                  height={28}
+                  width={32}
+                  height={32}
                   className="w-7 h-7 object-cover rounded-full"
                 />
               </div>

@@ -10,12 +10,10 @@ import { decrypt } from "@/src/utils/fns/encryption";
 
 export const useChat = () => {
   const socketRef = useRef(null);
-  const [activeChatId, setActiveChatId] = useState(null);
   const [messages, setMessages] = useState([]);
   const { currentChatId, setCurrentChatId } = useChatStore();
   const { user } = useUser();
   const [previewChat, setPreviewChat] = useState(null);
-  
 
   useEffect(() => {
     socketRef.current = io("http://localhost:4000", {
@@ -34,9 +32,10 @@ export const useChat = () => {
     mutationFn: async (payload) => {
       return await apiPost("/chat/get-or-create", payload);
     },
-    onSuccess: (data) => {
-      setActiveChatId(data.data.data.id);
-      socketRef.current.emit("join_chat", data.data.data.id);
+    onSuccess: (response) => {
+      const chat = response.data.data;
+      setCurrentChatId(chat.id);
+      socketRef.current.emit("join_chat", chat.id);
     },
     onError: (error) => {
       console.error("Failed to create or get chat:", error);
@@ -51,13 +50,15 @@ export const useChat = () => {
         chatPayload
       );
       const chatId = chatResponse.data.data.id;
-
+      console.log("THIS IS THE CHAT ID", chatId);
       const message = {
         chat_id: chatId,
         content,
         sender_id: user.id,
         sent_at: new Date().toISOString(),
       };
+
+      console.log("THIS IS THE MESSAGE TO EMIT", message);
 
       socketRef.current.emit("send_message", message);
 
@@ -77,17 +78,17 @@ export const useChat = () => {
       ? { chat_id }
       : {
           type: "private",
-          title: "Direct Chat",
+          title: "",
           participant_ids: prepareParticipants(ids),
         };
 
-  // CHARTS
+  // CHATS
 
   const {} = useQuery({
-    queryKey: ["chat", activeChatId],
-    queryFn: () => getChat(activeChatId),
+    queryKey: ["chat", currentChatId],
+    queryFn: () => getChat(currentChatId),
     staleTime: Infinity,
-    enabled: !!activeChatId,
+    enabled: !!currentChatId,
   });
 
   const getChat = async (id) => {
@@ -114,10 +115,10 @@ export const useChat = () => {
   };
 
   const {} = useQuery({
-    queryKey: ["chat_participants", activeChatId],
-    queryFn: () => getChatParticipants(activeChatId),
+    queryKey: ["chat_participants", currentChatId],
+    queryFn: () => getChatParticipants(currentChatId),
     staleTime: Infinity,
-    enabled: !!activeChatId,
+    enabled: !!currentChatId,
   });
 
   const getChatParticipants = async (id) => {
@@ -145,46 +146,43 @@ export const useChat = () => {
     }
   };
 
-
-
   useEffect(() => {
     if (chat_messages) {
       setMessages(chat_messages);
     }
   }, [chat_messages]);
 
-    useEffect(() => {
-      const getPreviewChat = () =>
-        decrypt(sessionStorageFn.get(PREVIEW_CHAT_KEY));
-      const preview = getPreviewChat();
-  
-      if (preview) {
-        const previewChatData = {
-          id: "preview",
-          title: null,
-          participants: [
-            {
+  useEffect(() => {
+    const getPreviewChat = () =>
+      decrypt(sessionStorageFn.get(PREVIEW_CHAT_KEY));
+    const preview = getPreviewChat();
+
+    if (preview) {
+      const previewChatData = {
+        id: "preview",
+        title: null,
+        participants: [
+          {
+            id: preview.recepient_id,
+            user: {
               id: preview.recepient_id,
-              user: {
-                id: preview.recepient_id,
-                first_name: preview.first_name,
-                last_name: preview.last_name,
-                profile_picture: null,
-              },
+              first_name: preview.first_name,
+              last_name: preview.last_name,
+              profile_picture: null,
             },
-          ],
-        };
-        setPreviewChat(previewChatData);
-      }
-    }, []);
-  
-    const combinedChats = previewChat
-      ? [previewChat, ...(chats ?? [])]
-      : chats ?? [];
+          },
+        ],
+      };
+      setPreviewChat(previewChatData);
+    }
+  }, []);
+
+  const combinedChats = previewChat
+    ? [previewChat, ...(chats ?? [])]
+    : chats ?? [];
 
   return {
     sendMessage,
-    activeChatId,
     messages,
     createOrGetChatMutation,
     preparePayLoad,

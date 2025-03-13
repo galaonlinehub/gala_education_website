@@ -36,10 +36,10 @@ export default function TeacherLayout({ children }) {
 
   const getCurrentDate = () => {
     const date = new Date();
-    return date.toLocaleDateString('en-US', {
-      month: 'long',
-      day: 'numeric',
-      year: 'numeric'
+    return date.toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
     });
   };
 
@@ -80,7 +80,9 @@ export default function TeacherLayout({ children }) {
       {/* Search Bar */}
       <div className="fixed top-14 left-0 bg-white right-0 z-40 border-b">
         <div className="flex items-center justify-between px-4 py-2 gap-4">
-          <span className="text-sm text-gray-600 whitespace-nowrap font-extralight">{getCurrentDate()}</span>
+          <span className="text-sm text-gray-600 whitespace-nowrap font-extralight">
+            {getCurrentDate()}
+          </span>
           <div className="flex gap-3">
             <FaBell className="text-xl" />
             <FaUserCircle className="text-xl" />
@@ -89,7 +91,14 @@ export default function TeacherLayout({ children }) {
       </div>
 
       {/* Mobile Menu Overlay */}
-      {isMobile && <div className={`fixed inset-0 bg-black/50 z-40 transition-opacity duration-300 ${isSidebarOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`} onClick={toggleSidebar} />}
+      {isMobile && (
+        <div
+          className={`fixed inset-0 bg-black/50 z-40 transition-opacity duration-300 ${
+            isSidebarOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
+          onClick={toggleSidebar}
+        />
+      )}
 
       <main className="flex-1 flex flex-row w-full h-screen overflow-hidden">
         <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
@@ -121,12 +130,26 @@ export default function TeacherLayout({ children }) {
                 const href = `/instructor/${item.link}`;
                 const hrefRoot = `/instructor`;
 
-                const isActive = pathname.startsWith(href) || (item.link === "." && "/instructor" == pathname);
+                const isActive =
+                  pathname.startsWith(href) ||
+                  (item.link === "." && "/instructor" == pathname);
 
                 return (
                   <li key={i}>
-                    <Link href={href} className={`flex items-center gap-1 p-1 rounded-lg transition-colors ${isActive ? "bg-[#001840] text-white hover:bg-[#001840]" : "text-gray-700 hover:bg-blue-50"}`} onClick={() => isMobile && setIsSidebarOpen(false)}>
-                      <span className={isActive ? "text-white" : "text-[#001840]"}>{item.icon}</span>
+                    <Link
+                      href={href}
+                      className={`flex items-center gap-1 p-1 rounded-lg transition-colors ${
+                        isActive
+                          ? "bg-[#001840] text-white hover:bg-[#001840]"
+                          : "text-gray-700 hover:bg-blue-50"
+                      }`}
+                      onClick={() => isMobile && setIsSidebarOpen(false)}
+                    >
+                      <span
+                        className={isActive ? "text-white" : "text-[#001840]"}
+                      >
+                        {item.icon}
+                      </span>
                       <span className="font-medium text-xs">{item.name}</span>
                     </Link>
                   </li>
@@ -137,11 +160,16 @@ export default function TeacherLayout({ children }) {
         </aside>
 
         {/* Main Content */}
-        <div className="flex-1 overflow-y-auto h-[calc(100vh-7rem)] mt-32 p-6">{children}</div>
+        <div className="flex-1 px-2 lg:px-6 py-2 w-full lg:w-[80vw] overflow-y-auto h-[calc(100vh-90px)] mt-12">
+          {children}
+        </div>
       </main>
 
       {!isInstalled && installPrompt && (
-        <FloatingActionButton position="bottom-center" onClick={handleInstallClick}>
+        <FloatingActionButton
+          position="bottom-center"
+          onClick={handleInstallClick}
+        >
           {/* &gt; Install Gala Education in Your device */}
         </FloatingActionButton>
       )}

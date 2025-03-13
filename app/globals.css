@@ -254,6 +254,6 @@
 .ant-tooltip-inner {
   background-color: #001840 !important;
 }
-.ant-tooltip-arrow::before {
+/* .ant-tooltip-arrow::before {
   background-color: #001840 !important;
-}
+} */

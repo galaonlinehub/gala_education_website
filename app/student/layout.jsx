@@ -143,7 +143,7 @@ export default function StudentLayout({ children }) {
         </ul>
       </Drawer>
       <NewClass />
-      {/* <CompleteProfile /> */}
+      <CompleteProfile />
     </>
   );
 }
