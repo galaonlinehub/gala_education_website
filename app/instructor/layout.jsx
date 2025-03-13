@@ -160,7 +160,7 @@ export default function TeacherLayout({ children }) {
         </aside>
 
         {/* Main Content */}
-        <div className="flex-1 px-2 lg:px-6 py-2 w-full lg:w-[80vw] overflow-y-auto h-[calc(100vh-90px)] mt-12">
+        <div className="flex-1 px-2 lg:px-6 py-2 w-full lg:w-[80vw] overflow-y-auto h-[calc(100vh-90px)] mt-24">
           {children}
         </div>
       </main>

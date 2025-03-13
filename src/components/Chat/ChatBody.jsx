@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import Image from "next/image";
 import { Avatar } from "antd";
 import {
   PaperClipOutlined,
@@ -15,6 +14,7 @@ import { useChat } from "@/src/hooks/useChat";
 import { useUser } from "@/src/hooks/useUser";
 import useChatStore from "@/src/store/chat/chat";
 import { img_base_url } from "@/src/config/settings";
+import TypingIndicator from "../ui/loading/template/Typing";
 
 const RenderChat = ({
   users,
@@ -26,37 +26,27 @@ const RenderChat = ({
   const [newMessage, setNewMessage] = useState("");
   const fileInputRef = useRef(null);
   const chatContainerRef = useRef(null);
+  const typingTimeoutRef = useRef(null);
   const { currentChatId, setCurrentChatId } = useChatStore();
-  const { sendMessage, chats, messages } = useChat();
+  const { sendMessage, chats, messages, typingUsers, sendTypingStatus } = useChat();
   const { user } = useUser();
 
-  // Check if it's a preview chat
   const isPreviewChat = currentChatId === "preview";
-
-  // Get current chat from chats array (which now includes previewChat)
   const currentChat = chats?.find((chat) => chat.id === currentChatId);
-
-  // Define recipient (the other participant in the chat)
   const recipient = currentChat?.participants.find((p) => p.user.id !== user.id);
+  const displayName =
+    currentChat?.participants
+      .filter((p) => p.user.id !== user.id)
+      .map((p) => `${p.user.first_name} ${p.user.last_name}`)
+      .join(", ") || "Chat";
+  const isRecipientTyping = recipient && typingUsers.includes(recipient.user.id);
 
-  // Calculate display name
-  const displayName = currentChat?.participants
-    .filter((p) => p.user.id !== user.id)
-    .map((p) => `${p.user.first_name} ${p.user.last_name}`)
-    .join(", ") || "Chat";
-
-  // Debug logging
-  // console.log("Chats:", chats);
-  // console.log("Current Chat ID:", currentChatId);
-  // console.log("Current Chat:", currentChat);
-  // console.log("Is Preview Chat:", isPreviewChat);
-  // console.log("Recipient:", recipient);
-
+  // Scroll to bottom when messages or typing status change
   useEffect(() => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [messages, isRecipientTyping]);
 
   const handleAttachment = () => {
     fileInputRef.current.click();
@@ -89,6 +79,20 @@ const RenderChat = ({
     input.focus();
   };
 
+  const handleTyping = (e) => {
+    setNewMessage(e.target.value);
+
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+    }
+
+    sendTypingStatus(true);
+
+    typingTimeoutRef.current = setTimeout(() => {
+      sendTypingStatus(false);
+    }, 1000);
+  };
+
   const handleSendMessage = async (e) => {
     e.preventDefault();
     if (!newMessage.trim()) return;
@@ -102,11 +106,12 @@ const RenderChat = ({
       }
 
       if (isPreviewChat) {
-        chatId = null; 
+        chatId = null;
       }
 
       console.log("Sending message with:", { content: newMessage, recipientId, chatId });
       await sendMessage(newMessage, recipientId, chatId);
+      sendTypingStatus(false);
       setNewMessage("");
     } catch (error) {
       console.error("Error sending message:", error);
@@ -143,8 +148,7 @@ const RenderChat = ({
                     : "/default-avatar.png"
                 }
                 alt={displayName}
-                width={40}
-                height={40}
+                size={40}
                 className="w-10 h-10 object-cover rounded-full"
               />
               {recipient?.online && (
@@ -152,11 +156,13 @@ const RenderChat = ({
               )}
             </div>
             <div>
-              <h2 className="font-semibold text-sm text-white">
-                {displayName}
-              </h2>
+              <h2 className="font-semibold text-sm text-white">{displayName}</h2>
               <p className="text-xs opacity-75 text-white">
-                {recipient?.online ? "Online" : "Last seen recently"}
+                {isRecipientTyping
+                  ? "Typing..."
+                  : recipient?.online
+                  ? "Online"
+                  : "Last seen recently"}
               </p>
             </div>
           </div>
@@ -203,8 +209,7 @@ const RenderChat = ({
                       : "/default-avatar.png"
                   }
                   alt={getSenderName(message.sender_id)}
-                  width={32}
-                  height={32}
+                  size={32}
                   className="w-7 h-7 object-cover rounded-full"
                 />
               </div>
@@ -226,6 +231,22 @@ const RenderChat = ({
             </div>
           </div>
         ))}
+
+        {isRecipientTyping && (
+          <div className="flex justify-start items-center gap-2">
+            <Avatar
+              src={
+                recipient?.user.profile_picture
+                  ? `${img_base_url}${recipient.user.profile_picture}`
+                  : "/default-avatar.png"
+              }
+              alt={displayName}
+              size={32}
+              className="w-7 h-7 object-cover rounded-full"
+            />
+            <TypingIndicator />
+          </div>
+        )}
       </div>
 
       <form onSubmit={handleSendMessage} className="p-3 border-t bg-white">
@@ -249,7 +270,7 @@ const RenderChat = ({
           </button>
           <input
             value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
+            onChange={handleTyping}
             placeholder="Type a message..."
             className="flex-grow bg-transparent outline-none text-sm px-2"
           />
