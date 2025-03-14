@@ -4,7 +4,7 @@ import { SearchOutlined } from "@ant-design/icons";
 import { useChat } from "@/src/hooks/useChat";
 import { img_base_url, PREVIEW_CHAT_KEY } from "@/src/config/settings";
 import useChatStore from "@/src/store/chat/chat";
-
+import { LuUser } from "react-icons/lu";
 
 const RenderSidebar = ({ currentTab, setCurrentTab, MAIN_COLOR }) => {
   const [searchValue, setSearchValue] = useState("");
@@ -17,7 +17,6 @@ const RenderSidebar = ({ currentTab, setCurrentTab, MAIN_COLOR }) => {
   const viewOnClickedUser = (idx) => {
     setCurrentChatId(idx);
   };
-
 
   return (
     <div className="p-4 h-full">
@@ -90,9 +89,8 @@ const RenderSidebar = ({ currentTab, setCurrentTab, MAIN_COLOR }) => {
                     <Avatar
                       src={`${img_base_url}${participant.user.profile_picture}`}
                       alt={participant.user.email}
-                      width={48}
-                      height={48}
-                      className="w-12 h-12 object-cover rounded-full"
+                      size={52}
+                      icon={<LuUser className="text-black" />}
                     />
                     {participant.online && (
                       <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></div>
@@ -109,10 +107,12 @@ const RenderSidebar = ({ currentTab, setCurrentTab, MAIN_COLOR }) => {
                         )
                         .join(", ")}
                     </span>
-                    <span className="text-xs text-gray-400">{chat.time}</span>
+                    <span className="text-[10px] text-gray-400">
+                      {chat?.last_message?.sent_at}
+                    </span>
                   </div>
-                  <p className="text-xs text-gray-500 truncate">
-                    {chat.message}
+                  <p className="text-xs text-gray-500 truncate first-letter:uppercase">
+                    {chat?.last_message?.content}
                   </p>
                 </div>
               </div>

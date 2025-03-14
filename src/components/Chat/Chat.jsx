@@ -31,21 +31,11 @@ const Chat = () => {
         {(!isSmallScreen || currentChatId === null) && (
           <div className="flex flex-col md:flex-row h-full">
             <div className="w-full md:w-1/3 border-r border-gray-200">
-              <RenderSidebar
-                currentTab={currentTab}
-                setCurrentTab={setCurrentTab}
-                MAIN_COLOR={MAIN_COLOR}
-                users={users}
-                currentChatId={currentChatId}
-                setCurrentChatId={setCurrentChatId}
-              />
+              <RenderSidebar MAIN_COLOR={MAIN_COLOR} TEXT_COLOR={TEXT_COLOR} />
             </div>
             <div className="w-full md:w-2/3 h-full">
               {currentChatId !== null ? (
                 <RenderChat
-                  users={users}
-                  currentChatId={currentChatId}
-                  setCurrentChatId={setCurrentChatId}
                   isSmallScreen={isSmallScreen}
                   MAIN_COLOR={MAIN_COLOR}
                   TEXT_COLOR={TEXT_COLOR}
@@ -79,9 +69,6 @@ const Chat = () => {
         )}
         {isSmallScreen && currentChatId !== null && (
           <RenderChat
-            users={users}
-            currentChatId={currentChatId}
-            setCurrentChatId={setCurrentChatId}
             isSmallScreen={isSmallScreen}
             MAIN_COLOR={MAIN_COLOR}
             TEXT_COLOR={TEXT_COLOR}

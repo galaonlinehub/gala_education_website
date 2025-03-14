@@ -71,7 +71,7 @@ export default function StudentLayout({ children }) {
                       ? "bg-[#001840] text-white"
                       : "hover:bg-blue-950/20"
                   }`}
-                  onClick={() => isMobile && setIsSidebarOpen(false)}
+                  // onClick={() => isMobile && setIsSidebarOpen(false)}
                 >
                   <span className="">{item.icon}</span>
                   <span className="text-sm font-normal">{item.name}</span>
@@ -94,7 +94,7 @@ export default function StudentLayout({ children }) {
         ></FloatingActionButton>
       )}
 
-      <Drawer
+      {/* <Drawer
         title={
           <div className="flex flex-col gap-2 items-center">
             <div className="w-10 h-10 relative bg-gradient-to-br from-blue-500 to-blue-600 rounded-full ring-2 ring-blue-400 ring-offset-2 flex items-center justify-center">
@@ -141,7 +141,7 @@ export default function StudentLayout({ children }) {
             />
           </li>
         </ul>
-      </Drawer>
+      </Drawer> */}
       <NewClass />
       <CompleteProfile />
     </>

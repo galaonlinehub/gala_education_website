@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { LuLogOut } from "react-icons/lu";
-
 import { Modal, Button } from "antd";
-import { PiWarningCircleBold } from "react-icons/pi";
 import { logout } from "@/src/utils/fns/auth";
 import { useRouter } from "next/navigation";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
@@ -41,14 +39,13 @@ const Signout = ({signOutWord}) => {
     <div className="">
       <LuLogOut
         size={18}
-        style={{ strokeWidth: 3 }}
         className="cursor-pointer hidden md:block"
         onClick={() => setSignoutVisible(true)}
       />
 
-       <Button type="default" danger icon={<LogoutOutlined />} onClick={() => setSignoutVisible(true)} className="w-full block md:hidden items-center justify-center">
+       {/* <Button type="default" danger icon={<LogoutOutlined />} onClick={() => setSignoutVisible(true)} className="w-full block md:hidden items-center justify-center">
            {signOutWord}
-       </Button>
+       </Button> */}
 
       <Modal
         width={400}

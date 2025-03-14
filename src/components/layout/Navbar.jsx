@@ -109,7 +109,9 @@ const Navbar = () => {
             placement="bottom"
             title={
               <NetworkMessage
-                message={"Your internet connection is weak and may be unstable."}
+                message={
+                  "Your internet connection is weak and may be unstable."
+                }
               />
             }
           >
@@ -122,7 +124,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="h-12 flex justify-between max-w-screen items-center fixed top-0 inset-x-0 z-50 lg:px-4 px-2 bg-white">
+    <nav className="h-12 flex justify-between max-w-screen items-center fixed top-0 inset-x-0 z-50 lg:px-8 px-2 bg-white">
       <Image
         alt={"Gala logo"}
         width={150}
@@ -131,7 +133,7 @@ const Navbar = () => {
         className={"w-16 h-16 object-cover rounded-full "}
       />
 
-      <ul className="text-black font-black flex sm:gap-x-4 gap-x-2 sm:text-xs text-[8px] leading-[5px] items-center justify-center">
+      <ul className="text-black flex sm:gap-x-4 gap-x-2 sm:text-[12px] text-[8px] leading-[5px] items-center justify-center">
         <div className="mr-2 lg:mr-6 cursor-pointer">{getIcon()}</div>
 
         <Popconfirm

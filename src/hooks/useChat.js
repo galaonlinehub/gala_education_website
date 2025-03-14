@@ -27,7 +27,6 @@ export const useChat = () => {
     });
 
     socketRef.current.on("user_typing", ({ user_id }) => {
-      console.log(`User ${user_id} is typing in chat ${currentChatId}`);
       setTypingUsers((prev) => {
         if (!prev.includes(user_id)) return [...prev, user_id];
         return prev;
@@ -35,19 +34,18 @@ export const useChat = () => {
     });
 
     socketRef.current.on("user_stop_typing", ({ user_id }) => {
-      console.log(`User ${user_id} stopped typing in chat ${currentChatId}`);
       setTypingUsers((prev) => prev.filter((id) => id !== user_id));
     });
 
     return () => socketRef.current.disconnect();
-  }, [currentChatId, user.id]);
+  }, [user.id]);
 
   const createOrGetChatMutation = useMutation({
     mutationFn: async (payload) => {
       return await apiPost("/chat/get-or-create", payload);
     },
     onSuccess: (response) => {
-      const chat = response.data.data; // Fixed from response.data.data
+      const chat = response.data.data;
       setCurrentChatId(chat.id);
       socketRef.current.emit("join_chat", chat.id);
     },
@@ -60,9 +58,10 @@ export const useChat = () => {
     if (!content.trim()) return;
     try {
       const chatPayload = preparePayLoad(recipient_id, chat_id);
-      const chatResponse = await createOrGetChatMutation.mutateAsync(chatPayload);
-      const chatId = chatResponse.data.data.id; // Fixed from chatResponse.data.data.id
-      console.log("THIS IS THE CHAT ID", chatId);
+      const chatResponse = await createOrGetChatMutation.mutateAsync(
+        chatPayload
+      );
+      const chatId = chatResponse.data.data.id;
       const message = {
         chat_id: chatId,
         content,
@@ -70,7 +69,6 @@ export const useChat = () => {
         sent_at: new Date().toISOString(),
       };
 
-      console.log("THIS IS THE MESSAGE TO EMIT", message);
       socketRef.current.emit("send_message", message);
 
       sessionStorageFn.remove(PREVIEW_CHAT_KEY);
@@ -80,7 +78,9 @@ export const useChat = () => {
     }
   };
 
-  const prepareParticipants = (ids) => [ids];
+  const prepareParticipants = (ids) => {
+    return [ids];
+  };
 
   const preparePayLoad = (ids, chat_id) =>
     chat_id
@@ -90,6 +90,15 @@ export const useChat = () => {
           title: "",
           participant_ids: prepareParticipants(ids),
         };
+
+  // CHATS
+
+  const {} = useQuery({
+    queryKey: ["chat", currentChatId],
+    queryFn: () => getChat(currentChatId),
+    staleTime: Infinity,
+    enabled: !!currentChatId,
+  });
 
   const getChat = async (id) => {
     try {
@@ -111,8 +120,22 @@ export const useChat = () => {
     try {
       const res = await apiGet(`/chat/${currentChatId}/messages`);
       return res.data;
+    } catch (error) {}
+  };
+
+  const {} = useQuery({
+    queryKey: ["chat_participants", currentChatId],
+    queryFn: () => getChatParticipants(currentChatId),
+    staleTime: Infinity,
+    enabled: !!currentChatId,
+  });
+
+  const getChatParticipants = async (id) => {
+    try {
+      const res = await apiGet(`/chat/${id}/participants`);
+      return res.data;
     } catch (error) {
-      console.error("Failed to fetch chat messages:", error);
+      console.error("Failed to fetch chat participants:", error);
     }
   };
 
@@ -139,7 +162,8 @@ export const useChat = () => {
   }, [chat_messages]);
 
   useEffect(() => {
-    const getPreviewChat = () => decrypt(sessionStorageFn.get(PREVIEW_CHAT_KEY));
+    const getPreviewChat = () =>
+      decrypt(sessionStorageFn.get(PREVIEW_CHAT_KEY));
     const preview = getPreviewChat();
 
     if (preview) {
@@ -166,10 +190,10 @@ export const useChat = () => {
     ? [previewChat, ...(chats ?? [])]
     : chats ?? [];
 
+  //TYPING
   const sendTypingStatus = (isTyping) => {
     if (!currentChatId) return;
     const payload = { chat_id: currentChatId, user_id: user.id };
-    console.log(`Emitting ${isTyping ? "typing" : "stop_typing"}`, payload);
     socketRef.current.emit(isTyping ? "typing" : "stop_typing", payload);
   };
 
@@ -178,9 +202,13 @@ export const useChat = () => {
     messages,
     createOrGetChatMutation,
     preparePayLoad,
+
+    // CHATS
     chats: combinedChats,
     isFetchingChats,
+
+    //TYPING
     sendTypingStatus,
-    typingUsers,
+    typingUsers
   };
 };
