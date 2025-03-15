@@ -3,12 +3,8 @@
 import { Popconfirm, Tooltip, message } from "antd";
 import Link from "next/link";
 import Image from "next/image";
-import React, { useState, useEffect } from "react";
-import {
-  MenuOutlined,
-  CloseOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
+import React, { useState } from "react";
+import { MenuOutlined, SettingOutlined } from "@ant-design/icons";
 import ChooseAccont from "@/src/components/ui/auth/signup/ChooseAccount";
 import { Signout } from "../ui/auth/signup/Signout";
 import { useUser } from "@/src/hooks/useUser";
@@ -22,10 +18,7 @@ const Navbar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { user } = useUser();
   const { width } = useDevice();
-
   const { isOnline, connectionQuality } = useNetwork();
-
-  const [openLogout, setOpenLogout] = useState(false);
 
   const [showLanguage, setShowLanguage] = useState(false);
   const [language, setLanguage] = useState("english");
@@ -124,7 +117,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="h-12 flex justify-between max-w-screen items-center fixed top-0 inset-x-0 z-50 lg:px-8 px-2 bg-white">
+    <nav className="h-12 flex justify-between max-w-screen items-center fixed top-0 inset-x-0 z-50 lg:px-10 sm:px-6 px-2 bg-white">
       <Image
         alt={"Gala logo"}
         width={150}
@@ -206,24 +199,18 @@ const Navbar = () => {
           </div>
         )}
 
-        {user && (
-          <button
-            className="md:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
+        {width <= 768 && user && !isSidebarOpen && (
+          <MenuOutlined
             onClick={toggleSidebar}
             aria-label="Toggle menu"
-          >
-            {isSidebarOpen ? (
-              <CloseOutlined className="text-[20px]" />
-            ) : (
-              <MenuOutlined className="text-[20px]" />
-            )}
-          </button>
+            className="text-[20px] p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          />
         )}
 
-        {user && <Signout />}
+        {user && width > 768 && <Signout />}
       </ul>
 
-      {width < 768 && (
+      {user && width <= 768 && (
         <MobileSideBar
           isOpen={isSidebarOpen}
           onClose={() => setIsSidebarOpen(false)}

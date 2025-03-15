@@ -4,15 +4,14 @@ import { Modal, Button } from "antd";
 import { logout } from "@/src/utils/fns/auth";
 import { useRouter } from "next/navigation";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
-import { LogoutOutlined } from "@ant-design/icons";
 import notificationService from "../../notification/Notification";
+import { useDevice } from "@/src/hooks/useDevice";
 
-
-
-const Signout = ({signOutWord}) => {
+const Signout = ({ onCloseSidebar }) => {
   const [signoutVisible, setSignoutVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { width } = useDevice();
 
   const handleCancel = () => {
     setSignoutVisible(false);
@@ -43,9 +42,18 @@ const Signout = ({signOutWord}) => {
         onClick={() => setSignoutVisible(true)}
       />
 
-       {/* <Button type="default" danger icon={<LogoutOutlined />} onClick={() => setSignoutVisible(true)} className="w-full block md:hidden items-center justify-center">
-           {signOutWord}
-       </Button> */}
+      {width <= 768 && (
+        <Button
+          onClick={() => {
+            onCloseSidebar();
+            setSignoutVisible(true);
+          }}
+          icon={<LuLogOut />}
+          className="w-full !border-red-500 text-red-500 hover:!text-red-500"
+        >
+          Sign out
+        </Button>
+      )}
 
       <Modal
         width={400}
@@ -78,7 +86,9 @@ const Signout = ({signOutWord}) => {
             Signing out... 😔
           </div>
         ) : (
-          <p className="text-xs text-[#001840]">Are you sure you want to sign out?</p>
+          <p className="text-xs text-[#001840]">
+            Are you sure you want to sign out?
+          </p>
         )}
       </Modal>
     </div>
