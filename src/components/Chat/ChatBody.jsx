@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from "react";
-import { Avatar, Button, Dropdown, Menu } from "antd";
+import { Avatar, Dropdown } from "antd";
 import {
+  Loading3QuartersOutlined,
+  LoadingOutlined,
   PaperClipOutlined,
   SmileOutlined,
-  SendOutlined,
 } from "@ant-design/icons";
 import clsx from "clsx";
 import { useChat } from "@/src/hooks/useChat";
@@ -17,6 +18,7 @@ import {
   LuEllipsisVertical,
   LuArrowLeft,
   LuUser,
+  LuSendHorizontal,
 } from "react-icons/lu";
 
 const RenderChat = ({
@@ -37,6 +39,7 @@ const RenderChat = ({
     typingUsers,
     sendTypingStatus,
     deleteChatMutation,
+    isFetchingChatMessages,
   } = useChat();
   const { user } = useUser();
 
@@ -141,29 +144,6 @@ const RenderChat = ({
 
   const isSender = (idx) => idx === user.id;
 
-  const chatMenu = (
-    <Menu>
-      <Menu.Item
-        key="delete"
-        onClick={() => {
-          console.log("Delete chat clicked for chat:", currentChatId);
-          // Add your delete chat logic here
-        }}
-      >
-        Delete
-      </Menu.Item>
-      <Menu.Item
-        key="archive"
-        onClick={() => {
-          console.log("Archive chat clicked for chat:", currentChatId);
-          // Add your archive chat logic here
-        }}
-      >
-        Archive
-      </Menu.Item>
-    </Menu>
-  );
-
   return (
     <div className="flex flex-col h-full">
       <div
@@ -245,90 +225,95 @@ const RenderChat = ({
           </div>
         </div>
       </div>
-
-      <div
-        ref={chatContainerRef}
-        className="flex-grow overflow-y-auto p-4 space-y-3"
-      >
-        <div className="text-center mb-4">
-          <span
-            className="inline-block px-3 py-1 text-xs rounded-full text-gray-600"
-            style={{ backgroundColor: "rgba(0, 24, 64, 0.08)" }}
-          >
-            Today
-          </span>
+      {isFetchingChatMessages ? (
+        <div className="flex justify-center items-center h-full w-full">
+          <LoadingOutlined spin />
         </div>
+      ) : (
+        <div
+          ref={chatContainerRef}
+          className="flex-grow overflow-y-auto p-4 space-y-3"
+        >
+          <div className="text-center mb-4">
+            <span
+              className="inline-block px-3 py-1 text-xs rounded-full text-gray-600"
+              style={{ backgroundColor: "rgba(0, 24, 64, 0.08)" }}
+            >
+              Today
+            </span>
+          </div>
 
-        {messages.map((message, index) => (
-          <div
-            key={index}
-            className={clsx(
-              "flex",
-              isSender(message.sender_id) ? "justify-end" : "justify-start"
-            )}
-          >
-            {message.sender_id !== user.id && (
-              <div className="mr-2 self-end mb-1">
-                <Avatar
-                  src={
-                    recipient?.user.profile_picture
-                      ? `${img_base_url}${recipient.user.profile_picture}`
-                      : "/default-avatar.png"
-                  }
-                  alt={getSenderName(message.sender_id)}
-                  size={32}
-                  icon={<LuUser className="text-black" />}
-                />
-              </div>
-            )}
-            <div className="flex flex-col max-w-[75%]">
-              <span
-                className={clsx("text-[10px] text-gray-600 mb-[1px] pr-2", {
-                  "self-end": isSender(message.sender_id),
-                })}
-              >
-                {getSenderName(message.sender_id)}
-              </span>
-              <div
-                className={`px-3 py-2 rounded-2xl flex gap-2 w-full ${
-                  isSender(message.sender_id)
-                    ? "text-white bg-[#001840] rounded-tr-none"
-                    : "bg-gray-200 text-gray-800 rounded-tl-none"
-                }`}
-              >
-                <p className="text-xs min-w-0">{message.content}</p>
-                <span
-                  className={clsx(
-                    "text-[8px] self-end shrink-0 whitespace-nowrap",
-                    {
-                      "text-gray-100": isSender(message.sender_id),
-                      "text-gray-500": !isSender(message.sender_id),
+          {messages.map((message, index) => (
+            <div
+              key={index}
+              className={clsx(
+                "flex",
+                isSender(message.sender_id) ? "justify-end" : "justify-start"
+              )}
+            >
+              {message.sender_id !== user.id && (
+                <div className="mr-2 self-end mb-1">
+                  <Avatar
+                    src={
+                      recipient?.user.profile_picture
+                        ? `${img_base_url}${recipient.user.profile_picture}`
+                        : "/default-avatar.png"
                     }
-                  )}
+                    alt={getSenderName(message.sender_id)}
+                    size={32}
+                    icon={<LuUser className="text-black" />}
+                  />
+                </div>
+              )}
+              <div className="flex flex-col max-w-[75%]">
+                <span
+                  className={clsx("text-[10px] text-gray-600 mb-[1px] pr-2", {
+                    "self-end": isSender(message.sender_id),
+                  })}
                 >
-                  {message.sent_at}
+                  {getSenderName(message.sender_id)}
                 </span>
+                <div
+                  className={`px-3 py-2 rounded-2xl flex gap-2 w-full ${
+                    isSender(message.sender_id)
+                      ? "text-white bg-[#001840] rounded-tr-none"
+                      : "bg-gray-200 text-gray-800 rounded-tl-none"
+                  }`}
+                >
+                  <p className="text-xs min-w-0">{message.content}</p>
+                  <span
+                    className={clsx(
+                      "text-[8px] self-end shrink-0 whitespace-nowrap",
+                      {
+                        "text-gray-100": isSender(message.sender_id),
+                        "text-gray-500": !isSender(message.sender_id),
+                      }
+                    )}
+                  >
+                    {message.sent_at}
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
 
-        {isRecipientTyping && (
-          <div className="flex justify-start items-center gap-2">
-            <Avatar
-              src={
-                recipient?.user.profile_picture
-                  ? `${img_base_url}${recipient.user.profile_picture}`
-                  : "/default-avatar.png"
-              }
-              alt={displayName}
-              size={32}
-              icon={<LuUser className="text-black" />}
-            />
-            <TypingIndicator />
-          </div>
-        )}
-      </div>
+          {isRecipientTyping && (
+            <div className="flex justify-start items-center gap-2">
+              <Avatar
+                src={
+                  recipient?.user.profile_picture
+                    ? `${img_base_url}${recipient.user.profile_picture}`
+                    : "/default-avatar.png"
+                }
+                alt={displayName}
+                size={32}
+                icon={<LuUser className="text-black" />}
+              />
+              <TypingIndicator />
+            </div>
+          )}
+        </div>
+      )}
 
       <form onSubmit={handleSendMessage} className="p-3 border-t bg-white">
         <div
@@ -371,7 +356,7 @@ const RenderChat = ({
                 : "bg-[#ccc] text-[#666]"
             )}
           >
-            <SendOutlined className="text-xs" />
+            <LuSendHorizontal className="text-xs" />
           </button>
         </div>
       </form>

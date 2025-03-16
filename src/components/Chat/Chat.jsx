@@ -16,7 +16,6 @@ const Chat = () => {
   const { chats, isFetchingChats } = useChat();
   const { width } = useDevice();
   const isSmallScreen = width <= 768;
-  const hasChats = chats && chats.length > 0;
 
   const NoChatsMessage = () => (
     <div className="flex items-center justify-center h-full bg-gray-50">
@@ -38,40 +37,18 @@ const Chat = () => {
     </div>
   );
 
-  const SidebarSkeleton = () => (
-    <div className="w-full flex items-center gap-2 p-6 h-16">
-      <Skeleton.Avatar active size={40} shape="circle" />
-      <Skeleton.Button active className="!w-full" />
-    </div>
-  );
   return (
     <div className="w-full md:shadow-md mt-2 -mx-2 md:mt-14 md:rounded-md md:border">
       <div className="md:h-[650px] h-[680px] w-full">
         {/* Large Screen Layout */}
         {!isSmallScreen && (
           <div className="flex h-full">
-            {isFetchingChats ? (
-              <div className="w-1/3 border-r flex flex-col h-full">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <SidebarSkeleton key={i} />
-                ))}
-              </div>
-            ) : hasChats ? (
-              <div className="w-1/3 border-r border-gray-200">
-                <RenderSidebar
-                  MAIN_COLOR={MAIN_COLOR}
-                  TEXT_COLOR={TEXT_COLOR}
-                />
-              </div>
-            ) : (
-              <div className="w-1/3 border-r border-gray-200">
-                <NoChatsMessage />
-              </div>
-            )}
+            <div className="w-1/3 border-r border-gray-200">
+              <RenderSidebar MAIN_COLOR={MAIN_COLOR} TEXT_COLOR={TEXT_COLOR} />
+            </div>
+
             <div className="w-2/3 h-full">
-              {isFetchingChats ? (
-                <LoadingOutlined className="text-2xl animate-spin" />
-              ) : currentChatId !== null && hasChats ? (
+              {currentChatId !== null ? (
                 <RenderChat
                   isSmallScreen={false}
                   MAIN_COLOR={MAIN_COLOR}
@@ -88,19 +65,15 @@ const Chat = () => {
         {/* Small Screen Layout */}
         {isSmallScreen && (
           <div className="h-full">
-            {isFetchingChats ? (
-              <LoadingOutlined className="text-2xl animate-spin" />
-            ) : currentChatId !== null && hasChats ? (
+            {currentChatId !== null ? (
               <RenderChat
                 isSmallScreen={true}
                 MAIN_COLOR={MAIN_COLOR}
                 TEXT_COLOR={TEXT_COLOR}
                 MAIN_COLOR_LIGHT={MAIN_COLOR_LIGHT}
               />
-            ) : hasChats ? (
-              <RenderSidebar MAIN_COLOR={MAIN_COLOR} TEXT_COLOR={TEXT_COLOR} />
             ) : (
-              <NoChatsMessage />
+              <RenderSidebar MAIN_COLOR={MAIN_COLOR} TEXT_COLOR={TEXT_COLOR} />
             )}
           </div>
         )}

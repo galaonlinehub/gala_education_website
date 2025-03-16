@@ -1,15 +1,20 @@
 import { useState } from "react";
-import { Avatar, Input } from "antd";
+import { Avatar, Input, Skeleton } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { useChat } from "@/src/hooks/useChat";
 import { img_base_url } from "@/src/config/settings";
 import useChatStore from "@/src/store/chat/chat";
-import { LuUser } from "react-icons/lu";
+import { LuUser, LuMessagesSquare } from "react-icons/lu";
+import { useUser } from "@/src/hooks/useUser";
 
 const RenderSidebar = ({ currentTab, setCurrentTab, MAIN_COLOR }) => {
   const [searchValue, setSearchValue] = useState("");
   const { currentChatId, setCurrentChatId } = useChatStore();
-  const { chats } = useChat();
+  const { chats, isFetchingChats } = useChat();
+  const { user } = useUser();
+
+  const hasChats = chats && chats.length > 0;
+
   const handleChange = (e) => {
     setSearchValue(e.target.value);
   };
@@ -17,6 +22,28 @@ const RenderSidebar = ({ currentTab, setCurrentTab, MAIN_COLOR }) => {
   const viewOnClickedUser = (idx) => {
     setCurrentChatId(idx);
   };
+
+  const ChatSkeleton = () => (
+    <div className="w-full flex items-center gap-1 p-6 h-16">
+      <Skeleton.Avatar active size={40} shape="circle" />
+      <Skeleton.Button active className="!w-full" />
+    </div>
+  );
+
+  const NoChat = () => (
+    <div className="flex flex-col items-center mt-24 h-full ">
+      <LuMessagesSquare className="w-12 h-12 mb-2 text-[#001840]" />
+      <div className="text-center flex flex-col text-gray-500">
+        <span className="text-xs">You have no chats yet</span>
+        {user?.role === "student" && (
+          <span className="text-xs">
+            Start by messaging teachers by searching them through above search
+            bar...!!
+          </span>
+        )}
+      </div>
+    </div>
+  );
 
   return (
     <div className="p-2 lg:p-4 h-full">
@@ -51,10 +78,12 @@ const RenderSidebar = ({ currentTab, setCurrentTab, MAIN_COLOR }) => {
         />
       </div>
       <div className="flex flex-col overflow-y-auto h-[450px]">
-        {chats?.length > 0 &&
+        {isFetchingChats ? (
+          Array.from({ length: 5 }).map((_, i) => <ChatSkeleton key={i} />)
+        ) : hasChats ? (
           chats
-            .filter((chat) => {
-              return chat.participants.some(
+            .filter((chat) =>
+              chat.participants.some(
                 (participant) =>
                   participant.user.first_name
                     .toLowerCase()
@@ -62,61 +91,62 @@ const RenderSidebar = ({ currentTab, setCurrentTab, MAIN_COLOR }) => {
                   participant.user.last_name
                     .toLowerCase()
                     .includes(searchValue.toLowerCase())
+              )
+            )
+            .map((chat) => {
+              const participantsData = chat.participants.map((participant) => ({
+                id: participant.user.id,
+                fullName: `${participant.user.first_name} ${participant.user.last_name}`,
+                profilePicture: `${img_base_url}${participant.user.profile_picture}`,
+                email: participant.user.email,
+                online: participant.online,
+              }));
+
+              return (
+                <div
+                  key={chat.id}
+                  onClick={() => viewOnClickedUser(chat.id)}
+                  className={clsx(
+                    "p-3 mb-2 transition-all duration-200 flex items-center cursor-pointer rounded-xl",
+                    currentChatId === chat.id
+                      ? "bg-blue-100/20 border-l-4 border-l-[#001840]"
+                      : "hover:bg-gray-50 border-l-0"
+                  )}
+                >
+                  {/* Avatars */}
+                  {participantsData.map((participant) => (
+                    <div key={participant.id} className="relative mr-3">
+                      <Avatar
+                        src={participant.profilePicture}
+                        alt={participant.email}
+                        size={52}
+                        icon={<LuUser className="text-black" />}
+                      />
+                      {participant.online && (
+                        <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></div>
+                      )}
+                    </div>
+                  ))}
+                  {/* Names and Message */}
+                  <div className="flex-grow overflow-hidden pr-2">
+                    <div className="flex justify-between items-center mb-1">
+                      <span className="font-semibold text-sm w-3/4 line-clamp-1">
+                        {participantsData.map((p) => p.fullName).join(", ")}
+                      </span>
+                      <span className="text-[10px] text-gray-400">
+                        {chat?.last_message?.sent_at}
+                      </span>
+                    </div>
+                    <p className="text-xs text-gray-500 truncate first-letter:uppercase">
+                      {chat?.last_message?.content}
+                    </p>
+                  </div>
+                </div>
               );
             })
-            .map((chat, _) => (
-              <div
-                key={chat.id}
-                onClick={() => viewOnClickedUser(chat.id)}
-                className={`p-3 mb-2 transition-all duration-200 flex items-center cursor-pointer rounded-xl ${
-                  currentChatId === chat.id
-                    ? "bg-opacity-20 bg-blue-100"
-                    : "hover:bg-gray-50"
-                }`}
-                style={{
-                  borderLeft:
-                    currentChatId === chat.id
-                      ? `3px solid ${MAIN_COLOR}`
-                      : "none",
-                  backgroundColor:
-                    currentChatId === chat.id
-                      ? "rgba(0, 24, 64, 0.08)"
-                      : "transparent",
-                }}
-              >
-                {chat.participants.map((participant, _) => (
-                  <div key={participant.user.id} className="relative mr-3">
-                    <Avatar
-                      src={`${img_base_url}${participant.user.profile_picture}`}
-                      alt={participant.user.email}
-                      size={52}
-                      icon={<LuUser className="text-black" />}
-                    />
-                    {participant.online && (
-                      <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></div>
-                    )}
-                  </div>
-                ))}
-                <div className="flex-grow overflow-hidden pr-2">
-                  <div className="flex justify-between items-center mb-1">
-                    <span className="font-semibold text-sm w-3/4 line-clamp-1">
-                      {chat.participants
-                        .map(
-                          (participant) =>
-                            `${participant.user.first_name} ${participant.user.last_name}`
-                        )
-                        .join(", ")}
-                    </span>
-                    <span className="text-[10px] text-gray-400">
-                      {chat?.last_message?.sent_at}
-                    </span>
-                  </div>
-                  <p className="text-xs text-gray-500 truncate first-letter:uppercase">
-                    {chat?.last_message?.content}
-                  </p>
-                </div>
-              </div>
-            ))}
+        ) : (
+          <NoChat />
+        )}
       </div>
     </div>
   );

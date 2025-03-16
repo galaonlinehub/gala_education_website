@@ -227,5 +227,8 @@ export const useChat = () => {
     //TYPING
     sendTypingStatus,
     typingUsers,
+
+    //MESSAGES
+    isFetchingChatMessages,
   };
 };
