@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Avatar } from "antd";
+import { Avatar, Button, Dropdown, Menu } from "antd";
 import {
   PaperClipOutlined,
   SmileOutlined,
@@ -30,8 +30,14 @@ const RenderChat = ({
   const chatContainerRef = useRef(null);
   const typingTimeoutRef = useRef(null);
   const { currentChatId, setCurrentChatId } = useChatStore();
-  const { sendMessage, chats, messages, typingUsers, sendTypingStatus } =
-    useChat();
+  const {
+    sendMessage,
+    chats,
+    messages,
+    typingUsers,
+    sendTypingStatus,
+    deleteChatMutation,
+  } = useChat();
   const { user } = useUser();
 
   const isPreviewChat = currentChatId === "preview";
@@ -135,6 +141,29 @@ const RenderChat = ({
 
   const isSender = (idx) => idx === user.id;
 
+  const chatMenu = (
+    <Menu>
+      <Menu.Item
+        key="delete"
+        onClick={() => {
+          console.log("Delete chat clicked for chat:", currentChatId);
+          // Add your delete chat logic here
+        }}
+      >
+        Delete
+      </Menu.Item>
+      <Menu.Item
+        key="archive"
+        onClick={() => {
+          console.log("Archive chat clicked for chat:", currentChatId);
+          // Add your archive chat logic here
+        }}
+      >
+        Archive
+      </Menu.Item>
+    </Menu>
+  );
+
   return (
     <div className="flex flex-col h-full">
       <div
@@ -180,7 +209,39 @@ const RenderChat = ({
           <div className="flex gap-3">
             <LuPhone className="text-gray-500 text-[16px] cursor-not-allowed" />
             <LuVideo className="text-gray-500  text-[16px] cursor-not-allowed " />
-            <LuEllipsisVertical className="text-white text-[16px] cursor-pointer" />
+            <Dropdown
+              arrow
+              menu={{
+                items: [
+                  {
+                    key: "delete",
+                    label: deleteChatMutation.isLoading
+                      ? "Deleting..."
+                      : "Delete Chat",
+                    onClick: () => {
+                      if (currentChatId && !isPreviewChat) {
+                        deleteChatMutation.mutate();
+                      }
+                    },
+                    disabled: deleteChatMutation.isLoading,
+                  },
+                  {
+                    key: "archive",
+                    label: "Archive",
+                    onClick: () => {
+                      console.log(
+                        "Archive chat clicked for chat:",
+                        currentChatId
+                      );
+                    },
+                  },
+                ],
+              }}
+              trigger={["click"]}
+              placement="bottomRight"
+            >
+              <LuEllipsisVertical className="text-white text-[16px] cursor-pointer" />
+            </Dropdown>
           </div>
         </div>
       </div>

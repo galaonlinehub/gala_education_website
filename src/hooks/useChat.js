@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
-import { apiPost, apiGet } from "@/src/services/api_service";
+import { apiPost, apiGet, apiDelete } from "@/src/services/api_service";
 import { useUser } from "./useUser";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { cookieFn, sessionStorageFn } from "../utils/fns/client";
 import { PREVIEW_CHAT_KEY, USER_COOKIE_KEY } from "../config/settings";
 import useChatStore from "../store/chat/chat";
 import { decrypt } from "@/src/utils/fns/encryption";
+import { message } from "antd";
 
 export const useChat = () => {
   const socketRef = useRef(null);
@@ -15,6 +16,8 @@ export const useChat = () => {
   const { user } = useUser();
   const [previewChat, setPreviewChat] = useState(null);
   const [typingUsers, setTypingUsers] = useState([]);
+
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     socketRef.current = io("http://localhost:4000", {
@@ -190,6 +193,19 @@ export const useChat = () => {
     ? [previewChat, ...(chats ?? [])]
     : chats ?? [];
 
+  const deleteChatMutation = useMutation({
+    mutationFn: () => apiDelete(`/chat/${currentChatId}/delete`),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["chats", user.id]);
+      setCurrentChatId(null);
+      message.success("Chat deleted successfully");
+    },
+    onError: (error) => {
+      console.error("Error deleting chat:", error);
+      message.error("Failed to delete chat");
+    },
+  });
+
   //TYPING
   const sendTypingStatus = (isTyping) => {
     if (!currentChatId) return;
@@ -206,6 +222,7 @@ export const useChat = () => {
     // CHATS
     chats: combinedChats,
     isFetchingChats,
+    deleteChatMutation,
 
     //TYPING
     sendTypingStatus,

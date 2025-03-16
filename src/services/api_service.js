@@ -19,7 +19,7 @@ const publicEndpoints = new Set([
   "password/reset-request",
   "reset-password",
   "subscribe-plan",
-  "health"
+  "health",
 ]);
 
 api.interceptors.request.use(
@@ -74,7 +74,6 @@ export const apiGet = async (endpoint, headers = {}, directToken = null) => {
   }
 };
 
-
 export const apiPost = async (endpoint, data, headers = {}) => {
   const response = await api.post(endpoint, data, { headers });
   return response;
@@ -102,7 +101,7 @@ export const apiPatch = async (endpoint, data, headers = {}) => {
 
 export const apiDelete = async (endpoint, data, headers = {}) => {
   try {
-    const response = await api.post(endpoint, data, { headers });
+    const response = await api.delete(endpoint, data, { headers });
     return response;
   } catch (error) {
     console.error(`DELETE ${endpoint} Error:`, error);
