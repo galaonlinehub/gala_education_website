@@ -1,20 +1,19 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import io from "socket.io-client";
 import { apiPost, apiGet, apiDelete } from "@/src/services/api_service";
 import { useUser } from "./useUser";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { cookieFn, sessionStorageFn } from "../utils/fns/client";
-import { PREVIEW_CHAT_KEY, USER_COOKIE_KEY } from "../config/settings";
+import { cookieFn } from "../utils/fns/client";
+import { USER_COOKIE_KEY } from "../config/settings";
 import useChatStore from "../store/chat/chat";
-import { decrypt } from "@/src/utils/fns/encryption";
 import { message } from "antd";
 
 export const useChat = () => {
   const socketRef = useRef(null);
   const [messages, setMessages] = useState([]);
-  const { currentChatId, setCurrentChatId } = useChatStore();
+  const { currentChatId, setCurrentChatId, previewChat, clearPreviewChat } =
+    useChatStore();
   const { user } = useUser();
-  const [previewChat, setPreviewChat] = useState(null);
   const [typingUsers, setTypingUsers] = useState([]);
 
   const queryClient = useQueryClient();
@@ -48,6 +47,8 @@ export const useChat = () => {
       return await apiPost("/chat/get-or-create", payload);
     },
     onSuccess: (response) => {
+      currentChatId === "preview" &&
+        queryClient.invalidateQueries([chats, user.id]);
       const chat = response.data.data;
       setCurrentChatId(chat.id);
       socketRef.current.emit("join_chat", chat.id);
@@ -73,9 +74,7 @@ export const useChat = () => {
       };
 
       socketRef.current.emit("send_message", message);
-
-      sessionStorageFn.remove(PREVIEW_CHAT_KEY);
-      setCurrentChatId(chatId);
+      clearPreviewChat();
     } catch (error) {
       console.error("Failed to send message:", error);
     }
@@ -145,7 +144,7 @@ export const useChat = () => {
   const { data: chats, isFetching: isFetchingChats } = useQuery({
     queryKey: ["chats", user.id],
     queryFn: () => getChats(),
-    staleTime: 5000,
+    staleTime: Infinity,
     enabled: true,
   });
 
@@ -165,33 +164,13 @@ export const useChat = () => {
   }, [chat_messages]);
 
   useEffect(() => {
-    const getPreviewChat = () =>
-      decrypt(sessionStorageFn.get(PREVIEW_CHAT_KEY));
-    const preview = getPreviewChat();
-
-    if (preview) {
-      const previewChatData = {
-        id: "preview",
-        title: null,
-        participants: [
-          {
-            id: preview.recepient_id,
-            user: {
-              id: preview.recepient_id,
-              first_name: preview.first_name,
-              last_name: preview.last_name,
-              profile_picture: null,
-            },
-          },
-        ],
-      };
-      setPreviewChat(previewChatData);
-    }
+    useChatStore.getState().initializePreviewChat();
   }, []);
 
-  const combinedChats = previewChat
-    ? [previewChat, ...(chats ?? [])]
-    : chats ?? [];
+  const combinedChats = useMemo(() => {
+    const chatsArray = chats ?? [];
+    return previewChat ? [previewChat, ...chatsArray] : chatsArray;
+  }, [previewChat, chats]);
 
   const deleteChatMutation = useMutation({
     mutationFn: () => apiDelete(`/chat/${currentChatId}/delete`),
@@ -215,7 +194,6 @@ export const useChat = () => {
 
   return {
     sendMessage,
-    messages,
     createOrGetChatMutation,
     preparePayLoad,
 
@@ -230,5 +208,6 @@ export const useChat = () => {
 
     //MESSAGES
     isFetchingChatMessages,
+    messages,
   };
 };

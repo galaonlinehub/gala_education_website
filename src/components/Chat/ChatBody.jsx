@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Avatar, Dropdown } from "antd";
 import {
-  Loading3QuartersOutlined,
   LoadingOutlined,
   PaperClipOutlined,
   SmileOutlined,
@@ -189,39 +188,41 @@ const RenderChat = ({
           <div className="flex gap-3">
             <LuPhone className="text-gray-500 text-[16px] cursor-not-allowed" />
             <LuVideo className="text-gray-500  text-[16px] cursor-not-allowed " />
-            <Dropdown
-              arrow
-              menu={{
-                items: [
-                  {
-                    key: "delete",
-                    label: deleteChatMutation.isLoading
-                      ? "Deleting..."
-                      : "Delete Chat",
-                    onClick: () => {
-                      if (currentChatId && !isPreviewChat) {
-                        deleteChatMutation.mutate();
-                      }
+            {currentChatId !== "preview" && (
+              <Dropdown
+                arrow
+                menu={{
+                  items: [
+                    {
+                      key: "delete",
+                      label: deleteChatMutation.isLoading
+                        ? "Deleting..."
+                        : "Delete Chat",
+                      onClick: () => {
+                        if (currentChatId && !isPreviewChat) {
+                          deleteChatMutation.mutate();
+                        }
+                      },
+                      disabled: deleteChatMutation.isLoading,
                     },
-                    disabled: deleteChatMutation.isLoading,
-                  },
-                  {
-                    key: "archive",
-                    label: "Archive",
-                    onClick: () => {
-                      console.log(
-                        "Archive chat clicked for chat:",
-                        currentChatId
-                      );
+                    {
+                      key: "archive",
+                      label: "Archive",
+                      onClick: () => {
+                        console.log(
+                          "Archive chat clicked for chat:",
+                          currentChatId
+                        );
+                      },
                     },
-                  },
-                ],
-              }}
-              trigger={["click"]}
-              placement="bottomRight"
-            >
-              <LuEllipsisVertical className="text-white text-[16px] cursor-pointer" />
-            </Dropdown>
+                  ],
+                }}
+                trigger={["click"]}
+                placement="bottomRight"
+              >
+                <LuEllipsisVertical className="text-white text-[16px] cursor-pointer" />
+              </Dropdown>
+            )}
           </div>
         </div>
       </div>

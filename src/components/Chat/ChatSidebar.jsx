@@ -6,13 +6,14 @@ import { img_base_url } from "@/src/config/settings";
 import useChatStore from "@/src/store/chat/chat";
 import { LuUser, LuMessagesSquare } from "react-icons/lu";
 import { useUser } from "@/src/hooks/useUser";
+import clsx from "clsx";
 
 const RenderSidebar = ({ currentTab, setCurrentTab, MAIN_COLOR }) => {
   const [searchValue, setSearchValue] = useState("");
   const { currentChatId, setCurrentChatId } = useChatStore();
   const { chats, isFetchingChats } = useChat();
   const { user } = useUser();
-
+  console.log(chats, "IN SIDEBR OF CHATS")
   const hasChats = chats && chats.length > 0;
 
   const handleChange = (e) => {

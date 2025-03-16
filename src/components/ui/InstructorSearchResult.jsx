@@ -22,7 +22,7 @@ import { useChat } from "@/src/hooks/useChat";
 const InstructorSearchResult = ({ details }) => {
   const { setEnrollMe, setEnrollCohort } = useEnrollMe();
   const { setOpenNewClass } = useNewClass();
-  const { setCurrentChatId } = useChatStore();
+  const { setCurrentChatId, setPreviewChat } = useChatStore();
   const { chats } = useChat();
   const { user } = useUser();
   const router = useRouter();
@@ -60,9 +60,7 @@ const InstructorSearchResult = ({ details }) => {
       recepient_id: details?.id,
     };
 
-    const encryptedPreviewChat = encrypt(preview_chat);
-    sessionStorageFn.set(PREVIEW_CHAT_KEY, encryptedPreviewChat);
-
+    setPreviewChat(preview_chat);
     navigateToChat("preview");
   };
 
