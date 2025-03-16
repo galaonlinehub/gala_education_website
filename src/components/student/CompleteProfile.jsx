@@ -38,7 +38,6 @@ const CompleteProfile = () => {
         return <Success />;
     }
   };
-  console.log(user)
   return (
     <Modal
       open={!user?.profile_picture}
@@ -87,7 +86,6 @@ const Save = ({ setStatus, setPhoneNumber }) => {
 
     updateProfile(formData);
   };
-  console.log("user", user);
 
   const dataURLtoBlob = (dataurl) => {
     const arr = dataurl.split(",");

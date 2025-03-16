@@ -17,13 +17,13 @@ import { sessionStorageFn } from "@/src/utils/fns/client";
 import { encrypt } from "@/src/utils/fns/encryption";
 import { PREVIEW_CHAT_KEY } from "@/src/config/settings";
 import useChatStore from "@/src/store/chat/chat";
-
+import { useChat } from "@/src/hooks/useChat";
 
 const InstructorSearchResult = ({ details }) => {
   const { setEnrollMe, setEnrollCohort } = useEnrollMe();
   const { setOpenNewClass } = useNewClass();
   const { setCurrentChatId } = useChatStore();
-
+  const { chats } = useChat();
   const { user } = useUser();
   const router = useRouter();
 
@@ -32,19 +32,45 @@ const InstructorSearchResult = ({ details }) => {
     setEnrollCohort(idx);
   };
 
-  let makeChat = () => {
+  const navigateToChat = (chatId) => {
+    setCurrentChatId(chatId);
+    router.push(`/${user?.role}/social`);
+    setOpenNewClass(false);
+  };
+
+  const setExistingChat = () => {
+    const existingChat = chats.find(
+      (chat) =>
+        chat.created_by === user?.id &&
+        chat.participants.some((p) => p.user_id === details?.id)
+    );
+
+    if (existingChat) {
+      navigateToChat(existingChat.id);
+      return true;
+    }
+    return false;
+  };
+
+  const createPreviewChat = () => {
     const names = details?.name.split(" ");
     const preview_chat = {
       first_name: names[0],
       last_name: names[1],
       recepient_id: details?.id,
     };
+
     const encryptedPreviewChat = encrypt(preview_chat);
     sessionStorageFn.set(PREVIEW_CHAT_KEY, encryptedPreviewChat);
 
-    setCurrentChatId("preview");
-    router.push(`/${user?.role}/social`);
-    setOpenNewClass(false);
+    navigateToChat("preview");
+  };
+
+  let makeChat = () => {
+    if (setExistingChat()) {
+      return;
+    }
+    createPreviewChat();
   };
 
   return (
@@ -115,15 +141,15 @@ const InstructorSearchResult = ({ details }) => {
             </span>
           </div>
           <div className="flex text-[10px] gap-2">
-            <div className="rounded-lg bg-transparent/10 flex items-center justify-center py-1 px-2 gap-1">
+            <div className="rounded-lg bg-transparent/10 flex items-center justify-center py-1 px-2 gap-2">
               <FaRegStar />
               Top Rated Plus
             </div>
-            <div className="rounded-lg bg-transparent/10 flex items-center justify-center py-1 px-2 gap-1">
+            <div className="rounded-lg bg-transparent/10 flex items-center justify-center py-1 px-2 gap-2">
               <FaRegMessage />
               Quick Responder
             </div>
-            <div className="rounded-lg bg-transparent/10 flex items-center justify-center py-1 px-2 gap-1">
+            <div className="rounded-lg bg-transparent/10 flex items-center justify-center py-1 px-2 gap-2">
               <GoShieldCheck />
               Expert Status
             </div>

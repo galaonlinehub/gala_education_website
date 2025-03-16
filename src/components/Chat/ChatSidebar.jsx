@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Avatar, Input } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { useChat } from "@/src/hooks/useChat";
-import { img_base_url, PREVIEW_CHAT_KEY } from "@/src/config/settings";
+import { img_base_url } from "@/src/config/settings";
 import useChatStore from "@/src/store/chat/chat";
 import { LuUser } from "react-icons/lu";
 
 const RenderSidebar = ({ currentTab, setCurrentTab, MAIN_COLOR }) => {
   const [searchValue, setSearchValue] = useState("");
   const { currentChatId, setCurrentChatId } = useChatStore();
-  const { sendMessage, chats, preparePayLoad, messages } = useChat();
+  const { chats } = useChat();
   const handleChange = (e) => {
     setSearchValue(e.target.value);
   };
@@ -19,10 +19,10 @@ const RenderSidebar = ({ currentTab, setCurrentTab, MAIN_COLOR }) => {
   };
 
   return (
-    <div className="p-4 h-full">
+    <div className="p-2 lg:p-4 h-full">
       <h2 className={`font-bold text-lg text-[${MAIN_COLOR}]`}>Messages</h2>
       <div className="flex justify-between gap-2 mb-4">
-        {["Direct", "Groups", "Public"].map((tab) => (
+        {["Direct", "Groups"].map((tab) => (
           <button
             key={tab}
             onClick={() => setCurrentTab(tab.toLowerCase())}
@@ -99,7 +99,7 @@ const RenderSidebar = ({ currentTab, setCurrentTab, MAIN_COLOR }) => {
                 ))}
                 <div className="flex-grow overflow-hidden pr-2">
                   <div className="flex justify-between items-center mb-1">
-                    <span className="font-semibold text-sm">
+                    <span className="font-semibold text-sm w-3/4 line-clamp-1">
                       {chat.participants
                         .map(
                           (participant) =>

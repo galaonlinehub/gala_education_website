@@ -138,7 +138,7 @@ const RenderChat = ({
   return (
     <div className="flex flex-col h-full">
       <div
-        className={`p-3 flex items-center border-b text-[${TEXT_COLOR}] bg-[${MAIN_COLOR}]`}
+        className={`p-2 md:p-3 flex items-center border-b text-[${TEXT_COLOR}] bg-[${MAIN_COLOR}]`}
       >
         {isSmallScreen && (
           <button
@@ -178,9 +178,9 @@ const RenderChat = ({
             </div>
           </div>
           <div className="flex gap-3">
-            <LuPhone className="text-white text-[16px]" />
-            <LuVideo className="text-white text-[16px]" />
-            <LuEllipsisVertical className="text-white text-[16px]" />
+            <LuPhone className="text-gray-500 text-[16px] cursor-not-allowed" />
+            <LuVideo className="text-gray-500  text-[16px] cursor-not-allowed " />
+            <LuEllipsisVertical className="text-white text-[16px] cursor-pointer" />
           </div>
         </div>
       </div>

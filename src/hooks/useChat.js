@@ -142,7 +142,7 @@ export const useChat = () => {
   const { data: chats, isFetching: isFetchingChats } = useQuery({
     queryKey: ["chats", user.id],
     queryFn: () => getChats(),
-    staleTime: Infinity,
+    staleTime: 5000,
     enabled: true,
   });
 
@@ -209,6 +209,6 @@ export const useChat = () => {
 
     //TYPING
     sendTypingStatus,
-    typingUsers
+    typingUsers,
   };
 };

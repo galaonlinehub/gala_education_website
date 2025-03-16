@@ -6,7 +6,7 @@ export const useEnrolledTopics = () => {
   const {
     data: enrolledTopics,
     isFetching: enrolledTopicsLoading,
-    error: enrolledToicsError,
+    error: enrolledTopicsError,
   } = useQuery({
     queryKey: ["enrolledTopics"],
     queryFn: getEnrolledTopics,
@@ -16,6 +16,6 @@ export const useEnrolledTopics = () => {
   return {
     enrolledTopics,
     enrolledTopicsLoading,
-    enrolledToicsError,
+    enrolledTopicsError,
   };
 };

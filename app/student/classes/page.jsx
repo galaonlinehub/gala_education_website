@@ -10,7 +10,7 @@ import Link from "next/link";
 
 const ClassList = () => {
   const [open, setOpen] = React.useState(true);
-  const { enrolledTopics, enrolledTopicsLoading, enrolledToipcsError } =
+  const { enrolledTopics, enrolledTopicsLoading, enrolledTopicsError } =
     useEnrolledTopics();
 
   return (
@@ -26,7 +26,7 @@ const ClassList = () => {
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {enrolledToipcsError ? (
+          {enrolledTopicsError ? (
             <div className="col-span-full text-center py-10">
               <p className="text-red-600 text-lg font-medium">
                 Something went wrong.
