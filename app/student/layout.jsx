@@ -15,7 +15,6 @@ import { FloatingActionButton } from "@/src/components/ui/Fab";
 import useInstallPrompt from "@/src/hooks/useInstallPrompt";
 import NewClass from "@/src/components/student/NewClass";
 import { useNewClass } from "@/src/store/student/class";
-import { getUser } from "@/src/utils/fns/global";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useUser } from "@/src/hooks/useUser";
 import CompleteProfile from "@/src/components/student/CompleteProfile";

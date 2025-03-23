@@ -53,22 +53,16 @@ export const useUser = () => {
   });
 
   const verifyOtp = useMutation({
-    mutationFn: async ({ otp, phone_number }) => {
-      const formData = new FormData();
-      formData.append("otp", otp);
-      formData.append("phone_number", phone_number);
-
-      const response = await apiPost("/verify-otp", formData);
+    mutationFn: async (data) => {
+      const response = await apiPost("/verify-otp", data);
       return response.data;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["auth-user"] });
-    },
+    onSuccess: () => {},
   });
 
   const resendOtp = useMutation({
     mutationFn: async (phone_number) => {
-      const response = await api.post("/resend-otp", { phone_number });
+      const response = await apiPost("/resend-otp", { phone_number });
       return response.data;
     },
   });

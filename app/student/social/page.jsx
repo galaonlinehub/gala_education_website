@@ -1,8 +1,6 @@
 "use client";
 import { Chat } from "@/src/components/Chat/Chat";
 
-const StudentSocial = () => {
-  return <Chat />;
-};
+const StudentSocial = () => <Chat />;
 
 export default StudentSocial;

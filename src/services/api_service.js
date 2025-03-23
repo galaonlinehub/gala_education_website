@@ -69,7 +69,7 @@ export const apiGet = async (endpoint, headers = {}, directToken = null) => {
     const response = await api.get(endpoint, { headers });
     return response;
   } catch (e) {
-    console.error(`apiGet error for ${endpoint}:`, e.message);
+    console.error(`apiGet error for ${endpoint}:`, e);
     throw e;
   }
 };

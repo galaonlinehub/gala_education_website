@@ -15,6 +15,9 @@ export const useChat = () => {
     useChatStore();
   const { user } = useUser();
   const [typingUsers, setTypingUsers] = useState([]);
+  const [messageStatuses, setMessageStatuses] = useState({});
+  const [sidebarTyping, setSidebarTyping] = useState({}); // { chat_id: [user_ids] }
+  const [unreadCounts, setUnreadCounts] = useState({}); // { chat_id: count }
 
   const queryClient = useQueryClient();
 
@@ -25,65 +28,192 @@ export const useChat = () => {
     });
 
     socketRef.current.on("new_message", (message) => {
-      setMessages((prev) => [...prev, message]);
+      setMessages((prev) => {
+        if (prev.some((m) => m.id === message.message_id)) return prev;
+        return [
+          ...prev,
+          {
+            id: message.message_id,
+            chat_id: message.chat_id,
+            sender_id: message.sender_id,
+            content: message.content,
+            type: message.type || "text",
+            sent_at: message.sent_at,
+            sent_at_iso: message.sent_at_iso,
+            statuses: [],
+          },
+        ];
+      });
+    });
+
+    socketRef.current.on(
+      "message_status",
+      ({ message_id, user_id, status }) => {
+        setMessageStatuses((prev) => ({
+          ...prev,
+          [message_id]: { ...prev[message_id], [user_id]: status },
+        }));
+        setMessages((prev) =>
+          prev.map((msg) =>
+            msg.id === message_id
+              ? {
+                  ...msg,
+                  statuses: [
+                    ...msg.statuses.filter((s) => s.user_id !== user_id),
+                    { user_id, status, message_id },
+                  ],
+                }
+              : msg
+          )
+        );
+      }
+    );
+
+    // Handle batched delivered statuses
+    socketRef.current.on(
+      "messages_delivered",
+      ({ user_id, message_ids, status }) => {
+        setMessageStatuses((prev) => {
+          const updated = { ...prev };
+          message_ids.forEach((message_id) => {
+            updated[message_id] = { ...updated[message_id], [user_id]: status };
+          });
+          return updated;
+        });
+        setMessages((prev) =>
+          prev.map((msg) =>
+            message_ids.includes(msg.id)
+              ? {
+                  ...msg,
+                  statuses: [
+                    ...msg.statuses.filter((s) => s.user_id !== user_id),
+                    { user_id, status, message_id: msg.id },
+                  ],
+                }
+              : msg
+          )
+        );
+      }
+    );
+
+    socketRef.current.on("message_id_updated", ({ old_id, new_id }) => {
+      setMessages((prev) =>
+        prev.map((msg) => (msg.id === old_id ? { ...msg, id: new_id } : msg))
+      );
+      setMessageStatuses((prev) => {
+        const updated = { ...prev };
+        if (prev[old_id]) {
+          updated[new_id] = prev[old_id];
+          delete updated[old_id];
+        }
+        return updated;
+      });
     });
 
     socketRef.current.on("user_typing", ({ user_id }) => {
-      setTypingUsers((prev) => {
-        if (!prev.includes(user_id)) return [...prev, user_id];
-        return prev;
-      });
+      setTypingUsers((prev) =>
+        prev.includes(user_id) ? prev : [...prev, user_id]
+      );
     });
 
     socketRef.current.on("user_stop_typing", ({ user_id }) => {
       setTypingUsers((prev) => prev.filter((id) => id !== user_id));
     });
 
+    // Sidebar typing indicators
+    socketRef.current.on("sidebar_typing", ({ chat_id, user_id }) => {
+      setSidebarTyping((prev) => ({
+        ...prev,
+        [chat_id]: prev[chat_id]?.includes(user_id)
+          ? prev[chat_id]
+          : [...(prev[chat_id] || []), user_id],
+      }));
+    });
+
+    socketRef.current.on("sidebar_stop_typing", ({ chat_id, user_id }) => {
+      setSidebarTyping((prev) => ({
+        ...prev,
+        [chat_id]: prev[chat_id]?.filter((id) => id !== user_id) || [],
+      }));
+    });
+
+    // Sidebar new message with unread count
+    socketRef.current.on(
+      "sidebar_new_message",
+      ({ chat_id, message, unread_count }) => {
+        console.log(unread_count);
+        console.log(message);
+        console.log("WE ARE HERE");
+        setMessages((prev) => {
+          if (prev.some((m) => m.id === message.message_id)) return prev;
+          return [
+            ...prev,
+            {
+              id: message.message_id,
+              chat_id,
+              sender_id: message.sender_id,
+              content: message.content,
+              type: message.type,
+              sent_at: message.sent_at,
+              sent_at_iso: message.sent_at_iso,
+              statuses: [],
+            },
+          ];
+        });
+        setUnreadCounts((prev) => ({ ...prev, [chat_id]: unread_count }));
+      }
+    );
+
+    socketRef.current.on(
+      "sidebar_unread_reset",
+      ({ chat_id, unread_count }) => {
+        setUnreadCounts((prev) => ({ ...prev, [chat_id]: unread_count }));
+      }
+    );
+
     return () => socketRef.current.disconnect();
-  }, [user.id]);
+  }, [user?.id]);
 
   const createOrGetChatMutation = useMutation({
-    mutationFn: async (payload) => {
-      return await apiPost("/chat/get-or-create", payload);
-    },
+    mutationFn: async (payload) => apiPost("/chat/get-or-create", payload),
     onSuccess: (response) => {
-      currentChatId === "preview" &&
-        queryClient.invalidateQueries([chats, user.id]);
+      if (currentChatId === "preview") {
+        queryClient.invalidateQueries(["chats", user.id]);
+      }
       const chat = response.data.data;
       setCurrentChatId(chat.id);
       socketRef.current.emit("join_chat", chat.id);
     },
-    onError: (error) => {
-      console.error("Failed to create or get chat:", error);
-    },
+    onError: (error) => console.error("Failed to create or get chat:", error),
   });
 
   const sendMessage = async (content, recipient_id, chat_id) => {
     if (!content.trim()) return;
     try {
-      const chatPayload = preparePayLoad(recipient_id, chat_id);
-      const chatResponse = await createOrGetChatMutation.mutateAsync(
-        chatPayload
-      );
-      const chatId = chatResponse.data.data.id;
+      let chatId = chat_id || currentChatId;
+
+      if (!chatId || chatId === "preview") {
+        const chatPayload = preparePayLoad(recipient_id, chat_id);
+        const chatResponse = await createOrGetChatMutation.mutateAsync(
+          chatPayload
+        );
+        chatId = chatResponse.data.data.id;
+      }
+
       const message = {
         chat_id: chatId,
         content,
         sender_id: user.id,
         sent_at: new Date().toISOString(),
       };
-
       socketRef.current.emit("send_message", message);
-      clearPreviewChat();
+      if (chatId === currentChatId) clearPreviewChat();
     } catch (error) {
       console.error("Failed to send message:", error);
     }
   };
 
-  const prepareParticipants = (ids) => {
-    return [ids];
-  };
-
+  const prepareParticipants = (ids) => [ids];
   const preparePayLoad = (ids, chat_id) =>
     chat_id
       ? { chat_id }
@@ -93,29 +223,11 @@ export const useChat = () => {
           participant_ids: prepareParticipants(ids),
         };
 
-  // CHATS
-
-  const {} = useQuery({
-    queryKey: ["chat", currentChatId],
-    queryFn: () => getChat(currentChatId),
-    staleTime: Infinity,
-    enabled: !!currentChatId,
-  });
-
-  const getChat = async (id) => {
-    try {
-      const res = await apiGet(`/chat/${id}`);
-      return res.data;
-    } catch (error) {
-      console.error("Failed to fetch chat:", error);
-    }
-  };
-
   const { data: chat_messages, isFetching: isFetchingChatMessages } = useQuery({
     queryKey: ["chat_messages", currentChatId],
     queryFn: () => getChatMessages(),
     staleTime: Infinity,
-    enabled: !!currentChatId,
+    enabled: !!currentChatId && currentChatId !== "preview",
   });
 
   const getChatMessages = async () => {
@@ -123,22 +235,6 @@ export const useChat = () => {
       const res = await apiGet(`/chat/${currentChatId}/messages`);
       return res.data;
     } catch (error) {}
-  };
-
-  const {} = useQuery({
-    queryKey: ["chat_participants", currentChatId],
-    queryFn: () => getChatParticipants(currentChatId),
-    staleTime: Infinity,
-    enabled: !!currentChatId,
-  });
-
-  const getChatParticipants = async (id) => {
-    try {
-      const res = await apiGet(`/chat/${id}/participants`);
-      return res.data;
-    } catch (error) {
-      console.error("Failed to fetch chat participants:", error);
-    }
   };
 
   const { data: chats, isFetching: isFetchingChats } = useQuery({
@@ -158,8 +254,44 @@ export const useChat = () => {
   };
 
   useEffect(() => {
+    if (chats && socketRef.current) {
+      const getChatIds = () => chats.map((c) => c?.id).filter(Boolean);
+      socketRef.current.emit("social", user.id, getChatIds());
+    }
+  }, [chats, user.id]);
+
+  useEffect(() => {
     if (chat_messages) {
-      setMessages(chat_messages);
+      const normalizedMessages = chat_messages.map((msg) => ({
+        id: msg.id,
+        chat_id: msg.chat_id,
+        sender_id: msg.sender_id,
+        content: msg.content,
+        type: msg.type,
+        sent_at: msg.sent_at,
+        sent_at_iso: msg.created_at,
+        statuses: msg.statuses || [],
+        sender: msg.sender,
+      }));
+      setMessages((prev) => {
+        const merged = [...normalizedMessages];
+        prev.forEach((socketMsg) => {
+          if (!merged.some((m) => m.id === socketMsg.id))
+            merged.push(socketMsg);
+        });
+        return merged;
+      });
+
+      const initialStatuses = normalizedMessages.reduce((acc, message) => {
+        if (message.statuses?.length > 0) {
+          acc[message.id] = message.statuses.reduce((statusAcc, status) => {
+            statusAcc[status.user_id] = status.status;
+            return statusAcc;
+          }, {});
+        }
+        return acc;
+      }, {});
+      setMessageStatuses((prev) => ({ ...prev, ...initialStatuses }));
     }
   }, [chat_messages]);
 
@@ -185,29 +317,36 @@ export const useChat = () => {
     },
   });
 
-  //TYPING
   const sendTypingStatus = (isTyping) => {
-    if (!currentChatId) return;
+    if (!currentChatId || currentChatId === "preview") return;
     const payload = { chat_id: currentChatId, user_id: user.id };
     socketRef.current.emit(isTyping ? "typing" : "stop_typing", payload);
+  };
+
+  const markMessageAsRead = (message_id) => {
+    if (currentChatId && currentChatId !== "preview") {
+      socketRef.current.emit("message_read", {
+        chat_id: currentChatId,
+        message_id,
+        user_id: user.id,
+      });
+    }
   };
 
   return {
     sendMessage,
     createOrGetChatMutation,
     preparePayLoad,
-
-    // CHATS
     chats: combinedChats,
     isFetchingChats,
     deleteChatMutation,
-
-    //TYPING
     sendTypingStatus,
     typingUsers,
-
-    //MESSAGES
+    sidebarTyping,
+    unreadCounts,
     isFetchingChatMessages,
     messages,
+    messageStatuses,
+    markMessageAsRead,
   };
 };

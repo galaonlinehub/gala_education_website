@@ -78,7 +78,6 @@ export const decrypt = (encryptedText) => {
       return null;
     }
 
-    // Try to parse as JSON if it's an object, otherwise return as is
     try {
       return JSON.parse(decryptedString);
     } catch {

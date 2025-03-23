@@ -5,24 +5,19 @@ import { useChat } from "@/src/hooks/useChat";
 import { img_base_url } from "@/src/config/settings";
 import useChatStore from "@/src/store/chat/chat";
 import { LuUser, LuMessagesSquare } from "react-icons/lu";
-import { useUser } from "@/src/hooks/useUser";
 import clsx from "clsx";
+import { useUser } from "@/src/hooks/useUser";
 
 const RenderSidebar = ({ currentTab, setCurrentTab, MAIN_COLOR }) => {
   const [searchValue, setSearchValue] = useState("");
   const { currentChatId, setCurrentChatId } = useChatStore();
-  const { chats, isFetchingChats } = useChat();
+  const { chats, isFetchingChats, sidebarTyping, unreadCounts } = useChat();
   const { user } = useUser();
-  console.log(chats, "IN SIDEBR OF CHATS")
   const hasChats = chats && chats.length > 0;
 
-  const handleChange = (e) => {
-    setSearchValue(e.target.value);
-  };
+  const handleChange = (e) => setSearchValue(e.target.value);
 
-  const viewOnClickedUser = (idx) => {
-    setCurrentChatId(idx);
-  };
+  const viewOnClickedUser = (idx) => setCurrentChatId(idx);
 
   const ChatSkeleton = () => (
     <div className="w-full flex items-center gap-1 p-6 h-16">
@@ -32,14 +27,13 @@ const RenderSidebar = ({ currentTab, setCurrentTab, MAIN_COLOR }) => {
   );
 
   const NoChat = () => (
-    <div className="flex flex-col items-center mt-24 h-full ">
+    <div className="flex flex-col items-center mt-24 h-full">
       <LuMessagesSquare className="w-12 h-12 mb-2 text-[#001840]" />
       <div className="text-center flex flex-col text-gray-500">
         <span className="text-xs">You have no chats yet</span>
         {user?.role === "student" && (
           <span className="text-xs">
-            Start by messaging teachers by searching them through above search
-            bar...!!
+            Start by messaging teachers by searching them through above search bar...!!
           </span>
         )}
       </div>
@@ -55,13 +49,10 @@ const RenderSidebar = ({ currentTab, setCurrentTab, MAIN_COLOR }) => {
             key={tab}
             onClick={() => setCurrentTab(tab.toLowerCase())}
             className={`flex-1 py-2 text-sm font-medium rounded-lg transition-colors ${
-              currentTab === tab.toLowerCase()
-                ? "text-white"
-                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+              currentTab === tab.toLowerCase() ? "text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"
             }`}
             style={{
-              backgroundColor:
-                currentTab === tab.toLowerCase() ? MAIN_COLOR : "#f1f1f1",
+              backgroundColor: currentTab === tab.toLowerCase() ? MAIN_COLOR : "#f1f1f1",
               color: currentTab === tab.toLowerCase() ? "white" : "#555",
             }}
           >
@@ -84,14 +75,10 @@ const RenderSidebar = ({ currentTab, setCurrentTab, MAIN_COLOR }) => {
         ) : hasChats ? (
           chats
             .filter((chat) =>
-              chat.participants.some(
-                (participant) =>
-                  participant.user.first_name
-                    .toLowerCase()
-                    .includes(searchValue.toLowerCase()) ||
-                  participant.user.last_name
-                    .toLowerCase()
-                    .includes(searchValue.toLowerCase())
+              chat.participants.some((participant) =>
+                `${participant.user.first_name} ${participant.user.last_name}`
+                  .toLowerCase()
+                  .includes(searchValue.toLowerCase())
               )
             )
             .map((chat) => {
@@ -102,6 +89,8 @@ const RenderSidebar = ({ currentTab, setCurrentTab, MAIN_COLOR }) => {
                 email: participant.user.email,
                 online: participant.online,
               }));
+              const isTyping = sidebarTyping[chat.id]?.length > 0;
+              const unreadCount = unreadCounts[chat.id] || 0;
 
               return (
                 <div
@@ -109,12 +98,9 @@ const RenderSidebar = ({ currentTab, setCurrentTab, MAIN_COLOR }) => {
                   onClick={() => viewOnClickedUser(chat.id)}
                   className={clsx(
                     "p-3 mb-2 transition-all duration-200 flex items-center cursor-pointer rounded-xl",
-                    currentChatId === chat.id
-                      ? "bg-blue-100/20 border-l-4 border-l-[#001840]"
-                      : "hover:bg-gray-50 border-l-0"
+                    currentChatId === chat.id ? "bg-blue-100/20 border-l-4 border-l-[#001840]" : "hover:bg-gray-50 border-l-0"
                   )}
                 >
-                  {/* Avatars */}
                   {participantsData.map((participant) => (
                     <div key={participant.id} className="relative mr-3">
                       <Avatar
@@ -128,19 +114,21 @@ const RenderSidebar = ({ currentTab, setCurrentTab, MAIN_COLOR }) => {
                       )}
                     </div>
                   ))}
-                  {/* Names and Message */}
                   <div className="flex-grow overflow-hidden pr-2">
                     <div className="flex justify-between items-center mb-1">
                       <span className="font-semibold text-sm w-3/4 line-clamp-1">
                         {participantsData.map((p) => p.fullName).join(", ")}
                       </span>
-                      <span className="text-[10px] text-gray-400">
-                        {chat?.last_message?.sent_at}
-                      </span>
+                      <span className="text-[10px] text-gray-400">{chat?.last_message?.sent_at}</span>
                     </div>
-                    <p className="text-xs text-gray-500 truncate first-letter:uppercase">
-                      {chat?.last_message?.content}
-                    </p>
+                    <div className="flex justify-between items-center">
+                      <p className="text-xs text-gray-500 truncate first-letter:uppercase">
+                        {isTyping ? "Typing..." : chat?.last_message?.content || "No messages yet"}
+                      </p>
+                      {unreadCount > 0 && (
+                        <span className="bg-[#001840]  text-white text-[8px] rounded-full h-4 w-4 flex items-center justify-center">{unreadCount}</span>
+                      )}
+                    </div>
                   </div>
                 </div>
               );
@@ -154,3 +142,9 @@ const RenderSidebar = ({ currentTab, setCurrentTab, MAIN_COLOR }) => {
 };
 
 export { RenderSidebar };
+
+/* Changes and Explanations:
+ * - Typing Indicator: Displays "Typing..." when sidebarTyping[chat.id] has users.
+ * - Unread Count: Shows unreadCounts[chat.id] as a badge, updated in real-time.
+ * - Scalability: Filtering and mapping optimized for large chat lists; consider virtualization (e.g., react-virtualized) for 1M users with many chats.
+ */

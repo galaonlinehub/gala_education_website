@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import {
   theme,
   Card,
-  Empty,
   Typography,
   Row,
   Col,
@@ -13,31 +12,22 @@ import {
   Progress,
   Space,
   Statistic,
-  Calendar,
-  List,
   Avatar,
   Badge,
   Tag,
-  Divider,
 } from "antd";
 import {
-  RightOutlined,
-  BookOutlined,
   ClockCircleOutlined,
   TrophyOutlined,
   BellOutlined,
   CheckCircleOutlined,
-  WarningOutlined,
-  UserOutlined,
 } from "@ant-design/icons";
 import { useEnrolledTopics } from "@/src/store/student/class";
 import { useUserTopics } from "@/src/store/user_topics";
 import Link from "next/link";
 import { useUser } from "@/src/hooks/useUser";
 import { GiBookCover } from "react-icons/gi";
-import { MdOutlineAssignment } from "react-icons/md";
-import CompleteProfile from "@/src/components/student/CompleteProfile";
-import { LuBookOpenCheck } from "react-icons/lu";
+import { LuBookOpenCheck, LuUser } from "react-icons/lu";
 import { img_base_url } from "@/src/config/settings";
 
 const { Title, Text } = Typography;
@@ -79,7 +69,7 @@ export default function Component() {
   const QuickLinks = () => (
     <Card title="Quick Links" size="small" className="overflow-hidden">
       <Space direction="vertical" className="w-full items-start">
-        <Button type="link" icon={<UserOutlined />} block className="text-left">
+        <Button type="link" icon={<LuUser />} block className="text-left">
           <Link href="/student/profile">Profile</Link>
         </Button>
         <Button
