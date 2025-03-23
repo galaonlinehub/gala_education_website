@@ -23,7 +23,7 @@ function AdminMain({ children }) {
         <section className="bg-[#ecf0fa] h-[calc(100vh-64px)] overflow-auto ">
           <div className="p-4 min-h-screen">{children}</div>
           <footer className="w-full text-[#d9d9d9] text-center py-2 bg-blue-900">
-            Galahub @2024 v1.0
+            Galahub @2025 v1.0
           </footer>
         </section>
       </main>
