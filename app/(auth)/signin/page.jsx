@@ -25,8 +25,6 @@ const SignInPage = () => {
     message: "",
   });
 
-  const errorMessage = "Unexpected Error. Try again later.";
-
   const {
     register,
     handleSubmit,
@@ -37,7 +35,6 @@ const SignInPage = () => {
     try {
       const res = await login(data);
       if (res === 1) {
-        // await queryClient.invalidateQueries({ queryKey: ['auth-user'] });
         const userData = await queryClient.fetchQuery({
           queryKey: ["auth-user"],
           queryFn: getUser,
@@ -50,7 +47,7 @@ const SignInPage = () => {
         }
       }
     } catch (error) {
-      showError(error?.message);
+      showError(error?.response?.data?.message ?? error?.message);
     } finally {
       setTimeout(() => clearFeedback(), 10000);
     }

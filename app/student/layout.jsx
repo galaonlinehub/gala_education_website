@@ -1,38 +1,18 @@
 "use client";
 import Link from "next/link";
-import { Drawer } from "antd";
-import Clock from "@/src/utils/vector-svg/vectors/Clock";
 import React, { useState, useEffect } from "react";
-import Footer from "@/src/components/layout/footer";
 import Navbar from "@/src/components/layout/Navbar";
-import { CloseCircleFilled } from "@ant-design/icons";
 import StudentSearch from "@/src/components/student/Search";
-import KidInPicture from "@/src/utils/vector-svg/vectors/KidInPicture";
 import { student_links } from "@/src/utils/data/navigation_links";
-import RightTiltedBook from "@/src/utils/vector-svg/vectors/CombinedBlock";
-import StudentsInClass from "@/src/utils/vector-svg/vectors/StudentsInClass";
 import { FloatingActionButton } from "@/src/components/ui/Fab";
 import useInstallPrompt from "@/src/hooks/useInstallPrompt";
 import NewClass from "@/src/components/student/NewClass";
-import { useNewClass } from "@/src/store/student/class";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useUser } from "@/src/hooks/useUser";
 import CompleteProfile from "@/src/components/student/CompleteProfile";
+import Subscribe from "@/src/components/Pay/Subscribe";
 
 export default function StudentLayout({ children }) {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const { user } = useUser();
 
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
 
   const { installPrompt, isInstalled, handleInstallClick } = useInstallPrompt();
   const currentUrl = usePathname();
@@ -143,6 +123,7 @@ export default function StudentLayout({ children }) {
       </Drawer> */}
       <NewClass />
       <CompleteProfile />
+      <Subscribe/>
     </>
   );
 }

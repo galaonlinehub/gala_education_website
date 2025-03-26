@@ -2,16 +2,16 @@ import React, { useState } from "react";
 import { LuLogOut } from "react-icons/lu";
 import { Modal, Button } from "antd";
 import { logout } from "@/src/utils/fns/auth";
-import { useRouter } from "next/navigation";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 import notificationService from "../../notification/Notification";
 import { useDevice } from "@/src/hooks/useDevice";
+import { useUser } from "@/src/hooks/useUser";
 
 const Signout = ({ onCloseSidebar }) => {
   const [signoutVisible, setSignoutVisible] = useState(false);
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
   const { width } = useDevice();
+  const { user } = useUser();
 
   const handleCancel = () => {
     setSignoutVisible(false);
@@ -35,14 +35,16 @@ const Signout = ({ onCloseSidebar }) => {
   };
 
   return (
-    <div className="">
-      <LuLogOut
-        size={18}
-        className="cursor-pointer hidden md:block"
-        onClick={() => setSignoutVisible(true)}
-      />
+    <div>
+      {width > 768 && user?.require_subscription && (
+        <LuLogOut
+          size={18}
+          className="cursor-pointer"
+          onClick={() => setSignoutVisible(true)}
+        />
+      )}
 
-      {width <= 768 && (
+      {width <= 768 && user?.require_subscription && (
         <Button
           onClick={() => {
             onCloseSidebar();
@@ -50,6 +52,18 @@ const Signout = ({ onCloseSidebar }) => {
           }}
           icon={<LuLogOut />}
           className="w-full !border-red-500 text-red-500 hover:!text-red-500"
+        >
+          Sign out
+        </Button>
+      )}
+
+      {!user?.require_subscription && (
+        <Button
+          onClick={() => {
+            setSignoutVisible(true);
+          }}
+          icon={<LuLogOut strokeWidth={3} />}
+          className="w-full !border-black hover:!border-red-500  hover:!text-red-500 !font-medium"
         >
           Sign out
         </Button>

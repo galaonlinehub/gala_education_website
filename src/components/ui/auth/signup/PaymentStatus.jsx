@@ -201,7 +201,7 @@ export const RenderFailureState = ({ onClose, setStatus }) => (
     extra={[
       <button
         key="tryAgain"
-        onClick={() => setStatus(PaymentStatus.LOADING)} // Uncomment and adjust if setStatus is passed
+        onClick={() => setStatus(PaymentStatus.LOADING)} 
         className="px-6 py-2 bg-[#001840] text-white rounded-lg hover:bg-blue-900 transition-colors w-3/4 duration-200 mb-3 md:mb-6"
       >
         Try Again

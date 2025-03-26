@@ -13,6 +13,7 @@ import KidInPicture from "@/src/utils/vector-svg/vectors/KidInPicture";
 import Clock from "@/src/utils/vector-svg/vectors/Clock";
 import StudentsInClass from "@/src/utils/vector-svg/vectors/StudentsInClass";
 import { teacher_links } from "@/src/utils/data/navigation_links";
+import Subscribe from "@/src/components/Pay/Subscribe";
 
 export default function TeacherLayout({ children }) {
   const pathname = usePathname();
@@ -173,6 +174,7 @@ export default function TeacherLayout({ children }) {
           {/* &gt; Install Gala Education in Your device */}
         </FloatingActionButton>
       )}
+      <Subscribe/>
     </>
   );
 }

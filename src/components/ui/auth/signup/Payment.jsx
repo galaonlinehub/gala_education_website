@@ -13,13 +13,14 @@ import { apiPost } from "@/src/services/api_service";
 import { PaymentStatus } from "@/src/config/settings";
 import { PaymentPending } from "./PaymentStatus";
 import io from "socket.io-client";
+import { useUser } from "@/src/hooks/useUser";
 
 const MobilePay = () => {
   const [validationMessage, setValidationMessage] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [plan, setPlan] = useState({});
   const [email, setEmail] = useState("");
-  const setActiveTab = useTabNavigator((state) => state.setActiveTab);
+  const { setActiveTab, activeTab } = useTabNavigator();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [paymentStatus, setPaymentStatus] = useState("");
   const [reference, setReference] = useState(null);
@@ -171,7 +172,7 @@ const MobilePay = () => {
   };
 
   const goBack = () => {
-    setActiveTab(1);
+    setActiveTab(activeTab - 1);
   };
 
   return (
@@ -239,7 +240,7 @@ const MobilePay = () => {
             type="primary"
             htmlType="submit"
             className="w-full !h-10 flex items-center justify-center gap-2 text-white 
-                !bg-[#010798] !hover:bg-[#010798] !border-transparent !font-semibold
+                !bg-[#001840] hover:!bg-blue-900 !border-transparent !font-semibold
                 rounded-lg transition-colors duration-200"
           >
             Request Payment
@@ -248,7 +249,7 @@ const MobilePay = () => {
         <div className="w-full mt-6">
           <span
             onClick={goBack}
-            className="font-bold text-[#010798] text-xs cursor-pointer border border-[#010798] p-2 rounded-md"
+            className="font-bold text-[#001840] text-xs cursor-pointer border border-[#001840] p-2 rounded-md"
           >
             Change plan
           </span>
