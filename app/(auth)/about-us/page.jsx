@@ -15,7 +15,7 @@ const AboutUs = () => {
   const outreachRef = useRef(null);
   const contactRef = useRef(null);
 
-  const sectionRefs = useMemo(() => ({
+  const sectionRefs = React.useMemo(() => ({
     aboutUs: aboutUsRef,
     leadership: leadershipRef,
     expectations: expectationsRef,
