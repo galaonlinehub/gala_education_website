@@ -67,7 +67,7 @@ const transformFormDataForAPI = (formData) => {
     start_date: formData.startDate,
     end_date: formData.endDate,
     daily_slots,
-    description: "denis mgaya",
+    description: formData.description,
     price: formData.price,
   };
 };

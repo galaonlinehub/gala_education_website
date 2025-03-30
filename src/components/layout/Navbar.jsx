@@ -192,7 +192,9 @@ const Navbar = () => {
           </li>
         )}
         <li>
-          <AboutUs />
+          <Link href={"/about-us"} className="hover:cursor-pointer tex-black">
+            About Us
+          </Link>
         </li>
 
         {!user && (

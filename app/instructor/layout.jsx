@@ -13,6 +13,7 @@ import KidInPicture from "@/src/utils/vector-svg/vectors/KidInPicture";
 import Clock from "@/src/utils/vector-svg/vectors/Clock";
 import StudentsInClass from "@/src/utils/vector-svg/vectors/StudentsInClass";
 import { teacher_links } from "@/src/utils/data/navigation_links";
+import InstructorCompleteProfile from "@/src/components/teacher/InstructorCompleteProfile";
 
 export default function TeacherLayout({ children }) {
   const pathname = usePathname();
@@ -46,38 +47,6 @@ export default function TeacherLayout({ children }) {
   return (
     <>
       <Navbar />
-      {/* Top Navigation */}
-      {/* <nav className="fixed top-0 left-0 right-0 h-16 px-4 bg-white shadow-sm flex justify-between items-center z-50">
-              <div className="flex items-center gap-2">
-                <div className="w-10 h-10 relative bg-gradient-to-br from-blue-500 to-blue-600 rounded-full ring-2 ring-blue-400 ring-offset-2 flex items-center justify-center">
-                  <div className="text-center">
-                    <p className="text-black text-[10px] font-bold leading-tight">Gala</p>
-                    <p className="text-black text-[10px] font-bold leading-tight">Education</p>
-                  </div>
-                </div>
-              </div>
-
-              <ul className="hidden md:flex items-center text-xs font-bold gap-8 text-gray-700">
-                <li className="hover:text-blue-600 transition-colors">
-                  <Link href="/">Home</Link>
-                </li>
-                <li className="hover:text-blue-600 transition-colors">
-                  <Link href="/about">About Us</Link>
-                </li>
-                <li className="hover:text-blue-600 transition-colors">
-                  <Link href="/signup">Register</Link>
-                </li>
-                <li className="hover:text-blue-600 transition-colors">
-                  <Link href="/signin">Login</Link>
-                </li>
-              </ul>
-
-              <button className="md:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors" onClick={toggleSidebar} aria-label="Toggle menu">
-                {isSidebarOpen ? <CloseOutlined style={{ fontSize: "20px" }} /> : <MenuOutlined style={{ fontSize: "20px" }} />}
-              </button>
-            </nav> */}
-
-      {/* Search Bar */}
       <div className="fixed top-14 left-0 bg-white right-0 z-40 border-b">
         <div className="flex items-center justify-between px-4 py-2 gap-4">
           <span className="text-sm text-gray-600 whitespace-nowrap font-extralight">{getCurrentDate()}</span>
@@ -145,6 +114,7 @@ export default function TeacherLayout({ children }) {
           {/* &gt; Install Gala Education in Your device */}
         </FloatingActionButton>
       )}
+      <InstructorCompleteProfile />
     </>
   );
 }

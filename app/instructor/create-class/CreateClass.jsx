@@ -76,6 +76,7 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
       days: [""],
       times: [""],
       durations: [""],
+      description: "",
       weeks: "",
     },
   });
@@ -102,6 +103,16 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
 
   const { createCohort, isFetching, cohorts } = useCohort();
 
+  const checkDescription = (v) => {
+    const wordCount = v
+      .trim()
+      .split(/\s+/)
+      .filter((word) => /\w/.test(word)).length; // Count only words containing letters or numbers
+  
+    return wordCount >= 10;
+  };
+  
+  
   const canProceed = () => {
     switch (step) {
       case 0:
@@ -109,7 +120,7 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
       case 1:
         return formData.days.every((day) => day) && formData.times.every((time) => time) && formData.durations.every((duration) => duration);
       case 2:
-        return formData.startDate && formData.endDate && formData.price;
+        return formData.startDate && formData.endDate && formData.price && checkDescription(formData.description) ;
       default:
         return false;
     }
@@ -124,6 +135,7 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
       console.error("Failed to create cohort:", error);
     }
   };
+
 
   const getGeneratedCohort = async (topicId, section) => {
     switch (section) {
@@ -151,33 +163,26 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
     }
   };
 
-  const handleChange = (e) => {
-    const newValue = e.target.value;
-    setValueData(newValue);
-
-    // Count words by splitting on whitespace and filtering out empty strings
-    const wordCount = newValue
-      .trim()
-      .split(/\s+/)
-      .filter((word) => word.length > 0).length;
-
-    // Check if the word count is at least 10
-    setIsValid(wordCount >= 10);
-  };
-
   const handleBlur = () => {
     const wordCount = value
       .trim()
       .split(/\s+/)
       .filter((word) => word.length > 0).length;
-    if (wordCount < 10) {
-      message.error("Please enter at least 10 words");
-    }
+  };
+
+  const header = (msg) => {
+    return (
+      <div className="w-full flex justify-between">
+        <span>{msg}</span>
+        <span className="font-black">{cohortName}</span>
+      </div>
+    );
   };
 
   const steps = [
     {
       title: "Subject & Topic Details",
+      header: header("Subject & Topic Details"),
       subtitle: "Choose your subject and topic",
       icon: <FiBookOpen />,
       content: (
@@ -192,6 +197,7 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
                   updateForm("subject", v);
                   updateForm("level", "");
                   updateForm("topic", "");
+                  setCohortName(null);
                   getGeneratedCohort("null_id", "subject_section");
                 }}
                 placeholder="Select a subject"
@@ -215,6 +221,7 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
                   onChange={(v) => {
                     updateForm("level", v);
                     updateForm("topic", "");
+                    setCohortName(null);
                     getGeneratedCohort("null_id", "level_section");
                   }}
                   placeholder="Select a subject"
@@ -257,25 +264,18 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
                 </Select>
               </div>
             )}
-
-            {
-              <div className="w-full">
-                {loading ? (
-                  <Skeleton.Input active size={32} />
-                ) : formData.level && formData.subject && formData.topic ? (
-                  <Tag color="success" className="text-xs">
-                    Class name:<span className="font-black ml-2 !text-lg mt-5">{cohortName}</span>
-                  </Tag>
-                ) : null}
-              </div>
-            }
           </div>
         </div>
       ),
     },
     {
-      title: `Schedule (${cohortName})`,
-      subtitle: "Set your class schedule",
+      title: `Schedule`,
+      header: header("Schedule"),
+      subtitle: (
+        <div>
+          Set your class Schedule <span className="text-gray-400 text-[9px]">(Min duration 30mins , max duration 120mins)</span>
+        </div>
+      ),
       icon: <FiClock />,
       content: (
         <div className="space-y-2">
@@ -340,8 +340,11 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] font-medium text-gray-700 mb-1">Duration {i + 1}</label>
+                  <label className="block text-[10px] font-medium text-gray-700 mb-1">Duration {i + 1} </label>
                   <InputNumber
+                    min="30"
+                    max="120"
+                    type="number"
                     style={componentStyles.datePicker}
                     value={formData.durations[i] || null}
                     onChange={(value) => {
@@ -360,6 +363,7 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
 
     {
       title: "Pricing",
+      header: header("Pricing"),
       subtitle: "Set duration and pricing",
       icon: <FiCreditCard />,
       content: (
@@ -430,14 +434,24 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
           <div>
             <label className="block text-[12px] font-medium text-gray-700 mb-1">Description</label>
 
-            <TextArea rows={4} placeholder="Please enter at least 10 words" maxLength={6000} value={value} onChange={handleChange} onBlur={handleBlur} status={isValid ? "" : "error"} />
+            <TextArea
+              rows={4}
+              placeholder="Please enter at least 10 words"
+              maxLength={6000}
+              // value={formData.description}
+              onChange={(v) => {
+                updateForm("description", v.target.value)
+              }}
+              onBlur={handleBlur}
+              // status={isValid ? "" : "error"}
+            />
             <div style={{ marginTop: "8px" }}>
               Word count:{" "}
-              {value.trim()
-                ? value
+              {formData.description.trim()
+                ? formData.description.trim()
                     .trim()
                     .split(/\s+/)
-                    .filter((word) => word.length > 0).length
+                    .filter((word) => /\w/.test(word)).length
                 : 0}
               /10 minimum
             </div>
@@ -469,7 +483,7 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
         />
 
         <div className="mb-4">
-          <h2 className="text-2xl font-bold text-gray-900">{steps[step].title}</h2>
+          <h2 className="text-2xl font-bold text-gray-900">{steps[step].header}</h2>
           <p className="text-gray-500 mt-1">{steps[step].subtitle}</p>
         </div>
 

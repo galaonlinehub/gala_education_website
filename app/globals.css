@@ -75,6 +75,7 @@
 .ant-tabs-ink-bar {
   height: 6px !important;
   width: 50% !important;
+  background-color: #001840 !important;
 }
 
 .ant-tabs-tab {
@@ -91,7 +92,7 @@
 }
 
 .ant-switch-checked {
-  background-color: #2459a4 !important; /* Color when checked */
+  background-color: #001840 !important; /* Color when checked */
 }
 
 .ant-switch:not(.ant-switch-checked) {
