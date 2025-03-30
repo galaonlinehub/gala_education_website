@@ -58,7 +58,7 @@ const TeacherDonate = () => {
 
                   <Paragraph style={{ color: "white", fontSize: "15px", lineHeight: "1.6" }}>
                     Many students cannot afford app charges, limiting their access to vital learning resources. 
-                    We're stepping in to help cover these costs, ensuring every student has a chance to learn, 
+                    We&apos;re stepping in to help cover these costs, ensuring every student has a chance to learn, 
                     regardless of their financial situation.
                   </Paragraph>
 

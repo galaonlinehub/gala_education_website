@@ -9,13 +9,19 @@ import Donate from "@/src/components/ui/Donate";
 const { Text } = Typography;
 
 const AboutUs = () => {
-  const sectionRefs = {
-    aboutUs: useRef(null),
-    leadership: useRef(null),
-    expectations: useRef(null),
-    outreach: useRef(null),
-    contact: useRef(null),
-  };
+  const aboutUsRef = useRef(null);
+  const leadershipRef = useRef(null);
+  const expectationsRef = useRef(null);
+  const outreachRef = useRef(null);
+  const contactRef = useRef(null);
+
+  const sectionRefs = useMemo(() => ({
+    aboutUs: aboutUsRef,
+    leadership: leadershipRef,
+    expectations: expectationsRef,
+    outreach: outreachRef,
+    contact: contactRef,
+  }), []);
 
   const [activeSection, setActiveSection] = useState(null);
 
@@ -54,7 +60,7 @@ const AboutUs = () => {
         if (ref.current) observer.unobserve(ref.current);
       });
     };
-  }, []);
+  }, [sectionRefs]);
 
   useEffect(() => {
     if (showDonatePop) {
@@ -128,7 +134,7 @@ const AboutUs = () => {
         return (
           <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             <div className="flex flex-col gap-2  w-full">
-              <Image src="/teacherOne.jpeg" className="w-full rounded-lg" width={100} height={100} />
+              <Image alt="" src="/teacherOne.jpeg" className="w-full rounded-lg" width={100} height={100} />
               <div className="text-xs flex w-full flex-col ml-2">
                 <Text className="font-bold">Dr. Hellen Dereck</Text>
                 <Text className="font-bold text-gray-500">Founder - Interim CEO</Text>
@@ -138,7 +144,7 @@ const AboutUs = () => {
               </div>
             </div>
             <div className="flex flex-col gap-2 w-full">
-              <Image src="/teacherOne.jpeg" className="w-full rounded-lg" width={100} height={100} />
+              <Image alt="" src="/teacherOne.jpeg" className="w-full rounded-lg" width={100} height={100} />
               <div className="text-xs flex w-full flex-col ml-2">
                 <Text className="font-bold">Dr. Hellen Dereck</Text>
                 <Text className="font-bold text-gray-500">Founder - Interim CEO</Text>
@@ -146,7 +152,7 @@ const AboutUs = () => {
               </div>
             </div>
             <div className="flex flex-col gap-2 w-full">
-              <Image src="/teacherOne.jpeg" className="w-full rounded-lg" width={100} height={100} />
+              <Image alt="" src="/teacherOne.jpeg" className="w-full rounded-lg" width={100} height={100} />
               <div className="text-xs flex w-full flex-col ml-2">
                 <Text className="font-bold">Dr. Hellen Dereck</Text>
                 <Text className="font-bold text-gray-500">Founder - Interim CEO</Text>
@@ -154,7 +160,7 @@ const AboutUs = () => {
               </div>
             </div>
             <div className="flex flex-col gap-2 w-full">
-              <Image src="/teacherOne.jpeg" className="w-full rounded-lg" width={100} height={100} />
+              <Image alt="" src="/teacherOne.jpeg" className="w-full rounded-lg" width={100} height={100} />
               <div className="text-xs flex w-full flex-col  ml-2">
                 <Text className="font-bold">Dr. Hellen Dereck</Text>
                 <Text className="font-bold text-gray-500">Founder - Interim CEO</Text>
@@ -190,7 +196,7 @@ const AboutUs = () => {
           <div className="w-full grid grid-cols-1 md:grid-cols-2 items-center gap-4">
             <Typography className="flex flex-col items-center text-justify">
               <Text className="font-bold">Language</Text>
-              <Text className="text-xs leading-6 lg:leading-8">Our platform currently supports English and Kiswahili, leveraging a scalable multilingual architecture to ensure seamless user experience across diverse linguistic backgrounds. As part of the company's vision for international expansion, we are actively developing language integration frameworks that will enable the addition of more languages, enhancing accessibility and inclusivity for a global audience.</Text>
+              <Text className="text-xs leading-6 lg:leading-8">Our platform currently supports English and Kiswahili, leveraging a scalable multilingual architecture to ensure seamless user experience across diverse linguistic backgrounds. As part of the company&apos;s vision for international expansion, we are actively developing language integration frameworks that will enable the addition of more languages, enhancing accessibility and inclusivity for a global audience.</Text>
             </Typography>
             <div className="w-full flex items-center justify-center">
               <Image src="/about-us/language.png" width={300} height={300} alt="language picture" className="w-full sm:w-3/4 rounded-lg" />
