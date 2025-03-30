@@ -1,8 +1,7 @@
 import { USER_COOKIE_KEY } from "@/src/config/settings";
-import { cookieFn } from "./client";
+import { cookieFn, localStorageFn, sessionStorageFn } from "./client";
 import { apiPost, apiGet } from "@/src/services/api_service";
 import { encrypt } from "./encryption";
-import { getUser } from "./global";
 
 const errorMessage = "Something went wrong, Please try again later!";
 
@@ -11,6 +10,8 @@ export const logout = async () => {
     const response = await apiPost("logout");
     if (response.status === 200) {
       cookieFn.remove(USER_COOKIE_KEY);
+      localStorageFn.clear();
+      sessionStorageFn.clear();
     }
   } catch (e) {
     throw new Error(`${errorMessage}\t`, +e?.message);

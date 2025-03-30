@@ -76,9 +76,9 @@ export default function Subscribe() {
           <Signout />
         </div>
       }
-      width={1024}
+      width={1124}
       centered={false}
-      open={!user?.require_subscription}
+      open={user?.require_subscription}
       footer={null}
       closable={false}
       classNames={classNames}

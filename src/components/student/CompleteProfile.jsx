@@ -42,7 +42,7 @@ const CompleteProfile = () => {
   };
   return (
     <Modal
-      open={!user?.phone_number_varified}
+      open={true}
       footer={null}
       styles={{ body: { height: "400px", overflowY: "auto" } }}
       title={
@@ -403,4 +403,4 @@ const Success = () => {
   );
 };
 
-export default CompleteProfile;
+export { CompleteProfile, Success, Verify, Save };

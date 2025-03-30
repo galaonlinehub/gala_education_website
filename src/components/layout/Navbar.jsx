@@ -126,7 +126,7 @@ const Navbar = () => {
         className={"w-16 h-16 object-cover rounded-full "}
       />
 
-      <ul className="text-black flex sm:gap-x-4 gap-x-2 sm:text-[12px] text-[8px] leading-[5px] items-center justify-center">
+      <ul className="text-black flex sm:gap-x-4 gap-x-2 sm:text-[12px] text-[8px] leading-[5px] items-center justify-center font-black">
         <div className="mr-2 lg:mr-6 cursor-pointer">{getIcon()}</div>
 
         <Popconfirm
@@ -191,7 +191,7 @@ const Navbar = () => {
         </li>
 
         {!user && (
-          <div className="flex gap-3" onClick={() => {}}>
+          <div className="flex gap-3 items-center justify-center" onClick={() => {}}>
             <ChooseAccont />
             <Link href={"/signin"} className="hover:cursor-pointer">
               <li>Sign In</li>

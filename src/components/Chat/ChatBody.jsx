@@ -1,34 +1,70 @@
 import { useState, useEffect, useRef } from "react";
 import { Avatar, Dropdown } from "antd";
-import { LoadingOutlined, PaperClipOutlined, SmileOutlined } from "@ant-design/icons";
+import {
+  LoadingOutlined,
+  PaperClipOutlined,
+  SmileOutlined,
+} from "@ant-design/icons";
 import clsx from "clsx";
 import { useChat } from "@/src/hooks/useChat";
 import { useUser } from "@/src/hooks/useUser";
 import useChatStore from "@/src/store/chat/chat";
 import { img_base_url } from "@/src/config/settings";
 import TypingIndicator from "../ui/loading/template/Typing";
-import { LuVideo, LuPhone, LuEllipsisVertical, LuArrowLeft, LuUser, LuSendHorizontal, LuCheck, LuCheckCheck } from "react-icons/lu";
+import {
+  LuVideo,
+  LuPhone,
+  LuEllipsisVertical,
+  LuArrowLeft,
+  LuUser,
+  LuSendHorizontal,
+  LuCheck,
+  LuCheckCheck,
+} from "react-icons/lu";
 import { format, isToday, isYesterday } from "date-fns";
 
-const RenderChat = ({ isSmallScreen, MAIN_COLOR, TEXT_COLOR, MAIN_COLOR_LIGHT }) => {
+const RenderChat = ({
+  isSmallScreen,
+  MAIN_COLOR,
+  TEXT_COLOR,
+  MAIN_COLOR_LIGHT,
+}) => {
   const [newMessage, setNewMessage] = useState("");
   const fileInputRef = useRef(null);
   const chatContainerRef = useRef(null);
   const typingTimeoutRef = useRef(null);
   const { currentChatId, setCurrentChatId } = useChatStore();
-  const { sendMessage, chats, messages, typingUsers, sendTypingStatus, deleteChatMutation, isFetchingChatMessages, messageStatuses, markMessageAsRead } = useChat();
+  const {
+    sendMessage,
+    chats,
+    messages,
+    typingUsers,
+    sendTypingStatus,
+    deleteChatMutation,
+    isFetchingChatMessages,
+    messageStatuses,
+    markMessageAsRead,
+  } = useChat();
   const { user } = useUser();
 
   const isPreviewChat = currentChatId === "preview";
   const currentChat = chats?.find((chat) => chat.id === currentChatId);
-  const recipient = currentChat?.participants.find((p) => p.user.id !== user.id);
-  const displayName = currentChat?.participants.filter((p) => p.user.id !== user.id).map((p) => `${p.user.first_name} ${p.user.last_name}`).join(", ") || "Chat";
-  const isRecipientTyping = recipient && typingUsers.includes(recipient.user.id);
-  const isRecipientOnline = true; // Placeholder; add real status if needed
+  const recipient = currentChat?.participants.find(
+    (p) => p.user.id !== user.id
+  );
+  const displayName =
+    currentChat?.participants
+      .filter((p) => p.user.id !== user.id)
+      .map((p) => `${p.user.first_name} ${p.user.last_name}`)
+      .join(", ") || "Chat";
+  const isRecipientTyping =
+    recipient && typingUsers.includes(recipient.user.id);
+  const isRecipientOnline = true; 
 
   useEffect(() => {
     if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
     }
   }, [messages, isRecipientTyping]);
 
@@ -36,7 +72,7 @@ const RenderChat = ({ isSmallScreen, MAIN_COLOR, TEXT_COLOR, MAIN_COLOR_LIGHT })
     if (!isPreviewChat && messages.length > 0) {
       messages.forEach((message) => {
         if (message.sender_id !== user.id) {
-          markMessageAsRead(message.id); 
+          markMessageAsRead(message.id);
         }
       });
     }
@@ -89,8 +125,12 @@ const RenderChat = ({ isSmallScreen, MAIN_COLOR, TEXT_COLOR, MAIN_COLOR_LIGHT })
 
   const getSenderName = (senderId) => {
     if (senderId === user.id) return "You";
-    const sender = currentChat?.participants.find((p) => p.user.id === senderId);
-    return sender ? `${sender.user.first_name} ${sender.user.last_name}` : "Unknown";
+    const sender = currentChat?.participants.find(
+      (p) => p.user.id === senderId
+    );
+    return sender
+      ? `${sender.user.first_name} ${sender.user.last_name}`
+      : "Unknown";
   };
 
   const isSender = (idx) => idx === user.id;
@@ -99,19 +139,29 @@ const RenderChat = ({ isSmallScreen, MAIN_COLOR, TEXT_COLOR, MAIN_COLOR_LIGHT })
     if (message.sender_id !== user.id) return null;
     const recipientId = recipient?.user.id;
     const socketStatus = messageStatuses[message.id]?.[recipientId];
-    const fetchedStatus = message.statuses?.find((s) => s.user_id === recipientId)?.status;
+    const fetchedStatus = message.statuses?.find(
+      (s) => s.user_id === recipientId
+    )?.status;
     const status = socketStatus ?? fetchedStatus ?? "sent";
     switch (status) {
-      case "sent": return <LuCheck size={12} className="text-gray-200" />;
-      case "delivered": return <LuCheckCheck size={12} className="text-gray-200" />;
-      case "read": return <LuCheckCheck size={12} className="text-blue-500" />;
-      default: return <LuCheck size={12} className="text-gray-200" />;
+      case "sent":
+        return <LuCheck size={12} className="text-gray-200" />;
+      case "delivered":
+        return <LuCheckCheck size={12} className="text-gray-200" />;
+      case "read":
+        return <LuCheckCheck size={12} className="text-blue-500" />;
+      default:
+        return <LuCheck size={12} className="text-gray-200" />;
     }
   };
 
   const groupedMessages = messages.reduce((acc, msg) => {
     const date = new Date(msg.sent_at_iso); // Use sent_at_iso for consistency
-    const key = isToday(date) ? "Today" : isYesterday(date) ? "Yesterday" : format(date, "MMMM d, yyyy");
+    const key = isToday(date)
+      ? "Today"
+      : isYesterday(date)
+      ? "Yesterday"
+      : format(date, "MMMM d, yyyy");
     acc[key] = acc[key] || [];
     acc[key].push(msg);
     return acc;
@@ -119,9 +169,14 @@ const RenderChat = ({ isSmallScreen, MAIN_COLOR, TEXT_COLOR, MAIN_COLOR_LIGHT })
 
   return (
     <div className="flex flex-col h-full">
-      <div className={`p-2 md:p-3 flex items-center border-b text-[${TEXT_COLOR}] bg-[${MAIN_COLOR}]`}>
+      <div
+        className={`p-2 md:p-3 flex items-center border-b text-[${TEXT_COLOR}] bg-[${MAIN_COLOR}]`}
+      >
         {isSmallScreen && (
-          <button onClick={() => setCurrentChatId(null)} className={`mr-3 hover:text-gray-300 text-[${TEXT_COLOR}]`}>
+          <button
+            onClick={() => setCurrentChatId(null)}
+            className={`mr-3 hover:text-gray-300 text-[${TEXT_COLOR}]`}
+          >
             <LuArrowLeft className="text-[16px] text-white" />
           </button>
         )}
@@ -129,7 +184,10 @@ const RenderChat = ({ isSmallScreen, MAIN_COLOR, TEXT_COLOR, MAIN_COLOR_LIGHT })
           <div className="flex items-center gap-3">
             <div className="relative">
               <Avatar
-                src={recipient?.user.profile_picture && `${img_base_url}${recipient.user.profile_picture}`}
+                src={
+                  recipient?.user.profile_picture &&
+                  `${img_base_url}${recipient.user.profile_picture}`
+                }
                 alt={displayName}
                 size={48}
                 icon={<LuUser className="text-white" />}
@@ -139,9 +197,15 @@ const RenderChat = ({ isSmallScreen, MAIN_COLOR, TEXT_COLOR, MAIN_COLOR_LIGHT })
               )}
             </div>
             <div>
-              <h2 className="font-extrabold text-base text-white">{displayName}</h2>
+              <h2 className="font-extrabold text-base text-white">
+                {displayName}
+              </h2>
               <p className="text-[10px] opacity-75 text-white">
-                {isRecipientTyping ? "Typing..." : isRecipientOnline ? "Online" : "Last seen recently"}
+                {isRecipientTyping
+                  ? "Typing..."
+                  : isRecipientOnline
+                  ? "Online"
+                  : "Last seen recently"}
               </p>
             </div>
           </div>
@@ -155,11 +219,21 @@ const RenderChat = ({ isSmallScreen, MAIN_COLOR, TEXT_COLOR, MAIN_COLOR_LIGHT })
                   items: [
                     {
                       key: "delete",
-                      label: deleteChatMutation.isLoading ? "Deleting..." : "Delete Chat",
-                      onClick: () => currentChatId && !isPreviewChat && deleteChatMutation.mutate(),
+                      label: deleteChatMutation.isLoading
+                        ? "Deleting..."
+                        : "Delete Chat",
+                      onClick: () =>
+                        currentChatId &&
+                        !isPreviewChat &&
+                        deleteChatMutation.mutate(),
                       disabled: deleteChatMutation.isLoading,
                     },
-                    { key: "archive", label: "Archive", onClick: () => console.log("Archive chat:", currentChatId) },
+                    {
+                      key: "archive",
+                      label: "Archive",
+                      onClick: () =>
+                        console.log("Archive chat:", currentChatId),
+                    },
                   ],
                 }}
                 trigger={["click"]}
@@ -176,23 +250,38 @@ const RenderChat = ({ isSmallScreen, MAIN_COLOR, TEXT_COLOR, MAIN_COLOR_LIGHT })
           <LoadingOutlined spin />
         </div>
       ) : (
-        <div ref={chatContainerRef} className="flex-grow overflow-y-auto p-4 space-y-3">
+        <div
+          ref={chatContainerRef}
+          className="flex-grow overflow-y-auto p-4 space-y-3"
+        >
           {Object.entries(groupedMessages).map(([date, msgs]) => (
             <div key={date}>
               <div className="text-center mb-4">
-                <span className="inline-block px-3 py-1 text-xs rounded-full text-gray-600" style={{ backgroundColor: "rgba(0, 24, 64, 0.08)" }}>
+                <span
+                  className="inline-block px-3 py-1 text-xs rounded-full text-gray-600"
+                  style={{ backgroundColor: "rgba(0, 24, 64, 0.08)" }}
+                >
                   {date}
                 </span>
               </div>
               {msgs.map((message) => (
                 <div
                   key={message.id}
-                  className={clsx("flex my-3", isSender(message.sender_id) ? "justify-end" : "justify-start")}
+                  className={clsx(
+                    "flex my-3",
+                    isSender(message.sender_id)
+                      ? "justify-end"
+                      : "justify-start"
+                  )}
                 >
                   {message.sender_id !== user.id && (
                     <div className="mr-2 self-end mb-1">
                       <Avatar
-                        src={recipient?.user.profile_picture ? `${img_base_url}${recipient.user.profile_picture}` : "/default-avatar.png"}
+                        src={
+                          recipient?.user.profile_picture
+                            ? `${img_base_url}${recipient.user.profile_picture}`
+                            : "/default-avatar.png"
+                        }
                         alt={getSenderName(message.sender_id)}
                         size={32}
                         icon={<LuUser className="text-black" />}
@@ -200,7 +289,12 @@ const RenderChat = ({ isSmallScreen, MAIN_COLOR, TEXT_COLOR, MAIN_COLOR_LIGHT })
                     </div>
                   )}
                   <div className="flex flex-col max-w-[75%]">
-                    <span className={clsx("text-[10px] text-gray-600 mb-[1px] pr-2", { "self-end": isSender(message.sender_id) })}>
+                    <span
+                      className={clsx(
+                        "text-[10px] text-gray-600 mb-[1px] pr-2",
+                        { "self-end": isSender(message.sender_id) }
+                      )}
+                    >
                       {getSenderName(message.sender_id)}
                     </span>
                     <div
@@ -214,7 +308,9 @@ const RenderChat = ({ isSmallScreen, MAIN_COLOR, TEXT_COLOR, MAIN_COLOR_LIGHT })
                       <div
                         className={clsx(
                           "text-[8px] self-end shrink-0 whitespace-nowrap flex gap-1 justify-end items-end",
-                          isSender(message.sender_id) ? "text-gray-100" : "text-gray-500"
+                          isSender(message.sender_id)
+                            ? "text-gray-100"
+                            : "text-gray-500"
                         )}
                       >
                         {message.sent_at} {renderTicks(message)}
@@ -228,7 +324,11 @@ const RenderChat = ({ isSmallScreen, MAIN_COLOR, TEXT_COLOR, MAIN_COLOR_LIGHT })
           {isRecipientTyping && (
             <div className="flex justify-start items-center gap-2">
               <Avatar
-                src={recipient?.user.profile_picture ? `${img_base_url}${recipient.user.profile_picture}` : "/default-avatar.png"}
+                src={
+                  recipient?.user.profile_picture
+                    ? `${img_base_url}${recipient.user.profile_picture}`
+                    : "/default-avatar.png"
+                }
                 alt={displayName}
                 size={32}
                 icon={<LuUser className="text-black" />}
@@ -239,9 +339,21 @@ const RenderChat = ({ isSmallScreen, MAIN_COLOR, TEXT_COLOR, MAIN_COLOR_LIGHT })
         </div>
       )}
       <form onSubmit={handleSendMessage} className="p-3 border-t bg-white">
-        <div className="flex items-center gap-2 rounded-full p-2" style={{ backgroundColor: "rgba(0, 24, 64, 0.05)" }}>
-          <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
-          <button type="button" onClick={handleAttachment} className={`ml-2 text-gray-500 hover:text-blue-500 transition-colors text-[${MAIN_COLOR_LIGHT}]`}>
+        <div
+          className="flex items-center gap-2 rounded-full p-2"
+          style={{ backgroundColor: "rgba(0, 24, 64, 0.05)" }}
+        >
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            className="hidden"
+          />
+          <button
+            type="button"
+            onClick={handleAttachment}
+            className={`ml-2 text-gray-500 hover:text-blue-500 transition-colors text-[${MAIN_COLOR_LIGHT}]`}
+          >
             <PaperClipOutlined style={{ fontSize: "18px" }} />
           </button>
           <input
@@ -262,7 +374,9 @@ const RenderChat = ({ isSmallScreen, MAIN_COLOR, TEXT_COLOR, MAIN_COLOR_LIGHT })
             disabled={!newMessage.trim()}
             className={clsx(
               "p-2 h-8 w-8 rounded-full transition-colors flex items-center justify-center",
-              newMessage.trim() ? `bg-[${MAIN_COLOR}] text-white` : "bg-[#ccc] text-[#666]"
+              newMessage.trim()
+                ? `bg-[${MAIN_COLOR}] text-white`
+                : "bg-[#ccc] text-[#666]"
             )}
           >
             <LuSendHorizontal className="text-xs" />
@@ -274,8 +388,3 @@ const RenderChat = ({ isSmallScreen, MAIN_COLOR, TEXT_COLOR, MAIN_COLOR_LIGHT })
 };
 
 export { RenderChat };
-
-/* Changes and Explanations:
- * - Unread Reset: "markMessageAsRead" now triggers on chat open, resetting unread counts via "message_read".
- * - Scalability: Optimized message rendering by avoiding unnecessary re-renders; groupedMessages uses sent_at_iso consistently.
- */

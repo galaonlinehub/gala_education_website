@@ -8,12 +8,10 @@ import { FloatingActionButton } from "@/src/components/ui/Fab";
 import useInstallPrompt from "@/src/hooks/useInstallPrompt";
 import NewClass from "@/src/components/student/NewClass";
 import { usePathname, useSearchParams } from "next/navigation";
-import CompleteProfile from "@/src/components/student/CompleteProfile";
+import { CompleteProfile } from "@/src/components/student/CompleteProfile";
 import Subscribe from "@/src/components/Pay/Subscribe";
 
 export default function StudentLayout({ children }) {
-
-
   const { installPrompt, isInstalled, handleInstallClick } = useInstallPrompt();
   const currentUrl = usePathname();
 
@@ -122,8 +120,8 @@ export default function StudentLayout({ children }) {
         </ul>
       </Drawer> */}
       <NewClass />
-      <CompleteProfile />
-      <Subscribe/>
+      {/* <CompleteProfile /> */}
+      <Subscribe />
     </>
   );
 }
