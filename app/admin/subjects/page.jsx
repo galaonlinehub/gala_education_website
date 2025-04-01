@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import React from "react";
 import DataTable from "react-data-table-component";
 
@@ -193,8 +194,8 @@ function Subjects() {
       <DataTable
         title={
           <div className="w-full flex justify-between px-2">
-            <span>Subjects</span>
-            <span>+ new subject</span>
+            <span className="text-xs text-blue-500">Subjects</span>
+            <Link href={'/admin/subjects/add-new'} className="text-xs text-blue-500 hover:underline">+ new subject</Link>
           </div>
         }
         columns={columns}

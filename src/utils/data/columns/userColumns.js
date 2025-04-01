@@ -4,8 +4,8 @@ import Link from 'next/link'
 
 export const userColumns = [
     {
-      name: "Username",
-      selector: row=><Link className='cursor-pointer hover:underline text-blue-900' href={`/admin/users/profile/${row.id}`}>{row.username}</Link>,
+      name: "Fullname",
+      selector: row=><Link className='cursor-pointer hover:underline text-blue-900' href={`/admin/users/profile/${row.id}`}>{row.first_name+row.last_name}</Link>,
       sortable: true
     },
     {
@@ -15,7 +15,15 @@ export const userColumns = [
     },
     {
       name: "Profile Picture",
-      selector: row => <Image  src={row.profile_picture} alt="Profile" width={100} height={100} className='w-8 h-8 rounded-full object-cover' />
+      selector: row => (
+        <Image 
+          src={row.profile_picture || "/gala_logo.png"} 
+          alt="Profile" 
+          width={100} 
+          height={100} 
+          className="w-8 h-8 rounded-full object-cover"
+        />
+      )
     },
     {
       name: "Status",
