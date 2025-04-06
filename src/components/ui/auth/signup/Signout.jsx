@@ -1,20 +1,17 @@
 import React, { useState } from "react";
-import { LuLogOut } from "react-icons/lu";
-
+import { LuLoaderCircle, LuLogOut } from "react-icons/lu";
 import { Modal, Button } from "antd";
-import { PiWarningCircleBold } from "react-icons/pi";
 import { logout } from "@/src/utils/fns/auth";
-import { useRouter } from "next/navigation";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
-import { LogoutOutlined } from "@ant-design/icons";
 import notificationService from "../../notification/Notification";
+import { useDevice } from "@/src/hooks/useDevice";
+import { useUser } from "@/src/hooks/useUser";
 
-
-
-const Signout = ({signOutWord}) => {
+const Signout = ({ onCloseSidebar }) => {
   const [signoutVisible, setSignoutVisible] = useState(false);
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
+  const { width } = useDevice();
+  const { user } = useUser();
 
   const handleCancel = () => {
     setSignoutVisible(false);
@@ -38,37 +35,56 @@ const Signout = ({signOutWord}) => {
   };
 
   return (
-    <div className="">
-      <LuLogOut
-        size={18}
-        style={{ strokeWidth: 3 }}
-        className="cursor-pointer hidden md:block"
-        onClick={() => setSignoutVisible(true)}
-      />
+    <div>
+      {width > 768 && user?.require_subscription && (
+        <LuLogOut
+          size={18}
+          className="cursor-pointer"
+          onClick={() => setSignoutVisible(true)}
+        />
+      )}
 
-       <Button type="default" danger icon={<LogoutOutlined />} onClick={() => setSignoutVisible(true)} className="w-full block md:hidden items-center justify-center">
-           {signOutWord}
-       </Button>
+      {width <= 768 && user?.require_subscription && (
+        <Button
+          onClick={() => {
+            onCloseSidebar();
+            setSignoutVisible(true);
+          }}
+          icon={<LuLogOut />}
+          className="w-full !border-red-500 text-red-500 hover:!text-red-500"
+        >
+          Sign out
+        </Button>
+      )}
+
+      {!user?.require_subscription && (
+        <Button
+          onClick={() => {
+            setSignoutVisible(true);
+          }}
+          icon={<LuLogOut strokeWidth={3} />}
+          className="w-full !border-black hover:!border-red-500  hover:!text-red-500 !font-medium"
+        >
+          Sign out
+        </Button>
+      )}
 
       <Modal
         width={400}
         title={
-          !loading && (
-            <div className="flex items-center gap-1">
-              <AiOutlineQuestionCircle size={24} className="text-[#001840]" />
-              <span className="text-[#001840] font-extrabold text-xl">
-                Sign Out
-              </span>
-            </div>
-          )
+          <div className="flex items-center gap-1">
+            <AiOutlineQuestionCircle size={24} className="!text-black" />
+            <span className="text-black font-extrabold text-xl">Sign Out</span>
+          </div>
         }
         open={signoutVisible}
         onOk={handleSignout}
+        okText="Confirm"
         onCancel={handleCancel}
         okButtonProps={{
           disabled: loading,
           className:
-            "[&.ant-btn-primary]:!bg-[#001840] [&.ant-btn-primary]:!border-[#000] [&.ant-btn-primary:not(:disabled):hover]:!bg-[#000]/80 [&.ant-btn]:!text-white [&.ant-btn-primary:disabled]:!bg-gray-300 [&.ant-btn-primary:disabled]:!border-gray-300",
+            "[&.ant-btn-primary]:!bg-black [&.ant-btn-primary]:!border-[#000] [&.ant-btn-primary:not(:disabled):hover]:!bg-[#000]/80 [&.ant-btn]:!text-white [&.ant-btn-primary:disabled]:!bg-gray-300 [&.ant-btn-primary:disabled]:!border-gray-300",
         }}
         cancelButtonProps={{
           disabled: loading,
@@ -76,13 +92,17 @@ const Signout = ({signOutWord}) => {
             "[&.ant-btn:not(:disabled):hover]:!border-red-500 [&.ant-btn:not(:disabled):hover]:!text-red-500 [&.ant-btn:not(:disabled)]:!border-[#001840]",
         }}
       >
-        {loading ? (
-          <div className="flex justify-center items-center font-black text-xl pt-6 pb-2 animate-pulse text-[#001840]">
-            Signing out... 😔
-          </div>
-        ) : (
-          <p className="text-xs text-[#001840]">Are you sure you want to sign out?</p>
-        )}
+        <div className="mb-3 lg:mb-6">
+          {loading ? (
+            <div className="flex flex-col justify-center items-center gap-1 font-black text-xl animate-pulse text-black">
+              <span>Signing out... 😔</span>
+            </div>
+          ) : (
+            <p className="text-xs text-black">
+              Are you sure you want to sign out?
+            </p>
+          )}
+        </div>
       </Modal>
     </div>
   );

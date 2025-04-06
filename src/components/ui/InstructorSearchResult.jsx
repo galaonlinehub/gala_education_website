@@ -2,20 +2,73 @@
 import React from "react";
 import { GoVerified, GoBook } from "react-icons/go";
 import { FaUsers, FaStar, FaClock } from "react-icons/fa";
-import { Avatar, Badge, Card, Button, Skeleton } from "antd";
+import { FaMessage } from "react-icons/fa6";
+import { Avatar, Badge, Card, Button, Skeleton, Tooltip } from "antd";
 import { FaRegStar } from "react-icons/fa";
 import { FaRegMessage, FaRegClock } from "react-icons/fa6";
 import { GoShieldCheck } from "react-icons/go";
 import { BsGlobe } from "react-icons/bs";
-import { LuUsers } from "react-icons/lu";
+import { LuMessageCircle, LuMessageSquare, LuUsers } from "react-icons/lu";
 import { useEnrollMe } from "@/src/store/student/useEnrollMe";
+import { useRouter } from "next/navigation";
+import { useUser } from "@/src/hooks/useUser";
+import { useNewClass } from "@/src/store/student/class";
+import { sessionStorageFn } from "@/src/utils/fns/client";
+import { encrypt } from "@/src/utils/fns/encryption";
+import { PREVIEW_CHAT_KEY } from "@/src/config/settings";
+import useChatStore from "@/src/store/chat/chat";
+import { useChat } from "@/src/hooks/useChat";
 
 const InstructorSearchResult = ({ details }) => {
   const { setEnrollMe, setEnrollCohort } = useEnrollMe();
+  const { setOpenNewClass } = useNewClass();
+  const { setCurrentChatId, setPreviewChat } = useChatStore();
+  const { chats } = useChat();
+  const { user } = useUser();
+  const router = useRouter();
 
   const handleEnroll = (idx) => {
     setEnrollMe(true);
     setEnrollCohort(idx);
+  };
+
+  const navigateToChat = (chatId) => {
+    setCurrentChatId(chatId);
+    router.push(`/${user?.role}/social`);
+    setOpenNewClass(false);
+  };
+
+  const setExistingChat = () => {
+    const existingChat = chats.find(
+      (chat) =>
+        chat.created_by === user?.id &&
+        chat.participants.some((p) => p.user_id === details?.id)
+    );
+
+    if (existingChat) {
+      navigateToChat(existingChat.id);
+      return true;
+    }
+    return false;
+  };
+
+  const createPreviewChat = () => {
+    const names = details?.name.split(" ");
+    const preview_chat = {
+      first_name: names[0],
+      last_name: names[1],
+      recepient_id: details?.id,
+    };
+
+    setPreviewChat(preview_chat);
+    navigateToChat("preview");
+  };
+
+  let makeChat = () => {
+    if (setExistingChat()) {
+      return;
+    }
+    createPreviewChat();
   };
 
   return (
@@ -82,38 +135,45 @@ const InstructorSearchResult = ({ details }) => {
               consequatur sequi voluptates a adipisci laborum cum impedit nam
               architecto iusto! Facilis quasi dolore debitis! Impedit a sit et
               reprehenderit corrupti fuga officiis iure, nesciunt iusto
-              architecto maiores eligendi dolorum. Eveniet repudiandae assumenda
-              et nihil ipsam quod esse temporibus similique. Nemo beatae ad
-              dolore consequatur praesentium provident dolorem nostrum
               inventore!
             </span>
           </div>
           <div className="flex text-[10px] gap-2">
-            <div className="rounded-lg bg-transparent/10 flex items-center justify-center py-1 px-2 gap-1">
+            <div className="rounded-lg bg-transparent/10 flex items-center justify-center py-1 px-2 gap-2">
               <FaRegStar />
               Top Rated Plus
             </div>
-            <div className="rounded-lg bg-transparent/10 flex items-center justify-center py-1 px-2 gap-1">
+            <div className="rounded-lg bg-transparent/10 flex items-center justify-center py-1 px-2 gap-2">
               <FaRegMessage />
               Quick Responder
             </div>
-            <div className="rounded-lg bg-transparent/10 flex items-center justify-center py-1 px-2 gap-1">
+            <div className="rounded-lg bg-transparent/10 flex items-center justify-center py-1 px-2 gap-2">
               <GoShieldCheck />
               Expert Status
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-2">
-            {details?.subjects?.map((sub, index) => (
-              <Badge
-                key={index}
-                count={
-                  <div className="bg-black text-white text-[8px] p-1 rounded-sm">
-                    {sub?.name}
-                  </div>
-                }
-              />
-            ))}
+          <div className="w-full flex">
+            <div className="flex flex-wrap gap-2 w-3/4">
+              {details?.subjects?.map((sub, index) => (
+                <Badge
+                  key={index}
+                  count={
+                    <div className="bg-black text-white text-[8px] p-1 rounded-sm">
+                      {sub?.name}
+                    </div>
+                  }
+                />
+              ))}
+            </div>
+            <div className="w-1/4 self-end flex justify-end">
+              <Tooltip title="Chat with instructor">
+                <LuMessageSquare
+                  className="text-xl cursor-pointer"
+                  onClick={makeChat}
+                />
+              </Tooltip>
+            </div>
           </div>
         </div>
       </Card>

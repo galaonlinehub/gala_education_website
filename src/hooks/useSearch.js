@@ -54,7 +54,6 @@ export const useSearch = () => {
         selectedItemId.type === "instructor"
           ? response.data
           : response.data.data;
-
       return res;
     },
     enabled: !!selectedItemId.id && !!selectedItemId.type,

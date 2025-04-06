@@ -14,7 +14,7 @@ import {
 import { globalOptions } from "../config/tanstack";
 import { message } from "antd";
 
-export const useAuth = (password) => {
+export const useAuth = () => {
   const [emailExists, setEmailExists] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [passwordFocused, setPasswordFocused] = useState(false);
