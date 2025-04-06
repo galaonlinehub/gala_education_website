@@ -7,8 +7,11 @@ import {
   MdDashboard,
   MdLibraryAdd,
   MdAssignment,
+  MdListAlt,
 } from "react-icons/md";
 import { LuGift } from "react-icons/lu";
+import { LuClock4 } from "react-icons/lu";
+
 
 export const footer_links = {
   Services: [
@@ -160,20 +163,27 @@ export const student_links = [
     link: "live-lesson",
     icon: <MdLiveTv />,
   },
-  // {
-    //   name: "Library",
-  //   link: "library",
-  //   icon: <FaBook />,
-  // },
+
   {
-    name: "Assignments",
-    link: "assignments",
-    icon: <FaChalkboardTeacher />,
+    name: "Classes",
+    link: "classes",
+    icon: <MdListAlt />,
   },
+
+  // {
+  //   name: "Assignments",
+  //   link: "assignments",
+  //   icon: <FaChalkboardTeacher />,
+  // },
   {
     name: "Social",
     link: "social",
     icon: <FaUsers />,
+  },
+  {
+    name: "Pending Payments",
+    link: "pending-payments",
+    icon: <LuClock4 />,
   },
 
   // {

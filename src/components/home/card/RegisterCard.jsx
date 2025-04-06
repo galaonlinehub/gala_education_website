@@ -20,7 +20,6 @@ function RegisterCard({ image, title, desc, type }) {
     router.push("/signup");
   };
 
-  console.log("Rendering RegisterCard with type:", type);
 
   return (
     <div className="flex-col flex w-full md:w-[16rem] shadow-sm shrink-0 shadow-black/30 pointer-events-none" onClick={handleRegister}>

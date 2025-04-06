@@ -8,4 +8,11 @@ const useEnrollMe = create((set) => ({
   setEnrollCohort: (state) => set(() => ({ enrollCohortId: state })),
 }));
 
-export { useEnrollMe };
+const useEnrollPay = create((set) => ({
+  enrollPayStatus: "",
+  setEnrollPayStatus: (state) => set(() => ({ enrollPayStatus: state })),
+  reference: null,
+  setReference: (state) => set(() => ({ reference: state })),
+}));
+
+export { useEnrollMe, useEnrollPay };

@@ -7,11 +7,13 @@ import {
   FaBell,
   FaChalkboardTeacher,
   FaBookReader,
+  FaSave,
 } from "react-icons/fa";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useSearch } from "@/src/hooks/useSearch";
 import StickyNotification from "../ui/notification/StickyNotification";
+import { FaBookmark } from "react-icons/fa6";
 
 const SearchResultCard = ({ data, onClick }) => {
   const { topics, teachers } = data;
@@ -131,9 +133,9 @@ const StudentSearch = () => {
   return (
     <div
       ref={searchContainerRef}
-      className="fixed top-14 left-0 right-0 w-full z-10 bg-white shadow-sm lg:px-8"
+      className="fixed top-12 left-0 right-0 w-full z-10 bg-white shadow-sm lg:px-8"
     >
-      <div className="mx-auto lg:px-20 px-4 py-4 bg-white ">
+      <div className="mx-auto lg:px-20 px-4 py-1 lg:py-2 bg-white">
         <div className="relative flex justify-between w-full items-center space-x-4">
           <div className="w-full md:w-[653px] relative">
             <Input.Search
@@ -219,6 +221,12 @@ const StudentSearch = () => {
           </div>
 
           <div className="lg:flex items-center space-x-4 hidden">
+            <Tooltip placement="top" title="Saved Classes">
+              <FaBookmark
+                className="text-lg text-black hover:text-blue-700 cursor-pointer transition-colors"
+                onClick={() => router.push("/student/saved")}
+              />
+            </Tooltip>
             <div className="relative inline-flex items-center">
               <FaBell className="text-xl text-black hover:text-blue-700 cursor-pointer transition-colors" />
               <span className="absolute top-0 right-0 flex h-2 w-2">
@@ -230,13 +238,13 @@ const StudentSearch = () => {
             <Tooltip placement="top" title="My Profile">
               <FaUserCircle
                 className="text-xl text-black hover:text-blue-700 cursor-pointer transition-colors"
-                onClick={() => router.push("/student/profile")}
+                onClick={() => router.push("/profile")}
               />
             </Tooltip>
           </div>
         </div>
       </div>
-      <StickyNotification />
+      {/* <StickyNotification /> */}
     </div>
   );
 };

@@ -8,6 +8,8 @@ import InstructorSignUpForm from "@/src/components/ui/auth/signup/InstructorSign
 import ConfirmPlan from "@/src/components/ui/auth/signup/ConfirmPlan";
 import { useTabNavigator, useAccountType } from "@/src/store/auth/signup";
 import { SIGN_UP_NAVIGATOR_KEY } from "@/src/config/settings";
+import StudentContract from "@/src/components/teacher/InstructorContract";
+import InstructorContract from "@/src/components/student/StudentContract";
 
 const SignupPage = () => {
   const { accountType } = useAccountType();
@@ -80,6 +82,7 @@ const SignupPage = () => {
 
         {steps[activeTab].content}
       </div>
+      {accountType == 'instructor' ? <StudentContract /> : <InstructorContract />}
     </main>
   );
 };

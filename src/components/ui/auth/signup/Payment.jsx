@@ -105,9 +105,9 @@ const MobilePay = () => {
   const mutation = useMutation({
     mutationFn: async () => {
       const data = {
-        email: "Denis.mgaya@outlook.com",
+        email: email,
         phone_number: `255${phoneNumber}`,
-        payment_plan_id: plan?.id ?? 3,
+        payment_plan_id: plan?.id,
       };
 
       try {
@@ -124,16 +124,14 @@ const MobilePay = () => {
       }
     },
     onError: (error) => {
-      setTimeout(() => {
-        setPaymentStatus(PaymentStatus.FAILURE);
-      }, 5000);
+      setPaymentStatus(PaymentStatus.FAILURE);
     },
   });
 
   useEffect(() => {
     const socket = io("https://edusockets.galahub.org/payment");
     socket.on("connect", () => {
-      socket.emit("join", { email: "Denis.mgaya@outlook.com" });
+      socket.emit("join", { email: email });
     });
 
     socket.on("paymentResponse", (msg) => {

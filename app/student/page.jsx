@@ -1,14 +1,43 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { theme, Card, Empty, Typography, Row, Col, Table, Button, Progress, Space, Statistic, Calendar, List, Avatar, Badge, Tag, Divider } from "antd";
-import { RightOutlined, BookOutlined, ClockCircleOutlined, TrophyOutlined, BellOutlined, CheckCircleOutlined, WarningOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  theme,
+  Card,
+  Empty,
+  Typography,
+  Row,
+  Col,
+  Table,
+  Button,
+  Progress,
+  Space,
+  Statistic,
+  Calendar,
+  List,
+  Avatar,
+  Badge,
+  Tag,
+  Divider,
+} from "antd";
+import {
+  RightOutlined,
+  BookOutlined,
+  ClockCircleOutlined,
+  TrophyOutlined,
+  BellOutlined,
+  CheckCircleOutlined,
+  WarningOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import { useEnrolledTopics } from "@/src/store/student/class";
 import { useUserTopics } from "@/src/store/user_topics";
 import Link from "next/link";
 import { useUser } from "@/src/hooks/useUser";
 import { GiBookCover } from "react-icons/gi";
 import { MdOutlineAssignment } from "react-icons/md";
+import CompleteProfile from "@/src/components/student/CompleteProfile";
+import { LuBookOpenCheck } from "react-icons/lu";
 
 
 const { Title, Text } = Typography;
@@ -22,13 +51,21 @@ export default function Component() {
 
   // Simulated data for new components
   const upcomingDeadlines = [
-    { title: "Mathematics Assignment Assignment Physics ", due: "2024-02-15", status: "pending" },
+    {
+      title: "Mathematics Assignment Assignment Physics ",
+      due: "2024-02-15",
+      status: "pending",
+    },
     { title: "Physics Lab Report", due: "2024-02-18", status: "completed" },
   ];
 
   const recentActivities = [
     { title: "Completed Biology Quiz", time: "2 hours ago", type: "quiz" },
-    { title: "Submitted Math Assignment", time: "1 day ago", type: "assignment" },
+    {
+      title: "Submitted Math Assignment",
+      time: "1 day ago",
+      type: "assignment",
+    },
   ];
 
   // Stats Data
@@ -39,15 +76,26 @@ export default function Component() {
 
   // Quick Links Component
   const QuickLinks = () => (
-    <Card title="Quick Links" size="small">
+    <Card title="Quick Links" size="small" className="overflow-hidden">
       <Space direction="vertical" className="w-full items-start">
         <Button type="link" icon={<UserOutlined />} block className="text-left">
           <Link href="/student/profile">Profile</Link>
         </Button>
-        <Button type="link" icon={<ClockCircleOutlined />} block className="text-left">
-        <Link href="/student/reminders">Create Reminders</Link>
+        <Button
+          type="link"
+          icon={<ClockCircleOutlined />}
+          block
+          className="text-left"
+        >
+          <Link href="/student/reminders">Create Reminders</Link>
         </Button>
-        <Button disabled type="link" icon={<TrophyOutlined />} block className="text-left">
+        <Button
+          disabled
+          type="link"
+          icon={<TrophyOutlined />}
+          block
+          className="text-left"
+        >
           Grades & Progress
         </Button>
       </Space>
@@ -55,12 +103,12 @@ export default function Component() {
   );
 
   const SelectedSubjects = () => (
-    <Card title="Selected subjects" size="small">
+    <Card title="Selected subjects" size="small" className="overflow-hidden">
       <Space direction="vertical" className=" w-44 items-start">
         <div className="flex gap-2  items-center justify-center">
           <GiBookCover />
           <div className="w-32 line-clamp-1"> Mathematics </div>
-        </div> 
+        </div>
         <div className="flex gap-2 items-center justify-center">
           <GiBookCover />
           <div className="w-32 line-clamp-1"> English </div>
@@ -88,9 +136,15 @@ export default function Component() {
         <Col xs={24} md={16}>
           <Space direction="vertical">
             <Title level={4} style={{ margin: 0 }}>
-              Welcome back, <span className="font-black">{user?.first_name} {user?.last_name}</span>!
+              Welcome back,{" "}
+              <span className="font-black">
+                {user?.first_name} {user?.last_name}
+              </span>
+              !
             </Title>
-            <Text type="secondary">Your learning dashboard - Track your progress and stay organized</Text>
+            <Text type="secondary">
+              Your learning dashboard - Track your progress and stay organized
+            </Text>
           </Space>
         </Col>
         <Col xs={24} md={8} className="text-right">
@@ -109,12 +163,33 @@ export default function Component() {
   const StatsSection = () => (
     <Row gutter={[8, 8]}>
       {[
-        { title: "Attendance Rate", value: stats.attendanceRate, suffix: "%", icon: <CheckCircleOutlined /> },
-        { title: "Completed Assignments", value: stats.completedAssignments, icon: <BookOutlined /> },
+        {
+          title: "Attendance Rate",
+          value: stats.attendanceRate,
+          suffix: "%",
+          icon: <CheckCircleOutlined />,
+        },
+        {
+          title: "Completed Assignments",
+          value: stats.completedAssignments,
+          icon: <LuBookOpenCheck />,
+
+        },
       ].map((stat, index) => (
-        <Col xs={12} md={12} key={index}>
-          <Card>
-            <Statistic title={stat.title} value={stat.value} suffix={stat.suffix} prefix={stat.icon} valueStyle={{ color: token.colorPrimary }} />
+        <Col xs={24} sm={12} key={index}>
+          <Card className="h-28">
+            <Statistic
+               
+              title={stat.title}
+              value={stat.value}
+              valueStyle={{ color: token.colorPrimary }}
+              formatter={(value) => (
+                <div className="flex items-center space-x-2">
+                  {stat.icon}
+                  <span>{value}{stat.suffix}</span>
+                </div>
+              )}
+            />
           </Card>
         </Col>
       ))}
@@ -123,7 +198,10 @@ export default function Component() {
 
   // Upcoming Reminders Component
   const DeadlinesCard = () => (
-    <Card title="Upcoming Reminders" extra={<Button type="link">View All</Button>}>
+    <Card
+      title="Upcoming Reminders"
+      extra={<Button type="link">View All</Button>}
+    >
       {upcomingDeadlines &&
         upcomingDeadlines.map((item, index) => {
           return (
@@ -131,7 +209,9 @@ export default function Component() {
               <span className=" line-clamp-1 w-full text-xs">{item.title}</span>
               <span className="text-xs mb-1 mt-1">{item.due}</span>
 
-              <Tag color={item.status === "completed" ? "success" : "warning"}>{item.status === "completed" ? "Completed" : "Pending"}</Tag>
+              <Tag color={item.status === "completed" ? "success" : "warning"}>
+                {item.status === "completed" ? "Completed" : "Pending"}
+              </Tag>
             </div>
           );
         })}
@@ -145,21 +225,23 @@ export default function Component() {
         recentActivities.map((item, index) => {
           return (
             <div key={index} className="flex gap-2 border-b p-2">
-            <CheckCircleOutlined style={{ color: '#90EE90' }} />
+              <CheckCircleOutlined style={{ color: "#90EE90" }} />
               <div className="flex flex-col">
-                <span className=" line-clamp-1 w-full text-xs">{item.title}</span>
+                <span className=" line-clamp-1 w-full text-xs">
+                  {item.title}
+                </span>
                 <span className="text-xs mb-1 mt-1 italic">{item.time}</span>
               </div>
-
             </div>
           );
         })}
-      
     </Card>
   );
 
   return (
-    <div className="h-fit mt-8 overflow-hidden">
+    <div className="h-fit  overflow-hidden">
+      <CompleteProfile />
+
       <Row
         className="max-w-[1920px] mx-auto p-4 md:p-6 h-full"
         gutter={[
@@ -196,7 +278,9 @@ export default function Component() {
                     dataIndex: "progress",
                     key: "progress",
                     width: "40%",
-                    render: (progress) => <Progress percent={progress} size="small" />,
+                    render: (progress) => (
+                      <Progress percent={progress} size="small" />
+                    ),
                   },
                   {
                     title: "Action",

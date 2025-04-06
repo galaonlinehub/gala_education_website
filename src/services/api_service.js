@@ -19,6 +19,7 @@ const publicEndpoints = new Set([
   "password/reset-request",
   "reset-password",
   "subscribe-plan",
+  "health"
 ]);
 
 api.interceptors.request.use(
@@ -32,11 +33,9 @@ api.interceptors.request.use(
     }
 
     if ([...publicEndpoints].some((endpoint) => baseUrl.includes(endpoint))) {
-      console.log("Public endpoint, no token needed");
       return config;
     }
 
-    // Only try cookie access in client-side context
     if (typeof window !== "undefined") {
       const encryptedToken = cookieFn.get(USER_COOKIE_KEY);
       if (!encryptedToken) {

@@ -85,7 +85,7 @@ const InstructorRegistrationForm = () => {
       >
         {text}
       </Button>
-      <Text className="text-[10px] font-extralight text-gray-500 flex items-center gap-1">
+      <Text className="text-[10px] font-normal text-gray-500 flex items-center gap-1">
         <FilePdfOutlined /> PDF only, max 2MB
       </Text>
     </div>
@@ -93,9 +93,9 @@ const InstructorRegistrationForm = () => {
 
   return (
     <>
-      <Card className="!border-0 !mt-12">
+      <Card className="!border-0 -mx-5 lg:-mx-0 mt-3">
         <div className="flex flex-col gap-2 justify-center items-center w-full mb-6">
-          <span className="font-bold text-2xl">Sign Up</span>
+          <span className="font-black text-2xl">Sign Up</span>
           <span className="font-medium text-[12px] w-full text-center">
             {" "}
             When registering with Gala, teachers undergo a vetting process to
@@ -109,7 +109,7 @@ const InstructorRegistrationForm = () => {
         <Form
           form={form}
           onFinish={onFinish}
-          className="flex flex-col lg:flex-row items-center justify-center gap-4 !w-full"
+          className="flex flex-col lg:flex-row items-center justify-center gap-3 lg:gap-6 !w-full"
         >
           <div className="w-full lg:w-6/12 flex flex-col">
             <Form.Item
