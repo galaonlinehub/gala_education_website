@@ -5,6 +5,8 @@ import { Segmented, ConfigProvider } from "antd";
 import Image from "next/image";
 import { IoMailOutline } from "react-icons/io5";
 import Donate from "@/src/components/ui/Donate";
+import FaqCard from "@/src/components/home/card/FaqCard";
+import { UserOutlined } from "@ant-design/icons";
 
 const { Text } = Typography;
 
@@ -27,6 +29,7 @@ const AboutUs = () => {
 
   const [selectedLDValue, setSelectedLDValue] = useState("Executive Team");
   const [selectedWEValue, setSelectedWEValue] = useState("System");
+  const [selecteContactsValue, setSelectedConatctsValue] = useState("Contact Us");
 
   const [showDonatePop, setShowDonatePop] = useState(false);
 
@@ -90,37 +93,64 @@ const AboutUs = () => {
     return (
       <>
         <Modal
-          title={<div className="text-sm flex justify-center">Biography</div>}
+          title={<div className="text-[14px] flex justify-center">Biography</div>}
           open={isModalOpen}
           width={{
             xs: "90%",
             sm: "80%",
             md: "70%",
             lg: "60%",
-            xl: "50%",
-            xxl: "40%",
+            xl: "70%",
+            xxl: "50%",
           }}
+          height={100}
           onCancel={handleCancel}
-          okText="Dismiss"
+          okText={<span className="text-[10px] md:text-xs">Dismiss</span>}
           onOk={handleCancel}
           cancelButtonProps={{ style: { display: "none" } }}
         >
-          <div className="flex flex-col gap-4 w-full">
-            <div className="flex gap-2">
-              <div>
-                <Image src="/teacherOne.jpeg" width={80} height={80} alt="user_photo" className="w-full max-w-[80px] sm:max-w-[150px] md:max-w-[180px] lg:max-w-[180px] object-cover rounded-xl" />
+          <div className="block md:hidden">
+            <div className="flex flex-col gap-4 w-full">
+              <div className="flex gap-2">
+                <div>
+                  <Image src="/teacherOne.jpeg" width={60} height={60} alt="user_photo" className="w-full max-w-[80px] sm:max-w-[150px] md:max-w-[180px] lg:max-w-[180px] object-cover rounded-xl" />
+                </div>
+                <div className="flex flex-col items-start justify-end ml-2">
+                  <Text className="font-bold text-[10px]">Dr. Hellen Dereck</Text>
+                  <Text className="text-gray-500 text-[10px]">Founder - Interim CEO</Text>
+                  <Text className="text-[10px] font-semibold">hellenderick@gmail.com</Text>
+                </div>
               </div>
-              <div className="flex flex-col items-start justify-end ml-2">
-                <Text className="font-bold text-sm">Dr. Hellen Dereck</Text>
-                <Text className="text-gray-500 text-xs">Founder - Interim CEO</Text>
-                <Text className="text-xs font-semibold">hellenderick@gmail.com</Text>
+              <div className="w-full flex flex-col gap-1">
+                <Text className="text-[10px] text-justify leading-loose">
+                  Dr. Erick Mgema is a distinguished academic and seasoned professional in the fields of education, research, and design. He holds a Ph.D., an MA in Fine Arts, and a BA in Art and Design, demonstrating a deep commitment to both artistic excellence and scholarly inquiry. With extensive expertise in curriculum development, creative innovation, and technological integration, Dr. Mgema plays a pivotal role in shaping the educational landscape. As the Senior Designer of the system, he spearheads its development, ensuring a seamless and user-centric experience. In addition to his academic contributions as a Lecturer, he serves as the Interim CEO of Galahub, the parent company of Gala Education, where he drives strategic growth and innovation. His leadership and vision continue to
+                  bridge the gap between education and technology, fostering transformative learning experiences.
+                </Text>
               </div>
             </div>
-            <div className="w-full flex flex-col gap-1">
-              <Text className="text-xs text-justify">
-                Dr. Erick Mgema is a distinguished academic and seasoned professional in the fields of education, research, and design. He holds a Ph.D., an MA in Fine Arts, and a BA in Art and Design, demonstrating a deep commitment to both artistic excellence and scholarly inquiry. With extensive expertise in curriculum development, creative innovation, and technological integration, Dr. Mgema plays a pivotal role in shaping the educational landscape. As the Senior Designer of the system, he spearheads its development, ensuring a seamless and user-centric experience. In addition to his academic contributions as a Lecturer, he serves as the Interim CEO of Galahub, the parent company of Gala Education, where he drives strategic growth and innovation. His leadership and vision continue to
-                bridge the gap between education and technology, fostering transformative learning experiences.
-              </Text>
+
+          </div>
+          <div className="hidden md:block">
+            <div className="flex gap-4 w-full p-8">
+              <div className="flex gap-2">
+                <div className="w-56">
+                  <Image src="/teacherOne.jpeg" width={120} height={120} alt="user_photo" className="w-full max-w-[80px]  sm:max-w-[150px] md:max-w-[180px] lg:max-w-[220px] object-cover rounded-xl" />
+                </div>
+              </div>
+              <div className="w-full flex flex-col gap-6 lg:ml-8">
+                <div className="flex flex-col items-start justify-end">
+                  <Text className="font-bold text-sm">Dr. Hellen Dereck</Text>
+                  <Text className="text-gray-500 text-xs">Founder - Interim CEO</Text>
+                </div>
+                <Text className="text-xs text-justify lg:leading-loose">
+                  Dr. Erick Mgema is a distinguished academic and seasoned professional in the fields of education, research, and design. He holds a Ph.D., an MA in Fine Arts, and a BA in Art and Design, demonstrating a deep commitment to both artistic excellence and scholarly inquiry. With extensive expertise in curriculum development, creative innovation, and technological integration, Dr. Mgema plays a pivotal role in shaping the educational landscape. As the Senior Designer of the system, he spearheads its development, ensuring a seamless and user-centric experience. In addition to his academic contributions as a Lecturer, he serves as the Interim CEO of Galahub, the parent company of Gala Education, where he drives strategic growth and innovation. His leadership and vision continue to
+                  bridge the gap between education and technology, fostering transformative learning experiences.
+                </Text>
+                <div className="flex flex-col">
+                  <Text className="text-xs font-semibold">Email:</Text>
+                  <Text className="text-xs ">hellenderick@gmail.com</Text>
+                </div>
+              </div>
             </div>
           </div>
         </Modal>
@@ -134,7 +164,7 @@ const AboutUs = () => {
         return (
           <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             <div className="flex flex-col gap-2  w-full">
-              <Image alt="" src="/teacherOne.jpeg" className="w-full rounded-lg" width={100} height={100} />
+              <Image alt="" src="/teacherOne.jpeg" className="w-full rounded-lg" width={120} height={120} />
               <div className="text-xs flex w-full flex-col ml-2">
                 <Text className="font-bold">Dr. Hellen Dereck</Text>
                 <Text className="font-bold text-gray-500">Founder - Interim CEO</Text>
@@ -143,8 +173,9 @@ const AboutUs = () => {
                 </Text>
               </div>
             </div>
+            
             <div className="flex flex-col gap-2 w-full">
-              <Image alt="" src="/teacherOne.jpeg" className="w-full rounded-lg" width={100} height={100} />
+              <Image alt="" src="/teacherOne.jpeg" className="w-full rounded-lg" width={120} height={120} />
               <div className="text-xs flex w-full flex-col ml-2">
                 <Text className="font-bold">Dr. Hellen Dereck</Text>
                 <Text className="font-bold text-gray-500">Founder - Interim CEO</Text>
@@ -237,8 +268,144 @@ const AboutUs = () => {
     }
   };
 
+  const renderContactsView = (value) => {
+    switch (value) {
+      case "Contact Us":
+        return (
+          <Card className="w-full bg-[#F2EFEF]">
+            <div className="flex flex-col space-y-4">
+              <Text id="contact" ref={sectionRefs.contact} className="font-black text-2xl">
+                Contact Us
+              </Text>
+              <Text className="text-xs text-justify leading-loose">For inquiries directed to the Gala Education team, please email info@galahub.org or submit your questions by clicking the button below.</Text>
+              <Button type="primary" className="text-xs bg-black w-full md:w-fit font-bold hover:!bg-gray-500 text-white" icon={<IoMailOutline size={16} />}>
+                Mail Us
+              </Button>
+              <Divider orientation="right" className="!text-xs !text-gray-500" style={{ borderColor: "#dcdcdc" }}>
+                Subscription
+              </Divider>
+              <Text className="font-black text-2xl">Subscribe to email alerts</Text>
+              <Text className="text-xs leading-loose text-justify">To subscribe to email alerts, please enter your email address in the field below and select at least one alert option. Once your request is submitted, you will receive a confirmation email with an activation link, which must be clicked to complete your subscription. Additional alert options can be selected at any time.</Text>
+              <Text className="text-xs leading-loose text-justify">At Gala Education, we are committed to safeguarding your privacy and will never share your information with third parties. You may unsubscribe from any alerts by visiting the ‘unsubscribe’ section below. If you encounter any issues during this process, please contact us for assistance.</Text>
+              <Text className="text-xs leading-loose text-justify">By providing your email address below, you consent to receive email updates from Gala Education.</Text>
+              <Text className="text-xs font-bold mt-3">Sign up for email alerts</Text>
+              <div className="flex flex-col md:flex-row gap-4 mb-5">
+                <Input type="email" size="middle" className="w-full md:w-1/4" placeholder="Email address" />
+                <Button type="primary" className="bg-black text-xs text-white hover:!bg-gray-500">
+                  Subscribe
+                </Button>
+              </div>
+              <Divider orientation="right" style={{ borderColor: "#dcdcdc" }} className="!text-xs !text-gray-500">
+                Unsubscribe
+              </Divider>
+              <Text className="font-black text-2xl">Unsubscribe from email alerts</Text>
+              <Text className="text-xs leading-loose text-justify">To opt-out of email alerts, please enter your email address in the field below and you will be removed from all email alerts to which you are subscribed. After submitting your email, you will receive a confirmation email to the requested email address. You must click the confirmation link in order to complete your request to unsubscribe. You can elect to receive alerts at any time you would like.</Text>
+              <Text className="text-xs font-bold mt-3">Unsubscribe from email alerts</Text>
+              <div className="flex flex-col md:flex-row gap-4 mb-5">
+                <Input type="email" size="middle" className="w-full md:w-1/4" placeholder="Email address" />
+                <Button type="primary" className="bg-black text-xs text-white hover:!bg-gray-500">
+                  Unsubscribe
+                </Button>
+              </div>
+            </div>
+          </Card>
+        );
+        break;
+      case "FAQs":
+        return (
+          <div className="relative w-full ">
+            <FaqCard
+              faqQn={"What is Gala Education?"}
+              bgColor={"#F2EFEF"}
+              faqAns={
+                "Gala Education is an online platform dedicated to providing high-quality tutoring for Primary, Secondary, and High School students across Tanzania. In addition to tutoring, we offer short courses designed to equip Tanzanian youth with self-employable skills. Our platform is powered by AI, which helps deliver personalized learning experiences tailored to each student’s individual needs and progress. We also reinvest profits into philanthropic activities, including building classrooms and libraries for under-served communities"
+              }
+
+            />
+            <FaqCard
+              faqQn={"Is there a money-back guarantee?"}
+              bgColor={"#F2EFEF"}
+              faqAns={
+                "Gala Education does not offer refunds unless there is a verified technical issue that prevents you from accessing our services. If you encounter such a problem, please contact our support team, and we will assist you in resolving the issue or processing a refund if necessary."
+              }
+            />
+            <FaqCard
+              faqQn={"Who can use Gala Education?"}
+              bgColor={"#F2EFEF"}
+              faqAns={
+                "Gala Education is designed for students in Primary, Secondary, and High School across Tanzania who are looking for personalized tutoring in various subjects. Our short courses are open to young adults looking to acquire practical, self-employable skills in various fields. Anyone with access to a device and internet connection can benefit from our educational resources."
+              }
+            />
+            <FaqCard
+              faqQn={"Do I need a device to access the tutoring sessions?"}
+              bgColor={"#F2EFEF"}
+              faqAns={
+                "Yes, you will need a device, such as a smartphone, tablet, or computer, and a stable internet connection to access our online tutoring sessions. This allows you to participate in lessons, access learning materials, and interact with our qualified tutors from anywhere at your convenience."
+              }
+            />
+            <FaqCard
+              faqQn={"Do I need to be a registered user to donate?"}
+              bgColor={"#F2EFEF"}
+              faqAns={
+                "No, donations can be made by anyone, regardless of whether you are a registered user of Gala Education. Our donation system is designed to allow anyone who wants to support our mission to contribute. The funds are directly used to support children’s education, particularly those from low-income backgrounds who lack access to quality resources."
+              }
+            />
+            <FaqCard
+              faqQn={"How are the donations used?"}
+              bgColor={"#F2EFEF"}
+              faqAns={
+                "All donations received are reinvested into our philanthropic efforts to improve education in Tanzania. This includes building and equipping classrooms, libraries, and providing educational materials for under-served communities. The donations also help support the development of educational programs that benefit students in need, ensuring that every child has access to quality learning opportunities."
+              }
+            />
+            <FaqCard
+              faqQn={
+                "What makes Gala Education different from other tutoring platforms?"
+              }
+              bgColor={"#F2EFEF"}
+              faqAns={
+                "Gala Education stands out by combining quality online tutoring with a strong commitment to community development. Not only do we provide expert tutors to support student learning, but we also employ teachers across Tanzania to help address the national shortage of qualified educators. Our platform also integrates AI-powered personalized learning to enhance each student’s progress. Moreover, we reinvest profits into community-building projects like classrooms and libraries, making our mission far-reaching and impactful."
+              }
+            />
+            <FaqCard
+              faqQn={"How do the short courses work?"}
+              faqAns={
+                "Our short courses are specifically designed to equip Tanzanian youth with practical, self-employable skills in various industries such as technology, business, and creative fields. These courses are taught by experienced academics, executives, and industry leaders. Students can take the courses online, at their own pace, and gain valuable skills that will help them pursue self-employment or career opportunities. Upon completion, students may also receive certification for the skills they’ve learned."
+              }
+            />
+            <FaqCard
+              faqQn={"Is there any age limit for the short courses?"}
+              bgColor={"#F2EFEF"}
+              faqAns={
+                "There is no specific age limit for the short courses. The courses are open to all Tanzanian youth who are eager to learn and acquire skills for self-employment. Whether you’re a recent graduate, a young professional, or someone looking to switch careers, our short courses offer flexible learning opportunities that can be adapted to your personal goals."
+              }
+            />
+            <FaqCard
+              faqQn={"How can I become a tutor on Gala Education?"}
+              bgColor={"#F2EFEF"}
+              faqAns={
+                "If you are a qualified educator with a passion for teaching and helping students succeed, you can apply to become a tutor at Gala Education. We are always looking for skilled tutors who can deliver personalized, high-quality lessons across a range of subjects. To apply, visit our website to submit your application, and we will contact you if there is a suitable opportunity to join our team."
+              }
+            />
+            <FaqCard
+              faqQn={
+                "Can I access Gala Education if I live outside of Tanzania?"
+              }
+              bgColor={"#F2EFEF"}
+              faqAns={
+                "While Gala Education is primarily focused on providing services to students within Tanzania, anyone with a stable internet connection can access our short courses. Our online platform allows individuals from anywhere in the world to benefit from our industry-leading courses that equip youth with valuable skills for self-employment. However, tutoring sessions are designed specifically for Tanzanian students, so availability may vary depending on your location."
+              }
+            />
+          </div>
+        );
+        break;
+
+      default:
+        break;
+    }
+  };
+
   return (
-    <div className="flex justify-between p-8 h-auto w-full">
+    <div className="flex justify-between -mt-16 p-8 h-auto w-screen ">
       <div className="flex flex-col w-full md:w-3/4">
         <div className="flex flex-col">
           <Text id="aboutUs" ref={sectionRefs.aboutUs} className="font-black text-2xl">
@@ -317,60 +484,38 @@ const AboutUs = () => {
         </div>
 
         <div className="flex flex-col mb-8">
-          <Card className="w-full bg-[#F2EFEF]">
-            <div className="flex flex-col space-y-4">
-              <Text id="contact" ref={sectionRefs.contact} className="font-black text-2xl">
-                Contact Us
-              </Text>
-              <Text className="text-xs text-justify leading-loose">For inquiries directed to the Gala Education team, please email info@galahub.org or submit your questions by clicking the button below.</Text>
-              <Button type="primary" className="text-xs bg-black w-full md:w-fit font-bold hover:!bg-gray-500 text-white" icon={<IoMailOutline size={16} />}>
-                Mail Us
-              </Button>
-              <Divider orientation="right" className="!text-xs !text-gray-500" style={{ borderColor: "#dcdcdc" }}>
-                Subscription
-              </Divider>
-              <Text className="font-black text-2xl">Subscribe to email alerts</Text>
-              <Text className="text-xs leading-loose text-justify">To subscribe to email alerts, please enter your email address in the field below and select at least one alert option. Once your request is submitted, you will receive a confirmation email with an activation link, which must be clicked to complete your subscription. Additional alert options can be selected at any time.</Text>
-              <Text className="text-xs leading-loose text-justify">At Gala Education, we are committed to safeguarding your privacy and will never share your information with third parties. You may unsubscribe from any alerts by visiting the ‘unsubscribe’ section below. If you encounter any issues during this process, please contact us for assistance.</Text>
-              <Text className="text-xs leading-loose text-justify">By providing your email address below, you consent to receive email updates from Gala Education.</Text>
-              <Text className="text-xs font-bold mt-3">Sign up for email alerts</Text>
-              <div className="flex flex-col md:flex-row gap-4 mb-5">
-                <Input type="email" size="middle" className="w-full md:w-1/4" placeholder="Email address" />
-                <Button type="primary" className="bg-black text-xs text-white hover:!bg-gray-500">
-                  Subscribe
-                </Button>
-              </div>
-              <Divider orientation="right" style={{ borderColor: "#dcdcdc" }} className="!text-xs !text-gray-500">
-                Unsubscribe
-              </Divider>
-              <Text className="font-black text-2xl">Unsubscribe from email alerts</Text>
-              <Text className="text-xs leading-loose text-justify">To opt-out of email alerts, please enter your email address in the field below and you will be removed from all email alerts to which you are subscribed. After submitting your email, you will receive a confirmation email to the requested email address. You must click the confirmation link in order to complete your request to unsubscribe. You can elect to receive alerts at any time you would like.</Text>
-              <Text className="text-xs font-bold mt-3">Unsubscribe from email alerts</Text>
-              <div className="flex flex-col md:flex-row gap-4 mb-5">
-                <Input type="email" size="middle" className="w-full md:w-1/4" placeholder="Email address" />
-                <Button type="primary" className="bg-black text-xs text-white hover:!bg-gray-500">
-                  Unsubscribe
-                </Button>
-              </div>
-            </div>
-          </Card>
+          <div className="flex flex-col w-full py-3">
+            <ConfigProvider
+              theme={{
+                components: {
+                  Segmented: {
+                    itemSelectedBg: "#030DFE",
+                    itemSelectedColor: "#ffffff",
+                  },
+                },
+              }}
+            >
+              <Segmented className="font-bold" options={["Contact Us", "FAQs"]} size="middle" value={selecteContactsValue} onChange={setSelectedConatctsValue} block />
+            </ConfigProvider>
+          </div>
+          <div className="md:p-3 mt-4">{renderContactsView(selecteContactsValue)}</div>
         </div>
       </div>
-      <div className="hidden md:flex  fixed mr-3 right-3 top-0 bottom-0 md:w-48 lg:w-64 items-center justify-center">
+      <div className="hidden md:flex fixed mr-3 right-3 top-0 bottom-0 md:w-48 lg:w-64 items-center justify-center">
         <div className="flex flex-col items-center w-full space-y-4">
-          <Text onClick={() => scrollToSection(sectionRefs.aboutUs)} className={`text-right w-full  p-2 cursor-pointer ${activeSection === "aboutUs" ? "text-blue-700 font-bold border-r-4 rounded-r-md border-blue-600 bg-gradient-to-l from-gray-400 to-transparent px-4 py-2" : "hover:text-blue-700"}`}>
+          <Text onClick={() => scrollToSection(sectionRefs.aboutUs)} className={`text-right w-full  p-2 cursor-pointer ${activeSection === "aboutUs" ? "text-white font-bold border-r-4 rounded-r-md border-black bg-gradient-to-l from-gray-500 to-transparent px-4 py-2" : "hover:text-blue-700"}`}>
             About Us
           </Text>
-          <Text onClick={() => scrollToSection(sectionRefs.leadership)} className={`text-right  w-full  p-2  cursor-pointer ${activeSection === "leadership" ? "text-blue-700 font-bold border-r-4 rounded-r-md border-blue-600 bg-gradient-to-l from-gray-400 to-transparent px-4 py-2" : "hover:text-blue-700"}`}>
+          <Text onClick={() => scrollToSection(sectionRefs.leadership)} className={`text-right  w-full  p-2  cursor-pointer ${activeSection === "leadership" ? "text-white font-bold border-r-4 rounded-r-md border-black bg-gradient-to-l from-gray-500 to-transparent px-4 py-2" : "hover:text-blue-700"}`}>
             Leadership
           </Text>
-          <Text onClick={() => scrollToSection(sectionRefs.expectations)} className={`text-right w-full  p-2  cursor-pointer ${activeSection === "expectations" ? "text-blue-700 font-bold border-r-4 rounded-r-md border-blue-600 bg-gradient-to-l from-gray-400 to-transparent px-4 py-2" : "hover:text-blue-700"}`}>
+          <Text onClick={() => scrollToSection(sectionRefs.expectations)} className={`text-right w-full  p-2  cursor-pointer ${activeSection === "expectations" ? "text-white font-bold border-r-4 rounded-r-md border-black bg-gradient-to-l from-gray-500 to-transparent px-4 py-2" : "hover:text-blue-700"}`}>
             What to expect
           </Text>
-          <Text onClick={() => scrollToSection(sectionRefs.outreach)} className={`text-right w-full  p-2  cursor-pointer ${activeSection === "outreach" ? "text-blue-700 font-bold border-r-4 rounded-r-md border-blue-600 bg-gradient-to-l from-gray-400 to-transparent px-4 py-2" : "hover:text-blue-700"}`}>
+          <Text onClick={() => scrollToSection(sectionRefs.outreach)} className={`text-right w-full  p-2  cursor-pointer ${activeSection === "outreach" ? "text-white font-bold border-r-4 rounded-r-md border-black bg-gradient-to-l from-gray-500 to-transparent px-4 py-2" : "hover:text-blue-700"}`}>
             Outreach efforts
           </Text>
-          <Text onClick={() => scrollToSection(sectionRefs.contact)} className={`text-right w-full  p-2  cursor-pointer ${activeSection === "contact" ? "text-blue-700 font-bold border-r-4 rounded-r-md border-blue-600 bg-gradient-to-l from-gray-400 to-transparent px-4 py-2" : "hover:text-blue-700"}`}>
+          <Text onClick={() => scrollToSection(sectionRefs.contact)} className={`text-right w-full  p-2  cursor-pointer ${activeSection === "contact" ? "text-white font-bold border-r-4 rounded-r-md border-black bg-gradient-to-l from-gray-500 to-transparent px-4 py-2" : "hover:text-blue-700"}`}>
             Contact Us
           </Text>
         </div>

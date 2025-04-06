@@ -6,7 +6,7 @@ import "../../../../app/globals.css";
 const { Panel } = Collapse;
 const { Option } = Select;
 
-const FaqCard = ({ faqQn, faqAns }) => {
+const FaqCard = ({ faqQn, faqAns, bgColor, iconColor, headerColor }) => {
   const [expandIconPosition, setExpandIconPosition] = useState("right");
 
   const handlePositionChange = (position) => {
@@ -21,7 +21,7 @@ const FaqCard = ({ faqQn, faqAns }) => {
     <IoIosArrowDropdownCircle
       style={{
         fontSize: "16px",
-        color: "white", // Make the icon white
+        color: iconColor, // Make the icon white
         transform: isActive ? "rotate(180deg)" : "rotate(0deg)",
         transition: "transform 0.3s",
       }}
@@ -38,10 +38,10 @@ const FaqCard = ({ faqQn, faqAns }) => {
       >
         <Panel
           key="1"
-          style={{ backgroundColor: "#001840" }}
-          header={<span style={{ color: "white", fontSize:"12px" }}>{faqQn}</span>} // Style the header text
+          style={{ backgroundColor: bgColor }}
+          header={<span style={{ color: headerColor, fontSize:"12px", fontWeight:"bold" }}>{faqQn}</span>} // Style the header text
         >
-          <div className="panel-content text-xs">{faqAns}</div>
+          <div className="panel-content font-semibold text-xs">{faqAns}</div>
         </Panel>
       </Collapse>
     </div>
