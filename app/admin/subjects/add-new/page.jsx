@@ -5,6 +5,7 @@ import { Input, Select, Steps } from "antd";
 import { FaBackward, FaTrash } from "react-icons/fa6";
 import { apiGet, apiPost } from "@/src/services/api_service";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 
 function AddNew() {
     const [current, setCurrent] = React.useState(0);
@@ -35,6 +36,7 @@ function AddNew() {
     });
 
     const queryClient = useQueryClient();
+    const router  = useRouter();
 
     const submitFormData = async (data) => {
         const response = await apiPost("create-subject-topic-subtopic", data);
@@ -44,9 +46,10 @@ function AddNew() {
     const mutation = useMutation({
         mutationFn: submitFormData,
         onSuccess: (response) => {
-            console.log("Form submitted successfully:", response);
+           
 
             queryClient.invalidateQueries(["someQueryKey"]);
+            router.push("/admin/subjects");
         },
         onError: (error) => {
             console.error("Error submitting form:", error.message);
@@ -57,7 +60,7 @@ function AddNew() {
     });
 
     const onSubmit = (data) => {
-        console.log("Form submitted with data:", data);
+        
         mutation.mutate(data);
     };
 

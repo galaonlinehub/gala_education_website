@@ -1,11 +1,10 @@
 import Image from 'next/image';
 import Link from 'next/link'
 
-
 export const userColumns = [
     {
       name: "Fullname",
-      selector: row=><Link className='cursor-pointer hover:underline text-blue-900' href={`/admin/users/profile/${row.id}`}>{row.first_name+row.last_name}</Link>,
+      selector: row=><Link className='cursor-pointer hover:underline text-blue-900' href={`/admin/users/profile/${row.id}`}>{row.first_name+" "+row.last_name}</Link>,
       sortable: true
     },
     {
@@ -33,7 +32,7 @@ export const userColumns = [
     },
     {
       name: "Created At",
-      selector: row => new Date(row.created_at).toLocaleString(),
+      selector: row => row.created_at,
       sortable: true,
       
     },{
