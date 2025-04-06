@@ -79,8 +79,8 @@ const StudentContract = () => {
                 date of electronic acceptance (“Effective Date”) by and between:</Paragraph>
 
             <Paragraph className='text-[10px] lg:text-xs text-justify'><b>Gala Hub via Gala Education</b>, an online educational platform registered under applicable laws,
-                hereinafter referred to as the <b>"Company"</b>, and the individual registering as a student on the Gala
-                Education platform, hereinafter referred to as the <b>"Student"</b> (collectively referred to as the
+                hereinafter referred to as the <b>&quot;Company&quot;</b>, and the individual registering as a student on the Gala
+                Education platform, hereinafter referred to as the <b>&quot;Student&quot;</b> (collectively referred to as the
                 “Parties”).</Paragraph>
 
             <Paragraph className='text-[10px] lg:text-xs text-justify'><b>WHEREAS</b>, Gala Education facilitates live online learning by connecting qualified Teachers with
@@ -172,7 +172,7 @@ const StudentContract = () => {
                 <Text className='text-[10px] lg:text-xs text-justify'>iii. Indirect or consequential damages resulting from platform use.</Text>
             </Typography>
 
-            <Paragraph className='text-[10px] lg:text-xs text-justify'>6.2 The Student uses the platform at their own risk, and all services are provided "as is" without
+            <Paragraph className='text-[10px] lg:text-xs text-justify'>6.2 The Student uses the platform at their own risk, and all services are provided &quot;as is&quot; without
                 warranties of any kind.</Paragraph>
 
             <Text className='text-[10px] lg:text-xs text-justify font-bold'>7. Data Protection and Privacy</Text>

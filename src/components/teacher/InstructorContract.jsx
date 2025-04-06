@@ -74,12 +74,12 @@ const InstructorContract = () => {
             }}
         >
             <Text className='text-[10px] lg:text-xs  self-center flex justify-center mb-5 text-center font-light italic text-blue-400'>Read and sroll to the bottom to accept the agreement</Text>
-            <Paragraph className='text-[10px] lg:text-xs text-justify'>This Digital Teacher Agreement ("Agreement") is entered into and made effective as of the date
-                of electronic acceptance ("Effective Date") by and between:</Paragraph>
+            <Paragraph className='text-[10px] lg:text-xs text-justify'>This Digital Teacher Agreement (&quot;Agreement&quot;) is entered into and made effective as of the date
+                of electronic acceptance (&quot;Effective Date&quot;) by and between:</Paragraph>
 
             <Paragraph className='text-[10px] lg:text-xs text-justify'><b>Gala Hub via Gala Education</b>, an online educational platform registered under applicable laws,
-                hereinafter referred to as the <b>"Company"</b>, and the individual registering as a student on the Gala
-                Education platform, hereinafter referred to as the <b>"Teacher"</b> (collectively, the
+                hereinafter referred to as the <b>&quot;Company&quot;</b>, and the individual registering as a student on the Gala
+                Education platform, hereinafter referred to as the <b>&quot;Teacher&quot;</b> (collectively, the
                 “Parties”).</Paragraph>
 
             <Paragraph className='text-[10px] lg:text-xs text-justify'><b>WHEREAS</b>, Gala Education provides a platform that connects teachers with students for live
