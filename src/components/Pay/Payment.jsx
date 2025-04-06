@@ -1,5 +1,5 @@
-import { Divider, Steps, Result, Button } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
+"use client";
+import { Divider, Steps } from "antd";
 import {
   PaymentDetails,
   PayForm,
@@ -8,6 +8,7 @@ import {
 } from "./PaymentDetails";
 import { useDevice } from "@/src/hooks/useDevice";
 import { usePay, usePaySteps } from "@/src/store/pay";
+import { ConfirmEnrollPay } from "./Confirm";
 
 const { Step } = Steps;
 
@@ -41,33 +42,19 @@ export const Payment = () => {
     },
     {
       title: "Confirmation",
-      content: (
-        <div className="w-full h-[calc(100vh-20rem)] flex flex-col items-center justify-center gap-4">
-          <LoadingOutlined style={{ fontSize: 24 }} />
-          <span>Processing payment...</span>
-
-          <Result
-            status="success"
-            title="Successfully Purchased Cloud Server ECS!"
-            subTitle="Order number: 2017182818828182881 Cloud server configuration takes 1-5 minutes, please wait."
-            extra={[
-              <Button type="primary" key="console">
-                Go Console
-              </Button>,
-              <Button key="buy">Buy Again</Button>,
-            ]}
-          />
-        </div>
-      ),
+      content: <ConfirmEnrollPay />,
     },
   ];
 
   return (
     <>
-      <Steps current={currentStep} items={steps} />
+      <Steps
+        current={currentStep}
+        items={steps}
+        direction={"horizontal"}
+        responsive={false}
+      />
       <div>{steps[currentStep].content}</div>
     </>
   );
 };
-
-

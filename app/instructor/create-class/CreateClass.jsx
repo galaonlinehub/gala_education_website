@@ -1,30 +1,17 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import {
-  Steps,
-  Select,
-  DatePicker,
-  TimePicker,
-  InputNumber,
-  Button,
-  Drawer,
-} from "antd";
-import {
-  FiCheck,
-  FiArrowRight,
-  FiArrowLeft,
-  FiCalendar,
-  FiClock,
-  FiBook,
-  FiBookOpen,
-  FiCreditCard,
-} from "react-icons/fi";
+import { Steps, Select, DatePicker, TimePicker, InputNumber, Button, Drawer, Alert, Skeleton, Tag, Input } from "antd";
+import { FiCheck, FiArrowRight, FiArrowLeft, FiCalendar, FiClock, FiBook, FiBookOpen, FiCreditCard } from "react-icons/fi";
 import dayjs from "dayjs";
 import { useSubject } from "@/src/hooks/useSubject";
 import { useGrade } from "@/src/hooks/useGrade";
 import { useTopic } from "@/src/hooks/useTopic";
 import { DAYS_MAP } from "@/src/utils/data/days_of_the_week";
 import { useCohort } from "@/src/hooks/useCohort";
+import { InfoCircleOutlined } from "@ant-design/icons";
+import { weekOptions } from "@/src/utils/data/weekData";
+import notificationService from "@/src/components/ui/notification/Notification";
+import { apiGet } from "@/src/services/api_service";
 
 const componentStyles = {
   select: {
@@ -61,8 +48,18 @@ const componentStyles = {
   },
 };
 
-const ClassCreationWizard = () => {
+const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
   const [step, setStep] = useState(0);
+
+  const tomorrow = Date.now();
+
+  const [loading, setLoading] = useState(false);
+  const [cohortName, setCohortName] = useState("");
+
+  const [value, setValueData] = useState("");
+  const [isValid, setIsValid] = useState(true);
+
+  const { TextArea } = Input;
 
   const {
     watch,
@@ -79,6 +76,8 @@ const ClassCreationWizard = () => {
       days: [""],
       times: [""],
       durations: [""],
+      description: "",
+      weeks: "",
     },
   });
 
@@ -88,28 +87,40 @@ const ClassCreationWizard = () => {
     setValue(key, value);
   };
 
+  const calculateEndDate = (weeks, startDate) => {
+    // Only calculate if both values are present
+    if (startDate && weeks) {
+      const endDate = dayjs(startDate).add(Number(weeks), "week").format("YYYY-MM-DD");
+      updateForm("endDate", endDate);
+    }
+  };
+
+  const showEndDate = formData.startDate && formData.weeks;
+
   const { subjects } = useSubject();
-  const { topics, isTopicLoadig, isTopicError, topicError } = useTopic(
-    formData.subject,
-    formData.level
-  );
-  const { grades, isGradesPending, isGradeError, gradeError, refetch } =
-    useGrade();
+  const { topics, isTopicLoadig, isTopicError, topicError } = useTopic(formData.subject, formData.level);
+  const { grades, isGradesPending, isGradeError, gradeError, refetch } = useGrade();
 
   const { createCohort, isFetching, cohorts } = useCohort();
 
+  const checkDescription = (v) => {
+    const wordCount = v
+      .trim()
+      .split(/\s+/)
+      .filter((word) => /\w/.test(word)).length; // Count only words containing letters or numbers
+  
+    return wordCount >= 10;
+  };
+  
+  
   const canProceed = () => {
     switch (step) {
       case 0:
         return formData.subject && formData.topic;
       case 1:
-        return (
-          formData.days.every((day) => day) &&
-          formData.times.every((time) => time) &&
-          formData.durations.every((duration) => duration)
-        );
+        return formData.days.every((day) => day) && formData.times.every((time) => time) && formData.durations.every((duration) => duration);
       case 2:
-        return formData.startDate && formData.endDate && formData.price;
+        return formData.startDate && formData.endDate && formData.price && checkDescription(formData.description) ;
       default:
         return false;
     }
@@ -126,18 +137,59 @@ const ClassCreationWizard = () => {
   };
 
 
+  const getGeneratedCohort = async (topicId, section) => {
+    switch (section) {
+      case "subject_section":
+        setLoading(false);
+        break;
+      case "level_section":
+        setLoading(false);
+        break;
+      case "topic_section":
+        setLoading(true);
+        try {
+          var cohort = await apiGet(`/get_cohort_name/${topicId}`);
+
+          setLoading(false);
+          setCohortName(cohort.data);
+        } catch (error) {
+          notificationService.error("Failed to retrieve cohort name", 3);
+          setLoading(false);
+        }
+        break;
+
+      default:
+        break;
+    }
+  };
+
+  const handleBlur = () => {
+    const wordCount = value
+      .trim()
+      .split(/\s+/)
+      .filter((word) => word.length > 0).length;
+  };
+
+  const header = (msg) => {
+    return (
+      <div className="w-full flex justify-between">
+        <span>{msg}</span>
+        <span className="font-black">{cohortName}</span>
+      </div>
+    );
+  };
+
   const steps = [
     {
       title: "Subject & Topic Details",
+      header: header("Subject & Topic Details"),
       subtitle: "Choose your subject and topic",
       icon: <FiBookOpen />,
       content: (
         <div className="space-y-6">
           <div className="space-y-2">
             <div className="w-full">
-              <label className="block font-medium text-gray-700 mb-1 text-[12px]">
-                Subject
-              </label>
+              <label className="block font-medium text-gray-700 mb-1 text-[12px]">Subject</label>
               <Select
                 style={componentStyles.select}
                 value={formData.subject}
@@ -145,6 +197,8 @@ const ClassCreationWizard = () => {
                   updateForm("subject", v);
                   updateForm("level", "");
                   updateForm("topic", "");
+                  setCohortName(null);
+                  getGeneratedCohort("null_id", "subject_section");
                 }}
                 placeholder="Select a subject"
                 suffixIcon={<FiBook className="text-gray-400" />}
@@ -160,15 +214,15 @@ const ClassCreationWizard = () => {
 
             {formData.subject && (
               <div className="w-full">
-                <label className="block font-medium text-gray-700 mb-1 text-[12px]">
-                  Level
-                </label>
+                <label className="block font-medium text-gray-700 mb-1 text-[12px]">Level</label>
                 <Select
                   style={componentStyles.select}
                   value={formData.level}
                   onChange={(v) => {
                     updateForm("level", v);
                     updateForm("topic", "");
+                    setCohortName(null);
+                    getGeneratedCohort("null_id", "level_section");
                   }}
                   placeholder="Select a subject"
                   suffixIcon={<FiBook className="text-gray-400" />}
@@ -185,22 +239,21 @@ const ClassCreationWizard = () => {
 
             {formData.level && formData.subject && (
               <div className="w-full">
-                <label className="block text-[12px] font-medium text-gray-700 mb-1">
-                  Topic
-                </label>
+                <label className="block text-[12px] font-medium text-gray-700 mb-1">Topic</label>
                 <Select
                   style={componentStyles.select}
                   value={formData.topic}
-                  onChange={(v) => updateForm("topic", v)}
+                  onChange={(v) => {
+                    updateForm("topic", v);
+                    getGeneratedCohort(v, "topic_section");
+                  }}
                   placeholder="Select a topic"
                   suffixIcon={<FiBookOpen className="text-gray-400" />}
                 >
                   {isTopicLoadig ? (
                     <Select.Option value="loading">Loading...</Select.Option>
                   ) : isTopicError ? (
-                    <Select.Option value="error">
-                      Error loading topics
-                    </Select.Option>
+                    <Select.Option value="error">Error loading topics</Select.Option>
                   ) : (
                     topics.map((t) => (
                       <Select.Option key={t.id} value={t.id}>
@@ -216,15 +269,18 @@ const ClassCreationWizard = () => {
       ),
     },
     {
-      title: "Schedule",
-      subtitle: "Set your class schedule",
+      title: `Schedule`,
+      header: header("Schedule"),
+      subtitle: (
+        <div>
+          Set your class Schedule <span className="text-gray-400 text-[9px]">(Min duration 30mins , max duration 120mins)</span>
+        </div>
+      ),
       icon: <FiClock />,
       content: (
         <div className="space-y-2">
           <div className="w-full">
-            <label className="block text-[12px] font-medium text-gray-700 mb-1">
-              Frequency
-            </label>
+            <label className="block text-[12px] font-medium text-gray-700 mb-1">Frequency</label>
             <Select
               style={componentStyles.select}
               value={formData.frequency}
@@ -251,9 +307,7 @@ const ClassCreationWizard = () => {
             [...Array(parseInt(formData.frequency))].map((_, i) => (
               <div key={i} className="grid grid-cols-3 gap-4 mt-4">
                 <div>
-                  <label className="block text-[10px] font-medium text-gray-700 mb-1">
-                    Day {i + 1}
-                  </label>
+                  <label className="block text-[10px] font-medium text-gray-700 mb-1">Day {i + 1}</label>
                   <Select
                     style={componentStyles.select}
                     value={formData.days[i]}
@@ -272,16 +326,10 @@ const ClassCreationWizard = () => {
                   </Select>
                 </div>
                 <div>
-                  <label className="block text-[10px] font-medium text-gray-700 mb-1">
-                    Time {i + 1}
-                  </label>
+                  <label className="block text-[10px] font-medium text-gray-700 mb-1">Time {i + 1}</label>
                   <TimePicker
                     style={componentStyles.datePicker}
-                    value={
-                      formData.times[i]
-                        ? dayjs(formData.times[i], "HH:mm")
-                        : null
-                    }
+                    value={formData.times[i] ? dayjs(formData.times[i], "HH:mm") : null}
                     onChange={(time, timeString) => {
                       const newTimes = [...formData.times];
                       newTimes[i] = timeString;
@@ -292,10 +340,11 @@ const ClassCreationWizard = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] font-medium text-gray-700 mb-1">
-                    Duration {i + 1}
-                  </label>
+                  <label className="block text-[10px] font-medium text-gray-700 mb-1">Duration {i + 1} </label>
                   <InputNumber
+                    min="30"
+                    max="120"
+                    type="number"
                     style={componentStyles.datePicker}
                     value={formData.durations[i] || null}
                     onChange={(value) => {
@@ -303,9 +352,7 @@ const ClassCreationWizard = () => {
                       newDurations[i] = value;
                       updateForm("durations", newDurations);
                     }}
-                    addonAfter={
-                      <span className="font-black text-[10px]">Min</span>
-                    }
+                    addonAfter={<span className="font-black text-[10px]">Min</span>}
                   />
                 </div>
               </div>
@@ -316,51 +363,57 @@ const ClassCreationWizard = () => {
 
     {
       title: "Pricing",
+      header: header("Pricing"),
       subtitle: "Set duration and pricing",
       icon: <FiCreditCard />,
       content: (
         <div className="space-y-6">
+          <Alert message="Note" description="The End date will be auto-selected according to the chosen Start date and number of weeks." type="info" showIcon icon={<InfoCircleOutlined />} className="mb-4" />
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-[11px] font-medium text-gray-700 mb-1">
-                Start Date
-              </label>
+              <label className="block text-[11px] font-medium text-gray-700 mb-1">Start Date</label>
               <div className="">
                 <DatePicker
+                  minDate={dayjs().add(1, "day")}
                   prefix={<FiCalendar className="text-gray-400 mr-2" />}
                   style={componentStyles.datePicker}
                   className="pl-10"
                   value={formData.startDate ? dayjs(formData.startDate) : null}
-                  onChange={(date, dateString) =>
-                    updateForm("startDate", dateString)
-                  }
+                  onChange={(date, dateString) => {
+                    updateForm("startDate", dateString);
+                    calculateEndDate(formData.weeks, dateString);
+                  }}
                   suffixIcon={null}
                 />
               </div>
             </div>
             <div>
-              <label className="block text-[11px] font-medium text-gray-700 mb-1">
-                End Date
-              </label>
+              <label className="block text-[11px] font-medium text-gray-700 mb-1">Choose Number of Weeks</label>
               <div className="relative">
-                <DatePicker
-                  prefix={<FiCalendar className="text-gray-400 mr-2" />}
-                  style={componentStyles.datePicker}
-                  className="pl-10"
-                  value={formData.endDate ? dayjs(formData.endDate) : null}
-                  onChange={(date, dateString) =>
-                    updateForm("endDate", dateString)
-                  }
-                  suffixIcon={null}
+                <Select
+                  value={formData.weeks}
+                  showSearch
+                  className="w-full"
+                  placeholder="Select number of weeks"
+                  options={weekOptions}
+                  onChange={(val) => {
+                    updateForm("weeks", val);
+                    calculateEndDate(val, formData.startDate);
+                  }}
                 />
               </div>
             </div>
           </div>
 
+          <div className={`transform transition-all duration-500 ease-in-out ${showEndDate ? "block translate-y-0" : "hidden -translate-y-4 pointer-events-none"}`}>
+            <div className="bg-gray-50 p-1.5 flex gap-2 items-center rounded-lg shadow-sm">
+              <span className="block text-xs font-medium text-gray-700">End Date:</span>
+              <span className="font-black">{formData.endDate}</span>
+            </div>
+          </div>
+
           <div>
-            <label className="block text-[12px] font-medium text-gray-700 mb-1">
-              Price
-            </label>
+            <label className="block text-[12px] font-medium text-gray-700 mb-1">Price</label>
 
             <InputNumber
               prefix={
@@ -373,11 +426,35 @@ const ClassCreationWizard = () => {
               placeholder="Enter price"
               value={formData.price}
               onChange={(value) => updateForm("price", value)}
-              formatter={(value) =>
-                `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-              }
+              formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
               parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
             />
+          </div>
+
+          <div>
+            <label className="block text-[12px] font-medium text-gray-700 mb-1">Description</label>
+
+            <TextArea
+              rows={4}
+              placeholder="Please enter at least 10 words"
+              maxLength={6000}
+              // value={formData.description}
+              onChange={(v) => {
+                updateForm("description", v.target.value)
+              }}
+              onBlur={handleBlur}
+              // status={isValid ? "" : "error"}
+            />
+            <div style={{ marginTop: "8px" }}>
+              Word count:{" "}
+              {formData.description.trim()
+                ? formData.description.trim()
+                    .trim()
+                    .split(/\s+/)
+                    .filter((word) => /\w/.test(word)).length
+                : 0}
+              /10 minimum
+            </div>
           </div>
         </div>
       ),
@@ -386,8 +463,8 @@ const ClassCreationWizard = () => {
 
   return (
     <Drawer
-      open={true}
-      onCancel={() => {}}
+      open={openAddNewClass}
+      onClose={() => setOpenAddNewClass(false)}
       footer={null}
       width={850}
       styles={{
@@ -395,7 +472,6 @@ const ClassCreationWizard = () => {
           padding: 0,
         },
       }}
-      className="!rounded-lg"
     >
       <div className="p-8">
         <Steps
@@ -407,48 +483,24 @@ const ClassCreationWizard = () => {
         />
 
         <div className="mb-4">
-          <h2 className="text-2xl font-bold text-gray-900">
-            {steps[step].title}
-          </h2>
+          <h2 className="text-2xl font-bold text-gray-900">{steps[step].header}</h2>
           <p className="text-gray-500 mt-1">{steps[step].subtitle}</p>
         </div>
 
         <div className="min-h-[220px] m-4">{steps[step].content}</div>
 
         <div className="flex justify-between items-center pt-6 mt-8 border-t border-gray-200">
-          <Button
-            type="default"
-            onClick={() => setStep(step - 1)}
-            disabled={step === 0}
-            icon={<FiArrowLeft />}
-            className={`!flex !items-center !border-none !px-4 !bg-black !text-white !text-[11px] ${
-              step === 0 ? "!bg-black/30" : ""
-            }`}
-          >
+          <Button type="default" onClick={() => setStep(step - 1)} disabled={step === 0} icon={<FiArrowLeft />} className={`!flex !items-center !border-none !px-4 !bg-black !text-white !text-[11px] ${step === 0 ? "!bg-black/30" : ""}`}>
             Back
           </Button>
 
           {step < steps.length - 1 ? (
-            <Button
-              type="primary"
-              onClick={() => setStep(step + 1)}
-              disabled={!canProceed()}
-              className={`!bg-black !border-none !text-white !px-4 !flex !items-center !gap-2 !text-[11px] hover:!bg-black/90 ${
-                !canProceed() ? "!bg-black/30" : ""
-              }`}
-            >
+            <Button type="primary" onClick={() => setStep(step + 1)} disabled={!canProceed()} className={`!bg-black !border-none !text-white !px-4 !flex !items-center !gap-2 !text-[11px] hover:!bg-black/90 ${!canProceed() ? "!bg-black/30" : ""}`}>
               Next
               <FiArrowRight />
             </Button>
           ) : (
-            <Button
-              type="primary"
-              onClick={handleSubmit}
-              disabled={!canProceed() || createCohort.isPending}
-              className={`!bg-black !border-none !text-white !px-6 !flex !items-center !gap-2 hover:!bg-[#01840]/90 ${
-                !canProceed() || createCohort.isPending ? "!bg-black/30" : ""
-              } ${createCohort.isSuccess ? "!bg-green-600 !cursor-not-allowed !pointer-events-none" : ""}`}
-            >
+            <Button type="primary" onClick={handleSubmit} disabled={!canProceed() || createCohort.isPending} className={`!bg-black !border-none !text-white !px-6 !flex !items-center !gap-2 hover:!bg-[#01840]/90 ${!canProceed() || createCohort.isPending ? "!bg-black/30" : ""} ${createCohort.isSuccess ? "!bg-green-600 !cursor-not-allowed !pointer-events-none" : ""}`}>
               {createCohort.isPending ? (
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />

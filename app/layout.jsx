@@ -59,7 +59,6 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${inter.className} ${poppins.variable}`}>
-      {" "}
       <body className="font-sans">
         <QueryWrapper>
           <AntdRegistry>{children}</AntdRegistry>

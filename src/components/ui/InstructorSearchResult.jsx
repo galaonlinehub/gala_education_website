@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { GoVerified, GoBook } from "react-icons/go";
 import { FaUsers, FaStar, FaClock } from "react-icons/fa";
@@ -7,30 +8,22 @@ import { FaRegMessage, FaRegClock } from "react-icons/fa6";
 import { GoShieldCheck } from "react-icons/go";
 import { BsGlobe } from "react-icons/bs";
 import { LuUsers } from "react-icons/lu";
+import { useEnrollMe } from "@/src/store/student/useEnrollMe";
 
-const InstructorSearchResult = () => {
-  const certifications = [
-    "AWS Solutions Architect",
-    "Google Cloud Professional",
-    "Microsoft Azure Expert",
-    "Science",
-    "Mathematics",
-    "Bios",
-    "Computer",
-    "Logos",
-  ];
+const InstructorSearchResult = ({ details }) => {
+  const { setEnrollMe, setEnrollCohort } = useEnrollMe();
 
-  const [enroll, setEnroll] = React.useState(false);
-
-  const enrollNow = () => {
-    setEnroll(true);
+  const handleEnroll = (idx) => {
+    setEnrollMe(true);
+    setEnrollCohort(idx);
   };
+
   return (
     <div className="mx-auto space-y-8 text-xs">
       <div className="bg-black backdrop-blur-md rounded-full py-3 px-6 flex items-center justify-center gap-6 text-white">
         <div className="flex items-center gap-2">
           <FaUsers size={16} />
-          <span>{200} Students</span>
+          <span>{details.student_count} Students</span>
         </div>
         <div className="flex items-center gap-2">
           <FaStar size={16} className="text-yellow-400" />
@@ -44,10 +37,7 @@ const InstructorSearchResult = () => {
         </div>
       </div>
 
-      <Card
-        // loading={searchLoading}
-        className="!text-[10px] !flex !space-y-6"
-      >
+      <Card className="!text-[10px] !flex !space-y-6">
         <Card.Meta
           avatar={
             <Avatar
@@ -58,9 +48,8 @@ const InstructorSearchResult = () => {
           title={
             <div className="flex gap-3 items-center">
               <div className="flex items-center gap-1">
-                <span className="font-extrabold">
-                  {/* {searchResults?.user?.first_name}{" "}
-                    {searchResults?.user?.last_name} */}
+                <span className="font-extrabold capitalize">
+                  {details?.name}{" "}
                 </span>
                 <Badge
                   count={
@@ -115,12 +104,12 @@ const InstructorSearchResult = () => {
           </div>
 
           <div className="flex flex-wrap gap-2">
-            {certifications.map((cert, index) => (
+            {details?.subjects?.map((sub, index) => (
               <Badge
                 key={index}
                 count={
                   <div className="bg-black text-white text-[8px] p-1 rounded-sm">
-                    {cert}
+                    {sub?.name}
                   </div>
                 }
               />
@@ -129,141 +118,71 @@ const InstructorSearchResult = () => {
         </div>
       </Card>
 
-      <Card
-        // loading={searchLoading}
-        className="!text-black !text-[12px]"
-      >
-        <Card.Meta
-          title={
-            <>
-              <div className="flex gap-2 items-center">
-                <div className="bg-transparent/90 !text-white p-2 rounded-lg">
-                  <BsGlobe size={20} />
+      {details?.topics?.map((i, index) => (
+        <Card key={index} className="!text-black !text-[12px]">
+          <Card.Meta
+            title={
+              <>
+                <div className="flex gap-2 items-center">
+                  <div className="bg-transparent/90 !text-white p-2 rounded-lg">
+                    <BsGlobe size={20} />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="font-bold capitalize">
+                      {i?.topic?.title}
+                    </span>
+                    <span className="text-[10px]">{i?.topic?.description}</span>
+                  </div>
                 </div>
-                <div className="flex flex-col">
-                  <span className="font-bold">Cloud Architecture</span>
-                  <span className="text-[10px]">
-                    Master cloud computing from basics to advanced concepts
-                  </span>
+              </>
+            }
+            description={i?.cohorts?.map((c, _) => (
+              <div
+                key={c?.cohort_id}
+                className="flex flex-col mb-3 text-[10px]"
+              >
+                <div className="bg-[#001840]/5 !rounded-md !w-full !text-black !p-2 !text-[12px] space-y-1">
+                  <div className="w-full flex justify-between">
+                    <span className="text-[14px] font-black">
+                      {c?.cohort_name}
+                    </span>
+                    <Badge
+                      count={
+                        <span className="flex items-center justify-center text-white !text-[10px] bg-black font-extrabold p-1 rounded-sm">
+                          {c?.price?.toLocaleString()} Tsh
+                        </span>
+                      }
+                    />
+                  </div>
+                  <div className="text-[10px] text-opacity-10">
+                    {c?.description}
+                  </div>
+                  <div className="flex gap-2">
+                    <div className="flex border-[0.009rem] border-black bg-white px-2 items-center justify-center text-[8px] rounded-sm gap-1 font-bold">
+                      <FaRegClock size={10} />
+                      <span>{c?.total_weeks} Weeks</span>
+                    </div>
+                    <div className="flex  border-[0.009rem] border-black bg-white px-2 items-center justify-center text-[8px] rounded-sm gap-1 font-bold">
+                      <LuUsers size={10} />
+                      <span>{c?.total_enrolled_students} Enrolled</span>
+                    </div>
+                    <div className="flex  border-[0.009rem] border-black bg-white px-2 items-center justify-center text-[8px] rounded-sm gap-1 font-bold">
+                      <GoBook size={10} />
+                      <span>Starts {c?.start_date}</span>
+                    </div>
+                  </div>
+                  <Button
+                    onClick={() => handleEnroll(c?.cohort_id)}
+                    className="!w-full !bg-black !mt-2 !text-white !border-transparent hover:!border-transparent !text-xs"
+                  >
+                    Enroll Now
+                  </Button>
                 </div>
               </div>
-            </>
-          }
-          description={
-            <div className="flex flex-col gap-3 text-[10px]">
-              <div className="bg-[#f9fafb] !rounded-md !w-full !text-black !p-2 !text-[12px] space-y-1">
-                <div className="w-full flex justify-between">
-                  <span className="text-[12px] font-bold">
-                    AWS Solutions Architecture
-                  </span>
-                  <Badge
-                    count={
-                      <span className="flex items-center justify-center text-white !text-[8px] bg-black p-1 rounded-sm">
-                        15,000 Tsh
-                      </span>
-                    }
-                  />
-                </div>
-                <div className="text-[10px] text-opacity-10">
-                  Complete guide to building scalable systems on AWS
-                </div>
-                <div className="flex gap-2">
-                  <div className="flex border-[0.009rem] border-black bg-white px-2 items-center justify-center text-[8px] rounded-sm gap-1 font-bold">
-                    <FaRegClock size={10} />
-                    <span>12 Weeks</span>
-                  </div>
-                  <div className="flex  border-[0.009rem] border-black bg-white px-2 items-center justify-center text-[8px] rounded-sm gap-1 font-bold">
-                    <LuUsers size={10} />
-                    <span>19 Enrolled</span>
-                  </div>
-                  <div className="flex  border-[0.009rem] border-black bg-white px-2 items-center justify-center text-[8px] rounded-sm gap-1 font-bold">
-                    <GoBook size={10} />
-                    <span>Starts Feb 15</span>
-                  </div>
-                </div>
-                <Button
-                  onClick={enrollNow}
-                  className="!w-full !bg-black !mt-2 !text-white !border-transparent hover:!border-transparent !text-xs"
-                >
-                  Enroll Now
-                </Button>
-              </div>
-
-              <div className="bg-[#f9fafb] !rounded-md !w-full !text-black !p-2 !text-[12px] space-y-1">
-                <div className="w-full flex justify-between">
-                  <span className="text-[12px] font-bold">
-                    AWS Solutions Architecture
-                  </span>
-                  <Badge
-                    count={
-                      <span className="flex items-center justify-center text-white !text-[8px] bg-black p-1 rounded-sm">
-                        15,000 Tsh
-                      </span>
-                    }
-                  />
-                </div>
-                <div className="text-[10px] text-opacity-10">
-                  Complete guide to building scalable systems on AWS
-                </div>
-                <div className="flex gap-2">
-                  <div className="flex border-[0.009rem] border-black bg-white px-2 items-center justify-center text-[8px] rounded-sm gap-1 font-bold">
-                    <FaRegClock size={10} />
-                    <span>12 Weeks</span>
-                  </div>
-                  <div className="flex  border-[0.009rem] border-black bg-white px-2 items-center justify-center text-[8px] rounded-sm gap-1 font-bold">
-                    <LuUsers size={10} />
-                    <span>19 Enrolled</span>
-                  </div>
-                  <div className="flex  border-[0.009rem] border-black bg-white px-2 items-center justify-center text-[8px] rounded-sm gap-1 font-bold">
-                    <GoBook size={10} />
-                    <span>Starts Feb 15</span>
-                  </div>
-                </div>
-                <Button className="!w-full !bg-black !mt-2 !text-white !border-transparent hover:!border-transparent !text-xs">
-                  Enroll Now
-                </Button>
-              </div>
-
-              <div className="bg-[#f9fafb] !rounded-md !w-full !text-black !p-2 !text-[12px] space-y-1">
-                <div className="w-full flex justify-between">
-                  <span className="text-[12px] font-bold">
-                    AWS Solutions Architecture
-                  </span>
-                  <Badge
-                    count={
-                      <span className="flex items-center justify-center text-white !text-[8px] bg-black p-1 rounded-sm">
-                        15,000 Tsh
-                      </span>
-                    }
-                  />
-                </div>
-                <div className="text-[10px] text-opacity-10">
-                  Complete guide to building scalable systems on AWS
-                </div>
-                <div className="flex gap-2">
-                  <div className="flex border-[0.009rem] border-black bg-white px-2 items-center justify-center text-[8px] rounded-sm gap-1 font-bold">
-                    <FaRegClock size={10} />
-                    <span>12 Weeks</span>
-                  </div>
-                  <div className="flex  border-[0.009rem] border-black bg-white px-2 items-center justify-center text-[8px] rounded-sm gap-1 font-bold">
-                    <LuUsers size={10} />
-                    <span>19 Enrolled</span>
-                  </div>
-                  <div className="flex  border-[0.009rem] border-black bg-white px-2 items-center justify-center text-[8px] rounded-sm gap-1 font-bold">
-                    <GoBook size={10} />
-                    <span>Starts Feb 15</span>
-                  </div>
-                </div>
-                <Button className="!w-full !bg-black !mt-2 !text-white !border-transparent hover:!border-transparent !text-xs">
-                  Enroll Now
-                </Button>
-              </div>
-            </div>
-          }
-        />
-
-        <div></div>
-      </Card>
+            ))}
+          />
+        </Card>
+      ))}
     </div>
   );
 };

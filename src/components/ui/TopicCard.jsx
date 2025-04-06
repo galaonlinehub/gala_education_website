@@ -1,18 +1,25 @@
+"use client";
 import React from "react";
 import { Card, Avatar, Badge, Button, Skeleton } from "antd";
-import { FaUsers, FaStar, FaClock } from "react-icons/fa";
+import { FaUsers } from "react-icons/fa";
 import { GoVerified, GoBook } from "react-icons/go";
-import { FaRegStar, FaRegMessage, FaRegClock } from "react-icons/fa6";
+import { FaRegClock } from "react-icons/fa6";
 import { GoShieldCheck } from "react-icons/go";
 import { BsGlobe } from "react-icons/bs";
 import { LuUsers } from "react-icons/lu";
 import { useEnrollMe } from "@/src/store/student/useEnrollMe";
-import { useEnroll } from "@/src/hooks/useEnroll";
 
 const TopicCard = ({ classInfo }) => {
   const { setEnrollMe, setEnrollCohort } = useEnrollMe();
 
+
+  const handleEnroll = () => {
+    setEnrollMe(true);
+    setEnrollCohort(classInfo?.cohort_id);
+  };
+
   return (
+    
     <Card
       loading={false}
       className="!text-black !text-[12px] hover:shadow-lg transition-all !self-center !mb-3"
@@ -36,7 +43,7 @@ const TopicCard = ({ classInfo }) => {
                 <span className="flex items-center justify-center text-white bg-[#001840] p-1 rounded-sm gap-1">
                   <span className="font-extrabold">Tshs</span>
                   <span className="font-black text-sm">
-                    {classInfo?.price}/=
+                    {classInfo?.price.toLocaleString()}/=
                   </span>
                 </span>
               </Badge>
@@ -112,10 +119,7 @@ const TopicCard = ({ classInfo }) => {
               {/* Action Button */}
               <Button
                 className="!w-full !bg-[#001840] !mt-2 !text-white !border-transparent hover:!border-transparent !text-xs hover:!opacity-90 !font-bold"
-                onClick={() => {
-                  setEnrollMe(true);
-                  setEnrollCohort(classInfo?.cohort_id);
-                }}
+                onClick={handleEnroll}
               >
                 Enroll Now
               </Button>
@@ -151,10 +155,9 @@ const TopicCardSkeleton = () => (
                 className="!w-[150px] !h-[12px]"
               />
             </div>
-            <Skeleton.Button
+            <Skeleton.Avatar
               active
-              size="small"
-              className="!w-[70px] !h-[20px]"
+              size={64}
             />
           </div>
         </div>

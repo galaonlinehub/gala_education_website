@@ -75,6 +75,7 @@
 .ant-tabs-ink-bar {
   height: 6px !important;
   width: 50% !important;
+  background-color: #001840 !important;
 }
 
 .ant-tabs-tab {
@@ -91,7 +92,7 @@
 }
 
 .ant-switch-checked {
-  background-color: #2459a4 !important; /* Color when checked */
+  background-color: #001840 !important; /* Color when checked */
 }
 
 .ant-switch:not(.ant-switch-checked) {
@@ -227,7 +228,7 @@
 }
 
 /* Override ant-design components */
-.ant-btn,
+/* .ant-btn,
 .ant-input,
 .ant-select,
 .ant-dropdown-menu,
@@ -242,9 +243,18 @@
 .ant-popover,
 .ant-card-body {
   font-family: 'Urbanist', sans-serif !important;
-}
+} */
 
 /* For specific Poppins usage */
 .font-poppins {
   font-family: var(--font-poppins);
+}
+
+
+
+.ant-tooltip-inner {
+  background-color: #001840 !important;
+}
+.ant-tooltip-arrow::before {
+  background-color: #001840 !important;
 }

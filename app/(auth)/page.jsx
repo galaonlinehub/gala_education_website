@@ -20,18 +20,29 @@ import ClientReviewsSm from "@/src/components/home/card/ClientReviewsSm";
 import Platform from "@/src/components/home/card/Platform";
 import Pioneers from "@/src/components/home/card/Pioneers";
 import LatestNews from "@/src/components/home/card/LatestNews";
-import AboutUs from "@/src/components/home/modals/AboutUs";
+import { Modal } from "antd";
 import Donate from "@/src/components/ui/Donate";
 import VideoPlayer from "@/src/components/ui/VideoPlayer";
 import ScrollableContent from "@/src/components/ui/TeachersCard";
+import { useUser } from "@/src/hooks/useUser";
+import Footer from "@/src/components/layout/footer";
+import { Button } from "antd";
+import { Document, Page, pdfjs } from "react-pdf";
+import { apiGet } from "@/src/services/api_service";
+import PdfViewer from "@/src/components/home/modals/PdfViewer";
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 function Home() {
   const [showDonatePopup, setShowDonatePopup] = useState(false);
+  const { user } = useUser();
+
+  const [showPdf, setShowPdf] = useState(false);
+
+  const financialFormPdfUrl = "https://galaweb.galahub.org/api/documents/uploads/documents/financial_form.pdf";
 
   const handleDonateVisibility = () => {
     setShowDonatePopup(true);
   };
-
   useEffect(() => {
     if (showDonatePopup) {
       document.body.classList.add("no-scroll");
@@ -39,54 +50,44 @@ function Home() {
       document.body.classList.remove("no-scroll");
     }
 
-    // Cleanup on unmount
     return () => {
       document.body.classList.remove("no-scroll");
     };
   }, [showDonatePopup]);
 
   return (
-    <div className="relative w-screen max-w-screen-2xl mx-auto h-full">
+    <div className="relative w-screen  mx-auto h-full">
       {showDonatePopup && (
-        <div className="fixed inset-0 bg-black bg-opacity-70 !z-[9999] flex justify-center items-center">
+        <div className="fixed inset-0 bg-black bg-opacity-70 !z-[80] flex justify-center items-center">
           <div className="p-1 rounded-lg w-full items-center justify-center flex ">
             <Donate setShowDonatePopup={setShowDonatePopup} showDonatePopup={showDonatePopup} />
           </div>
         </div>
       )}
 
-      {/* <div className="relative w-screen max-w-screen-2xl mx-auto h-[100vh] xl:h-[90vh] 2xl:h-[70vh] overflow-hidden"> */}
-      {/* <Image src="/homepage_photo.png" layout="fill" objectFit="cover" alt="Gala Home" /> */}
+      <PdfViewer pdfUrl={financialFormPdfUrl} isOpen={showPdf} onClose={() => setShowPdf(false)} />
 
-      <div className="relative w-screen max-w-screen-2xl mx-auto h-[60rem] sm:h-[44rem] overflow-hidden -mt-12">
+      <div className="relative w-screen  mx-auto h-[60rem] sm:h-[60rem] sm:items-center md:h-[50rem] lg:h-[44rem] overflow-hidden -mt-12">
         <Image src="/homepage_photo.png" layout="fill" objectFit="cover" alt="Gala Home" />
 
         <div className="absolute inset-0 bg-black opacity-70 w-full" />
         <div className="absolute inset-0 sm:py-12 py-12 w-full sm:px-24 md:px-10 px-2 flex md:flex-row flex-col lg:justify-between md:gap-10 max-sm:gap-5">
-          <div className={"mt-8"}>
-            <div className="">
-              <h1 className="text-white sm:text-[64px] mt-10 text-[35px]  sm:leading-[70px] leading-[30px] font-black">Gala</h1>
-              <h1 className="text-white sm:text-[64px] text-[35px]  sm:leading-[70px] leading-[30px] font-black">Education</h1>
+          <div className={"mt-14"}>
+            <div className="xxs:gap-8 mb-6 sm:gap-0 sm:mb-0 flex flex-col">
+              <h1 className="text-white xxs:text-[64px] mt-10 text-[35px]  sm:leading-[70px] leading-[30px] font-black">Gala</h1>
+              <h1 className="text-white xxs:text-[64px] text-[35px]  sm:leading-[70px] leading-[30px] font-black">Education</h1>
             </div>
-            <h2 className="text-white font-bold sm:leading-[30px] leading-[15px] sm:text-[20px] text-[10px]">
+            <h2 className="text-white font-bold sm:leading-[30px] leading-[15px] sm:text-[20px] text-[12px]">
               Empowering minds, shaping futures - Gala Education, your
               <br /> pathway to success.
             </h2>
-
-            <div className={"rounded-[4rem] py-[10px] px-4 mt-[2rem] flex gap-2 items-center justify-between bg-[#00184080]/50 border-white border-[1px]  sm:w-2/3 w-full"}>
-              <div className="flex flex-row gap-2 w-full">
-                <IoMenu className={"text-white"} />
-                <input placeholder={"Search for information here"} className={"bg-transparent placeholder-white/85 placeholder:text-xs text-xs text-white focus:placeholder-white/85 w-full border-none focus:outline-none"} />
-              </div>
-              <FaSearch className={"text-white"} />
-            </div>
           </div>
           <MailingList />
         </div>
       </div>
 
-      <div className="relative flex items-center flex-col gap-2 md:gap-12 sm:flex-row px-6 h-[45rem] sm:px-12 xs:h-[45rem] sm:h-[30rem] w-full ">
-        <div className="relative w-full sm:w-1/2 mt-14 h-fit  max-sm:p-2">
+      <div className="relative flex items-center flex-col gap-2 md:gap-12 md:flex-row px-6 h-[45rem] sm:px-12 xs:h-[45rem] sm:h-[43rem] w-full ">
+        <div className="relative w-full md:w-1/2 mt-14 h-fit  max-sm:p-2">
           <VideoPlayer videoSrc="/videos/gala_intro.mp4" />
         </div>
         <div className="md:w-1/2 w-full mb-20">
@@ -123,23 +124,25 @@ function Home() {
         </div>
       </div>
 
-      <div className="relative  max-sm:w-screen h-[28rem] w-full max-w-screen-2xl mx-auto mt-4 md:mt-8 lg:mt-4 px-6 sm:px-4 py-6 sm:py-10 flex flex-col md:flex-row">
-        <div className="hidden md:block w-full">
-          <div className=" w-full flex flex-col items-center gap-3 p-4">
-            <h1 className="font-black w-full text-center px-3 !text-3xl">Register with us!</h1>
-            <h3 className="text-center text-xs md:w-2/3 w-full mb-4 sm:text-sm leading-relaxed sm:px-6 ">Join Gala Education today - register as a teacher or student and unlock endless learning opportunities!</h3>
+      {!user && (
+        <div className="relative max-sm:w-screen h-[32rem] w-full  mx-auto mt-4 md:mt-8 lg:mt-4 px-6 sm:px-4 py-6 sm:py-10 flex flex-col md:flex-row">
+          <div className="hidden md:block w-full">
+            <div className=" w-full flex flex-col items-center gap-3 p-4">
+              <h1 className="font-black w-full text-center px-3 !text-3xl">Register with us!</h1>
+              <h3 className="text-center text-xs md:w-2/3 w-full mb-4 sm:text-sm leading-relaxed sm:px-6 ">Join Gala Education today - register as a teacher or student and unlock endless learning opportunities!</h3>
 
-            <div className="flex sm:gap-5 gap-2 overflow-x-auto px-2 max-sm:w-[98%] ">
-              <RegisterCard title={"Register as teacher"} image={"/register_teacher.jpeg"} desc={"Become part of our team of educators and help deliver exceptional learning experiences."} type={"instructor"} />
-              <RegisterCard title={"Register as student"} image={"/register_student.jpeg"} desc={"Join our community of learners and be part of the journey to excellence in education!"} type={"student"} />
+              <div className="flex sm:gap-5 gap-2 overflow-x-auto px-2 max-sm:w-[98%] ">
+                <RegisterCard title={"Register as teacher"} image={"/donate_and_funds.jpeg"} desc={"Become part of our team of educators and help deliver exceptional learning experiences."} type={"instructor"} />
+                <RegisterCard title={"Register as student"} image={"/register_student.jpeg"} desc={"Join our community of learners and be part of the journey to excellence in education!"} type={"student"} />
+              </div>
             </div>
           </div>
+          <div className="w-full block md:hidden gap-2 ">
+            <h1 className="font-black w-full text-center lg:text-4xl text-3xl mb-3">Register with us!</h1>
+            <RegisterWithUs />
+          </div>
         </div>
-        <div className="w-full block md:hidden gap-2 ">
-          <h1 className="font-black w-full text-center lg:text-4xl text-4xl mb-3">Register with us!</h1>
-          <RegisterWithUs />
-        </div>
-      </div>
+      )}
 
       <div className="relative flex items-center w-full px-6 ">
         <div className=" w-full mt-1 py-4 flex gap-5 items-center justify-center flex-col h-fit">
@@ -211,27 +214,27 @@ function Home() {
               />
             </div>
           </div>
-          <div className="block h-64 md:hidden w-full">
+          <div className="block md:hidden w-full">
             <Platform />
           </div>
         </div>
       </div>
 
-      {/* //relative w-screen max-w-screen-2xl mx-auto h-[100vh] overflow-hidden */}
+      {/* //relative w-screen  mx-auto h-[100vh] overflow-hidden */}
 
-      <div className="flex flex-col items-center">
-        <h1 className="font-black text-3xl text-center">Donations & Funding</h1>
+      <div className="flex flex-col items-center ">
+        <h1 className="font-black text-3xl text-center xxs:mt-12 md:mt-0">Donations & Funding</h1>
         <h2 className="text-xs md:w-2/3 w-full px-3 flex text-center py-4">Your donations directly support our mission in philanthropic activities, helping to meet children&apos;s educational needs, especially those from poor backgrounds. You don&apos;t have to be a user to contribute—every donation makes a difference in providing quality education for all.</h2>
         <div className="relative flex flex-col gap-4 sm:flex-row mt-3 h-fit sm:h-[37rem] w-full ">
-          <div className="relative  w-full sm:w-1/2 h-full max-sm:p-2">
-            <div className=" md:w-[300px] lg:w-[521px] h-[549px] hidden md:block left-0 bg-[#001840]" />
-            <Image alt="image" src="/register_teacher.jpeg" width={1920} height={1080} quality={75} className="border-[14px] top-[5rem]  left-[6rem] md:w-[300px] lg:w-[542px] h-[378px] object-cover  sm:absolute  border-white" />
+          <div className="relative  w-full sm:w-2/3 h-full max-sm:p-2">
+            <div className=" md:w-[300px] lg:w-[521px] h-[549px] hidden sm:block left-0 bg-[#001840]" />
+            <Image alt="image" src="/donate_and_funds.jpeg" width={1920} height={1080} quality={75} className="border-[14px] top-[5rem]  left-[6rem] md:w-[300px] lg:w-[542px] h-[378px] object-cover  sm:absolute  border-white" />
           </div>
           <div className="md:w-1/2 w-full ">
             <div className="relative w-full h-3/4  place-items-center">
-              <Image alt="Donation image" src={"/donate1.jpeg"} width={100} height={100} className=" rounded-br-[100px] h-[259px] w-[266px] object-cover  sm:ml-24" />
+              <Image alt="Donation image" src={"/poor_school.jpeg"} width={100} height={100} className=" rounded-br-[100px] h-[259px] w-[266px] object-cover  sm:ml-24" />
               {/*<div className="absolute  bottom-24 left-[4rem] w-[20rem] !z-10 bg-white p-6  mx-4 border rounded-lg shadow-lg">*/}
-              <div className="absolute  sm:bottom-24 sm:left-[2rem] -bottom-[5rem] left-3 w-[15rem] sm:w-[20rem] !z-10 bg-white p-6  mxp-4 border rounded-lg shadow-lg">
+              <div className="absolute  sm:bott:om-24 sm:left-[2rem] -bottom-[5rem] left-3 w-[15rem] sm:w-[20rem] !z-10 bg-white p-6  mxp-4 border rounded-lg shadow-lg">
                 <h1 className="sm:text-xl text-base font-bold mb-4">Donate today to support underfunded schools</h1>
                 <p className="sm:text-sm text-xs text-gray-600 mb-4 ">Join our community and make a difference! Your donation supports quality education and empowers lives. Together, we can create a brighter future. Every contribution counts - be part of something impactful today!</p>
                 <button onClick={handleDonateVisibility} className="w-full md:w-auto border border-blue-600 text-blue-600 font-bold py-2 px-4 rounded-md hover:bg-blue-50 transition-colors">
@@ -256,7 +259,9 @@ function Home() {
                 <Image src="/pdf_image.png" width={50} height={50} alt="pdf image" />
               </div>
             </div>
-            <button className="border-[1px] md:w-2/5 w-full text-xs text-center font-bold p-2  border-[#030DFE] rounded">Apply for financial aid</button>
+            <Button onClick={() => setShowPdf(true)} className="border-[1px] md:w-2/5 w-full text-xs text-center font-bold p-2  border-[#030DFE] rounded">
+              Apply for financial aid
+            </Button>
           </div>
         </div>
       </div>
@@ -264,7 +269,7 @@ function Home() {
       <div className="relative flex flex-col sm:flex-row  mt-4  h-fit w-full ">
         <div className="w-full flex  space-y-8   h-fit flex-col items-center">
           <h1 className="text-3xl px-3   text-center font-black leading-tight ">Pioneers in Digital Teaching</h1>
-          <h1 className="text-center text-xs">
+          <h1 className="text-center text-xs px-4">
             &ldquo;Our platform offers personalized, AI-driven learning while teaching students healthy <br /> digital habits for balanced, responsible technology use.&ldquo;
           </h1>
           <div className="hidden md:block">
@@ -336,7 +341,7 @@ function Home() {
               <h1 className="text-3xl text-center font-black ">Latest News</h1>
               <h1 className="text-center text-xs w-full px-3 md:w-2/3">Stay updated with the latest developments at Gala Education. Here, we share exciting announcements, new initiatives, and progress on our mission to make quality education accessible to all. Follow our journey as we continue to make a difference in Tanzania&apos;s educational landscape.</h1>
               <div className="flex flex-col p-6 ">
-                <div className="flex gap-2 flex-col sm:flex-row ">
+                <div className="flex gap-2 flex-col md:flex-row ">
                   <div className="basis-1/2 flex flex-col h-80">
                     <Image alt="image" src="/ai.jpeg" quality={75} width={200} height={200} className=" h-[127px] w-full object-cover" />
 
@@ -374,9 +379,9 @@ function Home() {
           <div className="hidden md:block">
             <div className="relative py-8">
               <div className={"flex flex-row max-sm:w-[98%] sm:justify-around items-center gap-y-2 gap-x-4 px-2 overflow-x-auto"}>
-                <Events img={"/events2.jpeg"} title={"Future of Learning Summit"} desc={"A conference exploring cutting-edge technologies in education, featuring expert speakers on AI, personalized learning, and digital transformation in classrooms."} />
-                <Events img={"/events3.jpeg"} title={"Student Innovation Hackathon"} desc={"A conference exploring cutting-edge technologies in education, featuring expert speakers on AI, personalized learning, and digital transformation in classrooms."} />
-                <Events img={"/events1.jpeg"} title={"Interactive Career Guidance Fair"} desc={"A workshop-focused event connecting students with industry professionals, offering career advice, mentorship, and guidance on education pathways for future success."} />
+                <Events img={"/hackathon.jpeg"} title={"Future of Learning Summit"} desc={"A conference exploring cutting-edge technologies in education, featuring expert speakers on AI, personalized learning, and digital transformation in classrooms."} />
+                <Events img={"/career_guidance.jpeg"} title={"Student Innovation Hackathon"} desc={"A conference exploring cutting-edge technologies in education, featuring expert speakers on AI, personalized learning, and digital transformation in classrooms."} />
+                <Events img={"/learning_summit.jpeg"} title={"Interactive Career Guidance Fair"} desc={"A workshop-focused event connecting students with industry professionals, offering career advice, mentorship, and guidance on education pathways for future success."} />
               </div>
             </div>
           </div>
@@ -389,21 +394,114 @@ function Home() {
           <h1 className="text-3xl text-center font-black px-2">Frequently Asked Questions (FAQs)</h1>
           <h1 className="text-center text-xs w-full px-6 md:w-2/3">Here you’ll find answers to common questions about Gala Education’s services, donations, and how our platform works. Whether you&apos;re a student, parent, or supporter, we&apos;ve provided helpful information to guide you. If you don&apos;t find what you&apos;re looking for, feel free to reach out to us!</h1>
           <div className="relative md:w-2/3 px-4 w-full md:py-8">
-            <FaqCard faqQn={"What is Gala Education?"} faqAns={"Gala Education is an online platform dedicated to providing high-quality tutoring for Primary, Secondary, and High School students across Tanzania. In addition to tutoring, we offer short courses designed to equip Tanzanian youth with self-employable skills. Our platform is powered by AI, which helps deliver personalized learning experiences tailored to each student’s individual needs and progress. We also reinvest profits into philanthropic activities, including building classrooms and libraries for under-served communities"} />
-            <FaqCard faqQn={"Is there a money-back guarantee?"} faqAns={"Gala Education does not offer refunds unless there is a verified technical issue that prevents you from accessing our services. If you encounter such a problem, please contact our support team, and we will assist you in resolving the issue or processing a refund if necessary."} />
-            <FaqCard faqQn={"Who can use Gala Education?"} faqAns={"Gala Education is designed for students in Primary, Secondary, and High School across Tanzania who are looking for personalized tutoring in various subjects. Our short courses are open to young adults looking to acquire practical, self-employable skills in various fields. Anyone with access to a device and internet connection can benefit from our educational resources."} />
-            <FaqCard faqQn={"Do I need a device to access the tutoring sessions?"} faqAns={"Yes, you will need a device, such as a smartphone, tablet, or computer, and a stable internet connection to access our online tutoring sessions. This allows you to participate in lessons, access learning materials, and interact with our qualified tutors from anywhere at your convenience."} />
-            <FaqCard faqQn={"Do I need to be a registered user to donate?"} faqAns={"No, donations can be made by anyone, regardless of whether you are a registered user of Gala Education. Our donation system is designed to allow anyone who wants to support our mission to contribute. The funds are directly used to support children’s education, particularly those from low-income backgrounds who lack access to quality resources."} />
-            <FaqCard faqQn={"How are the donations used?"} faqAns={"All donations received are reinvested into our philanthropic efforts to improve education in Tanzania. This includes building and equipping classrooms, libraries, and providing educational materials for under-served communities. The donations also help support the development of educational programs that benefit students in need, ensuring that every child has access to quality learning opportunities."} />
-            <FaqCard faqQn={"What makes Gala Education different from other tutoring platforms?"} faqAns={"Gala Education stands out by combining quality online tutoring with a strong commitment to community development. Not only do we provide expert tutors to support student learning, but we also employ teachers across Tanzania to help address the national shortage of qualified educators. Our platform also integrates AI-powered personalized learning to enhance each student’s progress. Moreover, we reinvest profits into community-building projects like classrooms and libraries, making our mission far-reaching and impactful."} />
-            <FaqCard faqQn={"How do the short courses work?"} faqAns={"Our short courses are specifically designed to equip Tanzanian youth with practical, self-employable skills in various industries such as technology, business, and creative fields. These courses are taught by experienced academics, executives, and industry leaders. Students can take the courses online, at their own pace, and gain valuable skills that will help them pursue self-employment or career opportunities. Upon completion, students may also receive certification for the skills they’ve learned."} />
-            <FaqCard faqQn={"Is there any age limit for the short courses?"} faqAns={"There is no specific age limit for the short courses. The courses are open to all Tanzanian youth who are eager to learn and acquire skills for self-employment. Whether you’re a recent graduate, a young professional, or someone looking to switch careers, our short courses offer flexible learning opportunities that can be adapted to your personal goals."} />
-            <FaqCard faqQn={"How can I become a tutor on Gala Education?"} faqAns={"If you are a qualified educator with a passion for teaching and helping students succeed, you can apply to become a tutor at Gala Education. We are always looking for skilled tutors who can deliver personalized, high-quality lessons across a range of subjects. To apply, visit our website to submit your application, and we will contact you if there is a suitable opportunity to join our team."} />
-            <FaqCard faqQn={"Can I access Gala Education if I live outside of Tanzania?"} faqAns={"While Gala Education is primarily focused on providing services to students within Tanzania, anyone with a stable internet connection can access our short courses. Our online platform allows individuals from anywhere in the world to benefit from our industry-leading courses that equip youth with valuable skills for self-employment. However, tutoring sessions are designed specifically for Tanzanian students, so availability may vary depending on your location."} />
+            <FaqCard
+              faqQn={"What is Gala Education?"}
+              bgColor={"#001840"}
+              iconColor={"white"}
+              headerColor={"white"}
+              faqAns={
+                "Gala Education is an online platform dedicated to providing high-quality tutoring for Primary, Secondary, and High School students across Tanzania. In addition to tutoring, we offer short courses designed to equip Tanzanian youth with self-employable skills. Our platform is powered by AI, which helps deliver personalized learning experiences tailored to each student’s individual needs and progress. We also reinvest profits into philanthropic activities, including building classrooms and libraries for under-served communities"
+              }
+            />
+            <FaqCard
+              faqQn={"Is there a money-back guarantee?"}
+              bgColor={"#001840"}
+              iconColor={"white"}
+              headerColor={"white"}
+              faqAns={
+                "Gala Education does not offer refunds unless there is a verified technical issue that prevents you from accessing our services. If you encounter such a problem, please contact our support team, and we will assist you in resolving the issue or processing a refund if necessary."
+              }
+            />
+            <FaqCard
+              faqQn={"Who can use Gala Education?"}
+              bgColor={"#001840"}
+              iconColor={"white"}
+              headerColor={"white"}
+              faqAns={
+                "Gala Education is designed for students in Primary, Secondary, and High School across Tanzania who are looking for personalized tutoring in various subjects. Our short courses are open to young adults looking to acquire practical, self-employable skills in various fields. Anyone with access to a device and internet connection can benefit from our educational resources."
+              }
+            />
+            <FaqCard
+              faqQn={"Do I need a device to access the tutoring sessions?"}
+              bgColor={"#001840"}
+              iconColor={"white"}
+              headerColor={"white"}
+              faqAns={
+                "Yes, you will need a device, such as a smartphone, tablet, or computer, and a stable internet connection to access our online tutoring sessions. This allows you to participate in lessons, access learning materials, and interact with our qualified tutors from anywhere at your convenience."
+              }
+            />
+            <FaqCard
+              faqQn={"Do I need to be a registered user to donate?"}
+              bgColor={"#001840"}
+              iconColor={"white"}
+              headerColor={"white"}
+              faqAns={
+                "No, donations can be made by anyone, regardless of whether you are a registered user of Gala Education. Our donation system is designed to allow anyone who wants to support our mission to contribute. The funds are directly used to support children’s education, particularly those from low-income backgrounds who lack access to quality resources."
+              }
+            />
+            <FaqCard
+              faqQn={"How are the donations used?"}
+              bgColor={"#001840"}
+              iconColor={"white"}
+              headerColor={"white"}
+              faqAns={
+                "All donations received are reinvested into our philanthropic efforts to improve education in Tanzania. This includes building and equipping classrooms, libraries, and providing educational materials for under-served communities. The donations also help support the development of educational programs that benefit students in need, ensuring that every child has access to quality learning opportunities."
+              }
+            />
+            <FaqCard
+              faqQn={
+                "What makes Gala Education different from other tutoring platforms?"
+              }
+              bgColor={"#001840"}
+              iconColor={"white"}
+              headerColor={"white"}
+              faqAns={
+                "Gala Education stands out by combining quality online tutoring with a strong commitment to community development. Not only do we provide expert tutors to support student learning, but we also employ teachers across Tanzania to help address the national shortage of qualified educators. Our platform also integrates AI-powered personalized learning to enhance each student’s progress. Moreover, we reinvest profits into community-building projects like classrooms and libraries, making our mission far-reaching and impactful."
+              }
+            />
+            <FaqCard
+              faqQn={"How do the short courses work?"}
+              faqAns={
+                "Our short courses are specifically designed to equip Tanzanian youth with practical, self-employable skills in various industries such as technology, business, and creative fields. These courses are taught by experienced academics, executives, and industry leaders. Students can take the courses online, at their own pace, and gain valuable skills that will help them pursue self-employment or career opportunities. Upon completion, students may also receive certification for the skills they’ve learned."
+              }
+              bgColor={"#001840"}
+              iconColor={"white"}
+              headerColor={"white"}
+            />
+            <FaqCard
+              faqQn={"Is there any age limit for the short courses?"}
+              faqAns={
+                "There is no specific age limit for the short courses. The courses are open to all Tanzanian youth who are eager to learn and acquire skills for self-employment. Whether you’re a recent graduate, a young professional, or someone looking to switch careers, our short courses offer flexible learning opportunities that can be adapted to your personal goals."
+              }
+              bgColor={"#001840"}
+              iconColor={"white"}
+              headerColor={"white"}
+            />
+            <FaqCard
+              faqQn={"How can I become a tutor on Gala Education?"}
+              faqAns={
+                "If you are a qualified educator with a passion for teaching and helping students succeed, you can apply to become a tutor at Gala Education. We are always looking for skilled tutors who can deliver personalized, high-quality lessons across a range of subjects. To apply, visit our website to submit your application, and we will contact you if there is a suitable opportunity to join our team."
+              }
+              bgColor={"#001840"}
+              iconColor={"white"}
+              headerColor={"white"}
+            />
+            <FaqCard
+              faqQn={
+                "Can I access Gala Education if I live outside of Tanzania?"
+              }
+              faqAns={
+                "While Gala Education is primarily focused on providing services to students within Tanzania, anyone with a stable internet connection can access our short courses. Our online platform allows individuals from anywhere in the world to benefit from our industry-leading courses that equip youth with valuable skills for self-employment. However, tutoring sessions are designed specifically for Tanzanian students, so availability may vary depending on your location."
+              }
+              bgColor={"#001840"}
+              iconColor={"white"}
+              headerColor={"white"}
+            />
           </div>
         </div>
       </div>
       {/* <AcceptCookies/> */}
+      <Footer />
     </div>
   );
 }

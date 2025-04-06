@@ -1,25 +1,29 @@
+"use client";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { apiGet } from "../services/api_service";
 import { useNewClass } from "@/src/store/student/class";
 import { useSearchResult } from "../store/search_result";
+import { sendR } from "@/res";
 
 export const useSearch = () => {
+  // State management
   const [searchTerm, setSearchTerm] = useState("");
   const [isSearching, setIsSearching] = useState({
     loading: false,
     resultsVisible: false,
   });
   const searchContainerRef = useRef(null);
-  const { setOpenNewClass } = useNewClass();
+
+  // External store hooks
+  const { openNewClass, setOpenNewClass } = useNewClass();
   const { selectedItemId, setSelectedItemId } = useSearchResult();
 
-  const clearSearch = () => {
-    setSearchTerm("");
-    setIsSearching({ loading: false, resultsVisible: false });
-  };
-
-  const { data: searchResults = [], refetch } = useQuery({
+  // Search query
+  const {
+    data: searchResults = { topics: [], teachers: [] },
+    refetch: refetchSearch,
+  } = useQuery({
     queryKey: ["search", searchTerm],
     queryFn: async () => {
       if (!searchTerm.trim()) return [];
@@ -27,24 +31,62 @@ export const useSearch = () => {
       return response.data;
     },
     enabled: false,
-    staleTime: 5000,
+    staleTime: Infinity,
   });
 
+  // Results query
+  const {
+    data: detailedResults = [],
+    isFetching: isFetchingResults,
+    refetch: refetchResults,
+  } = useQuery({
+    queryKey: ["search-results", selectedItemId.id, selectedItemId.type],
+    queryFn: async () => {
+      if (!selectedItemId.id || !selectedItemId.type) return [];
+
+      const endpoint =
+        selectedItemId.type === "instructor"
+          ? `instructor/${selectedItemId.id}/profile`
+          : `topic/${selectedItemId.id}/cohorts`;
+
+      const response = await apiGet(endpoint);
+      const res =
+        selectedItemId.type === "instructor"
+          ? response.data
+          : response.data.data;
+
+      return res;
+    },
+    enabled: !!selectedItemId.id && !!selectedItemId.type,
+  });
+
+  const clearSearch = useCallback(() => {
+    setSearchTerm("");
+    setIsSearching({ loading: false, resultsVisible: false });
+    if (!openNewClass) {
+      setSelectedItemId({ id: null, type: null });
+    }
+  }, [setSelectedItemId, openNewClass]);
+
   const performSearch = useCallback(() => {
-    setIsSearching((prev) => ({
-      ...prev,
-      loading: true,
-      resultsVisible: true,
-    }));
-    refetch().finally(() => {
+    if (!openNewClass) {
       setIsSearching((prev) => ({
         ...prev,
-        loading: false,
-        resultsVisible: searchTerm.trim().length > 0,
+        loading: true,
+        resultsVisible: true,
       }));
-    });
-  }, [refetch, searchTerm]);
 
+      refetchSearch().finally(() => {
+        setIsSearching((prev) => ({
+          ...prev,
+          loading: false,
+          resultsVisible: searchTerm.trim().length > 0,
+        }));
+      });
+    }
+  }, [openNewClass, refetchSearch, searchTerm]);
+
+  // Search debounce effect
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       if (searchTerm.trim()) {
@@ -55,16 +97,19 @@ export const useSearch = () => {
     }, 500);
 
     return () => clearTimeout(delayDebounceFn);
-  }, [searchTerm, performSearch]);
+  }, [searchTerm, performSearch, clearSearch]);
 
-  const handleClickOutside = useCallback((event) => {
-    if (
-      searchContainerRef.current &&
-      !searchContainerRef.current.contains(event.target)
-    ) {
-      clearSearch();
-    }
-  }, []);
+  const handleClickOutside = useCallback(
+    (event) => {
+      if (
+        searchContainerRef.current &&
+        !searchContainerRef.current.contains(event.target)
+      ) {
+        clearSearch();
+      }
+    },
+    [clearSearch]
+  );
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
@@ -73,41 +118,35 @@ export const useSearch = () => {
     };
   }, [handleClickOutside]);
 
-  const {
-    data: classResults = [],
-    refetch: refetchClasses,
-    isFetching: isFetchingClasses,
-  } = useQuery({
-    queryKey: ["classes", selectedItemId],
-    queryFn: async () => {
-      if (!selectedItemId) return [];
-      const response = await apiGet(`topic/${selectedItemId}/cohorts`);
-
-      return response.data.data;
+  const handleResultClick = useCallback(
+    (item) => {
+      const type = item.user ? "instructor" : "topic";
+      setSelectedItemId({ id: item.id, type });
+      setIsSearching((prev) => ({ ...prev, resultsVisible: false }));
+      setOpenNewClass(true);
+      refetchResults();
     },
-    enabled: !!selectedItemId,
-  });
+    [setOpenNewClass, setSelectedItemId, refetchResults]
+  );
 
-  useEffect(() => {
-    refetchClasses();
-  }, [refetchClasses, selectedItemId]);
-
-  const handleResultClick = (item) => {
-    setSelectedItemId(item.id);
-    setIsSearching((prev) => ({ ...prev, resultsVisible: false }));
-    setOpenNewClass(true);
-  };
+  const isResultsEmpty =
+    searchResults.topics.length === 0 && searchResults.teachers.length === 0;
 
   return {
+    // Search state
     searchTerm,
     setSearchTerm,
-    searchResults,
     isSearching,
     searchContainerRef,
+    isResultsEmpty,
+
+    // Search results
+    searchResults: [searchResults],
+    detailedResults,
+    isFetchingResults,
+
+    // Actions
     clearSearch,
     handleResultClick,
-    refetchClasses,
-    classResults,
-    isFetchingClasses,
   };
 };

@@ -7,8 +7,11 @@ import {
   MdDashboard,
   MdLibraryAdd,
   MdAssignment,
+  MdListAlt,
 } from "react-icons/md";
 import { LuGift } from "react-icons/lu";
+import { LuClock4 } from "react-icons/lu";
+
 
 export const footer_links = {
   Services: [
@@ -101,14 +104,14 @@ export const teacher_links = [
     link: ".",
     icon: <FaChalkboardTeacher />,
   },
+  // {
+  //   name: "Notes",
+  //   link: "notes",
+  //   icon: <MdNotes />,
+  // },
   {
-    name: "Notes",
-    link: "notes",
-    icon: <MdNotes />,
-  },
-  {
-    name: "Live",
-    link: "live",
+    name: "Live Class",
+    link: "live-class",
     icon: <MdLiveTv />,
   },
   ,
@@ -156,24 +159,31 @@ export const student_links = [
     icon: <MdDashboard />,
   },
   {
-    name: "Classroom",
-    link: "classroom",
-    icon: <FaChalkboardTeacher />,
-  },
-  {
     name: "Live Lesson",
     link: "live-lesson",
     icon: <MdLiveTv />,
   },
+
   {
-    name: "Library",
-    link: "library",
-    icon: <FaBook />,
+    name: "Classes",
+    link: "classes",
+    icon: <MdListAlt />,
   },
+
+  // {
+  //   name: "Assignments",
+  //   link: "assignments",
+  //   icon: <FaChalkboardTeacher />,
+  // },
   {
     name: "Social",
     link: "social",
     icon: <FaUsers />,
+  },
+  {
+    name: "Pending Payments",
+    link: "pending-payments",
+    icon: <LuClock4 />,
   },
 
   // {

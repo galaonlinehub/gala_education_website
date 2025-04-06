@@ -1,10 +1,11 @@
-import { Button, Input, Card, Switch, Spin } from "antd";
+import { Button, Input, Card, Switch } from "antd";
 import { CiCreditCard1, CiMobile4, CiCreditCardOff } from "react-icons/ci";
 import {
   FaRegClock,
   FaBookOpen,
   FaGraduationCap,
   FaUser,
+  FaUsers,
 } from "react-icons/fa";
 import { GoShieldCheck } from "react-icons/go";
 import React, { useState, useEffect } from "react";
@@ -16,6 +17,11 @@ import {
   LockOutlined,
 } from "@ant-design/icons";
 import { useEnroll } from "@/src/hooks/useEnroll";
+import { useMutation } from "@tanstack/react-query";
+import { PaymentStatus } from "@/src/config/settings";
+import notificationService from "../ui/notification/Notification";
+import { apiPost } from "@/src/services/api_service";
+import { useEnrollPay } from "@/src/store/student/useEnrollMe";
 
 const PaymentDetails = () => {
   const { enrollMeCohort, enrollMeCohortIsFetching, enrollMeCohortError } =
@@ -58,23 +64,30 @@ const PaymentDetails = () => {
       </Card>
     );
   }
-
   return (
     <Card className="!flex !flex-col !items-start !justify-start !w-full !lg:w-1/2 !border-none">
-      <div className="w-full mb-8">
+      <div className="w-full mb-6">
         <div className="space-y-2">
           <span className="text-sm text-gray-500">Total Amount</span>
           <div className="flex items-baseline">
             <span className="text-3xl lg:text-5xl font-black bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-gray-600">
-              Tshs {enrollMeCohort?.price}
+              Tshs {enrollMeCohort?.price.toLocaleString()}
             </span>
             <span className="text-xl text-gray-600 ml-1">/=</span>
           </div>
         </div>
       </div>
-
       <div className="w-full space-y-8">
-        <div className="space-y-3">
+        <div className="space-y-2">
+          <div className="flex items-center space-x-2 text-gray-600">
+            <FaUsers className="w-4 h-4" />
+            <span className="text-sm font-medium">Class Name </span>
+          </div>
+          <span className="font-bold text-xl line-clamp-2 w-full text-gray-800">
+            {enrollMeCohort?.cohort_name}
+          </span>
+        </div>
+        <div className="space-y-2">
           <div className="flex items-center space-x-2 text-gray-600">
             <FaBookOpen className="w-4 h-4" />
             <span className="text-sm font-medium">Topic</span>
@@ -84,7 +97,7 @@ const PaymentDetails = () => {
           </span>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-2">
           <div className="flex items-center space-x-2 text-gray-600">
             <FaGraduationCap className="w-4 h-4" />
             <span className="text-sm font-medium">Subject</span>
@@ -94,8 +107,8 @@ const PaymentDetails = () => {
           </div>
         </div>
 
-        <div className="">
-          <div className="space-y-4">
+        <div>
+          <div className="space-y-3">
             <div className="space-y-2">
               <span className="text-sm text-gray-600 flex items-center space-x-2">
                 <FaUser className="w-4 h-4" />
@@ -106,7 +119,7 @@ const PaymentDetails = () => {
               </div>
             </div>
 
-            <div className="flex items-center space-x-2 text-gray-600 pt-2 border-t border-gray-200">
+            <div className="flex items-center space-x-2 text-gray-600 pt-1 border-t border-gray-200">
               <FaRegClock className="w-4 h-4" />
               <div className="flex items-baseline">
                 <span className="font-semibold text-lg">
@@ -125,8 +138,9 @@ const PaymentDetails = () => {
 const MobilePay = () => {
   const [validationMessage, setValidationMessage] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const { currentStep, setCurrentStep } = usePaySteps();
-  const [loading, setLoading] = useState(false);
+  const { setCurrentStep } = usePaySteps();
+  const { setEnrollPayStatus, setReference } = useEnrollPay();
+  const { enrollMeCohort } = useEnroll();
 
   const messages = {
     required: "Phone number is required",
@@ -136,7 +150,8 @@ const MobilePay = () => {
   const isValidPhoneNumber = (number) => {
     if (!number || number.length !== 9) return false;
     if (!["6", "7"].includes(number[0])) return false;
-    if (!["1", "2", "3", "4", "5", "6"].includes(number[1])) return false;
+    if (!["1", "2", "3", "4", "5", "6", "7", "8"].includes(number[1]))
+      return false;
     if (!["1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(number[2]))
       return false;
     return true;
@@ -189,21 +204,53 @@ const MobilePay = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setLoading(true);
     try {
       const validationResult = validateInput(phoneNumber);
       if (validationResult) {
         setValidationMessage(validationResult);
         return;
       }
-
-      setCurrentStep(1);
+      mutation.mutate();
+      setEnrollPayStatus(PaymentStatus.LOADING);
     } catch (e) {
-      console.error(e);
+      notificationService.error({
+        message: "",
+        customStyle: { paddingTop: "0px" },
+      });
     } finally {
-      setLoading(false);
     }
   };
+
+  const mutation = useMutation({
+    mutationFn: async () => {
+      const data = {
+        phone_number: `255${phoneNumber}`,
+        cohort_id: enrollMeCohort?.cohort_id,
+      };
+
+      try {
+        const response = await apiPost("join_cohort", data);
+        return response.data;
+      } catch (error) {
+        console.error("API call failed:", error);
+        throw error;
+      }
+    },
+    onSuccess: (data) => {
+      if (data.order_response.resultcode === "000") {
+        setCurrentStep(1);
+        setReference(data.order_response.data[0].payment_token);
+      }
+    },
+    onError: (error) => {
+      notificationService.error({
+        message: "",
+        description: `${error?.message},\tFailed to process payment please try again later`,
+        duration: 10,
+        customStyle: { paddingTop: "0px" },
+      });
+    },
+  });
 
   return (
     <Card className="!border-none !w-full !lg:w-1/2 !h-full !bg-transparent ">
@@ -239,7 +286,7 @@ const MobilePay = () => {
           </div>
         </div>
         <Button
-          loading={loading}
+          loading={mutation.isPending}
           type="primary"
           htmlType="submit"
           className="!flex !w-full !items-center !justify-center !gap-2 !text-white !bg-gradient-to-r from-gray-800 to-gray-600 !text-[10px] !border-transparent !hover:border-transparent"

@@ -1,5 +1,3 @@
-// "use server"
-
 import axios from "axios";
 import { decrypt } from "../utils/fns/encryption";
 import { USER_COOKIE_KEY } from "../config/settings";
@@ -20,7 +18,8 @@ const publicEndpoints = new Set([
   "payment",
   "password/reset-request",
   "reset-password",
-  "subscribe-plan"
+  "subscribe-plan",
+  "health"
 ]);
 
 api.interceptors.request.use(
@@ -28,47 +27,54 @@ api.interceptors.request.use(
     if (!config.url) return config;
     const baseUrl = config.url.split("?")[0];
 
+    if (config.headers["X-Use-Direct-Token"] === "true") {
+      console.log("Skipping interceptor token logic...");
+      return config;
+    }
+
     if ([...publicEndpoints].some((endpoint) => baseUrl.includes(endpoint))) {
       return config;
     }
 
-    const encryptedToken = cookieFn.get(USER_COOKIE_KEY);
-    if (!encryptedToken) {
-      if (typeof window !== "undefined") {
-        // window.location.href = "/signin";
+    if (typeof window !== "undefined") {
+      const encryptedToken = cookieFn.get(USER_COOKIE_KEY);
+      if (!encryptedToken) {
+        console.error("No token in cookies");
+        return Promise.reject(new Error("No authentication token"));
       }
+      config.headers.Authorization = `Bearer ${decrypt(encryptedToken)}`;
+    } else if (!config.headers.Authorization) {
+      console.error("No Authorization header in server context");
       return Promise.reject(new Error("No authentication token"));
     }
 
-    config.headers.Authorization = `Bearer ${decrypt(encryptedToken)}`;
     return config;
   },
   (error) => Promise.reject(error)
 );
 
-// api.interceptors.response.use(
-//   (response) => {
-//     return response;
-//   },
-//   (error) => {
-//     console.error("Response Interceptor Error:", error);
-
-//     if (error.response?.status === 401) {
-//       console.warn("Unauthorized! Redirecting to login...");
-
-//       if (typeof window !== "undefined") {
-//         window.location.href = "/signin";
-//       }
-//     }
-
-//     return Promise.reject(error);
-//   }
-// );
-
-export const apiGet = async (endpoint, headers = {}) => {
-  const response = await api.get(endpoint, { headers });
-  return response;
+export const apiGet = async (endpoint, headers = {}, directToken = null) => {
+  try {
+    if (directToken) {
+      console.log("Using direct token for:", endpoint);
+      const response = await api.get(endpoint, {
+        headers: {
+          ...headers,
+          Authorization: `Bearer ${directToken}`,
+          "X-Use-Direct-Token": "true",
+        },
+      });
+      return response;
+    }
+    console.log("Intercepting for:", endpoint);
+    const response = await api.get(endpoint, { headers });
+    return response;
+  } catch (e) {
+    console.error(`apiGet error for ${endpoint}:`, e.message);
+    throw e;
+  }
 };
+
 
 export const apiPost = async (endpoint, data, headers = {}) => {
   const response = await api.post(endpoint, data, { headers });
@@ -84,6 +90,7 @@ export const apiPut = async (endpoint, data, headers = {}) => {
     throw error;
   }
 };
+
 export const apiPatch = async (endpoint, data, headers = {}) => {
   try {
     const response = await api.post(endpoint, data, { headers });

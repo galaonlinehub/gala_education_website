@@ -7,9 +7,10 @@ import { message, Alert } from "antd";
 import GoogleSvg from "@/src/utils/vector-svg/sign-in/GoogleSvg";
 import { handleGoogleLogin, login } from "@/src/utils/fns/auth";
 import { preventCopyPaste } from "@/src/utils/fns/general";
-import { useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from "@tanstack/react-query";
 import { getUser } from "@/src/utils/fns/global";
 import { roleRedirects } from "@/src/utils/data/redirect";
+import { LoadingOutlined } from "@ant-design/icons";
 
 const SignInPage = () => {
   const key = crypto.randomUUID();
@@ -49,8 +50,7 @@ const SignInPage = () => {
         }
       }
     } catch (error) {
-      alert(JSON.stringify(error))
-      showError(error.response?.data?.message || errorMessage);
+      showError(error?.message);
     } finally {
       setTimeout(() => clearFeedback(), 10000);
     }
@@ -167,7 +167,11 @@ const SignInPage = () => {
             disabled={isSubmitting}
             className="text-white text-base py-2 bg-[#030DFE] rounded-md w-3/4 lg:w-1/2 font-bold mt-5 disabled:opacity-60 flex items-center justify-center gap-2 text-xsdisabled:cursor-not-allowed"
           >
-            {isSubmitting ? "Signing in..." : "Sign In"}
+            {isSubmitting ? (
+              <LoadingOutlined className="text-base" />
+            ) : (
+              "Sign In"
+            )}
           </button>
         </form>
 

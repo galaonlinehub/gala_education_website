@@ -1,8 +1,8 @@
 "use client";
 
-import { Drawer, Input, Avatar, Badge, Card, Button, Skeleton } from "antd";
+import { Drawer } from "antd";
 import { useNewClass } from "@/src/store/student/class";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { createStyles, useTheme } from "antd-style";
 import { TopicCard, TopicCardSkeleton } from "@/src/components/ui/TopicCard";
 import { useSearch } from "@/src/hooks/useSearch";
@@ -13,6 +13,7 @@ import {
 import { useEnrollMe } from "@/src/store/student/useEnrollMe";
 import { usePaySteps } from "@/src/store/pay";
 import { Payment } from "../Pay/Payment";
+import { useSearchResult } from "@/src/store/search_result";
 
 const useStyle = createStyles(({ token }) => ({
   "my-drawer-body": {
@@ -34,15 +35,16 @@ const useStyle = createStyles(({ token }) => ({
 
 const NewClass = () => {
   const { openNewClass, setOpenNewClass } = useNewClass();
-  const { classResults, isFetchingClasses, clearSearch, refetchClasses } =
-    useSearch();
-  const { enrollMe, setEnrollMe } = useEnrollMe();
+  const { isFetchingResults, detailedResults } = useSearch();
+  const { enrollMe, setEnrollMe, setEnrollCohort } = useEnrollMe();
   const { currentStep, setCurrentStep } = usePaySteps();
+  const { selectedItemId } = useSearchResult();
 
   const onClose = () => {
     setOpenNewClass(false);
     setEnrollMe(false);
     setCurrentStep(0);
+    setEnrollCohort(null);
   };
 
   useEffect(() => {
@@ -96,26 +98,27 @@ const NewClass = () => {
         open={openNewClass}
         styles={drawerStyles}
       >
-        {!enrollMe && (
+        {selectedItemId.type === "topic" && !enrollMe && (
           <>
-            {isFetchingClasses
+            {isFetchingResults
               ? [1, 2, 3].map((i) => <TopicCardSkeleton key={i} />)
-              : classResults.map((c, idx) => (
+              : detailedResults.map((c, idx) => (
                   <TopicCard key={idx} classInfo={c} />
                 ))}
           </>
         )}
-        {enrollMe && <Payment/>}
 
-        {!true && (
+        {selectedItemId.type === "instructor" && !enrollMe && (
           <>
-            {true ? (
-              <InstructorSearchResult />
-            ) : (
+            {isFetchingResults ? (
               <InstructorSearchResultSkeleton />
+            ) : (
+              <InstructorSearchResult details={detailedResults} />
             )}
           </>
         )}
+
+        {enrollMe && <Payment />}
       </Drawer>
     </>
   );
