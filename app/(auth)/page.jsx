@@ -20,16 +20,17 @@ import ClientReviewsSm from "@/src/components/home/card/ClientReviewsSm";
 import Platform from "@/src/components/home/card/Platform";
 import Pioneers from "@/src/components/home/card/Pioneers";
 import LatestNews from "@/src/components/home/card/LatestNews";
-import AboutUs from "@/src/components/home/modals/AboutUs";
 import Donate from "@/src/components/ui/Donate";
 import VideoPlayer from "@/src/components/ui/VideoPlayer";
 import ScrollableContent from "@/src/components/ui/TeachersCard";
 import { useUser } from "@/src/hooks/useUser";
 import Footer from "@/src/components/layout/footer";
+import { useCookies } from "@/src/store/auth/signup";
 
 function Home() {
   const [showDonatePopup, setShowDonatePopup] = useState(false);
   const { user } = useUser();
+  const { cookieIsAccepted } = useCookies();
 
   const handleDonateVisibility = () => {
     setShowDonatePopup(true);
@@ -828,8 +829,8 @@ function Home() {
           </div>
         </div>
       </div>
-      {/* <AcceptCookies/> */}
-      <Footer/>
+      {!cookieIsAccepted && <AcceptCookies />}
+      <Footer />
     </div>
   );
 }

@@ -1,17 +1,19 @@
-
-
 import { create } from "zustand";
 import { sessionStorageFn } from "@/src/utils/fns/client";
-import { PREVIEW_CHAT_KEY } from "@/src/config/settings";
+import { CURRENT_CHAT_KEY, PREVIEW_CHAT_KEY } from "@/src/config/settings";
 import { decrypt, encrypt } from "@/src/utils/fns/encryption";
 
 const useChatStore = create((set, get) => ({
-  currentChatId: null,
+  currentChatId: sessionStorageFn.get(CURRENT_CHAT_KEY) ?? null,
   messages: [],
   users: [],
   previewChat: null,
 
-  setCurrentChatId: (chatId) => set({ currentChatId: chatId }),
+  setCurrentChatId: (chatId) =>
+    set((state) => {
+      sessionStorageFn.set(CURRENT_CHAT_KEY, chatId);
+      return { ...state, currentChatId: chatId };
+    }),
   setMessages: (messages) => set({ messages }),
   addMessage: (message) =>
     set((state) => ({ messages: [...state.messages, message] })),

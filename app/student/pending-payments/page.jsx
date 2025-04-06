@@ -1,22 +1,14 @@
 "use client";
-import TopicCardSkeleton, {
-  TopicCard,
-} from "@/src/components/student/TopicCardStudent";
 import React, { useState } from "react";
+import { PaymentStatus } from "@/src/config/settings";
 import { LuCircleX, LuFolder, LuUsers } from "react-icons/lu";
-import Link from "next/link";
 import { useEnrolledTopics } from "@/src/hooks/useEnrolledTopics";
+import TopicCardSkeleton from "@/src/components/student/TopicCardStudent";
 import { Card, Button, Avatar, Tooltip, Modal, Result, Spin } from "antd";
-import { HiMiniDevicePhoneMobile } from "react-icons/hi2";
-import {
-  NumberOutlined,
-  WalletOutlined,
-  LockOutlined,
-  CheckCircleOutlined,
-} from "@ant-design/icons";
 import {
   RenderReferenceState,
   RenderSuccessState,
+  RenderLoadingState,
 } from "@/src/components/ui/auth/signup/PaymentStatus";
 
 function PendingPayment() {
@@ -144,32 +136,22 @@ const PendingTopicCard = ({ details }) => {
   };
 
   const handleComplete = () => {
-    setPaymentStep("loading");
+    setPaymentStep(PaymentStatus.LOADING);
     setTimeout(() => {
-      setPaymentStep("success");
+      setPaymentStep(PaymentStatus.SUCCESS);
     }, 2000);
   };
 
   const handleClose = () => {
     setIsModalOpen(false);
-    setPaymentStep("initial");
+    setPaymentStep(PaymentStatus.INITIAL);
   };
 
   const renderModalContent = () => {
     switch (paymentStep) {
-      case "loading":
-        return (
-          <div className="flex flex-col items-center justify-center py-10">
-            <Spin size="large" />
-            <p className="mt-6 text-lg font-medium text-[#001840]">
-              Processing Payment
-            </p>
-            <p className="text-gray-500 text-sm mt-2">
-              Please wait while we process your payment...
-            </p>
-          </div>
-        );
-      case "success":
+      case PaymentStatus.LOADING:
+        return <RenderLoadingState />;
+      case PaymentStatus.SUCCESS:
         return <RenderSuccessState onClose={handleComplete} />;
 
       default:
@@ -234,7 +216,7 @@ const PendingTopicCard = ({ details }) => {
           </div>
         </div>
         <Button
-          className="hover:!border-[#2563eb] hover:!text-[#2563eb] text-gray-500 transition-colors duration-200 w-full"
+          className="hover:!border-[#2563eb] hover:!text-[#2563eb] !text-xs !border-[0.1px] text-gray-500 transition-colors duration-200 w-full"
           onClick={showModal}
         >
           Complete Payment
@@ -261,7 +243,5 @@ const PendingTopicCard = ({ details }) => {
     </>
   );
 };
-
-
 
 export default PendingPayment;

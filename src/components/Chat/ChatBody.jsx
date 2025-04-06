@@ -1,10 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import { Avatar, Dropdown } from "antd";
-import {
-  LoadingOutlined,
-  PaperClipOutlined,
-  SmileOutlined,
-} from "@ant-design/icons";
+import { Avatar, Dropdown, Skeleton } from "antd";
+import { LoadingOutlined, SmileOutlined } from "@ant-design/icons";
 import clsx from "clsx";
 import { useChat } from "@/src/hooks/useChat";
 import { useUser } from "@/src/hooks/useUser";
@@ -12,14 +8,15 @@ import useChatStore from "@/src/store/chat/chat";
 import { img_base_url } from "@/src/config/settings";
 import TypingIndicator from "../ui/loading/template/Typing";
 import {
-  LuVideo,
-  LuPhone,
   LuEllipsisVertical,
   LuArrowLeft,
   LuUser,
   LuSendHorizontal,
   LuCheck,
   LuCheckCheck,
+  LuVideoOff,
+  LuPhoneOff,
+  LuPaperclip,
 } from "react-icons/lu";
 import { format, isToday, isYesterday } from "date-fns";
 
@@ -37,6 +34,7 @@ const RenderChat = ({
   const {
     sendMessage,
     chats,
+    isFetchingChats,
     messages,
     typingUsers,
     sendTypingStatus,
@@ -59,7 +57,7 @@ const RenderChat = ({
       .join(", ") || "Chat";
   const isRecipientTyping =
     recipient && typingUsers.includes(recipient.user.id);
-  const isRecipientOnline = true; 
+  const isRecipientOnline = true;
 
   useEffect(() => {
     if (chatContainerRef.current) {
@@ -70,13 +68,22 @@ const RenderChat = ({
 
   useEffect(() => {
     if (!isPreviewChat && messages.length > 0) {
-      messages.forEach((message) => {
-        if (message.sender_id !== user.id) {
-          markMessageAsRead(message.id);
-        }
+      const unread_messages = messages.filter((m) => {
+        const isNotSender = m.sender_id !== user.id;
+        const userStatus = m.statuses?.find((s) => s.user_id === user.id);
+        const needsMarking = !userStatus
+          ? true
+          : (userStatus.status === "sent" ||
+              userStatus.status === "delivered") &&
+            userStatus.status !== "read";
+        return isNotSender && needsMarking;
       });
+
+      if (unread_messages.length > 0) {
+        markMessageAsRead(unread_messages);
+      }
     }
-  }, [messages, currentChatId, isPreviewChat, user.id, markMessageAsRead]);
+  }, [currentChatId, isPreviewChat, markMessageAsRead, messages, user.id]);
 
   const handleAttachment = () => fileInputRef.current.click();
 
@@ -156,7 +163,7 @@ const RenderChat = ({
   };
 
   const groupedMessages = messages.reduce((acc, msg) => {
-    const date = new Date(msg.sent_at_iso); // Use sent_at_iso for consistency
+    const date = new Date(msg.sent_at_iso);
     const key = isToday(date)
       ? "Today"
       : isYesterday(date)
@@ -168,7 +175,7 @@ const RenderChat = ({
   }, {});
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full w-full ">
       <div
         className={`p-2 md:p-3 flex items-center border-b text-[${TEXT_COLOR}] bg-[${MAIN_COLOR}]`}
       >
@@ -180,38 +187,43 @@ const RenderChat = ({
             <LuArrowLeft className="text-[16px] text-white" />
           </button>
         )}
+
         <div className="flex justify-between items-center w-full">
-          <div className="flex items-center gap-3">
-            <div className="relative">
-              <Avatar
-                src={
-                  recipient?.user.profile_picture &&
-                  `${img_base_url}${recipient.user.profile_picture}`
-                }
-                alt={displayName}
-                size={48}
-                icon={<LuUser className="text-white" />}
-              />
-              {isRecipientOnline && (
-                <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-white rounded-full"></div>
-              )}
+          {isFetchingChats ? (
+            <LoadingOutlined spin className="text-white p-3" />
+          ) : (
+            <div className="flex items-center gap-3">
+              <div className="relative">
+                <Avatar
+                  src={
+                    recipient?.user.profile_picture &&
+                    `${img_base_url}${recipient.user.profile_picture}`
+                  }
+                  alt={displayName}
+                  size={48}
+                  icon={<LuUser className="text-white" />}
+                />
+                {isRecipientOnline && (
+                  <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-white rounded-full"></div>
+                )}
+              </div>
+              <div>
+                <h2 className="font-extrabold text-base text-white line-clamp-1">
+                  {displayName}
+                </h2>
+                <p className="text-[10px] opacity-75 text-white">
+                  {isRecipientTyping
+                    ? "Typing..."
+                    : isRecipientOnline
+                    ? "Online"
+                    : "Last seen recently"}
+                </p>
+              </div>
             </div>
-            <div>
-              <h2 className="font-extrabold text-base text-white">
-                {displayName}
-              </h2>
-              <p className="text-[10px] opacity-75 text-white">
-                {isRecipientTyping
-                  ? "Typing..."
-                  : isRecipientOnline
-                  ? "Online"
-                  : "Last seen recently"}
-              </p>
-            </div>
-          </div>
+          )}
           <div className="flex gap-3">
-            <LuPhone className="text-gray-500 text-[16px] cursor-not-allowed" />
-            <LuVideo className="text-gray-500 text-[16px] cursor-not-allowed" />
+            <LuPhoneOff className="text-gray-500 text-[16px] cursor-not-allowed" />
+            <LuVideoOff className="text-gray-500 text-[16px] cursor-not-allowed" />
             {currentChatId !== "preview" && (
               <Dropdown
                 arrow
@@ -338,24 +350,19 @@ const RenderChat = ({
           )}
         </div>
       )}
-      <form onSubmit={handleSendMessage} className="p-3 border-t bg-white">
-        <div
-          className="flex items-center gap-2 rounded-full p-2"
-          style={{ backgroundColor: "rgba(0, 24, 64, 0.05)" }}
-        >
+      <form
+        onSubmit={handleSendMessage}
+        className="p-2 md:p-3 border-t bg-white sticky bottom-0 inset-x-0"
+      >
+        <div className="flex items-center gap-2 rounded-full p-1 bg-gray-200">
           <input
             type="file"
             ref={fileInputRef}
             onChange={handleFileChange}
             className="hidden"
           />
-          <button
-            type="button"
-            onClick={handleAttachment}
-            className={`ml-2 text-gray-500 hover:text-blue-500 transition-colors text-[${MAIN_COLOR_LIGHT}]`}
-          >
-            <PaperClipOutlined style={{ fontSize: "18px" }} />
-          </button>
+
+          <LuPaperclip className="cursor-not-allowed ml-2 text-gray-400 transition-colors" />
           <input
             value={newMessage}
             onChange={handleTyping}
@@ -386,5 +393,37 @@ const RenderChat = ({
     </div>
   );
 };
+
+const ChatHeaderSkeleton = ({ TEXT_COLOR, MAIN_COLOR, isSmallScreen }) => (
+  <div className={`p-1 md:p-3 flex items-center text-[${TEXT_COLOR}] bg-white`}>
+    {isSmallScreen && (
+      <Skeleton.Button active size="small" shape="circle" className="mr-3" />
+    )}
+    <div className="flex justify-between items-center w-full">
+      <div className="flex items-center gap-3">
+        <div>
+          <Skeleton.Avatar active size={48} shape="circle" />
+        </div>
+        <div className="flex gap-3">
+          <Skeleton.Input
+            active
+            size="small"
+            style={{ width: 120, color: "white" }}
+          />
+          <Skeleton.Input
+            active
+            size="small"
+            style={{ width: 80, height: 12, marginTop: 4 }}
+          />
+        </div>
+      </div>
+      <div className="flex gap-3 items-center">
+        <Skeleton.Button active size="small" shape="circle" />
+        <Skeleton.Button active size="small" shape="circle" />
+        <Skeleton.Button active size="small" shape="circle" />
+      </div>
+    </div>
+  </div>
+);
 
 export { RenderChat };

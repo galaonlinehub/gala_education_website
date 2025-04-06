@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Form,
   Input,
@@ -9,6 +9,7 @@ import {
   message,
   Progress,
   Tooltip,
+  Checkbox,
 } from "antd";
 import {
   UserOutlined,
@@ -23,12 +24,16 @@ import {
 } from "@ant-design/icons";
 import { useAuth } from "@/src/hooks/useAuth";
 import EmailVerification from "./EmailVerification";
+import { useRouter } from "next/navigation";
+import clsx from "clsx";
 
-const { Text, Paragraph } = Typography;
+const { Text } = Typography;
 
 const InstructorRegistrationForm = () => {
   const [form] = Form.useForm();
   const [password, setPassword] = useState("");
+  const [isAgreementChecked, setIsAgreementChecked] = useState(false);
+  const router = useRouter();
 
   const {
     getPasswordStatus,
@@ -102,7 +107,10 @@ const InstructorRegistrationForm = () => {
             ensure only qualified candidates are selected, maintaining service
             quality. The first payment, which is non-refundable, serves as an
             application fee. Applications are processed within 2-3 business days
-            and may be approved or denied.
+            and may be approved or denied. Please note: All uploaded
+            certificates must be certified by a registered Advocate to ensure
+            their authenticity. Submissions without proper certification will
+            not be accepted.
           </span>
         </div>
 
@@ -343,15 +351,53 @@ const InstructorRegistrationForm = () => {
           </div>
           <Form.Item className="w-full lg:w-2/12">
             <Button
-              disabled={loading}
+              disabled={loading || !isAgreementChecked}
               type="primary"
               htmlType="submit"
-              className="!flex !items-center !justify-center !w-full !font-semibold !bg-[#030DFE] !hover:bg-blue-700 !h-[40px] !text-white"
+              className={clsx(
+                "!flex !items-center !justify-center !w-full !font-normal !py-4 !text-white !border-transparent",
+                loading || !isAgreementChecked
+                  ? "!bg-[#030DFE]/20 !cursor-not-allowed"
+                  : "!bg-[#030DFE] !hover:bg-blue-700"
+              )}
             >
               {loading ? <LoadingOutlined spin /> : "Apply"}
             </Button>
           </Form.Item>
         </Form>
+        <div className="!text-center !text-sm !text-gray-600 !mt-2">
+          <Checkbox
+            className="!mr-1"
+            onChange={(e) => setIsAgreementChecked(e.target.checked)}
+          />
+          <Text>I have read and agreed to the</Text>
+          <Button
+            type="link"
+            className="!p-0 !m-1 !text-blue-600 hover:!text-blue-700"
+            onClick={() => router.push("/terms-and-privacy")}
+          >
+            Terms of Service
+          </Button>
+          <Text> and </Text>
+          <Button
+            type="link"
+            className="!p-0 !m-1 !text-blue-600 hover:!text-blue-700"
+            onClick={() => router.push("/terms-and-privacy")}
+          >
+            Privacy Policy
+          </Button>
+        </div>
+
+        <div className="!text-center !text-sm !text-gray-600">
+          <Text>Already have an account?</Text>
+          <Button
+            type="link"
+            className="!p-0 !m-1 !text-blue-600 hover:!text-blue-700"
+            onClick={() => router.push("/signin")}
+          >
+            Sign In
+          </Button>
+        </div>
       </Card>
       <EmailVerification />
     </>

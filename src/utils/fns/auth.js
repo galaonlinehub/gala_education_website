@@ -25,6 +25,8 @@ export const login = async (data) => {
     if (response.status === 200) {
       const encryptedToken = encrypt(response.data.token);
       cookieFn.set(USER_COOKIE_KEY, encryptedToken, 7);
+      sessionStorageFn.clear();
+      localStorageFn.clear();
       return 1;
     }
   } catch (error) {
@@ -40,18 +42,6 @@ export const handleGoogleLogin = async () => {
     const response = await apiGet("/auth/google");
     window.location.href = response.data.authUrl;
   } catch (error) {
-    setLocalFeedback({
-      show: true,
-      type: "error",
-      message: "Google login failed. Please try again later.",
-    });
   } finally {
-    setTimeout(() => {
-      setLocalFeedback({
-        show: false,
-        type: "",
-        message: "",
-      });
-    }, 10000);
   }
 };

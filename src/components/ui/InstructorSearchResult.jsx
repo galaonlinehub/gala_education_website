@@ -8,7 +8,7 @@ import { FaRegStar } from "react-icons/fa";
 import { FaRegMessage, FaRegClock } from "react-icons/fa6";
 import { GoShieldCheck } from "react-icons/go";
 import { BsGlobe } from "react-icons/bs";
-import { LuUsers } from "react-icons/lu";
+import { LuMessageCircle, LuMessageSquare, LuUsers } from "react-icons/lu";
 import { useEnrollMe } from "@/src/store/student/useEnrollMe";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/src/hooks/useUser";
@@ -168,7 +168,7 @@ const InstructorSearchResult = ({ details }) => {
             </div>
             <div className="w-1/4 self-end flex justify-end">
               <Tooltip title="Chat with instructor">
-                <FaMessage
+                <LuMessageSquare
                   className="text-xl cursor-pointer"
                   onClick={makeChat}
                 />

@@ -95,7 +95,6 @@ const Signout = ({ onCloseSidebar }) => {
         <div className="mb-3 lg:mb-6">
           {loading ? (
             <div className="flex flex-col justify-center items-center gap-1 font-black text-xl animate-pulse text-black">
-              <LuLoaderCircle className="animate-spin" />
               <span>Signing out... 😔</span>
             </div>
           ) : (

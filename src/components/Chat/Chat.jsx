@@ -12,6 +12,7 @@ const Chat = () => {
   const { width } = useDevice();
   const isSmallScreen = width <= 768;
 
+
   const NoChatsMessage = () => (
     <div className="flex items-center justify-center h-full bg-gray-50">
       <div className="text-center p-6">
@@ -27,8 +28,8 @@ const Chat = () => {
   );
 
   return (
-    <div className="w-full md:shadow-md mt-2 -mx-2 md:mt-14 md:rounded-md md:border">
-      <div className="md:h-[650px] h-[680px] w-full">
+    <div className="w-full md:shadow-md mt-2 md:mt-4 md:rounded-md md:border flex items-center justify-center">
+      <div className="md:h-[650px] h-[calc(100vh-105px)] w-full">
         {!isSmallScreen && (
           <div className="flex h-full">
             <div className="w-1/3 border-r border-gray-200">
@@ -44,7 +45,7 @@ const Chat = () => {
           </div>
         )}
         {isSmallScreen && (
-          <div className="h-full">
+          <div className="h-full w-full">
             {currentChatId !== null ? (
               <RenderChat isSmallScreen={true} MAIN_COLOR={MAIN_COLOR} TEXT_COLOR={TEXT_COLOR} MAIN_COLOR_LIGHT={MAIN_COLOR_LIGHT} />
             ) : (

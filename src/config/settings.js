@@ -8,14 +8,25 @@ export const PLAN_CONFIRMED_KEY = "b6694dca-72a9-41c1-82e9-befd10a51d5e";
 export const EMAIL_VERIFICATION_MODAL_KEY =
   "1a56cd1c-ba85-48cf-ac45-0991bc732fb2";
 
-export const PREVIEW_CHAT_KEY = "fb991dff-db78-4972-baa3-f7068fd06359"
+export const PREVIEW_CHAT_KEY = "fb991dff-db78-4972-baa3-f7068fd06359";
+
+export const CURRENT_CHAT_KEY =
+  "19fb96164-8236-0991bc732fb2-f8bc6b75-1764-4054";
+
+export const USER_HAS_ACCEPTED_COOKIES_KEY =
+  "1f17695c-c729-4300-9175-d9686b88cbc9";
 
 export const PaymentStatus = {
+  INITIAL: "initial",
   LOADING: "loading",
   SUCCESS: "success",
   FAILURE: "failure",
   REFERENCE: "reference",
+  CONGRATULATION: "congratulation",
 };
 
-// export const img_base_url = "https://galaweb.galahub.org/storage/";
-export const img_base_url = "http://localhost:8000/storage/";
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+export const img_base_url = process.env.NEXT_PUBLIC_IMAGE_BASE_URL;
+
+export const socket_base_url = process.env.NEXT_PUBLIC_SOCKET_BASE_URL;

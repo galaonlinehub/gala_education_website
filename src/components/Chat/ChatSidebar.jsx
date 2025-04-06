@@ -33,7 +33,8 @@ const RenderSidebar = ({ currentTab, setCurrentTab, MAIN_COLOR }) => {
         <span className="text-xs">You have no chats yet</span>
         {user?.role === "student" && (
           <span className="text-xs">
-            Start by messaging teachers by searching them through above search bar...!!
+            Start by messaging teachers by searching them through above search
+            bar...!!
           </span>
         )}
       </div>
@@ -49,10 +50,13 @@ const RenderSidebar = ({ currentTab, setCurrentTab, MAIN_COLOR }) => {
             key={tab}
             onClick={() => setCurrentTab(tab.toLowerCase())}
             className={`flex-1 py-2 text-sm font-medium rounded-lg transition-colors ${
-              currentTab === tab.toLowerCase() ? "text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+              currentTab === tab.toLowerCase()
+                ? "text-white"
+                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
             }`}
             style={{
-              backgroundColor: currentTab === tab.toLowerCase() ? MAIN_COLOR : "#f1f1f1",
+              backgroundColor:
+                currentTab === tab.toLowerCase() ? MAIN_COLOR : "#f1f1f1",
               color: currentTab === tab.toLowerCase() ? "white" : "#555",
             }}
           >
@@ -89,7 +93,10 @@ const RenderSidebar = ({ currentTab, setCurrentTab, MAIN_COLOR }) => {
                 email: participant.user.email,
                 online: participant.online,
               }));
-              const isTyping = sidebarTyping[chat.id]?.length > 0;
+              const typingUsers = (sidebarTyping[chat.id] || []).filter(
+                (id) => id !== user.id
+              );
+              const isTyping = typingUsers.length > 0;
               const unreadCount = unreadCounts[chat.id] || 0;
 
               return (
@@ -98,7 +105,9 @@ const RenderSidebar = ({ currentTab, setCurrentTab, MAIN_COLOR }) => {
                   onClick={() => viewOnClickedUser(chat.id)}
                   className={clsx(
                     "p-3 mb-2 transition-all duration-200 flex items-center cursor-pointer rounded-xl",
-                    currentChatId === chat.id ? "bg-blue-100/20 border-l-4 border-l-[#001840]" : "hover:bg-gray-50 border-l-0"
+                    currentChatId === chat.id
+                      ? "bg-blue-100/20 border-l-4 border-l-[#001840]"
+                      : "hover:bg-gray-50 border-l-0"
                   )}
                 >
                   {participantsData.map((participant) => (
@@ -119,14 +128,20 @@ const RenderSidebar = ({ currentTab, setCurrentTab, MAIN_COLOR }) => {
                       <span className="font-semibold text-sm w-3/4 line-clamp-1">
                         {participantsData.map((p) => p.fullName).join(", ")}
                       </span>
-                      <span className="text-[10px] text-gray-400">{chat?.last_message?.sent_at}</span>
+                      <span className="text-[10px] text-gray-400">
+                        {chat?.last_message?.sent_at}
+                      </span>
                     </div>
                     <div className="flex justify-between items-center">
                       <p className="text-xs text-gray-500 truncate first-letter:uppercase">
-                        {isTyping ? "Typing..." : chat?.last_message?.content || "No messages yet"}
+                        {isTyping
+                          ? "Typing..."
+                          : chat?.last_message?.content || "No messages yet"}
                       </p>
                       {unreadCount > 0 && (
-                        <span className="bg-[#001840]  text-white text-[8px] rounded-full h-4 w-4 flex items-center justify-center">{unreadCount}</span>
+                        <span className="bg-[#001840]  text-white text-[8px] rounded-full h-4 w-4 flex items-center justify-center">
+                          {unreadCount}
+                        </span>
                       )}
                     </div>
                   </div>
@@ -142,9 +157,3 @@ const RenderSidebar = ({ currentTab, setCurrentTab, MAIN_COLOR }) => {
 };
 
 export { RenderSidebar };
-
-/* Changes and Explanations:
- * - Typing Indicator: Displays "Typing..." when sidebarTyping[chat.id] has users.
- * - Unread Count: Shows unreadCounts[chat.id] as a badge, updated in real-time.
- * - Scalability: Filtering and mapping optimized for large chat lists; consider virtualization (e.g., react-virtualized) for 1M users with many chats.
- */

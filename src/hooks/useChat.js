@@ -4,7 +4,7 @@ import { apiPost, apiGet, apiDelete } from "@/src/services/api_service";
 import { useUser } from "./useUser";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { cookieFn } from "../utils/fns/client";
-import { USER_COOKIE_KEY } from "../config/settings";
+import { socket_base_url, USER_COOKIE_KEY } from "../config/settings";
 import useChatStore from "../store/chat/chat";
 import { message } from "antd";
 
@@ -22,7 +22,7 @@ export const useChat = () => {
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    socketRef.current = io("http://localhost:4000", {
+    socketRef.current = io(socket_base_url, {
       query: { user_id: user.id },
       auth: { token: cookieFn.get(USER_COOKIE_KEY) },
     });
@@ -47,54 +47,88 @@ export const useChat = () => {
     });
 
     socketRef.current.on(
-      "message_status",
-      ({ message_id, user_id, status }) => {
-        setMessageStatuses((prev) => ({
-          ...prev,
-          [message_id]: { ...prev[message_id], [user_id]: status },
-        }));
+      "message_status_batch",
+      ({ user_id, message_ids, status }) => {
+        console.log("HERE WE GO");
+        console.log(message_ids, status);
+        setMessageStatuses((prev) => {
+          const updated = { ...prev };
+
+          message_ids?.forEach((message_id) => {
+            updated[message_id] = {
+              ...(updated[message_id] || {}),
+              [user_id]: status,
+            };
+          });
+          return updated;
+        });
+
         setMessages((prev) =>
-          prev.map((msg) =>
-            msg.id === message_id
-              ? {
-                  ...msg,
-                  statuses: [
-                    ...msg.statuses.filter((s) => s.user_id !== user_id),
-                    { user_id, status, message_id },
-                  ],
-                }
-              : msg
-          )
+          prev.map((msg) => {
+            const shouldUpdate = message_ids?.includes(msg.id);
+            if (!shouldUpdate) return msg;
+
+            return {
+              ...msg,
+              statuses: [
+                ...msg.statuses.filter((s) => s.user_id !== user_id),
+                { user_id, status, message_id: msg.id },
+              ],
+            };
+          })
         );
       }
     );
 
+    // socketRef.current.on(
+    //   "message_status",
+    //   ({ message_id, user_id, status }) => {
+    //     setMessageStatuses((prev) => ({
+    //       ...prev,
+    //       [message_id]: { ...prev[message_id], [user_id]: status },
+    //     }));
+    //     setMessages((prev) =>
+    //       prev.map((msg) =>
+    //         msg.id === message_id
+    //           ? {
+    //               ...msg,
+    //               statuses: [
+    //                 ...msg.statuses.filter((s) => s.user_id !== user_id),
+    //                 { user_id, status, message_id },
+    //               ],
+    //             }
+    //           : msg
+    //       )
+    //     );
+    //   }
+    // );
+
     // Handle batched delivered statuses
-    socketRef.current.on(
-      "messages_delivered",
-      ({ user_id, message_ids, status }) => {
-        setMessageStatuses((prev) => {
-          const updated = { ...prev };
-          message_ids.forEach((message_id) => {
-            updated[message_id] = { ...updated[message_id], [user_id]: status };
-          });
-          return updated;
-        });
-        setMessages((prev) =>
-          prev.map((msg) =>
-            message_ids.includes(msg.id)
-              ? {
-                  ...msg,
-                  statuses: [
-                    ...msg.statuses.filter((s) => s.user_id !== user_id),
-                    { user_id, status, message_id: msg.id },
-                  ],
-                }
-              : msg
-          )
-        );
-      }
-    );
+    // socketRef.current.on(
+    //   "messages_delivered",
+    //   ({ user_id, message_ids, status }) => {
+    //     setMessageStatuses((prev) => {
+    //       const updated = { ...prev };
+    //       message_ids.forEach((message_id) => {
+    //         updated[message_id] = { ...updated[message_id], [user_id]: status };
+    //       });
+    //       return updated;
+    //     });
+    //     setMessages((prev) =>
+    //       prev.map((msg) =>
+    //         message_ids.includes(msg.id)
+    //           ? {
+    //               ...msg,
+    //               statuses: [
+    //                 ...msg.statuses.filter((s) => s.user_id !== user_id),
+    //                 { user_id, status, message_id: msg.id },
+    //               ],
+    //             }
+    //           : msg
+    //       )
+    //     );
+    //   }
+    // );
 
     socketRef.current.on("message_id_updated", ({ old_id, new_id }) => {
       setMessages((prev) =>
@@ -141,9 +175,6 @@ export const useChat = () => {
     socketRef.current.on(
       "sidebar_new_message",
       ({ chat_id, message, unread_count }) => {
-        console.log(unread_count);
-        console.log(message);
-        console.log("WE ARE HERE");
         setMessages((prev) => {
           if (prev.some((m) => m.id === message.message_id)) return prev;
           return [
@@ -172,7 +203,7 @@ export const useChat = () => {
     );
 
     return () => socketRef.current.disconnect();
-  }, [user?.id]);
+  }, [messages, user.id]);
 
   const createOrGetChatMutation = useMutation({
     mutationFn: async (payload) => apiPost("/chat/get-or-create", payload),
@@ -323,15 +354,21 @@ export const useChat = () => {
     socketRef.current.emit(isTyping ? "typing" : "stop_typing", payload);
   };
 
-  const markMessageAsRead = (message_id) => {
+  const markMessageAsRead = (unread_messages) => {
+    const payload = unreadMessageData(unread_messages);
     if (currentChatId && currentChatId !== "preview") {
-      socketRef.current.emit("message_read", {
-        chat_id: currentChatId,
-        message_id,
-        user_id: user.id,
-      });
+      socketRef.current.emit("message_read", payload);
     }
   };
+
+  const unreadMessageData = (unread_messages) => ({
+    user_id: user.id,
+    chat_id: currentChatId,
+    messages: unread_messages.map((m) => ({
+      message_id: m.id,
+      sender_id: m.sender_id,
+    })),
+  });
 
   return {
     sendMessage,

@@ -1,10 +1,10 @@
 import axios from "axios";
 import { decrypt } from "../utils/fns/encryption";
-import { USER_COOKIE_KEY } from "../config/settings";
+import { API_BASE_URL, USER_COOKIE_KEY } from "../config/settings";
 import { cookieFn } from "../utils/fns/client";
 
 export const api = axios.create({
-  baseURL: "http://localhost:8000/api/",
+  baseURL: API_BASE_URL,
   headers: {
     "Content-Type": "application/json",
   },
