@@ -15,6 +15,7 @@ import StudentsInClass from "@/src/utils/vector-svg/vectors/StudentsInClass";
 import { teacher_links } from "@/src/utils/data/navigation_links";
 import Subscribe from "@/src/components/Pay/Subscribe";
 import StudentSearch from "@/src/components/student/Search";
+import InstructorCompleteProfile from "@/src/components/teacher/InstructorCompleteProfile";
 
 export default function TeacherLayout({ children }) {
   const pathname = usePathname();
@@ -90,6 +91,7 @@ export default function TeacherLayout({ children }) {
         ></FloatingActionButton>
       )}
       <Subscribe />
+      <InstructorCompleteProfile />
     </>
   );
 }
