@@ -164,7 +164,7 @@ const AboutUs = () => {
         return (
           <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             <div className="flex flex-col gap-2  w-full">
-              <Image alt="" src="/teacherOne.jpeg" className="w-full rounded-lg" width={120} height={120} />
+              <Image alt="" src="/about-us/avatar.jpeg" className="w-full rounded-lg" width={120} height={120} />
               <div className="text-xs flex w-full flex-col ml-2">
                 <Text className="font-bold">Dr. Hellen Dereck</Text>
                 <Text className="font-bold text-gray-500">Founder - Interim CEO</Text>
@@ -175,7 +175,7 @@ const AboutUs = () => {
             </div>
             
             <div className="flex flex-col gap-2 w-full">
-              <Image alt="" src="/teacherOne.jpeg" className="w-full rounded-lg" width={120} height={120} />
+              <Image alt="" src="/about-us/avatar.jpeg" className="w-full rounded-lg" width={120} height={120} />
               <div className="text-xs flex w-full flex-col ml-2">
                 <Text className="font-bold">Dr. Hellen Dereck</Text>
                 <Text className="font-bold text-gray-500">Founder - Interim CEO</Text>
@@ -183,7 +183,7 @@ const AboutUs = () => {
               </div>
             </div>
             <div className="flex flex-col gap-2 w-full">
-              <Image alt="" src="/teacherOne.jpeg" className="w-full rounded-lg" width={100} height={100} />
+              <Image alt="" src="/about-us/avatar.jpeg" className="w-full rounded-lg" width={120} height={120} />
               <div className="text-xs flex w-full flex-col ml-2">
                 <Text className="font-bold">Dr. Hellen Dereck</Text>
                 <Text className="font-bold text-gray-500">Founder - Interim CEO</Text>
@@ -191,7 +191,7 @@ const AboutUs = () => {
               </div>
             </div>
             <div className="flex flex-col gap-2 w-full">
-              <Image alt="" src="/teacherOne.jpeg" className="w-full rounded-lg" width={100} height={100} />
+              <Image alt="" src="/about-us/avatar.jpeg" className="w-full rounded-lg" width={120} height={120} />
               <div className="text-xs flex w-full flex-col  ml-2">
                 <Text className="font-bold">Dr. Hellen Dereck</Text>
                 <Text className="font-bold text-gray-500">Founder - Interim CEO</Text>
