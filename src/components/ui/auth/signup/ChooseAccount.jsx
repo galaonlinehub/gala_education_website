@@ -1,107 +1,79 @@
 "use client";
 import { useAccountType, useTabNavigator } from "@/src/store/auth/signup";
-import { Popconfirm } from "antd";
+import { Dropdown } from "antd";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { usePathname } from "next/navigation";
+import { FaChalkboardTeacher } from "react-icons/fa";
+import { PiStudentBold } from "react-icons/pi";
 
-const ChooseAccont = () => {
-  const description = "Delete the task";
-
-  const text = "Choose account type to open";
-  const buttonWidth = 80;
-
+const ChooseAccount = () => {
   const router = useRouter();
-  const [open, setOpen] = React.useState(false);
   const pathname = usePathname();
 
-
-  const { activeTab, setActiveTab } = useTabNavigator();
-  const {accountType, setAccountType} = useAccountType();
+  const { setActiveTab } = useTabNavigator();
+  const { setAccountType } = useAccountType();
   const isDisabled = pathname === "/signup";
 
-  const handleTeacherClick = () => {
+  const handleSelect = (type) => {
     setActiveTab(0);
-    setAccountType("instructor");
-    handleCancel();
-
+    setAccountType(type);
     router.push("/signup");
   };
 
-  const handleStudentClick = () => {
-    setActiveTab(0);
-    setAccountType("student");
-    handleCancel();
-
-    router.push("/signup");
-  };
-
-  const showPopconfirm = () => {
-    if (isDisabled) return;
-    setOpen(true);
-  };
-
-  const handleCancel = () => {
-    setOpen(false);
-  };
-
-  
+  const items = [
+    {
+      key: "1",
+      icon: <PiStudentBold className="text-xl" />,
+      label: (
+        <div
+          className="flex items-center py-[2px] rounded"
+          onClick={handleSelect.bind(null, "student")}
+        >
+          <span className="text-sm font-normal">Student</span>
+        </div>
+      ),
+    },
+    {
+      key: "2",
+      icon: <FaChalkboardTeacher className="text-xl" />,
+      label: (
+        <div
+          className="flex items-center py-[2px] rounded"
+          onClick={handleSelect.bind(null, "instructor")}
+        >
+          <span className="text-sm font-normal">Teacher</span>
+        </div>
+      ),
+    },
+  ];
 
   return (
     <section>
-      <Popconfirm
-        open={open}
-        icon={<ExclamationCircleOutlined className="!text-[#010798]" />}
-        placement="bottom"
-        title={
-          <span className="text-xs font-thin">Choose your account type</span>
-        }
-        okText="Teacher"
-        cancelText="Student"
-        okButtonProps={{
-          // disabled: isDisabled,
-          onClick: handleTeacherClick,
-          style: {
-            width: 50,
-            height: "20px",
-            backgroundColor: "#001840",
-            color: "white",
-            fontSize: "10px",
-            padding: "1px",
-            fontWeight: 50,
-            opacity: isDisabled ? 0.5 : 1,
-            cursor: isDisabled ? "not-allowed" : "pointer",
-          },
-        }}
-        cancelButtonProps={{
-          // disabled: isDisabled,
-          onClick: handleStudentClick,
-          style: {
-            width: 50,
-            height: "23px",
-            backgroundColor: "#001840",
-            color: "white",
-            fontSize: "10px",
-            padding: "1px",
-            fontWeight: 50,
-            opacity: isDisabled ? 0.5 : 1,
-            cursor: isDisabled ? "not-allowed" : "pointer",
-          },
-        }}
-        onOpenChange={handleCancel}
+      <Dropdown
+        menu={{ items }}
+        placement="bottomCenter"
+        disabled={isDisabled}
+        overlayClassName="rounded-md shadow-lg border border-gray-100"
+        trigger={["hover"]}
+        arrow={true}
       >
-        <span
-          className={`cursor-pointer ${
-            isDisabled ? "opacity-20 cursor-not-allowed" : ""
+        <button
+          className={`text-black transition-all ${
+            isDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
           }`}
-          onClick={showPopconfirm}
+          onClick={(e) => {
+            if (isDisabled) {
+              e.preventDefault();
+              return;
+            }
+          }}
         >
-          Sign Up
-        </span>
-      </Popconfirm>
+          <span>Sign Up</span>
+        </button>
+      </Dropdown>
     </section>
   );
 };
 
-export default ChooseAccont;
+export default ChooseAccount;

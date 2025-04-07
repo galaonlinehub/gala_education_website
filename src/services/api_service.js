@@ -1,10 +1,10 @@
 import axios from "axios";
 import { decrypt } from "../utils/fns/encryption";
-import { USER_COOKIE_KEY } from "../config/settings";
+import { API_BASE_URL, USER_COOKIE_KEY } from "../config/settings";
 import { cookieFn } from "../utils/fns/client";
 
 export const api = axios.create({
-  baseURL: "https://galaweb.galahub.org/api",
+  baseURL: API_BASE_URL,
   headers: {
     "Content-Type": "application/json",
   },
@@ -19,7 +19,7 @@ const publicEndpoints = new Set([
   "password/reset-request",
   "reset-password",
   "subscribe-plan",
-  "health"
+  "health",
 ]);
 
 api.interceptors.request.use(
@@ -66,15 +66,13 @@ export const apiGet = async (endpoint, headers = {}, directToken = null) => {
       });
       return response;
     }
-    console.log("Intercepting for:", endpoint);
     const response = await api.get(endpoint, { headers });
     return response;
   } catch (e) {
-    console.error(`apiGet error for ${endpoint}:`, e.message);
+    console.error(`apiGet error for ${endpoint}:`, e);
     throw e;
   }
 };
-
 
 export const apiPost = async (endpoint, data, headers = {}) => {
   const response = await api.post(endpoint, data, { headers });
@@ -93,7 +91,7 @@ export const apiPut = async (endpoint, data, headers = {}) => {
 
 export const apiPatch = async (endpoint, data, headers = {}) => {
   try {
-    const response = await api.post(endpoint, data, { headers });
+    const response = await api.put(endpoint, data, { headers });
     return response;
   } catch (error) {
     console.error(`PATCH ${endpoint} Error:`, error);
@@ -103,7 +101,7 @@ export const apiPatch = async (endpoint, data, headers = {}) => {
 
 export const apiDelete = async (endpoint, data, headers = {}) => {
   try {
-    const response = await api.post(endpoint, data, { headers });
+    const response = await api.delete(endpoint, data, { headers });
     return response;
   } catch (error) {
     console.error(`DELETE ${endpoint} Error:`, error);

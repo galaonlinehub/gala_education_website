@@ -6,18 +6,16 @@ export const useEnrolledTopics = () => {
   const {
     data: enrolledTopics,
     isFetching: enrolledTopicsLoading,
-    error: enrolledToicsError,
+    error: enrolledTopicsError,
   } = useQuery({
     queryKey: ["enrolledTopics"],
     queryFn: getEnrolledTopics,
     // ...globalOptions,
   });
 
-  console.log(typeof enrolledTopics);
-
   return {
     enrolledTopics,
     enrolledTopicsLoading,
-    enrolledToicsError,
+    enrolledTopicsError,
   };
 };

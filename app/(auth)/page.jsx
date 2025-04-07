@@ -26,6 +26,7 @@ import VideoPlayer from "@/src/components/ui/VideoPlayer";
 import ScrollableContent from "@/src/components/ui/TeachersCard";
 import { useUser } from "@/src/hooks/useUser";
 import Footer from "@/src/components/layout/footer";
+import { useCookies } from "@/src/store/auth/signup";
 import { Button } from "antd";
 import { Document, Page, pdfjs } from "react-pdf";
 import { apiGet } from "@/src/services/api_service";
@@ -35,6 +36,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 function Home() {
   const [showDonatePopup, setShowDonatePopup] = useState(false);
   const { user } = useUser();
+  const { cookieIsAccepted } = useCookies();
 
   const [showPdf, setShowPdf] = useState(false);
 
@@ -500,7 +502,7 @@ function Home() {
           </div>
         </div>
       </div>
-      {/* <AcceptCookies/> */}
+      {!cookieIsAccepted && <AcceptCookies />}
       <Footer />
     </div>
   );

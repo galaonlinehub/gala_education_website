@@ -34,14 +34,14 @@ export const FloatingActionButton = ({
         z-50
         fixed ${positionClasses2[position]}
             py-2 px-6 rounded-full
-            bg-blue-600 text-white
+            bg-[#001840] text-white
             shadow-lg 
-            hover:bg-blue-700
+            hover:bg-[#001840]/90
             active:transform active:scale-95
             transition-all duration-200 ease-in-out
             flex items-center justify-center gap-2
             group
-            hover:shadow-blue-400/50 hover:shadow-xl
+            hover:shadow-[#001840]/50 hover:shadow-xl
         ${className}
       `}
     >

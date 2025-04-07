@@ -1,7 +1,14 @@
 import { notification } from "antd";
 import React from "react";
+import {
+  LuCircleX,
+  LuFolder,
+  LuUsers,
+  LuX,
+  LuBell,
+  LuBellRing,
+} from "react-icons/lu";
 
-// Define types for notification parameters
 /**
  * @typedef {Object} NotificationConfig
  * @property {string} message - Main notification message
@@ -19,7 +26,7 @@ const baseStyle = {
   paddingLeft: "0px",
   borderRadius: "8px",
   width: "400px",
-  minHeight: "30px",
+  // minHeight: "30px",
 };
 
 const themes = {
@@ -173,7 +180,7 @@ const notificationService = {
       closable,
       duration,
       closeIcon: null,
-      icon: <></>,
+      icon: <LuBellRing />,
     });
   },
 

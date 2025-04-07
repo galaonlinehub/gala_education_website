@@ -18,6 +18,9 @@ export const handlePhoneInput = (event, onChange) => {
   onChange(formattedValue);
 };
 
+export const reformat_phone_number = (phone_number) =>
+  phone_number.replace(/\D/g, "");
+
 export const mask_phone_number = (number) => {
   number = number.replace(/-/g, "");
   const visibleStart = number.slice(0, 5);

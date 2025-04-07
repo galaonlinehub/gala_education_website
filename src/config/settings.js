@@ -10,38 +10,27 @@ export const INSTRUCTOR_CONTRACT_KEY = "45dab10c-ce9f-40fd-9254-6b429efda2ee";
 export const EMAIL_VERIFICATION_MODAL_KEY =
   "1a56cd1c-ba85-48cf-ac45-0991bc732fb2";
 
+export const PREVIEW_CHAT_KEY = "fb991dff-db78-4972-baa3-f7068fd06359";
+
+export const CURRENT_CHAT_KEY =
+  "19fb96164-8236-0991bc732fb2-f8bc6b75-1764-4054";
+
+export const USER_HAS_ACCEPTED_COOKIES_KEY =
+  "1f17695c-c729-4300-9175-d9686b88cbc9";
+
 export const PaymentStatus = {
+  INITIAL: "initial",
   LOADING: "loading",
   SUCCESS: "success",
   FAILURE: "failure",
-  REFERENCE: "reference"
+  REFERENCE: "reference",
+  CONGRATULATION: "congratulation",
 };
 
-export const encryptText = (text, secretKey = 'SecretKey') => {
-  const textChars = text.split('');
-  const keyChars = secretKey.split('');
-  const encryptedChars = textChars.map((char, index) => {
-      const charCode = char.charCodeAt(0);
-      const keyChar = keyChars[index % keyChars.length];
-      const keyCode = keyChar.charCodeAt(0);
-      return String.fromCharCode(charCode ^ keyCode);
-  });
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-  const encryptedText = encryptedChars.join('');
-  return btoa(encryptedText);
-};
+export const img_base_url = process.env.NEXT_PUBLIC_IMAGE_BASE_URL;
 
-export const decryptText = (encryptedText, secretKey = 'SecretKey') => {
-  const encryptedChars = atob(encryptedText).split('');
-  const keyChars = secretKey.split('');
-  
-  const decryptedChars = encryptedChars.map((char, index) => {
-    const charCode = char.charCodeAt(0);
-    const keyChar = keyChars[index % keyChars.length];
-    const keyCode = keyChar.charCodeAt(0);
-    
-    return String.fromCharCode(charCode ^ keyCode);
-  });
-  
-  return decryptedChars.join('');
-};
+export const socket_base_url = process.env.NEXT_PUBLIC_SOCKET_BASE_URL;
+
+

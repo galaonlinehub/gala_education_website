@@ -3,13 +3,16 @@ import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
 import { message, Input, Button, Card, Typography, Space, Alert } from "antd";
-import { MailOutlined, SendOutlined, ReloadOutlined } from "@ant-design/icons";
+import { MailOutlined, ReloadOutlined } from "@ant-design/icons";
 import { FaKey } from "react-icons/fa6";
 import LoadingState from "@/src/components/ui/loading/template/LoadingSpinner";
 import { encrypt } from "@/src/utils/fns/encryption";
-import { apiPost, apiGet } from "@/src/services/api_service";
+import { apiPost } from "@/src/services/api_service";
+import { LuSendHorizontal } from "react-icons/lu";
+import { useMutation } from "@tanstack/react-query";
+import { sessionStorageFn } from "@/src/utils/fns/client";
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
 const ForgotPassword = () => {
   const router = useRouter();
@@ -43,36 +46,36 @@ const ForgotPassword = () => {
     return () => clearInterval(timer);
   }, [resendCounter]);
 
-  const onSubmit = async (data) => {
-    try {
-      setIsSendingOtp(true);
-      // message.destroy();
-      const response = await apiPost("/password/reset-request", {
-        email: data.email,
-      });
-      if (response.status === 200) {
-        const encryptedEmail = encrypt(data.email);
-        sessionStorage.setItem("Gala", encryptedEmail);
+  const resetPasswordMutation = useMutation({
+    mutationFn: (data) =>
+      apiPost("/password/reset-request", { email: data.email }),
 
-        setEmail(data.email);
+    onSuccess: (response, variables) => {
+      if (response.status === 200) {
+        const encryptedEmail = encrypt(variables.email);
+        sessionStorageFn.set("Gala", encryptedEmail);
+
+        setEmail(variables.email);
         setOtpSent(true);
         setResendCounter(30);
 
-        setEmailOtpFeedback({
-          show: true,
-          type: "success",
-          message: "OTP sent to your email!.",
-        });
+        message.success("OTP send to your email");
+
+        // setEmailOtpFeedback({
+        //   show: true,
+        //   type: "success",
+        //   message: "OTP sent to your email!.",
+        // });
       }
-    } catch (error) {
+    },
+    onError: () => {
       setEmailOtpFeedback({
         show: true,
         type: "error",
         message: "Failed to send OTP, Try again!.",
       });
-    } finally {
-      setIsSendingOtp(false);
-
+    },
+    onSettled: () => {
       setTimeout(() => {
         setEmailOtpFeedback({
           show: false,
@@ -80,7 +83,11 @@ const ForgotPassword = () => {
           message: "",
         });
       }, 10000);
-    }
+    },
+  });
+
+  const onSubmit = (data) => {
+    resetPasswordMutation.mutate(data);
   };
 
   const handleResendOtp = async () => {
@@ -154,16 +161,10 @@ const ForgotPassword = () => {
 
   return (
     <div className="flex items-center justify-center px-2 h-5/6">
-      <Card
-        className="!w-full !max-w-xl !bg-white !rounded-lg !border-0"
-        title={
-          <div className="flex justify-start items-center gap-3">
-            <Title level={3} className="!self-center !m-0">
-              {!otpSent ? "Forgot Password" : "Verify Email"}
-            </Title>
-          </div>
-        }
-      >
+      <Card className="!w-full !max-w-xl !bg-white !rounded-lg !border-0">
+        <div className="font-bold mb-5 text-2xl">
+          {!otpSent ? "Forgot Password" : "Verify Email"}
+        </div>
         {!otpSent ? (
           <form
             className="flex flex-col gap-2"
@@ -198,7 +199,7 @@ const ForgotPassword = () => {
                 )}
               />
               {errors.email && (
-                <Text type="danger" className="text-[10px] mt-2">
+                <Text type="danger" className="text-xs mt-2">
                   {errors.email.message}
                 </Text>
               )}
@@ -206,11 +207,18 @@ const ForgotPassword = () => {
             <Button
               type="primary"
               htmlType="submit"
-              loading={isSendingOtp}
-              icon={<SendOutlined />}
-              className="!w-full !bg-[#030DFE] !text-white !font-bold !py-5 px-4 !rounded"
+              disabled={resetPasswordMutation.isPending}
+              loading={resetPasswordMutation.isPending}
+              className="!w-full !bg-[#030DFE] !text-white !font-bold !py-5 px-4 !rounded-lg flex items-center justify-center gap-2"
             >
-              {!isSendingOtp && "Send OTP"}
+              {resetPasswordMutation.isPending ? (
+                "Sending..."
+              ) : (
+                <div className="flex items-center gap-2">
+                  <span>Send OTP</span>
+                  <LuSendHorizontal />
+                </div>
+              )}
             </Button>
           </form>
         ) : (
@@ -287,7 +295,7 @@ const ForgotPassword = () => {
                 disabled={resendCounter > 0 || isSendingOtp}
                 icon={<ReloadOutlined />}
               >
-                {resendCounter > 0 
+                {resendCounter > 0
                   ? `Resend OTP in ${resendCounter}s`
                   : "Resend OTP"}
               </Button>
