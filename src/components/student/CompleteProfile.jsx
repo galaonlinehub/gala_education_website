@@ -1,23 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Modal, Input, Button, Form, message } from "antd";
 import {
   LoadingOutlined,
   CheckOutlined,
   CameraOutlined,
   ArrowRightOutlined,
-  CheckCircleOutlined,
   CheckCircleFilled,
 } from "@ant-design/icons";
 import { useUser } from "@/src/hooks/useUser";
-import { FaUserCircle, FaUser } from "react-icons/fa";
 import Image from "next/image";
 import {
   handlePhoneInput,
   mask_phone_number,
+  reformat_phone_number,
 } from "@/src/utils/fns/format_phone_number";
-import { FiUser } from "react-icons/fi";
 
 import { LuUser } from "react-icons/lu";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Stage = {
   SAVE: "save",
@@ -28,7 +27,7 @@ const Stage = {
 
 const CompleteProfile = () => {
   const [status, setStatus] = useState(Stage.SAVE);
-  const { user } = useUser();
+  const { user, updateProfile, isUpdatingProfile } = useUser();
   const [phoneNumber, setPhoneNumber] = useState(null);
 
   const render = () => {
@@ -43,7 +42,7 @@ const CompleteProfile = () => {
   };
   return (
     <Modal
-      open={user?.phone_number}
+      open={true}
       footer={null}
       styles={{ body: { height: "400px", overflowY: "auto" } }}
       title={
@@ -61,8 +60,6 @@ const CompleteProfile = () => {
       maskClosable={false}
       closable={false}
       className="rounded-xl overflow-hidden"
-      //   bodyStyle={{ overflow: "hidden" }}
-      //   maskStyle={{ background: "rgba(0, 0, 0, 0.65)" }}
     >
       {render()}
     </Modal>
@@ -72,28 +69,42 @@ const CompleteProfile = () => {
 const Save = ({ setStatus, setPhoneNumber }) => {
   const [form] = Form.useForm();
   const [imageUrl, setImageUrl] = useState(null);
-  const [loading, setLoading] = useState(false);
   const [uploadLoading, setUploadLoading] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [verifyPhone, setVerifyPhone] = useState(false);
   const fileInputRef = React.useRef(null);
+  const { updateProfile, isUpdatingProfile, updateProfileSuccess } = useUser();
 
   const handleFinish = (values) => {
-    setPhoneNumber(`+255${values.phone_number}`);
-    setLoading(true);
-    setTimeout(() => {
-      console.log("Submitted values:", {
-        ...values,
-        phone_number: `+255${values.phone_number}`,
-        avatar: imageUrl,
-      });
-      setIsSuccess(true);
-      setLoading(false);
-      setStatus(Stage.VERIFY);
-      setTimeout(() => {
-        message.success("Profile saved successfully!");
-      }, 500);
-    }, 800);
+    setPhoneNumber(`255${reformat_phone_number(values.phone_number)}`);
+    const formData = new FormData();
+    formData.append(
+      "phone_number",
+      `255${reformat_phone_number(values.phone_number)}`
+    );
+    if (imageUrl) {
+      const blob = dataURLtoBlob(imageUrl);
+      formData.append("profile_picture", blob, "profile-pic.jpg");
+    }
+
+    updateProfile(formData, {
+      onSuccess: () => {
+        setStatus(Stage.VERIFY);
+      },
+      onError: (error) => {
+        message.error("Failed to update profile: " + error.message);
+      },
+    });
+  };
+
+  const dataURLtoBlob = (dataurl) => {
+    const arr = dataurl.split(",");
+    const mime = arr[0].match(/:(.*?);/)[1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new Blob([u8arr], { type: mime });
   };
 
   const handleImageClick = () => {
@@ -130,12 +141,18 @@ const Save = ({ setStatus, setPhoneNumber }) => {
     reader.readAsDataURL(file);
   };
 
-  const validateTanzanianNumber = (_, value) => {
+  const validateNumber = (_, value) => {
     if (!value) return Promise.reject("Phone number is required");
-    const numberRegex = /^[0-9]{11}$/;
-    if (!numberRegex.test(value)) {
-      return Promise.reject("Please enter 11 digits (e.g., 752451811)");
+
+    const cleanedValue = value.replace(/\D/g, "");
+    if (!/^[0-9]{9}$/.test(cleanedValue)) {
+      return Promise.reject("Please enter 9 digits (e.g., 752451811)");
     }
+
+    if (!/^[76][1-9][0-9]{7}$/.test(cleanedValue)) {
+      return Promise.reject("Enter valid phone number");
+    }
+
     return Promise.resolve();
   };
 
@@ -213,7 +230,7 @@ const Save = ({ setStatus, setPhoneNumber }) => {
               Phone Number
             </span>
           }
-          //   rules={[{ validator: validateTanzanianNumber }]}
+          rules={[{ validator: validateNumber }]}
           className="mb-8"
         >
           <Input
@@ -236,25 +253,13 @@ const Save = ({ setStatus, setPhoneNumber }) => {
         <Button
           type="primary"
           htmlType="submit"
-          loading={loading}
-          disabled={isSuccess}
-          className={`w-full h-10 text-base font-bold rounded-xl shadow-md transition-all duration-300 flex items-center justify-center ${
-            isSuccess
-              ? "bg-green-500 hover:bg-green-600 border-0"
-              : "bg-[#001840] hover:!bg-[#001840]/80"
-          }`}
+          loading={isUpdatingProfile}
+          disabled={updateProfileSuccess}
+          className={`!w-full h-10 text-base font-bold rounded-xl shadow-md transition-all duration-300 flex items-center justify-center 
+              bg-[#001840] ${!updateProfileSuccess && "hover:!bg-[#001840]/80"}
+         `}
         >
-          {loading ? (
-            <span className="flex items-center">
-              <LoadingOutlined className="mr-2" />
-              Processing...
-            </span>
-          ) : isSuccess ? (
-            <span className="flex items-center">
-              <CheckOutlined className="mr-2" />
-              Profile Saved!
-            </span>
-          ) : (
+          {!isUpdatingProfile && (
             <span className="flex items-center">
               Continue
               <ArrowRightOutlined className="ml-2" />
@@ -271,14 +276,21 @@ const Save = ({ setStatus, setPhoneNumber }) => {
 };
 
 const Verify = ({ phone_number, setStatus }) => {
-  const [hasVerified, setHasVerified] = useState(null);
-  const inputs = React.useRef([]);
   const [values, setValues] = useState(Array(6).fill(""));
+  const inputs = useRef([]);
+  const queryClient = useQueryClient();
 
-  const handleChange = async (value, index) => {
+  const {
+    verifyOtp,
+    isVerifyingOtp,
+    verifyOtpSuccess,
+    verifyOtpError,
+    resendOtp,
+    isResendingOtp,
+  } = useUser();
+
+  const handleChange = (value, index) => {
     if (isNaN(value) || value.length > 1) return;
-
-    setHasVerified(null);
 
     const newValues = [...values];
     newValues[index] = value;
@@ -288,42 +300,48 @@ const Verify = ({ phone_number, setStatus }) => {
       inputs.current[index + 1]?.focus();
     }
 
-    if (newValues.length === 6 && newValues.every((val) => val !== "")) {
-      setStatus(Stage.SUCCESS);
-      const code = Number(newValues.join(""));
-      setLoading(true);
-
-      const formData = new FormData();
-      formData.append("otp", code);
-      formData.append("email", email);
-
-      try {
-        const response = await apiPost("/verify-otp", formData);
-
-        if (response.status === 200) {
-          setHasVerified(true);
-          setTimeout(() => {
-            setActiveTab(1);
-            setOpenEmailVerificationModal(false);
-          }, 5000);
+    if (newValues.every((val) => val !== "")) {
+      const otp = newValues.join("");
+      verifyOtp(
+        { otp, phone_number },
+        {
+          onSuccess: () => {
+            setStatus(Stage.SUCCESS);
+            setTimeout(() => {
+              queryClient.invalidateQueries({ queryKey: ["auth-user"] });
+            }, 8000);
+          },
+          onError: (error) => {
+            message.error("Invalid OTP: " + error.message);
+            setValues(Array(6).fill(""));
+          },
         }
-      } catch (e) {
-        console.error(e.response?.data || e.message);
-        setHasVerified(false);
-      } finally {
-        setLoading(false);
-      }
+      );
     }
   };
 
+  const handleKeyDown = (e, index) => {
+    if (e.key === "Backspace" && !values[index] && index > 0) {
+      inputs.current[index - 1].focus();
+    }
+  };
+
+  const handleResend = () => {
+    resendOtp(phone_number, {
+      onSuccess: () => message.success("OTP resent successfully"),
+      onError: (error) =>
+        message.error("Failed to resend OTP: " + error.message),
+    });
+  };
+
   return (
-    <div className={"flex flex-col gap-6 items-center  h-full pt-24 pb-4"}>
+    <div className="flex flex-col gap-6 items-center h-full pt-24 pb-4">
       <div className="text-base font-medium">
-        Enter code sent to this{" "}
+        Enter code sent to{" "}
         <span className="text-blue-700 font-extrabold">
           {mask_phone_number(phone_number)}
         </span>{" "}
-        via sms
+        via SMS
       </div>
       <div className="flex flex-wrap gap-2">
         {Array(6)
@@ -331,10 +349,11 @@ const Verify = ({ phone_number, setStatus }) => {
           .map((_, index) => (
             <input
               key={index}
-              ref={(e) => (inputs.current[index] = e)}
+              ref={(el) => (inputs.current[index] = el)}
               type="text"
-              inputMode={"numeric"}
+              inputMode="numeric"
               maxLength="1"
+              value={values[index]}
               onInput={(e) => {
                 const value = e.target.value;
                 if (!/^[0-9]$/.test(value)) {
@@ -343,18 +362,21 @@ const Verify = ({ phone_number, setStatus }) => {
               }}
               onChange={(e) => handleChange(e.target.value, index)}
               onKeyDown={(e) => handleKeyDown(e, index)}
-              className={`${
-                hasVerified !== null
-                  ? hasVerified
-                    ? "border border-green-500 focus:ring-green-800 focus:outline-green-600 input-shake hasVerified"
-                    : "border border-red-500 focus:ring-red-800 focus:outline-red-600 input-shake failure"
-                  : "text-2xl font-black w-12 h-12 text-center text-black border border-[#030DFE] rounded-md focus:outline-none focus:ring focus:ring-[#030DFE]"
-              } text-2xl font-black w-12 h-12 text-center text-black rounded-md focus:outline-none focus:ring`}
+              disabled={isVerifyingOtp}
+              className={`text-2xl font-black w-12 h-12 text-center text-black rounded-md focus:outline-none focus:ring transition-all duration-300 ${
+                verifyOtpSuccess
+                  ? "border-2 border-green-500 focus:ring-green-800 text-green-600"
+                  : verifyOtpError
+                  ? "border-2 border-red-500 focus:ring-red-800 text-red-600 input-shake"
+                  : "border-2 border-[#030DFE] focus:ring-[#030DFE] text-black"
+              }`}
             />
           ))}
       </div>
       <div className="w-full flex justify-end mr-4">
-        <Button type="link">Resend</Button>
+        <Button type="link" onClick={handleResend} loading={isResendingOtp}>
+          Resend
+        </Button>
       </div>
     </div>
   );
@@ -381,4 +403,4 @@ const Success = () => {
   );
 };
 
-export default CompleteProfile;
+export { CompleteProfile, Success, Verify, Save };

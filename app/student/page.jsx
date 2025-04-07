@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import {
   theme,
   Card,
-  Empty,
   Typography,
   Row,
   Col,
@@ -13,32 +12,23 @@ import {
   Progress,
   Space,
   Statistic,
-  Calendar,
-  List,
   Avatar,
   Badge,
   Tag,
-  Divider,
 } from "antd";
 import {
-  RightOutlined,
-  BookOutlined,
   ClockCircleOutlined,
   TrophyOutlined,
   BellOutlined,
   CheckCircleOutlined,
-  WarningOutlined,
-  UserOutlined,
 } from "@ant-design/icons";
 import { useEnrolledTopics } from "@/src/store/student/class";
 import { useUserTopics } from "@/src/store/user_topics";
 import Link from "next/link";
 import { useUser } from "@/src/hooks/useUser";
 import { GiBookCover } from "react-icons/gi";
-import { MdOutlineAssignment } from "react-icons/md";
-import CompleteProfile from "@/src/components/student/CompleteProfile";
-import { LuBookOpenCheck } from "react-icons/lu";
-
+import { LuBookOpenCheck, LuUser } from "react-icons/lu";
+import { img_base_url } from "@/src/config/settings";
 
 const { Title, Text } = Typography;
 
@@ -48,6 +38,7 @@ export default function Component() {
   const { enrolledTopics, loading } = useEnrolledTopics();
   const { userTopics, topicsLoading } = useUserTopics();
   const { token } = theme.useToken();
+  console.log(user);
 
   // Simulated data for new components
   const upcomingDeadlines = [
@@ -78,7 +69,7 @@ export default function Component() {
   const QuickLinks = () => (
     <Card title="Quick Links" size="small" className="overflow-hidden">
       <Space direction="vertical" className="w-full items-start">
-        <Button type="link" icon={<UserOutlined />} block className="text-left">
+        <Button type="link" icon={<LuUser />} block className="text-left">
           <Link href="/student/profile">Profile</Link>
         </Button>
         <Button
@@ -152,7 +143,13 @@ export default function Component() {
             <Badge count={3}>
               <Button icon={<BellOutlined />} shape="circle" />
             </Badge>
-            <Avatar src={user?.avatar || "/default-avatar.png"} size="large" />
+            <Avatar
+              src={
+                `${img_base_url}${user?.profile_picture}` ||
+                "/default-avatar.png"
+              }
+              size="large"
+            />
           </Space>
         </Col>
       </Row>
@@ -173,20 +170,21 @@ export default function Component() {
           title: "Completed Assignments",
           value: stats.completedAssignments,
           icon: <LuBookOpenCheck />,
-
         },
       ].map((stat, index) => (
         <Col xs={24} sm={12} key={index}>
           <Card className="h-28">
             <Statistic
-               
               title={stat.title}
               value={stat.value}
               valueStyle={{ color: token.colorPrimary }}
               formatter={(value) => (
                 <div className="flex items-center space-x-2">
                   {stat.icon}
-                  <span>{value}{stat.suffix}</span>
+                  <span>
+                    {value}
+                    {stat.suffix}
+                  </span>
                 </div>
               )}
             />
@@ -239,11 +237,9 @@ export default function Component() {
   );
 
   return (
-    <div className="h-fit  overflow-hidden">
-      <CompleteProfile />
-
+    <div className="h-fit overflow-hidden">
       <Row
-        className="max-w-[1920px] mx-auto p-4 md:p-6 h-full"
+        className="max-w-[1920px] mx-auto p-1 md:p-6 h-full"
         gutter={[
           { xs: 8, sm: 16, md: 24 },
           { xs: 8, sm: 16, md: 24 },

@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import { Result, Modal, Progress } from "antd";
-import { PaymentStatus } from "@/src/config/settings";
+import {
+  PaymentStatus,
+  SIGN_UP_CHOOSE_ACCOUNT_KEY,
+} from "@/src/config/settings";
 import {
   CheckCircleOutlined,
   CloseCircleOutlined,
@@ -13,6 +16,8 @@ import { HiMiniDevicePhoneMobile } from "react-icons/hi2";
 import { useDevice } from "@/src/hooks/useDevice";
 import { useRouter } from "next/navigation";
 import { GoShieldCheck } from "react-icons/go";
+import InstructorSignUpFeedback from "@/src/components/teacher/InstructorSignUpFeedback";
+import { sessionStorageFn } from "@/src/utils/fns/client";
 
 export const RenderLoadingState = () => {
   const [percent, setPercent] = useState(0);
@@ -90,35 +95,50 @@ export const RenderLoadingState = () => {
   );
 };
 
-export const RenderSuccessState = ({ onClose }) => (
-  <Result
-    icon={<CheckCircleOutlined className="!text-green-500 text-2xl" />}
-    title={
-      <span className="text-2xl font-semibold text-gray-800">
-        Payment Successful!
-      </span>
+export const RenderSuccessState = ({ onClose, accountType, setStatus }) => {
+  if (accountType === "instructor") {
+    setTimeout(() => {
+      setStatus(PaymentStatus.CONGRATULATION);
+    }, 8000);
+  }
+
+  const onDone = () => {
+    onClose();
+    if (accountType === "instructor") {
+      setStatus(PaymentStatus.CONGRATULATION);
     }
-    subTitle={
-      <div className="space-y-4 mt-4 md:mt-6 lg:mt-8">
-        <p className="text-gray-600 text-xs md:text-sm">
-          Your transaction has been completed successfully.
-        </p>
-        <p className="text-gray-500 text-xs md:text-sm">
-          A confirmation email will be sent shortly.
-        </p>
-      </div>
-    }
-    extra={[
-      <button
-        key="done"
-        onClick={onClose}
-        className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors duration-200 w-3/4"
-      >
-        Done
-      </button>,
-    ]}
-  />
-);
+  };
+
+  return (
+    <Result
+      icon={<CheckCircleOutlined className="!text-green-500 text-2xl" />}
+      title={
+        <span className="text-2xl font-semibold text-gray-800">
+          Payment Successful!
+        </span>
+      }
+      subTitle={
+        <div className="space-y-4 mt-4 md:mt-6 lg:mt-8">
+          <p className="text-gray-600 text-xs md:text-sm">
+            Your transaction has been completed successfully.
+          </p>
+          <p className="text-gray-500 text-xs md:text-sm">
+            A confirmation email will be sent shortly.
+          </p>
+        </div>
+      }
+      extra={[
+        <button
+          key="done"
+          onClick={onDone}
+          className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors duration-200 w-3/4"
+        >
+          Done
+        </button>,
+      ]}
+    />
+  );
+};
 
 export const RenderReferenceState = ({ reference, amount, onClose }) => (
   <Result
@@ -201,7 +221,7 @@ export const RenderFailureState = ({ onClose, setStatus }) => (
     extra={[
       <button
         key="tryAgain"
-        onClick={() => setStatus(PaymentStatus.LOADING)} // Uncomment and adjust if setStatus is passed
+        onClick={() => setStatus(PaymentStatus.LOADING)}
         className="px-6 py-2 bg-[#001840] text-white rounded-lg hover:bg-blue-900 transition-colors w-3/4 duration-200 mb-3 md:mb-6"
       >
         Try Again
@@ -228,6 +248,7 @@ export const PaymentPending = ({
   const [modalSize, setModalSize] = useState({ width: 520, height: 520 });
   const router = useRouter();
   const [localStatus, setLocalStatus] = useState(status);
+  const [accountType, setAccountType] = useState("");
 
   useEffect(() => {
     const updateSize = () => {
@@ -242,12 +263,17 @@ export const PaymentPending = ({
     return () => window.removeEventListener("resize", updateSize);
   }, [width]);
 
+  useEffect(() => {
+    const accountType = sessionStorageFn.get(SIGN_UP_CHOOSE_ACCOUNT_KEY);
+    setAccountType(accountType);
+  }, []);
+
   return (
     <Modal
       title={<span className="text-xl font-semibold">Gala Education</span>}
       open={open}
       footer={null}
-      width={modalSize.width}
+      width={status === PaymentStatus.CONGRATULATION ? 720 : modalSize.width}
       closable={status !== PaymentStatus.LOADING}
       maskClosable={status !== PaymentStatus.LOADING}
       onCancel={onClose}
@@ -255,7 +281,11 @@ export const PaymentPending = ({
     >
       {status === PaymentStatus.LOADING && <RenderLoadingState />}
       {status === PaymentStatus.SUCCESS && (
-        <RenderSuccessState onClose={onClose} />
+        <RenderSuccessState
+          onClose={onClose}
+          accountType={accountType}
+          setStatus={setLocalStatus}
+        />
       )}
       {status === PaymentStatus.REFERENCE && (
         <RenderReferenceState
@@ -266,7 +296,9 @@ export const PaymentPending = ({
       )}
       {status === PaymentStatus.FAILURE && (
         <RenderFailureState onClose={onClose} setStatus={setLocalStatus} />
-      )}{" "}
+      )}
+
+      {status === PaymentStatus.CONGRATULATION && <InstructorSignUpFeedback />}
     </Modal>
   );
 };

@@ -1,6 +1,13 @@
 import "./globals.css";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
-import { Inter, Poppins, Urbanist, Outfit, DM_Sans } from "next/font/google";
+import {
+  Inter,
+  Poppins,
+  Urbanist,
+  Outfit,
+  DM_Sans,
+  Quicksand,
+} from "next/font/google";
 import QueryWrapper from "@/src/components/layout/QueryWrapper";
 
 const inter = Inter({
@@ -26,8 +33,14 @@ const outfit = Outfit({
 });
 
 const dmSans = DM_Sans({
-  subsets: ['latin'],
-  display: 'swap',
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const quicksand = Quicksand({
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 export const metadata = {
@@ -58,8 +71,11 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${inter.className} ${poppins.variable}`}>
-      <body className="font-sans">
+    <html
+      lang="en"
+      className={`${quicksand.className} ${outfit.variable} ${dmSans.variable}`}
+    >
+      <body>
         <QueryWrapper>
           <AntdRegistry>{children}</AntdRegistry>
         </QueryWrapper>
