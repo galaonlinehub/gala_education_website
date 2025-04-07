@@ -4,7 +4,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { apiGet } from "../services/api_service";
 import { useNewClass } from "@/src/store/student/class";
 import { useSearchResult } from "../store/search_result";
-import { sendR } from "@/res";
 
 export const useSearch = () => {
   // State management
