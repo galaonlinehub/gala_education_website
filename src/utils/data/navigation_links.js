@@ -101,8 +101,8 @@ export const teacher_links = [
   },
 
   {
-    name: "Live Class",
-    link: "live-class",
+    name: "Live Classes",
+    link: "live-classes",
     icon: <LuTv />,
   },
 
@@ -132,8 +132,8 @@ export const student_links = [
     icon: <LuLayoutDashboard />,
   },
   {
-    name: "Live Lesson",
-    link: "live-lesson",
+    name: "Live Lessons",
+    link: "live-lessons",
     icon: <LuTv />,
   },
 
