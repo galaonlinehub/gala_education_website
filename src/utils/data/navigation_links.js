@@ -1,17 +1,12 @@
-import { FaChalkboardTeacher, FaDonate, FaUsers, FaBook } from "react-icons/fa";
 import {
-  MdNotes,
-  MdLiveTv,
-  MdSettings,
-  MdAnalytics,
-  MdDashboard,
-  MdLibraryAdd,
-  MdAssignment,
-  MdListAlt,
-} from "react-icons/md";
-import { LuGift } from "react-icons/lu";
-import { LuClock4 } from "react-icons/lu";
-
+  LuBox,
+  LuLayoutDashboard,
+  LuLayoutList,
+  LuListChecks,
+  LuTv,
+  LuUsers,
+  LuClock4,
+} from "react-icons/lu";
 
 export const footer_links = {
   Services: [
@@ -102,53 +97,31 @@ export const teacher_links = [
   {
     name: "Dashboard",
     link: ".",
-    icon: <FaChalkboardTeacher />,
+    icon: <LuLayoutDashboard />,
   },
-  // {
-  //   name: "Notes",
-  //   link: "notes",
-  //   icon: <MdNotes />,
-  // },
+
   {
     name: "Live Class",
     link: "live-class",
-    icon: <MdLiveTv />,
+    icon: <LuTv />,
   },
-  ,
-  // {
-  //   "name": "Analytics",
-  //   "link": "analytics",
-  //   "icon": <MdAnalytics />
 
-  // }
   {
     name: "Social",
     link: "social",
-    icon: <FaUsers />,
+    icon: <LuUsers />,
   },
 
-  // {
-  //   "name": "Donate",
-  //   "link": "donate",
-  //   "icon": <FaDonate />
-
-  // },
-  // {
-  //   "name": "Manage Class",
-  //   "link": "manage-class",
-  //   "icon": <MdSettings />
-
-  // },
-  // {
-  //   "name": "Create Class",
-  //   "link": "create-class",
-  //   "icon": <MdLibraryAdd />
-
-  // },
   {
     name: "Assignments",
     link: "assignments",
-    icon: <MdAssignment />,
+    icon: <LuListChecks />,
+  },
+
+  {
+    name: "Subscriptions",
+    link: "subscriptions",
+    icon: <LuBox />,
   },
 ];
 
@@ -156,29 +129,24 @@ export const student_links = [
   {
     name: "Dashboard",
     link: ".",
-    icon: <MdDashboard />,
+    icon: <LuLayoutDashboard />,
   },
   {
     name: "Live Lesson",
     link: "live-lesson",
-    icon: <MdLiveTv />,
+    icon: <LuTv />,
   },
 
   {
     name: "Classes",
     link: "classes",
-    icon: <MdListAlt />,
+    icon: <LuLayoutList />,
   },
 
-  // {
-  //   name: "Assignments",
-  //   link: "assignments",
-  //   icon: <FaChalkboardTeacher />,
-  // },
   {
     name: "Social",
     link: "social",
-    icon: <FaUsers />,
+    icon: <LuUsers />,
   },
   {
     name: "Pending Payments",
@@ -186,9 +154,9 @@ export const student_links = [
     icon: <LuClock4 />,
   },
 
-  // {
-  //     "name":"Donate",
-  //     "link":"donate",
-  //     "icon":<LuGift />
-  // },
+  {
+    name: "Subscriptions",
+    link: "subscriptions",
+    icon: <LuBox />,
+  },
 ];

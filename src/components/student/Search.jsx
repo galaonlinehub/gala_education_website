@@ -4,16 +4,15 @@ import { IoMenu } from "react-icons/io5";
 import { CloseOutlined } from "@ant-design/icons";
 import {
   FaUserCircle,
-  FaBell,
   FaChalkboardTeacher,
   FaBookReader,
 } from "react-icons/fa";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useSearch } from "@/src/hooks/useSearch";
-import { FaBookmark } from "react-icons/fa6";
 import { notificationService } from "@/src/components/ui/notification/Notification";
 import { useUser } from "@/src/hooks/useUser";
+import { LuBell, LuCircleUser } from "react-icons/lu";
 
 const SearchResultCard = ({ data, onClick }) => {
   const { topics, teachers } = data;
@@ -97,7 +96,7 @@ const SearchResultCard = ({ data, onClick }) => {
                   <div className="flex items-center space-x-4">
                     <div className="">
                       <div className="w-16 h-16 rounded-full bg-gradient-to-r from-violet-500 to-violet-500 flex items-center justify-center">
-                        <FaUserCircle className="text-3xl text-white" />
+                        <LuCircleUser className="text-3xl text-white" />
                       </div>
                     </div>
                     <div>
@@ -236,24 +235,14 @@ const StudentSearch = () => {
           ) : (
             <div className="font-black text-sm">{getCurrentDate()}</div>
           )}
-          <div className="lg:flex items-center space-x-4 hidden">
-            <Tooltip placement="top" title="Saved Classes">
-              <FaBookmark
-                className="text-lg text-black hover:text-blue-700 cursor-pointer transition-colors"
-                onClick={() => router.push("/student/saved")}
-              />
+          <div className="lg:flex items-center space-x-3 hidden">
+            <Tooltip placement="top" title="Notifications">
+              <LuBell className="text-xl text-black hover:text-blue-600 cursor-pointer transition-colors" />
             </Tooltip>
-            <div className="relative inline-flex items-center">
-              <FaBell className="text-xl text-black hover:text-blue-700 cursor-pointer transition-colors" />
-              <span className="absolute top-0 right-0 flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-sky-500"></span>
-              </span>
-            </div>
 
             <Tooltip placement="top" title="My Profile">
-              <FaUserCircle
-                className="text-xl text-black hover:text-blue-700 cursor-pointer transition-colors"
+              <LuCircleUser
+                className="text-xl text-black hover:text-blue-600 cursor-pointer transition-colors"
                 onClick={() => router.push(`/${user.role}/profile`)}
               />
             </Tooltip>

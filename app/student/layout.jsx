@@ -14,6 +14,7 @@ import KidInPicture from "@/src/utils/vector-svg/vectors/KidInPicture";
 import Clock from "@/src/utils/vector-svg/vectors/Clock";
 import StudentsInClass from "@/src/utils/vector-svg/vectors/StudentsInClass";
 import RightTiltedBook from "@/src/utils/vector-svg/vectors/CombinedBlock";
+import clsx from "clsx";
 
 export default function StudentLayout({ children }) {
   const { installPrompt, isInstalled, handleInstallClick } = useInstallPrompt();
@@ -42,22 +43,37 @@ export default function StudentLayout({ children }) {
         {/* Sidebar */}
         <aside className="hidden lg:block sticky top-[90px] left-0 w-[16vw] h-[calc(100vh-80px)] border-r border-[#d9d9d9] p-4 overflow-y-auto">
           <ul className="space-y-4 pt-6">
-            {student_links.map((item, i) => (
-              <li key={i}>
-                <Link
-                  href={`/student/${item.link}`}
-                  className={`flex items-center gap-4 py-2 px-2 rounded-lg transition-colors ${
-                    currentUrl.replace(/\/$/, "") ===
-                    `/student${item.link === "." ? "" : `/${item.link}`}`
-                      ? "bg-[#001840] text-white"
-                      : "hover:bg-blue-950/20"
-                  }`}
-                >
-                  <span className="">{item.icon}</span>
-                  <span className="text-sm font-normal">{item.name}</span>
-                </Link>
-              </li>
-            ))}
+            {student_links.map((item, i) => {
+              const normalizedUrl = currentUrl.replace(/\/$/, "");
+              const itemUrl = `/student${
+                item.link === "." ? "" : `/${item.link}`
+              }`;
+              const isActive = normalizedUrl === itemUrl;
+
+              return (
+                <li key={i}>
+                  <Link
+                    href={itemUrl}
+                    className={clsx(
+                      "flex items-center gap-3 py-2 px-2 rounded-lg transition-colors",
+                      isActive
+                        ? "bg-[#001840] text-white"
+                        : "hover:bg-blue-950/20"
+                    )}
+                  >
+                    <span className="text-2xl">{item.icon}</span>
+                    <span
+                      className={clsx(
+                        "text-sm font-black",
+                        isActive && "font-[900]"
+                      )}
+                    >
+                      {item.name}
+                    </span>
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </aside>
 

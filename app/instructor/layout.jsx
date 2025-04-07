@@ -60,18 +60,14 @@ export default function TeacherLayout({ children }) {
                 <li key={i}>
                   <Link
                     href={href}
-                    className={`flex items-center gap-2 p-2 rounded-lg transition-colors ${
+                    className={`flex items-center gap-3 p-2 rounded-lg transition-colors ${
                       isActive
-                        ? "bg-[#001840] text-white hover:bg-[#001840]"
-                        : "text-gray-700 hover:bg-blue-50"
+                        ? "bg-[#001840] text-white hover:bg-[#001840] font-extrabold"
+                        : "text-black hover:bg-blue-950/20"
                     }`}
                   >
-                    <span
-                      className={isActive ? "text-white" : "text-[#001840]"}
-                    >
-                      {item.icon}
-                    </span>
-                    <span className="font-medium text-sm">{item.name}</span>
+                    <span className="text-2xl">{item.icon}</span>
+                    <span className="font-semibold text-sm">{item.name}</span>
                   </Link>
                 </li>
               );
@@ -91,7 +87,7 @@ export default function TeacherLayout({ children }) {
         ></FloatingActionButton>
       )}
       <Subscribe />
-      <InstructorCompleteProfile />
+      {/* <InstructorCompleteProfile /> */}
     </>
   );
 }
