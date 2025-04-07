@@ -1,10 +1,11 @@
 "use client"
 import React, { useState } from 'react'
 import { Switch } from 'antd'
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import InstructorProfile from '@/src/components/admin/InstructorProfile';
 import { apiGet, apiPost } from '@/src/services/api_service';
 import UserCard from '@/src/components/admin/UserCard';
+import { useRouter } from 'next/navigation';
 
 function ProfileId({params:{id}}) {
     const [active,setActive] = useState(true)
@@ -20,14 +21,43 @@ function ProfileId({params:{id}}) {
             queryFn:getDetails
         });
 
+
+    const queryClient = useQueryClient();
+        const router  = useRouter();
+    
+        
         const handleVerify = async()=>{
-            await apiPost('verify-instructor',
+           const {data} = await apiPost('approve-instructor',
                 {
                     "instructor_id":data?.instructor?.id,
                     "status":"verify"
                 }
             )
+            return data
         }
+    
+        const mutation = useMutation({
+            mutationFn: handleVerify,
+            onSuccess: (response) => {
+               
+    
+                queryClient.invalidateQueries(["user"]);
+                router.push("/admin/subjects");
+            },
+            onError: (error) => {
+                console.error("Error submitting form:", error.message);
+            },
+            onSettled: () => {
+                console.log("Mutation settled (success or error)");
+            },
+        });
+    
+        const onSubmit = (data) => {
+            
+            mutation.mutate(data);
+        };
+
+        
 
 
   return (

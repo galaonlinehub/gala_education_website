@@ -48,7 +48,7 @@ function AddNew() {
         onSuccess: (response) => {
            
 
-            queryClient.invalidateQueries(["someQueryKey"]);
+            queryClient.invalidateQueries(["subjects"]);
             router.push("/admin/subjects");
         },
         onError: (error) => {
