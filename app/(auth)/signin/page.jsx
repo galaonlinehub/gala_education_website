@@ -4,8 +4,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { message, Alert } from "antd";
-import GoogleSvg from "@/src/utils/vector-svg/sign-in/GoogleSvg";
-import { handleGoogleLogin, login } from "@/src/utils/fns/auth";
+import { login } from "@/src/utils/fns/auth";
 import { preventCopyPaste } from "@/src/utils/fns/general";
 import { useQueryClient } from "@tanstack/react-query";
 import { getUser } from "@/src/utils/fns/global";
@@ -126,7 +125,6 @@ const SignInPage = () => {
             <input
               id="password"
               type="password"
-              
               onCopy={preventCopyPaste}
               onPaste={preventCopyPaste}
               onCut={preventCopyPaste}
@@ -182,15 +180,6 @@ const SignInPage = () => {
             Sign Up
           </span>
         </span>
-
-        {/* <button
-          onClick={handleGoogleLogin}
-          disabled={isSubmitting}
-          className="rounded-md h-12 w-full lg:w-3/4 md:w-full bg-[#001840] mt-10 text-white lg:text-base font-black disabled:opacity-70 flex items-center justify-center gap-3 lg:gap-5 px-4 py-2 text-xs md:text-sm"
-        >
-          <GoogleSvg />
-          Continue with Google
-        </button> */}
       </div>
 
       {/* <LoginVectorSvg /> */}
