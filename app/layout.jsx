@@ -73,7 +73,7 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${quicksand.className} ${outfit.variable} ${dmSans.variable}`}
+      className={`${quicksand.className} ${dmSans.variable} ${urbanist.variable}`}
     >
       <body>
         <QueryWrapper>

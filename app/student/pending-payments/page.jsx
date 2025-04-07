@@ -66,7 +66,7 @@ function PendingPayment() {
   return (
     <div className="mt-layout-margin px-2 lg:px-4">
       <header className="mb-8">
-        <h1 className="text-3xl font-black text-[#001840] mb-2">
+        <h1 className="text-xl font-black text-[#001840] mb-2">
           Pending Payments
         </h1>
         <p className="text-gray-600 text-xs">
