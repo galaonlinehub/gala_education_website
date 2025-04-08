@@ -2,14 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+
 :root {
-  --font-family-base: 'Quicksand', sans-serif;
+  --font-family-base: var(--font-quicksand), 'Quicksand', sans-serif;
 }
 
 html,
 body {
-  font-family: var(--font-family-base);
+  font-family: var(--font-quicksand), 'Quicksand', sans-serif;
 }
+
+:root :where([class^="ant-"], [class*=" ant-"]) {
+  font-family: 'Quicksand', sans-serif !important;
+}
+
 
 .no-scroll {
   overflow: hidden;
@@ -193,24 +199,61 @@ body {
   border-radius: 4px; /* Add rounded corners */
 }
 
-:root {
-  --font-poppins: "Poppins", sans-serif;
-}
 
-/* Override ant-design components */
-/* .ant-btn,
+/* antd-overrides.css */
+.ant-.ant-card,
+.ant-card-head,
+.ant-card-head-title,
+.ant-card-extra,
+.ant-card-meta-title,
+.ant-card-meta-description,
+.ant-modal,
+.ant-modal-header,
+.ant-modal-title,
+.ant-modal-content,
+.ant-modal-body,
+.ant-modal-footer,
+.ant-btn,
 .ant-input,
 .ant-select,
-.ant-dropdown-menu,
-.ant-modal-content,
-.ant-form,
 .ant-table,
-.ant-typography,
+.ant-modal,
+.ant-form,
 .ant-menu,
-.ant-notification,
-.ant-message,
+.ant-dropdown,
+.ant-picker,
+.ant-typography,
+.ant-dropdown-menu-item,
+.ant-select-item,
 .ant-tabs,
+.ant-collapse,
+.ant-pagination,
+.ant-badge,
+.ant-alert,
+.ant-notification,
+.ant-drawer,
 .ant-popover,
-.ant-card-body {
-  font-family: "Quicksand", sans-serif !important;
-} */
+.ant-tooltip,
+.ant-progress,
+.ant-checkbox,
+.ant-radio,
+.ant-tag,
+.ant-list,
+.ant-avatar,
+.ant-breadcrumb,
+.ant-divider,
+.ant-statistic,
+.ant-timeline,
+.ant-steps,
+.ant-message,
+.ant-skeleton,
+.ant-empty {
+  font-family: var(--font-quicksand), 'Quicksand', sans-serif !important;
+}
+
+.ant-card *,
+.ant-modal * {
+  font-family: var(--font-quicksand), 'Quicksand', sans-serif !important;
+}
+
+

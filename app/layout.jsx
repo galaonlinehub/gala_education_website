@@ -40,6 +40,7 @@ const dmSans = DM_Sans({
 const quicksand = Quicksand({
   subsets: ["latin"],
   display: "swap",
+  variable: "--font-quicksand",
   weight: ["300", "400", "500", "600", "700"],
 });
 
@@ -75,7 +76,7 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${quicksand.className} ${dmSans.variable} ${urbanist.variable}`}
     >
-      <body>
+      <body className="font-sans">
         <QueryWrapper>
           <AntdRegistry>{children}</AntdRegistry>
         </QueryWrapper>
