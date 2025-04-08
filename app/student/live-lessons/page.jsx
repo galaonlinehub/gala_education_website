@@ -16,16 +16,16 @@ const ClassCard = ({ classData }) => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="flex w-full flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <Tag
+        color="#001840"
+        className="!text-white !font-medium !rounded-full !px-2 !py-0.5 !mb-2 !inline-flex !items-center !gap-1"
+      >
+        <LuClock className="h-3 w-3 text-yellow-300" />
+        {classData.status}
+      </Tag>
+      <div className="flex w-full flex-col sm:flex-row sm:items-center justify-between gap-4 px-4 md:px-8 py-2">
         <div className="flex-1 flex flex-col sm:flex-row sm:items-center gap-4">
           <div className="min-w-[140px]">
-            <Tag
-              color="#001840"
-              className="!text-white !font-medium !rounded-full !px-2 !py-0.5 !mb-2 !inline-flex !items-center !gap-1"
-            >
-              <LuClock className="h-3 w-3 text-yellow-300" />
-              {classData.status}
-            </Tag>
             <span className="text-base font-semibold leading-tight">
               {classData.class_name}: {classData.topic}
             </span>
