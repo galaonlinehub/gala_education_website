@@ -7,6 +7,7 @@ import { useDevice } from "@/src/hooks/useDevice";
 import { useSpecialNeeds } from "@/src/hooks/useSpecialNeeds";
 import { useSubject } from "@/src/hooks/useSubject";
 import { useGrade } from "@/src/hooks/useGrade";
+import { apiPost } from "@/src/services/api_service";
 
 const InstructorCompleteProfile = () => {
   const { user } = useUser();
@@ -32,12 +33,29 @@ const InstructorCompleteProfile = () => {
         return;
       }
 
-      values.phone_number = values.phone_number.startsWith("255") ? values.phone_number : `255${values.phone_number}`;
+      values.phone_number = values.phone_number.startsWith("255")
+        ? values.phone_number
+        : `255${values.phone_number}`;
 
-      const formData = {
-        ...values,
-        profile_picture: imageFile,
-      };
+      // Create a FormData object
+      const formData = new FormData();
+
+      // Append the file
+      formData.append('profile_picture', imageFile);
+
+
+
+      // Append all other form values
+      Object.keys(values).forEach(key => {
+        // Handle arrays (like your multi-select fields)
+        if (Array.isArray(values[key])) {
+          values[key].forEach(value => {
+            formData.append(`${key}[]`, value);
+          });
+        } else {
+          formData.append(key, values[key]);
+        }
+      });
 
       await apiPost("/complete-instructor-profile", formData, {
         headers: {
@@ -80,35 +98,37 @@ const InstructorCompleteProfile = () => {
       open={!user?.phone_number_verified && !user?.subscription_required}
       closable={false}
       maskClosable={false}
-      width={type === "mobile" ? "95%" : type === "desktop" ? "60%" : type === "tablet" ? "60%" : 400} // Reduced from 1000 to 600
+
       footer={null}
       keyboard={false}
       className="persistent-modal"
     >
       <Form form={form} onFinish={handleFormSubmit} layout="vertical" size="small">
-        <span className="block mb-2 text-xs text-justify">This process ensures that only qualified and experienced teachers gain access to our online community.</span>
+        <span className="block mb-2 font-extralight text-xs text-center ">This process ensures that only qualified and experienced teachers gain access to our online community.</span>
 
-        <Upload showUploadList={false} beforeUpload={() => true} onChange={handleUpload} className="flex w-full justify-center mb-4">
-          <div className="flex justify-center items-center w-full">
-            <div style={{ position: "relative", display: "inline-block" }}>
-              <Avatar size={80} icon={imageFile ? null : <UserOutlined />} src={imageFile ? URL.createObjectURL(imageFile) : null} style={{ cursor: "pointer" }} />
-              <CameraOutlined
-                style={{
-                  cursor: "pointer",
-                  position: "absolute",
-                  bottom: 0,
-                  right: 0,
-                  fontSize: 16,
-                  backgroundColor: "#fff",
-                  borderRadius: "50%",
-                  padding: 4,
-                  border: "1px solid #f0f0f0",
-                  boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
-                }}
-              />
+        <div className="flex w-full items-center justify-center">
+          <Upload showUploadList={false} beforeUpload={() => true} onChange={handleUpload} className="flex w-fit justify-center mb-4">
+            <div className="flex justify-center items-center w-full">
+              <div style={{ position: "relative", display: "inline-block" }}>
+                <Avatar size={80} icon={imageFile ? null : <UserOutlined />} src={imageFile ? URL.createObjectURL(imageFile) : null} style={{ cursor: "pointer" }} />
+                <CameraOutlined
+                  style={{
+                    cursor: "pointer",
+                    position: "absolute",
+                    bottom: 0,
+                    right: 0,
+                    fontSize: 16,
+                    backgroundColor: "#fff",
+                    borderRadius: "50%",
+                    padding: 4,
+                    border: "1px solid #f0f0f0",
+                    boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+                  }}
+                />
+              </div>
             </div>
-          </div>
-        </Upload>
+          </Upload>
+        </div>
 
         <Row gutter={[12, 0]}>
           {" "}
