@@ -405,7 +405,7 @@ const AboutUs = () => {
   };
 
   return (
-    <div className="flex justify-between -mt-16 p-8 h-auto w-screen ">
+    <div className="flex justify-between -mt-10 md:-mt-16 p-8 h-auto w-screen ">
       <div className="flex flex-col w-full md:w-3/4">
         <div className="flex flex-col">
           <Text id="aboutUs" ref={sectionRefs.aboutUs} className="font-black text-2xl">

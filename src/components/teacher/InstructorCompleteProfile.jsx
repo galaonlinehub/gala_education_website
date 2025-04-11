@@ -10,7 +10,7 @@ import { useGrade } from "@/src/hooks/useGrade";
 import { apiPost } from "@/src/services/api_service";
 
 const InstructorCompleteProfile = () => {
-  const { user } = useUser();
+  const { user, updateProfile } = useUser();
   const { type } = useDevice();
   const [form] = Form.useForm();
   const [imageFile, setImageFile] = useState(null);
@@ -57,11 +57,7 @@ const InstructorCompleteProfile = () => {
         }
       });
 
-      await apiPost("/complete-instructor-profile", formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
+       updateProfile(formData);
 
     } catch (error) {
       console.error(error);
@@ -95,7 +91,7 @@ const InstructorCompleteProfile = () => {
   return (
     <Modal
       title={<div className="text-center text-xs">Just a few more details before you start your journey</div>}
-      open={!user?.phone_number_verified && !user?.subscription_required}
+      open={user?.phone_number_verified && !user?.subscription_required}
       closable={false}
       maskClosable={false}
 
