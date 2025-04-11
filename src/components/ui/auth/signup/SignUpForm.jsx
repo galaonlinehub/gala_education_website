@@ -14,6 +14,7 @@ import {
   Progress,
   Tooltip,
   message,
+  Checkbox,
 } from "antd";
 import {
   UserOutlined,
@@ -28,12 +29,17 @@ import { disabilities } from "@/src/utils/data/disabilities";
 import { GoShieldCheck } from "react-icons/go";
 import { useAuth } from "@/src/hooks/useAuth";
 import EmailVerification from "./EmailVerification";
+import { useRouter } from "next/navigation";
+import clsx from "clsx"
 
 const { Title, Text, Paragraph } = Typography;
 
 const SignUpForm = () => {
   const [form] = Form.useForm();
   const [password, setPassword] = useState("");
+  const [isAgreementChecked, setIsAgreementChecked] = useState(false);
+
+  const router = useRouter();
 
   const {
     getPasswordStatus,
@@ -113,7 +119,7 @@ const SignUpForm = () => {
           >
             <div>
               <Input
-              autoComplete="off"
+                autoComplete="off"
                 prefix={<MailOutlined className="!text-gray-400" />}
                 placeholder="Email Address"
                 className="!h-11 signup-input"
@@ -227,11 +233,16 @@ const SignUpForm = () => {
           </Form.Item>
           <Form.Item className="!mb-0">
             <Button
-              disabled={loading}
+              disabled={loading || !isAgreementChecked}
               type="primary"
               htmlType="submit"
               loading={loading}
-              className="!w-full !h-11 !rounded-lg !bg-[#010798] hover:!bg-[#010798]/80 !transition-colors !text-base !text-white !font-medium"
+              className={clsx(
+                "!flex !items-center !justify-center !py-4 !border-transparent !rounded-lg !w-full !h-11  !transition-colors !text-base !text-white !font-medium",
+                loading || !isAgreementChecked
+                  ? "!bg-[#010798]/20 !cursor-not-allowed"
+                  : "!bg-[#010798] !hover:bg-blue-700"
+              )}
               icon={<GoShieldCheck />}
             >
               {!loading && "Create Account"}
@@ -240,10 +251,15 @@ const SignUpForm = () => {
         </Form>
 
         <div className="!text-center !text-sm !text-gray-600 !mt-6">
-          <Text>By creating an account, you agree to our </Text>
+          <Checkbox
+            className="!mr-1"
+            onChange={(e) => setIsAgreementChecked(e.target.checked)}
+          />
+          <Text>I have read and agreed to the</Text>
           <Button
             type="link"
             className="!p-0 !m-1 !text-blue-600 hover:!text-blue-700"
+            onClick={() => router.push("/terms-and-privacy")}
           >
             Terms of Service
           </Button>
@@ -251,8 +267,20 @@ const SignUpForm = () => {
           <Button
             type="link"
             className="!p-0 !m-1 !text-blue-600 hover:!text-blue-700"
+            onClick={() => router.push("/terms-and-privacy")}
           >
             Privacy Policy
+          </Button>
+        </div>
+
+        <div className="!text-center !text-sm !text-gray-600 !mt-2">
+          <Text>Already have an account?</Text>
+          <Button
+            type="link"
+            className="!p-0 !m-1 !text-blue-600 hover:!text-blue-700"
+            onClick={() => router.push("/signin")}
+          >
+            Sign In
           </Button>
         </div>
       </Card>

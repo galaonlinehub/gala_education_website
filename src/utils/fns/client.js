@@ -1,7 +1,7 @@
 import Cookies from "js-cookie";
 
 const isBrowser = typeof window !== "undefined";
-const isValidValue = (value) => value !== undefined && value !== null;
+const isValidValue = (value) => value !== undefined;
 const isValidKey = (key) => typeof key === "string" && key.length > 0;
 
 // Safe storage access wrapper

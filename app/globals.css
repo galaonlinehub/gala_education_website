@@ -3,8 +3,18 @@
 @tailwind utilities;
 
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap');
-@import url('@tldraw/tldraw/tldraw.css');
+:root {
+  --font-family-base: var(--font-quicksand), 'Quicksand', sans-serif;
+}
+
+html,
+body {
+  font-family: var(--font-quicksand), 'Quicksand', sans-serif;
+}
+
+:root :where([class^="ant-"], [class*=" ant-"]) {
+  font-family: 'Quicksand', sans-serif !important;
+}
 
 
 .no-scroll {
@@ -12,20 +22,17 @@
   height: 100vh;
 }
 
-
 .custom-select {
   background-color: #001840 !important;
-
-  /* color: white !important; */
 }
 
 .custom-select-tag {
-  background-color: #001840; /* Sets the background color */
-  color: white; /* Sets the text color */
-  border: 1px solid #001840; /* Matches the border with the background */
-  border-radius: 5px; /* Optional: Adds rounded corners */
-  padding: 10px; /* Adds padding for better appearance */
-  font-size: 16px; /* Sets font size */
+  background-color: #001840;
+  color: white;
+  border: 1px solid #001840;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 16px;
 }
 
 .custom-select .ant-select-selector {
@@ -151,18 +158,15 @@
   }
 }
 
-
-
-
 .tldraw__editor {
-	position: fixed;
-	top: 0px;
-	left: 0px;
-	bottom: 0px;
-	right: 0px;
-	width: 100%;
-	height: 100%;
-	overflow: hidden;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 .ant-card-body {
@@ -172,45 +176,17 @@
 .ant-upload.ant-upload-select {
   width: 100%;
 }
-.ant-form-item-explain-error{
+.ant-form-item-explain-error {
   font-size: 12px;
 }
-.signup-input{
-  outline: 0.5px solid #030DFE !important; 
-  border: 0.5px solid #030DFE !important;
+.signup-input {
+  outline: 0.5px solid #030dfe !important;
+  border: 0.5px solid #030dfe !important;
 }
-.signup-input:focus{
-  outline: 0.5px solid #030DFE !important; 
-  border: 0.5px solid #030DFE !important;
+.signup-input:focus {
+  outline: 0.5px solid #030dfe !important;
+  border: 0.5px solid #030dfe !important;
 }
-/* 
-@layer base {
-  html {
-    @apply font-sans;
-  }
-  
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-heading;
-  }
-}*/
-
-/* Optional: Add custom styles for specific heading levels */
-/*@layer components {
-  h1 {
-    @apply text-4xl font-heading font-bold;
-  }
-  
-  h2 {
-    @apply text-3xl font-heading font-semibold;
-  }
-  
-  h3 {
-    @apply text-2xl font-heading font-medium;
-  }
-} */
-/* Ensure consistent width of the panel content */
-
-
 
 .collapse-container .ant-collapse {
   margin-bottom: 16px; /* Adjust the margin as needed */
@@ -223,38 +199,61 @@
   border-radius: 4px; /* Add rounded corners */
 }
 
-:root {
-  --font-poppins: 'Poppins', sans-serif;
-}
 
-/* Override ant-design components */
-/* .ant-btn,
+/* antd-overrides.css */
+.ant-.ant-card,
+.ant-card-head,
+.ant-card-head-title,
+.ant-card-extra,
+.ant-card-meta-title,
+.ant-card-meta-description,
+.ant-modal,
+.ant-modal-header,
+.ant-modal-title,
+.ant-modal-content,
+.ant-modal-body,
+.ant-modal-footer,
+.ant-btn,
 .ant-input,
 .ant-select,
-.ant-dropdown-menu,
-.ant-modal-content,
-.ant-form,
 .ant-table,
-.ant-typography,
+.ant-modal,
+.ant-form,
 .ant-menu,
-.ant-notification,
-.ant-message,
+.ant-dropdown,
+.ant-picker,
+.ant-typography,
+.ant-dropdown-menu-item,
+.ant-select-item,
 .ant-tabs,
+.ant-collapse,
+.ant-pagination,
+.ant-badge,
+.ant-alert,
+.ant-notification,
+.ant-drawer,
 .ant-popover,
-.ant-card-body {
-  font-family: 'Urbanist', sans-serif !important;
-} */
+.ant-tooltip,
+.ant-progress,
+.ant-checkbox,
+.ant-radio,
+.ant-tag,
+.ant-list,
+.ant-avatar,
+.ant-breadcrumb,
+.ant-divider,
+.ant-statistic,
+.ant-timeline,
+.ant-steps,
+.ant-message,
+.ant-skeleton,
+.ant-empty {
+  font-family: var(--font-quicksand), 'Quicksand', sans-serif !important;
+}
 
-/* For specific Poppins usage */
-.font-poppins {
-  font-family: var(--font-poppins);
+.ant-card *,
+.ant-modal * {
+  font-family: var(--font-quicksand), 'Quicksand', sans-serif !important;
 }
 
 
-
-.ant-tooltip-inner {
-  background-color: #001840 !important;
-}
-.ant-tooltip-arrow::before {
-  background-color: #001840 !important;
-}

@@ -1,4 +1,4 @@
-import Footer from "@/src/components/layout/footer";
+'use client'
 import Navbar from "@/src/components/layout/Navbar";
 
 export default function AuthLayout({ children }) {

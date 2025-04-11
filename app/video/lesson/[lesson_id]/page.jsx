@@ -4,14 +4,19 @@ import WhiteBoard from "@/src/components/websockets/video/WhiteBoard";
 import useControlStore from "@/src/store/video/contols";
 import { decrypt } from "@/src/utils/fns/encryption";
 import Cookies from "js-cookie";
-import React, { useEffect, useState, useRef, useMemo, useCallback } from "react";
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  useMemo,
+  useCallback,
+} from "react";
 import io from "socket.io-client";
 import * as mediasoupClient from "mediasoup-client";
 import { ChatSection } from "@/src/components/websockets/video/ChatSection";
 import { useUser } from "@/src/hooks/useUser";
 import { Typography } from "antd";
 import { ParticipantsSection } from "@/src/components/websockets/video/Participants";
-
 
 export default function Lesson({ params }) {
   const { Text } = Typography;
@@ -59,7 +64,17 @@ export default function Lesson({ params }) {
   const containerRef = useRef(null);
   const {
     setControlVisibility,
-    controls: { audio, video, board, raise, materials, end, attendees, chat, share },
+    controls: {
+      audio,
+      video,
+      board,
+      raise,
+      materials,
+      end,
+      attendees,
+      chat,
+      share,
+    },
   } = useControlStore();
 
   const toggleFullscreen = () => {
@@ -287,37 +302,62 @@ export default function Lesson({ params }) {
     };
 
     const createSendTransport = () => {
-      socket.emit("createWebRtcTransport", { consumer: false }, ({ params }) => {
-        if (params.error) {
-          console.log(params.error);
-          return;
+      socket.emit(
+        "createWebRtcTransport",
+        { consumer: false },
+        ({ params }) => {
+          if (params.error) {
+            console.log(params.error);
+            return;
+          }
+
+          producerTransport = device.createSendTransport(params);
+
+          producerTransport.on(
+            "connect",
+            async ({ dtlsParameters }, callback, errback) => {
+              try {
+                socket.emit("transport-connect", {
+                  dtlsParameters,
+                  transportId: params.id,
+                });
+                callback();
+              } catch (error) {
+                errback(error);
+              }
+            }
+          );
+
+          producerTransport.on(
+            "produce",
+            async (parameters, callback, errback) => {
+              console.log(
+                "producer transport produce was called here ",
+                params
+              );
+              try {
+                socket.emit(
+                  "transport-produce",
+                  {
+                    kind: parameters.kind,
+                    rtpParameters: parameters.rtpParameters,
+                    appData: parameters.appData,
+                    transportId: params.id,
+                  },
+                  ({ id, producersExist }) => {
+                    callback({ id });
+                    if (producersExist) getProducers();
+                  }
+                );
+              } catch (error) {
+                errback(error);
+              }
+            }
+          );
+
+          connectSendTransport();
         }
-
-        producerTransport = device.createSendTransport(params);
-
-        producerTransport.on("connect", async ({ dtlsParameters }, callback, errback) => {
-          try {
-            socket.emit("transport-connect", { dtlsParameters, transportId: params.id });
-            callback();
-          } catch (error) {
-            errback(error);
-          }
-        });
-
-        producerTransport.on("produce", async (parameters, callback, errback) => {
-          console.log("producer transport produce was called here ", params);
-          try {
-            socket.emit("transport-produce", { kind: parameters.kind, rtpParameters: parameters.rtpParameters, appData: parameters.appData, transportId: params.id }, ({ id, producersExist }) => {
-              callback({ id });
-              if (producersExist) getProducers();
-            });
-          } catch (error) {
-            errback(error);
-          }
-        });
-
-        connectSendTransport();
-      });
+      );
     };
 
     const connectSendTransport = async () => {
@@ -326,19 +366,31 @@ export default function Lesson({ params }) {
       audioProducerRef.current = await producerTransport.produce(audioParams);
       videoProducerRef.current = await producerTransport.produce(videoParams);
 
-      audioProducerRef.current.on("trackended", () => console.log("audio track ended"));
-      audioProducerRef.current.on("transportclose", () => console.log("audio transport ended"));
+      audioProducerRef.current.on("trackended", () =>
+        console.log("audio track ended")
+      );
+      audioProducerRef.current.on("transportclose", () =>
+        console.log("audio transport ended")
+      );
 
-      videoProducerRef.current.on("trackended", () => console.log("video track ended"));
-      videoProducerRef.current.on("transportclose", () => console.log("video transport ended"));
+      videoProducerRef.current.on("trackended", () =>
+        console.log("video track ended")
+      );
+      videoProducerRef.current.on("transportclose", () =>
+        console.log("video transport ended")
+      );
 
       console.log("connect send transport was called");
 
       audioProducer.on("trackended", () => console.log("audio track ended"));
-      audioProducer.on("transportclose", () => console.log("audio transport ended"));
+      audioProducer.on("transportclose", () =>
+        console.log("audio transport ended")
+      );
 
       videoProducer.on("trackended", () => console.log("video track ended"));
-      videoProducer.on("transportclose", () => console.log("video transport ended"));
+      videoProducer.on("transportclose", () =>
+        console.log("video transport ended")
+      );
     };
 
     const getProducers = () => {
@@ -354,71 +406,94 @@ export default function Lesson({ params }) {
 
       socket.emit("createWebRtcTransport", { consumer: true }, ({ params }) => {
         if (!params || params.error) {
-          console.error("Failed to create WebRTC transport:", params?.error || "Unknown error");
+          console.error(
+            "Failed to create WebRTC transport:",
+            params?.error || "Unknown error"
+          );
           return;
         }
 
         const consumerTransport = device.createRecvTransport(params);
 
-        consumerTransport.on("connect", async ({ dtlsParameters }, callback, errback) => {
-          console.log("consumer transport connected");
+        consumerTransport.on(
+          "connect",
+          async ({ dtlsParameters }, callback, errback) => {
+            console.log("consumer transport connected");
 
-          try {
-            socket.emit("transport-recv-connect", {
-              dtlsParameters,
-              serverConsumerTransportId: params.id,
-            });
-            callback();
-          } catch (error) {
-            errback(error);
+            try {
+              socket.emit("transport-recv-connect", {
+                dtlsParameters,
+                serverConsumerTransportId: params.id,
+              });
+              callback();
+            } catch (error) {
+              errback(error);
+            }
           }
-        });
+        );
 
         connectRecvTransport(consumerTransport, remoteProducerId, params.id);
       });
     };
 
-    const connectRecvTransport = async (consumerTransport, remoteProducerId, serverConsumerTransportId) => {
-      socket.emit("consume", { rtpCapabilities: device.rtpCapabilities, remoteProducerId, serverConsumerTransportId }, async ({ params }) => {
-        if (params.error) {
-          console.log("Cannot Consume");
-          return;
-        }
-        console.log(params);
-        const consumer = await consumerTransport.consume({
-          id: params.id,
-          producerId: params.producerId,
-          kind: params.kind,
-          rtpParameters: params.rtpParameters,
-        });
-
-        consumerTransports.push({
-          consumerTransport,
-          serverConsumerTransportId: params.id,
-          producerId: remoteProducerId,
-          consumer,
-        });
-
-        const stream = new MediaStream([consumer.track]);
-
-        // Store stream based on user role
-        if (params?.user?.role === "instructor") {
-          setInstructorStream({
-            stream,
-            user: { ...params.user, isLocal: false },
+    const connectRecvTransport = async (
+      consumerTransport,
+      remoteProducerId,
+      serverConsumerTransportId
+    ) => {
+      socket.emit(
+        "consume",
+        {
+          rtpCapabilities: device.rtpCapabilities,
+          remoteProducerId,
+          serverConsumerTransportId,
+        },
+        async ({ params }) => {
+          if (params.error) {
+            console.log("Cannot Consume");
+            return;
+          }
+          console.log(params);
+          const consumer = await consumerTransport.consume({
+            id: params.id,
+            producerId: params.producerId,
+            kind: params.kind,
+            rtpParameters: params.rtpParameters,
           });
-        } else {
-          console.log("user id is " + user?.id + "while params user id is ", params.user);
-          setStudentStreams((prev) =>
-            new Map(prev).set(params.user.id, {
+
+          consumerTransports.push({
+            consumerTransport,
+            serverConsumerTransportId: params.id,
+            producerId: remoteProducerId,
+            consumer,
+          });
+
+          const stream = new MediaStream([consumer.track]);
+
+          // Store stream based on user role
+          if (params?.user?.role === "instructor") {
+            setInstructorStream({
               stream,
               user: { ...params.user, isLocal: false },
-            })
-          );
-        }
+            });
+          } else {
+            console.log(
+              "user id is " + user?.id + "while params user id is ",
+              params.user
+            );
+            setStudentStreams((prev) =>
+              new Map(prev).set(params.user.id, {
+                stream,
+                user: { ...params.user, isLocal: false },
+              })
+            );
+          }
 
-        socket.emit("consumer-resume", { serverConsumerId: params.serverConsumerId });
-      });
+          socket.emit("consumer-resume", {
+            serverConsumerId: params.serverConsumerId,
+          });
+        }
+      );
     };
 
     const handleStopScreenShare = async (originalTrack) => {
@@ -433,7 +508,9 @@ export default function Lesson({ params }) {
 
         // Replace track in producer
         if (videoProducer) {
-          await videoProducer.replaceTrack({ track: cameraStream.getVideoTracks()[0] });
+          await videoProducer.replaceTrack({
+            track: cameraStream.getVideoTracks()[0],
+          });
         }
 
         setIsScreenSharing(false);
@@ -444,7 +521,10 @@ export default function Lesson({ params }) {
 
     socket.on("message", (data) => {
       console.log(data);
-      setMessages((prev) => [...prev, { sender: data.userName, message: data.message }]);
+      setMessages((prev) => [
+        ...prev,
+        { sender: data.userName, message: data.message },
+      ]);
     });
 
     socket.on("connect", () => {
@@ -464,7 +544,9 @@ export default function Lesson({ params }) {
     });
 
     socket.on("producer-closed", ({ remoteProducerId, userRole }) => {
-      const producerToClose = consumerTransports.find((transportData) => transportData.producerId === remoteProducerId);
+      const producerToClose = consumerTransports.find(
+        (transportData) => transportData.producerId === remoteProducerId
+      );
 
       if (producerToClose) {
         producerToClose.consumerTransport.close();
@@ -496,13 +578,19 @@ export default function Lesson({ params }) {
 
     const { stream, user } = instructorStream;
     return (
-      <div className={`w-full h-[70%] ${chat || attendees ? "basis-2/3" : "w-full"} relative `}>
+      <div
+        className={`w-full h-[70%] ${
+          chat || attendees ? "basis-2/3" : "w-full"
+        } relative `}
+      >
         <video
           key={user.id}
           autoPlay
           muted={user.isLocal}
           playsInline
-          className={`w-full h-full object-cover rounded-2xl outline-none focus:outline-none border-none shadow-none bg-transparent ${!isScreenSharing ? "transform scale-x-[-1]" : ""}`}
+          className={`w-full h-full object-cover rounded-2xl outline-none focus:outline-none border-none shadow-none bg-transparent ${
+            !isScreenSharing ? "transform scale-x-[-1]" : ""
+          }`}
           ref={(el) => {
             if (el) el.srcObject = stream;
           }}
@@ -515,20 +603,27 @@ export default function Lesson({ params }) {
   }, [instructorStream, attendees, chat, isScreenSharing]);
 
   const renderStudentVideos = useMemo(() => {
-    return Array.from(studentStreams.entries()).map(([producerId, { stream, user }]) => (
-      <div key={producerId} className="relative w-full h-40 rounded-md overflow-hidden">
-        <video
-          autoPlay
-          muted={user.isLocal}
-          playsInline
-          className="w-full h-full object-cover outline-none focus:outline-none border-none shadow-none bg-transparent transform scale-x-[-1]"
-          ref={(el) => {
-            if (el) el.srcObject = stream;
-          }}
-        />
-        <div className="absolute bottom-2 left-2 bg-black/50 text-white px-2 py-1 rounded text-sm">{user.name} (Student)</div>
-      </div>
-    ));
+    return Array.from(studentStreams.entries()).map(
+      ([producerId, { stream, user }]) => (
+        <div
+          key={producerId}
+          className="relative w-full h-40 rounded-md overflow-hidden"
+        >
+          <video
+            autoPlay
+            muted={user.isLocal}
+            playsInline
+            className="w-full h-full object-cover outline-none focus:outline-none border-none shadow-none bg-transparent transform scale-x-[-1]"
+            ref={(el) => {
+              if (el) el.srcObject = stream;
+            }}
+          />
+          <div className="absolute bottom-2 left-2 bg-black/50 text-white px-2 py-1 rounded text-sm">
+            {user.name} (Student)
+          </div>
+        </div>
+      )
+    );
   }, [studentStreams]);
 
   return (
@@ -538,20 +633,36 @@ export default function Lesson({ params }) {
           {video ? (
             renderInstructorVideo
           ) : (
-            <div className={`w-full h-[70%] flex items-center justify-center ${chat || attendees ? "sm:basis-2/3" : "sm:w-full"}   bg-[#232333] rounded-2xl`}>
-              <Text className="bg-[#747487] w-48 h-48 rounded-full text-white flex items-center justify-center font-bold">{user?.name} (Instructor)</Text>
+            <div
+              className={`w-full h-[70%] flex items-center justify-center ${
+                chat || attendees ? "sm:basis-2/3" : "sm:w-full"
+              }   bg-[#232333] rounded-2xl`}
+            >
+              <Text className="bg-[#747487] w-48 h-48 rounded-full text-white flex items-center justify-center font-bold">
+                {user?.name} (Instructor)
+              </Text>
             </div>
           )}
           <>
             {chat ? (
               <div className={` p-5 rounded-xl h-[70vh] basis-1/3`}>
-                <Text className={"text-white text-center py-2"}>Room Group Chat</Text>
-                <ChatSection socketRef={socketRef} roomId={roomId} sender={user} messages={messages} setMessages={setMessages} />
+                <Text className={"text-white text-center py-2"}>
+                  Room Group Chat
+                </Text>
+                <ChatSection
+                  socketRef={socketRef}
+                  roomId={roomId}
+                  sender={user}
+                  messages={messages}
+                  setMessages={setMessages}
+                />
               </div>
             ) : attendees ? (
               // <div className={" p-5 rounded-xl max-h-[10rem] basis-1/3 flex flex-col overflow-y-scroll"}>{renderStudentVideos}</div>
               <div className={` p-5 rounded-xl h-[70vh] basis-1/3`}>
-                <Text className={"text-white text-center py-2"}>Participants</Text>
+                <Text className={"text-white text-center py-2"}>
+                  Participants
+                </Text>
                 <ParticipantsSection />
               </div>
             ) : (
@@ -562,7 +673,12 @@ export default function Lesson({ params }) {
       ) : (
         <WhiteBoard socketRef={socketRef} roomId={roomId} role={role} />
       )}
-      <BottomVideoControls audioProducerRef={audioProducerRef} videoProducerRef={videoProducerRef} role={role} toggleScreenShare={toggleScreenShare} />
+      <BottomVideoControls
+        audioProducerRef={audioProducerRef}
+        videoProducerRef={videoProducerRef}
+        role={role}
+        toggleScreenShare={toggleScreenShare}
+      />
     </div>
   );
 }

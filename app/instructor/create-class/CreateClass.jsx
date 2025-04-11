@@ -88,7 +88,6 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
   };
 
   const calculateEndDate = (weeks, startDate) => {
-    // Only calculate if both values are present
     if (startDate && weeks) {
       const endDate = dayjs(startDate).add(Number(weeks), "week").format("YYYY-MM-DD");
       updateForm("endDate", endDate);

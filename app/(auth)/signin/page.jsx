@@ -4,8 +4,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { message, Alert } from "antd";
-import GoogleSvg from "@/src/utils/vector-svg/sign-in/GoogleSvg";
-import { handleGoogleLogin, login } from "@/src/utils/fns/auth";
+import { login } from "@/src/utils/fns/auth";
 import { preventCopyPaste } from "@/src/utils/fns/general";
 import { useQueryClient } from "@tanstack/react-query";
 import { getUser } from "@/src/utils/fns/global";
@@ -25,8 +24,6 @@ const SignInPage = () => {
     message: "",
   });
 
-  const errorMessage = "Unexpected Error. Try again later.";
-
   const {
     register,
     handleSubmit,
@@ -37,7 +34,6 @@ const SignInPage = () => {
     try {
       const res = await login(data);
       if (res === 1) {
-        // await queryClient.invalidateQueries({ queryKey: ['auth-user'] });
         const userData = await queryClient.fetchQuery({
           queryKey: ["auth-user"],
           queryFn: getUser,
@@ -50,7 +46,7 @@ const SignInPage = () => {
         }
       }
     } catch (error) {
-      showError(error?.message);
+      showError(error?.response?.data?.message ?? error?.message);
     } finally {
       setTimeout(() => clearFeedback(), 10000);
     }
@@ -165,7 +161,7 @@ const SignInPage = () => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="text-white text-base py-2 bg-[#030DFE] rounded-md w-3/4 lg:w-1/2 font-bold mt-5 disabled:opacity-60 flex items-center justify-center gap-2 text-xsdisabled:cursor-not-allowed"
+            className="text-white text-base py-2 bg-[#030DFE] rounded-md w-full font-bold mt-5 disabled:opacity-60 flex items-center justify-center gap-2 text-xsdisabled:cursor-not-allowed"
           >
             {isSubmitting ? (
               <LoadingOutlined className="text-base" />
@@ -184,15 +180,6 @@ const SignInPage = () => {
             Sign Up
           </span>
         </span>
-
-        <button
-          onClick={handleGoogleLogin}
-          disabled={isSubmitting}
-          className="rounded-md h-12 w-full lg:w-3/4 md:w-full bg-[#001840] mt-10 text-white lg:text-base font-black disabled:opacity-70 flex items-center justify-center gap-3 lg:gap-5 px-4 py-2 text-xs md:text-sm"
-        >
-          <GoogleSvg />
-          Continue with Google
-        </button>
       </div>
 
       {/* <LoginVectorSvg /> */}

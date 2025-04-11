@@ -1,4 +1,3 @@
-import { sendR } from "@/res";
 import { apiGet, apiPost } from "@/src/services/api_service";
 import { useSearchResult } from "@/src/store/search_result";
 import { useEnrolledTopics } from "@/src/store/student/class";
@@ -19,7 +18,6 @@ export const getEnrolledTopics = async () => {
     const response = await apiGet("/enrolled_cohorts");
 
     if (response.status === 200) {
-      // sendR(response.data)
       return response.data;
     }
   } catch (error) {

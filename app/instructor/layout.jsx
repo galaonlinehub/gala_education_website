@@ -13,54 +13,20 @@ import KidInPicture from "@/src/utils/vector-svg/vectors/KidInPicture";
 import Clock from "@/src/utils/vector-svg/vectors/Clock";
 import StudentsInClass from "@/src/utils/vector-svg/vectors/StudentsInClass";
 import { teacher_links } from "@/src/utils/data/navigation_links";
+import Subscribe from "@/src/components/Pay/Subscribe";
+import StudentSearch from "@/src/components/student/Search";
 import InstructorCompleteProfile from "@/src/components/teacher/InstructorCompleteProfile";
 
 export default function TeacherLayout({ children }) {
   const pathname = usePathname();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
   const { installPrompt, isInstalled, handleInstallClick } = useInstallPrompt();
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
-
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
-
-  const getCurrentDate = () => {
-    const date = new Date();
-    return date.toLocaleDateString('en-US', {
-      month: 'long',
-      day: 'numeric',
-      year: 'numeric'
-    });
-  };
 
   return (
     <>
       <Navbar />
-      <div className="fixed top-14 left-0 bg-white right-0 z-40 border-b">
-        <div className="flex items-center justify-between px-4 py-2 gap-4">
-          <span className="text-sm text-gray-600 whitespace-nowrap font-extralight">{getCurrentDate()}</span>
-          <div className="flex gap-3">
-            <FaBell className="text-xl" />
-            <FaUserCircle className="text-xl" />
-          </div>
-        </div>
-      </div>
+      <StudentSearch />
 
-      {/* Mobile Menu Overlay */}
-      {isMobile && <div className={`fixed inset-0 bg-black/50 z-40 transition-opacity duration-300 ${isSidebarOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`} onClick={toggleSidebar} />}
-
-      <main className="flex-1 flex flex-row w-full h-screen overflow-hidden">
+      <main className="flex flex-col lg:flex-row w-full mt-20 overflow-hidden">
         <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
           <div className="absolute left-1/2 top-20 w-52 h-52 hidden md:block">
             <RightTiltedBook />
@@ -78,43 +44,50 @@ export default function TeacherLayout({ children }) {
 
         {/* Sidebar */}
         <aside
-          className={`fixed md:sticky border-r top-0 flex h-screen md:h-[calc(100vh-7rem)] overflow-y-auto transition-transform duration-300 ease-in-out
-      md:translate-x-0 md:w-56 md:z-0 mt-16 md:mt-28
-      ${isMobile ? "w-64" : ""}
-      ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
-      shadow-xl md:shadow-none`}
+          className={
+            "hidden lg:block sticky top-[90px] left-0 w-[16vw] h-[calc(100vh-80px)] border-r border-[#d9d9d9] p-4 overflow-y-auto"
+          }
         >
-          <div className="p-4 w-full">
-            <ul className="space-y-4">
-              {teacher_links.map((item, i) => {
-                const href = `/instructor/${item.link}`;
-                const hrefRoot = `/instructor`;
+          <ul className="space-y-4 pt-6">
+            {teacher_links.map((item, i) => {
+              const href = `/instructor/${item.link}`;
 
-                const isActive = pathname.startsWith(href) || (item.link === "." && "/instructor" == pathname);
+              const isActive =
+                pathname.startsWith(href) ||
+                (item.link === "." && "/instructor" == pathname);
 
-                return (
-                  <li key={i}>
-                    <Link href={href} className={`flex items-center gap-1 p-1 rounded-lg transition-colors ${isActive ? "bg-[#001840] text-white hover:bg-[#001840]" : "text-gray-700 hover:bg-blue-50"}`} onClick={() => isMobile && setIsSidebarOpen(false)}>
-                      <span className={isActive ? "text-white" : "text-[#001840]"}>{item.icon}</span>
-                      <span className="font-medium text-xs">{item.name}</span>
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
+              return (
+                <li key={i}>
+                  <Link
+                    href={href}
+                    className={`flex items-center gap-3 p-2 rounded-lg transition-colors ${
+                      isActive
+                        ? "bg-[#001840] text-white hover:bg-[#001840] font-extrabold"
+                        : "text-black hover:bg-blue-950/20"
+                    }`}
+                  >
+                    <span className="text-2xl">{item.icon}</span>
+                    <span className="font-semibold text-sm">{item.name}</span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
         </aside>
 
-        {/* Main Content */}
-        <div className="flex-1 overflow-y-auto h-[calc(100vh-7rem)] mt-32 p-6">{children}</div>
+        <div className="flex-1 px-2 lg:px-6 py-2 w-full lg:w-[80vw] overflow-y-auto h-[calc(100vh-90px)]">
+          {children}
+        </div>
       </main>
 
       {!isInstalled && installPrompt && (
-        <FloatingActionButton position="bottom-center" onClick={handleInstallClick}>
-          {/* &gt; Install Gala Education in Your device */}
-        </FloatingActionButton>
+        <FloatingActionButton
+          position="bottom-center"
+          onClick={handleInstallClick}
+        ></FloatingActionButton>
       )}
-      <InstructorCompleteProfile />
+      <Subscribe />
+      {/* <InstructorCompleteProfile /> */}
     </>
   );
 }
