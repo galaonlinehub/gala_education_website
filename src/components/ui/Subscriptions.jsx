@@ -1,4 +1,3 @@
-
 import { Card } from "antd";
 import React from "react";
 import {
@@ -65,8 +64,8 @@ const Subscriptions = () => {
       }`}
       styles={{ body: { padding: "16px", width: "100%" } }}
     >
-      <div className="flex w-full flex-col lg:flex-row lg:items-center gap-2 md:gap-3 lg:gap-0">
-        <div className="flex flex-col md:flex-row md:items-center xl:w-1/3 gap-2 lg:gap-0">
+      <div className="flex w-full flex-col lg:flex-row lg:items-center gap-2 md:gap-3 lg:gap-6">
+        <div className="flex flex-col md:flex-row md:items-center gap-2 lg:gap-0">
           <div
             className={`flex items-center justify-center mr-4 px-3 py-1 rounded-md ${
               sub.isCurrent ? "bg-white bg-opacity-10" : "bg-gray-200"
@@ -93,7 +92,7 @@ const Subscriptions = () => {
         </div>
 
         <div className="flex-1 flex flex-col lg:flex-row lg:items-center justify-between mt-4 md:mt-0 gap-2 lg:gap-0">
-          <div className="font-black text-xl">{sub.amount}</div>
+          <div className="font-black text-base md:text-lg lg:text-xl">{sub.amount}</div>
 
           <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-6">
             {/* Created Date */}
