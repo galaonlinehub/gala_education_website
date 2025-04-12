@@ -42,6 +42,7 @@ const RenderChat = ({
     isFetchingChatMessages,
     messageStatuses,
     markMessageAsRead,
+    onlineUsers,
   } = useChat();
   const { user } = useUser();
 
@@ -57,7 +58,11 @@ const RenderChat = ({
       .join(", ") || "Chat";
   const isRecipientTyping =
     recipient && typingUsers.includes(recipient.user.id);
-  const isRecipientOnline = true;
+  const isRecipientOnline =
+    recipient && onlineUsers.includes(recipient.user.id);
+
+  console.log(onlineUsers, "online users");
+  console.log(isRecipientOnline, "recipients that are online");
 
   useEffect(() => {
     if (chatContainerRef.current) {
@@ -69,6 +74,7 @@ const RenderChat = ({
   useEffect(() => {
     if (!isPreviewChat && messages.length > 0) {
       const unread_messages = messages.filter((m) => {
+        if (m.isTemp) return false;
         const isNotSender = m.sender_id !== user.id;
         const userStatus = m.statuses?.find((s) => s.user_id === user.id);
         const needsMarking = !userStatus
@@ -211,12 +217,16 @@ const RenderChat = ({
                 <h2 className="font-extrabold text-base text-white line-clamp-1">
                   {displayName}
                 </h2>
-                <p className="text-[10px] opacity-75 text-white">
+                <p className="text-xs text-gray-500">
                   {isRecipientTyping
                     ? "Typing..."
                     : isRecipientOnline
                     ? "Online"
-                    : "Last seen recently"}
+                    : `Last seen ${
+                        recipient?.user?.last_active_at
+                          ? recipient.user?.last_active_at
+                          : "recently"
+                      }`}
                 </p>
               </div>
             </div>
