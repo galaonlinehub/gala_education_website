@@ -174,7 +174,7 @@ export const useChat = () => {
       socketRef.current.disconnect();
       console.log("THIS IS ME DISCONNECTING", user.id);
     };
-  }, []);
+  }, [user.id]);
 
   const createOrGetChatMutation = useMutation({
     mutationFn: async (payload) => apiPost("/chat/get-or-create", payload),
