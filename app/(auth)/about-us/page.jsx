@@ -214,7 +214,7 @@ const AboutUs = () => {
           <div className="w-full grid grid-cols-1 md:grid-cols-2 items-center gap-4">
             <Typography className="flex flex-col items-center text-justify">
               <Text className="font-bold">Our System</Text>
-              <Text className="text-xs leading-6 lg:leading-8">Our advanced platform integrates AI-driven tutoring, machine learning-powered educational services, secure payment gateways with subscription management, digital assignment distribution and resource sharing, as well as real-time messaging and collaboration tools for students, educators, and cohorts, all engineered to adapt to the rapidly evolving EdTech landscape in Tanzania.</Text>
+              <Text className="text-sm leading-6 lg:leading-8">Our advanced platform integrates AI-driven tutoring, machine learning-powered educational services, secure payment gateways with subscription management, digital assignment distribution and resource sharing, as well as real-time messaging and collaboration tools for students, educators, and cohorts, all engineered to adapt to the rapidly evolving EdTech landscape in Tanzania.</Text>
             </Typography>
             <div className="w-full flex items-center justify-center">
               <Image src="/about-us/laptop.png" width={300} height={300} alt="laptop picture" className="w-full sm:w-3/4 rounded-lg" />
@@ -405,18 +405,18 @@ const AboutUs = () => {
   };
 
   return (
-    <div className="flex justify-between -mt-16 p-8 h-auto w-screen ">
+    <div className="flex justify-between -mt-10 px-4 py-8 lg:px-24 h-auto w-full">
       <div className="flex flex-col w-full md:w-3/4">
         <div className="flex flex-col">
           <Text id="aboutUs" ref={sectionRefs.aboutUs} className="font-black text-2xl">
             About Us
           </Text>
           <div className="flex flex-col">
-            <Typography className="text-xs leading-loose text-justify">
+            <Typography className="text-sm leading-loose text-justify">
               Gala Education is an innovative online tutoring platform created by academic experts to serve Tanzanian Primary, Secondary, and High School students. Our mission is to provide high-quality education while creating employment opportunities for teachers across Tanzania. Recognizing the critical shortage of qualified teachers, we meticulously designed our platform to bridge this gap and ensure that every student receives the education they deserve. At Gala Education, we believe that education is the foundation for a better future. Our platform not only focuses on delivering top-notch tutoring services but also reinvests its profits into various philanthropic activities. These include building classrooms, libraries, and other educational infrastructure across Tanzania, ensuring
               that students from all backgrounds have access to conducive learning environments. In addition to our primary and secondary education services.
             </Typography>
-            <Typography className="text-xs leading-loose text-justify">
+            <Typography className="text-sm leading-loose text-justify">
               {" "}
               Gala Education offers a range of short courses aimed at equipping Tanzanian youth with practical, self-employable skills. These courses are taught by a diverse team of academics, executives, and industry-leading experts, providing learners with valuable insights and hands-on experience in various fields. Accessing our services is simple. All you need is a device and a stable internet connection to join our online tutoring sessions. Our user-friendly platform makes it easy for students to connect with skilled tutors and access high-quality educational resources from the comfort of their homes. Join us at Gala Education as we strive to make quality education accessible to every child in Tanzania, empowering the next generation with the knowledge and skills they need to succeed.
             </Typography>
@@ -469,13 +469,13 @@ const AboutUs = () => {
           <Text id="outreach" ref={sectionRefs.outreach} className="font-black text-2xl py-2">
             Outreach efforts
           </Text>
-          <Text className="font-black text-xs">You are making a difference</Text>
-          <Text className="text-xs leading-loose text-justify">Gala Education Financial Aid wing is an extension of our platform that collaborates with organizations to enhance learning opportunities and support educational initiatives in local and global communities. We provide assistance in education, emergency response, family empowerment, hunger relief, and more.</Text>
+          <Text className="font-black text-sm">You are making a difference</Text>
+          <Text className="text-sm leading-loose text-justify">Gala Education Financial Aid wing is an extension of our platform that collaborates with organizations to enhance learning opportunities and support educational initiatives in local and global communities. We provide assistance in education, emergency response, family empowerment, hunger relief, and more.</Text>
           <div className="w-full relative py-6">
             <Image src="/about-us/outreach.png" width={300} height={300} alt="outreach_image" className="w-full" />
             <Text className="absolute left-6 bottom-10 text-xs md:text-sm font-bold text-white p-3 bg-[#0000004D]/30">Serve your community from wherever you are</Text>
           </div>
-          <Text className="text-xs leading-loose text-justify">Community impact is at the heart of Gala Education. A portion of every contribution is dedicated to outreach, supporting strategic partnerships that address real needs both locally and globally. From empowering schools to providing essential resources for those in need, we are committed to driving meaningful change in education and beyond. We believe in investing generously, serving consistently, and collaborating strategically to create lasting impact. There’s a place for everyone to get involved—join us in shaping a brighter future for learners and communities in need.</Text>
+          <Text className="text-sm leading-loose text-justify">Community impact is at the heart of Gala Education. A portion of every contribution is dedicated to outreach, supporting strategic partnerships that address real needs both locally and globally. From empowering schools to providing essential resources for those in need, we are committed to driving meaningful change in education and beyond. We believe in investing generously, serving consistently, and collaborating strategically to create lasting impact. There’s a place for everyone to get involved—join us in shaping a brighter future for learners and communities in need.</Text>
           <div className="w-full justify-center flex py-4 mb-10">
             <Button onClick={showDonatePopupModal} size="middle" className="font-semibold w-64 bg-[#F2EFEF]">
               Donate for the cause

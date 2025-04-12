@@ -88,7 +88,6 @@ const NewClass = () => {
       borderTop: `1px solid ${token.colorBorder}`,
     },
   };
-  console.log(detailedResults);
 
   return (
     <>

@@ -1,31 +1,31 @@
 "use client";
 import React, { useState } from "react";
-import {
-  ArrowLeftOutlined,
-  CalendarOutlined,
-  ClockCircleOutlined,
-  DownloadOutlined,
-  BookOutlined,
-  MessageOutlined,
-  PhoneOutlined,
-  CheckOutlined,
-  BellOutlined,
-  PlayCircleOutlined,
-  MailOutlined,
-  FilePdfOutlined,
-  FileTextOutlined,
-  VideoCameraOutlined,
-} from "@ant-design/icons";
-import Image from "next/image";
 import { Card, Avatar } from "antd";
+import {
+  LuArrowLeft,
+  LuBell,
+  LuBookText,
+  LuCalendar,
+  LuCheck,
+  LuClock4,
+  LuDownload,
+  LuFileMinus,
+  LuFileText,
+  LuMail,
+  LuMessageSquare,
+  LuPhone,
+  LuPlay,
+  LuUsers,
+  LuVideo,
+} from "react-icons/lu";
 
-const ClassDetailsPage = ({params}) => {
+const ClassDetailsPage = ({ params }) => {
   const [showChatInput, setShowChatInput] = useState(false);
   const { cohort_id } = params;
 
   console.log("Params:", params);
 
-  console.log(cohort_id)
+  console.log(cohort_id);
 
   const classData = {
     id: "BIO-454-44",
@@ -63,23 +63,23 @@ const ClassDetailsPage = ({params}) => {
       {
         name: "Reproduction Systems Textbook",
         type: "pdf",
-        icon: <FilePdfOutlined />,
+        icon: <LuFileText />,
       },
       {
         name: "Lecture Slides - Week 1-5",
         type: "slides",
-        icon: <FileTextOutlined />,
+        icon: <LuFileText />,
       },
-      { name: "Laboratory Manual", type: "pdf", icon: <FilePdfOutlined /> },
+      { name: "Laboratory Manual", type: "pdf", icon: <LuFileMinus /> },
       {
         name: "Research Paper - Comparative Reproduction",
         type: "pdf",
-        icon: <FilePdfOutlined />,
+        icon: <LuFileText />,
       },
       {
         name: "Video Tutorial - Cell Division",
         type: "video",
-        icon: <VideoCameraOutlined />,
+        icon: <LuVideo />,
       },
     ],
     assignments: [
@@ -167,7 +167,7 @@ const ClassDetailsPage = ({params}) => {
         <div className="px-4 h-12 flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <button className="h-10 w-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors">
-              <ArrowLeftOutlined className="text-[#001840]" />
+              <LuArrowLeft className="text-[#001840]" />
             </button>
             <div className="text-lg font-semibold text-gray-800">
               My Classes
@@ -206,8 +206,8 @@ const ClassDetailsPage = ({params}) => {
             </div>
             <div className="mt-4 md:mt-0">
               <button className="bg-[#001840] hover:bg-[#001840]/90 text-white px-6 py-2 rounded-md flex items-center">
-                <VideoCameraOutlined className="mr-2" />
-                <span>Join Next Class</span>
+                <LuVideo className="mr-2 text-xl" />
+                <span className="text-sm">Join Next Class</span>
               </button>
             </div>
           </div>
@@ -256,11 +256,11 @@ const ClassDetailsPage = ({params}) => {
               </h4>
               <div className="flex items-center justify-between text-gray-600">
                 <div className="flex items-center">
-                  <CalendarOutlined className="mr-2 text-[#001840]" />
+                  <LuCalendar className="mr-2 text-[#001840]" />
                   <span>{classData.schedule.nextClass.date}</span>
                 </div>
                 <div className="flex items-center">
-                  <ClockCircleOutlined className="mr-2 text-[#001840]" />
+                  <LuClock4 className="mr-2 text-[#001840]" />
                   <span>{classData.schedule.nextClass.time}</span>
                 </div>
               </div>
@@ -280,7 +280,7 @@ const ClassDetailsPage = ({params}) => {
                   </h4>
                   <div className="space-y-2 text-sm text-gray-600">
                     <div className="flex items-center">
-                      <CalendarOutlined className="text-[#001840] mr-2" />
+                      <LuCalendar className="text-[#001840] mr-2" />
                       <span>
                         {classData.schedule.startDate} -{" "}
                         {classData.schedule.endDate}
@@ -288,7 +288,7 @@ const ClassDetailsPage = ({params}) => {
                     </div>
                     {classData.schedule.sessions.map((session, index) => (
                       <div key={index} className="flex items-center">
-                        <ClockCircleOutlined className="text-[#001840] mr-2" />
+                        <LuClock4 className="text-[#001840] mr-2" />
                         <span>
                           {session.day}: {session.time}
                         </span>
@@ -355,9 +355,9 @@ const ClassDetailsPage = ({params}) => {
                         }`}
                       >
                         {week.completed ? (
-                          <CheckOutlined />
+                          <LuCheck />
                         ) : week.current ? (
-                          <PlayCircleOutlined />
+                          <LuPlay />
                         ) : (
                           index + 1
                         )}
@@ -425,7 +425,7 @@ const ClassDetailsPage = ({params}) => {
                       </div>
                     </div>
                     <button className="h-10 w-10 flex items-center justify-center rounded-full bg-gray-200 text-[#001840] hover:bg-[#001840] hover:text-white transition-colors">
-                      <DownloadOutlined />
+                      <LuDownload />
                     </button>
                   </div>
                 ))}
@@ -453,7 +453,7 @@ const ClassDetailsPage = ({params}) => {
                       >
                         <div className="flex items-center">
                           <div className="w-10 h-10 flex items-center justify-center bg-orange-100 text-orange-600 rounded-lg mr-3">
-                            <FileTextOutlined />
+                            <LuFileText />
                           </div>
                           <div>
                             <div className="font-medium text-gray-800">
@@ -487,7 +487,7 @@ const ClassDetailsPage = ({params}) => {
                       >
                         <div className="flex items-center">
                           <div className="w-10 h-10 flex items-center justify-center bg-green-100 text-green-600 rounded-lg mr-3">
-                            <CheckOutlined />
+                            <LuCheck />
                           </div>
                           <div>
                             <div className="font-medium text-gray-800">
@@ -514,7 +514,7 @@ const ClassDetailsPage = ({params}) => {
                   Announcements
                 </h3>
                 <div className="flex items-center space-x-2">
-                  <BellOutlined className="text-[#001840]" />
+                  <LuBell className="text-[#001840]" />
                   <span className="text-sm text-gray-500">3 new</span>
                 </div>
               </div>
@@ -542,7 +542,7 @@ const ClassDetailsPage = ({params}) => {
                     >
                       <div className="flex">
                         <div className="mr-3 mt-1">
-                          <BellOutlined className={iconColor} />
+                          <LuBell className={iconColor} />
                         </div>
                         <div>
                           <h4 className="font-medium text-gray-800">
@@ -599,7 +599,7 @@ const ClassDetailsPage = ({params}) => {
                     }`}
                     onClick={() => setShowChatInput(!showChatInput)}
                   >
-                    <MessageOutlined className="mr-2" />
+                    <LuMessageSquare className="mr-2" />
                     <span>Message Instructor</span>
                   </button>
 
@@ -620,11 +620,11 @@ const ClassDetailsPage = ({params}) => {
 
                   <div className="grid grid-cols-2 gap-2">
                     <button className="flex items-center justify-center px-4 py-2.5 rounded-md bg-gray-100 text-[#001840] font-medium text-sm hover:bg-gray-200 transition-colors">
-                      <MailOutlined className="mr-2" />
+                      <LuMail className="mr-2" />
                       <span>Email</span>
                     </button>
                     <button className="flex items-center justify-center px-4 py-2.5 rounded-md bg-gray-100 text-[#001840] font-medium text-sm hover:bg-gray-200 transition-colors">
-                      <PhoneOutlined className="mr-2" />
+                      <LuPhone className="mr-2" />
                       <span>Call</span>
                     </button>
                   </div>
@@ -687,7 +687,7 @@ const ClassDetailsPage = ({params}) => {
               <div className="space-y-4">
                 <div className="flex">
                   <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 mr-3 shrink-0">
-                    <CheckOutlined />
+                    <LuCheck />
                   </div>
                   <div>
                     <p className="text-gray-800 font-medium">
@@ -701,7 +701,7 @@ const ClassDetailsPage = ({params}) => {
                 </div>
                 <div className="flex">
                   <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mr-3 shrink-0">
-                    <PlayCircleOutlined />
+                    <LuPlay />
                   </div>
                   <div>
                     <p className="text-gray-800 font-medium">Attended class</p>
@@ -713,7 +713,7 @@ const ClassDetailsPage = ({params}) => {
                 </div>
                 <div className="flex">
                   <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 mr-3 shrink-0">
-                    <BookOutlined />
+                    <LuBookText />
                   </div>
                   <div>
                     <p className="text-gray-800 font-medium">
@@ -741,25 +741,25 @@ const ClassDetailsPage = ({params}) => {
               <div className="grid grid-cols-2 gap-3">
                 <button className="flex flex-col items-center justify-center p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
                   <div className="w-10 h-10 flex items-center justify-center text-[#001840] mb-2">
-                    <BookOutlined style={{ fontSize: "24px" }} />
+                    <LuBookText className="text-2xl" />
                   </div>
                   <span className="text-sm text-gray-800">Class Notes</span>
                 </button>
                 <button className="flex flex-col items-center justify-center p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
                   <div className="w-10 h-10 flex items-center justify-center text-[#001840] mb-2">
-                    <VideoCameraOutlined style={{ fontSize: "24px" }} />
+                    <LuVideo className="text-2xl" />
                   </div>
                   <span className="text-sm text-gray-800">Recordings</span>
                 </button>
                 <button className="flex flex-col items-center justify-center p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
                   <div className="w-10 h-10 flex items-center justify-center text-[#001840] mb-2">
-                    <MessageOutlined style={{ fontSize: "24px" }} />
+                    <LuUsers className="text-2xl" />
                   </div>
                   <span className="text-sm text-gray-800">Discussion</span>
                 </button>
                 <button className="flex flex-col items-center justify-center p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
                   <div className="w-10 h-10 flex items-center justify-center text-[#001840] mb-2">
-                    <FilePdfOutlined style={{ fontSize: "24px" }} />
+                    <LuFileText className="text-2xl" />
                   </div>
                   <span className="text-sm text-gray-800">Syllabus</span>
                 </button>

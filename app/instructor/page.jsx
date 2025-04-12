@@ -1,13 +1,34 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Layout, Card, Typography, Space, Modal, Form, Input, Button, Row, Col, Select, Statistic, Avatar, Tag, Table, Upload, message } from "antd";
-import { UserOutlined, CameraOutlined, BookOutlined, ClockCircleOutlined, CalendarOutlined, TeamOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+  Layout,
+  Card,
+  Typography,
+  Space,
+  Modal,
+  Form,
+  Input,
+  Button,
+  Row,
+  Col,
+  Statistic,
+  Tag,
+  Table,
+} from "antd";
+
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { apiGet, apiPost } from "@/src/services/api_service";
 import { useUser } from "@/src/hooks/useUser";
 import { useDevice } from "@/src/hooks/useDevice";
+import {
+  LuBook,
+  LuBookOpenText,
+  LuCalendar,
+  LuClock3,
+  LuUsers,
+} from "react-icons/lu";
 
 const { Title, Text } = Typography;
 const { Content } = Layout;
@@ -24,7 +45,6 @@ export default function TeacherClasses() {
   const [isProfileCompleted, setIsProfileCompleted] = useState(true);
   const [showOtpModal, setShowOtpModal] = useState(false);
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
-
 
   const inputRefs = useRef([]);
 
@@ -61,7 +81,7 @@ export default function TeacherClasses() {
       key: "startDate",
       render: (date) => (
         <Space>
-          <CalendarOutlined />
+          <LuCalendar />
           {date}
         </Space>
       ),
@@ -72,7 +92,7 @@ export default function TeacherClasses() {
       key: "endDate",
       render: (date) => (
         <Space>
-          <CalendarOutlined />
+          <LuCalendar />
           {date}
         </Space>
       ),
@@ -83,7 +103,7 @@ export default function TeacherClasses() {
       key: "students",
       render: (count) => (
         <Space>
-          <TeamOutlined />
+          <LuUsers />
           {count}
         </Space>
       ),
@@ -92,7 +112,10 @@ export default function TeacherClasses() {
       title: "Action",
       key: "action",
       render: () => (
-        <Button type="link" onClick={() => router.push("/instructor/class-details")}>
+        <Button
+          type="link"
+          onClick={() => router.push("/instructor/class-details")}
+        >
           View Details
         </Button>
       ),
@@ -102,7 +125,6 @@ export default function TeacherClasses() {
   // useEffect(() => {
   //   const fetchData = async () => {
   //     try {
-        
 
   //       console.log("User Data",user);
 
@@ -118,8 +140,6 @@ export default function TeacherClasses() {
 
   //   fetchData();
   // }, []);
-
- 
 
   const handleOtpChange = (index, value) => {
     if (!/^\d*$/.test(value)) return;
@@ -166,7 +186,11 @@ export default function TeacherClasses() {
         render: (text, record) => {
           if (col.key === "action") {
             return (
-              <Button type="link" block onClick={() => router.push("/instructor/class-details")}>
+              <Button
+                type="link"
+                block
+                onClick={() => router.push("/instructor/class-details")}
+              >
                 View Details
               </Button>
             );
@@ -191,9 +215,13 @@ export default function TeacherClasses() {
     <>
       <Layout className=" bg-white">
         <Content className="p-3 md:p-6">
-          <div className={`space-y-4 md:space-y-6 ${!isProfileCompleted ? "pointer-events-none opacity-30" : ""}`}>
+          <div
+            className={`space-y-4 md:space-y-6 ${
+              !isProfileCompleted ? "pointer-events-none opacity-30" : ""
+            }`}
+          >
             {/* Welcome Card */}
-            <Card className=" border-2">
+            <Card>
               <Row align="middle" justify="space-between" gutter={[16, 16]}>
                 <Col xs={24} md={18}>
                   <Space direction="vertical" size="small" className="w-full">
@@ -204,17 +232,42 @@ export default function TeacherClasses() {
                       </span>
                     </Title>
                     <Text type="secondary" className="text-sm md:text-base">
-                      Ready to inspire and educate? Your virtual classroom awaits!
+                      Ready to inspire and educate? Your virtual classroom
+                      awaits!
                     </Text>
-                    <Space size={device?.type === "mobile" ? "small" : "large"} className="mt-4 w-full flex flex-wrap">
-                      <Statistic title="Active Classes" value={5} prefix={<BookOutlined />} className="min-w-[120px]" />
-                      <Statistic title="Total Students" value={126} prefix={<TeamOutlined />} className="min-w-[120px]" />
-                      <Statistic title="Teaching Hours" value={48} prefix={<ClockCircleOutlined />} className="min-w-[120px]" />
+                    <Space
+                      size={device?.type === "mobile" ? "small" : "large"}
+                      className="mt-4 w-full flex flex-wrap"
+                    >
+                      <Statistic
+                        title="Active Classes"
+                        value={5}
+                        prefix={<LuBookOpenText />}
+                        className="min-w-[120px]"
+                      />
+                      <Statistic
+                        title="Total Students"
+                        value={126}
+                        prefix={<LuUsers />}
+                        className="min-w-[120px]"
+                      />
+                      <Statistic
+                        title="Teaching Hours"
+                        value={48}
+                        prefix={<LuClock3 />}
+                        className="min-w-[120px]"
+                      />
                     </Space>
                   </Space>
                 </Col>
                 <Col xs={24} md={6} className="text-center md:text-right">
-                  <Image src="/sitting_on_books.png" alt="Teacher illustration" width={120} height={120} className="h-auto w-auto mx-auto md:ml-auto" />
+                  <Image
+                    src="/sitting_on_books.png"
+                    alt="Teacher illustration"
+                    width={120}
+                    height={120}
+                    className="h-auto w-auto mx-auto md:ml-auto"
+                  />
                 </Col>
               </Row>
             </Card>
@@ -225,15 +278,25 @@ export default function TeacherClasses() {
                 <Card
                   title={
                     <Space>
-                      <BookOutlined />
+                      <LuBook />
                       <Text strong>Your Subjects</Text>
                     </Space>
                   }
                   className="h-full shadow-sm"
                 >
                   <Space size={[8, 16]} wrap className="w-full">
-                    {["Mathematics", "English", "Chemistry", "Physics", "Biology"].map((subject, index) => (
-                      <Tag key={index} color="blue" className="px-3 py-2 text-sm mb-2">
+                    {[
+                      "Mathematics",
+                      "English",
+                      "Chemistry",
+                      "Physics",
+                      "Biology",
+                    ].map((subject, index) => (
+                      <Tag
+                        key={index}
+                        color="blue"
+                        className="px-3 py-2 text-sm mb-2"
+                      >
                         {subject}
                       </Tag>
                     ))}
@@ -246,19 +309,27 @@ export default function TeacherClasses() {
                 <Card
                   title={
                     <Space>
-                      <TeamOutlined />
+                      <LuUsers />
                       <Text strong>Your Classes</Text>
                     </Space>
                   }
                   extra={
-                    <Button type="primary" onClick={() => router.push("/instructor/all-classes")} className="whitespace-nowrap">
+                    <Button
+                      type="primary"
+                      onClick={() => router.push("/instructor/all-classes")}
+                      className="whitespace-nowrap"
+                    >
                       See All Classes
                     </Button>
                   }
                   className="shadow-sm"
                 >
                   <div className="overflow-x-auto">
-                    <Table columns={getResponsiveColumns()} dataSource={classData} {...getTableSettings()} />
+                    <Table
+                      columns={getResponsiveColumns()}
+                      dataSource={classData}
+                      {...getTableSettings()}
+                    />
                   </div>
                 </Card>
               </Col>
@@ -266,21 +337,42 @@ export default function TeacherClasses() {
           </div>
 
           {/* Profile Completion Modal */}
-          
 
           {/* OTP Verification Modal */}
-          <Modal title="Verify OTP" open={showOtpModal} footer={null} closable={false} maskClosable={false} centered width={device?.type === "mobile" ? "95%" : 400}>
-            <div className="text-center mb-4">Please enter the verification code sent to your phone number</div>
+          <Modal
+            title="Verify OTP"
+            open={showOtpModal}
+            footer={null}
+            closable={false}
+            maskClosable={false}
+            centered
+            width={device?.type === "mobile" ? "95%" : 400}
+          >
+            <div className="text-center mb-4">
+              Please enter the verification code sent to your phone number
+            </div>
             <div className="flex justify-center gap-2 mb-6">
               {otp.map((digit, index) => (
-                <Input key={index} ref={(el) => (inputRefs.current[index] = el)} value={digit} onChange={(e) => handleOtpChange(index, e.target.value)} onKeyDown={(e) => handleKeyDown(index, e)} className="w-10 md:w-12 h-10 md:h-12 text-center text-lg" maxLength={1} />
+                <Input
+                  key={index}
+                  ref={(el) => (inputRefs.current[index] = el)}
+                  value={digit}
+                  onChange={(e) => handleOtpChange(index, e.target.value)}
+                  onKeyDown={(e) => handleKeyDown(index, e)}
+                  className="w-10 md:w-12 h-10 md:h-12 text-center text-lg"
+                  maxLength={1}
+                />
               ))}
             </div>
             <div className="flex justify-between items-center">
               <Button type="link" size="small" onClick={handleResendCode}>
                 Resend Code
               </Button>
-              <Button type="primary" onClick={handleVerifyOtp} disabled={otp.some((digit) => !digit)}>
+              <Button
+                type="primary"
+                onClick={handleVerifyOtp}
+                disabled={otp.some((digit) => !digit)}
+              >
                 Verify
               </Button>
             </div>
