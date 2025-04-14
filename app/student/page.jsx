@@ -126,7 +126,7 @@ export default function Component() {
       <Row gutter={[24, 24]} align="middle">
         <Col xs={24} md={16}>
           <Space direction="vertical">
-            <Title level={4} style={{ margin: 0 }}>
+            <Title level={4} style={{ margin: 0, fontFamily: '"Quicksand", sans-serif' }}>
               Welcome back,{" "}
               <span className="font-black">
                 {user?.first_name} {user?.last_name}

@@ -21,7 +21,6 @@ const LiveLesson = () => {
       time: "09:00 AM",
       duration: "1.5 hours",
       enrolled: 28,
-
       status: "Upcoming",
       link: "https://zoom.us/j/1234567890",
       description: "Dive deep into complex numbers and their real-world applications in electrical engineering and quantum mechanics. This session will cover fundamental theorems and practical problem-solving techniques.",
