@@ -7,7 +7,7 @@ on:
     branches: [ develop, main ]
 
 env:
-  NODE_VERSION: '20.11.1'
+  NODE_VERSION: '21'
 
 permissions:
   actions: read
