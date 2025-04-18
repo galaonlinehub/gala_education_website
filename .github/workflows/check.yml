@@ -7,7 +7,7 @@ on:
     branches: [ develop, main ]
 
 env:
-  NODE_VERSION: '20.11.1'
+  NODE_VERSION: '22.14.1'
 
 permissions:
   actions: read
@@ -24,7 +24,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.11.1'
+          node-version: '22.14.1'
           cache: 'npm'
 
       - name: Confirm Node version
