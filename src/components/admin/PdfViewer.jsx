@@ -8,7 +8,7 @@ import { useDevice } from '@/src/hooks/useDevice';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
-function PdfViewer({pdfPath}) {
+function PdfViewer({pdfPath,width=400}) {
   const [pageNumber, setPageNumber] = useState(1); 
   const [numPages, setNumPages] = useState(null);
   const {type} =useDevice() 
@@ -39,18 +39,18 @@ function PdfViewer({pdfPath}) {
   }
 
   if (error) {
-    return <p>Error loading PDF: {error.message}</p>;
+    return <p className="text-xs">No PDF available</p>;
   }
 
   const pdfFileObj = `https://galaweb.galahub.org/api/documents/${pdfPath}`
   
   return (
-    <div className='flex flex-col sm:items-center '>
+    <div className='flex justify-center items-center  w-32'>
       {pdfFile ? (
         <Document
           file={pdfFileObj} 
           onLoadSuccess={onDocumentLoadSuccess}
-          className="w-4/5 sm:w-full"
+          className="w-4/5 flex items-center justify-center sm:w-full"
         >
           <Page
             pageNumber={pageNumber}
@@ -58,17 +58,17 @@ function PdfViewer({pdfPath}) {
             renderTextLayer={false}
             renderAnnotationLayer={false}
             renderMode="canvas"
-            width={type == "mobile" ? 300 : 450}
+            width={width}
           />
         </Document>
       ) : (
         <p>No PDF available</p>
       )}
-      {numPages && (
-        <p>
+      {/* {numPages && (
+        <p className='text-xs'>
           Page {pageNumber} of {numPages}
         </p>
-      )}
+      )} */}
     </div>
   );
 }

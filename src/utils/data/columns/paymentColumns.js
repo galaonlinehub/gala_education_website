@@ -1,3 +1,4 @@
+import { Tag } from 'antd';
 import Link from 'next/link'
 
 export const paymentColumns = [
@@ -18,7 +19,7 @@ export const paymentColumns = [
     },
     {
       name: "Status",
-      selector: row => <span className={`rounded border ${row.status === 'pending' ? "" :""} `}>{row?.status}</span>,
+      cell: row => <Tag color={row?.status === 'pending' ? "gold" : row?.status === 'failed' ? "red" : row?.status === 'success' ? "green" : "purple"} p-1 >{row?.status}</Tag>,
       sortable: true,
       
     },
