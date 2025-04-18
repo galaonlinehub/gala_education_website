@@ -17,7 +17,7 @@ jobs:
   quality:
     name: Code Quality Check
     runs-on: ubuntu-22.04
-    # runs-on: ubuntu-latest system
+    # runs-on: ubuntu-latest syste
     
     steps:
       - name: Checkout code
