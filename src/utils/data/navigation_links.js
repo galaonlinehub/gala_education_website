@@ -6,6 +6,7 @@ import {
   LuTv,
   LuUsers,
   LuClock4,
+  LuBanknote,
 } from "react-icons/lu";
 
 export const footer_links = {
@@ -149,9 +150,9 @@ export const student_links = [
     icon: <LuUsers />,
   },
   {
-    name: "Pending Payments",
-    link: "pending-payments",
-    icon: <LuClock4 />,
+    name: "Payments",
+    link: "payments",
+    icon: <LuBanknote />,
   },
 
   {
