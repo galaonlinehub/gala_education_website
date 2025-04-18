@@ -37,11 +37,4 @@ export const login = async (data) => {
   }
 };
 
-export const handleGoogleLogin = async () => {
-  try {
-    const response = await apiGet("/auth/google");
-    window.location.href = response.data.authUrl;
-  } catch (error) {
-  } finally {
-  }
-};
+

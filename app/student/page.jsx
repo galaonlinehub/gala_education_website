@@ -140,7 +140,7 @@ export default function Component() {
         </Col>
         <Col xs={24} md={8} className="text-right">
           <Space>
-            <Badge count={3}>
+            <Badge color="#001840" count={3}>
               <Button icon={<BellOutlined />} shape="circle" />
             </Badge>
             <Avatar

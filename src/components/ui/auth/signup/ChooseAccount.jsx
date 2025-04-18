@@ -52,7 +52,7 @@ const ChooseAccount = () => {
     <section>
       <Dropdown
         menu={{ items }}
-        placement="bottomCenter"
+        placement="bottom"
         disabled={isDisabled}
         overlayClassName="rounded-md shadow-lg border border-gray-100"
         trigger={["hover"]}

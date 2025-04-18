@@ -161,7 +161,7 @@ const Navbar = () => {
           onOpenChange={handleOpenChange}
           overlayClassName="rounded-md shadow-lg border border-gray-100"
           arrow={true}
-          placement="bottomCenter"
+          placement="bottom"
           // dropdownRender={(menu) => (
           //   <div>
           //     <div className="text-xs font-light text-black px-4 py-2">

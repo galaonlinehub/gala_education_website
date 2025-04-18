@@ -2,12 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+
 :root {
-  --font-stack: "Quicksand", "Outfit", "DM Sans", sans-serif;
+  --font-family-base: var(--font-quicksand), "Quicksand", sans-serif;
 }
 
-html {
-  font-family: var(--font-stack);
+html,
+body {
+  font-family: var(--font-quicksand), "Quicksand", sans-serif;
+}
+
+[class^="ant-"],
+[class*=" ant-"],
+[class^="ant-"] *,
+[class*=" ant-"] * {
+  font-family: var(--font-quicksand), "Quicksand", sans-serif !important;
 }
 
 .no-scroll {
@@ -192,24 +201,7 @@ html {
   border-radius: 4px; /* Add rounded corners */
 }
 
-:root {
-  --font-poppins: "Poppins", sans-serif;
-}
 
-/* Override ant-design components */
-/* .ant-btn,
-.ant-input,
-.ant-select,
-.ant-dropdown-menu,
-.ant-modal-content,
-.ant-form,
-.ant-table,
-.ant-typography,
-.ant-menu,
-.ant-notification,
-.ant-message,
-.ant-tabs,
-.ant-popover,
-.ant-card-body {
-  font-family: 'Urbanist', sans-serif !important;
-} */
+
+
+

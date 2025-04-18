@@ -25,9 +25,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# local env files
-.env*.local
-
 # vercel
 .vercel
 
@@ -39,6 +36,9 @@ next-env.d.ts
 .vscode/
 .idea/
 
-𐍈🚀send.bash
+res.js
+send.bash
+server.js
 .env*
+𐍈🚀send.bash
 !.env.example
