@@ -13,6 +13,7 @@ import { useSearch } from "@/src/hooks/useSearch";
 import { notificationService } from "@/src/components/ui/notification/Notification";
 import { useUser } from "@/src/hooks/useUser";
 import { LuBell, LuCircleUser } from "react-icons/lu";
+import Updates from "../ui/notification/Updates";
 
 const SearchResultCard = ({ data, onClick }) => {
   const { topics, teachers } = data;
@@ -236,9 +237,11 @@ const StudentSearch = () => {
             <div className="font-black text-sm">{getCurrentDate()}</div>
           )}
           <div className="lg:flex items-center space-x-3 hidden">
-            <Tooltip placement="top" title="Notifications">
-              <LuBell className="text-xl text-black hover:text-blue-600 cursor-pointer transition-colors" />
-            </Tooltip>
+            <Updates>
+              <Tooltip placement="top" title="Notifications">
+                <LuBell className="text-xl text-black hover:text-blue-600 cursor-pointer transition-colors" />
+              </Tooltip>
+            </Updates>
 
             <Tooltip placement="top" title="My Profile">
               <LuCircleUser

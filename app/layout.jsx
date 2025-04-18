@@ -10,32 +10,12 @@ import {
 } from "next/font/google";
 import QueryWrapper from "@/src/components/layout/QueryWrapper";
 
-const inter = Inter({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-inter",
-});
-
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
-  display: "swap",
-  variable: "--font-poppins",
-});
 
 const urbanist = Urbanist({
   subsets: ["latin"],
   display: "swap",
 });
-const outfit = Outfit({
-  subsets: ["latin"],
-  display: "swap",
-});
 
-const dmSans = DM_Sans({
-  subsets: ["latin"],
-  display: "swap",
-});
 
 const quicksand = Quicksand({
   subsets: ["latin"],
@@ -74,7 +54,7 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${quicksand.className} ${dmSans.variable} ${urbanist.variable}`}
+      className={`${quicksand.className} ${urbanist.variable}`}
     >
       <body className="font-sans">
         <QueryWrapper>

@@ -7,6 +7,7 @@ import { cookieFn } from "../utils/fns/client";
 import { socket_base_url, USER_COOKIE_KEY } from "../config/settings";
 import useChatStore from "../store/chat/chat";
 import { message } from "antd";
+import { decrypt } from "../utils/fns/encryption";
 
 export const useChat = () => {
   const socketRef = useRef(null);
@@ -25,9 +26,9 @@ export const useChat = () => {
 
   useEffect(() => {
     if (!user?.id) return;
-    socketRef.current = io(socket_base_url, {
+    socketRef.current = io(`${socket_base_url}/chat`, {
       query: { user_id: user.id },
-      auth: { token: cookieFn.get(USER_COOKIE_KEY) },
+      auth: { token: decrypt(cookieFn.get(USER_COOKIE_KEY)) },
     });
 
     socketRef.current.on("user_online", (user_id) => {
@@ -149,7 +150,7 @@ export const useChat = () => {
 
     socketRef.current.on("user_offline", ({ user_id, last_active_at }) => {
       setOnlineUsers((prev) => prev.filter((id) => id !== user_id));
-
+      console.log("USER WENT OFFLINE", user_id, last_active_at)
       setChats((prev) =>
         prev.map((chat) => {
           return {
