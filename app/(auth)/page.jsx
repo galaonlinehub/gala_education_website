@@ -32,6 +32,7 @@ import { Document, Page, pdfjs } from "react-pdf";
 import { apiGet } from "@/src/services/api_service";
 import PdfViewer from "@/src/components/home/modals/PdfViewer";
 import { Authorities } from "@/src/components/layout/Authorities";
+import VideoBackground from "@/src/components/ui/VideoBackground";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 function Home() {
@@ -79,13 +80,8 @@ function Home() {
       />
 
       <div className="relative w-screen  mx-auto h-[60rem] sm:h-[60rem] sm:items-center md:h-[50rem] lg:h-[44rem] overflow-hidden -mt-12">
-        <Image
-          src="/homepage_photo.png"
-          layout="fill"
-          objectFit="cover"
-          alt="Gala Home"
-        />
-        <div className="absolute inset-0 bg-black opacity-70 w-full" />
+        <VideoBackground />
+        <div className="absolute inset-0 bg-black opacity-50 w-full" />
         <div className="absolute inset-0 sm:py-12 py-12 w-full sm:px-24 md:px-10 px-2 flex md:flex-row flex-col lg:justify-between md:gap-10 max-sm:gap-5">
           <div className={"mt-14"}>
             <div className="xxs:gap-8 mb-6 sm:gap-0 sm:mb-0 flex flex-col">
