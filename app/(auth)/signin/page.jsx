@@ -12,7 +12,7 @@ import { roleRedirects } from "@/src/utils/data/redirect";
 import { LoadingOutlined } from "@ant-design/icons";
 
 const SignInPage = () => {
-  const key = crypto.randomUUID();
+  // const key = crypto.randomUUID();
   // alert(key);
 
   const router = useRouter();
@@ -105,8 +105,10 @@ const SignInPage = () => {
                   message: "Invalid email address",
                 },
               })}
-              autoComplete="off"
+              autoComplete="new-password"
               autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck="false"
               className={`h-input-height border-[0.5px] focus:border-[1.5px] rounded-md focus:outline-none p-2 border-[#030DFE] w-full text-xs ${
                 errors.email ? "border-red-500" : ""
               }`}
@@ -135,7 +137,7 @@ const SignInPage = () => {
                   message: "Password must be at least 8 characters",
                 },
               })}
-              autoComplete="off"
+              autoComplete="new-password"
               autoCorrect="off"
               className={`h-input-height border-[0.5px] focus:border-[1.5px] rounded-md focus:outline-none p-2 border-[#030DFE] w-full text-xs ${
                 errors.password ? "border-red-500" : ""

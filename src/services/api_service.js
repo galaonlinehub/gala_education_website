@@ -14,11 +14,11 @@ const publicEndpoints = new Set([
   "login",
   "register",
   "verify-otp",
-  "resend-otp",
   "payment",
   "password/reset-request",
-  "reset-password",
+  "password/reset",
   "subscribe-plan",
+  "request-otp",
   "health",
 ]);
 

@@ -30,7 +30,7 @@ import { GoShieldCheck } from "react-icons/go";
 import { useAuth } from "@/src/hooks/useAuth";
 import EmailVerification from "./EmailVerification";
 import { useRouter } from "next/navigation";
-import clsx from "clsx"
+import clsx from "clsx";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -88,6 +88,7 @@ const SignUpForm = () => {
             >
               <Input
                 prefix={<UserOutlined className="!text-gray-400" />}
+                autoComplete="new-password"
                 placeholder="First Name"
                 className="!h-11 signup-input"
               />
@@ -102,6 +103,7 @@ const SignUpForm = () => {
             >
               <Input
                 prefix={<UserOutlined className="!text-gray-400" />}
+                autoComplete="new-password"
                 placeholder="Last Name"
                 className="!h-11 signup-input"
               />
@@ -119,7 +121,9 @@ const SignUpForm = () => {
           >
             <div>
               <Input
-                autoComplete="off"
+                autoComplete="new-password"
+                autoCapitalize="off"
+                spellCheck="false"
                 prefix={<MailOutlined className="!text-gray-400" />}
                 placeholder="Email Address"
                 className="!h-11 signup-input"
@@ -151,6 +155,7 @@ const SignUpForm = () => {
           >
             <div className="space-y-2">
               <Input.Password
+                autoComplete="new-password"
                 prefix={<LockOutlined className="!text-gray-400" />}
                 placeholder="Password"
                 className="!h-11 signup-input"
@@ -209,6 +214,7 @@ const SignUpForm = () => {
             ]}
           >
             <Input.Password
+              autoComplete="new-password"
               prefix={<SafetyOutlined className="!text-gray-400" />}
               placeholder="Confirm Password"
               className="!h-11 signup-input"
