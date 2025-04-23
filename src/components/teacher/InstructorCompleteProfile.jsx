@@ -1,6 +1,32 @@
 import React, { useState } from "react";
-import { Layout, Card, Typography, Space, Modal, Form, Input, Button, Row, Col, Select, Statistic, Avatar, Tag, Table, Upload, message } from "antd";
-import { UserOutlined, CameraOutlined, BookOutlined, ClockCircleOutlined, CalendarOutlined, TeamOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+  Layout,
+  Card,
+  Typography,
+  Space,
+  Modal,
+  Form,
+  Input,
+  Button,
+  Row,
+  Col,
+  Select,
+  Statistic,
+  Avatar,
+  Tag,
+  Table,
+  Upload,
+  message,
+} from "antd";
+import {
+  UserOutlined,
+  CameraOutlined,
+  BookOutlined,
+  ClockCircleOutlined,
+  CalendarOutlined,
+  TeamOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 import Image from "next/image";
 import { useUser } from "@/src/hooks/useUser";
 import { useDevice } from "@/src/hooks/useDevice";
@@ -32,7 +58,9 @@ const InstructorCompleteProfile = () => {
         return;
       }
 
-      values.phone_number = values.phone_number.startsWith("255") ? values.phone_number : `255${values.phone_number}`;
+      values.phone_number = values.phone_number.startsWith("255")
+        ? values.phone_number
+        : `255${values.phone_number}`;
 
       const formData = {
         ...values,
@@ -41,10 +69,9 @@ const InstructorCompleteProfile = () => {
 
       await apiPost("/complete-instructor-profile", formData, {
         headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+          "Content-Type": "multipart/form-data",
+        },
       });
-
     } catch (error) {
       console.error(error);
     }
@@ -60,10 +87,16 @@ const InstructorCompleteProfile = () => {
         break;
       case "done":
         setImageFile(file);
-        message.success({ content: "Image uploaded successfully!", key: "upload" });
+        message.success({
+          content: "Image uploaded successfully!",
+          key: "upload",
+        });
         break;
       case "error":
-        message.error({ content: "Upload failed. Please try again.", key: "upload" });
+        message.error({
+          content: "Upload failed. Please try again.",
+          key: "upload",
+        });
         break;
       case "removed":
         setImageFile(null);
@@ -76,22 +109,52 @@ const InstructorCompleteProfile = () => {
 
   return (
     <Modal
-      title={<div className="text-center text-xs">Just a few more details before you start your journey</div>}
-      open={!user?.phone_number_verified && !user?.subscription_required}
+      title={
+        <div className="text-center text-xs">
+          Just a few more details before you start your journey
+        </div>
+      }
+      open={!user?.completed_profile}
       closable={false}
       maskClosable={false}
-      width={type === "mobile" ? "95%" : type === "desktop" ? "60%" : type === "tablet" ? "60%" : 400} // Reduced from 1000 to 600
+      width={
+        type === "mobile"
+          ? "95%"
+          : type === "desktop"
+          ? "60%"
+          : type === "tablet"
+          ? "60%"
+          : 400
+      } // Reduced from 1000 to 600
       footer={null}
       keyboard={false}
       className="persistent-modal"
     >
-      <Form form={form} onFinish={handleFormSubmit} layout="vertical" size="small">
-        <span className="block mb-2 text-xs text-justify">This process ensures that only qualified and experienced teachers gain access to our online community.</span>
+      <Form
+        form={form}
+        onFinish={handleFormSubmit}
+        layout="vertical"
+        size="small"
+      >
+        <span className="block mb-2 text-xs text-justify">
+          This process ensures that only qualified and experienced teachers gain
+          access to our online community.
+        </span>
 
-        <Upload showUploadList={false} beforeUpload={() => true} onChange={handleUpload} className="flex w-full justify-center mb-4">
+        <Upload
+          showUploadList={false}
+          beforeUpload={() => true}
+          onChange={handleUpload}
+          className="flex w-full justify-center mb-4"
+        >
           <div className="flex justify-center items-center w-full">
             <div style={{ position: "relative", display: "inline-block" }}>
-              <Avatar size={80} icon={imageFile ? null : <UserOutlined />} src={imageFile ? URL.createObjectURL(imageFile) : null} style={{ cursor: "pointer" }} />
+              <Avatar
+                size={80}
+                icon={imageFile ? null : <UserOutlined />}
+                src={imageFile ? URL.createObjectURL(imageFile) : null}
+                style={{ cursor: "pointer" }}
+              />
               <CameraOutlined
                 style={{
                   cursor: "pointer",
@@ -119,26 +182,58 @@ const InstructorCompleteProfile = () => {
               rules={[
                 {
                   required: true,
-                  message: <span className="text-xs ">Please enter your phone number</span>,
+                  message: (
+                    <span className="text-xs ">
+                      Please enter your phone number
+                    </span>
+                  ),
                 },
                 {
                   validator: async (_, value) => {
                     const phoneRegex = /^[67]\d{8}$/;
                     if (!value) return Promise.resolve();
                     if (!phoneRegex.test(value)) {
-                      return Promise.reject(<span className="text-xs ">Phone number must be 9 digits starting with 6 or 7</span>);
+                      return Promise.reject(
+                        <span className="text-xs ">
+                          Phone number must be 9 digits starting with 6 or 7
+                        </span>
+                      );
                     }
                     return Promise.resolve();
                   },
                 },
               ]}
             >
-              <Input placeholder="Phone number" addonBefore="255" size="middle" className="text-xs" />
+              <Input
+                placeholder="Phone number"
+                addonBefore="255"
+                size="middle"
+                className="text-xs"
+              />
             </Form.Item>
           </Col>
           <Col span={24}>
-            <Form.Item name="language" rules={[{ required: true, message: <span className="text-xs ">Language is required</span> }]}>
-              <Select mode="multiple" size="middle" className="!text-xs " placeholder="Select language(s)" maxTagCount={3} maxTagPlaceholder={(omittedValues) => `+ ${omittedValues.length}`}>
+            <Form.Item
+              name="language"
+              rules={[
+                {
+                  required: true,
+                  message: (
+                    <span className="text-xs ">Language is required</span>
+                  ),
+                },
+              ]}
+            >
+              <Select
+                mode="multiple"
+                size="middle"
+                className="!text-xs "
+                placeholder="Select language(s)"
+                maxTagCount={3}
+                maxTagPlaceholder={(omittedValues) =>
+                  `+ ${omittedValues.length}`
+                }
+              >
                 {languages?.map((language) => (
                   <Select.Option key={language.id} value={language.tag}>
                     {language.language}
@@ -148,8 +243,27 @@ const InstructorCompleteProfile = () => {
             </Form.Item>
           </Col>
           <Col span={24}>
-            <Form.Item name="subjects" rules={[{ required: true, message: <span className="text-xs ">Subject(s) is required</span> }]}>
-              <Select mode="multiple" size="middle" className="!text-xs" placeholder="Subjects you can teach" maxTagCount={2} maxTagPlaceholder={(omittedValues) => `+ ${omittedValues.length}`}>
+            <Form.Item
+              name="subjects"
+              rules={[
+                {
+                  required: true,
+                  message: (
+                    <span className="text-xs ">Subject(s) is required</span>
+                  ),
+                },
+              ]}
+            >
+              <Select
+                mode="multiple"
+                size="middle"
+                className="!text-xs"
+                placeholder="Subjects you can teach"
+                maxTagCount={2}
+                maxTagPlaceholder={(omittedValues) =>
+                  `+ ${omittedValues.length}`
+                }
+              >
                 {subjects?.map((subject) => (
                   <Select.Option key={subject.id} value={subject.id}>
                     {subject.name}
@@ -159,8 +273,27 @@ const InstructorCompleteProfile = () => {
             </Form.Item>
           </Col>
           <Col span={24}>
-            <Form.Item name="grade_levels" rules={[{ required: true, message: <span className="text-xs ">Grade level(s) is required</span> }]}>
-              <Select mode="multiple" size="middle" className="!text-xs" maxTagCount={2} maxTagPlaceholder={(omittedValues) => `+ ${omittedValues.length}`} placeholder="Levels you can teach">
+            <Form.Item
+              name="grade_levels"
+              rules={[
+                {
+                  required: true,
+                  message: (
+                    <span className="text-xs ">Grade level(s) is required</span>
+                  ),
+                },
+              ]}
+            >
+              <Select
+                mode="multiple"
+                size="middle"
+                className="!text-xs"
+                maxTagCount={2}
+                maxTagPlaceholder={(omittedValues) =>
+                  `+ ${omittedValues.length}`
+                }
+                placeholder="Levels you can teach"
+              >
                 {grades?.map((level) => (
                   <Select.Option key={level.id} value={level.id}>
                     {level.name}
@@ -170,8 +303,29 @@ const InstructorCompleteProfile = () => {
             </Form.Item>
           </Col>
           <Col span={24}>
-            <Form.Item name="special_needs" rules={[{ required: true, message: <span className="text-xs">Special group(s) is required</span> }]}>
-              <Select mode="multiple" size="middle" className="!text-xs" maxTagCount={1} maxTagPlaceholder={(omittedValues) => `+ ${omittedValues.length}`} placeholder="Special groups you can teach">
+            <Form.Item
+              name="special_needs"
+              rules={[
+                {
+                  required: true,
+                  message: (
+                    <span className="text-xs">
+                      Special group(s) is required
+                    </span>
+                  ),
+                },
+              ]}
+            >
+              <Select
+                mode="multiple"
+                size="middle"
+                className="!text-xs"
+                maxTagCount={1}
+                maxTagPlaceholder={(omittedValues) =>
+                  `+ ${omittedValues.length}`
+                }
+                placeholder="Special groups you can teach"
+              >
                 {special_needs?.map((special) => (
                   <Select.Option key={special.id} value={special.id}>
                     {special.name}
@@ -183,7 +337,13 @@ const InstructorCompleteProfile = () => {
         </Row>
 
         <Form.Item>
-          <Button type="primary" className="bg-[#001840] hover:!bg-blue-900" htmlType="submit" block size="middle">
+          <Button
+            type="primary"
+            className="bg-[#001840] hover:!bg-blue-900"
+            htmlType="submit"
+            block
+            size="middle"
+          >
             Submit
           </Button>
         </Form.Item>

@@ -78,7 +78,7 @@ export default function Subscribe() {
       }
       width={1124}
       centered={false}
-      open={user?.require_subscription}
+      open={!user?.has_active_subscription}
       footer={null}
       closable={false}
       classNames={classNames}

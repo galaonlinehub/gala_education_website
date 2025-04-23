@@ -1,7 +1,3 @@
-import {
-  useEmailVerificationModalOpen,
-  useTabNavigator,
-} from "@/src/store/auth/signup";
 import React, { useState, useEffect } from "react";
 import {
   Form,
@@ -16,21 +12,22 @@ import {
   message,
   Checkbox,
 } from "antd";
-import {
-  UserOutlined,
-  LockOutlined,
-  MailOutlined,
-  SafetyOutlined,
-  EyeInvisibleOutlined,
-  EyeTwoTone,
-  CheckCircleFilled,
-} from "@ant-design/icons";
+
 import { disabilities } from "@/src/utils/data/disabilities";
-import { GoShieldCheck } from "react-icons/go";
 import { useAuth } from "@/src/hooks/useAuth";
 import EmailVerification from "./EmailVerification";
 import { useRouter } from "next/navigation";
 import clsx from "clsx";
+import {
+  LuCircleCheck,
+  LuEye,
+  LuEyeOff,
+  LuLock,
+  LuMail,
+  LuShieldCheck,
+  LuUser,
+} from "react-icons/lu";
+import SlickSpinner from "../../loading/template/SlickSpinner";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -38,9 +35,7 @@ const SignUpForm = () => {
   const [form] = Form.useForm();
   const [password, setPassword] = useState("");
   const [isAgreementChecked, setIsAgreementChecked] = useState(false);
-
   const router = useRouter();
-
   const {
     getPasswordStatus,
     getPasswordRequirements,
@@ -49,10 +44,11 @@ const SignUpForm = () => {
     emailExists,
     passwordStrength,
     passwordFocused,
-    loading,
-    setPasswordStrength,
     setPasswordFocused,
     setEmailExists,
+    mutation,
+    setRegisterError,
+    registerError,
   } = useAuth(password);
 
   return (
@@ -70,11 +66,28 @@ const SignUpForm = () => {
             knowledge begins here.
           </Paragraph>
         </div>
-
+        {registerError && (
+          <div
+            className={clsx(
+              "p-1 border-[0.8px] text-xs text-center mb-4 w-full rounded-md",
+              mutation.isSuccess
+                ? "border-green-700 text-green-400 bg-green-50"
+                : mutation.isError
+                ? "border-red-500 text-red-500 bg-red-50"
+                : "border-gray-700 text-gray-700"
+            )}
+          >
+            {registerError}
+          </div>
+        )}
         <Form
           form={form}
           name="signup"
           onFinish={onFinish}
+          onFieldsChange={() => {
+            mutation.reset();
+            setRegisterError("");
+          }}
           layout="vertical"
           className="!space-y-4"
         >
@@ -87,7 +100,7 @@ const SignUpForm = () => {
               className="!mb-0"
             >
               <Input
-                prefix={<UserOutlined className="!text-gray-400" />}
+                prefix={<LuUser className="!text-gray-400" />}
                 autoComplete="new-password"
                 placeholder="First Name"
                 className="!h-11 signup-input"
@@ -102,7 +115,7 @@ const SignUpForm = () => {
               className="!mb-0"
             >
               <Input
-                prefix={<UserOutlined className="!text-gray-400" />}
+                prefix={<LuUser className="!text-gray-400" />}
                 autoComplete="new-password"
                 placeholder="Last Name"
                 className="!h-11 signup-input"
@@ -115,7 +128,7 @@ const SignUpForm = () => {
             validateTrigger={["onBlur", "onChange", "onSubmit"]}
             rules={[
               { required: true, message: "Please enter your email address" },
-              { type: "email", message: "Invalid email address" },
+              { type: "email", message: "Please enter valid email address" },
             ]}
             validateStatus={emailExists ? "error" : undefined}
           >
@@ -124,11 +137,11 @@ const SignUpForm = () => {
                 autoComplete="new-password"
                 autoCapitalize="off"
                 spellCheck="false"
-                prefix={<MailOutlined className="!text-gray-400" />}
+                prefix={<LuMail className="!text-gray-400" />}
                 placeholder="Email Address"
                 className="!h-11 signup-input"
                 onChange={() => {
-                  setEmailExists(false);
+                  setEmailExists("");
                 }}
               />
               {emailExists && (
@@ -156,7 +169,7 @@ const SignUpForm = () => {
             <div className="space-y-2">
               <Input.Password
                 autoComplete="new-password"
-                prefix={<LockOutlined className="!text-gray-400" />}
+                prefix={<LuLock className="!text-gray-400" />}
                 placeholder="Password"
                 className="!h-11 signup-input"
                 onChange={(e) => {
@@ -167,7 +180,7 @@ const SignUpForm = () => {
                 onBlur={() => setPasswordFocused(false)}
                 iconRender={(visible) => (
                   <span className="hover:!text-blue-500 !transition-colors">
-                    {visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />}
+                    {visible ? <LuEye /> : <LuEyeOff />}
                   </span>
                 )}
               />
@@ -182,7 +195,7 @@ const SignUpForm = () => {
                   <div className="grid grid-cols-2 gap-2">
                     {getPasswordRequirements(password).map((req, index) => (
                       <div key={index} className="flex items-center gap-2">
-                        <CheckCircleFilled
+                        <LuCircleCheck
                           className={
                             req.met ? "!text-green-500" : "!text-gray-300"
                           }
@@ -215,12 +228,12 @@ const SignUpForm = () => {
           >
             <Input.Password
               autoComplete="new-password"
-              prefix={<SafetyOutlined className="!text-gray-400" />}
+              prefix={<LuShieldCheck className="!text-gray-400" />}
               placeholder="Confirm Password"
               className="!h-11 signup-input"
               iconRender={(visible) => (
                 <span className="hover:!text-blue-500 !transition-colors">
-                  {visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />}
+                  {visible ? <LuEye /> : <LuEyeOff />}
                 </span>
               )}
             />
@@ -239,19 +252,24 @@ const SignUpForm = () => {
           </Form.Item>
           <Form.Item className="!mb-0">
             <Button
-              disabled={loading || !isAgreementChecked}
+              disabled={
+                mutation.isPending ||
+                !isAgreementChecked ||
+                mutation.isSuccess ||
+                mutation.isError
+              }
               type="primary"
               htmlType="submit"
-              loading={loading}
               className={clsx(
-                "!flex !items-center !justify-center !py-4 !border-transparent !rounded-lg !w-full !h-11  !transition-colors !text-base !text-white !font-medium",
-                loading || !isAgreementChecked
-                  ? "!bg-[#010798]/20 !cursor-not-allowed"
-                  : "!bg-[#010798] !hover:bg-blue-700"
+                "!flex !items-center !justify-center !py-4 !border-transparent !rounded-lg !w-full !h-11  !transition-colors !text-base !text-white !font-medium disabled:!cursor-not-allowed disabled:!opacity-60 !bg-[#010798] !hover:bg-blue-700"
               )}
-              icon={<GoShieldCheck />}
+              icon={mutation.isPending ? null : <LuShieldCheck />}
             >
-              {!loading && "Create Account"}
+              {mutation.isPending ? (
+                <SlickSpinner size={16} color="white" />
+              ) : (
+                <span>Create Account</span>
+              )}
             </Button>
           </Form.Item>
         </Form>

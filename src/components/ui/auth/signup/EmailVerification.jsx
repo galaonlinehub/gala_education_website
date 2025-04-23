@@ -10,7 +10,11 @@ import { maskEmail } from "@/src/utils/fns/mask_email";
 import { ReloadOutlined } from "@ant-design/icons";
 import { apiPost } from "@/src/services/api_service";
 import { sessionStorageFn } from "@/src/utils/fns/client";
-import { EMAIL_VERIFICATION_KEY, EMAIL_VERIFICATION_MODAL_KEY } from "@/src/config/settings";
+import {
+  EMAIL_VERIFICATION_KEY,
+  EMAIL_VERIFICATION_MODAL_KEY,
+} from "@/src/config/settings";
+import clsx from "clsx";
 
 const EmailVerification = () => {
   const openEmailVerificationModal = useEmailVerificationModalOpen(
@@ -87,7 +91,7 @@ const EmailVerification = () => {
           }, 5000);
         }
       } catch (e) {
-        console.error(e.response?.data || e.message);
+        console.error(e.response?.data?.message || e.message);
         setHasVerified(false);
       } finally {
         setLoading(false);
@@ -123,14 +127,14 @@ const EmailVerification = () => {
         setLocalFeedback({
           show: true,
           type: "success",
-          message: "OTP sent successfully.",
+          message: response?.data?.message ?? "OTP sent successfully.",
         });
       }
     } catch (e) {
       setLocalFeedback({
         show: true,
         type: "error",
-        message: "Sending OTP failed, Try again.",
+        message: e?.response?.data?.message ?? "Sending OTP failed, Try again.",
       });
     } finally {
       setIsSendingOtp(false);
@@ -153,11 +157,10 @@ const EmailVerification = () => {
       keyboard={false}
       destroyOnClose={false}
       footer={null}
-      // loading={loading}
       open={openEmailVerificationModal}
       onCancel={() => setOpenEmailVerificationModal(false)}
     >
-      <div className="mb-6">
+      <div className="mb-6 flex flex-col">
         <span className="block w-full space-x-2 overflow-hidden text-ellipsis whitespace-nowrap">
           <span>Enter Verification Code Sent through</span>
           <span className="font-bold">
@@ -165,13 +168,16 @@ const EmailVerification = () => {
           </span>
         </span>
         {localFeedback.show && (
-          <Alert
-            showIcon
-            closable
-            message={localFeedback.message}
-            type={localFeedback.type}
-            className="!my-2"
-          />
+          <div
+            className={clsx(
+              "border-[0.8px] rounded-md p-1 my-2 text-center w-full self-center",
+              localFeedback.type === "error"
+                ? "border-red-500 text-red-500 bg-red-50"
+                : "border-green-700 text-green-700 bg-green-50"
+            )}
+          >
+            {localFeedback.message}
+          </div>
         )}
         <div>
           <div
@@ -229,8 +235,8 @@ const EmailVerification = () => {
             <Button
               type="link"
               onClick={handleResendOtp}
-              className={`!p-1 !bg-transparent/10 !rounded-md !cursor-pointer !text-xs disabled:pointer-events-none ${
-                isSendingOtp && "!text-blue-600 !px-2"
+              className={`!p-1 !bg-transparent !rounded-md !cursor-pointer !text-xs disabled:pointer-events-none ${
+                isSendingOtp && "!text-blue-600 !px-1"
               }`}
               disabled={resendCounter > 0 || loading || isSendingOtp}
               icon={!isSendingOtp && <ReloadOutlined />}

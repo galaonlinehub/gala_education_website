@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 :root {
   --font-family-base: var(--font-quicksand), "Quicksand", sans-serif;
 }
@@ -201,7 +200,10 @@ body {
   border-radius: 4px; /* Add rounded corners */
 }
 
+.ant-modal-wrap {
+  position: fixed;
+}
 
-
-
-
+body.ant-modal-open {
+  overflow: hidden;
+}

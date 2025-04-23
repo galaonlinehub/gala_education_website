@@ -30,6 +30,7 @@ const CompleteProfile = () => {
   const { user, updateProfile, isUpdatingProfile } = useUser();
   const [phoneNumber, setPhoneNumber] = useState(null);
 
+
   const render = () => {
     switch (status) {
       case Stage.SAVE:
@@ -42,7 +43,7 @@ const CompleteProfile = () => {
   };
   return (
     <Modal
-      open={true}
+      open={!user?.completed_profile}
       footer={null}
       styles={{ body: { height: "400px", overflowY: "auto" } }}
       title={

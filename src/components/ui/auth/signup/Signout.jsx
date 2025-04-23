@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { LuLoaderCircle, LuLogOut } from "react-icons/lu";
+import { LuLogOut } from "react-icons/lu";
 import { Modal, Button } from "antd";
 import { logout } from "@/src/utils/fns/auth";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 import notificationService from "../../notification/Notification";
 import { useDevice } from "@/src/hooks/useDevice";
 import { useUser } from "@/src/hooks/useUser";
+import SlickSpinner from "../../loading/template/SlickSpinner";
 
 const Signout = ({ onCloseSidebar }) => {
   const [signoutVisible, setSignoutVisible] = useState(false);
@@ -94,8 +95,9 @@ const Signout = ({ onCloseSidebar }) => {
       >
         <div className="mb-3 lg:mb-6">
           {loading ? (
-            <div className="flex flex-col justify-center items-center gap-1 font-black text-xl animate-pulse text-black">
-              <span>Signing out... 😔</span>
+            <div className="flex flex-col justify-center items-center gap-1 font-black text-xl text-black">
+              <SlickSpinner color="black" />
+              <span className="animate-pulse">Signing out... 😔</span>
             </div>
           ) : (
             <p className="text-xs text-black">

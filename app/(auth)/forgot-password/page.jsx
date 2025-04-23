@@ -18,6 +18,7 @@ import {
 import { useMutation } from "@tanstack/react-query";
 import { sessionStorageFn } from "@/src/utils/fns/client";
 import { useDevice } from "@/src/hooks/useDevice";
+import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
 
 const { Text } = Typography;
 
@@ -250,7 +251,7 @@ const ForgotPassword = () => {
             >
               {resetPasswordMutation.isPending ? (
                 <div className="flex justify-center items-center gap-2">
-                  <LuLoaderCircle className="animate-spin" />
+                  <SlickSpinner size={14} color="white" />
                 </div>
               ) : (
                 <div className="flex items-center gap-2">
@@ -361,7 +362,8 @@ const ForgotPassword = () => {
                 onClick={handleResendOtp}
                 disabled={resendCounter > 0 || isSendingOtp}
                 className={`
-                   !px-4 !py-2 !h-auto !flex !items-center !justify-center !mx-auto !border-none !text-[#030DFE] disabled:!text-gray-400`}>
+                   !px-4 !py-2 !h-auto !flex !items-center !justify-center !mx-auto !border-none !text-[#030DFE] disabled:!text-gray-400`}
+              >
                 <div>
                   {!isSendingOtp ? (
                     <div>
