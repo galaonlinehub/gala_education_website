@@ -15,6 +15,7 @@ import Clock from "@/src/utils/vector-svg/vectors/Clock";
 import StudentsInClass from "@/src/utils/vector-svg/vectors/StudentsInClass";
 import RightTiltedBook from "@/src/utils/vector-svg/vectors/CombinedBlock";
 import clsx from "clsx";
+import StickyNotification from "@/src/components/ui/notification/StickyNotification";
 
 export default function StudentLayout({ children }) {
   const { installPrompt, isInstalled, handleInstallClick } = useInstallPrompt();
@@ -91,8 +92,9 @@ export default function StudentLayout({ children }) {
       )}
 
       <NewClass />
-      {/* <CompleteProfile /> */}
+      <CompleteProfile />
       <Subscribe />
+      <StickyNotification />
     </>
   );
 }

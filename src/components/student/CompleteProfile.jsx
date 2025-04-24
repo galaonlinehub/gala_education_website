@@ -42,7 +42,7 @@ const CompleteProfile = () => {
   };
   return (
     <Modal
-      open={true}
+      open={!user?.completed_profile && user?.has_active_subscription}
       footer={null}
       styles={{ body: { height: "400px", overflowY: "auto" } }}
       title={

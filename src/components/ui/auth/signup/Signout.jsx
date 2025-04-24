@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { LuLoaderCircle, LuLogOut } from "react-icons/lu";
+import { LuLogOut } from "react-icons/lu";
 import { Modal, Button } from "antd";
 import { logout } from "@/src/utils/fns/auth";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 import notificationService from "../../notification/Notification";
 import { useDevice } from "@/src/hooks/useDevice";
 import { useUser } from "@/src/hooks/useUser";
+import SlickSpinner from "../../loading/template/SlickSpinner";
 
 const Signout = ({ onCloseSidebar }) => {
   const [signoutVisible, setSignoutVisible] = useState(false);
@@ -36,15 +37,19 @@ const Signout = ({ onCloseSidebar }) => {
 
   return (
     <div>
-      {width > 768 && user?.require_subscription && (
-        <LuLogOut
-          size={18}
-          className="cursor-pointer"
-          onClick={() => setSignoutVisible(true)}
-        />
+      {width > 768 && user?.has_active_subscription && (
+        <button
+          onClick={() => {
+            setSignoutVisible(true);
+          }}
+          className="w-full border border-black hover:border-red-500  hover:text-red-500 font-medium flex rounded-md items-center gap-1 px-2 py-1"
+        >
+          <LuLogOut />
+          <span className="text-sm"> Sign out</span>
+        </button>
       )}
 
-      {width <= 768 && user?.require_subscription && (
+      {width <= 768 && user?.has_active_subscription && (
         <Button
           onClick={() => {
             onCloseSidebar();
@@ -57,16 +62,16 @@ const Signout = ({ onCloseSidebar }) => {
         </Button>
       )}
 
-      {!user?.require_subscription && (
-        <Button
+      {!user?.has_active_subscription && (
+        <button
           onClick={() => {
             setSignoutVisible(true);
           }}
-          icon={<LuLogOut strokeWidth={3} />}
-          className="w-full !border-black hover:!border-red-500  hover:!text-red-500 !font-medium"
+          className="w-full border border-black hover:border-red-500 hover:text-red-500 font-medium flex rounded-md items-center gap-1 px-2 py-1"
         >
-          Sign out
-        </Button>
+          <LuLogOut />
+          <span className="text-sm"> Sign out</span>
+        </button>
       )}
 
       <Modal
@@ -94,8 +99,9 @@ const Signout = ({ onCloseSidebar }) => {
       >
         <div className="mb-3 lg:mb-6">
           {loading ? (
-            <div className="flex flex-col justify-center items-center gap-1 font-black text-xl animate-pulse text-black">
-              <span>Signing out... 😔</span>
+            <div className="flex flex-col justify-center items-center gap-1 font-black text-xl text-black">
+              <SlickSpinner color="black" />
+              <span className="animate-pulse">Signing out... 😔</span>
             </div>
           ) : (
             <p className="text-xs text-black">

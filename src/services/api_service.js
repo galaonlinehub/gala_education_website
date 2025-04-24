@@ -14,11 +14,12 @@ const publicEndpoints = new Set([
   "login",
   "register",
   "verify-otp",
-  "resend-otp",
   "payment",
   "password/reset-request",
-  "reset-password",
+  "password/reset",
   "subscribe-plan",
+  "request-otp",
+  "subscribe-mail-list",
   "health",
 ]);
 
@@ -75,8 +76,13 @@ export const apiGet = async (endpoint, headers = {}, directToken = null) => {
 };
 
 export const apiPost = async (endpoint, data, headers = {}) => {
-  const response = await api.post(endpoint, data, { headers });
-  return response;
+  try {
+    const response = await api.post(endpoint, data, { headers });
+    return response;
+  } catch (error) {
+    console.error(`POST ${endpoint} Error:`, error);
+    throw error;
+  }
 };
 
 export const apiPut = async (endpoint, data, headers = {}) => {

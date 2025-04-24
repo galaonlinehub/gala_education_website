@@ -128,6 +128,7 @@ const InstructorRegistrationForm = () => {
             >
               <Input
                 prefix={<UserOutlined className="!text-gray-400" />}
+                autoComplete="new-password"
                 placeholder="First Name"
                 className="!h-[42px] signup-input"
               />
@@ -141,6 +142,7 @@ const InstructorRegistrationForm = () => {
             >
               <Input
                 prefix={<UserOutlined className="!text-gray-400" />}
+                autoComplete="new-password"
                 placeholder="Last Name"
                 className="!h-[42px] signup-input"
               />
@@ -157,6 +159,9 @@ const InstructorRegistrationForm = () => {
               <div>
                 <Input
                   prefix={<MailOutlined className="!text-gray-400" />}
+                  autoComplete="new-password"
+                  autoCapitalize="off"
+                  spellCheck="false"
                   placeholder="Email Address"
                   className="!h-[42px] signup-input"
                   onChange={() => {
@@ -189,6 +194,7 @@ const InstructorRegistrationForm = () => {
             >
               <Input.Password
                 prefix={<LockOutlined className="!text-gray-400" />}
+                autoComplete="new-password"
                 placeholder="Password"
                 className="!h-[42px] signup-input"
                 onChange={(e) => {
@@ -243,6 +249,7 @@ const InstructorRegistrationForm = () => {
             >
               <Input.Password
                 prefix={<LockOutlined className="!text-gray-400" />}
+                autoComplete="new-password"
                 placeholder="Confirm Password"
                 className="!h-[42px] signup-input"
               />
@@ -264,6 +271,7 @@ const InstructorRegistrationForm = () => {
             >
               <Input
                 prefix={<IdcardOutlined className="!text-gray-400" />}
+                autoComplete="new-password"
                 suffix={
                   <Tooltip title="National ID Number">
                     <InfoCircleOutlined className="!text-gray-400" />
