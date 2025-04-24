@@ -114,7 +114,7 @@ const InstructorCompleteProfile = () => {
           Just a few more details before you start your journey
         </div>
       }
-      open={!user?.completed_profile}
+      open={!user?.completed_profile && user?.has_active_subscription}
       closable={false}
       maskClosable={false}
       width={

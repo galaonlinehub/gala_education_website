@@ -37,15 +37,19 @@ const Signout = ({ onCloseSidebar }) => {
 
   return (
     <div>
-      {width > 768 && user?.require_subscription && (
-        <LuLogOut
-          size={18}
-          className="cursor-pointer"
-          onClick={() => setSignoutVisible(true)}
-        />
+      {width > 768 && user?.has_active_subscription && (
+        <button
+          onClick={() => {
+            setSignoutVisible(true);
+          }}
+          className="w-full border border-black hover:border-red-500  hover:text-red-500 font-medium flex rounded-md items-center gap-1 px-2 py-1"
+        >
+          <LuLogOut />
+          <span className="text-sm"> Sign out</span>
+        </button>
       )}
 
-      {width <= 768 && user?.require_subscription && (
+      {width <= 768 && user?.has_active_subscription && (
         <Button
           onClick={() => {
             onCloseSidebar();
@@ -58,16 +62,16 @@ const Signout = ({ onCloseSidebar }) => {
         </Button>
       )}
 
-      {!user?.require_subscription && (
-        <Button
+      {!user?.has_active_subscription && (
+        <button
           onClick={() => {
             setSignoutVisible(true);
           }}
-          icon={<LuLogOut strokeWidth={3} />}
-          className="w-full !border-black hover:!border-red-500  hover:!text-red-500 !font-medium"
+          className="w-full border border-black hover:border-red-500 hover:text-red-500 font-medium flex rounded-md items-center gap-1 px-2 py-1"
         >
-          Sign out
-        </Button>
+          <LuLogOut />
+          <span className="text-sm"> Sign out</span>
+        </button>
       )}
 
       <Modal
