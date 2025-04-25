@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { Modal, Steps, Button, Input, Select, Row, Col, Typography, Space, Form, Radio, Divider, InputNumber, Card, Tabs, Tooltip } from "antd";
+import { Modal, Steps, Button, Input, Select, Row, Col, Typography, Space, Form, Radio, Divider, InputNumber, Card, Tabs, Tooltip, message } from "antd";
+import { apiPost } from "@/src/services/api_service";
 
 const { Title, Paragraph, Text } = Typography;
 const { Option } = Select;
@@ -18,15 +19,6 @@ const Donate = ({ showDonatePopup, setShowDonatePopup }) => {
   const [selectedAmount, setSelectedAmount] = useState(null);
   const [form] = Form.useForm();
 
-  const handleValidatePhone = async () => {
-    try {
-      // Validate only the phone field
-      await form.validateFields(["phone_number"]);
-      setIsPhoneValid(true);
-    } catch (error) {
-      setIsPhoneValid(false);
-    }
-  };
 
   const handleCancel = () => {
     // Use the prop function instead of local state
@@ -45,13 +37,37 @@ const Donate = ({ showDonatePopup, setShowDonatePopup }) => {
     setCurrentStep(currentStep - 1);
   };
 
+
+  //complete donation
+
   const completeDonation = () => {
-    // Use the prop function instead of local state
-    setShowDonatePopup(false);
+    form.validateFields()
+      .then(async values => {
+        // Prepare the data in the format you need
+        const donationData = {
+          email: values.email || form.getFieldValue('email') || "",
+          frequency: donationFrequency === "monthly" ? "monthly" : "one_time",
+          name: values.name || form.getFieldValue('name') || "",
+          amount: selectedAmount,
+          phone_number: `255${values.phone_number}`
+        };
+
+        const response = await apiPost('/make-donation', donationData);
+
+        console.log("Payment response:",response.data.payment_response);
+
+        form.resetFields();
+        setSelectedAmount(null);
+        // setShowDonatePopup(false);
+      })
+      .catch(error => {
+        console.error("Validation failed:", error);
+      });
   };
 
+
   const renderDonationStep = () => (
-    <div>
+    <Form form={form}>
       <div style={{ marginBottom: "20px" }}>
         <Radio.Group
           value={donationFrequency}
@@ -122,26 +138,23 @@ const Donate = ({ showDonatePopup, setShowDonatePopup }) => {
           </Paragraph>
         </Card>
 
-        <Form.Item>
+        <Form.Item name="name">
           <Input placeholder="Enter your name (Optional)" />
         </Form.Item>
 
-        <Form.Item>
+        <Form.Item name="email" rules={[
+          { type: 'email', message: 'Please enter a valid email' }
+        ]}>
           <Input placeholder="Enter your email (Optional)" />
         </Form.Item>
       </div>
-    </div>
+    </Form>
   );
 
   const renderPaymentStep = () => (
     <div>
       <Form
         form={form}
-        onChange={(changedValues) => {
-          if (changedValues.phone_number !== undefined) {
-            handleValidatePhone();
-          }
-        }}
         layout="vertical"
       >
         <div style={{ marginBottom: "16px" }}>
@@ -208,13 +221,7 @@ const Donate = ({ showDonatePopup, setShowDonatePopup }) => {
 
         {paymentMethod === "mobile" && (
           <Space direction="vertical" size="middle" style={{ width: "100%" }}>
-            <Form.Item label="Mobile Money Provider" style={{ marginBottom: "12px" }}>
-              <Select defaultValue="mpesa" style={{ width: "100%" }}>
-                <Option value="mpesa">M-Pesa</Option>
-                <Option value="tigopesa">Tigo Pesa</Option>
-                <Option value="airtel">Airtel Money</Option>
-              </Select>
-            </Form.Item>
+
 
             <Form.Item
               label="Phone number"
@@ -226,13 +233,23 @@ const Donate = ({ showDonatePopup, setShowDonatePopup }) => {
                 },
                 {
                   validator: async (_, value) => {
-                    const phoneRegex = /^[67]\d{8}$/;
-                    if (!value) return Promise.resolve();
-                    if (!phoneRegex.test(value)) {
-                      return Promise.reject(<span className="text-xs ">Phone number must be 9 digits starting with 6 or 7</span>);
+                    if (!value) {
+                      setIsPhoneValid(false);
+                      return Promise.resolve();
                     }
+
+                    if (!/^[67]/.test(value)) {
+                      setIsPhoneValid(false);
+                      return Promise.reject(<span className="text-xs">Phone number must start with 6 or 7</span>);
+                    }
+
+                    if (!/^\d{9}$/.test(value)) {
+                      setIsPhoneValid(false);
+                      return Promise.reject(<span className="text-xs">Phone number must be exactly 9 digits</span>);
+                    }
+                    setIsPhoneValid(true);
                     return Promise.resolve();
-                  },
+                  }
                 },
               ]}
             >
@@ -305,13 +322,15 @@ const Donate = ({ showDonatePopup, setShowDonatePopup }) => {
       <TabPane
         disabled={!selectedAmount}
         tab={
-          <span
-            style={{
-              color: activeTab === "2" ? "#001840" : undefined,
-            }}
-          >
-            Payment Method
-          </span>
+          <Tooltip placement="top" title={!selectedAmount ? "Please fill amount first" : ""}>
+            <span
+              style={{
+                color: activeTab === "2" ? "#001840" : undefined,
+              }}
+            >
+              Payment Method
+            </span>
+          </Tooltip>
         }
         key="2"
       >
@@ -322,11 +341,8 @@ const Donate = ({ showDonatePopup, setShowDonatePopup }) => {
             className={`
           bg-[#001840] 
           text-white 
-          hover:bg-blue-900 
-          hover:text-white
-          ${!isPhoneValid ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-900"}
         `}
-            disabled={!selectedAmount}
+            disabled={!selectedAmount || !isPhoneValid}
             onClick={completeDonation}
           >
             Complete Donation

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Steps, Select, DatePicker, TimePicker, InputNumber, Button, Drawer, Alert, Skeleton, Tag, Input } from "antd";
 import { FiCheck, FiArrowRight, FiArrowLeft, FiCalendar, FiClock, FiBook, FiBookOpen, FiCreditCard } from "react-icons/fi";
@@ -51,8 +51,6 @@ const componentStyles = {
 const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
   const [step, setStep] = useState(0);
 
-  const tomorrow = Date.now();
-
   const [loading, setLoading] = useState(false);
   const [cohortName, setCohortName] = useState("");
 
@@ -64,6 +62,7 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
   const {
     watch,
     setValue,
+    reset,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -82,6 +81,33 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
   });
 
   const formData = watch();
+
+  // Reset all form state
+  const resetForm = () => {
+    reset({
+      subject: "",
+      topic: "",
+      price: "",
+      frequency: "",
+      startDate: "",
+      endDate: "",
+      days: [""],
+      times: [""],
+      durations: [""],
+      description: "",
+      weeks: "",
+    });
+    setStep(0);
+    setCohortName("");
+    setValueData("");
+    setIsValid(true);
+  };
+
+  // Handle drawer close with reset
+  const handleDrawerClose = () => {
+    resetForm();
+    setOpenAddNewClass(false);
+  };
 
   const updateForm = (key, value) => {
     setValue(key, value);
@@ -102,11 +128,21 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
 
   const { createCohort, isFetching, cohorts } = useCohort();
 
+  useEffect(() => {
+    if (createCohort.isSuccess) {
+      const timer = setTimeout(() => {
+        handleDrawerClose();
+      }, 1000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [createCohort.isSuccess]);
+
   const checkDescription = (v) => {
     const wordCount = v
       .trim()
       .split(/\s+/)
-      .filter((word) => /\w/.test(word)).length; // Count only words containing letters or numbers
+      .filter((word) => /\w/.test(word)).length; 
   
     return wordCount >= 10;
   };
@@ -130,6 +166,7 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
     try {
       await createCohort.mutateAsync(formData);
       e.target.reset();
+      setOpenAddNewClass(false);
     } catch (error) {
       console.error("Failed to create cohort:", error);
     }
@@ -462,8 +499,10 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
 
   return (
     <Drawer
-      open={true}
-      onClose={() => setOpenAddNewClass(false)}
+
+      open={openAddNewClass}
+      onClose={handleDrawerClose}
+
       footer={null}
       width={850}
       styles={{

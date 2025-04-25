@@ -73,7 +73,7 @@ const InstructorContract = () => {
       }}
     >
       <Text className="text-[10px] lg:text-xs  self-center flex justify-center mb-5 text-center font-light italic text-blue-400">
-        Read and sroll to the bottom to accept the agreement
+        Read and scroll to the bottom to accept the agreement
       </Text>
       <Paragraph className="text-[10px] lg:text-xs text-justify">
         This Digital Teacher Agreement (&quot;Agreement&quot;) is entered into

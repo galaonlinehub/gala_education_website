@@ -33,12 +33,15 @@ import { useDevice } from "@/src/hooks/useDevice";
 import { useSpecialNeeds } from "@/src/hooks/useSpecialNeeds";
 import { useSubject } from "@/src/hooks/useSubject";
 import { useGrade } from "@/src/hooks/useGrade";
+import { apiPost } from "@/src/services/api_service";
 
 const InstructorCompleteProfile = () => {
-  const { user } = useUser();
+  const { user, updateInstructorProfile } = useUser();
   const { type } = useDevice();
   const [form] = Form.useForm();
   const [imageFile, setImageFile] = useState(null);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const { special_needs } = useSpecialNeeds();
   const { subjects } = useSubject();
@@ -49,7 +52,7 @@ const InstructorCompleteProfile = () => {
     { language: "Swahili", id: 2, tag: "swahili" },
   ];
 
-  console.log("Subjects", subjects);
+  console.log("User", user);
 
   const handleFormSubmit = async (values) => {
     try {
@@ -57,23 +60,43 @@ const InstructorCompleteProfile = () => {
         message.info("Please upload a profile image");
         return;
       }
+      setIsLoading(true);
 
       values.phone_number = values.phone_number.startsWith("255")
         ? values.phone_number
         : `255${values.phone_number}`;
 
-      const formData = {
-        ...values,
-        profile_picture: imageFile,
-      };
+      // Create a FormData object
+      const formData = new FormData();
 
-      await apiPost("/complete-instructor-profile", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+      // Append the file
+      formData.append('profile_picture', imageFile);
+      formData.append('role', user?.role);
+
+
+
+
+
+      // Append all other form values
+      Object.keys(values).forEach(key => {
+        // Handle arrays (like your multi-select fields)
+        if (Array.isArray(values[key])) {
+          values[key].forEach(value => {
+            formData.append(`${key}[]`, value);
+          });
+        } else {
+          formData.append(key, values[key]);
+        }
       });
+
+      updateInstructorProfile(formData);
+
+      setIsLoading(false);
+
+
     } catch (error) {
       console.error(error);
+      setIsLoading(false);
     }
   };
 
@@ -109,69 +132,46 @@ const InstructorCompleteProfile = () => {
 
   return (
     <Modal
-      title={
-        <div className="text-center text-xs">
-          Just a few more details before you start your journey
-        </div>
-      }
-      open={!user?.completed_profile && user?.has_active_subscription}
+
+      title={<div className="text-center text-xs">Just a few more details before you start your journey</div>}
+      //change here verify....
+      open={!user?.phone_number_verified}
       closable={false}
       maskClosable={false}
-      width={
-        type === "mobile"
-          ? "95%"
-          : type === "desktop"
-          ? "60%"
-          : type === "tablet"
-          ? "60%"
-          : 400
-      } // Reduced from 1000 to 600
+
+
       footer={null}
       keyboard={false}
       className="persistent-modal"
     >
-      <Form
-        form={form}
-        onFinish={handleFormSubmit}
-        layout="vertical"
-        size="small"
-      >
-        <span className="block mb-2 text-xs text-justify">
-          This process ensures that only qualified and experienced teachers gain
-          access to our online community.
-        </span>
 
-        <Upload
-          showUploadList={false}
-          beforeUpload={() => true}
-          onChange={handleUpload}
-          className="flex w-full justify-center mb-4"
-        >
-          <div className="flex justify-center items-center w-full">
-            <div style={{ position: "relative", display: "inline-block" }}>
-              <Avatar
-                size={80}
-                icon={imageFile ? null : <UserOutlined />}
-                src={imageFile ? URL.createObjectURL(imageFile) : null}
-                style={{ cursor: "pointer" }}
-              />
-              <CameraOutlined
-                style={{
-                  cursor: "pointer",
-                  position: "absolute",
-                  bottom: 0,
-                  right: 0,
-                  fontSize: 16,
-                  backgroundColor: "#fff",
-                  borderRadius: "50%",
-                  padding: 4,
-                  border: "1px solid #f0f0f0",
-                  boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
-                }}
-              />
+      <Form form={form} onFinish={handleFormSubmit} layout="vertical" size="small">
+        <span className="block mb-2 font-extralight text-xs text-center ">This process ensures that only qualified and experienced teachers gain access to our online community.</span>
+
+        <div className="flex w-full items-center justify-center">
+          <Upload showUploadList={false} beforeUpload={() => true} onChange={handleUpload} className="flex w-fit justify-center mb-4">
+            <div className="flex justify-center items-center w-full">
+              <div style={{ position: "relative", display: "inline-block" }}>
+                <Avatar size={80} icon={imageFile ? null : <UserOutlined />} src={imageFile ? URL.createObjectURL(imageFile) : null} style={{ cursor: "pointer" }} />
+                <CameraOutlined
+                  style={{
+                    cursor: "pointer",
+                    position: "absolute",
+                    bottom: 0,
+                    right: 0,
+                    fontSize: 16,
+                    backgroundColor: "#fff",
+                    borderRadius: "50%",
+                    padding: 4,
+                    border: "1px solid #f0f0f0",
+                    boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+                  }}
+                />
+              </div>
+
             </div>
-          </div>
-        </Upload>
+          </Upload>
+        </div>
 
         <Row gutter={[12, 0]}>
           {" "}
@@ -182,27 +182,32 @@ const InstructorCompleteProfile = () => {
               rules={[
                 {
                   required: true,
-                  message: (
-                    <span className="text-xs ">
-                      Please enter your phone number
-                    </span>
-                  ),
+
+                  message: <span className="text-xs">Please enter your phone number</span>,
+
                 },
                 {
                   validator: async (_, value) => {
-                    const phoneRegex = /^[67]\d{8}$/;
                     if (!value) return Promise.resolve();
-                    if (!phoneRegex.test(value)) {
-                      return Promise.reject(
-                        <span className="text-xs ">
-                          Phone number must be 9 digits starting with 6 or 7
-                        </span>
-                      );
+
+
+                    // Check if the number starts with 6 or 7
+                    if (!/^[67]/.test(value)) {
+                      return Promise.reject(<span className="text-xs">Phone number must start with 6 or 7</span>);
                     }
+
+                    // Check if the number has exactly 9 digits
+                    if (!/^\d{9}$/.test(value)) {
+                      return Promise.reject(<span className="text-xs">Phone number must be exactly 9 digits</span>);
+
+                    }
+
                     return Promise.resolve();
                   },
                 },
               ]}
+              validateTrigger={['onBlur', 'onChange']}
+              validateFirst={true}
             >
               <Input
                 placeholder="Phone number"
