@@ -11,16 +11,13 @@ function AdminSidebar() {
   return (
     <div className="h-screen fixed sm:block hidden w-[240px] border-black/20 border-r-[0.8px] ">
       <div className="h-[64px] px-[20px] border-b-[0.8px]  border-gray-400  py-[15px] flex items-center justify-center">
-        <div className="w-[40px] h-[40px] relative bg-[#d9d9d9]  rounded-full  ring-[#a0a0a0] ring-offset-1 ring-[2px] flex items-start flex-col ">
-          <div className="absolute left-2 top-1 flex flex-col">
-            <p className="text-black text-[12px] font-bold leading-tight">
-              Gala
-            </p>
-            <p className="text-black text-[12px] font-bold leading-tight">
-              Education
-            </p>
-          </div>
-        </div>
+      <Image
+              alt="image"
+              src={"/gala_logo.png"}
+              className="h-20 w-20 object-cover"
+              width={100}
+              height={100}
+            />
       </div>
       <div>
         <div className="flex items-center justify-center py-14 flex-col gap-2">
