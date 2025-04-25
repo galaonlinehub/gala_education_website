@@ -14,6 +14,7 @@ import { PaymentStatus } from "@/src/config/settings";
 import { PaymentPending } from "./PaymentStatus";
 import io from "socket.io-client";
 import { useUser } from "@/src/hooks/useUser";
+import SlickSpinner from "../../loading/template/SlickSpinner";
 
 const MobilePay = () => {
   const [validationMessage, setValidationMessage] = useState("");
@@ -176,31 +177,34 @@ const MobilePay = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[35rem] md:p-8">
-      <Card className="w-full lg:w-3/4 max-w-3xl bg-white rounded-xl p-6 md:p-8">
+    <div className="flex flex-col items-center justify-center min-h-[35rem] xs:p-4 md:p-8">
+      <Card
+        className="w-full lg:w-3/4 max-w-3xl bg-white rounded-xl border-0 md:border-[0.8px] md:border-gray-200
+          [&_.ant-card-body]:!p-0 sm:[&_.ant-card-body]:!p-3 md:[&_.ant-card-body]:!p-8 !py-4 md:!py-0"
+      >
         <div className="mb-8">
-          <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">
+          <h2 className="text-sm xxs:text-lg xs:text-text-xl sm:text-2xl md:text-2xl font-bold text-gray-900 mb-4">
             Payment Details
           </h2>
 
           <div className="bg-gray-50 rounded-lg p-4 space-y-2">
-            <div className="flex justify-between items-center">
-              <span className="">Amount</span>
+            <div className="flex flex-col xxs:flex-row justify-between items-start xxs:items-center">
+              <span className="text-xs sm:text-sm mb-1 xxs:mb-0">Amount</span>
               {plan ? (
                 <span className="text-xl font-black">
                   {Number(plan.amount).toLocaleString()} TZS
                 </span>
               ) : (
-                <LoadingOutlined spin className="text-xs" />
+                <SlickSpinner color="#010798" size={12} />
               )}
             </div>
 
-            <div className="flex justify-between items-center">
-              <span className="">Plan</span>
+            <div className="flex flex-col xxs:flex-row justify-between items-start xxs:items-center">
+              <span className="text-xs sm:text-sm mb-1 xxs:mb-0">Plan</span>
               {plan ? (
                 <span className="text-gray-900 font-black">{plan.name}</span>
               ) : (
-                <LoadingOutlined spin className="text-xs" />
+                <SlickSpinner color="#010798" size={12} />
               )}
             </div>
           </div>
@@ -230,9 +234,13 @@ const MobilePay = () => {
 
             <div className="flex justify-between items-center text-xs mt-1">
               {validationMessage && (
-                <span className="text-red-500">{validationMessage}</span>
+                <span className="text-red-500 text-[10px] xxs:text-xs line-clamp-2">
+                  {validationMessage}
+                </span>
               )}
-              <span className="text-gray-500">Example: 752451811</span>
+              <span className="text-gray-500 text-[10px] xxs:text-xs line-clamp-2">
+                Example: 752451811
+              </span>
             </div>
           </div>
 
@@ -240,8 +248,8 @@ const MobilePay = () => {
             type="primary"
             htmlType="submit"
             className="w-full !h-10 flex items-center justify-center gap-2 text-white 
-                !bg-[#001840] hover:!bg-blue-900 !border-transparent !font-semibold
-                rounded-lg transition-colors duration-200"
+                !bg-[#010798] hover:!opacity-80 !border-transparent !font-semibold
+                rounded-lg transition-colors duration-200 text-[11px] xxs:text-sm"
           >
             Request Payment
           </Button>
@@ -249,7 +257,7 @@ const MobilePay = () => {
         <div className="w-full mt-6">
           <span
             onClick={goBack}
-            className="font-bold text-[#001840] text-xs cursor-pointer border border-[#001840] p-2 rounded-md"
+            className="font-bold text-[#010798] text-xs cursor-pointer border border-[#010798] p-2 rounded-md"
           >
             Change plan
           </span>
@@ -259,9 +267,11 @@ const MobilePay = () => {
         <PaymentPending
           open={isModalOpen}
           status={paymentStatus}
+          setStatus={setPaymentStatus}
           reference={reference ?? null}
           amount={plan.amount ?? null}
           onClose={() => setIsModalOpen(false)}
+          mutationFn={mutation.mutate}
         />
       )}
     </div>

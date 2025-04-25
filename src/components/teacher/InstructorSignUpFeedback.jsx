@@ -2,14 +2,19 @@ import InstructorSignUpFeedbackSvg from "@/src/utils/vector-svg/sign-up/Instruct
 import { Button } from "antd";
 import { useRouter } from "next/navigation";
 
-const InstructorSignUpFeedback = () => {
+const InstructorSignUpFeedback = ({ onClose }) => {
   const router = useRouter();
+  const onFinish = () => {
+    router.push("/");
+    onClose();
+  };
   return (
-    // <Modal width={700} open={true} footer={null} closable={false}>
     <div className="flex flex-col items-center gap-4 py-8">
       <InstructorSignUpFeedbackSvg />
-      <span className="font-black text-2xl">Congratulations!!!</span>
-      <p className="text-center leading-8 w-3/4 mb-3">
+      <span className="font-black text-sm xxs:text-2xl">
+        Congratulations!!!
+      </span>
+      <p className="text-center text-xs xxs:text-sm leading-6 xxs:leading-8 w-3/4 mb-3">
         Congratulations! Your application was successful. Gala Education will
         contact you soon via <span className="font-black mx-1">Email</span>
         and
@@ -19,12 +24,11 @@ const InstructorSignUpFeedback = () => {
 
       <Button
         className="rounded-full !bg-[#030DFE] text-white hover:!text-white !border-transparent !px-12 !py-4 !font-extrabold"
-        onClick={() => router.push("/")}
+        onClick={onFinish}
       >
         Finish
       </Button>
     </div>
-    // </Modal>
   );
 };
 

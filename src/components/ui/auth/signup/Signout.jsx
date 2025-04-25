@@ -42,10 +42,10 @@ const Signout = ({ onCloseSidebar }) => {
           onClick={() => {
             setSignoutVisible(true);
           }}
-          className="w-full border border-black hover:border-red-500  hover:text-red-500 font-medium flex rounded-md items-center gap-1 px-2 py-1"
+          className="w-full border border-black hover:border-red-500  hover:text-red-500 font-medium flex rounded-md items-center justify-center gap-1 px-2 py-1"
         >
           <LuLogOut />
-          <span className="text-sm"> Sign out</span>
+          <span className="text-sm line-clamp-1"> Sign out</span>
         </button>
       )}
 
@@ -67,10 +67,10 @@ const Signout = ({ onCloseSidebar }) => {
           onClick={() => {
             setSignoutVisible(true);
           }}
-          className="w-full border border-black hover:border-red-500 hover:text-red-500 font-medium flex rounded-md items-center gap-1 px-2 py-1"
+          className="w-full border border-black hover:border-red-500 hover:text-red-500 font-medium flex rounded-md items-center justify-center gap-1 px-1 sm:px-2 py-1"
         >
-          <LuLogOut />
-          <span className="text-sm"> Sign out</span>
+          <LuLogOut className="text-xs sm:text-sm" />
+          <span className="text-xs sm:text-sm line-clamp-1"> Sign out</span>
         </button>
       )}
 

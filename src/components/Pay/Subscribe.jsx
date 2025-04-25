@@ -57,8 +57,8 @@ export default function Subscribe() {
   return (
     <Drawer
       title={
-        <div className="flex justify-between w-full">
-          <div className="font-black text-base md:text-xl lg:text-2xl pb-3">
+        <div className="flex justify-between w-full gap-3">
+          <div className="font-black text-sm sm:text-base md:text-xl lg:text-2xl line-clamp-2">
             Subscribe To The Service
           </div>
           <Signout />
@@ -76,7 +76,7 @@ export default function Subscribe() {
           <Steps.Step key={index} title={step.title} />
         ))}
       </Steps>
-      <div className="mt-6 overflow-y-auto">{steps[activeTab].content}</div>
+      <div className="mt-6">{steps[activeTab].content}</div>
     </Drawer>
   );
 }
