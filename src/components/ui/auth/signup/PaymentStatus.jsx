@@ -226,7 +226,7 @@ export const RenderFailureState = ({ onClose, setStatus, mutationFn }) => {
         </div>
       }
       extra={[
-        <div className="flex flex-col items-center justify-center">
+        <div key="extras" className="flex flex-col items-center justify-center">
           <button
             key="tryAgain"
             onClick={reload}
