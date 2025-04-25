@@ -6,7 +6,7 @@ import Image from "next/image";
 import { IoMailOutline } from "react-icons/io5";
 import Donate from "@/src/components/ui/Donate";
 import FaqCard from "@/src/components/home/card/FaqCard";
-import { UserOutlined } from "@ant-design/icons";
+import { useTeamMembers } from "@/src/hooks/useTeamMembers";
 
 const { Text } = Typography;
 
@@ -34,6 +34,8 @@ const AboutUs = () => {
   const [showDonatePop, setShowDonatePop] = useState(false);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { teamMembers , isMembersPending} = useTeamMembers();
 
   const scrollToSection = (sectionRef) => {
     sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
@@ -76,6 +78,10 @@ const AboutUs = () => {
       document.body.classList.remove("no-scroll");
     };
   }, [showDonatePop]);
+
+
+  console.log("Team mebers:. ", teamMembers);
+
 
   const showDonatePopupModal = () => {
     setShowDonatePop(true);

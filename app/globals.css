@@ -256,4 +256,53 @@ body {
   font-family: var(--font-quicksand), 'Quicksand', sans-serif !important;
 }
 
+.card-shadow {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.lesson-card {
+  transition: all 0.3s;
+}
+
+.lesson-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 576px) {
+  .ant-card-head-title {
+    font-size: 16px;
+  }
+}
+
+.ant-modal-content {
+  border-radius: 8px;
+}
+
+.ant-form-item-label > label {
+  font-weight: 500;
+}
+
+.student-table-card .ant-table-thead > tr > th {
+  background-color: #f0f5ff;
+}
+
+.student-table-card .ant-table-tbody > tr:hover > td {
+  background-color: #f0f5ff;
+}
+
+@keyframes glowing {
+  0% { box-shadow: 0 0 5px rgba(35, 54, 81, 0.7); }
+  50% { box-shadow: 0 0 20px rgba(22, 47, 94, 0.9); }
+  100% { box-shadow: 0 0 5px rgba(3, 28, 110, 0.401); }
+}
+
+.glow-button {
+  animation: glowing 1.5s infinite;
+}
+
+/* Optional: Pause animation on hover */
+.glow-button:hover {
+  animation-play-state: paused;
+}
 

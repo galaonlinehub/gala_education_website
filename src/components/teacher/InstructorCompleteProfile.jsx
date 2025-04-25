@@ -10,10 +10,12 @@ import { useGrade } from "@/src/hooks/useGrade";
 import { apiPost } from "@/src/services/api_service";
 
 const InstructorCompleteProfile = () => {
-  const { user, updateProfile } = useUser();
+  const { user, updateInstructorProfile } = useUser();
   const { type } = useDevice();
   const [form] = Form.useForm();
   const [imageFile, setImageFile] = useState(null);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const { special_needs } = useSpecialNeeds();
   const { subjects } = useSubject();
@@ -24,7 +26,7 @@ const InstructorCompleteProfile = () => {
     { language: "Swahili", id: 2, tag: "swahili" },
   ];
 
-  console.log("Subjects", subjects);
+  console.log("User", user);
 
   const handleFormSubmit = async (values) => {
     try {
@@ -32,6 +34,7 @@ const InstructorCompleteProfile = () => {
         message.info("Please upload a profile image");
         return;
       }
+      setIsLoading(true);
 
       values.phone_number = values.phone_number.startsWith("255")
         ? values.phone_number
@@ -42,6 +45,7 @@ const InstructorCompleteProfile = () => {
 
       // Append the file
       formData.append('profile_picture', imageFile);
+      formData.append('role', user?.role);
 
 
 
@@ -57,10 +61,13 @@ const InstructorCompleteProfile = () => {
         }
       });
 
-       updateProfile(formData);
+      updateInstructorProfile(formData);
+
+      setIsLoading(false);
 
     } catch (error) {
       console.error(error);
+      setIsLoading(false);
     }
   };
 
@@ -91,7 +98,8 @@ const InstructorCompleteProfile = () => {
   return (
     <Modal
       title={<div className="text-center text-xs">Just a few more details before you start your journey</div>}
-      open={user?.phone_number_verified && !user?.subscription_required}
+      //change here verify....
+      open={!user?.phone_number_verified}
       closable={false}
       maskClosable={false}
 
@@ -135,21 +143,35 @@ const InstructorCompleteProfile = () => {
               rules={[
                 {
                   required: true,
-                  message: <span className="text-xs ">Please enter your phone number</span>,
+                  message: <span className="text-xs">Please enter your phone number</span>,
                 },
                 {
                   validator: async (_, value) => {
-                    const phoneRegex = /^[67]\d{8}$/;
                     if (!value) return Promise.resolve();
-                    if (!phoneRegex.test(value)) {
-                      return Promise.reject(<span className="text-xs ">Phone number must be 9 digits starting with 6 or 7</span>);
+
+                    // Check if the number starts with 6 or 7
+                    if (!/^[67]/.test(value)) {
+                      return Promise.reject(<span className="text-xs">Phone number must start with 6 or 7</span>);
                     }
+
+                    // Check if the number has exactly 9 digits
+                    if (!/^\d{9}$/.test(value)) {
+                      return Promise.reject(<span className="text-xs">Phone number must be exactly 9 digits</span>);
+                    }
+
                     return Promise.resolve();
                   },
                 },
               ]}
+              validateTrigger={['onBlur', 'onChange']}
+              validateFirst={true}
             >
-              <Input placeholder="Phone number" addonBefore="255" size="middle" className="text-xs" />
+              <Input
+                placeholder="Phone number"
+                addonBefore="255"
+                size="middle"
+                className="text-xs"
+              />
             </Form.Item>
           </Col>
           <Col span={24}>

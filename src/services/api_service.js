@@ -91,7 +91,7 @@ export const apiPut = async (endpoint, data, headers = {}) => {
 
 export const apiPatch = async (endpoint, data, headers = {}) => {
   try {
-    const response = await api.put(endpoint, data, { headers });
+    const response = await api.patch(endpoint, data, { headers });
     return response;
   } catch (error) {
     console.error(`PATCH ${endpoint} Error:`, error);

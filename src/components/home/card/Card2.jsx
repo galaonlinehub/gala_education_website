@@ -1,5 +1,6 @@
 import Image from "next/image";
 import React from "react";
+import Animator from "../animations/Animator";
 
 function Card2({ image, title, desc }) {
   return (
@@ -9,8 +10,13 @@ function Card2({ image, title, desc }) {
       </div>
 
       <div className="lg:h-[181px] md:[190px] bg-[#001840]  flex flex-col px-8 py-10">
-        <span className="text-white font-black ">{title}</span>
-        <span className="text-white text-[12px]">{desc}</span>
+        <Animator delay={0.4} direction="down">
+          <span className="text-white font-black ">{title}</span>
+        </Animator>
+
+        <Animator delay={0.6} direction="down">
+          <span className="text-white text-[12px]">{desc}</span>
+        </Animator>
       </div>
     </div>
   );
