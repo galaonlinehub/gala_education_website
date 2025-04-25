@@ -50,7 +50,7 @@ const MobileSideBar = ({ isOpen, onClose }) => {
         closeIcon={null}
       >
         <ul className="space-y-4">
-          {links[user?.role].map((item, i) => (
+          {links[user?.role]?.map((item, i) => (
             <li key={i}>
               <Link
                 href={`/${user?.role}/${item.link}`}
