@@ -133,7 +133,7 @@ const RenderSidebar = ({ currentTab, setCurrentTab, MAIN_COLOR }) => {
                       </span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <p className="text-xs text-gray-500 truncate first-letter:uppercase">
+                      <p className="text-xs text-gray-500 truncate">
                         {isTyping
                           ? "Typing..."
                           : chat?.last_message?.content || "No messages yet"}

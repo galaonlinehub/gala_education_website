@@ -4,7 +4,6 @@ import { Tooltip, message, Dropdown, Menu } from "antd";
 import Link from "next/link";
 import Image from "next/image";
 import React, { useState } from "react";
-import { MenuOutlined, SettingOutlined } from "@ant-design/icons";
 import ChooseAccont from "@/src/components/ui/auth/signup/ChooseAccount";
 import { Signout } from "../ui/auth/signup/Signout";
 import { useUser } from "@/src/hooks/useUser";
@@ -13,7 +12,7 @@ import MobileSideBar from "./MobileSideBar";
 import { useDevice } from "@/src/hooks/useDevice";
 import { BiWifi, BiWifiOff } from "react-icons/bi";
 import useNetwork from "@/src/hooks/useNetwork";
-import { LuGlobe } from "react-icons/lu";
+import { LuGlobe, LuMenu } from "react-icons/lu";
 
 const Navbar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -37,7 +36,7 @@ const Navbar = () => {
   const items = [
     {
       key: "1",
-      icon: <LuGlobe className="text-xl" />,
+      // icon: <LuGlobe className="text-xl" />,
       label: (
         <div className="flex flex-col items-center text-sm font-medium">
           English
@@ -161,7 +160,7 @@ const Navbar = () => {
           onOpenChange={handleOpenChange}
           overlayClassName="rounded-md shadow-lg border border-gray-100"
           arrow={true}
-          placement="bottomCenter"
+          placement="bottom"
           // dropdownRender={(menu) => (
           //   <div>
           //     <div className="text-xs font-light text-black px-4 py-2">
@@ -209,10 +208,11 @@ const Navbar = () => {
           </div>
         )}
         {width <= 768 && user && !isSidebarOpen && (
-          <MenuOutlined
+          <LuMenu
+            size={32}
             onClick={toggleSidebar}
             aria-label="Toggle menu"
-            className="text-[20px] p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            className="text-[20px] p-1 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
           />
         )}
         {user && width > 768 && <Signout />}

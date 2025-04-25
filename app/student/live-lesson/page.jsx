@@ -1,113 +1,76 @@
 "use client";
-
-import { Avatar, Button, Card, Collapse, Tag } from "antd";
 import React, { useState } from "react";
-import { LuCalendar, LuClock, LuUsers, LuVideo, LuInfo } from "react-icons/lu";
+import { Table, Card, Tag, Button, Statistic, Row, Col, Calendar, Badge, Space, Modal, Progress, Typography, Grid } from "antd";
+import { VideoCameraOutlined, UserOutlined, ClockCircleOutlined, BellOutlined, BookOutlined, TeamOutlined, LineChartOutlined, CalendarOutlined } from "@ant-design/icons";
 
-const { Panel } = Collapse;
+const { Title, Paragraph } = Typography;
+const { useBreakpoint } = Grid;
 
-const ClassCard = ({ classData }) => {
-  const [isHovered, setIsHovered] = useState(false);
+const LiveLesson = () => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedClass, setSelectedClass] = useState(null);
+  const screens = useBreakpoint();
 
-  return (
-    <Card
-      className="!flex !flex-col !w-full !rounded-xl !bg-white"
-      styles={{ body: { padding: "8px", width: "100%" } }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <Tag
-        color="#001840"
-        className="!text-white !font-medium !rounded-full !px-2 !py-0.5 !mb-2 !inline-flex !items-center !gap-1"
-      >
-        <LuClock className="h-3 w-3 text-yellow-300" />
-        {classData.status}
-      </Tag>
-      <div className="flex w-full flex-col sm:flex-row sm:items-center justify-between gap-4 px-4 md:px-8 py-2">
-        <div className="flex-1 flex flex-col sm:flex-row sm:items-center gap-4">
-          <div className="min-w-[140px]">
-            <span className="text-base font-semibold leading-tight">
-              {classData.class_name}: {classData.topic}
-            </span>
-            <div className="text-[10px] text-gray-600 italic flex items-center gap-1">
-              <span>by</span>
-              <Avatar
-                size={24}
-                className="!bg-transparent/90"
-                src={`https://api.dicebear.com/7.x/miniavs/svg?seed`}
-              />
-              {classData.instructor}
-            </div>
-          </div>
+  const liveClasses = [
+    {
+      key: "1",
+      class_name: "Advanced Mathematics",
+      instructor: "Dr. Sarah Smith",
+      topic: "Complex Numbers & Applications",
+      date: "Feb 20, 2025",
+      time: "09:00 AM",
+      duration: "1.5 hours",
+      enrolled: 28,
+      status: "Upcoming",
+      link: "https://zoom.us/j/1234567890",
+      description: "Dive deep into complex numbers and their real-world applications in electrical engineering and quantum mechanics. This session will cover fundamental theorems and practical problem-solving techniques.",
+      prerequisites: "Basic calculus knowledge required",
+    },
+    {
+      key: "2",
+      class_name: "World Literature",
+      instructor: "Prof. Michael Johnson",
+      topic: "Shakespeare's Tragedies",
+      date: "Feb 21, 2025",
+      time: "02:00 PM",
+      duration: "2 hours",
+      enrolled: 15,
 
-          <div className="flex items-center gap-2">
-            <LuCalendar className="h-5 w-5 text-[#001840] flex-shrink-0" />
-            <div>
-              <span className="text-xs text-gray-500">Date & Time</span>
-              <p className="text-xs font-medium text-gray-800">
-                {classData.date}, {classData.time} ({classData.duration})
-              </p>
-            </div>
-          </div>
+      status: "Closed",
+      link: "https://zoom.us/j/1234567891",
+      description: "Explore the themes of fate, ambition, and moral corruption in Shakespeare's major tragedies. We'll focus on Macbeth, King Lear, and Hamlet.",
+      prerequisites: "None",
+    },
+    {
+      key: "3",
+      class_name: "Quantum Physics",
+      instructor: "Dr. Emily Brown",
+      topic: "Quantum Entanglement",
+      date: "Feb 22, 2025",
+      time: "10:30 AM",
+      duration: "1.5 hours",
+      enrolled: 25,
 
-          <div className="flex items-center gap-2">
-            <LuUsers className="h-5 w-5 text-[#001840] flex-shrink-0" />
-            <div>
-              <span className="text-xs text-gray-500">Enrolled</span>
-              <p className="text-xs font-medium text-gray-800">
-                {classData.enrolled} students
-              </p>
-            </div>
-          </div>
-        </div>
+      status: "Closed",
+      link: "https://zoom.us/j/1234567892",
+      description: "Understanding quantum entanglement and its implications for quantum computing and cryptography. Includes live demonstrations using quantum simulation software.",
+      prerequisites: "Basic quantum mechanics knowledge",
+    },
+    {
+      key: "4",
+      class_name: "Computer Science",
+      instructor: "Prof. Alan Chen",
+      topic: "Machine Learning Basics",
+      date: "Feb 23, 2025",
+      time: "11:00 AM",
+      duration: "2 hours",
+      enrolled: 18,
 
-        <div className="flex items-center">
-          <Button
-            type="primary"
-            href={classData.link}
-            target="_blank"
-            className={`!bg-[#001840] !text-white !font-medium !rounded-md !px-4 !py-1 !h-auto !border-none transition-transform duration-200 ${
-              isHovered ? "!scale-105 !bg-[#003380]" : ""
-            }`}
-            icon={<LuVideo />}
-          >
-            Join
-          </Button>
-        </div>
-      </div>
-
-      <Collapse
-        bordered={false}
-        expandIcon={({ isActive }) => (
-          <LuInfo
-            className={`h-5 w-5 text-[#001840] transition-transform ${
-              isActive ? "rotate-180" : ""
-            }`}
-          />
-        )}
-        className="!mt-4 !bg-transparent"
-      >
-        <Panel
-          header="More Details"
-          key="1"
-          className="!text-[#001840] !font-medium"
-        >
-          <div className="text-sm text-gray-700">
-            <p>
-              <strong>Description:</strong> {classData.description}
-            </p>
-            <p className="mt-1">
-              <strong>Prerequisites:</strong> {classData.prerequisites}
-            </p>
-          </div>
-        </Panel>
-      </Collapse>
-    </Card>
-  );
-};
-
-const LiveLessons = () => {
-  const classes = [
+      status: "Upcoming",
+      link: "https://zoom.us/j/1234567893",
+      description: "Introduction to machine learning concepts including supervised learning, classification, and regression. Hands-on practice with Python and scikit-learn.",
+      prerequisites: "Python programming basics",
+    },
     {
       key: "5",
       class_name: "Business Studies",
@@ -117,125 +80,266 @@ const LiveLessons = () => {
       time: "03:00 PM",
       duration: "1.5 hours",
       enrolled: 32,
+
       status: "Upcoming",
       link: "https://zoom.us/j/1234567894",
-      description:
-        "Learn about strategic planning, competitive analysis, and business model innovation. Includes case studies of successful global companies.",
+      description: "Learn about strategic planning, competitive analysis, and business model innovation. Includes case studies of successful global companies.",
       prerequisites: "Basic business knowledge",
-    },
-    {
-      key: "6",
-      class_name: "Data Science",
-      instructor: "Prof. John Lee",
-      topic: "Machine Learning Basics",
-      date: "Feb 25, 2025",
-      time: "10:00 AM",
-      duration: "2 hours",
-      enrolled: 45,
-      status: "Upcoming",
-      link: "https://zoom.us/j/9876543210",
-      description:
-        "Introduction to machine learning concepts and algorithms with hands-on examples.",
-      prerequisites: "Basic programming knowledge",
-    },
-    {
-      key: "7",
-      class_name: "Marketing",
-      instructor: "Sarah Thompson",
-      topic: "Digital Marketing Strategies",
-      date: "Feb 26, 2025",
-      time: "01:00 PM",
-      duration: "1 hour",
-      enrolled: 28,
-      status: "Upcoming",
-      link: "https://zoom.us/j/4567891234",
-      description:
-        "Explore SEO, social media, and content marketing techniques for modern businesses.",
-      prerequisites: "None",
-    },
-    {
-      key: "7",
-      class_name: "Marketing",
-      instructor: "Sarah Thompson",
-      topic: "Digital Marketing Strategies",
-      date: "Feb 26, 2025",
-      time: "01:00 PM",
-      duration: "1 hour",
-      enrolled: 28,
-      status: "Upcoming",
-      link: "https://zoom.us/j/4567891234",
-      description:
-        "Explore SEO, social media, and content marketing techniques for modern businesses.",
-      prerequisites: "None",
-    },
-    {
-      key: "7",
-      class_name: "Marketing",
-      instructor: "Sarah Thompson",
-      topic: "Digital Marketing Strategies",
-      date: "Feb 26, 2025",
-      time: "01:00 PM",
-      duration: "1 hour",
-      enrolled: 28,
-      status: "Upcoming",
-      link: "https://zoom.us/j/4567891234",
-      description:
-        "Explore SEO, social media, and content marketing techniques for modern businesses.",
-      prerequisites: "None",
-    },
-    {
-      key: "7",
-      class_name: "Marketing",
-      instructor: "Sarah Thompson",
-      topic: "Digital Marketing Strategies",
-      date: "Feb 26, 2025",
-      time: "01:00 PM",
-      duration: "1 hour",
-      enrolled: 28,
-      status: "Upcoming",
-      link: "https://zoom.us/j/4567891234",
-      description:
-        "Explore SEO, social media, and content marketing techniques for modern businesses.",
-      prerequisites: "None",
-    },
-    {
-      key: "7",
-      class_name: "Marketing",
-      instructor: "Sarah Thompson",
-      topic: "Digital Marketing Strategies",
-      date: "Feb 26, 2025",
-      time: "01:00 PM",
-      duration: "1 hour",
-      enrolled: 28,
-      status: "Upcoming",
-      link: "https://zoom.us/j/4567891234",
-      description:
-        "Explore SEO, social media, and content marketing techniques for modern businesses.",
-      prerequisites: "None",
     },
   ];
 
-  return (
-    <div className="w-full p-4 mt-layout-margin">
-      <div className="flex flex-col justify-center gap-1 mb-4">
-        <div className="flex items-center gap-2">
-          <LuVideo className="text-2xl md:text-4xl text-[#001840] flex-shrink-0" />
-          <span className="font-semibold text-lg md:text-2xl text-[#001840] tracking-tight">
-            Live Learning Center
-          </span>
-        </div>
-        <p className="text-xs md:text-sm text-gray-600 leading-relaxed max-w-4xl px-3">
-          Participate in Live, Interactive Classes Delivered in Real Time with
-          Dynamic Lessons and Engaging Discussions
-        </p>
-      </div>
-      <div className="space-y-3">
-        {classes.map((classData) => (
-          <ClassCard key={classData.key} classData={classData} />
+  const getStatusColor = (status) => {
+    switch (status) {
+     
+      case "Upcoming":
+        return "orange";
+      case "Closed":
+        return "red";
+      default:
+        return "blue";
+    }
+  };
+
+  const getColumns = () => {
+    const baseColumns = [
+      {
+        title: "Class Details",
+        dataIndex: "class_name",
+        key: "class_name",
+        render: (text, record) => (
+          <Space direction="vertical" size={0}>
+            <div style={{ fontWeight: "bold" }}>
+              <BookOutlined style={{ marginRight: 8 }} />
+              {text}
+            </div>
+            <div style={{ fontSize: "0.9em", color: "#666" }}>{record.topic}</div>
+            <div style={{ fontSize: "0.9em", color: "#666" }}>
+              <UserOutlined style={{ marginRight: 8 }} />
+              {record.instructor}
+            </div>
+          </Space>
+        ),
+      },
+      {
+        title: "Schedule",
+        dataIndex: "date",
+        key: "date",
+        render: (text, record) => (
+          <Space direction="vertical" size={0}>
+            <div>
+              <CalendarOutlined style={{ marginRight: 8 }} />
+              {text}
+            </div>
+            <div style={{ fontSize: "0.9em", color: "#666" }}>
+              <ClockCircleOutlined style={{ marginRight: 8 }} />
+              {record.time}
+            </div>
+            <div style={{ fontSize: "0.9em", color: "#666" }}>
+              <LineChartOutlined style={{ marginRight: 8 }} />
+              {record.duration}
+            </div>
+          </Space>
+        ),
+      },
+      {
+        title: "Status",
+        key: "status",
+        dataIndex: "status",
+        render: (status) => <Tag color={getStatusColor(status)}>{status}</Tag>,
+      },
+      {
+        title: "Actions",
+        key: "actions",
+        render: (_, record) => (
+          <Space direction={screens.xs ? "vertical" : "horizontal"} style={{ width: "100%" }}>
+            <Button
+              type="primary"
+              icon={<VideoCameraOutlined />}
+              onClick={() => {
+                setSelectedClass(record);
+                setIsModalVisible(true);
+              }}
+              disabled={record.status === "Closed"}
+              size={screens.xs ? "middle" : "default"}
+            >
+              Join
+            </Button>
+            <Button icon={<BellOutlined />} onClick={() => alert(`Reminder set for ${record.class_name}`)} size={screens.xs ? "middle" : "default"}>
+              Remind
+            </Button>
+          </Space>
+        ),
+      },
+    ];
+
+    if (!screens.xs) {
+      baseColumns.splice(2, 0, {
+        title: "Enrolled",
+        key: "capacity",
+        render: (_, record) => (
+          <Space direction="vertical" size={0}>
+            <div>
+              <TeamOutlined style={{ marginRight: 8 }} />
+              {`${record.enrolled}`}
+            </div>
+          </Space>
+        ),
+      });
+    }
+
+    return baseColumns;
+  };
+
+  const getListData = (value) => {
+    const listData = [];
+    liveClasses.forEach((classItem) => {
+      const classDate = new Date(classItem.date);
+      if (value.date() === classDate.getDate() && value.month() === classDate.getMonth()) {
+        listData.push({
+          type: "success",
+          content: classItem.class_name,
+        });
+      }
+    });
+    return listData;
+  };
+
+  const dateCellRender = (value) => {
+    const listData = getListData(value);
+    return (
+      <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+        {listData.map((item, index) => (
+          <li key={index} style={{ marginBottom: 3 }}>
+            <Badge status={item.type} />
+          </li>
         ))}
-      </div>
+      </ul>
+    );
+  };
+
+  return (
+    <div style={{ padding: screens.xs ? 8 : 24 }}>
+      <Row align="middle" justify="space-between" style={{ marginBottom: 24 }}>
+        <Title level={screens.xs ? 3 : 2} style={{ margin: 0 }}>
+          <VideoCameraOutlined style={{ marginRight: 8 }} />
+          Live Learning Center
+        </Title>
+      </Row>
+
+      <Row gutter={[16, 16]} style={{ marginBottom: 24 }}>
+        {[
+          {
+            title: "Total Classes",
+            value: liveClasses.length,
+            icon: <CalendarOutlined />,
+          },
+          {
+            title: "Total Students",
+            value: liveClasses.reduce((acc, curr) => acc + curr.enrolled, 0),
+            icon: <TeamOutlined />,
+          },
+         
+          {
+            title: "Total Hours",
+            value: liveClasses.reduce((acc, curr) => acc + parseFloat(curr.duration), 0),
+            suffix: "hrs",
+            icon: <ClockCircleOutlined />,
+          },
+        ].map((stat, index) => (
+          <Col xs={24} sm={12} md={8} lg={6} key={index}>
+            <Card>
+              <Statistic title={stat.title} value={stat.value} suffix={stat.suffix} prefix={stat.icon} />
+            </Card>
+          </Col>
+        ))}
+      </Row>
+
+      <Row gutter={[16, 16]}>
+        <Col xs={24} lg={16}>
+          <Card
+            title={
+              <Space>
+                <CalendarOutlined />
+                Upcoming Live Classes
+              </Space>
+            }
+            style={{ marginBottom: 16 }}
+          >
+            <Table
+              columns={getColumns()}
+              dataSource={liveClasses}
+              pagination={{
+                pageSize: 2, // Show 2 items per page
+                total: liveClasses.length,
+                hideOnSinglePage: true, // Hide pagination if there's only one page
+                showSizeChanger: false, // Optional: disable the page size selector
+              }}
+              scroll={{ x: true }}
+              size={screens.xs ? "small" : "default"}
+            />
+          </Card>
+        </Col>
+        <Col xs={24} lg={8}>
+          <Card
+            title={
+              <Space>
+                <CalendarOutlined />
+                Class Calendar
+              </Space>
+            }
+          >
+            <Calendar fullscreen={false} cellRender={dateCellRender} style={{ maxWidth: "100%" }} />
+          </Card>
+        </Col>
+      </Row>
+
+      <Modal
+        title={selectedClass ? `Join ${selectedClass.class_name} Class` : "Join Class"}
+        open={isModalVisible}
+        onCancel={() => setIsModalVisible(false)}
+        footer={[
+          <Button key="back" onClick={() => setIsModalVisible(false)}>
+            Cancel
+          </Button>,
+          <Button
+            key="join"
+            type="primary"
+            icon={<VideoCameraOutlined />}
+            onClick={() => {
+              window.open(selectedClass?.link, "_blank");
+              setIsModalVisible(false);
+            }}
+          >
+            Join Now
+          </Button>,
+        ]}
+        width={screens.xs ? "95%" : 520}
+      >
+        {selectedClass && (
+          <Space direction="vertical" style={{ width: "100%" }}>
+            <Paragraph>
+              <strong>Topic:</strong> {selectedClass.topic}
+            </Paragraph>
+            <Paragraph>
+              <strong>Instructor:</strong> {selectedClass.instructor}
+            </Paragraph>
+            <Paragraph>
+              <strong>Description:</strong> {selectedClass.description}
+            </Paragraph>
+            <Paragraph>
+              <strong>Prerequisites:</strong> {selectedClass.prerequisites}
+            </Paragraph>
+            <Paragraph>
+              <strong>Date & Time:</strong> {selectedClass.date} at {selectedClass.time}
+            </Paragraph>
+            <Paragraph>
+              <strong>Duration:</strong> {selectedClass.duration}
+            </Paragraph>
+          </Space>
+        )}
+      </Modal>
     </div>
   );
 };
 
-export default LiveLessons;
+export default LiveLesson;

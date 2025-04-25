@@ -1,13 +1,16 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+
 import { Layout, Card, Typography, Space, Modal, Form, Input, Button, Row, Col, Select, Statistic, Avatar, Tag, Table, Upload, message, Skeleton, Flex, Empty } from "antd";
 import { UserOutlined, CameraOutlined, BookOutlined, ClockCircleOutlined, CalendarOutlined, TeamOutlined, PlusOutlined, LoadingOutlined } from "@ant-design/icons";
+
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { apiGet, apiPost } from "@/src/services/api_service";
 import { useUser } from "@/src/hooks/useUser";
 import { useDevice } from "@/src/hooks/useDevice";
+
 import { useInstructorSubjects } from "@/src/hooks/useInstructorSubjects";
 import { useInstructorCohorts } from "@/src/hooks/useInstructorCohorts";
 
@@ -18,6 +21,7 @@ import { useCohort } from "@/src/hooks/useCohort";
 import { encrypt } from "@/src/utils/fns/encryption";
 import ClassCreationWizard from "./create-class/CreateClass";
 import TableSkeleton from "@/src/components/teacher/TableSkeleton";
+
 
 const { Title, Text } = Typography;
 const { Content } = Layout;
@@ -42,11 +46,6 @@ export default function TeacherClasses() {
 
   const { cohorts } = useCohort();
 
-
-  console.log("Instructor cohorts", InstructorCohorts);
-  console.log("aLL cohorts", cohorts);
-
-
   const inputRefs = useRef([]);
 
 
@@ -68,7 +67,9 @@ export default function TeacherClasses() {
       key: "startDate",
       render: (date) => (
         <Space>
+
           <IoCalendarClearSharp color="green" />
+
           {date}
         </Space>
       ),
@@ -79,7 +80,9 @@ export default function TeacherClasses() {
       key: "endDate",
       render: (date) => (
         <Space>
+
           <IoCalendarClearSharp color="red" />
+
           {date}
         </Space>
       ),
@@ -90,7 +93,7 @@ export default function TeacherClasses() {
       key: "students",
       render: (count) => (
         <Space>
-          <TeamOutlined />
+          <LuUsers />
           {count}
         </Space>
       ),
@@ -98,15 +101,15 @@ export default function TeacherClasses() {
     {
       title: "Action",
       key: "action",
+
       render: (_, record) => (
         <Button type="link" onClick={() => gotoCohortDetails(record.cohortId)}>
+
           View Details
         </Button>
       ),
     }
   ];
-
-
 
   const handleOtpChange = (index, value) => {
     if (!/^\d*$/.test(value)) return;
@@ -153,7 +156,9 @@ export default function TeacherClasses() {
         render: (text, record) => {
           if (col.key === "action") {
             return (
+
               <Button type="link" onClick={() => gotoCohortDetails(record.cohortId)}>
+
                 View Details
               </Button>
             );
@@ -183,9 +188,13 @@ export default function TeacherClasses() {
     <>
       <Layout className=" bg-white">
         <Content className="p-3 md:p-6">
-          <div className={`space-y-4 md:space-y-6 ${!isProfileCompleted ? "pointer-events-none opacity-30" : ""}`}>
-            {/* Welcome Card */}
-            <Card className=" border-2">
+          <div
+            className={`space-y-4 md:space-y-6 ${
+              !isProfileCompleted ? "pointer-events-none opacity-30" : ""
+            }`}
+          >
+           
+            <Card>
               <Row align="middle" justify="space-between" gutter={[16, 16]}>
                 <Col xs={24} md={18}>
                   <Space direction="vertical" size="small" className="w-full">
@@ -196,17 +205,26 @@ export default function TeacherClasses() {
                       </span>
                     </Title>
                     <Text type="secondary" className="text-sm md:text-base">
-                      Ready to inspire and educate? Your virtual classroom awaits!
+                      Ready to inspire and educate? Your virtual classroom
+                      awaits!
                     </Text>
+
                     <Space size={device?.type === "mobile" ? "small" : "large"} className="mt-4 w-full flex flex-wrap">
                       <Statistic title="Active Classes" value={user?.active_cohorts} prefix={<BookOutlined />} className="min-w-[120px]" />
                       <Statistic title="Total Students" value={user?.student_count} prefix={<TeamOutlined />} className="min-w-[120px]" />
                       <Statistic title="Teaching Hours" value={user?.teaching_hours} prefix={<ClockCircleOutlined />} className="min-w-[120px]" />
+
                     </Space>
                   </Space>
                 </Col>
                 <Col xs={24} md={6} className="text-center md:text-right">
-                  <Image src="/sitting_on_books.png" alt="Teacher illustration" width={120} height={120} className="h-auto w-auto mx-auto md:ml-auto" />
+                  <Image
+                    src="/sitting_on_books.png"
+                    alt="Teacher illustration"
+                    width={120}
+                    height={120}
+                    className="h-auto w-auto mx-auto md:ml-auto"
+                  />
                 </Col>
               </Row>
             </Card>
@@ -217,12 +235,13 @@ export default function TeacherClasses() {
                 <Card
                   title={
                     <Space>
-                      <BookOutlined />
+                      <LuBook />
                       <Text strong>Your Subjects</Text>
                     </Space>
                   }
                   className="h-full shadow-sm"
                 >
+
                   {isInstructorSubjectsPending ? (
                     <div className="w-full">
                       <Flex wrap="wrap" gap="small">
@@ -255,6 +274,7 @@ export default function TeacherClasses() {
                       className="py-4"
                     />
                   )}
+
                 </Card>
               </Col>
 
@@ -263,11 +283,12 @@ export default function TeacherClasses() {
                 <Card
                   title={
                     <Space>
-                      <TeamOutlined />
+                      <LuUsers />
                       <Text strong>Your Classes</Text>
                     </Space>
                   }
                   extra={
+
                     <div className="flex gap-3">
                       <Button
                         type="primary"
@@ -292,6 +313,7 @@ export default function TeacherClasses() {
                       <Table columns={getResponsiveColumns()}  dataSource={InstructorCohorts} {...getTableSettings()} />
                     </div>
                   }
+
                 </Card>
               </Col>
             </Row>
@@ -301,18 +323,40 @@ export default function TeacherClasses() {
 
 
           {/* OTP Verification Modal */}
-          <Modal title="Verify OTP" open={showOtpModal} footer={null} closable={false} maskClosable={false} centered width={device?.type === "mobile" ? "95%" : 400}>
-            <div className="text-center mb-4">Please enter the verification code sent to your phone number</div>
+          <Modal
+            title="Verify OTP"
+            open={showOtpModal}
+            footer={null}
+            closable={false}
+            maskClosable={false}
+            centered
+            width={device?.type === "mobile" ? "95%" : 400}
+          >
+            <div className="text-center mb-4">
+              Please enter the verification code sent to your phone number
+            </div>
             <div className="flex justify-center gap-2 mb-6">
               {otp.map((digit, index) => (
-                <Input key={index} ref={(el) => (inputRefs.current[index] = el)} value={digit} onChange={(e) => handleOtpChange(index, e.target.value)} onKeyDown={(e) => handleKeyDown(index, e)} className="w-10 md:w-12 h-10 md:h-12 text-center text-lg" maxLength={1} />
+                <Input
+                  key={index}
+                  ref={(el) => (inputRefs.current[index] = el)}
+                  value={digit}
+                  onChange={(e) => handleOtpChange(index, e.target.value)}
+                  onKeyDown={(e) => handleKeyDown(index, e)}
+                  className="w-10 md:w-12 h-10 md:h-12 text-center text-lg"
+                  maxLength={1}
+                />
               ))}
             </div>
             <div className="flex justify-between items-center">
               <Button type="link" size="small" onClick={handleResendCode}>
                 Resend Code
               </Button>
-              <Button type="primary" onClick={handleVerifyOtp} disabled={otp.some((digit) => !digit)}>
+              <Button
+                type="primary"
+                onClick={handleVerifyOtp}
+                disabled={otp.some((digit) => !digit)}
+              >
                 Verify
               </Button>
             </div>

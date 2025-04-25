@@ -1,6 +1,32 @@
 import React, { useState } from "react";
-import { Layout, Card, Typography, Space, Modal, Form, Input, Button, Row, Col, Select, Statistic, Avatar, Tag, Table, Upload, message } from "antd";
-import { UserOutlined, CameraOutlined, BookOutlined, ClockCircleOutlined, CalendarOutlined, TeamOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+  Layout,
+  Card,
+  Typography,
+  Space,
+  Modal,
+  Form,
+  Input,
+  Button,
+  Row,
+  Col,
+  Select,
+  Statistic,
+  Avatar,
+  Tag,
+  Table,
+  Upload,
+  message,
+} from "antd";
+import {
+  UserOutlined,
+  CameraOutlined,
+  BookOutlined,
+  ClockCircleOutlined,
+  CalendarOutlined,
+  TeamOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 import Image from "next/image";
 import { useUser } from "@/src/hooks/useUser";
 import { useDevice } from "@/src/hooks/useDevice";
@@ -49,6 +75,8 @@ const InstructorCompleteProfile = () => {
 
 
 
+
+
       // Append all other form values
       Object.keys(values).forEach(key => {
         // Handle arrays (like your multi-select fields)
@@ -64,6 +92,7 @@ const InstructorCompleteProfile = () => {
       updateInstructorProfile(formData);
 
       setIsLoading(false);
+
 
     } catch (error) {
       console.error(error);
@@ -81,10 +110,16 @@ const InstructorCompleteProfile = () => {
         break;
       case "done":
         setImageFile(file);
-        message.success({ content: "Image uploaded successfully!", key: "upload" });
+        message.success({
+          content: "Image uploaded successfully!",
+          key: "upload",
+        });
         break;
       case "error":
-        message.error({ content: "Upload failed. Please try again.", key: "upload" });
+        message.error({
+          content: "Upload failed. Please try again.",
+          key: "upload",
+        });
         break;
       case "removed":
         setImageFile(null);
@@ -97,16 +132,19 @@ const InstructorCompleteProfile = () => {
 
   return (
     <Modal
+
       title={<div className="text-center text-xs">Just a few more details before you start your journey</div>}
       //change here verify....
       open={!user?.phone_number_verified}
       closable={false}
       maskClosable={false}
 
+
       footer={null}
       keyboard={false}
       className="persistent-modal"
     >
+
       <Form form={form} onFinish={handleFormSubmit} layout="vertical" size="small">
         <span className="block mb-2 font-extralight text-xs text-center ">This process ensures that only qualified and experienced teachers gain access to our online community.</span>
 
@@ -130,6 +168,7 @@ const InstructorCompleteProfile = () => {
                   }}
                 />
               </div>
+
             </div>
           </Upload>
         </div>
@@ -143,11 +182,14 @@ const InstructorCompleteProfile = () => {
               rules={[
                 {
                   required: true,
+
                   message: <span className="text-xs">Please enter your phone number</span>,
+
                 },
                 {
                   validator: async (_, value) => {
                     if (!value) return Promise.resolve();
+
 
                     // Check if the number starts with 6 or 7
                     if (!/^[67]/.test(value)) {
@@ -157,6 +199,7 @@ const InstructorCompleteProfile = () => {
                     // Check if the number has exactly 9 digits
                     if (!/^\d{9}$/.test(value)) {
                       return Promise.reject(<span className="text-xs">Phone number must be exactly 9 digits</span>);
+
                     }
 
                     return Promise.resolve();
@@ -175,8 +218,27 @@ const InstructorCompleteProfile = () => {
             </Form.Item>
           </Col>
           <Col span={24}>
-            <Form.Item name="language" rules={[{ required: true, message: <span className="text-xs ">Language is required</span> }]}>
-              <Select mode="multiple" size="middle" className="!text-xs " placeholder="Select language(s)" maxTagCount={3} maxTagPlaceholder={(omittedValues) => `+ ${omittedValues.length}`}>
+            <Form.Item
+              name="language"
+              rules={[
+                {
+                  required: true,
+                  message: (
+                    <span className="text-xs ">Language is required</span>
+                  ),
+                },
+              ]}
+            >
+              <Select
+                mode="multiple"
+                size="middle"
+                className="!text-xs "
+                placeholder="Select language(s)"
+                maxTagCount={3}
+                maxTagPlaceholder={(omittedValues) =>
+                  `+ ${omittedValues.length}`
+                }
+              >
                 {languages?.map((language) => (
                   <Select.Option key={language.id} value={language.tag}>
                     {language.language}
@@ -186,8 +248,27 @@ const InstructorCompleteProfile = () => {
             </Form.Item>
           </Col>
           <Col span={24}>
-            <Form.Item name="subjects" rules={[{ required: true, message: <span className="text-xs ">Subject(s) is required</span> }]}>
-              <Select mode="multiple" size="middle" className="!text-xs" placeholder="Subjects you can teach" maxTagCount={2} maxTagPlaceholder={(omittedValues) => `+ ${omittedValues.length}`}>
+            <Form.Item
+              name="subjects"
+              rules={[
+                {
+                  required: true,
+                  message: (
+                    <span className="text-xs ">Subject(s) is required</span>
+                  ),
+                },
+              ]}
+            >
+              <Select
+                mode="multiple"
+                size="middle"
+                className="!text-xs"
+                placeholder="Subjects you can teach"
+                maxTagCount={2}
+                maxTagPlaceholder={(omittedValues) =>
+                  `+ ${omittedValues.length}`
+                }
+              >
                 {subjects?.map((subject) => (
                   <Select.Option key={subject.id} value={subject.id}>
                     {subject.name}
@@ -197,8 +278,27 @@ const InstructorCompleteProfile = () => {
             </Form.Item>
           </Col>
           <Col span={24}>
-            <Form.Item name="grade_levels" rules={[{ required: true, message: <span className="text-xs ">Grade level(s) is required</span> }]}>
-              <Select mode="multiple" size="middle" className="!text-xs" maxTagCount={2} maxTagPlaceholder={(omittedValues) => `+ ${omittedValues.length}`} placeholder="Levels you can teach">
+            <Form.Item
+              name="grade_levels"
+              rules={[
+                {
+                  required: true,
+                  message: (
+                    <span className="text-xs ">Grade level(s) is required</span>
+                  ),
+                },
+              ]}
+            >
+              <Select
+                mode="multiple"
+                size="middle"
+                className="!text-xs"
+                maxTagCount={2}
+                maxTagPlaceholder={(omittedValues) =>
+                  `+ ${omittedValues.length}`
+                }
+                placeholder="Levels you can teach"
+              >
                 {grades?.map((level) => (
                   <Select.Option key={level.id} value={level.id}>
                     {level.name}
@@ -208,8 +308,29 @@ const InstructorCompleteProfile = () => {
             </Form.Item>
           </Col>
           <Col span={24}>
-            <Form.Item name="special_needs" rules={[{ required: true, message: <span className="text-xs">Special group(s) is required</span> }]}>
-              <Select mode="multiple" size="middle" className="!text-xs" maxTagCount={1} maxTagPlaceholder={(omittedValues) => `+ ${omittedValues.length}`} placeholder="Special groups you can teach">
+            <Form.Item
+              name="special_needs"
+              rules={[
+                {
+                  required: true,
+                  message: (
+                    <span className="text-xs">
+                      Special group(s) is required
+                    </span>
+                  ),
+                },
+              ]}
+            >
+              <Select
+                mode="multiple"
+                size="middle"
+                className="!text-xs"
+                maxTagCount={1}
+                maxTagPlaceholder={(omittedValues) =>
+                  `+ ${omittedValues.length}`
+                }
+                placeholder="Special groups you can teach"
+              >
                 {special_needs?.map((special) => (
                   <Select.Option key={special.id} value={special.id}>
                     {special.name}
@@ -221,7 +342,13 @@ const InstructorCompleteProfile = () => {
         </Row>
 
         <Form.Item>
-          <Button type="primary" className="bg-[#001840] hover:!bg-blue-900" htmlType="submit" block size="middle">
+          <Button
+            type="primary"
+            className="bg-[#001840] hover:!bg-blue-900"
+            htmlType="submit"
+            block
+            size="middle"
+          >
             Submit
           </Button>
         </Form.Item>

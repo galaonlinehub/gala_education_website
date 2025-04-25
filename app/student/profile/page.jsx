@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useState } from "react";
 import {
@@ -17,24 +16,22 @@ import {
   message,
   Tooltip,
 } from "antd";
-import {
-  BookOutlined,
-  TrophyOutlined,
-  MailOutlined,
-  PhoneOutlined,
-  EnvironmentOutlined,
-  CalendarOutlined,
-  StarOutlined,
-  CheckCircleOutlined,
-  ClockCircleOutlined,
-  ReadOutlined,
-  EditOutlined,
-  SaveOutlined,
-  CloseOutlined,
-} from "@ant-design/icons";
 import { useUser } from "@/src/hooks/useUser";
 import { useDevice } from "@/src/hooks/useDevice";
 import { img_base_url } from "@/src/config/settings";
+import {
+  LuBookOpenText,
+  LuCalendar,
+  LuCircleCheckBig,
+  LuClock4,
+  LuMail,
+  LuMapPin,
+  LuPencil,
+  LuPhone,
+  LuSave,
+  LuTrophy,
+  LuX,
+} from "react-icons/lu";
 
 const { Title, Text } = Typography;
 const { TextArea } = Input;
@@ -114,7 +111,7 @@ const StudentProfile = () => {
                 {icon} {label}
               </Text>
               <Tooltip title="Edit">
-                <EditOutlined
+                <LuPencil
                   className="opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer text-blue-500"
                   onClick={toggleEdit}
                 />
@@ -127,9 +124,7 @@ const StudentProfile = () => {
         ) : (
           <Form.Item name={fieldName} initialValue={value} className="mb-2">
             <Input
-              suffix={
-                <SaveOutlined className="text-green-500 cursor-pointer" />
-              }
+              suffix={<LuSave className="text-green-500 cursor-pointer" />}
             />
           </Form.Item>
         )}
@@ -138,7 +133,7 @@ const StudentProfile = () => {
   };
 
   return (
-    <div className="mt-16">
+    <div className="mt-layout-margin">
       <Row gutter={[24, 24]} justify="center">
         <div className="w-full px-4 lg:px-12">
           <Card className="profile-header mb-[24px]">
@@ -177,7 +172,7 @@ const StudentProfile = () => {
                           className="capitalize text-[10px] font-bold !m-0"
                           color="#001840"
                         >
-                          {user?.role || "Student"}
+                          {user?.role}
                         </Tag>
                       </div>
                     ) : (
@@ -194,11 +189,12 @@ const StudentProfile = () => {
                             className="font-bold text-xl"
                             suffix={
                               <div className="flex gap-2">
-                                <SaveOutlined
+                                <LuSave
                                   className="text-green-500 cursor-pointer"
                                   onClick={() => form.submit()}
                                 />
-                                <CloseOutlined
+                                <LuX
+                                  strokeWidth={3}
                                   className="text-red-500 cursor-pointer"
                                   onClick={() => setEditName(false)}
                                 />
@@ -219,14 +215,14 @@ const StudentProfile = () => {
                       <Statistic
                         title="Classes Bought"
                         value={student.classesBought}
-                        prefix={<ReadOutlined />}
+                        prefix={<LuBookOpenText />}
                       />
                     </Col>
                     <Col>
                       <Statistic
                         title="Achievements"
                         value={student.achievements}
-                        prefix={<TrophyOutlined />}
+                        prefix={<LuTrophy />}
                       />
                     </Col>
                   </Row>
@@ -241,37 +237,48 @@ const StudentProfile = () => {
                 title={<Title level={4}>Learning Progress</Title>}
                 className="mb-[24px]"
               >
-                <Row gutter={[16, 16]}>
-                  <Col span={8}>
-                    <Statistic
-                      title="Completed"
-                      value={student.completedClasses}
-                      prefix={
-                        <CheckCircleOutlined className="text-[#52c41a]" />
-                      }
-                    />
-                  </Col>
-                  <Col span={8}>
-                    <Statistic
-                      title={<span className="line-clamp-1">In Progress</span>}
-                      value={student.inProgressClasses}
-                      prefix={
-                        <ClockCircleOutlined className="text-[#1890ff]" />
-                      }
-                    />
-                  </Col>
-                  <Col span={8}>
-                    <Statistic
-                      title={
-                        <span className="line-clamp-1">Completion Rate</span>
-                      }
-                      value={Math.round(
-                        (student.completedClasses / student.classesBought) * 100
-                      )}
-                      suffix="%"
-                    />
-                  </Col>
-                </Row>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                  <div className="bg-white rounded-md shadow p-4 flex items-center justify-between">
+                    <div>
+                      <div className="text-sm text-gray-500 font-medium mb-1">
+                        Completed
+                      </div>
+                      <div className="text-lg font-semibold">
+                        {student.completedClasses}
+                      </div>
+                    </div>
+                    <LuCircleCheckBig className="text-[#52c41a] text-xl" />
+                  </div>
+
+                  {/* In Progress */}
+                  <div className="bg-white rounded-md shadow p-4 flex items-center justify-between">
+                    <div>
+                      <div className="text-sm text-gray-500 font-medium mb-1 line-clamp-1">
+                        In Progress
+                      </div>
+                      <div className="text-lg font-semibold">
+                        {student.inProgressClasses}
+                      </div>
+                    </div>
+                    <LuClock4 className="text-[#1890ff] text-xl" />
+                  </div>
+
+                  {/* Completion Rate */}
+                  <div className="bg-white rounded-md shadow p-4 flex items-center justify-between">
+                    <div>
+                      <div className="text-sm text-gray-500 font-medium mb-1 line-clamp-1">
+                        Completion Rate
+                      </div>
+                      <div className="text-lg font-semibold">
+                        {Math.round(
+                          (student.completedClasses / student.classesBought) *
+                            100
+                        )}
+                        %
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </Card>
 
               <Card title={<Title level={4}>Recent Activity</Title>}>
@@ -294,7 +301,7 @@ const StudentProfile = () => {
                     <Title level={4}>Contact Information</Title>
                     {!editContact ? (
                       <Tooltip title="Edit Contact Information">
-                        <EditOutlined
+                        <LuPencil
                           className="text-blue-500 cursor-pointer"
                           onClick={() => setEditContact(true)}
                         />
@@ -302,13 +309,14 @@ const StudentProfile = () => {
                     ) : (
                       <div className="flex gap-2">
                         <Tooltip title="Save">
-                          <SaveOutlined
+                          <LuSave
                             className="text-green-500 cursor-pointer"
                             onClick={() => form.submit()}
                           />
                         </Tooltip>
                         <Tooltip title="Cancel">
-                          <CloseOutlined
+                          <LuX
+                            strokeWidth={3}
                             className="text-red-500 cursor-pointer"
                             onClick={() => setEditContact(false)}
                           />
@@ -323,54 +331,54 @@ const StudentProfile = () => {
                   <div className="flex flex-col gap-[16px]">
                     <div className="group">
                       <div className="flex items-center justify-between">
-                        <Text type="secondary">
-                          <MailOutlined /> Email
-                        </Text>
-                        <EditOutlined
+                        <div className="flex gap-1 items-center text-gray-400">
+                          <LuMail /> Email
+                        </div>
+                        <LuPencil
                           className="opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer text-blue-500"
                           onClick={() => setEditContact(true)}
                         />
                       </div>
-                      <div>
-                        <Text strong>{user?.email || student.email}</Text>
+                      <div className="px-3">
+                        <Text strong>{user?.email}</Text>
                       </div>
                     </div>
 
                     <div className="group">
                       <div className="flex items-center justify-between">
-                        <Text type="secondary">
-                          <PhoneOutlined /> Phone
-                        </Text>
-                        <EditOutlined
+                        <div className="flex gap-1 items-center text-gray-400">
+                          <LuPhone /> Phone
+                        </div>
+                        <LuPencil
                           className="opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer text-blue-500"
                           onClick={() => setEditContact(true)}
                         />
                       </div>
-                      <div>
-                        <Text strong>{student.phone}</Text>
+                      <div className="px-3">
+                        <Text strong>{user?.phone_number}</Text>
                       </div>
                     </div>
 
                     <div className="group">
                       <div className="flex items-center justify-between">
-                        <Text type="secondary">
-                          <EnvironmentOutlined /> Location
-                        </Text>
-                        <EditOutlined
+                        <div className="flex gap-1 items-center text-gray-400">
+                          <LuMapPin /> Location
+                        </div>
+                        <LuPencil
                           className="opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer text-blue-500"
                           onClick={() => setEditContact(true)}
                         />
                       </div>
-                      <div>
-                        <Text strong>{student.location}</Text>
+                      <div className="px-3">
+                        <Text strong>{user?.location || "--"}</Text>
                       </div>
                     </div>
 
                     <div>
-                      <Text type="secondary">
-                        <CalendarOutlined /> Joined
-                      </Text>
-                      <div>
+                      <div className="flex gap-1 items-center text-gray-400">
+                        <LuCalendar /> Joined
+                      </div>
+                      <div className="px-3">
                         <Text strong>{student.joinedDate}</Text>
                       </div>
                     </div>
@@ -390,7 +398,7 @@ const StudentProfile = () => {
                       name="email"
                       label={
                         <span>
-                          <MailOutlined /> Email
+                          <LuMail /> Email
                         </span>
                       }
                     >
@@ -401,7 +409,7 @@ const StudentProfile = () => {
                       name="phone"
                       label={
                         <span>
-                          <PhoneOutlined /> Phone
+                          <LuPhone /> Phone
                         </span>
                       }
                     >
@@ -412,7 +420,7 @@ const StudentProfile = () => {
                       name="location"
                       label={
                         <span>
-                          <EnvironmentOutlined /> Location
+                          <LuMapPin /> Location
                         </span>
                       }
                     >
@@ -421,7 +429,7 @@ const StudentProfile = () => {
 
                     <div>
                       <Text type="secondary">
-                        <CalendarOutlined /> Joined
+                        <LuCalendar /> Joined
                       </Text>
                       <div>
                         <Text strong>{student.joinedDate}</Text>
@@ -456,7 +464,7 @@ const StudentProfile = () => {
                     <Title level={4}>Skills</Title>
                     {!editSkills ? (
                       <Tooltip title="Edit Skills">
-                        <EditOutlined
+                        <LuPencil
                           className="text-blue-500 cursor-pointer"
                           onClick={() => setEditSkills(true)}
                         />
@@ -464,13 +472,14 @@ const StudentProfile = () => {
                     ) : (
                       <div className="flex gap-2">
                         <Tooltip title="Save">
-                          <SaveOutlined
+                          <LuSave
                             className="text-green-500 cursor-pointer"
                             onClick={() => form.submit()}
                           />
                         </Tooltip>
                         <Tooltip title="Cancel">
-                          <CloseOutlined
+                          <LuX
+                            strokeWidth={3}
                             className="text-red-500 cursor-pointer"
                             onClick={() => setEditSkills(false)}
                           />
@@ -492,7 +501,7 @@ const StudentProfile = () => {
                       <Button
                         type="dashed"
                         size="small"
-                        icon={<EditOutlined />}
+                        icon={<LuPencil />}
                         onClick={() => setEditSkills(true)}
                       >
                         Edit Skills

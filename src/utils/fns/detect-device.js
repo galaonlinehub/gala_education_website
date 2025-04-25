@@ -1,6 +1,5 @@
 export const detectDevice = () => {
     if (typeof window === "undefined") {
-      // Default for SSR: Assume desktop dimensions
       return { type: "desktop", width: 1920, height: 1080 };
     }
   

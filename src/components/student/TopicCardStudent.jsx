@@ -1,11 +1,9 @@
 import React from "react";
 import { Card, Progress, Avatar, Tooltip, Skeleton } from "antd";
 import {
-  RightOutlined,
   ExclamationCircleOutlined,
-  TeamOutlined,
 } from "@ant-design/icons";
-import { GoBook } from "react-icons/go";
+import { LuChevronRight, LuListChecks, LuUsers } from "react-icons/lu";
 
 const TopicCard = ({ details }) => {
   return (
@@ -54,7 +52,7 @@ const TopicCard = ({ details }) => {
           </div>
           <Tooltip title="Enrolled Students">
             <div className="flex items-center gap-1 text-gray-600">
-              <TeamOutlined />
+              <LuUsers />
               <span className="text-sm">{details?.total_student_enrolled}</span>
             </div>
           </Tooltip>
@@ -70,13 +68,13 @@ const TopicCard = ({ details }) => {
             </div>
           ) : (
             <div className="flex items-center text-green-600">
-              <GoBook className="mr-1" />
+              <LuListChecks className="mr-1" />
               <span className="text-sm">All caught up!</span>
             </div>
           )}
           <div className="flex items-center text-[#001840] font-medium">
             <span className="text-sm mr-2">Details</span>
-            <RightOutlined className="group-hover:translate-x-1 transition-transform" />
+            <LuChevronRight className="group-hover:translate-x-1 transition-transform" />
           </div>
         </div>
       </div>

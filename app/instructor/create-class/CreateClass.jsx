@@ -499,8 +499,10 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
 
   return (
     <Drawer
+
       open={openAddNewClass}
       onClose={handleDrawerClose}
+
       footer={null}
       width={850}
       styles={{

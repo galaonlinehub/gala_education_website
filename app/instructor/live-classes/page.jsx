@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState } from "react";
 import { 
   Layout, Card, Button, List, Tag, Space, Typography, Row, Col, Avatar, Input, 
@@ -37,10 +38,12 @@ const InstructorVideoDashboard = () => {
       description: "Learn the fundamentals of React, including components, props, and state management.",
       materials: ["Slides", "Code Examples", "Exercise Files"],
       recording: null,
+
     },
     {
       id: 2,
       title: "Advanced JavaScript Concepts",
+
       date: "2025-04-21",
       time: "2:00 PM",
       duration: "2h",
@@ -50,10 +53,12 @@ const InstructorVideoDashboard = () => {
       description: "Deep dive into closures, promises, async/await, and prototypal inheritance.",
       materials: ["Handbook", "Practice Problems"],
       recording: null,
+
     },
     {
       id: 3,
       title: "CSS Fundamentals Workshop",
+
       date: "2025-04-19",
       time: "11:00 AM",
       duration: "1h",
@@ -160,10 +165,11 @@ const InstructorVideoDashboard = () => {
     ) / 100,
   };
 
-  // Handlers
+
   const handleJoinMeeting = (link) => {
     window.open(link, "_blank");
   };
+
 
   const handleViewRecording = (link) => {
     window.open(link, "_blank");
@@ -447,9 +453,12 @@ const InstructorVideoDashboard = () => {
             />
           )}
         </Card>
+
       </Content>
     </Layout>
   );
 };
 
+
 export default InstructorVideoDashboard;
+

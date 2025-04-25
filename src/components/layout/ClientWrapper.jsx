@@ -14,7 +14,9 @@ import { LuBellRing, LuX } from "react-icons/lu";
 
 
 const ClientWrapper = ({ children }) => {
+
   const { userLoading, userError, user } = useUser();
+
   const { loading, toggleLoading } = useLoading();
   const router = useRouter();
 
@@ -37,6 +39,7 @@ const ClientWrapper = ({ children }) => {
   useEffect(() => {
     !userLoading && toggleLoading();
   }, [toggleLoading, userLoading]);
+
 
   if (loading) {
     return <TemplateLoader />;
