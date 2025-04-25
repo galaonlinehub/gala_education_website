@@ -21,6 +21,7 @@ import { useCohort } from "@/src/hooks/useCohort";
 import { encrypt } from "@/src/utils/fns/encryption";
 import ClassCreationWizard from "./create-class/CreateClass";
 import TableSkeleton from "@/src/components/teacher/TableSkeleton";
+import { LuBook, LuUser, LuUsers } from "react-icons/lu";
 
 
 const { Title, Text } = Typography;
