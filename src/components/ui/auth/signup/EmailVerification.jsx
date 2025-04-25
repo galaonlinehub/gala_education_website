@@ -247,7 +247,7 @@ const EmailVerification = () => {
               />
             ))}
           <div className="flex flex-wrap gap-2 text-xs w-full items-center justify-end overflow-hidden">
-            <span>Didn't get the code?</span>
+            <span>Didn&apos;t get the code?</span>
             <Button
               type="link"
               onClick={handleResendOtp}
