@@ -209,9 +209,10 @@ const Navbar = () => {
         )}
         {width <= 768 && user && !isSidebarOpen && (
           <LuMenu
+            size={32}
             onClick={toggleSidebar}
             aria-label="Toggle menu"
-            className="text-[20px] p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            className="text-[20px] p-1 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
           />
         )}
         {user && width > 768 && <Signout />}

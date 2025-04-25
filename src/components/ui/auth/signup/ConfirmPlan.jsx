@@ -47,7 +47,8 @@ const ConfirmPlan = () => {
         plans.map((plan) => (
           <Card
             key={plan?.id}
-            className="!rounded-xl !shadow-xs !transition-all !duration-300 hover:!shadow-none !w-full sm:!w-[370px] relative !border-[#010798]"
+            className="!rounded-xl !shadow-none !transition-all !duration-300 hover:!shadow-sm !w-full xs:!w-[65%] sm:!w-[370px] relative !border-[#010798] [&_.ant-card-body]:!p-0 
+                    sm:[&_.ant-card-body]:!p-3 !py-4"
           >
             {plan?.number_of_months === 12 && (
               <div className="absolute -top-3 right-4">
@@ -57,7 +58,7 @@ const ConfirmPlan = () => {
               </div>
             )}
             <div className="flex flex-col gap-6 md:gap-8 lg:gap-12 p-3 md:p-6">
-              <div className="text-center">
+              <div className="text-center overflow-hidden">
                 <div className="!mb-2 !font-bold text-base md:text-2xl">
                   {plan?.name}
                 </div>
@@ -65,16 +66,16 @@ const ConfirmPlan = () => {
                   7-day-money-back-guarantee
                 </Text>
               </div>
-              <div className="text-center text-gray-700 text-xs sm:text-sm">
+              <div className="text-center text-gray-700 text-xs sm:text-sm overflow-hidden">
                 This fee grants you full access to Gala Education&apos;s
                 teaching platform, allowing you to connect with students, manage
                 lessons, and utilize our advanced tools and resources to deliver
                 high-quality education.
               </div>
-              <div className="text-center">
+              <div className="text-center overflow-hidden">
                 <div className="flex items-center justify-center gap-1 mb-2">
                   <div className="text-base md:text-3xl !font-bold">TZS</div>
-                  <div className="!font-bold text-base md:text-3xl">
+                  <div className="!font-bold text-xl md:text-3xl">
                     {plan.amount.toLocaleString()}
                   </div>
                 </div>
@@ -88,11 +89,11 @@ const ConfirmPlan = () => {
                   </Text>
                 )}
               </div>
-              <div className="!mt-auto w-full flex items-center justify-center">
+              <div className="!mt-auto w-full flex items-center justify-center overflow-hidden">
                 <Button
                   type="primary"
                   onClick={() => handleConfirmPayClick(plan)}
-                  className="!bg-[#010798] !rounded-lg !px-8 !font-semibold !text-xs !h-9 !min-w-[160px] !flex !items-center !justify-center hover:!opacity-90 !transition-all !duration-300"
+                  className="!bg-[#010798] !rounded-lg !px-8 !font-semibold !text-xs !h-9 !flex !items-center !justify-center hover:!opacity-90 !transition-all !duration-300"
                   icon={<LuCircleCheckBig />}
                 >
                   CONTINUE
@@ -102,14 +103,16 @@ const ConfirmPlan = () => {
           </Card>
         ))
       ) : (
-        <div className="flex flex-col items-center justify-center gap-4">
-          <span className="font-bold text-sm md:text-2xl">
-            {" "}
+        <div className="flex flex-col items-center justify-center gap-2 md:gap-4 mt-8">
+          <span className="font-bold text-sm md:text-2xl text-center">
             No any payment plan for a moment!!
           </span>
-          <Button type="link" className="text-xs text">
-            Contact Support
-          </Button>
+          <a href="mailto:support@galahub.org?subject=Payment%20Failure">
+            <Button type="link" className="text-xs">
+              Contact Support
+            </Button>
+          </a>
+
           <Button onClick={() => router.push("/")}>Return Home</Button>
         </div>
       )}

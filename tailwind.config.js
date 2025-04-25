@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-import { fontFamily } from "tailwindcss/defaultTheme";
+import defaultTheme from "tailwindcss/defaultTheme";
 
 const tailwindConfig = {
   content: [
@@ -11,7 +11,17 @@ const tailwindConfig = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["var(--font-quicksand)", ...fontFamily.sans],
+        sans: ["var(--font-quicksand)", ...defaultTheme.fontFamily.sans],
+      },
+      fontWeight: {
+        thin: "300",
+        light: "300",
+        normal: "400",
+        medium: "500",
+        semibold: "600",
+        bold: "700",
+        extrabold: "700",
+        black: "700",
       },
 
       height: {
@@ -41,15 +51,9 @@ const tailwindConfig = {
         },
       },
       screens: {
-        xxs: "240px",
+        xxs: "280px",
         xs: "480px",
-        sm: "640px",
-        md: "768px",
-        lg: "1024px",
-        xl: "1280px",
-        "2xl": "1536px",
-        "3xl": "1920px",
-        "4xl": "2560px",
+        ...defaultTheme.screens,
       },
     },
   },

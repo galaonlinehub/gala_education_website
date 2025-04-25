@@ -75,14 +75,6 @@ const SignInPage = () => {
     loginMutation.mutate(data);
   };
 
-  // const handleChange = () => {
-  //   setLocalFeedback({
-  //     show: false,
-  //     message: "",
-  //   }),
-  //     loginMutation.reset();
-  // };
-
   useEffect(() => {
     const resetFeedback = debounce(() => {
       if (localFeedback.show) {
