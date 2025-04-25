@@ -5,11 +5,8 @@ import {
   Select,
   Button,
   Typography,
-  Space,
   Card,
   Progress,
-  Tooltip,
-  message,
   Checkbox,
 } from "antd";
 
@@ -19,6 +16,7 @@ import EmailVerification from "./EmailVerification";
 import { useRouter } from "next/navigation";
 import clsx from "clsx";
 import {
+  LuCheck,
   LuCircleCheck,
   LuEye,
   LuEyeOff,
@@ -29,7 +27,7 @@ import {
 } from "react-icons/lu";
 import SlickSpinner from "../../loading/template/SlickSpinner";
 
-const { Title, Text, Paragraph } = Typography;
+const { Text } = Typography;
 
 const SignUpForm = () => {
   const [form] = Form.useForm();
@@ -53,18 +51,15 @@ const SignUpForm = () => {
 
   return (
     <div className="flex justify-center lg:px-8 lg:mt-4">
-      <Card className="!w-full max-w-3xl !border-0">
-        <div className="text-center mb-8">
-          <Title
-            level={2}
-            className="!text-2xl !font-bold !text-gray-900 !mb-2"
-          >
+      <Card className="max-w-3xl !border-0 -mx-5 lg:!w-full lg:-mx-0">
+        <div className="text-center mb-4 sm:mb-8">
+          <div className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
             Sign Up
-          </Title>
-          <Paragraph className="!text-sm !text-gray-600">
+          </div>
+          <span className="text-xs xs:text-sm text-gray-600">
             Step into the realm of endless possibilities! Your adventure in
             knowledge begins here.
-          </Paragraph>
+          </span>
         </div>
         {registerError && (
           <div
@@ -260,9 +255,9 @@ const SignUpForm = () => {
               }
               type="primary"
               htmlType="submit"
-              className={clsx(
-                "!flex !items-center !justify-center !py-4 !border-transparent !rounded-lg !w-full !h-11  !transition-colors !text-base !text-white !font-medium disabled:!cursor-not-allowed disabled:!opacity-60 !bg-[#010798] !hover:bg-blue-700"
-              )}
+              className={
+                "!flex !items-center !justify-center !py-4 !border-transparent !rounded-lg !w-full !h-11  !transition-colors !text-base !text-white !font-medium disabled:!cursor-not-allowed disabled:!opacity-70 !bg-[#010798] hover:!opacity-80"
+              }
               icon={mutation.isPending ? null : <LuShieldCheck />}
             >
               {mutation.isPending ? (
@@ -274,11 +269,31 @@ const SignUpForm = () => {
           </Form.Item>
         </Form>
 
-        <div className="!text-center !text-sm !text-gray-600 !mt-6">
-          <Checkbox
-            className="!mr-1"
-            onChange={(e) => setIsAgreementChecked(e.target.checked)}
-          />
+        <div className="text-center text-sm text-gray-600 mt-4 flex items-center justify-center gap-2 flex-wrap">
+          <div className="relative flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={isAgreementChecked}
+                        onChange={(e) => setIsAgreementChecked(e.target.checked)}
+                        className="appearance-none w-5 h-5 border-2 border-[#010798] rounded 
+               checked:bg-[#010798] cursor-pointer
+               transition-all duration-300 ease-in-out
+               hover:border-opacity-80 focus:ring-2 focus:ring-[#010798] focus:ring-opacity-40 flex items-center justify-center outline-none"
+                      />
+                      <LuCheck
+                        className={clsx(
+                          "absolute left-0.5 top-0.5",
+                          "pointer-events-none transition-all duration-300 ease-in-out",
+                          {
+                            "text-white": isAgreementChecked,
+                            "text-transparent": !isAgreementChecked,
+                          }
+                        )}
+                        size={16}
+                        strokeWidth={4}
+                      />
+                    </div>
+          
           <Text>I have read and agreed to the</Text>
           <Button
             type="link"

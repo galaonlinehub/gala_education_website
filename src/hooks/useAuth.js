@@ -68,7 +68,7 @@ export const useAuth = () => {
     onSuccess: (data, variables, context) => {
       message.success({
         content: "Account created successfully!",
-        icon: <LuCircleCheckBig size={20} className="text-[#52c41a]" />,
+        icon: <LuCircleCheckBig size={20} className="text-[#52c41a] !mx-1" />,
       });
 
       sessionStorageFn.set(
@@ -168,7 +168,6 @@ export const useAuth = () => {
     setPasswordStrength,
     setPasswordFocused,
     setEmailExists,
-    loading: mutation.isPending,
     mutation,
     setFileList,
     fileList,
