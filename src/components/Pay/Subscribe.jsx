@@ -31,7 +31,7 @@ const useStyle = createStyles(({ token }) => ({
 }));
 
 export default function Subscribe() {
-  const user = useUser();
+  const {user} = useUser();
   const { activeTab } = useTabNavigator();
 
   const modalStyles = {
@@ -53,6 +53,8 @@ export default function Subscribe() {
       content: <SignupPay />,
     },
   ];
+
+  console.log("user data:..", user);
 
   return (
     <Drawer

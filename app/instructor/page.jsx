@@ -57,8 +57,8 @@ export default function TeacherClasses() {
 
   const columns = [
     {
-      title: "Subject",
-      dataIndex: "subject",
+      title: "Class",
+      dataIndex: "class",
       key: "subject",
       render: (text) => <Text strong>{text}</Text>,
     },
@@ -262,9 +262,9 @@ export default function TeacherClasses() {
                     </div>
                   ) : instructorSubjects?.length > 0 ? (
                     <Space size={[8, 16]} wrap className="w-full">
-                      {instructorSubjects?.map((subject, index) => (
-                        <Tag key={index} color="blue" className="px-3 py-2 text-sm mb-2">
-                          {subject}
+                      {instructorSubjects?.map((subject) => (
+                        <Tag key={subject.id} color="blue" className="px-3 py-2 text-sm mb-2">
+                          {subject.name}
                         </Tag>
                       ))}
                     </Space>
@@ -294,9 +294,9 @@ export default function TeacherClasses() {
                       <Button
                         type="primary"
                         variant="filled"
-                        color="blue"
+                        
                         onClick={handleAddNew}
-                        className="whitespace-nowrap text-xs glow-button bg-[#001840]"
+                        className="whitespace-nowrap text-xs glow-button bg-[#457ee2]"
                       >
                         Add Class
                       </Button>
