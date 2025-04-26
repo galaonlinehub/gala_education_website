@@ -78,7 +78,7 @@ export default function Subscribe() {
           <Steps.Step key={index} title={step.title} />
         ))}
       </Steps>
-      <div className="mt-6">{steps[activeTab].content}</div>
+      <div className="md:mt-6">{steps[activeTab].content}</div>
     </Drawer>
   );
 }
