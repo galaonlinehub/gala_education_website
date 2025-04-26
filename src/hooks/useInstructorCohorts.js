@@ -3,18 +3,18 @@ import { globalOptions } from "../config/tanstack";
 import { apiGet } from "../services/api_service";
 import { useUser } from "./useUser";
 
-export const useInstructorCohorts = (pageSize = "all") => {
+export const useInstructorCohorts = (pageSize = null) => {
   const { user } = useUser();
 
   const getInstructorCohorts = async () => {
     try {
-      const response = await apiGet(`/instructor/${user.instructor_id}/cohorts/${pageSize}`);
+      const response = await apiGet(`/instructor/${user.instructor_id}/cohorts?pageSize=${pageSize}`);
       if (response.status === 200) {
         // Transform the raw API data to match the table structure
-        const formattedData = response.data.map((cohort, index) => ({
+        const formattedData = response.data.data.map((cohort, index) => ({
           key: cohort.id,
           cohortId: cohort.id,
-          subject: cohort.topic?.title || "No Title",
+          class: cohort.topic?.title || "No Title",
           startDate: cohort.timetable?.start_date || "N/A",
           endDate: cohort.timetable?.end_date || "N/A",
           students: cohort.enrollments?.length || 0,

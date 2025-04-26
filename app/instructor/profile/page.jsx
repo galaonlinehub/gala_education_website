@@ -216,7 +216,6 @@ const TeacherProfile = () => {
     return (
         <Layout className="min-h-screen bg-gray-50">
             <Content className={`p-6 ${isMobile ? 'px-2' : ''}`}>
-                <span className="text-center flex justify-center text-lg md:text-2xl font-semibold mb-6">Profile</span>
                 <span className='flex text-xs lg:text-sm justify-center w-full font-extralight mb-5 text-blue-600'>Your profile will be visible to Student users</span>
 
                 {/* Main Profile Card */}

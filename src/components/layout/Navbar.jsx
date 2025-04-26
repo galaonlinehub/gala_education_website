@@ -207,7 +207,7 @@ const Navbar = () => {
             </Link>
           </div>
         )}
-        {width <= 768 && user && !isSidebarOpen && (
+        {width < 768 && user && !isSidebarOpen && (
           <LuMenu
             size={32}
             onClick={toggleSidebar}
@@ -218,7 +218,7 @@ const Navbar = () => {
         {user && width > 768 && <Signout />}
       </ul>
 
-      {user && width <= 768 && (
+      {user && width < 768 && (
         <MobileSideBar
           isOpen={isSidebarOpen}
           onClose={() => setIsSidebarOpen(false)}

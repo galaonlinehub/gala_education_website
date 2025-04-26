@@ -338,7 +338,7 @@ function Home() {
                 {/*<div className="absolute  bottom-24 left-[4rem] w-[20rem] !z-10 bg-white p-6  mx-4 border rounded-lg shadow-lg">*/}
                 <div className="absolute  sm:bott:om-24 sm:left-[2rem] -bottom-[5rem] left-3 w-[15rem] sm:w-[20rem] !z-10 bg-white p-6  mxp-4 border rounded-lg shadow-lg">
                   <h1 className="sm:text-xl text-base font-bold mb-4">Donate today to support underfunded schools</h1>
-                  <p className="sm:text-sm text-xs text-gray-600 mb-4 ">Join our community and make a difference! Your donation supports quality education and empowers lives. Together, we can create a brighter future. Every contribution counts - be part of something impactful today!</p>
+                  <p className=" text-xs text-gray-600 mb-4 ">Join our community and make a difference! Your donation supports quality education and empowers lives. Together, we can create a brighter future. Every contribution counts - be part of something impactful today!</p>
                   <button onClick={handleDonateVisibility} className="w-full md:w-auto border border-blue-600 text-blue-600 font-bold py-2 px-4 rounded-md hover:bg-blue-50 transition-colors">
                     Donate
                   </button>
