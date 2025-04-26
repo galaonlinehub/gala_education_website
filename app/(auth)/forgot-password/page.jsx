@@ -127,7 +127,7 @@ const ForgotPassword = () => {
         ) : (
           <div className="flex flex-col items-center pb-6">
             <p className="text-gray-600 mb-6 text-center">
-              We've sent a 6-digit verification code to your email.
+              We&apos;ve sent a 6-digit verification code to your email.
               <br />
               Please enter it below.
             </p>
@@ -206,7 +206,7 @@ const ForgotPassword = () => {
 
             <div className="text-center mt-4">
               <p className="text-gray-500 text-xs mb-2">
-                Didn't receive the code?
+                Didn&apos;t receive the code?
               </p>
               <Button
                 type="link"
