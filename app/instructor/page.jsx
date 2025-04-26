@@ -1,34 +1,28 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import {
-  Layout,
-  Card,
-  Typography,
-  Space,
-  Modal,
-  Form,
-  Input,
-  Button,
-  Row,
-  Col,
-  Statistic,
-  Tag,
-  Table,
-} from "antd";
+
+import { Layout, Card, Typography, Space, Modal, Form, Input, Button, Row, Col, Select, Statistic, Avatar, Tag, Table, Upload, message, Skeleton, Flex, Empty } from "antd";
+import { UserOutlined, CameraOutlined, BookOutlined, ClockCircleOutlined, CalendarOutlined, TeamOutlined, PlusOutlined, LoadingOutlined } from "@ant-design/icons";
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { apiGet, apiPost } from "@/src/services/api_service";
 import { useUser } from "@/src/hooks/useUser";
 import { useDevice } from "@/src/hooks/useDevice";
-import {
-  LuBook,
-  LuBookOpenText,
-  LuCalendar,
-  LuClock3,
-  LuUsers,
-} from "react-icons/lu";
+
+import { useInstructorSubjects } from "@/src/hooks/useInstructorSubjects";
+import { useInstructorCohorts } from "@/src/hooks/useInstructorCohorts";
+
+
+
+import { IoCalendarClearSharp } from "react-icons/io5";
+import { useCohort } from "@/src/hooks/useCohort";
+import { encrypt } from "@/src/utils/fns/encryption";
+import ClassCreationWizard from "./create-class/CreateClass";
+import TableSkeleton from "@/src/components/teacher/TableSkeleton";
+import { LuBook, LuUser, LuUsers } from "react-icons/lu";
+
 
 const { Title, Text } = Typography;
 const { Content } = Layout;
@@ -39,6 +33,11 @@ export default function TeacherClasses() {
   const device = useDevice();
 
   const { user } = useUser();
+  const { instructorSubjects, isInstructorSubjectsPending } = useInstructorSubjects();
+  const { InstructorCohorts, isInstructorCohortsPending } = useInstructorCohorts(2);
+
+  const [openAddNewClass, setOpenAddNewClass] = useState(false);
+
 
   // States
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -46,32 +45,20 @@ export default function TeacherClasses() {
   const [showOtpModal, setShowOtpModal] = useState(false);
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
 
+  const { cohorts } = useCohort();
+
   const inputRefs = useRef([]);
 
-  // Sample class data
-  const classData = [
-    {
-      key: "1",
-      subject: "Mathematics",
-      startDate: "10.05.2026",
-      endDate: "10.06.2026",
-      students: 25,
-      progress: 60,
-    },
-    {
-      key: "2",
-      subject: "English",
-      startDate: "10.05.2026",
-      endDate: "10.06.2026",
-      students: 30,
-      progress: 45,
-    },
-  ];
+
+  const handleAddNew = () => {
+    setOpenAddNewClass(true);
+  };
+
 
   const columns = [
     {
-      title: "Subject",
-      dataIndex: "subject",
+      title: "Class",
+      dataIndex: "class",
       key: "subject",
       render: (text) => <Text strong>{text}</Text>,
     },
@@ -81,7 +68,9 @@ export default function TeacherClasses() {
       key: "startDate",
       render: (date) => (
         <Space>
-          <LuCalendar />
+
+          <IoCalendarClearSharp color="green" />
+
           {date}
         </Space>
       ),
@@ -92,7 +81,9 @@ export default function TeacherClasses() {
       key: "endDate",
       render: (date) => (
         <Space>
-          <LuCalendar />
+
+          <IoCalendarClearSharp color="red" />
+
           {date}
         </Space>
       ),
@@ -111,35 +102,15 @@ export default function TeacherClasses() {
     {
       title: "Action",
       key: "action",
-      render: () => (
-        <Button
-          type="link"
-          onClick={() => router.push("/instructor/class-details")}
-        >
+
+      render: (_, record) => (
+        <Button type="link" onClick={() => gotoCohortDetails(record.cohortId)}>
+
           View Details
         </Button>
       ),
-    },
+    }
   ];
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-
-  //       console.log("User Data",user);
-
-  //       if (!user["completed_profile"]) {
-  //         setIsModalVisible(true);
-  //         setIsProfileCompleted(false);
-  //       }
-  //     } catch (error) {
-  //       console.error(error);
-  //     } finally {
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
 
   const handleOtpChange = (index, value) => {
     if (!/^\d*$/.test(value)) return;
@@ -178,7 +149,7 @@ export default function TeacherClasses() {
     }
   };
 
-  // Responsive column settings
+  // // Responsive column settings
   const getResponsiveColumns = () => {
     if (device?.type === "mobile") {
       return columns.map((col) => ({
@@ -186,11 +157,9 @@ export default function TeacherClasses() {
         render: (text, record) => {
           if (col.key === "action") {
             return (
-              <Button
-                type="link"
-                block
-                onClick={() => router.push("/instructor/class-details")}
-              >
+
+              <Button type="link" onClick={() => gotoCohortDetails(record.cohortId)}>
+
                 View Details
               </Button>
             );
@@ -211,6 +180,11 @@ export default function TeacherClasses() {
     },
   });
 
+  const gotoCohortDetails = (cohortId) => {
+    const encryptedId = encrypt(cohortId);
+    router.push(`/instructor/all-classes/${encryptedId}`);
+  }
+
   return (
     <>
       <Layout className=" bg-white">
@@ -220,7 +194,7 @@ export default function TeacherClasses() {
               !isProfileCompleted ? "pointer-events-none opacity-30" : ""
             }`}
           >
-            {/* Welcome Card */}
+           
             <Card>
               <Row align="middle" justify="space-between" gutter={[16, 16]}>
                 <Col xs={24} md={18}>
@@ -235,28 +209,12 @@ export default function TeacherClasses() {
                       Ready to inspire and educate? Your virtual classroom
                       awaits!
                     </Text>
-                    <Space
-                      size={device?.type === "mobile" ? "small" : "large"}
-                      className="mt-4 w-full flex flex-wrap"
-                    >
-                      <Statistic
-                        title="Active Classes"
-                        value={5}
-                        prefix={<LuBookOpenText />}
-                        className="min-w-[120px]"
-                      />
-                      <Statistic
-                        title="Total Students"
-                        value={126}
-                        prefix={<LuUsers />}
-                        className="min-w-[120px]"
-                      />
-                      <Statistic
-                        title="Teaching Hours"
-                        value={48}
-                        prefix={<LuClock3 />}
-                        className="min-w-[120px]"
-                      />
+
+                    <Space size={device?.type === "mobile" ? "small" : "large"} className="mt-4 w-full flex flex-wrap">
+                      <Statistic title="Active Classes" value={user?.active_cohorts} prefix={<BookOutlined />} className="min-w-[120px]" />
+                      <Statistic title="Total Students" value={user?.student_count} prefix={<TeamOutlined />} className="min-w-[120px]" />
+                      <Statistic title="Teaching Hours" value={user?.teaching_hours} prefix={<ClockCircleOutlined />} className="min-w-[120px]" />
+
                     </Space>
                   </Space>
                 </Col>
@@ -284,23 +242,40 @@ export default function TeacherClasses() {
                   }
                   className="h-full shadow-sm"
                 >
-                  <Space size={[8, 16]} wrap className="w-full">
-                    {[
-                      "Mathematics",
-                      "English",
-                      "Chemistry",
-                      "Physics",
-                      "Biology",
-                    ].map((subject, index) => (
-                      <Tag
-                        key={index}
-                        color="blue"
-                        className="px-3 py-2 text-sm mb-2"
-                      >
-                        {subject}
-                      </Tag>
-                    ))}
-                  </Space>
+
+                  {isInstructorSubjectsPending ? (
+                    <div className="w-full">
+                      <Flex wrap="wrap" gap="small">
+                        {[
+                          { width: 100, height: 40 },
+                          { width: 120, height: 40 },
+                          { width: 150, height: 40 },
+                          { width: 150, height: 40 }
+                        ].map((dimensions, index) => (
+                          <Skeleton.Node
+                            key={index}
+                            active
+                            style={{ width: dimensions.width, height: dimensions.height }}
+                          />
+                        ))}
+                      </Flex>
+                    </div>
+                  ) : instructorSubjects?.length > 0 ? (
+                    <Space size={[8, 16]} wrap className="w-full">
+                      {instructorSubjects?.map((subject) => (
+                        <Tag key={subject.id} color="blue" className="px-3 py-2 text-sm mb-2">
+                          {subject.name}
+                        </Tag>
+                      ))}
+                    </Space>
+                  ) : (
+                    <Empty
+                      description="Your chosen subjects will appear here"
+                      image={Empty.PRESENTED_IMAGE_SIMPLE}
+                      className="py-4"
+                    />
+                  )}
+
                 </Card>
               </Col>
 
@@ -314,29 +289,39 @@ export default function TeacherClasses() {
                     </Space>
                   }
                   extra={
-                    <Button
-                      type="primary"
-                      onClick={() => router.push("/instructor/all-classes")}
-                      className="whitespace-nowrap"
-                    >
-                      See All Classes
-                    </Button>
+
+                    <div className="flex gap-3">
+                      <Button
+                        type="primary"
+                        variant="filled"
+                        
+                        onClick={handleAddNew}
+                        className="whitespace-nowrap text-xs glow-button bg-[#457ee2]"
+                      >
+                        Add Class
+                      </Button>
+                      {InstructorCohorts?.length > 0 && <Button type="primary" onClick={() => router.push("/instructor/all-classes")} className="whitespace-nowrap bg-[#001840] text-xs">
+                        See All
+                      </Button>}
+                    </div>
+
                   }
                   className="shadow-sm"
                 >
-                  <div className="overflow-x-auto">
-                    <Table
-                      columns={getResponsiveColumns()}
-                      dataSource={classData}
-                      {...getTableSettings()}
-                    />
-                  </div>
+                  {isInstructorCohortsPending ? <TableSkeleton /> :
+
+                    <div className="overflow-x-auto">
+                      <Table columns={getResponsiveColumns()}  dataSource={InstructorCohorts} {...getTableSettings()} />
+                    </div>
+                  }
+
                 </Card>
               </Col>
             </Row>
           </div>
 
           {/* Profile Completion Modal */}
+
 
           {/* OTP Verification Modal */}
           <Modal
@@ -379,6 +364,7 @@ export default function TeacherClasses() {
           </Modal>
         </Content>
       </Layout>
+      <ClassCreationWizard openAddNewClass={openAddNewClass} setOpenAddNewClass={setOpenAddNewClass} />
     </>
   );
 }

@@ -27,7 +27,7 @@ export default function TeacherLayout({ children }) {
       <Navbar />
       <StudentSearch />
 
-      <main className="flex flex-col lg:flex-row w-full mt-20 overflow-hidden">
+      <main className="flex flex-col md:flex-row w-full mt-20 overflow-hidden">
         <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
           <div className="absolute left-1/2 top-20 w-52 h-52 hidden md:block">
             <RightTiltedBook />
@@ -46,7 +46,7 @@ export default function TeacherLayout({ children }) {
         {/* Sidebar */}
         <aside
           className={
-            "hidden lg:block sticky top-[90px] left-0 w-[16vw] h-[calc(100vh-80px)] border-r border-[#d9d9d9] p-4 overflow-y-auto"
+            "hidden md:block sticky top-[90px] left-0 w-[24vw] lg:w-[16vw] h-[calc(100vh-80px)] border-r border-[#d9d9d9] p-4 overflow-y-auto"
           }
         >
           <ul className="space-y-4 pt-6">
@@ -89,7 +89,9 @@ export default function TeacherLayout({ children }) {
       )}
       <Subscribe />
       <InstructorCompleteProfile />
+
       <StickyNotification/>
+
     </>
   );
 }

@@ -14,7 +14,7 @@ const RegisterWithUs = () => {
 
   return (
     <div>
-      <h3 className="text-center text-sm md:w-2/3 w-full mb-4 sm:text-sm leading-relaxed sm:px-4 ">Join Gala Education today - register as a teacher or student and unlock endless learning opportunities!</h3>
+      <h3 className="text-center text-xs md:w-2/3 w-full mb-4 leading-relaxed sm:px-4 ">Join Gala Education today - register as a teacher or student and unlock endless learning opportunities!</h3>
       <Carousel autoplay={true} dots={true} className="w-full">
       
       <div className="w-full p-3 items-center flex">

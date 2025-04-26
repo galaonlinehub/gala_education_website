@@ -37,17 +37,36 @@ export const useUser = () => {
     },
   });
 
+  
   const updateProfile = useMutation({
     mutationFn: async (data) => {
       const response = await apiPut(`/update-user/${user.id}`, data, {
         "Content-Type": "multipart/form-data",
       });
-      console.log("response", response);
       return response.data;
     },
     enabled: !!user,
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["auth-user"] });
+    },
+    onError: (data) => {},
+  });
+
+  const updateInstructorProfile = useMutation({
+    mutationFn: async (data) => {
+      const response = await apiPut(`/complete-instructor-profile`, data, {
+        "Content-Type": "multipart/form-data",
+      });
+      console.log("response is here now", response);
+      return response.data;
+    },
+    enabled: !!user,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["instructor"] });
+      queryClient.invalidateQueries({ queryKey: ["auth-user"] });
+      queryClient.invalidateQueries({ queryKey: ["instructor-subjects"] });
+      queryClient.invalidateQueries({ queryKey: ["instructor-profile"] });
+      queryClient.invalidateQueries({ queryKey: ["instructor_cohorts"] });
     },
     onError: (data) => {},
   });
@@ -67,6 +86,7 @@ export const useUser = () => {
     },
   });
 
+
   return {
     // User data and loading states
     user,
@@ -78,6 +98,7 @@ export const useUser = () => {
 
     // Profile update functionality
     updateProfile: updateProfile.mutate,
+    updateInstructorProfile: updateInstructorProfile.mutate,
     isUpdatingProfile: updateProfile.isPending,
     updateProfileError: updateProfile.error,
     updateProfileSuccess: updateProfile.isSuccess,
