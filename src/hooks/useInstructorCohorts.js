@@ -21,6 +21,8 @@ export const useInstructorCohorts = (pageSize = null) => {
 
           data: cohort
         }));
+
+        console.log("formatted data:", formattedData)
         
         return formattedData;
       }
