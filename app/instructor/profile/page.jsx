@@ -200,7 +200,7 @@ const TeacherProfile = () => {
     };
 
     const selectedSubjectIds = subjects
-        ?.filter(subject => instructorSubjects?.includes(subject.name))
+        ?.filter(subject => instructorSubjects?.some(sub => sub.name === subject.name))
         .map(subject => subject.id);
 
     const selectedGradeIds = grades
@@ -210,6 +210,8 @@ const TeacherProfile = () => {
     const selectedSpecialNeedsIds = special_needs
         ?.filter(special => instructorProfile?.special_needs.some(sn => sn.name === special.name))
         .map(special => special.id);
+
+
 
 
 
@@ -467,14 +469,14 @@ const TeacherProfile = () => {
                         <Divider />
                         <div className="mt-1 flex flex-wrap">
                             {instructorSubjects?.map(subject => (
-                                <Tooltip title={subject} key={subject}>
+                                <Tooltip title={subject.name} key={subject.id}>
                                     <Tag
                                         color="blue"
-                                        key={subject}
+                                        key={subject.id}
                                         className="mb-1 mr-1 text-xs lg:text-sm py-1 px-3"
                                         style={{ maxWidth: '100%', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
                                     >
-                                        {subject}
+                                        {subject.name}
                                     </Tag>
                                 </Tooltip>
                             ))}
@@ -511,14 +513,14 @@ const TeacherProfile = () => {
                         <Divider />
                         <div className="mt-3 flex flex-wrap">
                             {InstructorCohorts?.map(cohort => (
-                                <Tooltip title={cohort.subject} key={cohort.key}>
+                                <Tooltip title={cohort.class} key={cohort.key}>
                                     <Tag
                                         color="green"
                                         key={cohort.key}
                                         className="mb-1 mr-1 text-xs lg:text-sm py-1 px-3"
                                         style={{ maxWidth: '100%', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
                                     >
-                                        {cohort.subject}
+                                        {cohort.class}
                                     </Tag>
                                 </Tooltip>
                             ))}
@@ -533,10 +535,10 @@ const TeacherProfile = () => {
                         <Divider />
                         <div className="mt-3 flex flex-wrap">
                             {instructorProfile?.special_needs.map(special => (
-                                <Tooltip title={special.name} key={special.key}>
+                                <Tooltip title={special.name} key={special.id}>
                                     <Tag
                                         color="red"
-                                        key={special.key}
+                                        key={special.id}
                                         className="mb-1 mr-1 text-xs lg:text-sm py-1 px-3"
                                         style={{ maxWidth: '100%', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
                                     >
