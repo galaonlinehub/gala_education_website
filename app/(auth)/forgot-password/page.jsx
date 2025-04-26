@@ -1,190 +1,43 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
-import { useForm, Controller } from "react-hook-form";
-import { message, Input, Button, Card, Typography, Space, Alert } from "antd";
-import LoadingState from "@/src/components/ui/loading/template/LoadingSpinner";
-import { encrypt } from "@/src/utils/fns/encryption";
-import { apiPost } from "@/src/services/api_service";
+import { Controller } from "react-hook-form";
+import { Input, Button, Card, Space } from "antd";
 import {
   LuCircleCheckBig,
   LuKeySquare,
-  LuLoaderCircle,
   LuMail,
   LuRotateCw,
   LuSendHorizontal,
   LuX,
 } from "react-icons/lu";
-import { useMutation } from "@tanstack/react-query";
-import { sessionStorageFn } from "@/src/utils/fns/client";
-import { useDevice } from "@/src/hooks/useDevice";
 import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
-
-const { Text } = Typography;
+import { usePassword } from "@/src/hooks/usePassword";
+import { SUPPORT_EMAIL } from "@/src/config/settings";
 
 const ForgotPassword = () => {
-  const router = useRouter();
-  const [otpSent, setOtpSent] = useState(false);
-  const [email, setEmail] = useState("");
-  const [isSendingOtp, setIsSendingOtp] = useState(false);
-  const [isVerifyingOtp, setIsVerifyingOtp] = useState(null);
-  const [resendCounter, setResendCounter] = useState(0);
-  const [otpValues, setOtpValues] = useState(["", "", "", "", "", ""]);
-  const [otpStatus, setOtpStatus] = useState({ status: "", message: "" });
-  const otpRefs = useRef([]);
-  const { width } = useDevice();
-
   const {
+    onSubmit,
+    resetPasswordMutation,
     control,
     handleSubmit,
-    formState: { errors },
-    setError,
-  } = useForm();
-
-  useEffect(() => {
-    let timer;
-    if (resendCounter > 0) {
-      timer = setInterval(() => {
-        setResendCounter((prev) => prev - 1);
-      }, 1000);
-    }
-    return () => clearInterval(timer);
-  }, [resendCounter]);
-
-  const resetPasswordMutation = useMutation({
-    mutationFn: (data) =>
-      apiPost("/password/reset-request", { email: data.email }),
-
-    onSuccess: (response, variables) => {
-      if (response.status === 200) {
-        const encryptedEmail = encrypt(variables.email);
-        sessionStorageFn.set("Gala", encryptedEmail);
-
-        setEmail(variables.email);
-        setOtpSent(true);
-        setResendCounter(30);
-
-        message.success("OTP sent to your email");
-      }
-    },
-    onError: (res) => {
-      if (
-        res.status === 422 &&
-        Object.keys(res?.response?.data?.errors).includes("email")
-      ) {
-        setError("email", {
-          type: "manual",
-          message: "No account registered with this email 😕",
-        });
-      } else {
-        message.error(
-          "Something went wrong. Please try again later. If the issue persists, contact support."
-        );
-      }
-    },
-    onSettled: () => {},
-  });
-
-  const onSubmit = (data) => {
-    resetPasswordMutation.mutate(data);
-  };
-
-  const handleResendOtp = async () => {
-    if (resendCounter > 0) return;
-    try {
-      setIsSendingOtp(true);
-      const response = await apiPost("/request-otp", {
-        email: email,
-      });
-      if (response.status === 200) {
-        setResendCounter(30);
-        message.success("OTP resent to your email", 6);
-      }
-    } catch (e) {
-      message.error(`Failed to resend OTP: ${e.message}`);
-    } finally {
-      setIsSendingOtp(false);
-      setResendCounter(30);
-    }
-  };
-
-  const handleOtpChange = (value, index) => {
-    setIsVerifyingOtp(null);
-    const newOtpValues = [...otpValues];
-    newOtpValues[index] = value;
-    setOtpValues(newOtpValues);
-
-    if (value && index < 5) {
-      otpRefs.current[index + 1].focus();
-    }
-
-    if (newOtpValues.every((v) => v !== "") && value) {
-      verifyOtp(newOtpValues.join(""));
-    }
-
-    setOtpStatus((prev) => ({ ...prev, status: "", message: "" }));
-  };
-
-  const verifyOtp = async (otp) => {
-    try {
-      setIsVerifyingOtp("loading");
-      const response = await apiPost("/verify-otp", {
-        email,
-        otp,
-      });
-
-      if (response.status === 200) {
-        setIsVerifyingOtp("success");
-        setOtpStatus({
-          status: "success",
-          message: "",
-        });
-        setTimeout(() => {
-          router.push("/forgot-password/password-change");
-        }, 3000);
-      }
-    } catch (e) {
-      setOtpStatus({
-        status: "error",
-        message:
-          e?.response?.data?.message ||
-          "Invalid or expired OTP. Please try again.",
-      });
-      setIsVerifyingOtp("error");
-    }
-  };
-
-  const handleKeyDown = (e, index) => {
-    if (e.key === "Backspace" && !otpValues[index] && index > 0) {
-      otpRefs.current[index - 1].focus();
-    }
-  };
-
-  const handlePaste = (e) => {
-    e.preventDefault();
-    const pastedData = e.clipboardData.getData("text/plain").trim();
-
-    if (/^\d+$/.test(pastedData) && pastedData.length <= otpValues.length) {
-      const newOtpValues = [...otpValues].map((_, index) =>
-        index < pastedData.length ? pastedData[index] : ""
-      );
-      setOtpValues(newOtpValues);
-
-      const nextEmptyIndex = newOtpValues.findIndex((value) => value === "");
-      const focusIndex =
-        nextEmptyIndex === -1 ? otpValues.length - 1 : nextEmptyIndex;
-      otpRefs.current[focusIndex].focus();
-
-      if (newOtpValues.every((v) => v !== "")) {
-        verifyOtp(newOtpValues.join(""));
-      }
-    }
-  };
+    errors,
+    handleKeyDown,
+    handleOtpChange,
+    handlePaste,
+    verificationMutation,
+    handleResendOtp,
+    resendOtpMutation,
+    width,
+    otpStatus,
+    otpValues,
+    resendCounter,
+    otpRefs,
+    setOtpStatus,
+  } = usePassword();
 
   return (
-    <div className="flex items-center justify-center px-2 py-2 md:py-12 ">
+    <div className="flex items-center justify-center px-2 py-2 md:py-12">
       <Card
-        className={`w-full max-w-md py-8 bg-white rounded-xl transition-all ${
+        className={`!w-full !max-w-md !py-8 bg-white rounded-xl transition-all ${
           width < 768 ? "shadow-none border-none" : "shadow-sm"
         }`}
       >
@@ -195,14 +48,21 @@ const ForgotPassword = () => {
         </div>
 
         <h1 className="font-bold mb-6 text-2xl text-center text-gray-800">
-          {!otpSent ? "Verify Email" : "Enter Verification Code"}
+          {!resetPasswordMutation.isSuccess
+            ? "Verify Email"
+            : "Enter Verification Code"}
         </h1>
 
-        {!otpSent ? (
+        {!resetPasswordMutation.isSuccess ? (
           <form
-            className="flex flex-col gap-4"
+            className="flex flex-col gap-4 pb-6"
             onSubmit={handleSubmit(onSubmit)}
           >
+            {otpStatus.message && (
+              <div className="text-red-500 bg-red-50  text-center w-full text-xs font-medium border-[.1px] border-red-500 p-1 rounded">
+                {otpStatus.message}
+              </div>
+            )}
             <div>
               <label
                 htmlFor="email"
@@ -223,22 +83,25 @@ const ForgotPassword = () => {
                 render={({ field }) => (
                   <Input
                     {...field}
+                    onChange={(e) => {
+                      field.onChange(e);
+                      setOtpStatus({ status: "", message: "" });
+                    }}
                     id="email"
-                    type="email"
                     autoComplete="new-password"
                     autoCorrect="off"
                     autoCapitalize="off"
                     placeholder="Enter your email"
                     prefix={<LuMail className="text-gray-400" />}
-                    className="rounded-lg"
+                    className="rounded-lg !text-xs"
                     size="large"
                   />
                 )}
               />
               {errors.email && (
-                <Text type="danger" className="mt-1 block">
-                  {errors.email.message}
-                </Text>
+                <div className="mt-1 px-2 block text-red-500 text-xs">
+                  {errors?.email?.message}
+                </div>
               )}
             </div>
 
@@ -246,7 +109,7 @@ const ForgotPassword = () => {
               type="primary"
               htmlType="submit"
               disabled={resetPasswordMutation.isPending}
-              className="!h-12 !bg-[#030DFE] hover:!bg-[#0000dd] disabled:!opacity-40  disabled:!cursor-not-allowed disabled:!pointer-events-none !text-white !font-semibold !rounded-lg !flex !items-center !justify-center !gap-2 !mt-4"
+              className="!h-12 !bg-[#030DFE] hover:!bg-[#0000dd] disabled:!opacity-40 disabled:!cursor-not-allowed disabled:!pointer-events-none !text-white !font-semibold !rounded-lg !flex !items-center !justify-center !gap-2 !mt-4"
               size="large"
             >
               {resetPasswordMutation.isPending ? (
@@ -254,7 +117,7 @@ const ForgotPassword = () => {
                   <SlickSpinner size={14} color="white" />
                 </div>
               ) : (
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 text-sm">
                   <span>Send Verification Code</span>
                   <LuSendHorizontal />
                 </div>
@@ -262,20 +125,20 @@ const ForgotPassword = () => {
             </Button>
           </form>
         ) : (
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center pb-6">
             <p className="text-gray-600 mb-6 text-center">
-              We&apos;ve sent a 6-digit verification code to your email.
+              We've sent a 6-digit verification code to your email.
               <br />
               Please enter it below.
             </p>
 
             {otpStatus.message && (
-              <div className="text-red-500 text-sm text-center w-full mb-6 font-medium border-[.1px] border-red-500 p-1 rounded">
+              <div className="text-red-500 text-xs text-center w-full mb-6 font-medium border-[.1px] border-red-500 p-1 rounded">
                 {otpStatus.message}
               </div>
             )}
 
-            <div className="mb-4 w-full">
+            <div className="mb-6 w-full">
               <Space
                 size={[8, 8]}
                 className="w-full justify-center flex flex-wrap"
@@ -299,7 +162,7 @@ const ForgotPassword = () => {
                         w-12 h-12 sm:w-14 sm:h-14 text-center text-2xl md:text-4xl border rounded-lg font-black
                         focus:border-4 focus:outline-none transition-all
                         ${
-                          otpStatus.status === "success"
+                          verificationMutation.isSuccess
                             ? "border-green-500 text-green-600"
                             : otpStatus.status === "error"
                             ? "border-red-500 text-red-600"
@@ -317,75 +180,66 @@ const ForgotPassword = () => {
               </Space>
             </div>
 
-            {isVerifyingOtp !== null && (
-              <div
-                className={`w-full flex flex-col items-center justify-center mb-4 transition-all ${
-                  isVerifyingOtp === "loading"
-                    ? "text-blue-500"
-                    : isVerifyingOtp === "error"
-                    ? "text-red-500"
-                    : "text-green-500"
-                }`}
-              >
-                {isVerifyingOtp === "loading" && (
-                  <>
-                    <LoadingState />
-                    <span className="mt-2">Verifying your code...</span>
-                  </>
-                )}
-                {isVerifyingOtp === "error" && (
-                  <div className="flex flex-col items-center justify-center gap-2">
-                    <LuX strokeWidth={3.5} size={32} />
-                    <span className="font-medium text-center">
-                      OTP Verification failed
-                    </span>
-                  </div>
-                )}
-                {isVerifyingOtp === "success" && (
-                  <div className="flex flex-col items-center justify-center gap-2">
-                    <LuCircleCheckBig strokeWidth={3} size={32} />
-                    <span className="font-medium">Success!</span>
-                    <p className="text-sm">
-                      Redirecting you to reset your password...
-                    </p>
-                  </div>
-                )}
+            {verificationMutation.isPending && (
+              <div className="w-full flex flex-col items-center justify-center mb-4 text-blue-500">
+                <SlickSpinner size={24} color="blue" />
+                <span className="mt-2">Verifying your code...</span>
+              </div>
+            )}
+            {verificationMutation.isError && (
+              <div className="w-full flex flex-col items-center justify-center mb-4 text-red-500">
+                <LuX strokeWidth={3.5} size={32} />
+                <span className="font-medium text-center">
+                  OTP Verification failed
+                </span>
+              </div>
+            )}
+            {verificationMutation.isSuccess && (
+              <div className="w-full flex flex-col items-center justify-center mb-4 text-green-500">
+                <LuCircleCheckBig strokeWidth={3} size={32} />
+                <span className="font-medium">Success!</span>
+                <p className="text-sm">
+                  Redirecting you to reset your password...
+                </p>
               </div>
             )}
 
             <div className="text-center mt-4">
               <p className="text-gray-500 text-xs mb-2">
-                Didn&apos;t receive the code?
+                Didn't receive the code?
               </p>
               <Button
                 type="link"
                 onClick={handleResendOtp}
-                disabled={resendCounter > 0 || isSendingOtp}
+                disabled={resendCounter > 0 || resendOtpMutation.isPending}
                 className={`
-                   !px-4 !py-2 !h-auto !flex !items-center !justify-center !mx-auto !border-none !text-[#030DFE] disabled:!text-gray-400`}
+                  !px-4 !py-2 !h-auto !flex !items-center !justify-center !mx-auto !border-none !text-[#030DFE] disabled:!text-gray-400`}
               >
-                <div>
-                  {!isSendingOtp ? (
-                    <div>
-                      {resendCounter > 0 ? (
-                        `Resend in ${resendCounter}s`
-                      ) : (
-                        <div className="flex items-center gap-2">
-                          <LuRotateCw />
-                          Resend code
-                        </div>
-                      )}
-                    </div>
-                  ) : (
-                    <div className="flex items-center justify-center gap-2">
-                      <LuLoaderCircle className="animate-spin" /> Sending...
-                    </div>
-                  )}
-                </div>
+                {resendOtpMutation.isPending ? (
+                  <div className="flex items-center justify-center gap-2">
+                    <SlickSpinner size={14} color="blue" />
+                    Sending...
+                  </div>
+                ) : resendCounter > 0 ? (
+                  `Resend in ${resendCounter}s`
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <LuRotateCw />
+                    Resend code
+                  </div>
+                )}
               </Button>
             </div>
           </div>
         )}
+        <div className="w-full flex justify-end">
+          <a
+            href={`mailto:${SUPPORT_EMAIL}?subject=Password%20Reset%20Failure`}
+            className="text-[#0000dd] hover:text-opacity-80 text-xs px-2"
+          >
+            Contact support
+          </a>
+        </div>
       </Card>
     </div>
   );

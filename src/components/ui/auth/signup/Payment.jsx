@@ -180,7 +180,7 @@ const MobilePay = () => {
     <div className="flex flex-col items-center justify-center min-h-[35rem] xs:p-4 md:p-8">
       <Card
         className="w-full lg:w-3/4 max-w-3xl bg-white rounded-xl border-0 md:border-[0.8px] md:border-gray-200
-          [&_.ant-card-body]:!p-0 sm:[&_.ant-card-body]:!p-3 md:[&_.ant-card-body]:!p-8 !py-4 md:!py-0"
+          [&_.ant-card-body]:!p-0 sm:[&_.ant-card-body]:!p-3 md:[&_.ant-card-body]:!p-8 !py-2 md:!py-0"
       >
         <div className="mb-8">
           <h2 className="text-sm xxs:text-lg xs:text-text-xl sm:text-2xl md:text-2xl font-bold text-gray-900 mb-4">
