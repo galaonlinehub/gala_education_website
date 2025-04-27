@@ -7,6 +7,9 @@ import { IoMailOutline } from "react-icons/io5";
 import Donate from "@/src/components/ui/Donate";
 import FaqCard from "@/src/components/home/card/FaqCard";
 import { useTeamMembers } from "@/src/hooks/useTeamMembers";
+import { img_base_url } from "@/src/config/settings";
+import MultipleProfileSkeletons from '@/src/components/home/card/ProfileCardSkeleton';
+
 
 const { Text } = Typography;
 
@@ -35,7 +38,9 @@ const AboutUs = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { teamMembers , isMembersPending} = useTeamMembers();
+  const { teamMembers, isMembersPending } = useTeamMembers();
+
+  const [member, setMemberDetails] = useState({});
 
   const scrollToSection = (sectionRef) => {
     sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
@@ -87,9 +92,15 @@ const AboutUs = () => {
     setShowDonatePop(true);
   };
 
-  const showModal = () => {
+  const showModal = (memberData) => {
+
+    setMemberDetails(memberData)
+
     setIsModalOpen(true);
   };
+
+  console.log("data:", member)
+
 
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -119,18 +130,20 @@ const AboutUs = () => {
             <div className="flex flex-col gap-4 w-full">
               <div className="flex gap-2">
                 <div>
-                  <Image src="/teacherOne.jpeg" width={60} height={60} alt="user_photo" className="w-full max-w-[80px] sm:max-w-[150px] md:max-w-[180px] lg:max-w-[180px] object-cover rounded-xl" />
+                  <Image src={
+                    member?.photo &&
+                    `${img_base_url + member?.photo}`
+                  } width={100} height={60} alt="user_photo" className="w-full max-w-[80px] sm:max-w-[150px] md:max-w-[180px] lg:max-w-[180px] object-cover rounded-xl" />
                 </div>
                 <div className="flex flex-col items-start justify-end ml-2">
-                  <Text className="font-bold text-[10px]">Dr. Hellen Dereck</Text>
-                  <Text className="text-gray-500 text-[10px]">Founder - Interim CEO</Text>
-                  <Text className="text-[10px] font-semibold">hellenderick@gmail.com</Text>
+                  <Text className="font-bold text-[10px]">{member?.name}</Text>
+                  <Text className="text-gray-500 text-[10px]">{member?.teams?.[0]?.position || "No position"}</Text>
+                  <Text className="text-[10px] font-semibold">{member?.email}</Text>
                 </div>
               </div>
               <div className="w-full flex flex-col gap-1">
                 <Text className="text-[10px] text-justify leading-loose">
-                  Dr. Erick Mgema is a distinguished academic and seasoned professional in the fields of education, research, and design. He holds a Ph.D., an MA in Fine Arts, and a BA in Art and Design, demonstrating a deep commitment to both artistic excellence and scholarly inquiry. With extensive expertise in curriculum development, creative innovation, and technological integration, Dr. Mgema plays a pivotal role in shaping the educational landscape. As the Senior Designer of the system, he spearheads its development, ensuring a seamless and user-centric experience. In addition to his academic contributions as a Lecturer, he serves as the Interim CEO of Galahub, the parent company of Gala Education, where he drives strategic growth and innovation. His leadership and vision continue to
-                  bridge the gap between education and technology, fostering transformative learning experiences.
+                  {member?.bio}
                 </Text>
               </div>
             </div>
@@ -140,21 +153,23 @@ const AboutUs = () => {
             <div className="flex gap-4 w-full p-8">
               <div className="flex gap-2">
                 <div className="w-56">
-                  <Image src="/teacherOne.jpeg" width={120} height={120} alt="user_photo" className="w-full max-w-[80px]  sm:max-w-[150px] md:max-w-[180px] lg:max-w-[220px] object-cover rounded-xl" />
+                  <Image src={
+                    member?.photo &&
+                    `${img_base_url + member?.photo}`
+                  } width={120} height={120} alt="user_photo" className="w-full max-w-[80px]  sm:max-w-[150px] md:max-w-[180px] lg:max-w-[220px] object-cover rounded-xl" />
                 </div>
               </div>
               <div className="w-full flex flex-col gap-6 lg:ml-8">
                 <div className="flex flex-col items-start justify-end">
-                  <Text className="font-bold text-sm">Dr. Hellen Dereck</Text>
-                  <Text className="text-gray-500 text-xs">Founder - Interim CEO</Text>
+                  <Text className="font-bold text-sm">{member?.name}</Text>
+                  <Text className="text-gray-500 text-xs">{member?.teams?.[0]?.position || "No position"}</Text>
                 </div>
                 <Text className="text-xs text-justify lg:leading-loose">
-                  Dr. Erick Mgema is a distinguished academic and seasoned professional in the fields of education, research, and design. He holds a Ph.D., an MA in Fine Arts, and a BA in Art and Design, demonstrating a deep commitment to both artistic excellence and scholarly inquiry. With extensive expertise in curriculum development, creative innovation, and technological integration, Dr. Mgema plays a pivotal role in shaping the educational landscape. As the Senior Designer of the system, he spearheads its development, ensuring a seamless and user-centric experience. In addition to his academic contributions as a Lecturer, he serves as the Interim CEO of Galahub, the parent company of Gala Education, where he drives strategic growth and innovation. His leadership and vision continue to
-                  bridge the gap between education and technology, fostering transformative learning experiences.
+                  {member?.bio}
                 </Text>
                 <div className="flex flex-col">
                   <Text className="text-xs font-semibold">Email:</Text>
-                  <Text className="text-xs ">hellenderick@gmail.com</Text>
+                  <Text className="text-xs ">{member?.email}</Text>
                 </div>
               </div>
             </div>
@@ -168,42 +183,24 @@ const AboutUs = () => {
     switch (value) {
       case "Executive Team":
         return (
-          <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            <div className="flex flex-col gap-2  w-full">
-              <Image alt="" src="/about-us/avatar.jpeg" className="w-full rounded-lg" width={120} height={120} />
-              <div className="text-xs flex w-full flex-col ml-2">
-                <Text className="font-bold">Dr. Hellen Dereck</Text>
-                <Text className="font-bold text-gray-500">Founder - Interim CEO</Text>
-                <Text onClick={showModal} className="text-blue-700 underline cursor-pointer">
-                  Full bio
-                </Text>
-              </div>
-            </div>
-            
-            <div className="flex flex-col gap-2 w-full">
-              <Image alt="" src="/about-us/avatar.jpeg" className="w-full rounded-lg" width={120} height={120} />
-              <div className="text-xs flex w-full flex-col ml-2">
-                <Text className="font-bold">Dr. Hellen Dereck</Text>
-                <Text className="font-bold text-gray-500">Founder - Interim CEO</Text>
-                <Text className="text-blue-700 underline cursor-pointer">Full bio</Text>
-              </div>
-            </div>
-            <div className="flex flex-col gap-2 w-full">
-              <Image alt="" src="/about-us/avatar.jpeg" className="w-full rounded-lg" width={120} height={120} />
-              <div className="text-xs flex w-full flex-col ml-2">
-                <Text className="font-bold">Dr. Hellen Dereck</Text>
-                <Text className="font-bold text-gray-500">Founder - Interim CEO</Text>
-                <Text className="text-blue-700 underline cursor-pointer">Full bio</Text>
-              </div>
-            </div>
-            <div className="flex flex-col gap-2 w-full">
-              <Image alt="" src="/about-us/avatar.jpeg" className="w-full rounded-lg" width={120} height={120} />
-              <div className="text-xs flex w-full flex-col  ml-2">
-                <Text className="font-bold">Dr. Hellen Dereck</Text>
-                <Text className="font-bold text-gray-500">Founder - Interim CEO</Text>
-                <Text className="text-blue-700 underline cursor-pointer">Full bio</Text>
-              </div>
-            </div>
+          <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-4">
+            {isMembersPending ? <MultipleProfileSkeletons /> :
+              teamMembers?.map((member) => (
+                <div className="flex flex-col gap-2 items-center w-full">
+                  <Image alt="" src={
+                    member?.photo &&
+                    `${img_base_url + member?.photo}`
+                  } className="w-64 h-72 rounded-lg" width={120} height={80} />
+                  <div className="text-xs flex flex-col items-center ml-2">
+                    <Text className="font-bold">{member.name}</Text>
+                    <Text className="font-bold text-gray-500">{member?.teams?.[0]?.position}</Text>
+                    <Text onClick={() => showModal(member)} className="text-blue-700 underline cursor-pointer">
+                      Full bio
+                    </Text>
+                  </div>
+                </div>
+              ))
+            }
           </div>
         );
         break;
@@ -219,8 +216,8 @@ const AboutUs = () => {
         return (
           <div className="w-full grid grid-cols-1 md:grid-cols-2 items-center gap-4">
             <Typography className="flex flex-col items-center text-justify">
-              <Text className="font-bold">Our System</Text>
-              <Text className="text-sm leading-6 lg:leading-8">Our advanced platform integrates AI-driven tutoring, machine learning-powered educational services, secure payment gateways with subscription management, digital assignment distribution and resource sharing, as well as real-time messaging and collaboration tools for students, educators, and cohorts, all engineered to adapt to the rapidly evolving EdTech landscape in Tanzania.</Text>
+              <Text className="font-bold text-lg">Our System</Text>
+              <Text className="text-xs lg:text-sm xxs:leading-loose leading-6 lg:leading-8">Our advanced platform integrates AI-driven tutoring, machine learning-powered educational services, secure payment gateways with subscription management, digital assignment distribution and resource sharing, as well as real-time messaging and collaboration tools for students, educators, and cohorts, all engineered to adapt to the rapidly evolving EdTech landscape in Tanzania.</Text>
             </Typography>
             <div className="w-full flex items-center justify-center">
               <Image src="/about-us/laptop.png" width={300} height={300} alt="laptop picture" className="w-full sm:w-3/4 rounded-lg" />
@@ -232,8 +229,8 @@ const AboutUs = () => {
         return (
           <div className="w-full grid grid-cols-1 md:grid-cols-2 items-center gap-4">
             <Typography className="flex flex-col items-center text-justify">
-              <Text className="font-bold">Language</Text>
-              <Text className="text-xs leading-6 lg:leading-8">Our platform currently supports English and Kiswahili, leveraging a scalable multilingual architecture to ensure seamless user experience across diverse linguistic backgrounds. As part of the company&apos;s vision for international expansion, we are actively developing language integration frameworks that will enable the addition of more languages, enhancing accessibility and inclusivity for a global audience.</Text>
+              <Text className="font-bold text-lg">Language</Text>
+              <Text className="text-xs lg:text-sm xxs:leading-loose leading-6 lg:leading-8">Our platform currently supports English and Kiswahili, leveraging a scalable multilingual architecture to ensure seamless user experience across diverse linguistic backgrounds. As part of the company&apos;s vision for international expansion, we are actively developing language integration frameworks that will enable the addition of more languages, enhancing accessibility and inclusivity for a global audience.</Text>
             </Typography>
             <div className="w-full flex items-center justify-center">
               <Image src="/about-us/language.png" width={300} height={300} alt="language picture" className="w-full sm:w-3/4 rounded-lg" />
@@ -245,8 +242,8 @@ const AboutUs = () => {
         return (
           <div className="w-full grid grid-cols-1 md:grid-cols-2 items-center gap-4">
             <Typography className="flex flex-col items-center text-justify">
-              <Text className="font-bold">For teachers</Text>
-              <Text className="text-xs leading-6 lg:leading-8">Our platform upholds the highest standards of integrity and quality education, enforcing a zero-tolerance policy for any form of misconduct. To ensure compliance, we conduct periodic in-class evaluations where our staff members attend sessions to assess teaching quality, engagement, and adherence to our educational guidelines, fostering a trustworthy and professional learning environment.</Text>
+              <Text className="font-bold text-lg">For teachers</Text>
+              <Text className="text-xs lg:text-sm xxs:leading-loose leading-6 lg:leading-8">Our platform upholds the highest standards of integrity and quality education, enforcing a zero-tolerance policy for any form of misconduct. To ensure compliance, we conduct periodic in-class evaluations where our staff members attend sessions to assess teaching quality, engagement, and adherence to our educational guidelines, fostering a trustworthy and professional learning environment.</Text>
             </Typography>
             <div className="w-full flex items-center justify-center">
               <Image src="/about-us/for_teachers.png" width={300} height={300} alt="teachers picture" className="w-full sm:w-3/4 rounded-lg" />
@@ -259,8 +256,8 @@ const AboutUs = () => {
         return (
           <div className="w-full grid grid-cols-1 md:grid-cols-2 items-center gap-4">
             <Typography className="flex flex-col items-center text-justify">
-              <Text className="font-bold">For students</Text>
-              <Text className="text-xs leading-6 lg:leading-8">Our platform is committed to maintaining a high standard of academic integrity and quality education, enforcing a zero-tolerance policy for any form of misconduct. Students are expected to engage respectfully, adhere to ethical learning practices, and uphold honesty in all academic activities. To ensure compliance, we conduct periodic assessments and monitoring, fostering a fair, professional, and inclusive learning environment.</Text>
+              <Text className="font-bold text-lg">For students</Text>
+              <Text className="text-xs lg:text-sm xxs:leading-loose leading-6 lg:leading-8">Our platform is committed to maintaining a high standard of academic integrity and quality education, enforcing a zero-tolerance policy for any form of misconduct. Students are expected to engage respectfully, adhere to ethical learning practices, and uphold honesty in all academic activities. To ensure compliance, we conduct periodic assessments and monitoring, fostering a fair, professional, and inclusive learning environment.</Text>
             </Typography>
             <div className="w-full flex items-center justify-center">
               <Image src="/about-us/for_students.png" width={300} height={300} alt="students picture" className="w-full sm:w-3/4 rounded-lg" />
@@ -280,7 +277,7 @@ const AboutUs = () => {
         return (
           <Card className="w-full bg-[#F2EFEF]">
             <div className="flex flex-col space-y-4">
-              <Text id="contact" ref={sectionRefs.contact} className="font-black text-2xl">
+              <Text id="contact" ref={sectionRefs.contact} className="font-black text-lg lg:text-2xl">
                 Contact Us
               </Text>
               <Text className="text-xs text-justify leading-loose">For inquiries directed to the Gala Education team, please email info@galahub.org or submit your questions by clicking the button below.</Text>
@@ -290,7 +287,7 @@ const AboutUs = () => {
               <Divider orientation="right" className="!text-xs !text-gray-500" style={{ borderColor: "#dcdcdc" }}>
                 Subscription
               </Divider>
-              <Text className="font-black text-2xl">Subscribe to email alerts</Text>
+              <Text className="font-black text-lg lg:text-2xl">Subscribe to email alerts</Text>
               <Text className="text-xs leading-loose text-justify">To subscribe to email alerts, please enter your email address in the field below and select at least one alert option. Once your request is submitted, you will receive a confirmation email with an activation link, which must be clicked to complete your subscription. Additional alert options can be selected at any time.</Text>
               <Text className="text-xs leading-loose text-justify">At Gala Education, we are committed to safeguarding your privacy and will never share your information with third parties. You may unsubscribe from any alerts by visiting the ‘unsubscribe’ section below. If you encounter any issues during this process, please contact us for assistance.</Text>
               <Text className="text-xs leading-loose text-justify">By providing your email address below, you consent to receive email updates from Gala Education.</Text>
@@ -304,7 +301,7 @@ const AboutUs = () => {
               <Divider orientation="right" style={{ borderColor: "#dcdcdc" }} className="!text-xs !text-gray-500">
                 Unsubscribe
               </Divider>
-              <Text className="font-black text-2xl">Unsubscribe from email alerts</Text>
+              <Text className="font-black text-lg lg:text-2xl">Unsubscribe from email alerts</Text>
               <Text className="text-xs leading-loose text-justify">To opt-out of email alerts, please enter your email address in the field below and you will be removed from all email alerts to which you are subscribed. After submitting your email, you will receive a confirmation email to the requested email address. You must click the confirmation link in order to complete your request to unsubscribe. You can elect to receive alerts at any time you would like.</Text>
               <Text className="text-xs font-bold mt-3">Unsubscribe from email alerts</Text>
               <div className="flex flex-col md:flex-row gap-4 mb-5">
@@ -416,15 +413,15 @@ const AboutUs = () => {
 
       <div className="flex flex-col w-full md:w-3/4">
         <div className="flex flex-col">
-          <Text id="aboutUs" ref={sectionRefs.aboutUs} className="font-black text-2xl">
+          <Text id="aboutUs" ref={sectionRefs.aboutUs} className="font-black text-xl lg:text-2xl">
             About Us
           </Text>
           <div className="flex flex-col">
-            <Typography className="text-sm leading-loose text-justify">
+            <Typography className="text-xs lg:text-sm xxs:leading-loose lg:leading-loose text-justify">
               Gala Education is an innovative online tutoring platform created by academic experts to serve Tanzanian Primary, Secondary, and High School students. Our mission is to provide high-quality education while creating employment opportunities for teachers across Tanzania. Recognizing the critical shortage of qualified teachers, we meticulously designed our platform to bridge this gap and ensure that every student receives the education they deserve. At Gala Education, we believe that education is the foundation for a better future. Our platform not only focuses on delivering top-notch tutoring services but also reinvests its profits into various philanthropic activities. These include building classrooms, libraries, and other educational infrastructure across Tanzania, ensuring
               that students from all backgrounds have access to conducive learning environments. In addition to our primary and secondary education services.
             </Typography>
-            <Typography className="text-sm leading-loose text-justify">
+            <Typography className="text-xs xxs:leading-loose lg:text-sm lg:leading-loose text-justify">
               {" "}
               Gala Education offers a range of short courses aimed at equipping Tanzanian youth with practical, self-employable skills. These courses are taught by a diverse team of academics, executives, and industry-leading experts, providing learners with valuable insights and hands-on experience in various fields. Accessing our services is simple. All you need is a device and a stable internet connection to join our online tutoring sessions. Our user-friendly platform makes it easy for students to connect with skilled tutors and access high-quality educational resources from the comfort of their homes. Join us at Gala Education as we strive to make quality education accessible to every child in Tanzania, empowering the next generation with the knowledge and skills they need to succeed.
             </Typography>
@@ -432,7 +429,7 @@ const AboutUs = () => {
         </div>
 
         <div className="flex flex-col mt-6">
-          <Text id="leadership" ref={sectionRefs.leadership} className="font-black text-2xl py-2">
+          <Text id="leadership" ref={sectionRefs.leadership} className="font-black text-lg lg:text-2xl py-2">
             Leadership/Governance
           </Text>
           <div className="flex flex-col w-full py-3">
@@ -453,7 +450,7 @@ const AboutUs = () => {
         </div>
 
         <div className="flex flex-col mt-6">
-          <Text id="expectations" ref={sectionRefs.expectations} className="font-black text-2xl pt-2">
+          <Text id="expectations" ref={sectionRefs.expectations} className="font-black text-lg lg:text-2xl pt-2">
             What to expect
           </Text>
           <div className="flex flex-col w-full py-3">
@@ -474,16 +471,16 @@ const AboutUs = () => {
         </div>
 
         <div className="flex flex-col mt-8">
-          <Text id="outreach" ref={sectionRefs.outreach} className="font-black text-2xl py-2">
+          <Text id="outreach" ref={sectionRefs.outreach} className="font-black text-lg lg:text-2xl py-2">
             Outreach efforts
           </Text>
           <Text className="font-black text-sm">You are making a difference</Text>
-          <Text className="text-sm leading-loose text-justify">Gala Education Financial Aid wing is an extension of our platform that collaborates with organizations to enhance learning opportunities and support educational initiatives in local and global communities. We provide assistance in education, emergency response, family empowerment, hunger relief, and more.</Text>
+          <Text className="text-xs lg:text-sm xxs:leading-loose lg:leading-loose text-justify">Gala Education Financial Aid wing is an extension of our platform that collaborates with organizations to enhance learning opportunities and support educational initiatives in local and global communities. We provide assistance in education, emergency response, family empowerment, hunger relief, and more.</Text>
           <div className="w-full relative py-6">
             <Image src="/about-us/outreach.png" width={300} height={300} alt="outreach_image" className="w-full" />
             <Text className="absolute left-6 bottom-10 text-xs md:text-sm font-bold text-white p-3 bg-[#0000004D]/30">Serve your community from wherever you are</Text>
           </div>
-          <Text className="text-sm leading-loose text-justify">Community impact is at the heart of Gala Education. A portion of every contribution is dedicated to outreach, supporting strategic partnerships that address real needs both locally and globally. From empowering schools to providing essential resources for those in need, we are committed to driving meaningful change in education and beyond. We believe in investing generously, serving consistently, and collaborating strategically to create lasting impact. There’s a place for everyone to get involved—join us in shaping a brighter future for learners and communities in need.</Text>
+          <Text className="text-xs lg:text-sm xxs:leading-loose lg:leading-loose text-justify">Community impact is at the heart of Gala Education. A portion of every contribution is dedicated to outreach, supporting strategic partnerships that address real needs both locally and globally. From empowering schools to providing essential resources for those in need, we are committed to driving meaningful change in education and beyond. We believe in investing generously, serving consistently, and collaborating strategically to create lasting impact. There’s a place for everyone to get involved—join us in shaping a brighter future for learners and communities in need.</Text>
           <div className="w-full justify-center flex py-4 mb-10">
             <Button onClick={showDonatePopupModal} size="middle" className="font-semibold w-64 bg-[#F2EFEF]">
               Donate for the cause
