@@ -153,10 +153,7 @@ const AboutUs = () => {
             <div className="flex gap-4 w-full p-8">
               <div className="flex gap-2">
                 <div className="w-56">
-                  <Image src={
-                    member?.photo &&
-                    `${img_base_url + member?.photo}`
-                  } width={120} height={120} alt="user_photo" className="w-full max-w-[80px]  sm:max-w-[150px] md:max-w-[180px] lg:max-w-[220px] object-cover rounded-xl" />
+                  <Image src="/about-us/team-placeholder.png" width={120} height={120} alt="user_photo" className="w-full max-w-[80px]  sm:max-w-[150px] md:max-w-[180px] lg:max-w-[220px] object-cover rounded-xl" />
                 </div>
               </div>
               <div className="w-full flex flex-col gap-6 lg:ml-8">
@@ -187,10 +184,7 @@ const AboutUs = () => {
             {isMembersPending ? <MultipleProfileSkeletons /> :
               teamMembers?.map((member) => (
                 <div className="flex flex-col gap-2 items-center w-full">
-                  <Image alt="" src={
-                    member?.photo &&
-                    `${img_base_url + member?.photo}`
-                  } className="w-64 h-72 rounded-lg" width={120} height={80} />
+                  <Image alt="" src="/about-us/team-placeholder.png" className="w-64 h-64 rounded-lg" width={120} height={80} />
                   <div className="text-xs flex flex-col items-center ml-2">
                     <Text className="font-bold">{member.name}</Text>
                     <Text className="font-bold text-gray-500">{member?.teams?.[0]?.position}</Text>
