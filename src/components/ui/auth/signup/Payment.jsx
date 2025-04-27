@@ -25,6 +25,7 @@ const MobilePay = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [paymentStatus, setPaymentStatus] = useState("");
   const [reference, setReference] = useState(null);
+  const { user } = useUser();
 
   const messages = {
     required: "Phone number is required",
@@ -162,13 +163,13 @@ const MobilePay = () => {
 
   let getPlan = () => {
     const localStorageText = localStorageFn.get(PLAN_CONFIRMED_KEY);
-    const decryptedPlan = decrypt(localStorageText);
+    const decryptedPlan = localStorageText && decrypt(localStorageText);
     setPlan(decryptedPlan);
   };
 
   var getEmail = () => {
     const sessionStorageText = sessionStorageFn.get(EMAIL_VERIFICATION_KEY);
-    const decryptedEmail = decrypt(sessionStorageText);
+    const decryptedEmail = user ? user.email : decrypt(sessionStorageText);
     setEmail(decryptedEmail);
   };
 

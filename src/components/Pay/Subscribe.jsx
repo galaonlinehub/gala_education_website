@@ -7,28 +7,7 @@ import { useTabNavigator } from "@/src/store/auth/signup";
 
 import { createStyles, useTheme } from "antd-style";
 import { Signout } from "../ui/auth/signup/Signout";
-const useStyle = createStyles(({ token }) => ({
-  "my-modal-body": {
-    overflowY: "auto",
-  },
-  "my-modal-mask": {
-    boxShadow: `inset 0 0 15px #fff`,
-    overflow: "hidden",
-    display: "flex",
-  },
-  "my-modal-header": {
-    borderBottom: `1px dotted ${token.colorPrimary}`,
-  },
 
-  "my-modal-content": {
-    border: "1px solid #333",
-    display: "flex",
-    flexDirection: "column",
-  },
-  "modal-container": {
-    overflow: "hidden",
-  },
-}));
 
 export default function Subscribe() {
   const {user} = useUser();
@@ -54,7 +33,6 @@ export default function Subscribe() {
     },
   ];
 
-  console.log("user data:..", user);
 
   return (
     <Drawer

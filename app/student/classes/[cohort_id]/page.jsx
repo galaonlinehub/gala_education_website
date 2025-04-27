@@ -18,14 +18,18 @@ import {
   LuUsers,
   LuVideo,
 } from "react-icons/lu";
+import { useRouter } from "next/navigation";
+import { useEnrolledTopics } from "@/src/hooks/useEnrolledTopics";
+import { useSearchParams } from "next/navigation";
+import { decrypt } from "@/src/utils/fns/encryption";
+import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
 
 const ClassDetailsPage = ({ params }) => {
   const [showChatInput, setShowChatInput] = useState(false);
   const { cohort_id } = params;
 
-  console.log("Params:", params);
-
-  console.log(cohort_id);
+  const searchParams = useSearchParams();
+  const instructor_id = decrypt(searchParams.get("id"));
 
   const classData = {
     id: "BIO-454-44",
@@ -161,13 +165,24 @@ const ClassDetailsPage = ({ params }) => {
     ],
   };
 
+  const router = useRouter();
+  const { cohortDetails, cohortDetailsLoading } = useEnrolledTopics(cohort_id);
+  console.log(cohortDetails);
+
   return (
     <div className="min-h-screen w-full">
-      <div className="sticky top-4 z-50 bg-white -mx-2 lg:-mx-6 w-full ">
-        <div className="px-4 h-12 flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <button className="h-10 w-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors">
-              <LuArrowLeft className="text-[#001840]" />
+      <div className="sticky top-1 z-50 bg-white -mx-2 lg:-mx-12 w-full">
+        <div className="px-4 h-12 flex items-center justify-between mx-4">
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={() => router.back()}
+              className="h-8 w-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
+            >
+              <LuArrowLeft
+                strokeWidth={3}
+                size={24}
+                className="text-[#001840]"
+              />
             </button>
             <div className="text-lg font-semibold text-gray-800">
               My Classes
@@ -183,58 +198,70 @@ const ClassDetailsPage = ({ params }) => {
 
       {/* Main Content */}
       <div className="max-w-6xl mx-auto px-4 py-6">
-        {/* Class Header */}
         <Card className="mb-6">
-          <div className="flex flex-col md:flex-row md:items-center justify-between">
+          {cohortDetailsLoading ? (
+            <div className="flex items-center justify-center w-full h-56">
+              <SlickSpinner color="#001840" size={28} />
+            </div>
+          ) : (
             <div>
-              <div className="text-[#001840] font-black text-xl mb-3">
-                {classData.id}
+              <div className="flex flex-col md:flex-row md:items-center justify-between">
+                <div>
+                  <div className="text-[#001840] font-black text-xl mb-3">
+                    {cohortDetails?.cohort_name}
+                  </div>
+
+                  <div className="flex items-center space-x-2 mb-2">
+                    <span className="bg-blue-500 text-white text-xs px-2 py-1 rounded-md">
+                      {cohortDetails?.subject}
+                    </span>
+                    <span className="bg-teal-500 text-white text-xs px-2 py-1 rounded-md">
+                      {cohortDetails?.grade_level}
+                    </span>
+                  </div>
+                  <h1 className="text-2xl font-bold text-gray-800">
+                    {cohortDetails?.topic_title}
+                  </h1>
+                  <p className="text-gray-600 mt-1">
+                    {cohortDetails?.topic_description}
+                  </p>
+                </div>
+                <div className="mt-4 md:mt-0">
+                  <button
+                    disabled={true}
+                    className="bg-[#001840] hover:bg-[#001840]/90 text-white px-6 py-2 rounded-md flex items-center"
+                  >
+                    <LuVideo className="mr-2 text-xl" />
+                    <span className="text-sm">Join Next Class</span>
+                  </button>
+                </div>
               </div>
 
-              <div className="flex items-center space-x-2 mb-2">
-                <span className="bg-blue-500 text-white text-xs px-2 py-1 rounded-md">
-                  {classData.subject}
-                </span>
-                <span className="bg-teal-500 text-white text-xs px-2 py-1 rounded-md">
-                  {classData.grade}
-                </span>
-              </div>
-              <h1 className="text-2xl font-bold text-gray-800">
-                {classData.name}
-              </h1>
-              <p className="text-gray-600 mt-1">{classData.shortDescription}</p>
-            </div>
-            <div className="mt-4 md:mt-0">
-              <button className="bg-[#001840] hover:bg-[#001840]/90 text-white px-6 py-2 rounded-md flex items-center">
-                <LuVideo className="mr-2 text-xl" />
-                <span className="text-sm">Join Next Class</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Progress Bar */}
-          <div className="mt-6 pt-6 border-t border-gray-100">
-            <div className="flex items-center justify-between mb-2">
-              <div className="text-sm font-medium text-gray-800">
-                Your Progress:{" "}
-                <span className="text-[#001840] font-semibold">
-                  {classData.progress}%
-                </span>
-              </div>
-              <div className="text-sm text-gray-500">
-                Next class:{" "}
-                <span className="font-medium text-[#001840]">
-                  {classData.schedule.nextClass.countdown}
-                </span>
+              {/* Progress Bar */}
+              <div className="mt-6 pt-6 border-t border-gray-100">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="text-sm font-medium text-gray-800">
+                    Your Progress:{" "}
+                    <span className="text-[#001840] font-semibold">
+                      {cohortDetails?.percentage_completion}%
+                    </span>
+                  </div>
+                  <div className="text-sm text-gray-500">
+                    Next class:{" "}
+                    <span className="font-medium text-[#001840]">
+                      {classData.schedule.nextClass.countdown}
+                    </span>
+                  </div>
+                </div>
+                <div className="h-3 w-full bg-gray-100 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-[#001840] rounded-full"
+                    style={{ width: `${classData.progress}%` }}
+                  />
+                </div>
               </div>
             </div>
-            <div className="h-3 w-full bg-gray-100 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-[#001840] rounded-full"
-                style={{ width: `${classData.progress}%` }}
-              />
-            </div>
-          </div>
+          )}
         </Card>
 
         {/* Content Grid */}
