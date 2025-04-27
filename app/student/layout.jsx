@@ -46,10 +46,16 @@ export default function StudentLayout({ children }) {
           <ul className="space-y-4 pt-6">
             {student_links.map((item, i) => {
               const normalizedUrl = currentUrl.replace(/\/$/, "");
+
               const itemUrl = `/student${
                 item.link === "." ? "" : `/${item.link}`
               }`;
-              const isActive = normalizedUrl === itemUrl;
+
+              const isDashboard = itemUrl === "/student";
+
+              const isActive = isDashboard
+                ? normalizedUrl === itemUrl
+                : normalizedUrl.startsWith(itemUrl);
 
               return (
                 <li key={i}>
@@ -93,7 +99,7 @@ export default function StudentLayout({ children }) {
 
       <NewClass />
       <CompleteProfile />
-      <Subscribe />
+      {/* <Subscribe /> */}
       <StickyNotification />
     </>
   );

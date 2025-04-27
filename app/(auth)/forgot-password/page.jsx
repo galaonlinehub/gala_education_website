@@ -35,13 +35,13 @@ const ForgotPassword = () => {
   } = usePassword();
 
   return (
-    <div className="flex items-center justify-center px-2 py-2 md:py-12">
+    <div className="flex items-center justify-center px-2 py-2 md:py-6">
       <Card
-        className={`!w-full !max-w-md !py-8 bg-white rounded-xl transition-all ${
+        className={`!w-full !max-w-md !py-4 bg-white rounded-xl transition-all ${
           width < 768 ? "shadow-none border-none" : "shadow-sm"
         }`}
       >
-        <div className="flex items-center justify-center mb-6">
+        <div className="flex items-center justify-center mb-4">
           <div className="bg-blue-50 p-3 rounded-full">
             <LuKeySquare className="text-[#030DFE] text-2xl" />
           </div>
@@ -125,8 +125,8 @@ const ForgotPassword = () => {
             </Button>
           </form>
         ) : (
-          <div className="flex flex-col items-center pb-6">
-            <p className="text-gray-600 mb-6 text-center">
+          <div className="flex flex-col items-center pb-2">
+            <p className="text-gray-600 mb-4 text-center">
               We&apos;ve sent a 6-digit verification code to your email.
               <br />
               Please enter it below.
@@ -138,7 +138,7 @@ const ForgotPassword = () => {
               </div>
             )}
 
-            <div className="mb-6 w-full">
+            <div className="mb-4 w-full">
               <Space
                 size={[8, 8]}
                 className="w-full justify-center flex flex-wrap"
