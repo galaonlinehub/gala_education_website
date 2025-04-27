@@ -84,7 +84,7 @@ const InstructorContract = () => {
       <Paragraph className="text-[10px] lg:text-xs text-justify">
         <b>Gala Hub via Gala Education</b>, an online educational platform
         registered under applicable laws, hereinafter referred to as the{" "}
-        <b>&quot;Company&quot;</b>, and the individual registering as a student
+        <b>&quot;Company&quot;</b>, and the individual registering as a teacher
         on the Gala Education platform, hereinafter referred to as the{" "}
         <b>&quot;Teacher&quot;</b> (collectively, the “Parties”).
       </Paragraph>
