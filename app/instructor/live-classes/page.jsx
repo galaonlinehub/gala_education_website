@@ -1,219 +1,182 @@
 "use client";
 
-import { Avatar, Button, Card, Collapse, Tag } from "antd";
+import { Avatar, Button, Card, Collapse, Modal, Tag } from "antd";
 import React, { useState } from "react";
-import { LuCalendar, LuClock, LuUsers, LuVideo, LuInfo } from "react-icons/lu";
+import { LuCalendar, LuClock, LuUsers, LuVideo, LuInfo, LuX, LuCheckCheck } from "react-icons/lu";
+import { useUpcomingLessons } from "@/src/hooks/useUpcomigLessons";
+import LiveLessonSkeleton from "@/src/components/teacher/LiveLessonSkeleton";
+import { LoadingOutlined } from "@ant-design/icons";
 
 const { Panel } = Collapse;
 
 const ClassCard = ({ classData }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showConfirmModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleJoin = () => {
+    window.open(classData.link, '_blank');
+    setIsModalOpen(false);
+  };
 
   return (
-    <Card
-      className="!flex !flex-col !w-full !rounded-xl !bg-white"
-      styles={{ body: { padding: "8px", width: "100%" } }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <Tag
-        color="#001840"
-        className="!text-white !font-medium !rounded-full !px-2 !py-0.5 !mb-2 !inline-flex !items-center !gap-1"
+    <>
+      <Card
+        className="!flex !flex-col !w-full !rounded-xl !bg-white"
+        styles={{ body: { padding: "8px", width: "100%" } }}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       >
-        <LuClock className="h-3 w-3 text-yellow-300" />
-        {classData.status}
-      </Tag>
-      <div className="flex w-full flex-col sm:flex-row sm:items-center justify-between gap-4 px-4 md:px-8 py-2">
-        <div className="flex-1 flex flex-col sm:flex-row sm:items-center gap-4">
-          <div className="min-w-[140px]">
-            <span className="text-base font-semibold leading-tight">
-              {classData.class_name}: {classData.topic}
-            </span>
-            <div className="text-[10px] text-gray-600 italic flex items-center gap-1">
-              <span>by</span>
-              <Avatar
-                size={24}
-                className="!bg-transparent/90"
-                src={`https://api.dicebear.com/7.x/miniavs/svg?seed`}
-              />
-              {classData.instructor}
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <LuCalendar className="h-5 w-5 text-[#001840] flex-shrink-0" />
-            <div>
-              <span className="text-xs text-gray-500">Date & Time</span>
-              <p className="text-xs font-medium text-gray-800">
-                {classData.date}, {classData.time} ({classData.duration})
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <LuUsers className="h-5 w-5 text-[#001840] flex-shrink-0" />
-            <div>
-              <span className="text-xs text-gray-500">Enrolled</span>
-              <p className="text-xs font-medium text-gray-800">
-                {classData.enrolled} students
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex items-center">
-          <Button
-            type="primary"
-            href={classData.link}
-            target="_blank"
-            className={`!bg-[#001840] !text-white !font-medium !rounded-md !px-4 !py-1 !h-auto !border-none transition-transform duration-200 ${
-              isHovered ? "!scale-105 !bg-[#003380]" : ""
-            }`}
-            icon={<LuVideo />}
-          >
-            Join
-          </Button>
-        </div>
-      </div>
-
-      <Collapse
-        bordered={false}
-        expandIcon={({ isActive }) => (
-          <LuInfo
-            className={`h-5 w-5 text-[#001840] transition-transform ${
-              isActive ? "rotate-180" : ""
-            }`}
-          />
-        )}
-        className="!mt-4 !bg-transparent"
-      >
-        <Panel
-          header="More Details"
-          key="1"
-          className="!text-[#001840] !font-medium"
+        <Tag
+          color="#001840"
+          className="!text-white !font-medium !rounded-full !px-2 !py-0.5 !mb-2 !inline-flex !items-center !gap-1"
         >
-          <div className="text-sm text-gray-700">
-            <p>
-              <strong>Description:</strong> {classData.description}
-            </p>
-            <p className="mt-1">
-              <strong>Prerequisites:</strong> {classData.prerequisites}
-            </p>
+          <LuClock className="h-3 w-3 text-yellow-300" />
+          {classData.status}
+        </Tag>
+        <div className="flex w-full mt-4 flex-col sm:flex-row sm:items-center justify-between gap-4 px-2 md:px-4 py-2">
+          <div className="flex-1 flex flex-col sm:flex-row sm:items-center gap-4">
+            <div className="min-w-[140px]">
+              <span className="text-base font-semibold leading-tight">
+                {classData.class_name}: {classData.topic}
+              </span>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <LuCalendar className="h-5 w-5 text-[#001840] flex-shrink-0" />
+              <div>
+                <span className="text-xs text-gray-500">Date & Time</span>
+                <p className="text-xs font-medium text-gray-800">
+                  {classData.date}, {classData.time} ({classData.duration})
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <LuUsers className="h-5 w-5 text-[#001840] flex-shrink-0" />
+              <div>
+                <span className="text-xs text-gray-500">Enrolled</span>
+                <p className="text-xs font-medium text-gray-800">
+                  {classData.enrolled} students
+                </p>
+              </div>
+            </div>
           </div>
-        </Panel>
-      </Collapse>
-    </Card>
+
+          <div className="flex items-center">
+            <Button
+              type="primary"
+              // href={classData.link}
+              onClick={showConfirmModal}
+              target="_blank"
+              className={`!bg-[#001840] !text-white !font-medium !rounded-md !px-4 !py-1 !h-auto !border-none transition-transform duration-200 ${isHovered ? "!scale-105 !bg-[#003380]" : ""
+                }`}
+              icon={<LuVideo />}
+            >
+              Join
+            </Button>
+          </div>
+        </div>
+
+        <Collapse
+          bordered={false}
+          expandIcon={({ isActive }) => (
+            <LuInfo
+              className={`h-5 w-5 text-[#001840] transition-transform ${isActive ? "rotate-180" : ""
+                }`}
+            />
+          )}
+          className="!mt-4 !bg-transparent"
+        >
+          <Panel
+            header="More Details"
+            key="1"
+            className="!text-[#001840] !font-medium"
+          >
+            <div className="text-sm text-gray-700">
+              <p>
+                <strong>Description:</strong> {classData.description}
+              </p>
+              <p className="mt-1">
+                <strong>Prerequisites:</strong> {classData.prerequisites}
+              </p>
+            </div>
+          </Panel>
+        </Collapse>
+      </Card>
+      {/* Confrimation Modal */}
+
+      <>
+        
+        <Modal
+          open={isModalOpen}
+          footer={null}
+          onCancel={handleCancel}
+          centered
+          closeIcon={<LuX className="text-gray-500 hover:text-gray-700" />}
+          className="confirm-join-modal"
+        >
+          <div className="py-4">
+         
+            <div className="flex justify-center mb-6">
+              <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center">
+                <LuVideo className="text-4xl text-[#001840]" />
+              </div>
+            </div>
+
+            <h3 className="text-xl font-semibold text-center mb-2">
+              Join Live Class
+            </h3>
+
+            <div className="bg-gray-50 rounded-lg p-4 mb-6">
+              <div className="font-medium text-gray-800 mb-2">
+                {classData.class_name}: {classData.topic}
+              </div>
+
+              <div className="flex items-center gap-2 text-sm text-gray-600 mb-1">
+                <LuCalendar className="flex-shrink-0" />
+                <span>{classData.date}, {classData.time}</span>
+              </div>
+            </div>
+
+            <p className="text-gray-600 text-xs lg:text-sm text-center mb-6">
+              You&apos;re about to join a live interactive session. Make sure your camera and microphone are working properly.
+            </p>
+
+            <div className="flex gap-3 justify-center">
+              <Button
+                onClick={handleCancel}
+                className="!border-gray-300 !text-gray-700 !px-5 !h-10 !rounded-md"
+              >
+                Cancel
+              </Button>
+              <Button
+                type="primary"
+                onClick={handleJoin}
+                className="!bg-[#001840] !border-none !text-white !px-5 !h-10 !rounded-md !flex !items-center !gap-1"
+                icon={<LuCheckCheck />}
+              >
+                Confirm & Join
+              </Button>
+            </div>
+          </div>
+        </Modal>
+      </>
+    </>
   );
 };
 
 const InstructorLiveLessons = () => {
-  const classes = [
-    {
-      key: "5",
-      class_name: "Business Studies",
-      instructor: "Dr. Rachel Martinez",
-      topic: "Strategic Management",
-      date: "Feb 24, 2025",
-      time: "03:00 PM",
-      duration: "1.5 hours",
-      enrolled: 32,
-      status: "Upcoming",
-      link: "https://zoom.us/j/1234567894",
-      description:
-        "Learn about strategic planning, competitive analysis, and business model innovation. Includes case studies of successful global companies.",
-      prerequisites: "Basic business knowledge",
-    },
-    {
-      key: "6",
-      class_name: "Data Science",
-      instructor: "Prof. John Lee",
-      topic: "Machine Learning Basics",
-      date: "Feb 25, 2025",
-      time: "10:00 AM",
-      duration: "2 hours",
-      enrolled: 45,
-      status: "Upcoming",
-      link: "https://zoom.us/j/9876543210",
-      description:
-        "Introduction to machine learning concepts and algorithms with hands-on examples.",
-      prerequisites: "Basic programming knowledge",
-    },
-    {
-      key: "7",
-      class_name: "Marketing",
-      instructor: "Sarah Thompson",
-      topic: "Digital Marketing Strategies",
-      date: "Feb 26, 2025",
-      time: "01:00 PM",
-      duration: "1 hour",
-      enrolled: 28,
-      status: "Upcoming",
-      link: "https://zoom.us/j/4567891234",
-      description:
-        "Explore SEO, social media, and content marketing techniques for modern businesses.",
-      prerequisites: "None",
-    },
-    {
-      key: "7",
-      class_name: "Marketing",
-      instructor: "Sarah Thompson",
-      topic: "Digital Marketing Strategies",
-      date: "Feb 26, 2025",
-      time: "01:00 PM",
-      duration: "1 hour",
-      enrolled: 28,
-      status: "Upcoming",
-      link: "https://zoom.us/j/4567891234",
-      description:
-        "Explore SEO, social media, and content marketing techniques for modern businesses.",
-      prerequisites: "None",
-    },
-    {
-      key: "7",
-      class_name: "Marketing",
-      instructor: "Sarah Thompson",
-      topic: "Digital Marketing Strategies",
-      date: "Feb 26, 2025",
-      time: "01:00 PM",
-      duration: "1 hour",
-      enrolled: 28,
-      status: "Upcoming",
-      link: "https://zoom.us/j/4567891234",
-      description:
-        "Explore SEO, social media, and content marketing techniques for modern businesses.",
-      prerequisites: "None",
-    },
-    {
-      key: "7",
-      class_name: "Marketing",
-      instructor: "Sarah Thompson",
-      topic: "Digital Marketing Strategies",
-      date: "Feb 26, 2025",
-      time: "01:00 PM",
-      duration: "1 hour",
-      enrolled: 28,
-      status: "Upcoming",
-      link: "https://zoom.us/j/4567891234",
-      description:
-        "Explore SEO, social media, and content marketing techniques for modern businesses.",
-      prerequisites: "None",
-    },
-    {
-      key: "7",
-      class_name: "Marketing",
-      instructor: "Sarah Thompson",
-      topic: "Digital Marketing Strategies",
-      date: "Feb 26, 2025",
-      time: "01:00 PM",
-      duration: "1 hour",
-      enrolled: 28,
-      status: "Upcoming",
-      link: "https://zoom.us/j/4567891234",
-      description:
-        "Explore SEO, social media, and content marketing techniques for modern businesses.",
-      prerequisites: "None",
-    },
-  ];
+
+  const { upcomingLessons, isFetchingUpcomingLessons } = useUpcomingLessons();
+
 
   return (
     <div className="w-full p-4 mt-layout-margin">
@@ -229,13 +192,28 @@ const InstructorLiveLessons = () => {
           Dynamic Lessons and Engaging Discussions
         </p>
       </div>
+
       <div className="space-y-3">
-        {classes.map((classData) => (
-          <ClassCard key={classData.key} classData={classData} />
-        ))}
+        {isFetchingUpcomingLessons ? (
+          <div className="flex justify-center gap-2 items-center w-full py-40 md:py-64">
+            <LoadingOutlined className="text-3xl text-[#001840]" spin /> <span className="text-xs">Loading lessons...</span>
+          </div>
+        ) : upcomingLessons?.length > 0 ? (
+          upcomingLessons.map((classData) => (
+            <ClassCard key={classData.id} classData={classData} />
+          ))
+        ) : (
+          <div className="flex justify-center items-center w-full py-16">
+            <p className="text-gray-500">No upcoming classes found.</p>
+          </div>
+        )}
       </div>
+
+      {/* Confirmation modal */}
+
+
     </div>
-  );
+  )
 };
 
 export default InstructorLiveLessons;
