@@ -184,7 +184,13 @@ const AboutUs = () => {
             {isMembersPending ? <MultipleProfileSkeletons /> :
               teamMembers?.map((member) => (
                 <div key={member.id} className="flex flex-col gap-2 items-center w-full">
-                  <Image alt="" src="/about-us/team-placeholder.png" className="w-64 h-64 rounded-lg" width={120} height={80} />
+                  <Image
+                    alt=""
+                    src="/about-us/team-placeholder.png"
+                    className="w-28 h-28 rounded-full object-cover"
+                    width={80}
+                    height={80}
+                  />
                   <div className="text-xs flex flex-col items-center ml-2">
                     <Text className="font-bold">{member.name}</Text>
                     <Text className="font-bold text-gray-500">{member?.teams?.[0]?.position}</Text>
