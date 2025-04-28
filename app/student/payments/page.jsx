@@ -12,8 +12,7 @@ import {
 } from "@/src/components/ui/auth/signup/PaymentStatus";
 
 function PendingPayment() {
-  const {  enrolledTopicsLoading, enrolledTopicsError } =
-    useEnrolledTopics();
+  const { enrolledTopicsLoading, enrolledTopicsError } = useEnrolledTopics();
 
   const pendingClasses = [
     {

@@ -40,9 +40,9 @@ export default function VideoBackground({ children }) {
                     <GoUnmute />
                 )}
             </Button>
-            <div className="relative z-10 w-full h-full">
+            {/* <div className="relative z-10 w-full h-full">
                 {children}
-            </div>
+            </div> */}
         </div>
     );
 }

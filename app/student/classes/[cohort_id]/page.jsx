@@ -171,12 +171,12 @@ const ClassDetailsPage = ({ params }) => {
 
   return (
     <div className="min-h-screen w-full">
-      <div className="sticky top-1 z-50 bg-white -mx-2 lg:-mx-12 w-full">
-        <div className="px-4 h-12 flex items-center justify-between mx-4">
+      <div className="sticky  top-1 inset-x-0 z-50 bg-white w-full border-b">
+        <div className="px-4 h-12 flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <button
               onClick={() => router.back()}
-              className="h-8 w-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
+              className="h-10 w-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
             >
               <LuArrowLeft
                 strokeWidth={3}
