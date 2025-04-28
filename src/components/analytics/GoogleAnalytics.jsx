@@ -10,6 +10,7 @@ export default function GoogleAnalyticsComponent() {
     return null;
   }
   
+  console.log("MEASUREMENT ID", gaId);
 
   return (
     <GoogleAnalytics
