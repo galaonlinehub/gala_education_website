@@ -281,7 +281,8 @@ const AboutUs = () => {
                 Contact Us
               </Text>
               <Text className="text-xs text-justify leading-loose">For inquiries directed to the Gala Education team, please email info@galahub.org or submit your questions by clicking the button below.</Text>
-              <Button type="primary" className="text-xs bg-black w-full md:w-fit font-bold hover:!bg-gray-500 text-white" icon={<IoMailOutline size={16} />}>
+              <Button type="primary" onClick={() => window.location.href = "mailto:galaonlinehub@gmail.com"}
+                className="text-xs bg-black w-full md:w-fit font-bold hover:!bg-gray-500 text-white" icon={<IoMailOutline size={16} />}>
                 Mail Us
               </Button>
               <Divider orientation="right" className="!text-xs !text-gray-500" style={{ borderColor: "#dcdcdc" }}>
