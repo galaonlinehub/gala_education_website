@@ -20,9 +20,20 @@ export const useEnrolledTopics = (cohortId) => {
     error: cohortDetailsError,
   } = useQuery({
     queryKey: ["cohort-details", cohortId],
-    queryFn: () => cohortId ? getCohortDetails(cohortId) : Promise.resolve(null),  
-    enabled: !!cohortId, 
-    ...globalOptions
+    queryFn: () =>
+      cohortId ? getCohortDetails(cohortId) : Promise.resolve(null),
+    enabled: !!cohortId,
+    ...globalOptions,
+  });
+
+  const {
+    data: enrolledSubjects = [],
+    isFetching: isFetchingEnrolledSubjects,
+    isError: isEnrolledSubjectsError,
+  } = useQuery({
+    queryKey: ["enrolled-subjects"],
+    queryFn: getEnrolledSubjects,
+    ...globalOptions,
   });
 
   return {
@@ -35,13 +46,29 @@ export const useEnrolledTopics = (cohortId) => {
     cohortDetails,
     cohortDetailsLoading,
     cohortDetailsError,
+
+    //ENROLLED SUBJECTS
+    enrolledSubjects,
+    isFetchingEnrolledSubjects,
+    isEnrolledSubjectsError,
   };
 };
 
 const getCohortDetails = async (cohortId) => {
   try {
     const response = await apiGet(`cohort/${cohortId}/details`);
-    return response.data;  
+    return response.data;
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+};
+
+const getEnrolledSubjects = async () => {
+  return;
+  try {
+    const response = await apiGet("");
+    return response.data;
   } catch (e) {
     console.error(e);
     throw e;

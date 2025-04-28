@@ -12,14 +12,15 @@ import { Signout } from "../ui/auth/signup/Signout";
 export default function Subscribe() {
   const {user} = useUser();
   const { activeTab } = useTabNavigator();
+  console.log(user)
 
   const modalStyles = {
     mask: {
       backdropFilter: "blur(10px)",
     },
-    content: {
-      top: "-80px",
-    },
+    // content: {
+    //   top: "-80px",
+    // },
   };
 
   const steps = [

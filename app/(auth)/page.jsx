@@ -113,7 +113,7 @@ function Home() {
 
         <div className="relative w-screen  mx-auto h-[60rem] sm:h-[60rem] sm:items-center md:h-[50rem] lg:h-[44rem] overflow-hidden -mt-12">
           <VideoBackground />
-          <div className="absolute inset-0 bg-black opacity-80 w-full" />
+          <div className="absolute inset-0 bg-black opacity-85 w-full" />
           <div className="absolute inset-0 sm:py-12 py-12 w-full sm:px-24 md:px-10 px-2 flex md:flex-row flex-col lg:justify-between md:gap-10 max-sm:gap-5">
             <div className={"mt-14"}>
               <div className="xxs:gap-8 mb-6 sm:gap-0 sm:mb-0 flex flex-col">
@@ -124,7 +124,7 @@ function Home() {
                 </Animator>
 
                 <Animator delay={0.2}>
-                  <h1 className="text-white xxs:text-[64px] text-[35px]  sm:leading-[70px] leading-[30px] font-black">
+                  <h1 className="text-white xxs:text-[64px] text-[35px] sm:leading-[70px] leading-[30px] font-black">
                     Education
                   </h1>
                 </Animator>

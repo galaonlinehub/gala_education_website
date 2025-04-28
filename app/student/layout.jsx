@@ -16,10 +16,21 @@ import StudentsInClass from "@/src/utils/vector-svg/vectors/StudentsInClass";
 import RightTiltedBook from "@/src/utils/vector-svg/vectors/CombinedBlock";
 import clsx from "clsx";
 import StickyNotification from "@/src/components/ui/notification/StickyNotification";
+import { useStickyNotification } from "@/src/store/notification/notification";
 
 export default function StudentLayout({ children }) {
   const { installPrompt, isInstalled, handleInstallClick } = useInstallPrompt();
   const currentUrl = usePathname();
+  const notificationOpen = useStickyNotification(
+    (state) => state.notificationOpen
+  );
+  const openStickyNotification = useStickyNotification(
+    (state) => state.openStickyNotification
+  );
+
+  useEffect(() => {
+    openStickyNotification();
+  }, []);
 
   return (
     <>
@@ -99,8 +110,8 @@ export default function StudentLayout({ children }) {
 
       <NewClass />
       <CompleteProfile />
-      {/* <Subscribe /> */}
-      <StickyNotification />
+      <Subscribe />
+      {notificationOpen && <StickyNotification />}
     </>
   );
 }

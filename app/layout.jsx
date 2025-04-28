@@ -5,7 +5,7 @@ import { Urbanist, Quicksand } from "next/font/google";
 import QueryWrapper from "@/src/components/layout/QueryWrapper";
 import SEOProvider from "@/src/components/layout/SEOProvider";
 import JsonLd from "@/src/components/layout/JsonLD";
-import BreadcrumbNav from "@/src/components/layout/BreadcrumbNav";
+import GoogleAnalyticsComponent from "@/src/components/analytics/GoogleAnalytics";
 
 const urbanist = Urbanist({
   subsets: ["latin"],
@@ -57,7 +57,7 @@ export default function RootLayout({ children }) {
           <AntdRegistry>
             <SEOProvider />
             <JsonLd />
-            {/* <BreadcrumbNav /> */}
+            <GoogleAnalyticsComponent/>
             {children}
           </AntdRegistry>
         </QueryWrapper>

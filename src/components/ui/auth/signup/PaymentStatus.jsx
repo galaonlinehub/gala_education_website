@@ -86,7 +86,7 @@ export const RenderLoadingState = () => {
               </span>
             </div>
           </div>
-          <div className="mt-6 flex items-center justify-center gap-1 xxs:gap-2">
+          <div className="my-8 flex items-center justify-center gap-1 xxs:gap-2">
             <LuShieldCheck size={24} />
             <span className="text-[10px] xxs:text-xs line-clamp-2 text-muted-foreground">
               Your transaction is protected by end-to-end encryption
@@ -108,11 +108,13 @@ export const RenderSuccessState = ({ onClose, accountType, setStatus }) => {
   const onDone = () => {
     if (accountType === "instructor") {
       setStatus(PaymentStatus.CONGRATULATION);
+    } else {
+      onClose();
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center p-1 xxs:p-4 min-w-[50px] max-w-[600px] mx-auto mt-8 xs:mt-16">
+    <div className="flex flex-col items-center justify-center p-1 xxs:p-4 min-w-[50px] max-w-[600px] mx-auto mt-4 xs:mt-8">
       <LuCircleCheckBig
         strokeWidth={3}
         className="text-green-500 text-3xl xxs:text-6xl mb-4"
@@ -130,7 +132,7 @@ export const RenderSuccessState = ({ onClose, accountType, setStatus }) => {
       </div>
       <button
         onClick={onDone}
-        className="mt-8 text-xs xxs:text-base px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors duration-200 w-full max-w-[300px]"
+        className="my-12 text-xs xxs:text-base px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors duration-200 w-full max-w-[300px]"
       >
         Done
       </button>
@@ -185,7 +187,7 @@ export const RenderReferenceState = ({ reference, amount, onClose }) => (
     </div>
     <button
       onClick={onClose}
-      className="mt-4 px-6 py-2 bg-[#010798] text-white rounded-lg hover:opacity-80 transition-colors duration-200 w-full max-w-[400px]"
+      className="my-8 px-6 py-2 bg-[#010798] text-white rounded-lg hover:opacity-80 transition-colors duration-200 w-full max-w-[400px]"
     >
       Done
     </button>
@@ -285,7 +287,6 @@ export const PaymentPending = ({
     }
   }, []);
 
-  console.log(status, "STATUS");
 
   return (
     <Modal
