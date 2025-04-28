@@ -147,7 +147,7 @@ const ClassCard = ({ classData }) => {
             </div>
 
             <p className="text-gray-600 text-xs lg:text-sm text-center mb-6">
-              You're about to join a live interactive session. Make sure your camera and microphone are working properly.
+              You&apos;re about to join a live interactive session. Make sure your camera and microphone are working properly.
             </p>
 
             <div className="flex gap-3 justify-center">
