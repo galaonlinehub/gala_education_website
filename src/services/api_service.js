@@ -21,6 +21,7 @@ const publicEndpoints = new Set([
   "request-otp",
   "subscribe-mail-list",
   "support",
+  "team-members",
   "health",
 ]);
 
