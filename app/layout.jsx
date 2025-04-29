@@ -57,7 +57,7 @@ export default function RootLayout({ children }) {
           <AntdRegistry>
             <SEOProvider />
             <JsonLd />
-            <GoogleAnalyticsComponent/>
+            <GoogleAnalyticsComponent />
             {children}
           </AntdRegistry>
         </QueryWrapper>

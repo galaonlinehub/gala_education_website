@@ -26,6 +26,8 @@ export const useChat = () => {
 
   useEffect(() => {
     if (!user?.id) return;
+    console.log('TOKEN BEFORE CONNECTING', decrypt(cookieFn.get(USER_COOKIE_KEY)));
+
     socketRef.current = io(`${socket_base_url}/chat`, {
       query: { user_id: user.id },
       auth: { token: decrypt(cookieFn.get(USER_COOKIE_KEY)) },
@@ -171,10 +173,10 @@ export const useChat = () => {
       );
     });
 
-    return () => {
-      socketRef.current.disconnect();
-      console.log("THIS IS ME DISCONNECTING", user.id);
-    };
+    // return () => {
+    //   socketRef.current.disconnect();
+    //   console.log("THIS IS ME DISCONNECTING", user.id);
+    // };
   }, [user.id]);
 
   const createOrGetChatMutation = useMutation({

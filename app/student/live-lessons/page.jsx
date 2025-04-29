@@ -22,7 +22,7 @@ const ClassCard = ({ classData }) => {
 
   return (
     <Card
-      className="!flex !flex-col !w-full !rounded-xl !bg-white [&_.ant-card-body]:!p-2 md:[&_.ant-card-body]:!p-4"
+      className="!flex !flex-col !w-full !shadow-sm hover:!shadow-md !rounded-xl !bg-white [&_.ant-card-body]:!p-2 md:[&_.ant-card-body]:!p-4"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -34,12 +34,12 @@ const ClassCard = ({ classData }) => {
         {classData.status}
       </Tag>
       <div className="flex w-full flex-col sm:flex-row sm:items-center justify-between gap-4 px-4 md:px-8 py-1">
-        <div className="flex-1 flex flex-col sm:flex-row sm:items-center gap-4">
+        <div className="flex-1 flex flex-col sm:flex-row sm:items-center gap-4 md:gap-12">
           <div className="min-w-[140px]">
             <span className="text-base font-semibold leading-tight">
               {classData.class_name}: {classData.topic}
             </span>
-            <div className="text-[10px] text-gray-600 italic flex items-center gap-1">
+            <div className="text-[10px] text-gray-600 flex items-center gap-1">
               <span>by</span>
               <Avatar
                 size={24}
@@ -50,7 +50,7 @@ const ClassCard = ({ classData }) => {
                 }
                 icon={!classData.instructor_image && <LuUser color="black" />}
               />
-              {classData.instructor}
+              <span className="italic">{classData.instructor}</span>
             </div>
           </div>
 
@@ -140,7 +140,7 @@ const LiveLessons = () => {
       <div className="space-y-3">
         {isFetchingUpcomingLessons ? (
           <div className="flex justify-center items-center py-24 lg:py-32">
-            <SlickSpinner color="#001840" size={28} />
+            <SlickSpinner color="#001840" size={60} />
           </div>
         ) : upcomingLessons.length === 0 ? (
           <div className="flex flex-col justify-center items-center py-24">

@@ -9,8 +9,12 @@ export default function GoogleAnalyticsComponent() {
     );
     return null;
   }
-  
-  console.log("MEASUREMENT ID", gaId);
+  if (process.env.NODE_ENV !== "production") {
+    console.warn(
+      "Google Analytics is only enabled in production. Check NODE_ENV in .env.local"
+    );
+    return null;
+  }
 
   return (
     <GoogleAnalytics
