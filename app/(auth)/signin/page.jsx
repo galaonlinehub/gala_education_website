@@ -24,6 +24,7 @@ const SignInPage = () => {
 
   const [localFeedback, setLocalFeedback] = useState({
     show: false,
+    status: "",
     message: "",
   });
 
@@ -42,12 +43,6 @@ const SignInPage = () => {
   const loginMutation = useMutation({
     mutationFn: login,
     onSuccess: async (res) => {
-      setLocalFeedback((prev) => ({
-        ...prev,
-        show: true,
-        message: "Signed in successfully, Redirecting you now…",
-      }));
-
       if (res === 1) {
         const userData = await queryClient.fetchQuery({
           queryKey: ["auth-user"],
@@ -56,7 +51,15 @@ const SignInPage = () => {
         });
 
         if (userData?.role) {
+          setLocalFeedback((prev) => ({
+            ...prev,
+            show: true,
+            status: "success",
+            message: "Signed in successfully, Redirecting you now…",
+          }));
+
           const redirectPath = roleRedirects[userData.role] || "/";
+
           router.push(redirectPath);
         }
       }
@@ -66,7 +69,12 @@ const SignInPage = () => {
         error?.response?.data?.message ??
         error?.message ??
         "Unexpected error occurred, Try again later";
-      setLocalFeedback((prev) => ({ ...prev, show: true, message }));
+      setLocalFeedback((prev) => ({
+        ...prev,
+        show: true,
+        status: "error",
+        message,
+      }));
     },
     onSettled: () => {},
   });
@@ -78,7 +86,7 @@ const SignInPage = () => {
   useEffect(() => {
     const resetFeedback = debounce(() => {
       if (localFeedback.show) {
-        setLocalFeedback({ show: false, message: "" });
+        setLocalFeedback({ show: false, message: "", status: "" });
         loginMutation.reset();
       }
     }, 500);
@@ -118,8 +126,17 @@ const SignInPage = () => {
             <AnimatePresence>
               {localFeedback.show && (
                 <motion.div
-                  initial={{ opacity: 0, y: -5 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  key={localFeedback.status}
+                  initial={
+                    localFeedback.status === "error"
+                      ? { opacity: 0, y: -5 }
+                      : { opacity: 0, scale: 0.95 }
+                  }
+                  animate={
+                    localFeedback.status === "error"
+                      ? { opacity: 1, y: 0 }
+                      : { opacity: 1, scale: 1.08 }
+                  }
                   exit={{ opacity: 0, y: -5 }}
                   transition={{ duration: 0.3 }}
                   className={clsx(
@@ -182,10 +199,7 @@ const SignInPage = () => {
                   onCut={preventCopyPaste}
                   {...register("password", {
                     required: "Please enter your password",
-                    minLength: {
-                      value: 8,
-                      message: "Password must be at least 8 characters",
-                    },
+
                     // onChange: handleChange,
                   })}
                   autoComplete="new-password"

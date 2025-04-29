@@ -12,7 +12,6 @@ import { Signout } from "../ui/auth/signup/Signout";
 export default function Subscribe() {
   const {user} = useUser();
   const { activeTab } = useTabNavigator();
-  console.log(user)
 
   const modalStyles = {
     mask: {
