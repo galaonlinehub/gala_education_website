@@ -14,160 +14,114 @@ import {
   LuOctagonAlert,
 } from "react-icons/lu";
 import SlickSpinner from "./loading/template/SlickSpinner";
-import { motion } from "framer-motion";
 
 const Subscriptions = () => {
   const { current, previous, next } = useUserSubscriptions();
 
   return (
     <div className="xl:px-6 py-2 rounded-xl">
-      <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <div className="text-2xl font-black mb-2 text-[#001840] flex items-center">
-          <div className="flex items-center justify-center h-10 w-10 rounded-full bg-[#001840] text-white mr-3">
-            <LuCrown className="h-5 w-5" />
-          </div>
-          Your Subscriptions
+      <div className="text-2xl font-black mb-2 text-black flex items-center">
+        <div className="flex items-center justify-center h-10 w-10 rounded-full bg-[#001840] text-white mr-3">
+          <LuCrown className="h-5 w-5" />
         </div>
-        <div className="text-sm text-[#001840]/80 mb-6 border-l-4 border-[#001840] pl-3 py-1 bg-[#001840]/10 rounded-r-md">
-          Manage and view your active, upcoming, and past subscriptions in one
-          place.
-        </div>
-      </motion.div>
+        Your Subscriptions
+      </div>
+      <div className="text-sm text-black mb-6 border-l-4 border-[#001840] pl-3 py-1 bg-[#001840]/10 rounded-r-md">
+        Manage and view your active, upcoming, and past subscriptions in one
+        place.
+      </div>
 
       {/* Active Subscriptions */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-      >
-        <Card className="mb-6 shadow-md hover:shadow-lg transition-all duration-300 border-t-4 border-t-[#001840] rounded-t-md">
-          <div className="flex flex-col items-start justify-center w-full">
-            <div className="flex justify-between w-full mb-4 overflow-hidden">
-              <div className="font-bold text-xl text-[#001840] flex items-center">
-                <div className="flex items-center justify-center h-8 w-8 rounded-full bg-[#001840]/10 mr-2">
-                  <LuShieldCheck className="h-4 w-4 text-[#001840]" />
-                </div>
-                Active Subscriptions
-              </div>
-              <Tooltip title="This feature is currently unavailable.">
-                <button
-                  disabled={true}
-                  className="flex items-center justify-center text-xs sm:text-sm bg-[#001840] hover:bg-[#002060] text-white font-medium py-1 xs:py-2 px-2 sm:px-4 xs:gap-1 rounded-3xl xs:rounded-full shadow-md transition-all duration-300 transform hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed disabled:opacity-65 overflow-hidden"
-                >
-                  <LuPlus strokeWidth={3.5} size={18} />
-                  <span className="text-white font-bold line-clamp-1 w-3/4 xs:w-fit inline-block">
-                    {" "}
-                    Add Subscription
-                  </span>
-                </button>
-              </Tooltip>
-            </div>
-            {current.isFetching && <Loader />}
-            {current.isError && (
-              <ErrorState message="Failed to load current subscription." />
-            )}
-            {current.isSuccess && current.data?.length === 0 && (
-              <EmptyState
-                icon={<LuCrown className="h-12 w-12 text-[#001840]/40" />}
-                message="No active subscriptions"
-                subtitle="Subscribe to unlock premium features"
-                actionText="Add Subscription"
-                actionIcon={<LuPlus className="h-4 w-4 mr-1" />}
-              />
-            )}
-            {current.data?.map((sub) => (
-              <motion.div
-                key={sub.id}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-                className="w-full"
-              >
-                <SubscriptionItem
-                  sub={{ ...sub, status: "Current", isCurrent: true }}
-                />
-              </motion.div>
-            ))}
-          </div>
 
-          <div className="flex flex-col items-start justify-center w-full">
-            <div className="font-medium text-sm mt-6 mb-2 text-[#001840] flex items-center">
-              <div className="flex items-center justify-center h-6 w-6 rounded-full bg-[#001840]/10 mr-2">
-                <LuClock className="h-3 w-3 text-[#001840]" />
+      <Card className="mb-6 transition-all duration-300">
+        <div className="flex flex-col items-start justify-center w-full">
+          <div className="flex justify-between w-full mb-4 overflow-hidden">
+            <div className="font-bold text-xl text-black flex items-center">
+              <div className="flex items-center justify-center h-8 w-8 rounded-full bg-[#001840]/10 mr-2">
+                <LuShieldCheck className="h-4 w-4" />
               </div>
-              Next Subscriptions
+              Active Subscriptions
             </div>
-            {next.isLoading && <Loader />}
-            {next.isError && (
-              <ErrorState message="Failed to load next subscriptions." />
-            )}
-            {next.isSuccess && next.data?.length === 0 && (
-              <div className="text-[#001840]/70 text-sm px-4 py-3 italic bg-[#001840]/5 rounded-md w-full border-l-2 border-[#001840]/30">
-                No upcoming subscriptions scheduled.
-              </div>
-            )}
-            {next.data?.map((sub) => (
-              <motion.div
-                key={sub.id}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-                className="w-full"
+            <Tooltip title="This feature is currently unavailable.">
+              <button
+                disabled={true}
+                className="flex items-center justify-center text-xs sm:text-sm bg-[#001840] hover:bg-[#002060] text-white font-medium py-1 xs:py-2 px-2 sm:px-4 xs:gap-1 rounded-3xl xs:rounded-full shadow-md transition-all duration-300 transform hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed disabled:opacity-80 overflow-hidden"
               >
-                <SubscriptionItem
-                  key={sub.id}
-                  sub={{ ...sub, status: "Next" }}
-                />
-              </motion.div>
-            ))}
+                <LuPlus strokeWidth={3.5} size={18} />
+                <span className="text-white font-bold line-clamp-1 w-3/4 xs:w-fit inline-block">
+                  {" "}
+                  Add Subscription
+                </span>
+              </button>
+            </Tooltip>
           </div>
-        </Card>
-      </motion.div>
-
-      {/* Previous Subscriptions */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.3 }}
-      >
-        <Card className="shadow-md hover:shadow-lg transition-all duration-300 border-t-4 border-t-[#001840]/70 rounded-t-md">
-          <div className="font-bold text-xl mb-4 text-[#001840] flex items-center">
-            <div className="flex items-center justify-center h-8 w-8 rounded-full bg-[#001840]/10 mr-2">
-              <LuHistory className="h-4 w-4 text-[#001840]/70" />
-            </div>
-            Previous Subscriptions
-          </div>
-          {previous.isLoading && <Loader />}
-          {previous.isError && (
-            <ErrorState message="Failed to load previous subscriptions." />
+          {current.isFetching && <Loader />}
+          {current.isError && (
+            <ErrorState message="Failed to load current subscription." />
           )}
-          {previous.isSuccess && previous.data?.length === 0 && (
+          {current.isSuccess && current.data?.length === 0 && (
             <EmptyState
-              icon={<LuHistory className="h-12 w-12 text-[#001840]/40" />}
-              message="No subscription history found"
-              subtitle="Your completed subscriptions will appear here once they expire"
+              icon={<LuCrown className="h-12 w-12 text-[#001840]/40" />}
+              message="No active subscriptions"
+              subtitle="Subscribe to unlock premium features"
+              actionText="Add Subscription"
+              actionIcon={<LuPlus className="h-4 w-4 mr-1" />}
             />
           )}
-          {previous.data?.map((sub) => (
-            <motion.div
+          {current.data?.map((sub) => (
+            <SubscriptionItem
               key={sub.id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-              className="w-full"
-            >
-              <SubscriptionItem
-                key={sub.id}
-                sub={{ ...sub, status: "Previous" }}
-              />
-            </motion.div>
+              sub={{ ...sub, status: "Current", isCurrent: true }}
+            />
           ))}
-        </Card>
-      </motion.div>
+        </div>
+
+        <div className="flex flex-col items-start justify-center w-full">
+          <div className="font-medium text-sm mt-6 mb-2 flex items-center">
+            <div className="flex items-center justify-center h-6 w-6 rounded-full bg-[#001840]/10 mr-2">
+              <LuClock className="h-3 w-3" />
+            </div>
+            Next Subscriptions
+          </div>
+          {next.isLoading && <Loader />}
+          {next.isError && (
+            <ErrorState message="Failed to load next subscriptions." />
+          )}
+          {next.isSuccess && next.data?.length === 0 && (
+            <div className="text-gray-500 text-sm px-4 py-3 italic bg-[#001840]/5 rounded-md w-full border-l-2 border-[#001840]/30">
+              No upcoming subscriptions scheduled.
+            </div>
+          )}
+          {next.data?.map((sub) => (
+            <SubscriptionItem key={sub.id} sub={{ ...sub, status: "Next" }} />
+          ))}
+        </div>
+      </Card>
+
+      {/* Previous Subscriptions */}
+
+      <Card className="">
+        <div className="font-bold text-xl mb-4  flex items-center">
+          <div className="flex items-center justify-center h-8 w-8 rounded-full bg-[#001840]/10 mr-2">
+            <LuHistory className="h-4 w-4" />
+          </div>
+          Previous Subscriptions
+        </div>
+        {previous.isLoading && <Loader />}
+        {previous.isError && (
+          <ErrorState message="Failed to load previous subscriptions." />
+        )}
+        {previous.isSuccess && previous.data?.length === 0 && (
+          <EmptyState
+            icon={<LuHistory className="h-12 w-12" />}
+            message="No subscription history found"
+            subtitle="Your completed subscriptions will appear here once they expire"
+          />
+        )}
+        {previous.data?.map((sub) => (
+          <SubscriptionItem key={sub.id} sub={{ ...sub, status: "Previous" }} />
+        ))}
+      </Card>
     </div>
   );
 };
@@ -299,8 +253,8 @@ const SubscriptionItem = ({ sub }) => {
 const EmptyState = ({ icon, message, subtitle, actionText, actionIcon }) => (
   <div className="flex flex-col items-center justify-center py-10 px-4 w-full bg-gradient-to-br from-[#001840]/5 to-[#001840]/10 rounded-lg border border-[#001840]/10">
     <div className="mb-4 p-4 bg-white rounded-full shadow-md">{icon}</div>
-    <p className="text-lg font-medium text-[#001840] mb-1">{message}</p>
-    {subtitle && <p className="text-sm text-[#001840]/70 mb-4">{subtitle}</p>}
+    <p className="text-lg font-medium mb-1">{message}</p>
+    {subtitle && <p className="text-sm mb-4 text-gray-500">{subtitle}</p>}
     {actionText && (
       <button className="flex items-center justify-center bg-[#001840] hover:bg-[#002060] text-white font-medium py-2 px-6 rounded-full shadow-md transition-all duration-300 transform hover:scale-105">
         {actionIcon}
@@ -321,10 +275,7 @@ const ErrorState = ({ message }) => (
 
 const Loader = () => (
   <div className="flex flex-col items-center justify-center w-full py-10">
-    <SlickSpinner size={38} color="#001840" />
-    <span className="mt-4 text-xs md:text-sm text-[#001840]/80 font-medium">
-      Loading your subscriptions...
-    </span>
+    <SlickSpinner size={50} color="#001840" />
   </div>
 );
 

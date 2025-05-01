@@ -30,7 +30,7 @@ export default function StudentLayout({ children }) {
 
   useEffect(() => {
     openStickyNotification();
-  }, []);
+  }, [openStickyNotification]);
 
   return (
     <>

@@ -100,22 +100,24 @@ const ClassCard = ({ classData }) => {
           />
         )}
         className="!bg-transparent"
-      >
-        <Panel
-          header="More Details"
-          key="1"
-          className="!text-[#001840] !font-medium"
-        >
-          <div className="text-sm text-gray-700">
-            <p>
-              <strong>Description:</strong> {classData?.description}
-            </p>
-            <p className="mt-1">
-              <strong>Prerequisites:</strong> {classData?.prerequisites}
-            </p>
-          </div>
-        </Panel>
-      </Collapse>
+        items={[
+          {
+            key: "1",
+            label: "More Details",
+            children: (
+              <div className="text-sm text-gray-700">
+                <p>
+                  <strong>Description:</strong> {classData?.description}
+                </p>
+                <p className="mt-1">
+                  <strong>Prerequisites:</strong> {classData?.prerequisites}
+                </p>
+              </div>
+            ),
+            className: "!text-[#001840] !font-medium",
+          },
+        ]}
+      />
     </Card>
   );
 };

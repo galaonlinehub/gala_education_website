@@ -3,7 +3,7 @@ import { globalOptions } from "../config/tanstack";
 import { getEnrolledTopics } from "../utils/fns/global";
 import { apiGet } from "../services/api_service";
 
-export const useEnrolledTopics = (cohortId) => {
+export const useEnrolledTopics = (cohortId, instructor_id) => {
   const {
     data: enrolledTopics,
     isFetching: enrolledTopicsLoading,
@@ -36,6 +36,20 @@ export const useEnrolledTopics = (cohortId) => {
     ...globalOptions,
   });
 
+  const {
+    data: instructorDetails,
+    isFetching: instructorDetailsLoading,
+    isError: instructorDetailsError,
+  } = useQuery({
+    queryKey: ["instructor-details", instructor_id],
+    queryFn: () =>
+      instructor_id
+        ? getInstructorDetails(instructor_id)
+        : Promise.resolve(null),
+    enabled: !!instructor_id,
+    ...globalOptions,
+  });
+
   return {
     // ENROLLED TOPICS
     enrolledTopics,
@@ -51,6 +65,11 @@ export const useEnrolledTopics = (cohortId) => {
     enrolledSubjects,
     isFetchingEnrolledSubjects,
     isEnrolledSubjectsError,
+
+    //INSTRUCTOR DETAILS
+    instructorDetails,
+    instructorDetailsLoading,
+    instructorDetailsError,
   };
 };
 
@@ -65,9 +84,19 @@ const getCohortDetails = async (cohortId) => {
 };
 
 const getEnrolledSubjects = async () => {
-  return;
+  return [];
   try {
     const response = await apiGet("");
+    return response.data;
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+};
+
+const getInstructorDetails = async (id) => {
+  try {
+    const response = await apiGet(`instructor/${id}/details`);
     return response.data;
   } catch (e) {
     console.error(e);

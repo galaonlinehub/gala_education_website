@@ -17,10 +17,22 @@ import Subscribe from "@/src/components/Pay/Subscribe";
 import StudentSearch from "@/src/components/student/Search";
 import InstructorCompleteProfile from "@/src/components/teacher/InstructorCompleteProfile";
 import StickyNotification from "@/src/components/ui/notification/StickyNotification";
+import { useStickyNotification } from "@/src/store/notification/notification";
 
 export default function TeacherLayout({ children }) {
   const pathname = usePathname();
   const { installPrompt, isInstalled, handleInstallClick } = useInstallPrompt();
+
+  const notificationOpen = useStickyNotification(
+    (state) => state.notificationOpen
+  );
+  const openStickyNotification = useStickyNotification(
+    (state) => state.openStickyNotification
+  );
+
+  useEffect(() => {
+    openStickyNotification();
+  }, [openStickyNotification]);
 
   return (
     <>
@@ -90,8 +102,7 @@ export default function TeacherLayout({ children }) {
       <Subscribe />
       <InstructorCompleteProfile />
 
-      <StickyNotification/>
-
+      {notificationOpen && <StickyNotification />}
     </>
   );
 }

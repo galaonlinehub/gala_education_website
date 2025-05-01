@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, use } from "react";
 import { Card, Avatar } from "antd";
 import {
   LuArrowLeft,
@@ -11,9 +11,7 @@ import {
   LuDownload,
   LuFileMinus,
   LuFileText,
-  LuMail,
   LuMessageSquare,
-  LuPhone,
   LuPlay,
   LuUsers,
   LuVideo,
@@ -23,10 +21,10 @@ import { useEnrolledTopics } from "@/src/hooks/useEnrolledTopics";
 import { useSearchParams } from "next/navigation";
 import { decrypt } from "@/src/utils/fns/encryption";
 import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
+import { img_base_url } from "@/src/config/settings";
 
 const ClassDetailsPage = ({ params }) => {
-  const [showChatInput, setShowChatInput] = useState(false);
-  const { cohort_id } = params;
+  const { cohort_id } = use(params);
 
   const searchParams = useSearchParams();
   const instructor_id = decrypt(searchParams.get("id"));
@@ -166,8 +164,15 @@ const ClassDetailsPage = ({ params }) => {
   };
 
   const router = useRouter();
-  const { cohortDetails, cohortDetailsLoading } = useEnrolledTopics(cohort_id);
-  console.log(cohortDetails);
+  const {
+    cohortDetails,
+    cohortDetailsLoading,
+    instructorDetails,
+    instructorDetailsLoading,
+    instructorDetailsError,
+  } = useEnrolledTopics(cohort_id, instructor_id);
+
+  const instructor = instructorDetails?.instructor?.user;
 
   return (
     <div className="min-h-screen w-full">
@@ -201,7 +206,7 @@ const ClassDetailsPage = ({ params }) => {
         <Card className="mb-6">
           {cohortDetailsLoading ? (
             <div className="flex items-center justify-center w-full h-56">
-              <SlickSpinner color="#001840" size={28} />
+              <SlickSpinner color="blue" size={28} />
             </div>
           ) : (
             <div>
@@ -323,30 +328,6 @@ const ClassDetailsPage = ({ params }) => {
                     ))}
                   </div>
                 </div>
-                {/* <div className="rounded-lg bg-blue-50 p-4">
-                  <h4 className="text-sm font-medium text-[#001840] mb-2">
-                    Upcoming Assignments
-                  </h4>
-                  <div className="space-y-2 text-sm">
-                    {classData.assignments
-                      .filter((a) => a.status === "pending")
-                      .slice(0, 3)
-                      .map((assignment, index) => (
-                        <div
-                          key={index}
-                          className="flex items-center justify-between"
-                        >
-                          <div className="flex items-center text-gray-700">
-                            <div className="w-2 h-2 rounded-full bg-orange-500 mr-2"></div>
-                            <span>{assignment.name}</span>
-                          </div>
-                          <span className="text-orange-600 text-xs font-medium">
-                            Due {assignment.dueDate}
-                          </span>
-                        </div>
-                      ))}
-                  </div>
-                </div> */}
               </div>
             </Card>
 
@@ -590,74 +571,39 @@ const ClassDetailsPage = ({ params }) => {
             </Card>
           </div>
 
-          {/* Right Column - 1/3 width */}
           <div className="md:col-span-1 space-y-6">
-            {/* Instructor Card */}
-            <Card className="overflow-hidden !space-y-6">
-              {/* <div className="relative h-40 bg-gradient-to-r from-blue-500 to-indigo-600">
-                <div className="absolute bottom-0 left-0 w-full p-6 pt-16 bg-gradient-to-t from-black/60 to-transparent text-white">
-                  <h4 className="font-bold text-xl">Instructor</h4>
+            <Card className="overflow-hidden !space-y-3">
+              {instructorDetailsLoading ? (
+                <div className="h-28 flex justify-center items-center">
+                  <SlickSpinner color="blue" size={15} />
                 </div>
-              </div> */}
+              ) : (
+                <div className="w-full flex flex-col">
+                  <Avatar
+                    size={72}
+                    className="!bg-transparent/90 mb-4"
+                    src={`${img_base_url}${instructor?.profile_picture}`}
+                  />
 
-              {/* <div className="p-6 pt-12 relative"> */}
-              {/* <div className="absolute -top-10 left-6 w-20 h-20 rounded-full border-4 border-white overflow-hidden shadow-md"> */}
-              <Avatar
-                size={72}
-                className="!bg-transparent/90 mb-4"
-                src={`https://api.dicebear.com/7.x/miniavs/svg?seed=`}
-              />
-              {/* </div> */}
+                  <div className="flex flex-col">
+                    <h4 className="font-semibold text-xl text-gray-800">
+                      {instructor?.first_name} {instructor?.last_name}
+                    </h4>
+                    <p className="text-gray-500 text-xs mt-1 mb-4 line-clamp-6">
+                      {instructor?.bio}{" "}
+                    </p>
 
-              <div>
-                <h4 className="font-semibold text-xl text-gray-800">
-                  {classData.instructor.name}
-                </h4>
-                <p className="text-gray-500 text-sm mb-4">
-                  {classData.instructor.bio}
-                </p>
-
-                <div className="space-y-3 mt-4">
-                  <button
-                    className={`w-full px-4 py-2.5 rounded-md flex items-center justify-center font-medium text-sm ${
-                      showChatInput
-                        ? "bg-gray-100 text-[#001840]"
-                        : "bg-[#001840] text-white"
-                    }`}
-                    onClick={() => setShowChatInput(!showChatInput)}
-                  >
-                    <LuMessageSquare className="mr-2" />
-                    <span>Message Instructor</span>
-                  </button>
-
-                  {showChatInput && (
-                    <div className="mt-3 p-3 bg-gray-50 rounded-md">
-                      <textarea
-                        placeholder="Type your message..."
-                        className="w-full p-2 rounded border border-gray-200 text-sm focus:outline-none focus:border-[#001840]"
-                        rows={3}
-                      ></textarea>
-                      <div className="flex justify-end mt-2">
-                        <button className="px-3 py-1 bg-[#001840] text-white rounded text-sm">
-                          Send
-                        </button>
-                      </div>
+                    <div className="space-y-3">
+                      <button
+                        className={`w-full px-4 py-2.5 rounded-md flex items-center justify-center font-medium text-sm bg-[#001840] text-white`}
+                      >
+                        <LuMessageSquare className="mr-2" />
+                        <span>Message Instructor</span>
+                      </button>
                     </div>
-                  )}
-
-                  <div className="grid grid-cols-2 gap-2">
-                    <button className="flex items-center justify-center px-4 py-2.5 rounded-md bg-gray-100 text-[#001840] font-medium text-sm hover:bg-gray-200 transition-colors">
-                      <LuMail className="mr-2" />
-                      <span>Email</span>
-                    </button>
-                    <button className="flex items-center justify-center px-4 py-2.5 rounded-md bg-gray-100 text-[#001840] font-medium text-sm hover:bg-gray-200 transition-colors">
-                      <LuPhone className="mr-2" />
-                      <span>Call</span>
-                    </button>
                   </div>
                 </div>
-              </div>
-              {/* </div> */}
+              )}
             </Card>
 
             {/* Course Stats Card */}
