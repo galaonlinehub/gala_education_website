@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Result, Modal, Progress, Button } from "antd";
+import { Result, Modal, Progress } from "antd";
 import { PaymentStatus } from "@/src/config/settings";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import { HiMiniDevicePhoneMobile } from "react-icons/hi2";
@@ -70,11 +70,10 @@ export const RenderLoadingState = () => {
           <div className="space-y-2 xxs:space-y-4">
             <Progress
               percent={percent}
-              size="default"
+              size="large"
               strokeColor="#010798"
               trailColor="#e5e7eb"
               className="w-full max-w-xs sm:max-w-sm md:max-w-md"
-              strokeWidth={8}
               showInfo={false}
             />
             <div className="flex justify-between items-center text-xs xxs:text-sm">
@@ -156,7 +155,7 @@ export const RenderReferenceState = ({ reference, amount, onClose }) => (
       <div className="space-y-4">
         <div className="flex items-center justify-center gap-3 text-gray-700 bg-gray-50 p-3 rounded-lg">
           <LuHash className="text-[#001840] text-xl" />
-          <div>
+          <div className="flex flex-col items-center justify-center">
             <span className="font-medium">2. Enter Reference Number</span>
             <p className="text-lg text-[#001840] font-black mt-1 text-center">
               {reference ?? "---"}
@@ -165,7 +164,7 @@ export const RenderReferenceState = ({ reference, amount, onClose }) => (
         </div>
         <div className="flex items-center justify-center gap-3 text-gray-700 bg-gray-50 p-3 rounded-lg">
           <LuWallet className="text-[#001840] text-xl" />
-          <div>
+          <div className="flex flex-col items-center justify-center">
             <span className="font-medium">
               3. Enter Amount for plan selected
             </span>
@@ -176,9 +175,9 @@ export const RenderReferenceState = ({ reference, amount, onClose }) => (
         </div>
         <div className="flex items-center justify-center gap-3 text-gray-700 bg-gray-50 p-3 rounded-lg">
           <LuLock className="text-[#001840] text-xl" />
-          <div>
+          <div className="flex flex-col items-center justify-center">
             <span className="font-medium">4. Enter PIN to Confirm</span>
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-gray-500 mt-1 text-center">
               Enter your mobile money PIN to complete payment
             </p>
           </div>
@@ -261,8 +260,6 @@ export const PaymentPending = ({
 }) => {
   const { width } = useDevice();
   const [modalSize, setModalSize] = useState({ width: 520, height: 520 });
-  const router = useRouter();
-  const [localStatus, setLocalStatus] = useState(status);
   const { accountType, setAccountType } = useAccountType();
   const url = usePathname();
   const user = useUser();
@@ -286,7 +283,6 @@ export const PaymentPending = ({
       setAccountType(newUrl);
     }
   }, []);
-
 
   return (
     <Modal

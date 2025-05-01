@@ -26,7 +26,7 @@ export const useUserSubscriptions = () => {
     queries: types.map((type) => ({
       queryKey: ["subscriptions", type],
       queryFn: () => getSubscriptions(type),
-    //   ...globalOptions,
+      ...globalOptions,
     })),
   });
 

@@ -250,7 +250,7 @@ const DashboardHeader = () => {
               style={{ margin: 0, fontFamily: '"Quicksand", sans-serif' }}
             >
               Welcome back,{" "}
-              <span className="font-black">
+              <span className="font-black capitalize">
                 {user?.first_name} {user?.last_name}
               </span>
               !

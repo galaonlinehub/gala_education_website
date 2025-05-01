@@ -8,21 +8,21 @@ const { Panel } = Collapse;
 const { Option } = Select;
 
 const FaqCard = ({ faqQn, faqAns, bgColor, iconColor, headerColor }) => {
-  const [expandIconPosition, setExpandIconPosition] = useState("right");
+  const [expandIconPosition, setExpandIconPosition] = useState("end");
 
   const handlePositionChange = (position) => {
     setExpandIconPosition(position);
   };
 
   const handleCollapseChange = (key) => {
-    console.log(key);
+    // console.log(key);
   };
 
   const customExpandIcon = ({ isActive }) => (
     <IoIosArrowDropdownCircle
       style={{
         fontSize: "16px",
-        color: iconColor, // Make the icon white
+        color: iconColor, 
         transform: isActive ? "rotate(180deg)" : "rotate(0deg)",
         transition: "transform 0.3s",
       }}

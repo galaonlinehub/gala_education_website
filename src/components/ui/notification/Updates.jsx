@@ -1,4 +1,5 @@
 import { Drawer, List, Typography, Badge } from "antd";
+import clsx from "clsx";
 import { useState } from "react";
 import { LuBell, LuBellRing } from "react-icons/lu";
 
@@ -17,6 +18,8 @@ export default function Updates({ children }) {
   const showDrawer = () => setOpen(true);
   const closeDrawer = () => setOpen(false);
 
+  const updates = [];
+
   return (
     <>
       <div onClick={showDrawer}>{children}</div>
@@ -28,7 +31,12 @@ export default function Updates({ children }) {
               Notifications
             </Typography.Text>
             <Typography.Link
-              className="text-sm text-blue-600 hover:text-blue-800"
+              className={clsx(
+                "!text-sm",
+                updates.length > 0
+                  ? "!text-blue-600 hover:!text-blue-800"
+                  : "!text-gray-400 !cursor-not-allowed"
+              )}
               onClick={() => console.log("Clear All clicked")}
             >
               Clear All
@@ -46,35 +54,68 @@ export default function Updates({ children }) {
           body: { background: "#ffffff" },
         }}
       >
-        <List
-          dataSource={notifications}
-          renderItem={(item) => (
-            <List.Item
-              className={`p-4 border-b border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer !px-6 ${
-                item.unread ? "bg-blue-50" : "bg-white"
-              }`}
-              onClick={() => console.log(`Clicked notification ${item.id}`)}
-            >
-              <div className="flex items-start space-x-3">
-                <LuBellRing className="text-lg text-blue-600 mt-1" />
-                <div className="flex-1">
-                  <Typography.Text
-                    className={`text-sm ${
-                      item.unread
-                        ? "font-medium text-gray-900"
-                        : "text-gray-700"
-                    }`}
-                  >
-                    {item.message}
-                  </Typography.Text>
-                  <Typography.Text className="block text-xs text-gray-500 mt-1">
-                    {item.time}
-                  </Typography.Text>
+        {updates.length === 0 ? (
+          <div className="flex flex-col items-center justify-center h-full text-center p-6">
+            <style>
+              {`
+              @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+                20%, 40%, 60%, 80% { transform: translateX(2px); }
+              }
+              .bell-icon {
+                animation: shake 0.8s ease-in-out;
+              }
+              .fade-in {
+                animation: fadeIn 0.5s ease-in;
+              }
+              @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+              }
+            `}
+            </style>
+            <div className="rounded-lg p-8 max-w-sm w-full flex flex-col items-center justify-center">
+              <LuBell className="text-7xl text-gray-400 mb-4 bell-icon" />
+              <Typography.Text className="text-xl font-semibold text-gray-700 block mb-2 fade-in">
+                No notifications yet
+              </Typography.Text>
+              <Typography.Text className="text-xs md:text-sm text-gray-500 fade-in">
+                Your notifications will appear here.
+              </Typography.Text>
+            </div>
+          </div>
+        ) : (
+          <List
+            dataSource={updates}
+            renderItem={(item) => (
+              <List.Item
+                className={`p-4 border-b border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer !px-6 ${
+                  item.unread ? "bg-blue-50" : "bg-white"
+                }`}
+                onClick={() => console.log(`Clicked notification ${item.id}`)}
+              >
+                <div className="flex items-start space-x-3">
+                  <LuBellRing className="text-lg text-blue-600 mt-1" />
+                  <div className="flex-1">
+                    <Typography.Text
+                      className={`text-sm ${
+                        item.unread
+                          ? "font-medium text-gray-900"
+                          : "text-gray-700"
+                      }`}
+                    >
+                      {item.message}
+                    </Typography.Text>
+                    <Typography.Text className="block text-xs text-gray-500 mt-1">
+                      {item.time}
+                    </Typography.Text>
+                  </div>
                 </div>
-              </div>
-            </List.Item>
-          )}
-        />
+              </List.Item>
+            )}
+          />
+        )}
       </Drawer>
     </>
   );
