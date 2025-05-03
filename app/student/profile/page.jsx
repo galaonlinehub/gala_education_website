@@ -47,12 +47,7 @@ const StudentProfile = () => {
       return response.data || [];
     },
     enabled: false,
-    placeholderData: [
-      { date: "2024-01-15", action: "Completed Advanced React Course" },
-      { date: "2024-01-10", action: "Earned 'Top Performer' Badge" },
-      { date: "2024-01-05", action: "Started Machine Learning Basics" },
-      { date: "2024-01-01", action: "Joined Platform" },
-    ],
+    placeholderData: [],
   });
 
   const updateProfilePictureMutation = useMutation({
@@ -118,16 +113,14 @@ const StudentProfile = () => {
     }
   };
 
-  // Calculate stats
-  const classesTotal = user?.classes_bought || 12;
-  const classesCompleted = user?.completed_classes || 5;
-  const classesInProgress = user?.in_progress_classes || 4;
-  const achievements = user?.achievements || 5;
-  const completionRate = Math.round((classesCompleted / classesTotal) * 100);
+  const classesTotal = user?.total_cohorts;
+  const classesCompleted = user?.completed_cohorts;
+  const classesInProgress = user?.in_progress_cohorts;
+  const achievements = user?.completed_cohorts;
+  const completionRate = user?.completion_rate;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Header Card */}
       <div className="bg-white rounded-lg shadow-md p-6 mb-6 border">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <div className="flex flex-col sm:flex-row items-start gap-4">
@@ -438,9 +431,7 @@ const StudentProfile = () => {
                   <div className="flex gap-2 items-center text-gray-500">
                     <LuCalendar /> <span>Joined</span>
                   </div>
-                  <div className="pl-6 font-medium">
-                    {user?.created_at || "--"}
-                  </div>
+                  <div className="pl-6 font-medium">{user?.created_at}</div>
                 </div>
               </div>
             ) : (
@@ -454,7 +445,7 @@ const StudentProfile = () => {
                   location: user?.location,
                 }}
               >
-                <Form.Item
+                {/* <Form.Item
                   name="email"
                   label={
                     <span className="flex items-center gap-2">
@@ -463,9 +454,21 @@ const StudentProfile = () => {
                   }
                 >
                   <Input />
-                </Form.Item>
+                </Form.Item> */}
 
-                <Form.Item
+                <div className="mb-4">
+                  <div className="flex items-center gap-2 text-gray-500 mb-1">
+                    <LuMail /> Email
+                  </div>
+                  <div className="pl-6">
+                    <span className="font-medium">{user?.email}</span>
+                    <span className="text-gray-500 text-xs ml-2">
+                      (Not editable)
+                    </span>
+                  </div>
+                </div>
+
+                {/* <Form.Item
                   name="phone"
                   label={
                     <span className="flex items-center gap-2">
@@ -474,7 +477,19 @@ const StudentProfile = () => {
                   }
                 >
                   <Input />
-                </Form.Item>
+                </Form.Item> */}
+
+                <div className="mb-4">
+                  <div className="flex items-center gap-2 text-gray-500 mb-1">
+                    <LuPhone /> Phone
+                  </div>
+                  <div className="pl-6">
+                    <span className="font-medium">{user?.phone_number}</span>
+                    <span className="text-gray-500 text-xs ml-2">
+                      (Not editable)
+                    </span>
+                  </div>
+                </div>
 
                 <Form.Item
                   name="location"
@@ -495,7 +510,7 @@ const StudentProfile = () => {
                     <span className="font-medium">
                       {user?.created_at || "--"}
                     </span>
-                    <span className="text-gray-500 text-sm ml-2">
+                    <span className="text-gray-500 text-xs ml-2">
                       (Not editable)
                     </span>
                   </div>

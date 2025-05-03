@@ -13,11 +13,11 @@ import {
   Avatar,
   Badge,
   Tag,
+  Tooltip,
 } from "antd";
 import {
   ClockCircleOutlined,
   TrophyOutlined,
-  BellOutlined,
   CheckCircleOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
@@ -31,6 +31,8 @@ import {
 import { img_base_url } from "@/src/config/settings";
 import { useEnrolledTopics } from "@/src/hooks/useEnrolledTopics";
 import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
+import { useRouter } from "next/navigation";
+import Updates from "@/src/components/ui/notification/Updates";
 
 const { Title, Text } = Typography;
 
@@ -239,6 +241,7 @@ const DeadlinesCard = () => {
 
 const DashboardHeader = () => {
   const { user } = useUser();
+  const router = useRouter();
 
   return (
     <Card className="border-blue-600">
@@ -263,13 +266,26 @@ const DashboardHeader = () => {
         <Col xs={24} md={8} className="text-right">
           <Space>
             <Badge color="#001840" count={0}>
-              <Button icon={<LuBellRing />} shape="circle" />
+              <Updates>
+                <Tooltip placement="top" title="Notifications">
+                  <Button
+                    className="cursor-pointer"
+                    onClick={() => {}}
+                    icon={<LuBellRing />}
+                    shape="circle"
+                  />
+                </Tooltip>
+              </Updates>
             </Badge>
-            <Avatar
-              src={`${img_base_url}${user?.profile_picture}`}
-              icon={<LuUser color="black" />}
-              size="large"
-            />
+            <Tooltip title="View Profile">
+              <Avatar
+                onClick={() => router.push("/student/profile")}
+                className="cursor-pointer"
+                src={`${img_base_url}${user?.profile_picture}`}
+                icon={<LuUser color="black" />}
+                size="large"
+              />
+            </Tooltip>
           </Space>
         </Col>
       </Row>
@@ -334,7 +350,7 @@ const ActivityCard = () => {
   ];
 
   return (
-    <Card title="Recent Activity">
+    <Card title="Recent Activities">
       <div className="flex flex-col items-center justify-center w-full h-full">
         {isLoading ? (
           <SlickSpinner color="black" size={12} />
