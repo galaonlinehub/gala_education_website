@@ -134,15 +134,17 @@ const LiveLessons = () => {
             Live Learning Center
           </span>
         </div>
-        <p className="text-xs md:text-sm text-gray-600 leading-relaxed max-w-4xl px-2">
+        <p className="text-xs md:text-sm text-gray-600 leading-relaxed max-w-4xl">
           Participate in Live, Interactive Classes Delivered in Real Time with
           Dynamic Lessons and Engaging Discussions
         </p>
       </div>
       <div className="space-y-3">
         {isFetchingUpcomingLessons ? (
-          <div className="flex justify-center items-center py-24 lg:py-32">
-            <SlickSpinner color="#001840" size={60} />
+          <div className="flex w-full justify-center py-3 md:py-12">
+            <div className="flex justify-center items-center bg-white rounded-full shadow-md w-fit p-1 shadow-gray-400">
+              <SlickSpinner color="#001840" size={26} />
+            </div>
           </div>
         ) : upcomingLessons.length === 0 ? (
           <div className="flex flex-col justify-center items-center py-24">
