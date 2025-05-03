@@ -1,4 +1,5 @@
 "use client";
+import clsx from "clsx";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import Navbar from "@/src/components/layout/Navbar";
@@ -14,7 +15,6 @@ import KidInPicture from "@/src/utils/vector-svg/vectors/KidInPicture";
 import Clock from "@/src/utils/vector-svg/vectors/Clock";
 import StudentsInClass from "@/src/utils/vector-svg/vectors/StudentsInClass";
 import RightTiltedBook from "@/src/utils/vector-svg/vectors/CombinedBlock";
-import clsx from "clsx";
 import StickyNotification from "@/src/components/ui/notification/StickyNotification";
 import { useStickyNotification } from "@/src/store/notification/notification";
 
@@ -28,9 +28,9 @@ export default function StudentLayout({ children }) {
     (state) => state.openStickyNotification
   );
 
-  useEffect(() => {
-    openStickyNotification();
-  }, [openStickyNotification]);
+  // useEffect(() => {
+  //   openStickyNotification();
+  // }, [openStickyNotification]);
 
   return (
     <>

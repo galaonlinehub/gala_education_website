@@ -1,15 +1,5 @@
-import React, { useState, useEffect } from "react";
-import {
-  Form,
-  Input,
-  Select,
-  Button,
-  Typography,
-  Card,
-  Progress,
-  Checkbox,
-} from "antd";
-
+import React, { useState } from "react";
+import { Form, Input, Select, Button, Typography, Card, Progress } from "antd";
 import { disabilities } from "@/src/utils/data/disabilities";
 import { useAuth } from "@/src/hooks/useAuth";
 import EmailVerification from "./EmailVerification";
@@ -26,6 +16,7 @@ import {
   LuUser,
 } from "react-icons/lu";
 import SlickSpinner from "../../loading/template/SlickSpinner";
+import { preventCopyPaste } from "@/src/utils/fns/general";
 
 const { Text } = Typography;
 
@@ -132,6 +123,9 @@ const SignUpForm = () => {
                 autoComplete="new-password"
                 autoCapitalize="off"
                 spellCheck="false"
+                onCopy={preventCopyPaste}
+                onPaste={preventCopyPaste}
+                onCut={preventCopyPaste}
                 prefix={<LuMail className="!text-gray-400" />}
                 placeholder="Email Address"
                 className="!h-11 signup-input"
@@ -171,6 +165,9 @@ const SignUpForm = () => {
                   handlePasswordChange(e);
                   setPassword(e.target.value);
                 }}
+                onCopy={preventCopyPaste}
+                onPaste={preventCopyPaste}
+                onCut={preventCopyPaste}
                 onFocus={() => setPasswordFocused(true)}
                 onBlur={() => setPasswordFocused(false)}
                 iconRender={(visible) => (
@@ -271,29 +268,29 @@ const SignUpForm = () => {
 
         <div className="text-center text-sm text-gray-600 mt-4 flex items-center justify-center gap-2 flex-wrap">
           <div className="relative flex items-center">
-                      <input
-                        type="checkbox"
-                        checked={isAgreementChecked}
-                        onChange={(e) => setIsAgreementChecked(e.target.checked)}
-                        className="appearance-none w-5 h-5 border-2 border-[#010798] rounded 
+            <input
+              type="checkbox"
+              checked={isAgreementChecked}
+              onChange={(e) => setIsAgreementChecked(e.target.checked)}
+              className="appearance-none w-5 h-5 border-2 border-[#010798] rounded 
                checked:bg-[#010798] cursor-pointer
                transition-all duration-300 ease-in-out
                hover:border-opacity-80 focus:ring-2 focus:ring-[#010798] focus:ring-opacity-40 flex items-center justify-center outline-none"
-                      />
-                      <LuCheck
-                        className={clsx(
-                          "absolute left-0.5 top-0.5",
-                          "pointer-events-none transition-all duration-300 ease-in-out",
-                          {
-                            "text-white": isAgreementChecked,
-                            "text-transparent": !isAgreementChecked,
-                          }
-                        )}
-                        size={16}
-                        strokeWidth={4}
-                      />
-                    </div>
-          
+            />
+            <LuCheck
+              className={clsx(
+                "absolute left-0.5 top-0.5",
+                "pointer-events-none transition-all duration-300 ease-in-out",
+                {
+                  "text-white": isAgreementChecked,
+                  "text-transparent": !isAgreementChecked,
+                }
+              )}
+              size={16}
+              strokeWidth={4}
+            />
+          </div>
+
           <Text>I have read and agreed to the</Text>
           <Button
             type="link"
