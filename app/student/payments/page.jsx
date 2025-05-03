@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import { PaymentStatus } from "@/src/config/settings";
 import { LuCircleX, LuFolder, LuUsers } from "react-icons/lu";
-import { useEnrolledTopics } from "@/src/hooks/useEnrolledTopics";
 import TopicCardSkeleton from "@/src/components/student/TopicCardStudent";
 import { Card, Button, Avatar, Tooltip, Modal } from "antd";
 import {
@@ -10,93 +9,67 @@ import {
   RenderSuccessState,
   RenderLoadingState,
 } from "@/src/components/ui/auth/signup/PaymentStatus";
+import { usePendingCohorts } from "@/src/hooks/usePendingCohorts";
+import { useDevice } from "@/src/hooks/useDevice";
+import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
 
 function PendingPayment() {
-  const { enrolledTopicsLoading, enrolledTopicsError } = useEnrolledTopics();
+  const {
+    pendingCohorts,
+    isFetchingPendingCohorts,
+    errorFetchinPendingCohorts,
+  } = usePendingCohorts();
 
-  const pendingClasses = [
-    {
-      topic: "Introduction to Algebra",
-      cohort_id: "cohort-101",
-      subject: "Mathematics",
-      cohort_name: "Math Beginners Batch",
-      instructor_name: "John Doe",
-      total_student_enrolled: 25,
-      amount: 25000,
-    },
-    {
-      topic: "World War II Overview",
-      cohort_id: "cohort-102",
-      subject: "History",
-      cohort_name: "History Enthusiasts",
-      instructor_name: "Jane Smith",
-      total_student_enrolled: 30,
-      amount: 30000,
-    },
-    {
-      topic: "Basics of Programming",
-      cohort_id: "cohort-103",
-      subject: "Computer Science",
-      cohort_name: "Intro to CS",
-      instructor_name: "Alice Johnson",
-      total_student_enrolled: 15,
-      amount: 20000,
-    },
-    {
-      topic: "Shakespearean Literature",
-      cohort_id: "cohort-104",
-      subject: "English Literature",
-      cohort_name: "English Majors",
-      instructor_name: "Robert Brown",
-      total_student_enrolled: 20,
-      amount: 22000,
-    },
-    {
-      topic: "Photosynthesis Process",
-      cohort_id: "cohort-105",
-      subject: "Biology",
-      cohort_name: "Biology Starters",
-      instructor_name: "Emily Davis",
-      total_student_enrolled: 18,
-      amount: 18000,
-    },
-  ];
+  const { width } = useDevice();
+  const isMobile = width < 768;
 
   return (
-    <div className="mt-layout-margin px-2 lg:px-4">
-      <header className="mb-8">
-        <h1 className="text-xl font-black text-[#001840] mb-2">
+    <div className="mt-layout-margin px-1 sm:px-2 lg:px-4">
+      <div className="mb-8">
+        <h1 className="font-black text-[#001840] mb-1 text-lg md:text-2xl">
           Pending Payments
         </h1>
-        <p className="text-gray-600 text-xs">
+        <p className="text-gray-600 text-xs md:text-sm">
           Topics that are waiting for payment confirmation
         </p>
-      </header>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {enrolledTopicsError ? (
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 w-full">
+        {errorFetchinPendingCohorts ? (
           <div className="col-span-full text-center py-20 flex flex-col items-center justify-center">
-            <LuCircleX className="text-red-600 text-3xl md:text-6xl mb-4" />
-            <p className="text-red-600 text-xl font-medium">
+            <LuCircleX className="text-red-600 text-2xl md:text-4xl mb-2 md:mb-4" />
+            <p className="text-red-600 text-base md:text-xl font-medium mb-1 md:mb-3">
               Something went wrong
             </p>
-            <p className="text-gray-500 text-xs">Please try again later</p>
+            <p className="text-gray-500 text-xs sm:text-sm lg:text-base">
+              Please try again later
+            </p>
           </div>
-        ) : enrolledTopicsLoading ? (
-          Array.from({ length: 6 }).map((_, index) => (
-            <TopicCardSkeleton key={index} />
-          ))
-        ) : pendingClasses.length === 0 ? (
+        ) : isFetchingPendingCohorts ? (
+          <>
+            {isMobile ? (
+              <div className="flex w-full justify-center py-2">
+                <div className="flex justify-center items-center bg-white rounded-full shadow-md w-fit p-1 shadow-gray-400">
+                  <SlickSpinner color="black" size={18} />
+                </div>
+              </div>
+            ) : (
+              Array.from({ length: 6 }).map((_, index) => (
+                <TopicCardSkeleton key={index} />
+              ))
+            )}
+          </>
+        ) : pendingCohorts.length === 0 ? (
           <div className="flex flex-col items-center justify-center col-span-full py-24">
             <LuFolder className="text-6xl md:text-8xl text-[#001840]" />
-            <p className="text-[#001840] text-lg font-medium">
+            <p className="text-base sm:text-xl font-medium text-center">
               You don&apos;t have any pending payments!
             </p>
-            <p className="text-gray-500 text-xs mt-2">
+            <p className="text-gray-500 text-xs sm:text-sm mt-2 text-center">
               Use the search bar above to explore and find classes.
             </p>
           </div>
         ) : (
-          pendingClasses?.map((classItem) => (
+          pendingCohorts?.map((classItem) => (
             <div key={classItem.cohort_id}>
               <PendingTopicCard details={classItem} />
             </div>

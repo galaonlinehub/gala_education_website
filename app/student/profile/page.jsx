@@ -120,8 +120,8 @@ const StudentProfile = () => {
   const completionRate = user?.completion_rate;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="bg-white rounded-lg shadow-md p-6 mb-6 border">
+    <div className="max-w-7xl mx-auto px-1 sm:px-4 lg:px-8 py-8">
+      <div className="bg-white rounded-lg lg:shadow-md p-6 mb-6 border">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <div className="flex flex-col sm:flex-row items-start gap-4">
             <div className="relative group">
@@ -202,7 +202,6 @@ const StudentProfile = () => {
                               icon={
                                 <LuSave
                                   size={20}
-                                  strokeWidth={3}
                                   className="!text-green-500"
                                 />
                               }
@@ -216,7 +215,6 @@ const StudentProfile = () => {
                               icon={
                                 <LuX
                                   size={20}
-                                  strokeWidth={3}
                                   className="!text-red-500"
                                 />
                               }
@@ -364,13 +362,12 @@ const StudentProfile = () => {
                   />
                 </Tooltip>
               ) : (
-                <div className="flex gap-2">
+                <div className="flex">
                   <Tooltip title="Save">
                     <Button
                       type="text"
                       icon={
                         <LuSave
-                          strokeWidth={3}
                           size={20}
                           className="!text-green-500"
                         />
@@ -384,7 +381,6 @@ const StudentProfile = () => {
                       type="text"
                       icon={
                         <LuX
-                          strokeWidth={3}
                           size={20}
                           className="!text-red-500"
                         />
