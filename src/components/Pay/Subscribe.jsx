@@ -17,9 +17,9 @@ export default function Subscribe() {
     mask: {
       backdropFilter: "blur(10px)",
     },
-    content: {
-      top: "-80px",
-    },
+    // content: {
+    //   top: "-80px",
+    // },
   };
 
   const steps = [

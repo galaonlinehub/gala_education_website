@@ -1,4 +1,5 @@
 "use client";
+import clsx from "clsx";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import Navbar from "@/src/components/layout/Navbar";
@@ -14,12 +15,22 @@ import KidInPicture from "@/src/utils/vector-svg/vectors/KidInPicture";
 import Clock from "@/src/utils/vector-svg/vectors/Clock";
 import StudentsInClass from "@/src/utils/vector-svg/vectors/StudentsInClass";
 import RightTiltedBook from "@/src/utils/vector-svg/vectors/CombinedBlock";
-import clsx from "clsx";
 import StickyNotification from "@/src/components/ui/notification/StickyNotification";
+import { useStickyNotification } from "@/src/store/notification/notification";
 
 export default function StudentLayout({ children }) {
   const { installPrompt, isInstalled, handleInstallClick } = useInstallPrompt();
   const currentUrl = usePathname();
+  const notificationOpen = useStickyNotification(
+    (state) => state.notificationOpen
+  );
+  const openStickyNotification = useStickyNotification(
+    (state) => state.openStickyNotification
+  );
+
+  // useEffect(() => {
+  //   openStickyNotification();
+  // }, [openStickyNotification]);
 
   return (
     <>
@@ -85,7 +96,7 @@ export default function StudentLayout({ children }) {
         </aside>
 
         {/* Main Content */}
-        <div className="flex-1 px-2 lg:px-6 py-2 w-full lg:w-[80vw] overflow-y-auto h-[calc(100vh-90px)]">
+        <div className="flex-1 px-2 sm:px-3 lg:px-5 py-2 w-full lg:w-[80vw] overflow-y-auto h-[calc(100vh-90px)]">
           {children}
         </div>
       </main>
@@ -99,8 +110,8 @@ export default function StudentLayout({ children }) {
 
       <NewClass />
       <CompleteProfile />
-      {/* <Subscribe /> */}
-      <StickyNotification />
+      <Subscribe />
+      {notificationOpen && <StickyNotification />}
     </>
   );
 }

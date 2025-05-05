@@ -54,7 +54,7 @@ const ClassList = () => {
             enrolledTopics?.map((classItem) => (
               <Link
                 href={`/student/classes/${classItem.cohort_id}?id=${encrypt(
-                  90
+                  classItem?.instructor_id
                 )}`}
                 key={classItem.cohort_id}
               >
