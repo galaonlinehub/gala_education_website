@@ -27,7 +27,6 @@ import { useUser } from "@/src/hooks/useUser";
 import Footer from "@/src/components/layout/footer";
 import { useCookies } from "@/src/store/auth/signup";
 import { Button } from "antd";
-import { pdfjs } from "react-pdf";
 import { apiGet } from "@/src/services/api_service";
 import PdfViewer from "@/src/components/home/modals/PdfViewer";
 import { Authorities } from "@/src/components/layout/Authorities";

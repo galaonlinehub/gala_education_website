@@ -6,7 +6,10 @@ import { LoadingOutlined } from "@ant-design/icons";
 import { LuDownload } from "react-icons/lu";
 
 // Set the worker source
-pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+  'pdfjs-dist/build/pdf.worker.min.mjs',
+  import.meta.url,
+).toString();
 
 const PdfViewer = ({ pdfUrl, isOpen, onClose }) => {
   // Using a unique key to force re-render of Document component
