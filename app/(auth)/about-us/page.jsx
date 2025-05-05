@@ -9,6 +9,7 @@ import FaqCard from "@/src/components/home/card/FaqCard";
 import { useTeamMembers } from "@/src/hooks/useTeamMembers";
 import { img_base_url } from "@/src/config/settings";
 import MultipleProfileSkeletons from '@/src/components/home/card/ProfileCardSkeleton';
+import Footer from "@/src/components/layout/footer";
 
 
 const { Text } = Typography;
@@ -503,6 +504,7 @@ const AboutUs = () => {
           </div>
           <div className="md:p-3 mt-4">{renderContactsView(selecteContactsValue)}</div>
         </div>
+        <Footer />
       </div>
       <div className="hidden md:flex fixed mr-3 right-3 top-0 bottom-0 md:w-48 lg:w-64 items-center justify-center">
         <div className="flex flex-col items-center w-full space-y-4">
