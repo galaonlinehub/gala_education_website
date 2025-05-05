@@ -1,3 +1,4 @@
+'use client';
 import React, { useRef, useState, useEffect } from "react";
 import { Modal, Button, Alert } from "antd";
 import { Document, Page, pdfjs } from "react-pdf";
@@ -5,11 +6,8 @@ import { useDevice } from "@/src/hooks/useDevice";
 import { LoadingOutlined } from "@ant-design/icons";
 import { LuDownload } from "react-icons/lu";
 
-// Set the worker source
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.mjs',
-  import.meta.url,
-).toString();
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+
 
 const PdfViewer = ({ pdfUrl, isOpen, onClose }) => {
   // Using a unique key to force re-render of Document component
@@ -158,7 +156,7 @@ const PdfViewer = ({ pdfUrl, isOpen, onClose }) => {
               </Button>
             </div>
             <div className="flex w-full justify-center py-4">
-              <Button className="flex w-full text-xs" icon={<LuDownload size={15} />} onClick={handleDownload} disabled={!pdfBlob}>
+              <Button className="flex w-full !text-xs" icon={<LuDownload size={15} />} onClick={handleDownload} disabled={!pdfBlob}>
                 Download
               </Button>
             </div>
@@ -223,7 +221,7 @@ const PdfViewer = ({ pdfUrl, isOpen, onClose }) => {
                   width={getPageWidth()}
                   renderTextLayer={false}
                   renderAnnotationLayer={false}
-                  scale={1.0}
+                  scale={1.2}
                   className="pdf-page"
                   loading={
                     <div className="flex justify-center items-center h-64">
