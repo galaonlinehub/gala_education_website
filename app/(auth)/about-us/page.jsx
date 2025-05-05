@@ -9,6 +9,7 @@ import FaqCard from "@/src/components/home/card/FaqCard";
 import { useTeamMembers } from "@/src/hooks/useTeamMembers";
 import { img_base_url } from "@/src/config/settings";
 import MultipleProfileSkeletons from '@/src/components/home/card/ProfileCardSkeleton';
+import Footer from "@/src/components/layout/footer";
 
 
 const { Text } = Typography;
@@ -130,10 +131,7 @@ const AboutUs = () => {
             <div className="flex flex-col gap-4 w-full">
               <div className="flex gap-2">
                 <div>
-                  <Image src={
-                    member?.photo &&
-                    `${img_base_url + member?.photo}`
-                  } width={100} height={60} alt="user_photo" className="w-full max-w-[80px] sm:max-w-[150px] md:max-w-[180px] lg:max-w-[180px] object-cover rounded-xl" />
+                  <Image src="/about-us/team-placeholder.png" width={100} height={60} alt="user_photo" className="w-full max-w-[80px] sm:max-w-[150px] md:max-w-[180px] lg:max-w-[180px] object-cover rounded-xl" />
                 </div>
                 <div className="flex flex-col items-start justify-end ml-2">
                   <Text className="font-bold text-[10px]">{member?.name}</Text>
@@ -506,6 +504,7 @@ const AboutUs = () => {
           </div>
           <div className="md:p-3 mt-4">{renderContactsView(selecteContactsValue)}</div>
         </div>
+        <Footer />
       </div>
       <div className="hidden md:flex fixed mr-3 right-3 top-0 bottom-0 md:w-48 lg:w-64 items-center justify-center">
         <div className="flex flex-col items-center w-full space-y-4">

@@ -6,8 +6,6 @@ import { pdfjs } from 'react-pdf';
 import axios from 'axios';
 import { useDevice } from '@/src/hooks/useDevice';
 
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
-
 function PdfViewer({pdfPath,width=400}) {
   const [pageNumber, setPageNumber] = useState(1); 
   const [numPages, setNumPages] = useState(null);

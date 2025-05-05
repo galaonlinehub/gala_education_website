@@ -3,15 +3,18 @@ import { useForm } from "react-hook-form";
 import { Steps, Select, DatePicker, TimePicker, InputNumber, Button, Drawer, Alert, Skeleton, Tag, Input } from "antd";
 import { FiCheck, FiArrowRight, FiArrowLeft, FiCalendar, FiClock, FiBook, FiBookOpen, FiCreditCard } from "react-icons/fi";
 import dayjs from "dayjs";
-import { useSubject } from "@/src/hooks/useSubject";
 import { useGrade } from "@/src/hooks/useGrade";
 import { useTopic } from "@/src/hooks/useTopic";
 import { DAYS_MAP } from "@/src/utils/data/days_of_the_week";
 import { useCohort } from "@/src/hooks/useCohort";
-import { InfoCircleOutlined } from "@ant-design/icons";
+import { InfoCircleOutlined, LoadingOutlined } from "@ant-design/icons";
 import { weekOptions } from "@/src/utils/data/weekData";
 import notificationService from "@/src/components/ui/notification/Notification";
 import { apiGet } from "@/src/services/api_service";
+import { useSubTopics } from "@/src/hooks/useSubTopics";
+import { useInstructorSubjects } from "@/src/hooks/useInstructorSubjects";
+import { RiCalendarScheduleLine } from "react-icons/ri";
+import { FaArrowTurnDown } from "react-icons/fa6";
 
 const componentStyles = {
   select: {
@@ -57,6 +60,11 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
   const [value, setValueData] = useState("");
   const [isValid, setIsValid] = useState(true);
 
+  const [currentActiveSubtopic, setCurrentActiveSubtopic] = useState(0);
+
+  const [subtopicValues, setSubtopicValues] = useState([]);
+
+
   const { TextArea } = Input;
 
   const {
@@ -71,12 +79,11 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
       price: "",
       frequency: "",
       startDate: "",
-      endDate: "",
       days: [""],
       times: [""],
       durations: [""],
       description: "",
-      weeks: "",
+      subtopics: subtopicValues
     },
   });
 
@@ -84,18 +91,19 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
 
   // Reset all form state
   const resetForm = () => {
+    setSubtopicValues({});
+
     reset({
       subject: "",
       topic: "",
       price: "",
       frequency: "",
       startDate: "",
-      endDate: "",
       days: [""],
       times: [""],
       durations: [""],
       description: "",
-      weeks: "",
+      subtopics: {}
     });
     setStep(0);
     setCohortName("");
@@ -113,27 +121,28 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
     setValue(key, value);
   };
 
-  const calculateEndDate = (weeks, startDate) => {
-    if (startDate && weeks) {
-      const endDate = dayjs(startDate).add(Number(weeks), "week").format("YYYY-MM-DD");
-      updateForm("endDate", endDate);
-    }
-  };
 
-  const showEndDate = formData.startDate && formData.weeks;
-
-  const { subjects } = useSubject();
+  const { instructorSubjects } = useInstructorSubjects();
   const { topics, isTopicLoadig, isTopicError, topicError } = useTopic(formData.subject, formData.level);
   const { grades, isGradesPending, isGradeError, gradeError, refetch } = useGrade();
 
   const { createCohort, isFetching, cohorts } = useCohort();
+
+  const {
+    getSubTopics,
+    subTopics,
+    isSubtopicsPending,
+    isSubtopicsError,
+  } = useSubTopics();
+
+  console.log("Subtopics:", subTopics);
 
   useEffect(() => {
     if (createCohort.isSuccess) {
       const timer = setTimeout(() => {
         handleDrawerClose();
       }, 1000);
-      
+
       return () => clearTimeout(timer);
     }
   }, [createCohort.isSuccess]);
@@ -142,12 +151,12 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
     const wordCount = v
       .trim()
       .split(/\s+/)
-      .filter((word) => /\w/.test(word)).length; 
-  
+      .filter((word) => /\w/.test(word)).length;
+
     return wordCount >= 10;
   };
-  
-  
+
+
   const canProceed = () => {
     switch (step) {
       case 0:
@@ -155,7 +164,35 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
       case 1:
         return formData.days.every((day) => day) && formData.times.every((time) => time) && formData.durations.every((duration) => duration);
       case 2:
-        return formData.startDate && formData.endDate && formData.price && checkDescription(formData.description) ;
+        return formData.startDate && subTopics?.length > 0 &&
+        (() => {
+          // First check if subtopics exists and is an array
+          if (!formData.subtopics || !Array.isArray(formData.subtopics)) {
+            return false;
+          }
+          
+          // Then check each subtopic
+          return subTopics.every((topic) => {
+            try {
+              // Find this subtopic in the array
+              const subtopicEntry = formData.subtopics.find(item => 
+                item && typeof item === 'object' && item.subtopic === topic.id
+              );
+              
+              // Check if it exists and has valid num_lessons value
+              return subtopicEntry && 
+                subtopicEntry.num_lessons !== '' && 
+                !isNaN(parseInt(subtopicEntry.num_lessons)) &&
+                parseInt(subtopicEntry.num_lessons) >= 1 && 
+                parseInt(subtopicEntry.num_lessons) <= 5;
+            } catch (error) {
+              console.error("Error validating subtopic:", error);
+              return false;
+            }
+          });
+        })();
+      case 3:
+        return formData.price && checkDescription(formData.description);
       default:
         return false;
     }
@@ -164,6 +201,8 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+
+      console.log("Forma data here:", formData);
       await createCohort.mutateAsync(formData);
       e.target.reset();
       setOpenAddNewClass(false);
@@ -215,6 +254,10 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
     );
   };
 
+  const goToNextStep = () => {
+    setCurrentActiveSubtopic(currentActiveSubtopic + 1);
+  }
+
   const steps = [
     {
       title: "Subject & Topic Details",
@@ -239,8 +282,8 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
                 placeholder="Select a subject"
                 suffixIcon={<FiBook className="text-gray-400" />}
               >
-                {subjects &&
-                  subjects.map((sub) => (
+                {instructorSubjects &&
+                  instructorSubjects.map((sub) => (
                     <Select.Option key={sub.id} value={sub.id}>
                       {sub.name}
                     </Select.Option>
@@ -282,6 +325,9 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
                   onChange={(v) => {
                     updateForm("topic", v);
                     getGeneratedCohort(v, "topic_section");
+                    getSubTopics(v);
+                    setCurrentActiveSubtopic(0);
+                    setSubtopicValues({});
                   }}
                   placeholder="Select a topic"
                   suffixIcon={<FiBookOpen className="text-gray-400" />}
@@ -398,14 +444,17 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
     },
 
     {
-      title: "Pricing",
-      header: header("Pricing"),
-      subtitle: "Set duration and pricing",
-      icon: <FiCreditCard />,
+      title: `Lesson Plan`,
+      header: header("Lesson Plan"),
+      subtitle: (
+        <div>
+          Specificy the number of lessons it will take to complete each Sub-topic:
+        </div>
+      ),
+      icon: <RiCalendarScheduleLine />,
       content: (
-        <div className="space-y-6">
-          <Alert message="Note" description="The End date will be auto-selected according to the chosen Start date and number of weeks." type="info" showIcon icon={<InfoCircleOutlined />} className="mb-4" />
-          <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <div className="grid grid-cols-1 gap-4">
             <div>
               <label className="block text-[11px] font-medium text-gray-700 mb-1">Start Date</label>
               <div className="">
@@ -417,36 +466,138 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
                   value={formData.startDate ? dayjs(formData.startDate) : null}
                   onChange={(date, dateString) => {
                     updateForm("startDate", dateString);
-                    calculateEndDate(formData.weeks, dateString);
+                    // calculateEndDate(formData.weeks, dateString);
                   }}
                   suffixIcon={null}
                 />
               </div>
             </div>
-            <div>
-              <label className="block text-[11px] font-medium text-gray-700 mb-1">Choose Number of Weeks</label>
-              <div className="relative">
-                <Select
-                  value={formData.weeks}
-                  showSearch
-                  className="w-full"
-                  placeholder="Select number of weeks"
-                  options={weekOptions}
-                  onChange={(val) => {
-                    updateForm("weeks", val);
-                    calculateEndDate(val, formData.startDate);
-                  }}
-                />
-              </div>
-            </div>
-          </div>
+            <div style={{
+              maxHeight: '400px',
+              overflowY: 'auto',
+              padding: '0 10px 0 0'
+            }}>
+              <Steps
+                direction="vertical"
+                size="small"
+                current={currentActiveSubtopic}
+                items={isSubtopicsPending ? <div className="flex flex-col gap-1"><LoadingOutlined /> <span>Loading sub-topics...</span></div> : subTopics?.length > 0 ?
+                  subTopics.map((topic, index) => ({
+                    title: topic.title,
+                    description: <div className="flex gap-2">
+                      <Input
+                        type="number"
+                        placeholder="Number of lessons?"
+                        style={{ width: '100%' }}
+                        value={Array.isArray(subtopicValues) ?
+                          (subtopicValues.find(item => item.subtopic === topic.id)?.num_lessons || '') :
+                          ''}
+                        disabled={currentActiveSubtopic < index}
+                        min="1"
+                        max="5"
+                        onChange={(e) => {
+                          const newValue = e.target.value;
 
-          <div className={`transform transition-all duration-500 ease-in-out ${showEndDate ? "block translate-y-0" : "hidden -translate-y-4 pointer-events-none"}`}>
-            <div className="bg-gray-50 p-1.5 flex gap-2 items-center rounded-lg shadow-sm">
-              <span className="block text-xs font-medium text-gray-700">End Date:</span>
-              <span className="font-black">{formData.endDate}</span>
+                          // Ensure subtopicValues is an array
+                          const currentValues = Array.isArray(subtopicValues) ? subtopicValues : [];
+
+                          // Check if this subtopic already exists in the array
+                          const existingIndex = currentValues.findIndex(item => item.subtopic === topic.id);
+
+                          let newSubtopicValues;
+                          if (existingIndex >= 0) {
+                            // Update existing entry
+                            newSubtopicValues = [...currentValues];
+                            newSubtopicValues[existingIndex] = {
+                              subtopic: topic.id,
+                              num_lessons: newValue
+                            };
+                          } else {
+                            // Add new entry
+                            newSubtopicValues = [
+                              ...currentValues,
+                              {
+                                subtopic: topic.id,
+                                num_lessons: newValue
+                              }
+                            ];
+                          }
+
+                          setSubtopicValues(newSubtopicValues);
+                          updateForm("subtopics", newSubtopicValues);
+                        }}
+                        onBlur={(e) => {
+                          const value = e.target.value;
+
+                          // Ensure subtopicValues is an array
+                          const currentValues = Array.isArray(subtopicValues) ? subtopicValues : [];
+
+                          if (parseInt(value) < 1 || value === '') {
+                            const existingIndex = currentValues.findIndex(item => item.subtopic === topic.id);
+                            const newSubtopicValues = [...currentValues];
+
+                            if (existingIndex >= 0) {
+                              newSubtopicValues[existingIndex] = {
+                                subtopic: topic.id,
+                                num_lessons: '1'
+                              };
+                            } else {
+                              newSubtopicValues.push({
+                                subtopic: topic.id,
+                                num_lessons: '1'
+                              });
+                            }
+
+                            setSubtopicValues(newSubtopicValues);
+                            updateForm("subtopics", newSubtopicValues);
+                          } else if (parseInt(value) > 5) {
+                            const existingIndex = currentValues.findIndex(item => item.subtopic === topic.id);
+                            const newSubtopicValues = [...currentValues];
+
+                            if (existingIndex >= 0) {
+                              newSubtopicValues[existingIndex] = {
+                                subtopic: topic.id,
+                                num_lessons: '5'
+                              };
+                            } else {
+                              newSubtopicValues.push({
+                                subtopic: topic.id,
+                                num_lessons: '5'
+                              });
+                            }
+
+                            setSubtopicValues(newSubtopicValues);
+                            updateForm("subtopics", newSubtopicValues);
+                          }
+                        }}
+                      />
+                      {(currentActiveSubtopic === index && currentActiveSubtopic < (subTopics.length - 1)) ?
+                        <Button
+                          color="blue"
+                          type="primary"
+                          disabled={!Array.isArray(subtopicValues) ||
+                            !subtopicValues.find(item => item.subtopic === topic.id)?.num_lessons}
+                          onClick={goToNextStep}
+                          icon={<FaArrowTurnDown />}
+                        ></Button> : null}
+                    </div>
+                  }))
+                  : []
+                }
+              />
             </div>
           </div>
+        </div>
+      ),
+    },
+
+    {
+      title: "Pricing",
+      header: header("Pricing"),
+      subtitle: "Set duration and pricing",
+      icon: <FiCreditCard />,
+      content: (
+        <div className="space-y-6">
 
           <div>
             <label className="block text-[12px] font-medium text-gray-700 mb-1">Price</label>
@@ -479,15 +630,15 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
                 updateForm("description", v.target.value)
               }}
               onBlur={handleBlur}
-              // status={isValid ? "" : "error"}
+            // status={isValid ? "" : "error"}
             />
             <div style={{ marginTop: "8px" }}>
               Word count:{" "}
               {formData.description.trim()
                 ? formData.description.trim()
-                    .trim()
-                    .split(/\s+/)
-                    .filter((word) => /\w/.test(word)).length
+                  .trim()
+                  .split(/\s+/)
+                  .filter((word) => /\w/.test(word)).length
                 : 0}
               /10 minimum
             </div>
@@ -550,7 +701,7 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
                   Created!
                 </div>
               ) : (
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-1 !text-[11px]">
                   Create Class
                   <FiCheck />
                 </div>

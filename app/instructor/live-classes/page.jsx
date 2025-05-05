@@ -1,6 +1,6 @@
 "use client";
 
-import { Avatar, Button, Card, Collapse, Modal, Tag } from "antd";
+import { Avatar, Button, Card, Collapse, Modal, Segmented, Tag } from "antd";
 import React, { useState } from "react";
 import { LuCalendar, LuClock, LuUsers, LuVideo, LuInfo, LuX, LuCheckCheck } from "react-icons/lu";
 import { useUpcomingLessons } from "@/src/hooks/useUpcomigLessons";
@@ -114,7 +114,7 @@ const ClassCard = ({ classData }) => {
       {/* Confrimation Modal */}
 
       <>
-        
+
         <Modal
           open={isModalOpen}
           footer={null}
@@ -124,7 +124,7 @@ const ClassCard = ({ classData }) => {
           className="confirm-join-modal"
         >
           <div className="py-4">
-         
+
             <div className="flex justify-center mb-6">
               <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center">
                 <LuVideo className="text-4xl text-[#001840]" />
@@ -177,6 +177,8 @@ const InstructorLiveLessons = () => {
 
   const { upcomingLessons, isFetchingUpcomingLessons } = useUpcomingLessons();
 
+  const [alignValue, setAlignValue] = useState('Upcoming');
+
 
   return (
     <div className="w-full p-4 mt-layout-margin">
@@ -193,7 +195,62 @@ const InstructorLiveLessons = () => {
         </p>
       </div>
 
-      <div className="space-y-3">
+      <Segmented
+        value={alignValue}
+        style={{ marginBottom: 8 }}
+        onChange={setAlignValue}
+        options={['Upcoming', 'Completed', 'Canceled']}
+      />
+
+      {alignValue == 'Upcoming' && <div className="space-y-3">
+        {isFetchingUpcomingLessons ? (
+          <div className="flex justify-center gap-2 items-center w-full py-40 md:py-64">
+            <LoadingOutlined className="text-3xl text-[#001840]" spin /> <span className="text-xs">Loading lessons...</span>
+          </div>
+        ) : upcomingLessons?.filter((lesson)=> lesson.status === 'Upcoming').length > 0 ? (
+          upcomingLessons.filter((lesson)=> lesson.status === 'Upcoming').map((classData) => (
+            <ClassCard key={classData.id} classData={classData} />
+          ))
+        ) : (
+          <div className="flex justify-center items-center w-full py-16">
+            <p className="text-gray-500">No upcoming classes found.</p>
+          </div>
+        )}
+      </div>}
+
+      {alignValue == 'Completed' && <div className="space-y-3">
+        {isFetchingUpcomingLessons ? (
+          <div className="flex justify-center gap-2 items-center w-full py-40 md:py-64">
+            <LoadingOutlined className="text-3xl text-[#001840]" spin /> <span className="text-xs">Loading lessons...</span>
+          </div>
+        ) : upcomingLessons?.filter((lesson)=> lesson.status === 'Completed').length > 0 ? (
+          upcomingLessons.filter((lesson)=> lesson.status === 'Completed').map((classData) => (
+            <ClassCard key={classData.id} classData={classData} />
+          ))
+        ) : (
+          <div className="flex justify-center items-center w-full py-16">
+            <p className="text-gray-500">No Completed classes found.</p>
+          </div>
+        )}
+      </div>}
+
+      {alignValue == 'Canceled' && <div className="space-y-3">
+        {isFetchingUpcomingLessons ? (
+          <div className="flex justify-center gap-2 items-center w-full py-40 md:py-64">
+            <LoadingOutlined className="text-3xl text-[#001840]" spin /> <span className="text-xs">Loading lessons...</span>
+          </div>
+        ) : upcomingLessons?.filter((lesson)=> lesson.status === 'Canceled').length > 0 ? (
+          upcomingLessons.filter((lesson)=> lesson.status === 'Canceled').map((classData) => (
+            <ClassCard key={classData.id} classData={classData} />
+          ))
+        ) : (
+          <div className="flex justify-center items-center w-full py-16">
+            <p className="text-gray-500">No Canceled classes found.</p>
+          </div>
+        )}
+      </div>}
+
+      {/* <div className="space-y-3">
         {isFetchingUpcomingLessons ? (
           <div className="flex justify-center gap-2 items-center w-full py-40 md:py-64">
             <LoadingOutlined className="text-3xl text-[#001840]" spin /> <span className="text-xs">Loading lessons...</span>
@@ -207,7 +264,7 @@ const InstructorLiveLessons = () => {
             <p className="text-gray-500">No upcoming classes found.</p>
           </div>
         )}
-      </div>
+      </div> */}
 
       {/* Confirmation modal */}
 
