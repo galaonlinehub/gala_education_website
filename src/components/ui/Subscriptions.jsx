@@ -20,38 +20,42 @@ const Subscriptions = () => {
 
   return (
     <div className="xl:px-6 py-2 rounded-xl">
-      <div className="text-2xl font-black mb-2 text-black flex items-center">
-        <div className="flex items-center justify-center h-10 w-10 rounded-full bg-[#001840] text-white mr-3">
+      <div className="text-lg md:text-2xl font-black mb-2 text-black flex items-center">
+        <div className="flex items-center justify-center h-10 w-10 rounded-full bg-[#001840] text-white mr-2">
           <LuCrown className="h-5 w-5" />
         </div>
         Your Subscriptions
       </div>
-      <div className="text-sm text-black mb-6 border-l-4 border-[#001840] pl-3 py-1 bg-[#001840]/10 rounded-r-md">
+      <div className="text-xs md:text-sm text-black mb-6 border-l-4 border-[#001840] pl-3 py-1 bg-[#001840]/10 rounded-r-md">
         Manage and view your active, upcoming, and past subscriptions in one
         place.
       </div>
 
       {/* Active Subscriptions */}
-
-      <Card className="mb-6 transition-all duration-300">
+      <div className="mb-6 transition-all duration-300">
         <div className="flex flex-col items-start justify-center w-full">
-          <div className="flex justify-between w-full mb-4 overflow-hidden">
-            <div className="font-bold text-xl text-black flex items-center">
+          <div className="flex flex-col xxs:flex-row xxs:justify-between gap-2 w-full mb-4 overflow-hidden">
+            <div className="font-bold text-base md:text-xl text-black flex items-center">
               <div className="flex items-center justify-center h-8 w-8 rounded-full bg-[#001840]/10 mr-2">
                 <LuShieldCheck className="h-4 w-4" />
               </div>
               Active Subscriptions
             </div>
-            <Tooltip title="This feature is currently unavailable.">
+            <Tooltip
+              title={
+                <div className="text-xs">
+                  This feature is currently unavailable.
+                </div>
+              }
+            >
               <button
                 disabled={true}
-                className="flex items-center justify-center text-xs sm:text-sm bg-[#001840] hover:bg-[#002060] text-white font-medium py-1 xs:py-2 px-2 sm:px-4 xs:gap-1 rounded-3xl xs:rounded-full shadow-md transition-all duration-300 transform hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed disabled:opacity-80 overflow-hidden"
+                className="flex items-center justify-center bg-[#001840] hover:bg-[#002060] text-white font-medium py-1 xs:py-2 px-2 sm:px-4 xs:gap-2 rounded-3xl xs:rounded-full shadow-md transition-all duration-300 transform hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed disabled:opacity-80 overflow-hidden"
               >
-                <LuPlus strokeWidth={3.5} size={18} />
-                <span className="text-white font-bold line-clamp-1 w-3/4 xs:w-fit inline-block">
-                  {" "}
+                <LuPlus size={18} />
+                <div className="text-white font-bold text-xs sm:text-sm">
                   Add Subscription
-                </span>
+                </div>
               </button>
             </Tooltip>
           </div>
@@ -96,11 +100,11 @@ const Subscriptions = () => {
             <SubscriptionItem key={sub.id} sub={{ ...sub, status: "Next" }} />
           ))}
         </div>
-      </Card>
+      </div>
 
       {/* Previous Subscriptions */}
 
-      <Card className="">
+      <Card className="border-0">
         <div className="font-bold text-xl mb-4  flex items-center">
           <div className="flex items-center justify-center h-8 w-8 rounded-full bg-[#001840]/10 mr-2">
             <LuHistory className="h-4 w-4" />

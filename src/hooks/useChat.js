@@ -23,6 +23,7 @@ export const useChat = () => {
   const [onlineUsers, setOnlineUsers] = useState([]);
 
   const queryClient = useQueryClient();
+  const isDev = process.env.NODE_ENV === "development";
 
   useEffect(() => {
     if (!user?.id) return;
@@ -34,7 +35,7 @@ export const useChat = () => {
     }
 
     socketRef.current = io(`${socket_base_url}chat`, {
-      query: { user_id: user.id },
+      query: { user_id: user.id, mode: isDev ? "development" : "" },
       auth: { token },
       transportOptions: {
         polling: {
