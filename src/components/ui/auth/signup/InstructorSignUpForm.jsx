@@ -345,7 +345,7 @@ const InstructorRegistrationForm = () => {
                 fileList={fileList.transcript}
                 maxCount={1}
               >
-                {uploadButton("Upload Transcript", "")}
+                {uploadButton("Upload Certificate", "")}
               </Upload>
             </Form.Item>
 
