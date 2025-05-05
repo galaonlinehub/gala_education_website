@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
-import { Button, Input, Card, Modal } from "antd";
+import { Button, Input, Card } from "antd";
 import { localStorageFn, sessionStorageFn } from "@/src/utils/fns/client";
 import {
   EMAIL_VERIFICATION_KEY,
   PLAN_CONFIRMED_KEY,
+  socket_base_url,
 } from "@/src/config/settings";
 import { decrypt } from "@/src/utils/fns/encryption";
-import { LoadingOutlined } from "@ant-design/icons";
 import { useTabNavigator } from "@/src/store/auth/signup";
 import { useMutation } from "@tanstack/react-query";
 import { apiPost } from "@/src/services/api_service";
@@ -132,9 +132,10 @@ const MobilePay = () => {
   });
 
   useEffect(() => {
-    const socket = io("https://edusockets.galahub.org/payment");
+    const socket = io(`${socket_base_url}payment`);
+    if (!email) return;
     socket.on("connect", () => {
-      socket.emit("join", { email: email });
+      socket.emit("join", { email });
     });
 
     socket.on("paymentResponse", (msg) => {
@@ -157,21 +158,21 @@ const MobilePay = () => {
   }, [email]);
 
   useEffect(() => {
+    const getEmail = () => {
+      const sessionStorageText = sessionStorageFn.get(EMAIL_VERIFICATION_KEY);
+      const decryptedEmail = user ? user.email : decrypt(sessionStorageText);
+      setEmail(decryptedEmail);
+    };
+
+    const getPlan = () => {
+      const localStorageText = localStorageFn.get(PLAN_CONFIRMED_KEY);
+      const decryptedPlan = localStorageText && decrypt(localStorageText);
+      setPlan(decryptedPlan);
+    };
+
     getPlan();
     getEmail();
-  }, []);
-
-  let getPlan = () => {
-    const localStorageText = localStorageFn.get(PLAN_CONFIRMED_KEY);
-    const decryptedPlan = localStorageText && decrypt(localStorageText);
-    setPlan(decryptedPlan);
-  };
-
-  var getEmail = () => {
-    const sessionStorageText = sessionStorageFn.get(EMAIL_VERIFICATION_KEY);
-    const decryptedEmail = user ? user.email : decrypt(sessionStorageText);
-    setEmail(decryptedEmail);
-  };
+  }, [user]);
 
   const goBack = () => {
     setActiveTab(activeTab - 1);

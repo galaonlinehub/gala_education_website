@@ -1,7 +1,12 @@
 import { useDevice } from "@/src/hooks/useDevice";
+import { useStickyNotification } from "@/src/store/notification/notification";
 import { LuX } from "react-icons/lu";
 
 const StickyNotification = () => {
+  const closeStickyNotification = useStickyNotification(
+    (state) => state.closeStickyNotification
+  );
+
   const { width } = useDevice();
   const btnWidth = width < 300 ? 14 : width < 500 ? 18 : width < 800 ? 24 : 26;
   return (
@@ -44,7 +49,10 @@ const StickyNotification = () => {
           <span>Join</span> <span className="hidden md:block">Now</span>
         </button>
 
-        <button className="text-white hover:text-blue-300">
+        <button
+          onClick={closeStickyNotification}
+          className="text-white hover:text-blue-300"
+        >
           <LuX size={btnWidth} strokeWidth={3} />
         </button>
       </div>

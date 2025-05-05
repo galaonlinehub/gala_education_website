@@ -23,12 +23,27 @@ export const useChat = () => {
   const [onlineUsers, setOnlineUsers] = useState([]);
 
   const queryClient = useQueryClient();
+  const isDev = process.env.NODE_ENV === "development";
 
   useEffect(() => {
     if (!user?.id) return;
-    socketRef.current = io(`${socket_base_url}/chat`, {
-      query: { user_id: user.id },
-      auth: { token: decrypt(cookieFn.get(USER_COOKIE_KEY)) },
+    const token = decrypt(cookieFn.get(USER_COOKIE_KEY));
+
+    if (!token) {
+      console.error("No token available for socket authentication");
+      return;
+    }
+
+    socketRef.current = io(`${socket_base_url}chat`, {
+      query: { user_id: user.id, mode: isDev ? "development" : "" },
+      auth: { token },
+      transportOptions: {
+        polling: {
+          extraHeaders: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      },
     });
 
     socketRef.current.on("user_online", (user_id) => {
@@ -150,7 +165,7 @@ export const useChat = () => {
 
     socketRef.current.on("user_offline", ({ user_id, last_active_at }) => {
       setOnlineUsers((prev) => prev.filter((id) => id !== user_id));
-      console.log("USER WENT OFFLINE", user_id, last_active_at)
+      console.log("USER WENT OFFLINE", user_id, last_active_at);
       setChats((prev) =>
         prev.map((chat) => {
           return {
@@ -171,10 +186,10 @@ export const useChat = () => {
       );
     });
 
-    return () => {
-      socketRef.current.disconnect();
-      console.log("THIS IS ME DISCONNECTING", user.id);
-    };
+    // return () => {
+    //   socketRef.current.close();
+    //   console.log("THIS IS ME DISCONNECTING", user.id);
+    // };
   }, [user.id]);
 
   const createOrGetChatMutation = useMutation({

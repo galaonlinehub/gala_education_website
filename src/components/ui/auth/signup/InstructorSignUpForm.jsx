@@ -26,6 +26,7 @@ import { useRouter } from "next/navigation";
 import clsx from "clsx";
 import { LuCheck, LuUpload } from "react-icons/lu";
 import SlickSpinner from "../../loading/template/SlickSpinner";
+import { preventCopyPaste } from "@/src/utils/fns/general";
 
 const { Text } = Typography;
 
@@ -222,6 +223,9 @@ const InstructorRegistrationForm = () => {
                   handlePasswordChange(e);
                   setPassword(e.target.value);
                 }}
+                onCopy={preventCopyPaste}
+                onPaste={preventCopyPaste}
+                onCut={preventCopyPaste}
                 onFocus={() => setPasswordFocused(true)}
                 onBlur={() => setPasswordFocused(false)}
               />
@@ -273,6 +277,9 @@ const InstructorRegistrationForm = () => {
                 autoComplete="new-password"
                 placeholder="Confirm Password"
                 className="!h-[42px] signup-input"
+                onCopy={preventCopyPaste}
+                onPaste={preventCopyPaste}
+                onCut={preventCopyPaste}
               />
             </Form.Item>
 
@@ -338,7 +345,7 @@ const InstructorRegistrationForm = () => {
                 fileList={fileList.transcript}
                 maxCount={1}
               >
-                {uploadButton("Upload Transcript", "")}
+                {uploadButton("Upload Certificate", "")}
               </Upload>
             </Form.Item>
 

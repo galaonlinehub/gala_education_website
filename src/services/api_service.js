@@ -3,10 +3,14 @@ import { decrypt } from "../utils/fns/encryption";
 import { API_BASE_URL, USER_COOKIE_KEY } from "../config/settings";
 import { cookieFn } from "../utils/fns/client";
 
+
 export const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     "Content-Type": "application/json",
+    ...(process.env.NODE_ENV === "development"
+      ? { "X-Dev-Request": "true" }
+      : {}),
   },
 });
 
@@ -20,6 +24,7 @@ const publicEndpoints = new Set([
   "subscribe-plan",
   "request-otp",
   "subscribe-mail-list",
+  "support",
   "team-members",
   "health",
 ]);
@@ -30,7 +35,6 @@ api.interceptors.request.use(
     const baseUrl = config.url.split("?")[0];
 
     if (config.headers["X-Use-Direct-Token"] === "true") {
-      console.log("Skipping interceptor token logic...");
       return config;
     }
 
@@ -58,7 +62,6 @@ api.interceptors.request.use(
 export const apiGet = async (endpoint, headers = {}, directToken = null) => {
   try {
     if (directToken) {
-      console.log("Using direct token for:", endpoint);
       const response = await api.get(endpoint, {
         headers: {
           ...headers,

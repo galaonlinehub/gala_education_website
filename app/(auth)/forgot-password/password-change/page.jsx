@@ -15,6 +15,7 @@ import {
   LuLoaderCircle,
   LuLock,
 } from "react-icons/lu";
+import { RESET_PASSWORD_EMAIL_KEY } from "@/src/config/settings";
 
 const { Title, Text } = Typography;
 
@@ -69,7 +70,7 @@ const ChangePassword = () => {
   }, []);
 
   const decryptEmail = () => {
-    const storedEmail = sessionStorageFn.get("Gala");
+    const storedEmail = sessionStorageFn.get(RESET_PASSWORD_EMAIL_KEY);
     const decryptedEmail = decrypt(storedEmail);
     if (decryptedEmail) {
       setEmail(decryptedEmail);

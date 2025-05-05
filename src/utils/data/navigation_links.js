@@ -150,7 +150,7 @@ export const student_links = [
     icon: <LuUsers />,
   },
   {
-    name: "Payments",
+    name: "Pending Payments",
     link: "payments",
     icon: <LuBanknote />,
   },

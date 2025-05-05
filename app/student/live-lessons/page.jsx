@@ -22,7 +22,7 @@ const ClassCard = ({ classData }) => {
 
   return (
     <Card
-      className="!flex !flex-col !w-full !rounded-xl !bg-white [&_.ant-card-body]:!p-2 md:[&_.ant-card-body]:!p-4"
+      className="!flex !flex-col !w-full !shadow-sm hover:!shadow-md !rounded-xl !bg-white [&_.ant-card-body]:!p-2 md:[&_.ant-card-body]:!p-4"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -34,12 +34,12 @@ const ClassCard = ({ classData }) => {
         {classData.status}
       </Tag>
       <div className="flex w-full flex-col sm:flex-row sm:items-center justify-between gap-4 px-4 md:px-8 py-1">
-        <div className="flex-1 flex flex-col sm:flex-row sm:items-center gap-4">
+        <div className="flex-1 flex flex-col sm:flex-row sm:items-center gap-4 md:gap-12">
           <div className="min-w-[140px]">
             <span className="text-base font-semibold leading-tight">
               {classData.class_name}: {classData.topic}
             </span>
-            <div className="text-[10px] text-gray-600 italic flex items-center gap-1">
+            <div className="text-[10px] text-gray-600 flex items-center gap-1">
               <span>by</span>
               <Avatar
                 size={24}
@@ -50,7 +50,7 @@ const ClassCard = ({ classData }) => {
                 }
                 icon={!classData.instructor_image && <LuUser color="black" />}
               />
-              {classData.instructor}
+              <span className="italic">{classData.instructor}</span>
             </div>
           </div>
 
@@ -100,47 +100,77 @@ const ClassCard = ({ classData }) => {
           />
         )}
         className="!bg-transparent"
-      >
-        <Panel
-          header="More Details"
-          key="1"
-          className="!text-[#001840] !font-medium"
-        >
-          <div className="text-sm text-gray-700">
-            <p>
-              <strong>Description:</strong> {classData?.description}
-            </p>
-            <p className="mt-1">
-              <strong>Prerequisites:</strong> {classData?.prerequisites}
-            </p>
-          </div>
-        </Panel>
-      </Collapse>
+        items={[
+          {
+            key: "1",
+            label: "More Details",
+            children: (
+              <div className="text-sm text-gray-700">
+                <p>
+                  <strong>Description:</strong> {classData?.description}
+                </p>
+                <p className="mt-1">
+                  <strong>Prerequisites:</strong> {classData?.prerequisites}
+                </p>
+              </div>
+            ),
+            className: "!text-[#001840] !font-medium",
+          },
+        ]}
+      />
     </Card>
   );
 };
 
 const LiveLessons = () => {
-  const { upcomingLessons, isFetchingUpcomingLessons } = useUpcomingLessons();
+  const {
+    upcomingLessons,
+    isFetchingUpcomingLessons,
+    isLoadingUpcomingLessons,
+  } = useUpcomingLessons();
 
   return (
-    <div className="w-full p-4">
-      <div className="flex flex-col justify-center gap-1 mb-4">
+    <div className="w-full py-4">
+      <div className="flex flex-col justify-center gap-1 mb-4 w-full">
         <div className="flex items-center gap-2">
-          {/* <LuVideo className="text-2xl md:text-4xl text-[#001840] flex-shrink-0" /> */}
           <span className="font-semibold text-lg md:text-2xl text-[#001840] tracking-tight">
             Live Learning Center
           </span>
         </div>
-        <p className="text-xs md:text-sm text-gray-600 leading-relaxed max-w-4xl px-2">
+        <div className="text-xs md:text-sm text-gray-600 leading-relaxed w-full md:max-w-4xl">
           Participate in Live, Interactive Classes Delivered in Real Time with
           Dynamic Lessons and Engaging Discussions
-        </p>
+        </div>
       </div>
       <div className="space-y-3">
         {isFetchingUpcomingLessons ? (
-          <div className="flex justify-center items-center py-24 lg:py-32">
-            <SlickSpinner color="#001840" size={28} />
+          <div className="flex w-full justify-center py-3 md:py-12">
+            <div className="flex justify-center items-center bg-white rounded-full shadow-md w-fit p-1 shadow-gray-400">
+              <SlickSpinner color="#001840" size={26} />
+            </div>
+          </div>
+        ) : isLoadingUpcomingLessons ? (
+          <div className="flex w-full justify-center py-3 md:py-24">
+            <svg
+              class="size-14 animate-spin"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
+                opacity="0.25"
+              />
+              <path
+                d="M12 2a10 10 0 0 1 10 10"
+                stroke="currentColor"
+                stroke-width="4"
+              />
+            </svg>
           </div>
         ) : upcomingLessons.length === 0 ? (
           <div className="flex flex-col justify-center items-center py-24">

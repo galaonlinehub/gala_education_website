@@ -9,12 +9,12 @@ const getUpcomingLessons = async () => {
 };
 
 export const useUpcomingLessons = () => {
-  const { data = [], isFetching } = useQuery({
+  const { data = [], isFetching, isLoading } = useQuery({
     queryKey: ["upcoming-lessons"],
     queryFn: getUpcomingLessons,
     // ...globalOptions,
   });
 
-  return { upcomingLessons: data, isFetchingUpcomingLessons: isFetching };
+  return { upcomingLessons: data, isFetchingUpcomingLessons: isFetching , isLoadingUpcomingLessons: isLoading};   
 };
 
