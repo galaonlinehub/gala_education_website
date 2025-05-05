@@ -130,10 +130,7 @@ const AboutUs = () => {
             <div className="flex flex-col gap-4 w-full">
               <div className="flex gap-2">
                 <div>
-                  <Image src={
-                    member?.photo &&
-                    `${img_base_url + member?.photo}`
-                  } width={100} height={60} alt="user_photo" className="w-full max-w-[80px] sm:max-w-[150px] md:max-w-[180px] lg:max-w-[180px] object-cover rounded-xl" />
+                  <Image src="/about-us/team-placeholder.png" width={100} height={60} alt="user_photo" className="w-full max-w-[80px] sm:max-w-[150px] md:max-w-[180px] lg:max-w-[180px] object-cover rounded-xl" />
                 </div>
                 <div className="flex flex-col items-start justify-end ml-2">
                   <Text className="font-bold text-[10px]">{member?.name}</Text>

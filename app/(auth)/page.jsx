@@ -27,7 +27,7 @@ import { useUser } from "@/src/hooks/useUser";
 import Footer from "@/src/components/layout/footer";
 import { useCookies } from "@/src/store/auth/signup";
 import { Button } from "antd";
-import { Document, Page, pdfjs } from "react-pdf";
+import { pdfjs } from "react-pdf";
 import { apiGet } from "@/src/services/api_service";
 import PdfViewer from "@/src/components/home/modals/PdfViewer";
 import { Authorities } from "@/src/components/layout/Authorities";
@@ -35,7 +35,6 @@ import VideoBackground from "@/src/components/ui/VideoBackground";
 import Animator from "@/src/components/home/animations/Animator";
 import { API_BASE_URL } from "@/src/config/settings";
 import { NextSeo } from "next-seo";
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 function Home() {
   const [showDonatePopup, setShowDonatePopup] = useState(false);

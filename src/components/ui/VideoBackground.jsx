@@ -3,7 +3,7 @@ import React, { useState, useRef } from 'react';
 import { BiVolumeMute } from "react-icons/bi";
 import { GoUnmute } from "react-icons/go";
 
-export default function VideoBackground({ children }) {
+export default function VideoBackground() {
     const [isMuted, setIsMuted] = useState(true);
     const videoRef = useRef(null);
 
@@ -40,9 +40,6 @@ export default function VideoBackground({ children }) {
                     <GoUnmute />
                 )}
             </Button>
-            <div className="relative z-10 w-full h-full">
-                {children}
-            </div>
         </div>
     );
 }

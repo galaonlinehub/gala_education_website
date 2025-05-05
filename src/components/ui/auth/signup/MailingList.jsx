@@ -29,7 +29,9 @@ const MailingList = () => {
         formData.append(key, data[key]);
       });
 
-      const response = await apiPost("/mailing-list", formData, {
+      console.log("The form data", formData);
+
+      const response = await apiPost("/support", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -43,7 +45,7 @@ const MailingList = () => {
         });
       }
 
-      //   reset();
+        reset();
     } catch (e) {
       setAlert({
         show: true,
@@ -109,13 +111,13 @@ const MailingList = () => {
               autoCorrect="off"
               placeholder="First Name"
               className={`focus:outline-none text-white text-[10px] h-[34px] bg-[#001840] placeholder:text-white/50 placeholder:text-xs py-1 px-2 rounded-[5px]`}
-              {...register("first_name", {
+              {...register("firstname", {
                 required: "This field is mandatory.",
               })}
             />
-            {errors.first_name && (
+            {errors.firstname && (
               <span className="text-red-500 text-[10px] px-2">
-                {errors.first_name.message}
+                {errors.firstname.message}
               </span>
             )}
           </div>
@@ -127,13 +129,13 @@ const MailingList = () => {
               autoCorrect="off"
               placeholder="Second Name"
               className={`focus:outline-none text-white text-[10px] h-[34px] bg-[#001840] placeholder:text-white/50 placeholder:text-xs py-1 px-2 rounded-[5px]`}
-              {...register("second_name", {
+              {...register("lastname", {
                 required: "This field is mandatory.",
               })}
             />
-            {errors.second_name && (
+            {errors.lastname && (
               <span className="text-red-500 text-[10px] px-2">
-                {errors.second_name.message}
+                {errors.lastname.message}
               </span>
             )}
           </div>
@@ -162,7 +164,7 @@ const MailingList = () => {
           <div className="flex flex-col gap-1 w-full">
             <input
               type="text"
-              {...register("phone_number", {
+              {...register("phonenumber", {
                 required: "This field is mandatory.",
                 pattern: {
                   value: /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/,
@@ -174,9 +176,9 @@ const MailingList = () => {
               placeholder="Phone Number"
               className={`focus:outline-none text-white text-[10px] h-[34px] bg-[#001840] placeholder:text-white/50 placeholder:text-xs py-1 px-2 rounded-[5px]`}
             />
-            {errors.phone_number && (
+            {errors.phonenumber && (
               <span className="text-red-500 text-[10px] px-2">
-                {errors.phone_number.message}
+                {errors.phonenumber.message}
               </span>
             )}
           </div>
@@ -220,7 +222,7 @@ const MailingList = () => {
             placeholder="Any additional details about yout request"
             rows={3}
             className="!bg-[#001840] text-white p-2 w-full rounded-[5px] placeholder:italic placeholder:font-thin placeholder:text-xs focus:outline-none placeholder:text-white/50 text-xs"
-            {...register("more_details")}
+            {...register("additional_details")}
           />
         </div>
         <div className="gap-x-2 flex justify-start items-center">
