@@ -168,7 +168,7 @@ const PdfViewer = ({ pdfUrl, isOpen, onClose }) => {
         className="flex items-center justify-center px-2"
         ref={containerRef}
         style={{
-          // height: type === "tablet" ? "600px" : type === "desktop" ? "550px" : type === "mobile" ? "400px" : "auto",
+          height: type === "tablet" ? "600px" : type === "desktop" ? "550px" : type === "mobile" ? "400px" : "auto",
           overflow: "auto",
         }}
       >
