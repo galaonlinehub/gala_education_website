@@ -20,13 +20,10 @@ const Subscriptions = () => {
 
   return (
     <div className="xl:px-6 py-2 rounded-xl">
-      <div className="text-lg md:text-2xl font-black mb-2 text-black flex items-center">
-        <div className="flex items-center justify-center h-10 w-10 rounded-full bg-[#001840] text-white mr-2">
-          <LuCrown className="h-5 w-5" />
-        </div>
-        Your Subscriptions
+      <div className="text-lg md:text-2xl font-black mb-1 text-black flex items-center">
+        Subscription Overview
       </div>
-      <div className="text-xs md:text-sm text-black mb-6 border-l-4 border-[#001840] pl-3 py-1 bg-[#001840]/10 rounded-r-md">
+      <div className="text-xs text-black mb-6 lg:mb-8 px-1">
         Manage and view your active, upcoming, and past subscriptions in one
         place.
       </div>
@@ -87,7 +84,7 @@ const Subscriptions = () => {
             </div>
             Next Subscriptions
           </div>
-          {next.isLoading && <Loader />}
+          {next.isFetching && <Loader />}
           {next.isError && (
             <ErrorState message="Failed to load next subscriptions." />
           )}
@@ -104,14 +101,14 @@ const Subscriptions = () => {
 
       {/* Previous Subscriptions */}
 
-      <Card className="border-0">
+      <div className="border-0">
         <div className="font-bold text-xl mb-4  flex items-center">
           <div className="flex items-center justify-center h-8 w-8 rounded-full bg-[#001840]/10 mr-2">
             <LuHistory className="h-4 w-4" />
           </div>
           Previous Subscriptions
         </div>
-        {previous.isLoading && <Loader />}
+        {previous.isFetching && <Loader />}
         {previous.isError && (
           <ErrorState message="Failed to load previous subscriptions." />
         )}
@@ -125,7 +122,7 @@ const Subscriptions = () => {
         {previous.data?.map((sub) => (
           <SubscriptionItem key={sub.id} sub={{ ...sub, status: "Previous" }} />
         ))}
-      </Card>
+      </div>
     </div>
   );
 };
@@ -279,7 +276,7 @@ const ErrorState = ({ message }) => (
 
 const Loader = () => (
   <div className="flex flex-col items-center justify-center w-full py-10">
-    <SlickSpinner size={50} color="#001840" />
+    <SlickSpinner size={25} color="blue" />
   </div>
 );
 
