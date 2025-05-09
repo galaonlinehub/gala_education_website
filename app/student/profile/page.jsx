@@ -43,7 +43,7 @@ const StudentProfile = () => {
   } = useQuery({
     queryKey: ["recent-activities"],
     queryFn: async () => {
-      const response = await apiGet("recent-activities");
+      const response = await apiGet("/ecent-activities");
       return response.data || [];
     },
     enabled: false,
@@ -52,7 +52,7 @@ const StudentProfile = () => {
 
   const updateProfilePictureMutation = useMutation({
     mutationFn: async (data) => {
-      const response = await apiPut(`/update-user/${user.id}`, data, {
+      const response = await apiPut("/update-user", data, {
         "Content-Type": "multipart/form-data",
       });
     },
@@ -62,7 +62,7 @@ const StudentProfile = () => {
       setProfilePicture(null);
     },
     onError: (error) => {
-      message.error(`Profile picture update failed: ${error.message}`);
+      message.error(`Profile picture update failed, Try again later`);
     },
   });
 
@@ -200,10 +200,7 @@ const StudentProfile = () => {
                             <Button
                               type="text"
                               icon={
-                                <LuSave
-                                  size={20}
-                                  className="!text-green-500"
-                                />
+                                <LuSave size={20} className="!text-green-500" />
                               }
                               onClick={formName.submit}
                               loading={isUpdatingProfile}
@@ -212,12 +209,7 @@ const StudentProfile = () => {
                           <Tooltip title="Cancel">
                             <Button
                               type="text"
-                              icon={
-                                <LuX
-                                  size={20}
-                                  className="!text-red-500"
-                                />
-                              }
+                              icon={<LuX size={20} className="!text-red-500" />}
                               onClick={() => setEditName(false)}
                             />
                           </Tooltip>
@@ -366,12 +358,7 @@ const StudentProfile = () => {
                   <Tooltip title="Save">
                     <Button
                       type="text"
-                      icon={
-                        <LuSave
-                          size={20}
-                          className="!text-green-500"
-                        />
-                      }
+                      icon={<LuSave size={20} className="!text-green-500" />}
                       onClick={() => formContacts.submit()}
                       loading={isUpdatingProfile}
                     />
@@ -379,12 +366,7 @@ const StudentProfile = () => {
                   <Tooltip title="Cancel">
                     <Button
                       type="text"
-                      icon={
-                        <LuX
-                          size={20}
-                          className="!text-red-500"
-                        />
-                      }
+                      icon={<LuX size={20} className="!text-red-500" />}
                       onClick={() => setEditContact(false)}
                     />
                   </Tooltip>
