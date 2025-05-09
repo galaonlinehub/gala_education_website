@@ -96,7 +96,7 @@ export default function StudentLayout({ children }) {
         </aside>
 
         {/* Main Content */}
-        <div className="flex-1 px-2 sm:px-3 lg:px-5 py-2 w-full lg:w-[80vw] overflow-y-auto h-[calc(100vh-90px)]">
+        <div className="flex-1 px-2 xxs:px-3 lg:px-5 py-2 w-full lg:w-[80vw] overflow-y-auto h-[calc(100vh-90px)]">
           {children}
         </div>
       </main>
