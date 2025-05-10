@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { IoMenu } from "react-icons/io5";
 import Card1 from "@/src/components/home/card/Card1";
 import RegisterCard from "@/src/components/home/card/RegisterCard";
 import PioneerCard from "@/src/components/home/card/PioneerCard";
@@ -9,8 +8,6 @@ import NewsCard from "@/src/components/home/card/NewsCard";
 import Events from "@/src/components/home/card/Events";
 import Card2 from "@/src/components/home/card/Card2";
 import MailingList from "@/src/components/ui/auth/signup/MailingList";
-import { FaSearch } from "react-icons/fa";
-import ChoosePlatformSvg from "@/src/utils/vector-svg/ChoosePlatformSvg";
 import AcceptCookies from "@/src/components/layout/Cookies";
 import ClientReviews from "@/src/components/home/card/ClientReviews";
 import FaqCard from "@/src/components/home/card/FaqCard";
@@ -27,8 +24,7 @@ import { useUser } from "@/src/hooks/useUser";
 import Footer from "@/src/components/layout/footer";
 import { useCookies } from "@/src/store/auth/signup";
 import { Button } from "antd";
-import { Document, Page, pdfjs } from "react-pdf";
-import { apiGet } from "@/src/services/api_service";
+import { pdfjs } from "react-pdf";
 import PdfViewer from "@/src/components/home/modals/PdfViewer";
 import { Authorities } from "@/src/components/layout/Authorities";
 import VideoBackground from "@/src/components/ui/VideoBackground";
@@ -93,7 +89,7 @@ function Home() {
           handle: "@galahub_tz",
         }}
       />
-      <div className="relative w-screen  mx-auto h-full">
+      <div className="relative w-screen mx-auto h-full">
         {showDonatePopup && (
           <div className="fixed inset-0 bg-black bg-opacity-70 !z-[80] flex justify-center items-center">
             <div className="p-1 rounded-lg w-full items-center justify-center flex ">
@@ -141,8 +137,8 @@ function Home() {
           </div>
         </div>
 
-        <div className="relative flex items-center flex-col gap-2 md:gap-12 md:flex-row px-6 h-[45rem] sm:px-12 xs:h-[45rem] sm:h-[43rem] w-full">
-          <div className="relative w-full md:w-1/2 mt-14 h-fit  max-sm:p-2">
+        <div className="relative flex items-center flex-col gap-2 md:gap-12 md:flex-row px-6 h-[45rem] sm:px-12 xs:h-[45rem] sm:h-[30rem] w-full">
+          <div className="relative w-full md:w-1/2 mt-14 h-fit max-sm:p-2">
             <VideoPlayer videoSrc="/videos/gala_intro.mp4" />
           </div>
           <div className="md:w-1/2 w-full mb-20">

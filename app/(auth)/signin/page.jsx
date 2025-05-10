@@ -13,6 +13,8 @@ import { preventCopyPaste } from "@/src/utils/fns/general";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import LoginVectorSvg from "@/src/utils/vector-svg/sign-in/LoginVectorSvg";
 import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
+import { Contact } from "@/src/components/layout/Contact";
+import { message, Modal } from "antd";
 
 const SignInPage = () => {
   // const key = crypto.randomUUID();
@@ -21,6 +23,7 @@ const SignInPage = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const [showPassword, setShowPassword] = useState(false);
+  const [loginModal, setLoginModal] = useState({ open: false, message: "" });
 
   const [localFeedback, setLocalFeedback] = useState({
     show: false,
@@ -69,6 +72,10 @@ const SignInPage = () => {
         error?.response?.data?.message ??
         error?.message ??
         "Unexpected error occurred, Try again later";
+      if (error?.status === 403 && message.includes("vetting")) {
+        setLoginModal((p) => ({ ...p, open: true, message: message }));
+      }
+
       setLocalFeedback((prev) => ({
         ...prev,
         show: true,
@@ -263,7 +270,16 @@ const SignInPage = () => {
             Sign Up
           </span>
         </span>
+
+        <div className="flex items-center justify-center mt-6">
+          <Contact />
+        </div>
       </div>
+      <LoginModal
+        open={loginModal.open}
+        message={loginModal.message}
+        setLoginModal={setLoginModal}
+      />
 
       <LoginVectorSvg />
     </div>
@@ -271,3 +287,37 @@ const SignInPage = () => {
 };
 
 export default SignInPage;
+
+const LoginModal = ({ open, message, setLoginModal }) => (
+  <Modal
+    open={open}
+    footer={null}
+    onCancel={() =>
+      setLoginModal((p) => ({
+        ...p,
+        open: false,
+        message: "",
+      }))
+    }
+    title={
+      <div className="font-black w-full text-center text-xl">
+        Gala Education
+      </div>
+    }
+  >
+    <div className="flex flex-col items-center justify-center gap-3">
+      <div className="text-lg font-semibold text-center">{message}</div>
+      <p className="text-center text-sm text-gray-600">
+        We are currently verifying the documents you submitted during
+        registration.
+      </p>
+      <p className="text-center text-sm text-gray-600">
+        We&apos;ll reach out to you via email once the process is complete —
+        please check your inbox regularly.
+      </p>
+      <div className="my-4">
+        <Contact />
+      </div>
+    </div>
+  </Modal>
+);

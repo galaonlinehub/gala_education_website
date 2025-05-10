@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Avatar, Input, Form, Button, message, Tooltip } from "antd";
 import { useUser } from "@/src/hooks/useUser";
 import { useDevice } from "@/src/hooks/useDevice";
@@ -10,7 +10,6 @@ import {
   LuCircleCheckBig,
   LuClock4,
   LuMail,
-  LuMapPin,
   LuPencil,
   LuPhone,
   LuSave,
@@ -97,7 +96,6 @@ const StudentProfile = () => {
     updateProfile({
       email: values.email,
       phone_number: values.phone,
-      location: values.location,
     });
     setEditContact(false);
   };
@@ -393,18 +391,6 @@ const StudentProfile = () => {
                   </div>
                   <div className="pl-6 font-medium">{user?.phone_number}</div>
                 </div>
-
-                <div className="group">
-                  <div className="flex items-center justify-between">
-                    <div className="flex gap-2 items-center text-gray-500">
-                      <LuMapPin /> <span>Location</span>
-                    </div>
-                  </div>
-                  <div className="pl-6 font-medium">
-                    {user?.location || "--"}
-                  </div>
-                </div>
-
                 <div>
                   <div className="flex gap-2 items-center text-gray-500">
                     <LuCalendar /> <span>Joined</span>
@@ -420,7 +406,6 @@ const StudentProfile = () => {
                 initialValues={{
                   email: user?.email,
                   phone: user?.phone_number,
-                  location: user?.location,
                 }}
               >
                 {/* <Form.Item
@@ -468,18 +453,6 @@ const StudentProfile = () => {
                     </span>
                   </div>
                 </div>
-
-                <Form.Item
-                  name="location"
-                  label={
-                    <span className="flex items-center gap-2">
-                      <LuMapPin /> Location
-                    </span>
-                  }
-                >
-                  <Input />
-                </Form.Item>
-
                 <div className="mb-4">
                   <div className="flex items-center gap-2 text-gray-500 mb-1">
                     <LuCalendar /> Joined
@@ -496,15 +469,14 @@ const StudentProfile = () => {
 
                 <Form.Item className="mt-4">
                   <Button
-                    className="bg-[#001840] hover:bg-[#001840]/80"
+                    className="bg-[#001840] hover:!bg-[#001840]/80 !text-xs"
                     type="primary"
                     htmlType="submit"
-                    loading={isUpdatingProfile}
                   >
-                    Save Changes
+                    {isUpdatingProfile ? <>Saving...</> : <>Save</>}
                   </Button>
                   <Button
-                    className="ml-2 hover:text-red-500 hover:border-red-500"
+                    className="ml-2 hover:!text-red-500 hover:!border-red-500 !text-xs"
                     onClick={() => setEditContact(false)}
                   >
                     Cancel
