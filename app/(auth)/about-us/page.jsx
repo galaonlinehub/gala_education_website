@@ -558,7 +558,7 @@ const AboutUs = () => {
   };
 
   return (
-    <div className="flex justify-between -mt-10 md:-mt-16 px-2 py-8 md:px-12 lg:px-20 md:py-12 h-auto w-screen">
+    <div className="flex flex-col justify-between -mt-10 md:-mt-16 px-2 py-8 md:px-12 lg:px-20 md:py-12 h-auto w-screen">
       <div className="flex flex-col w-full md:w-3/4">
         <div className="flex flex-col">
           <Text
