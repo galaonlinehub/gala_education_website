@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { login } from "@/src/utils/fns/auth";
 import { LuEye, LuEyeOff } from "react-icons/lu";
 import { getUser } from "@/src/utils/fns/global";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { motion, AnimatePresence } from "framer-motion";
 import { roleRedirects } from "@/src/utils/data/redirect";
@@ -90,18 +90,34 @@ const SignInPage = () => {
     loginMutation.mutate(data);
   };
 
+  
+  const debouncedResetRef = useRef(
+    debounce(() => {
+      setLocalFeedback((prev) => {
+        if (prev.show) {
+          loginMutation.reset();
+          return { show: false, message: "", status: "" };
+        }
+        return prev;
+      });
+    }, 2000)
+  );
+
+  const prevFieldsRef = useRef(watchedFields);
+
   useEffect(() => {
-    const resetFeedback = debounce(() => {
-      if (localFeedback.show) {
-        setLocalFeedback({ show: false, message: "", status: "" });
-        loginMutation.reset();
-      }
-    }, 500);
+    const debouncedReset = debouncedResetRef.current;
+    const fieldsChanged = watchedFields.some(
+      (field, index) => field !== prevFieldsRef.current[index]
+    );
 
-    resetFeedback();
+    if (localFeedback.show && fieldsChanged && watchedFields.some((field) => field)) {
+      debouncedReset();
+    }
+    prevFieldsRef.current = watchedFields;
 
-    return () => resetFeedback.cancel();
-  }, [watchedFields]);
+    return () => debouncedReset.cancel();
+  }, [watchedFields, localFeedback.show]);
 
   return (
     <div className="px-6 md:px-8 lg:px-12 xl:px-16 flex justify-center">
@@ -271,7 +287,7 @@ const SignInPage = () => {
           </span>
         </span>
 
-        <div className="flex items-center justify-center mt-6">
+        <div className="flex items-center justify-center mt-8">
           <Contact />
         </div>
       </div>

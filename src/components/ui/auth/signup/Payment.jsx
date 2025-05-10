@@ -116,7 +116,7 @@ const MobilePay = () => {
       };
 
       try {
-        const response = await apiPost("subscribe-plan", data);
+        const response = await apiPost("/subscribe-plan", data);
         return response.data;
       } catch (error) {
         console.error("API call failed:", error);
