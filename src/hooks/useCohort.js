@@ -82,5 +82,6 @@ const transformFormDataForAPI = (formData) => {
     daily_slots,
     description: formData.description,
     price: formData.price,
+    subtopics: formData.subtopics
   };
 };

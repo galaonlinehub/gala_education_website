@@ -21,7 +21,7 @@ function Card1({ image, title, desc, details }) {
 
   return (
     <>
-      <div onMouseOver={showModal} className="flex-col cursor-pointer flex md:w-56 lg:min-w-[15rem] md:max-w-[15rem] h-[20rem]  md:h-[12rem] 2xl:w-[400px]  shadow-[0px_2px_2px_rgba(0,0,0,0.3)]">
+      <div onClick={showModal} className="flex-col cursor-pointer flex md:w-56 lg:min-w-[15rem] md:max-w-[15rem] h-[20rem]  md:h-[12rem] 2xl:w-[400px]  shadow-[0px_2px_2px_rgba(0,0,0,0.3)]">
         <div className="w-full h-[10rem] md:h-[4rem] ">
           <Image alt="image Data" src={image} className="w-full h-full border-white border-[1px] object-cover" width={100} height={100} />
         </div>
