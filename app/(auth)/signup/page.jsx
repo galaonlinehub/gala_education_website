@@ -82,11 +82,7 @@ const SignupPage = () => {
 
         {steps[activeTab].content}
       </div>
-      {accountType == "instructor" ? (
-        <StudentContract />
-      ) : (
-        <InstructorContract />
-      )}
+      {accountType == 'instructor' ? <StudentContract /> : <InstructorContract />}
     </main>
   );
 };

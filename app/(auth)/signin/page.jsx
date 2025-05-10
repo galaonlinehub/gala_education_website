@@ -307,11 +307,11 @@ const LoginModal = ({ open, message, setLoginModal }) => (
   >
     <div className="flex flex-col items-center justify-center gap-3">
       <div className="text-lg font-semibold text-center">{message}</div>
-      <p className="text-center text-sm text-gray-600">
+      <p className="text-center text-xs sm:text-sm text-gray-600">
         We are currently verifying the documents you submitted during
         registration.
       </p>
-      <p className="text-center text-sm text-gray-600">
+      <p className="text-center text-xs sm:text-sm text-gray-600">
         We&apos;ll reach out to you via email once the process is complete —
         please check your inbox regularly.
       </p>

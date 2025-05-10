@@ -11,16 +11,18 @@ const items = [
   {
     key: "call",
     label: (
-      <a href={callto} className="text-xs">
-        📞 Call Us
+      <a href={callto} className="text-xs flex flex-col">
+        <span> 📞 Call Us</span>
+        <span className="text-[10px] pl-4 text-gray-500">+{PHONE_NUMBER}</span>
       </a>
     ),
   },
   {
     key: "email",
     label: (
-      <a href={mailto} className="text-xs">
-        ✉️ Email Us
+      <a href={mailto} className="text-xs flex flex-col">
+        <span> ✉️ Email Us</span>
+        <span className="text-[10px] pl-4 text-gray-500">{SUPPORT_EMAIL}</span>
       </a>
     ),
   },
@@ -29,12 +31,12 @@ const items = [
 export const Contact = () => {
   return (
     <div className="text-sm flex items-center justify-center gap-2">
-      <a href="#" className="text-gray-700 hover:text-blue-600 text-xs">
+      <a href="#" className="text-black hover:text-[#030DFE] text-xs font-black">
         Help Center
       </a>
       <span>|</span>
       <Dropdown arrow menu={{ items }} trigger={["click"]}>
-        <button className="text-blue-600 hover:underline text-xs">
+        <button className="text-[#030DFE] hover:underline text-xs">
           Contact Us
         </button>
       </Dropdown>
