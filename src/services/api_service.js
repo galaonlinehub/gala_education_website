@@ -8,9 +8,9 @@ export const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     "Content-Type": "application/json",
-    // ...(process.env.NODE_ENV === "development"
-    //   ? { "X-Dev-Request": "true" }
-    //   : {}),
+    ...(process.env.NODE_ENV === "development"
+      ? { "X-Dev-Request": "true" }
+      : {}),
   },
 });
 

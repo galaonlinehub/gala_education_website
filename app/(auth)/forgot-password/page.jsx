@@ -12,6 +12,7 @@ import {
 import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
 import { usePassword } from "@/src/hooks/usePassword";
 import { SUPPORT_EMAIL } from "@/src/config/settings";
+import { Contact } from "@/src/components/layout/Contact";
 
 const ForgotPassword = () => {
   const {
@@ -233,12 +234,7 @@ const ForgotPassword = () => {
           </div>
         )}
         <div className="w-full flex justify-end">
-          <a
-            href={`mailto:${SUPPORT_EMAIL}?subject=Password%20Reset%20Failure`}
-            className="text-[#0000dd] hover:text-opacity-80 text-xs px-2"
-          >
-            Contact support
-          </a>
+          <Contact />
         </div>
       </Card>
     </div>
