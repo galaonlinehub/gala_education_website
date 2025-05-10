@@ -18,12 +18,14 @@ const nextConfig = {
         hostname: 'source.unsplash.com'
       },
       {
-        protocol: "https",
+        protocol: "https",  
         hostname: "galaweb.galahub.org",
       },
     ]
   },
   productionBrowserSourceMaps: false
+
+  
 };
 
 export default pwaConfig(nextConfig);

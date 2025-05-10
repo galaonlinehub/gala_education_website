@@ -31,7 +31,6 @@ import VideoBackground from "@/src/components/ui/VideoBackground";
 import Animator from "@/src/components/home/animations/Animator";
 import { API_BASE_URL } from "@/src/config/settings";
 import { NextSeo } from "next-seo";
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 function Home() {
   const [showDonatePopup, setShowDonatePopup] = useState(false);

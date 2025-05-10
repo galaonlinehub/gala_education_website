@@ -54,6 +54,7 @@ import { getSpecificCohortFn } from "@/src/hooks/useCohort";
 import { useUser } from "@/src/hooks/useUser";
 import CohortDetailsSkeleton from "@/src/components/teacher/CohortDetailsSkeleton";
 import { img_base_url } from "@/src/config/settings";
+import { useCohortEnrolledStudents } from "@/src/hooks/useCohortEnrolledStudents";
 
 
 const { Title, Text, Paragraph } = Typography;
@@ -109,6 +110,11 @@ const ClassDetailsPage = () => {
     }
   }, [params.id]);
 
+
+  const { enrolledStudents } = useCohortEnrolledStudents(cohortId);
+
+
+
   const getChosenDays = (timeslots) => {
     if (!timeslots) return [];
 
@@ -124,7 +130,8 @@ const ClassDetailsPage = () => {
 
     return timeslots.map(slot => dayMap[slot.day] || slot.day);
   };
-  console.log("Cohort details", cohortDetails);
+  console.log("Enrolled students", enrolledStudents);
+  console.log("COHORT DETAILS", cohortDetails);
 
   const classData = {
     students: [
@@ -484,7 +491,7 @@ const ClassDetailsPage = () => {
 
 
               {cohortDetails?.total_enrolled_students > 0 ?
-                <div style={{ marginBottom: "16px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <div className="mb-16 flex flex-col gap-4 items-center w-full">
                   <Input
                     placeholder="Search by name or email"
                     prefix={<SearchOutlined />}
