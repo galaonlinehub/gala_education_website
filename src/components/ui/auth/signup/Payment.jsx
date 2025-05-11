@@ -143,11 +143,6 @@ const MobilePay = () => {
     socket.on("paymentResponse", (msg) => {
       if (msg.status === "success") {
         setPaymentStatus(PaymentStatus.SUCCESS);
-        if (!user) {
-          setTimeout(() => {
-            window.location.href = "/signin";
-          }, 10000);
-        }
       } else {
         setPaymentStatus(PaymentStatus.REFERENCE);
       }
@@ -158,7 +153,7 @@ const MobilePay = () => {
     });
 
     return () => socket.close();
-  }, [email]);
+  }, [email, user]);
 
   useEffect(() => {
     const getEmail = () => {
