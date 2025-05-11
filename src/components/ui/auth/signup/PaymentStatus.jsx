@@ -17,6 +17,7 @@ import { useAccountType } from "@/src/store/auth/signup";
 import { usePathname } from "next/navigation";
 import { useUser } from "@/src/hooks/useUser";
 import { Contact } from "@/src/components/layout/Contact";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const RenderLoadingState = ({ setStatus }) => {
   const [percent, setPercent] = useState(0);
@@ -25,7 +26,7 @@ export const RenderLoadingState = ({ setStatus }) => {
   useEffect(() => {
     const interval = setInterval(() => {
       setPercent((prevPercent) => {
-        if (prevPercent >= 96) return prevPercent;
+        if (prevPercent >= 93) return prevPercent;
         return prevPercent + 1;
       });
 
@@ -33,7 +34,7 @@ export const RenderLoadingState = ({ setStatus }) => {
         if (prevSeconds <= 5) return prevSeconds;
         return prevSeconds - 1;
       });
-    }, 300);
+    }, 500);
 
     const timeout = setTimeout(() => {
       setStatus(PaymentStatus.FAILURE);
@@ -101,10 +102,16 @@ export const RenderLoadingState = ({ setStatus }) => {
   );
 };
 
-export const RenderSuccessState = ({ onClose, accountType, setStatus }) => {
+export const RenderSuccessState = ({
+  onClose,
+  accountType,
+  setStatus,
+  queryClient,
+}) => {
   if (accountType === "instructor") {
     setTimeout(() => {
       setStatus(PaymentStatus.CONGRATULATION);
+      queryClient.invalidateQueries(["auth-user"]);
     }, 8000);
   }
 
@@ -114,6 +121,8 @@ export const RenderSuccessState = ({ onClose, accountType, setStatus }) => {
     } else {
       onClose();
     }
+
+    queryClient.invalidateQueries(["auth-user"]);
   };
 
   return (
@@ -269,6 +278,8 @@ export const PaymentPending = ({
   const url = usePathname();
   const { user: rawUser } = useUser();
   const user = useMemo(() => rawUser, [rawUser]);
+  const queryClient = useQueryClient();
+
 
   useEffect(() => {
     const updateSize = () => {
@@ -322,6 +333,7 @@ export const PaymentPending = ({
           onClose={onClose}
           accountType={String(accountType)}
           setStatus={setStatus}
+          queryClient={queryClient}
         />
       )}
       {status === PaymentStatus.REFERENCE && (
