@@ -5,7 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import clsx from "clsx";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { LuCircleCheckBig, LuLoaderCircle, LuX } from "react-icons/lu";
+import { LuCircleCheckBig, LuX } from "react-icons/lu";
 import SlickSpinner from "../ui/loading/template/SlickSpinner";
 
 function Footer() {

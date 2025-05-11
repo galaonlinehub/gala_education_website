@@ -17,6 +17,7 @@ import {
 } from "react-icons/lu";
 import SlickSpinner from "../../loading/template/SlickSpinner";
 import { preventCopyPaste } from "@/src/utils/fns/general";
+import { Contact } from "@/src/components/layout/Contact";
 
 const { Text } = Typography;
 
@@ -318,6 +319,10 @@ const SignUpForm = () => {
           >
             Sign In
           </Button>
+        </div>
+
+        <div className="w-full flex items-center justify-center mt-1">
+          <Contact />
         </div>
       </Card>
       <EmailVerification />
