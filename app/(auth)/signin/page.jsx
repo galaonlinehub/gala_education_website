@@ -338,7 +338,7 @@ const LoginModal = ({ open, message, setLoginModal }) => (
           Verification takes 1 to 2 business days.
         </p>
         <p className="text-sm text-gray-600">
-          We'll reach out to you via email once the process is complete — please
+          We&apos;ll reach out to you via email once the process is complete — please
           check your inbox regularly.
         </p>
       </div>

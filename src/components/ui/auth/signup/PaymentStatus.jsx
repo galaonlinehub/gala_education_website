@@ -106,19 +106,24 @@ export const RenderSuccessState = ({
   onClose,
   accountType,
   setStatus,
-  queryClient,
+  queryClient,user
 }) => {
   if (accountType === "instructor") {
     setTimeout(() => {
       setStatus(PaymentStatus.CONGRATULATION);
       queryClient.invalidateQueries(["auth-user"]);
-    }, 8000);
+    }, 10000);
   }
 
   const onDone = () => {
     if (accountType === "instructor") {
       setStatus(PaymentStatus.CONGRATULATION);
     } else {
+      if (!user) {
+        setTimeout(() => {
+          window.location.href = "/signin";
+        }, 5000);
+      }
       onClose();
     }
 
@@ -280,7 +285,6 @@ export const PaymentPending = ({
   const user = useMemo(() => rawUser, [rawUser]);
   const queryClient = useQueryClient();
 
-
   useEffect(() => {
     const updateSize = () => {
       if (width < 600) {
@@ -334,6 +338,7 @@ export const PaymentPending = ({
           accountType={String(accountType)}
           setStatus={setStatus}
           queryClient={queryClient}
+          user={user}
         />
       )}
       {status === PaymentStatus.REFERENCE && (
