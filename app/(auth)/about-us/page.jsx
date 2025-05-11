@@ -412,7 +412,7 @@ const AboutUs = () => {
 
       <div className="flex justify-between -mt-10 md:-mt-16 p-8 h-auto w-screen">
 
-        <div className="flex flex-col w-full md:w-3/4">
+        <div className="flex flex-col w-full md:w-3/4 pt-10">
           <div className="flex flex-col">
             <Text id="aboutUs" ref={sectionRefs.aboutUs} className="font-black text-xl lg:text-2xl">
               About Us
@@ -530,7 +530,7 @@ const AboutUs = () => {
 
       </div>
 
-      <div>
+      <div className="w-full">
         <Footer />
       </div>
       {BiographyModal()}
