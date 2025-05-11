@@ -168,6 +168,7 @@ const QuickLinks = () => (
       </Button>
       <Button
         type="link"
+        disabled
         icon={<ClockCircleOutlined />}
         block
         className="text-left"

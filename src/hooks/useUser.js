@@ -64,30 +64,6 @@ export const useUser = () => {
     onError: (data) => {},
   });
 
-  // const updateInstructorProfile = useMutation({
-  //   mutationFn: async (data) => {
-  //     const response = await apiPut(`/complete-instructor-profile`, data, {
-  //       "Content-Type": "multipart/form-data",
-  //     });
-  //     return response.data;
-  //   },
-  //   enabled: !!user,
-  //   onSuccess: (data) => {
-  //     const keysToInvalidate = [
-  //       ["instructor"],
-  //       ["auth-user"],
-  //       ["instructor-subjects"],
-  //       ["instructor-profile"],
-  //       ["instructor_cohorts"],
-  //     ];
-
-  //     keysToInvalidate.forEach((key) => {
-  //       queryClient.invalidateQueries({ queryKey: key });
-  //     });
-  //   },
-  //   onError: (data) => {},
-  // });
-
   const verifyOtp = useMutation({
     mutationFn: async (data) => {
       const response = await apiPost("/verify-otp", data);

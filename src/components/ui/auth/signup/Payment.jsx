@@ -15,6 +15,7 @@ import { PaymentPending } from "./PaymentStatus";
 import io from "socket.io-client";
 import { useUser } from "@/src/hooks/useUser";
 import SlickSpinner from "../../loading/template/SlickSpinner";
+import { Contact } from "@/src/components/layout/Contact";
 
 const MobilePay = () => {
   const [validationMessage, setValidationMessage] = useState("");
@@ -35,7 +36,8 @@ const MobilePay = () => {
   const isValidPhoneNumber = (number) => {
     if (!number || number.length !== 9) return false;
     if (!["6", "7"].includes(number[0])) return false;
-    if (!["1", "2", "3", "4", "5", "6", "8"].includes(number[1])) return false;
+    if (!["1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(number[1]))
+      return false;
     if (!["1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(number[2]))
       return false;
     return true;
@@ -114,7 +116,7 @@ const MobilePay = () => {
       };
 
       try {
-        const response = await apiPost("subscribe-plan", data);
+        const response = await apiPost("/subscribe-plan", data);
         return response.data;
       } catch (error) {
         console.error("API call failed:", error);
@@ -256,13 +258,15 @@ const MobilePay = () => {
             Request Payment
           </Button>
         </form>
-        <div className="w-full mt-6">
-          <span
+        <div className="w-full mt-6 flex justify-between">
+          <div
             onClick={goBack}
             className="font-bold text-[#010798] text-xs cursor-pointer border border-[#010798] p-2 rounded-md"
           >
             Change plan
-          </span>
+          </div>
+
+          <Contact />
         </div>
       </Card>
       {isModalOpen && (

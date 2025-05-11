@@ -67,13 +67,12 @@ const StudentContract = () => {
         body: {
           maxHeight: "80vh",
           overflow: "auto",
-          backgroundColor: "#f8f8ff",
           paddingRight: "10px",
           padding: "20px",
         },
       }}
     >
-      <Text className="text-[10px] lg:text-xs text-justify self-center flex justify-center mb-5 font-light italic text-blue-400">
+      <Text className="text-xs lg:text-sm text-justify self-center flex justify-center mb-5 font-light italic text-blue-700">
         Read and scroll to the bottom to accept the agreement
       </Text>
       <Paragraph className="text-[10px] lg:text-xs text-justify">
@@ -349,7 +348,7 @@ const StudentContract = () => {
           checked={checked}
           onChange={onChange}
         >
-          Accept
+          I accept the contract terms and conditions.
         </Checkbox>
       </div>
     </Modal>
