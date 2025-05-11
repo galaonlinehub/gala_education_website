@@ -4,13 +4,15 @@ import { useEnrolledTopics } from "@/src/store/student/class";
 import { useUserTopics } from "@/src/store/user_topics";
 
 export const getUser = async () => {
-  const response = await apiGet("/user");
-  
-  if (response.status !== 200) {
-    throw new Error("Failed to fetch user");
+  try {
+    const response = await apiGet("/user");
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (e) {
+    console.error(`Error has occured, ${e}`);
+    throw new Error("Something went wrong, Please try again later");
   }
-  
-  return response.data;
 };
 
 export const getEnrolledTopics = async () => {

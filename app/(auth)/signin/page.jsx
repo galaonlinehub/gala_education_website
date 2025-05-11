@@ -14,7 +14,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import LoginVectorSvg from "@/src/utils/vector-svg/sign-in/LoginVectorSvg";
 import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
 import { Contact } from "@/src/components/layout/Contact";
-import { message, Modal } from "antd";
+import { Modal } from "antd";
 
 const SignInPage = () => {
   // const key = crypto.randomUUID();
@@ -90,7 +90,6 @@ const SignInPage = () => {
     loginMutation.mutate(data);
   };
 
-  
   const debouncedResetRef = useRef(
     debounce(() => {
       setLocalFeedback((prev) => {
@@ -100,7 +99,7 @@ const SignInPage = () => {
         }
         return prev;
       });
-    }, 2000)
+    }, 1000)
   );
 
   const prevFieldsRef = useRef(watchedFields);
@@ -111,7 +110,11 @@ const SignInPage = () => {
       (field, index) => field !== prevFieldsRef.current[index]
     );
 
-    if (localFeedback.show && fieldsChanged && watchedFields.some((field) => field)) {
+    if (
+      localFeedback.show &&
+      fieldsChanged &&
+      watchedFields.some((field) => field)
+    ) {
       debouncedReset();
     }
     prevFieldsRef.current = watchedFields;
@@ -316,22 +319,30 @@ const LoginModal = ({ open, message, setLoginModal }) => (
       }))
     }
     title={
-      <div className="font-black w-full text-center text-xl">
+      <div className="font-bold w-full text-center text-2xl text-gray-800">
         Gala Education
       </div>
     }
+    className="rounded-lg"
   >
     <div className="flex flex-col items-center justify-center gap-3">
-      <div className="text-lg font-semibold text-center">{message}</div>
-      <p className="text-center text-xs sm:text-sm text-gray-600">
-        We are currently verifying the documents you submitted during
-        registration.
-      </p>
-      <p className="text-center text-xs sm:text-sm text-gray-600">
-        We&apos;ll reach out to you via email once the process is complete —
-        please check your inbox regularly.
-      </p>
-      <div className="my-4">
+      <div className="text-lg font-semibold text-center text-gray-900">
+        {message}
+      </div>
+      <div className="flex flex-col gap-2 text-center">
+        <p className="text-sm text-gray-600">
+          We are currently verifying the documents you submitted during
+          registration.
+        </p>
+        <p className="text-sm text-gray-600">
+          Verification takes 1 to 2 business days.
+        </p>
+        <p className="text-sm text-gray-600">
+          We'll reach out to you via email once the process is complete — please
+          check your inbox regularly.
+        </p>
+      </div>
+      <div className="mt-4">
         <Contact />
       </div>
     </div>
