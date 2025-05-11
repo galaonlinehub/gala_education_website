@@ -141,20 +141,14 @@ const MobilePay = () => {
     });
 
     socket.on("paymentResponse", (msg) => {
-      console.log("THIS IS PAYMENT RESPONSE")
-      console.log(msg)
       if (msg.status === "success") {
-        console.log("IN SUCCESS")
-
         setPaymentStatus(PaymentStatus.SUCCESS);
-      if(!user){
-         setTimeout(() => {
-          window.location.href = "/signin";
-        }, 10000);
-      }
-      
+        if (!user) {
+          setTimeout(() => {
+            window.location.href = "/signin";
+          }, 10000);
+        }
       } else {
-        console.log("IN REFERENCE")
         setPaymentStatus(PaymentStatus.REFERENCE);
       }
     });
