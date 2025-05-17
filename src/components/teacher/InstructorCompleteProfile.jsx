@@ -148,7 +148,6 @@ const Save = ({
   };
 
   const handleUpload = (info) => {
-    alert("Upload image");
     message.destroy();
     const file = info.file.originFileObj;
 

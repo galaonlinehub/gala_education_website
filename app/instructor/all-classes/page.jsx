@@ -174,7 +174,7 @@ const InstructorClasses = () => {
                             <span>Start date</span>
                           </div>
                           <Text  className="text-green-600 text-sm">
-                            {classItem.data.timetable.start_date}
+                            {classItem.data.timetable?.start_date}
                           </Text>
                         </div>
                         <div className="flex flex-col items-start">
@@ -183,7 +183,7 @@ const InstructorClasses = () => {
                             <span>End date</span>
                           </div>
                           <Text  className="text-red-600 text-sm">
-                            {classItem.data.timetable.end_date}
+                            {classItem.data.timetable?.end_date}
                           </Text>
                         </div>
                       </div>

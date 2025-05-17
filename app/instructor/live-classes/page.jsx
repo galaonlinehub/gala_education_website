@@ -4,14 +4,22 @@ import { Avatar, Button, Card, Collapse, Modal, Segmented, Tag } from "antd";
 import React, { useState } from "react";
 import { LuCalendar, LuClock, LuUsers, LuVideo, LuInfo, LuX, LuCheckCheck } from "react-icons/lu";
 import { useUpcomingLessons } from "@/src/hooks/useUpcomigLessons";
-import LiveLessonSkeleton from "@/src/components/teacher/LiveLessonSkeleton";
 import { LoadingOutlined } from "@ant-design/icons";
+import { useLesson } from "@/src/hooks/useLesson";
+import { useRouter } from "next/navigation";
+import { useUser } from "@/src/hooks/useUser";
+import { sessionStorageFn } from "@/src/utils/fns/client";
+import { encrypt } from "@/src/utils/fns/encryption";
 
 const { Panel } = Collapse;
 
 const ClassCard = ({ classData }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const router = useRouter();
+  const { user } = useUser();
+
+  const { lessonToken, lessonTokenPending, getLessonToken } = useLesson();
 
   const showConfirmModal = () => {
     setIsModalOpen(true);
@@ -21,9 +29,34 @@ const ClassCard = ({ classData }) => {
     setIsModalOpen(false);
   };
 
-  const handleJoin = () => {
-    window.open(classData.link, '_blank');
+
+  const handleJoin = async () => {
+
+    const lessonToken = await getLessonToken(classData.link);
+    const lessonId = `${classData.lesson_id}`;
+    const roomName = `${classData.class_name}`;
+    const userName = `${user?.first_name} ${user?.last_name}`;
+    const userEmail = `${user?.email}`;
+    const isModerator = user?.role == 'instructor' ? 'true' : 'false';
+
+    const encryptedLesssonToken = encrypt(lessonToken);
+    const encryptedModeratorvalue = encrypt(isModerator);
+    const encryptedLessonId = encrypt(lessonId);
+
+    const encryptedRoomName = encrypt(roomName);
+    const encryptedUserName = encrypt(userName);
+    const encryptedUserEmail = encrypt(userEmail);
+    
+
+    sessionStorageFn.set("lessonToken", encryptedLesssonToken);
+    sessionStorageFn.set("isModerator", encryptedModeratorvalue);
+    sessionStorageFn.set("lessonId", encryptedLessonId);
+
+    
+    router.push(`/gala-meet?room=${encryptedRoomName}&name=${encryptedUserName}&email=${encryptedUserEmail}`);
+
     setIsModalOpen(false);
+
   };
 
   return (
@@ -196,6 +229,7 @@ const InstructorLiveLessons = () => {
       </div>
 
       <Segmented
+        block
         value={alignValue}
         style={{ marginBottom: 8 }}
         onChange={setAlignValue}
@@ -207,13 +241,13 @@ const InstructorLiveLessons = () => {
           <div className="flex justify-center gap-2 items-center w-full py-40 md:py-64">
             <LoadingOutlined className="text-3xl text-[#001840]" spin /> <span className="text-xs">Loading lessons...</span>
           </div>
-        ) : upcomingLessons?.filter((lesson)=> lesson.status === 'Upcoming').length > 0 ? (
-          upcomingLessons.filter((lesson)=> lesson.status === 'Upcoming').map((classData) => (
+        ) : upcomingLessons?.filter((lesson) => lesson.status === 'Upcoming').length > 0 ? (
+          upcomingLessons.filter((lesson) => lesson.status === 'Upcoming').map((classData) => (
             <ClassCard key={classData.id} classData={classData} />
           ))
         ) : (
-          <div className="flex justify-center items-center w-full py-16">
-            <p className="text-gray-500">No upcoming classes found.</p>
+          <div className="flex justify-center items-center w-full py-32">
+            <p className="text-gray-500 text-xs md:text-sm  ">No upcoming classes found.</p>
           </div>
         )}
       </div>}
@@ -223,13 +257,13 @@ const InstructorLiveLessons = () => {
           <div className="flex justify-center gap-2 items-center w-full py-40 md:py-64">
             <LoadingOutlined className="text-3xl text-[#001840]" spin /> <span className="text-xs">Loading lessons...</span>
           </div>
-        ) : upcomingLessons?.filter((lesson)=> lesson.status === 'Completed').length > 0 ? (
-          upcomingLessons.filter((lesson)=> lesson.status === 'Completed').map((classData) => (
+        ) : upcomingLessons?.filter((lesson) => lesson.status === 'Completed').length > 0 ? (
+          upcomingLessons.filter((lesson) => lesson.status === 'Completed').map((classData) => (
             <ClassCard key={classData.id} classData={classData} />
           ))
         ) : (
-          <div className="flex justify-center items-center w-full py-16">
-            <p className="text-gray-500">No Completed classes found.</p>
+          <div className="flex justify-center items-center w-full py-32">
+            <p className="text-gray-500 text-xs md:text-sm">No Completed classes found.</p>
           </div>
         )}
       </div>}
@@ -239,13 +273,13 @@ const InstructorLiveLessons = () => {
           <div className="flex justify-center gap-2 items-center w-full py-40 md:py-64">
             <LoadingOutlined className="text-3xl text-[#001840]" spin /> <span className="text-xs">Loading lessons...</span>
           </div>
-        ) : upcomingLessons?.filter((lesson)=> lesson.status === 'Canceled').length > 0 ? (
-          upcomingLessons.filter((lesson)=> lesson.status === 'Canceled').map((classData) => (
+        ) : upcomingLessons?.filter((lesson) => lesson.status === 'Canceled').length > 0 ? (
+          upcomingLessons.filter((lesson) => lesson.status === 'Canceled').map((classData) => (
             <ClassCard key={classData.id} classData={classData} />
           ))
         ) : (
-          <div className="flex justify-center items-center w-full py-16">
-            <p className="text-gray-500">No Canceled classes found.</p>
+          <div className="flex justify-center items-center w-full py-32">
+            <p className="text-gray-500 text-xs md:text-sm">No Canceled classes found.</p>
           </div>
         )}
       </div>}
