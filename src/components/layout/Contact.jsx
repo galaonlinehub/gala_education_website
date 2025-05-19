@@ -1,12 +1,12 @@
 
-import { PHONE_NUMBER, SUPPORT_EMAIL } from "@/src/config/settings";
+import { BILLING_SUPPORT_DESK, SUPPORT_EMAIL } from "@/src/config/settings";
 import { Dropdown } from "antd";
 
 const subject = encodeURIComponent("Support and Help from Gala Education");
 const body = encodeURIComponent("Hi Gala Education,\n\nI need help with...");
 
 const mailto = `mailto:${SUPPORT_EMAIL}?subject=${subject}&body=${body}`;
-const callto = `tel:${PHONE_NUMBER}`;
+const callto = `tel:${BILLING_SUPPORT_DESK}`;
 
 const items = [
   {
@@ -14,7 +14,7 @@ const items = [
     label: (
       <a href={callto} className="text-xs flex flex-col">
         <span> 📞 Call Us</span>
-        <span className="text-[10px] pl-4 text-gray-500">+{PHONE_NUMBER}</span>
+        <span className="text-[10px] pl-4 text-gray-500">+{BILLING_SUPPORT_DESK}</span>
       </a>
     ),
   },

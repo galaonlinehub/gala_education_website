@@ -99,7 +99,7 @@ const SignInPage = () => {
         }
         return prev;
       });
-    }, 1000)
+    }, 700)
   );
 
   const prevFieldsRef = useRef(watchedFields);

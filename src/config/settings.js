@@ -26,7 +26,9 @@ export const RESET_PASSWORD_EMAIL_KEY = "e4e70c35-1afa-4e04-9347-165d0050a908";
 
 export const SUPPORT_EMAIL = "support@galahub.org";
 export const MAIN_EMAIL = "edu@galahub.org";
-export const PHONE_NUMBER = "255750196902";
+export const SUPPORT_DESK = "255 742 999 553";
+export const BILLING_SUPPORT_DESK = "255 760 999 553";
+
 export const TWITTER_HANDLE = "galahub_tz";
 export const INSTAGRAM_USER_NAME = "galahub.tz";
 

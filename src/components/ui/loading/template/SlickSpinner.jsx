@@ -1,3 +1,4 @@
+"use client"
 const SlickSpinner = ({ size = 20, color = "#3b82f6", strokeWidth = "6" }) => {
   return (
     <div className="inline-flex items-center justify-center">

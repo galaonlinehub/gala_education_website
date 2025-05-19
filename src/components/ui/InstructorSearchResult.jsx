@@ -8,7 +8,7 @@ import { FaRegStar } from "react-icons/fa";
 import { FaRegMessage, FaRegClock } from "react-icons/fa6";
 import { GoShieldCheck } from "react-icons/go";
 import { BsGlobe } from "react-icons/bs";
-import { LuMessageCircle, LuMessageSquare, LuUsers } from "react-icons/lu";
+import {  LuMessageSquare, LuUsers } from "react-icons/lu";
 import { useEnrollMe } from "@/src/store/student/useEnrollMe";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/src/hooks/useUser";
@@ -18,6 +18,7 @@ import { encrypt } from "@/src/utils/fns/encryption";
 import { PREVIEW_CHAT_KEY } from "@/src/config/settings";
 import useChatStore from "@/src/store/chat/chat";
 import { useChat } from "@/src/hooks/useChat";
+import { TbMessage } from "react-icons/tb";
 
 const InstructorSearchResult = ({ details }) => {
   const { setEnrollMe, setEnrollCohort } = useEnrollMe();
@@ -26,6 +27,7 @@ const InstructorSearchResult = ({ details }) => {
   const { chats } = useChat();
   const { user } = useUser();
   const router = useRouter();
+
 
   const handleEnroll = (idx) => {
     setEnrollMe(true);
@@ -42,8 +44,9 @@ const InstructorSearchResult = ({ details }) => {
     const existingChat = chats.find(
       (chat) =>
         chat.created_by === user?.id &&
-        chat.participants.some((p) => p.user_id === details?.id)
+        chat.participants.some((p) => p.user.id === details?.id)
     );
+
 
     if (existingChat) {
       navigateToChat(existingChat.id);
@@ -168,7 +171,7 @@ const InstructorSearchResult = ({ details }) => {
             </div>
             <div className="w-1/4 self-end flex justify-end">
               <Tooltip title="Chat with instructor">
-                <LuMessageSquare
+                <TbMessage
                   className="text-xl cursor-pointer"
                   onClick={makeChat}
                 />
