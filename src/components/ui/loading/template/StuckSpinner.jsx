@@ -1,5 +1,6 @@
+"use client"
 
-const SlickSpinner = ({
+const StuckSpinner = ({
     size = 24,
     color = "#3b82f6",
     strokeWidth = 4,
@@ -86,6 +87,6 @@ const SlickSpinner = ({
     );
   };
   
-  export default SlickSpinner;
+  export default StuckSpinner;
   
   

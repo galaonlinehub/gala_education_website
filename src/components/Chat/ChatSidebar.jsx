@@ -7,6 +7,7 @@ import useChatStore from "@/src/store/chat/chat";
 import { LuUser, LuMessagesSquare } from "react-icons/lu";
 import clsx from "clsx";
 import { useUser } from "@/src/hooks/useUser";
+import SlickSpinner from "../ui/loading/template/SlickSpinner";
 
 const RenderSidebar = ({ currentTab, setCurrentTab, MAIN_COLOR }) => {
   const [searchValue, setSearchValue] = useState("");
@@ -18,13 +19,6 @@ const RenderSidebar = ({ currentTab, setCurrentTab, MAIN_COLOR }) => {
   const handleChange = (e) => setSearchValue(e.target.value);
 
   const viewOnClickedUser = (idx) => setCurrentChatId(idx);
-
-  const ChatSkeleton = () => (
-    <div className="w-full flex items-center gap-1 p-6 h-16">
-      <Skeleton.Avatar active size={40} shape="circle" />
-      <Skeleton.Button active className="!w-full" />
-    </div>
-  );
 
   const NoChat = () => (
     <div className="flex flex-col items-center mt-24 h-full">
@@ -64,18 +58,21 @@ const RenderSidebar = ({ currentTab, setCurrentTab, MAIN_COLOR }) => {
           </button>
         ))}
       </div>
-      <div className="relative mb-4">
-        <Input
-          prefix={<SearchOutlined className="text-gray-400" />}
-          placeholder="Search conversations"
-          value={searchValue}
-          onChange={handleChange}
-          className="rounded-lg py-2 border-gray-200"
-        />
-      </div>
+      {hasChats && (
+        <div className="relative mb-4">
+          <input
+            placeholder="Search conversations..."
+            value={searchValue}
+            onChange={handleChange}
+            className="rounded-md border border-gray-200 flex items-center justify-center focus:border-2 focus:border-[#001840] px-2 w-full p-1 placeholder:text-xs placeholder:px-1 outline-none "
+          />
+        </div>
+      )}
       <div className="flex flex-col overflow-y-auto h-[450px]">
         {isFetchingChats ? (
-          Array.from({ length: 5 }).map((_, i) => <ChatSkeleton key={i} />)
+          <div className="w-full flex justify-center pt-6">
+            <SlickSpinner color="blue" strokeWidth={6} size={20} />
+          </div>
         ) : hasChats ? (
           chats
             .filter((chat) =>
