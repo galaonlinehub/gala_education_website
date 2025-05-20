@@ -106,7 +106,8 @@ export const RenderSuccessState = ({
   onClose,
   accountType,
   setStatus,
-  queryClient,user
+  queryClient,
+  user,
 }) => {
   if (accountType === "instructor") {
     setTimeout(() => {
@@ -361,7 +362,7 @@ export const PaymentPending = ({
       )}
 
       <div className="mt-2">
-        <Contact />
+        <Contact useBillingContact={true} />
       </div>
     </Modal>
   );
