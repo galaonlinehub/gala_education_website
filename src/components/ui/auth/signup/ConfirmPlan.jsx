@@ -128,7 +128,7 @@ const ConfirmPlan = () => {
           </div>
 
           <div className="mt-20">
-            <Contact />
+            <Contact useBillingContact={true} />
           </div>
         </div>
       ) : (
@@ -137,7 +137,7 @@ const ConfirmPlan = () => {
             No any payment plan for a moment!!
           </span>
           <div className="my-3">
-            <Contact />
+            <Contact useBillingContact={true} />
           </div>
           <Button onClick={() => router.push("/")}>Return Home</Button>
         </div>
