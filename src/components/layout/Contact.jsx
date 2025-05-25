@@ -1,8 +1,8 @@
-import { BILLING_SUPPORT_DESK, SUPPORT_DESK, SUPPORT_EMAIL } from "@/src/config/settings";
 import { Dropdown } from "antd";
+import { BILLING_SUPPORT_DESK, SUPPORT_DESK, SUPPORT_EMAIL } from "@/src/config/settings";
 
 export const Contact = ({ useBillingContact = false }) => {
-    const phoneNumber = useBillingContact ? BILLING_SUPPORT_DESK : SUPPORT_DESK;
+  const phoneNumber = useBillingContact ? BILLING_SUPPORT_DESK : SUPPORT_DESK;
 
   const subject = encodeURIComponent("Support and Help from Gala Education");
   const body = encodeURIComponent("Hi Gala Education,\n\nI need help with...");
