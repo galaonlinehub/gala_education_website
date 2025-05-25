@@ -52,7 +52,7 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${quicksand.className} ${urbanist.variable}`}>
-      <body className="font-sans">
+      <body className="font-sans ">
         <QueryWrapper>
           <AntdRegistry>
             <SEOProvider />

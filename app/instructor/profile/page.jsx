@@ -66,7 +66,7 @@ const { Option } = Select;
 
 const TeacherProfile = () => {
 
-    const { user, updateInstructorProfile } = useUser();
+    const { user, updateProfile } = useUser();
     const { InstructorCohorts } = useInstructorCohorts();
     const { instructorSubjects } = useInstructorSubjects();
     const { subjects } = useSubject();
@@ -89,6 +89,8 @@ const TeacherProfile = () => {
         "Ordinary level Education Certificate",
         "Advanced level Education Certificate"
     ];
+
+    console.log("profile", instructorProfile);
 
     // Track window width for responsive design
     React.useEffect(() => {
@@ -172,7 +174,7 @@ const TeacherProfile = () => {
             });
 
             // Make the API call
-            const userData = await updateInstructorProfile(formData);
+            updateProfile(formData);
 
             setIsEditing(false);
             message.success('Profile updated successfully!');
@@ -344,9 +346,9 @@ const TeacherProfile = () => {
                                     <Form.Item name="last_name" label="Last Name" rules={[{ required: true, message: <span className="text-xs">Last name is required</span>, }]}>
                                         <Input placeholder="Last Name" />
                                     </Form.Item>
-                                    <Form.Item name="email" label="Email Address" rules={[{ required: true, type: 'email', message: <span className="text-xs">Email is required</span>, }]}>
+                                    {/* <Form.Item name="email" label="Email Address" rules={[{ required: true, type: 'email', message: <span className="text-xs">Email is required</span>, }]}>
                                         <Input placeholder="Email Address" prefix={<MailOutlined />} />
-                                    </Form.Item>
+                                    </Form.Item> */}
                                     <Form.Item initialValue={selectedSpecialNeedsIds} rules={[{ required: true, message: <span className="text-xs">Select atleast 1 Special group</span>, }]} name="special_needs" label="Special groups you can teach">
                                         <Select
                                             mode="multiple"
@@ -368,7 +370,7 @@ const TeacherProfile = () => {
                                 </div>
 
                                 <div>
-                                    <Form.Item name="phone_number" label="Phone Number" rules={[
+                                    {/* <Form.Item name="phone_number" label="Phone Number" rules={[
                                         {
                                             required: true,
                                             message: <span className="text-xs">Please enter your phone number</span>,
@@ -392,7 +394,7 @@ const TeacherProfile = () => {
                                         },
                                     ]}>
                                         <Input placeholder="Phone Number" prefix={<PhoneOutlined />} />
-                                    </Form.Item>
+                                    </Form.Item> */}
                                     <Form.Item initialValue={selectedSubjectIds} name="subjects" label="Subjects you can teach" rules={[{ required: true, message: <span className="text-xs">Select atleast 1 subject</span>, }]}>
                                         <Select
                                             mode="multiple"
@@ -559,7 +561,7 @@ const TeacherProfile = () => {
                             <span>Certifications</span>
                         </div>
 
-                        <Divider  />
+                        <Divider />
 
                         <div className="mt-3 flex flex-wrap">
                             {certifications.map((cert, index) => (

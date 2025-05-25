@@ -88,7 +88,9 @@ function Home() {
           handle: "@galahub_tz",
         }}
       />
-      <div className="relative w-screen mx-auto h-full">
+
+      <div className="overflow-x-hidden relative w-full mx-auto h-full">
+
         {showDonatePopup && (
           <div className="fixed inset-0 bg-black bg-opacity-70 !z-[80] flex justify-center items-center">
             <div className="p-1 rounded-lg w-full items-center justify-center flex ">
@@ -106,7 +108,7 @@ function Home() {
           onClose={() => setShowPdf(false)}
         />
 
-        <div className="relative w-screen  mx-auto h-[60rem] sm:h-[60rem] sm:items-center md:h-[50rem] lg:h-[44rem] overflow-hidden -mt-12">
+        <div className="relative mx-auto h-[60rem] sm:h-[60rem] sm:items-center md:h-[50rem] lg:h-[44rem] overflow-hidden -mt-12">
           <VideoBackground />
           <div className="absolute inset-0 bg-black opacity-85 w-full" />
           <div className="absolute inset-0 sm:py-12 py-12 w-full sm:px-24 md:px-10 px-2 flex md:flex-row flex-col lg:justify-between md:gap-10 max-sm:gap-5">
@@ -1055,7 +1057,9 @@ function Home() {
           </div>
         </div>
         {!cookieIsAccepted && <AcceptCookies />}
-        <Footer />
+        <Animator delay={0.2} direction="up">
+          <Footer />
+        </Animator>
       </div>
     </>
   );
