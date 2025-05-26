@@ -640,7 +640,7 @@ function Home() {
                         85 <span className="text-lg">%</span>
                       </p>
                       <p className="text-xs font-medium mt-2">
-                        Literacy improvement rate in schools we've partnered with.
+                        Literacy improvement rate in schools we&apos;ve partnered with.
                       </p>
                     </div>
                   </div>
