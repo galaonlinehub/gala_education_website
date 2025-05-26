@@ -15,7 +15,7 @@ export default function VideoBackground() {
     };
 
     return (
-        <div className="relative w-full h-full overflow-hidden">
+        <div className="relative w-full h-full overflow-hidden">    
             <video
                 ref={videoRef}
                 autoPlay

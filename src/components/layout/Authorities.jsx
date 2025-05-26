@@ -13,7 +13,7 @@ export const Authorities = () => {
   return (
     <div className="w-full flex flex-col items-center justify-center mb-24 px-3">
       <Animator delay={0.4} direction="top">
-        <span className="font-black text-3xl text-center">
+        <span className="font-black flex text-3xl text-center">
           Our Teacher Verification Process
         </span>
       </Animator>

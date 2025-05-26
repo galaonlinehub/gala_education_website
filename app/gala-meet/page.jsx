@@ -68,7 +68,7 @@ const VideoConference = () => {
               'sharedvideo', 'settings', 'raisehand', 'videoquality',
               'filmstrip', 'feedback', 'stats', 'shortcuts',
               'tileview', 'select-background', 'download', 'help',
-              'mute-everyone', 'security'
+              'mute-everyone', 'security','whiteboard'
             ]
           }}
           userInfo={{
