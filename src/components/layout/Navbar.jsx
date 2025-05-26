@@ -201,7 +201,7 @@ const Navbar = () => {
             className="flex gap-3 items-center justify-center"
             onClick={() => {}}
           >
-            <ChooseAccont />
+            <ChooseAccont btnText={'Sign Up'} textColor={'black'} placement={'bottom'} trigger={'hover'} />
             <Link href={"/signin"} className="hover:cursor-pointer">
               <li>Sign In</li>
             </Link>
