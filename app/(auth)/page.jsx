@@ -354,7 +354,7 @@ function Home() {
                 Our clients&apos; feedback is at the heart of what we do. We’re
                 proud to share their experiences and the positive impact our
                 platform has had on their learning journey. Here’s what they
-                have to say about Gala Education.
+                have to say about Gala Education
               </h2>
             </Animator>
             <div className="hidden md:block">
