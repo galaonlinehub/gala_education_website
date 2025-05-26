@@ -685,7 +685,7 @@ function Home() {
                   <div className="flex flex-col justify-end h-full">
                     <p className="text-xs font-bold">Real stories, real impact</p>
                     <p className="text-xs font-medium mb-4">
-                      Witness how your support changes lives—from classrooms to communities.
+                      Witness how your support changes lives—from classrooms to communities
                     </p>
                   </div>
                 </div>
