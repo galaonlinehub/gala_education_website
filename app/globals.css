@@ -2,30 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --font-family-base: var(--font-quicksand), "Quicksand", sans-serif;
+}
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap');
-@import url('@tldraw/tldraw/tldraw.css');
+html,
+body {
+  font-family: var(--font-quicksand), "Quicksand", sans-serif;
+}
 
+[class^="ant-"],
+[class*=" ant-"],
+[class^="ant-"] *,
+[class*=" ant-"] * {
+  font-family: var(--font-quicksand), "Quicksand", sans-serif !important;
+}
 
 .no-scroll {
   overflow: hidden;
   height: 100vh;
 }
 
-
 .custom-select {
   background-color: #001840 !important;
-
-  /* color: white !important; */
 }
 
 .custom-select-tag {
-  background-color: #001840; /* Sets the background color */
-  color: white; /* Sets the text color */
-  border: 1px solid #001840; /* Matches the border with the background */
-  border-radius: 5px; /* Optional: Adds rounded corners */
-  padding: 10px; /* Adds padding for better appearance */
-  font-size: 16px; /* Sets font size */
+  background-color: #001840;
+  color: white;
+  border: 1px solid #001840;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 16px;
 }
 
 .custom-select .ant-select-selector {
@@ -75,6 +83,7 @@
 .ant-tabs-ink-bar {
   height: 6px !important;
   width: 50% !important;
+  background-color: #001840 !important;
 }
 
 .ant-tabs-tab {
@@ -91,7 +100,7 @@
 }
 
 .ant-switch-checked {
-  background-color: #2459a4 !important; /* Color when checked */
+  background-color: #001840 !important; /* Color when checked */
 }
 
 .ant-switch:not(.ant-switch-checked) {
@@ -150,18 +159,15 @@
   }
 }
 
-
-
-
 .tldraw__editor {
-	position: fixed;
-	top: 0px;
-	left: 0px;
-	bottom: 0px;
-	right: 0px;
-	width: 100%;
-	height: 100%;
-	overflow: hidden;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 .ant-card-body {
@@ -171,45 +177,17 @@
 .ant-upload.ant-upload-select {
   width: 100%;
 }
-.ant-form-item-explain-error{
+.ant-form-item-explain-error {
   font-size: 12px;
 }
-.signup-input{
-  outline: 0.5px solid #030DFE !important; 
-  border: 0.5px solid #030DFE !important;
+.signup-input {
+  outline: 0.5px solid #030dfe !important;
+  border: 0.5px solid #030dfe !important;
 }
-.signup-input:focus{
-  outline: 0.5px solid #030DFE !important; 
-  border: 0.5px solid #030DFE !important;
+.signup-input:focus {
+  outline: 0.5px solid #030dfe !important;
+  border: 0.5px solid #030dfe !important;
 }
-/* 
-@layer base {
-  html {
-    @apply font-sans;
-  }
-  
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-heading;
-  }
-}*/
-
-/* Optional: Add custom styles for specific heading levels */
-/*@layer components {
-  h1 {
-    @apply text-4xl font-heading font-bold;
-  }
-  
-  h2 {
-    @apply text-3xl font-heading font-semibold;
-  }
-  
-  h3 {
-    @apply text-2xl font-heading font-medium;
-  }
-} */
-/* Ensure consistent width of the panel content */
-
-
 
 .collapse-container .ant-collapse {
   margin-bottom: 16px; /* Adjust the margin as needed */
@@ -222,38 +200,63 @@
   border-radius: 4px; /* Add rounded corners */
 }
 
-:root {
-  --font-poppins: 'Poppins', sans-serif;
-}
-
-/* Override ant-design components */
-/* .ant-btn,
-.ant-input,
-.ant-select,
-.ant-dropdown-menu,
-.ant-modal-content,
-.ant-form,
-.ant-table,
-.ant-typography,
-.ant-menu,
-.ant-notification,
-.ant-message,
-.ant-tabs,
-.ant-popover,
-.ant-card-body {
-  font-family: 'Urbanist', sans-serif !important;
-} */
-
-/* For specific Poppins usage */
-.font-poppins {
-  font-family: var(--font-poppins);
+.ant-modal-wrap {
+  position: fixed;
 }
 
 
+.card-shadow {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
 
-.ant-tooltip-inner {
-  background-color: #001840 !important;
+.lesson-card {
+  transition: all 0.3s;
 }
-.ant-tooltip-arrow::before {
-  background-color: #001840 !important;
+
+.lesson-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
+
+@media (max-width: 576px) {
+  .ant-card-head-title {
+    font-size: 16px;
+  }
+}
+
+.ant-modal-content {
+  border-radius: 8px;
+}
+
+.ant-form-item-label > label {
+  font-weight: 500;
+}
+
+.student-table-card .ant-table-thead > tr > th {
+  background-color: #f0f5ff;
+}
+
+.student-table-card .ant-table-tbody > tr:hover > td {
+  background-color: #f0f5ff;
+}
+
+@keyframes glowing {
+  0% { box-shadow: 0 0 5px rgba(35, 54, 81, 0.7); }
+  50% { box-shadow: 0 0 20px rgba(22, 47, 94, 0.9); }
+  100% { box-shadow: 0 0 5px rgba(3, 28, 110, 0.401); }
+}
+
+.glow-button {
+  animation: glowing 1.5s infinite;
+}
+
+/* Optional: Pause animation on hover */
+.glow-button:hover {
+  animation-play-state: paused;
+}
+
+
+body.ant-modal-open {
+  overflow: hidden;
+}
+

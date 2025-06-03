@@ -1,16 +1,16 @@
-import { Modal, Result } from "antd";
+import { Modal, Result, Button, message } from "antd";
 import React, { useEffect, useState } from "react";
 import LoadingState from "../../loading/template/LoadingSpinner";
 import { useEmailVerificationModalOpen } from "@/src/store/auth/signup";
 import { useTabNavigator } from "@/src/store/auth/signup";
 import { decrypt } from "@/src/utils/fns/encryption";
 import { useRouter } from "next/navigation";
-import { message, Button, Alert } from "antd";
 import { maskEmail } from "@/src/utils/fns/mask_email";
 import { ReloadOutlined } from "@ant-design/icons";
 import { apiPost } from "@/src/services/api_service";
 import { sessionStorageFn } from "@/src/utils/fns/client";
-import { EMAIL_VERIFICATION_KEY, EMAIL_VERIFICATION_MODAL_KEY } from "@/src/config/settings";
+import { EMAIL_VERIFICATION_KEY } from "@/src/config/settings";
+import clsx from "clsx";
 
 const EmailVerification = () => {
   const openEmailVerificationModal = useEmailVerificationModalOpen(
@@ -44,7 +44,7 @@ const EmailVerification = () => {
         const decryptedEmail = decrypt(encryptedEmail);
         setEmail(decryptedEmail);
       } else {
-        message.error("Unexpected Error Occured, Try again Later!");
+        message.error("Unexpected Error Occurred, Try Again Later!");
         router.push("/");
       }
     };
@@ -87,7 +87,7 @@ const EmailVerification = () => {
           }, 5000);
         }
       } catch (e) {
-        console.error(e.response?.data || e.message);
+        console.error(e.response?.data?.message || e.message);
         setHasVerified(false);
       } finally {
         setLoading(false);
@@ -123,14 +123,14 @@ const EmailVerification = () => {
         setLocalFeedback({
           show: true,
           type: "success",
-          message: "OTP sent successfully.",
+          message: response?.data?.message ?? "OTP sent successfully.",
         });
       }
     } catch (e) {
       setLocalFeedback({
         show: true,
         type: "error",
-        message: "Sending OTP failed, Try again.",
+        message: e?.response?.data?.message ?? "Sending OTP failed, Try again.",
       });
     } finally {
       setIsSendingOtp(false);
@@ -145,6 +145,26 @@ const EmailVerification = () => {
     }
   };
 
+  const handleCancel = () => {
+    Modal.confirm({
+      title: "Warning: Cancel Email Verification",
+      content: (
+        <div className="text-xs">
+          <strong>Caution:</strong> If you cancel now, you will not be able to
+          verify your email address. This will result in the permanent deletion
+          of your account, and you will lose access to all associated data.
+        </div>
+      ),
+      okText: "Yes, Cancel",
+      okType: "danger",
+      cancelText: "No, Continue Verifying",
+      onOk: () => {
+        setOpenEmailVerificationModal(false);
+      },
+      onCancel: () => {},
+    });
+  };
+
   return (
     <Modal
       title={<p>Verify Email</p>}
@@ -153,11 +173,10 @@ const EmailVerification = () => {
       keyboard={false}
       destroyOnClose={false}
       footer={null}
-      // loading={loading}
       open={openEmailVerificationModal}
-      onCancel={() => setOpenEmailVerificationModal(false)}
+      onCancel={handleCancel}
     >
-      <div className="mb-6">
+      <div className="mb-6 flex flex-col">
         <span className="block w-full space-x-2 overflow-hidden text-ellipsis whitespace-nowrap">
           <span>Enter Verification Code Sent through</span>
           <span className="font-bold">
@@ -165,13 +184,16 @@ const EmailVerification = () => {
           </span>
         </span>
         {localFeedback.show && (
-          <Alert
-            showIcon
-            closable
-            message={localFeedback.message}
-            type={localFeedback.type}
-            className="!my-2"
-          />
+          <div
+            className={clsx(
+              "border-[0.8px] rounded-md p-1 my-2 text-center w-full self-center",
+              localFeedback.type === "error"
+                ? "border-red-500 text-red-500 bg-red-50"
+                : "border-green-700 text-green-700 bg-green-50"
+            )}
+          >
+            {localFeedback.message}
+          </div>
         )}
         <div>
           <div
@@ -198,9 +220,9 @@ const EmailVerification = () => {
                     hasVerified !== null
                       ? hasVerified
                         ? "border border-green-500 focus:ring-green-800 focus:outline-green-600 input-shake hasVerified"
-                        : "border border-red-500 focus:ring-red-800 focus:outline-red-600 input-shake failure"
+                        : "border border-red-500 focus:ring-red-500 focus:outline-red-500 input-shake failure"
                       : "text-2xl font-black w-12 h-12 text-center text-black border border-[#030DFE] rounded-md focus:outline-none focus:ring focus:ring-[#030DFE]"
-                  } text-2xl font-black w-12 h-12 text-center text-black rounded-md focus:outline-none focus:ring`}
+                  } text-3xl font-black w-12 h-12 text-center text-black rounded-md focus:outline-none focus:ring`}
                 />
               ))}
           </div>
@@ -214,23 +236,23 @@ const EmailVerification = () => {
             (hasVerified ? (
               <Result
                 status="success"
-                title="Email successfully Verified!"
-                subTitle="Hold on a moment. You&#39;ll be directed to the next stage."
+                title="Email Successfully Verified!"
+                subTitle="Hold on a moment. You'll be directed to the next stage."
               />
             ) : (
               <Result
                 status="error"
                 title="Email Verification Failed!"
                 subTitle="Incorrect Code Provided."
-              ></Result>
+              />
             ))}
           <div className="flex flex-wrap gap-2 text-xs w-full items-center justify-end overflow-hidden">
-            <span>Didn&#39;t get the code?</span>
+            <span>Didn&apos;t get the code?</span>
             <Button
               type="link"
               onClick={handleResendOtp}
-              className={`!p-1 !bg-transparent/10 !rounded-md !cursor-pointer !text-xs disabled:pointer-events-none ${
-                isSendingOtp && "!text-blue-600 !px-2"
+              className={`!p-1 !bg-transparent !rounded-md !cursor-pointer !text-xs disabled:pointer-events-none ${
+                isSendingOtp && "!text-blue-600 !px-1"
               }`}
               disabled={resendCounter > 0 || loading || isSendingOtp}
               icon={!isSendingOtp && <ReloadOutlined />}
@@ -243,6 +265,14 @@ const EmailVerification = () => {
             </Button>
           </div>
         </div>
+      </div>
+      <div className="w-full flex justify-end">
+        <button
+          onClick={handleCancel}
+          className="border border-black rounded-md px-2 hover:border-red-500 hover:text-red-500"
+        >
+          Cancel
+        </button>
       </div>
     </Modal>
   );

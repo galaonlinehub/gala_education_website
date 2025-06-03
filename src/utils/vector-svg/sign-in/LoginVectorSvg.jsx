@@ -1,10 +1,16 @@
+import { useDevice } from "@/src/hooks/useDevice";
+
 const LoginVectorSvg = () => {
+  const { width } = useDevice();
+
+  const svgWidth = width < 1240 ? "400" : "537";
+  const svgHeight = width < 1240 ? "400" : "537";
   return (
     <>
       <div className="absolute bottom-10 left-10 hidden lg:block pointer-events-none overflow-hidden">
         <svg
-          width="537"
-          height="528"
+          width={svgWidth}
+          height={svgHeight}
           viewBox="0 0 537 528"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -19,8 +25,8 @@ const LoginVectorSvg = () => {
 
       <div className="absolute right-10 bottom-15 hidden pointer-events-none lg:block">
         <svg
-          width="600"
-          height="600"
+          width={svgHeight}
+          height={svgHeight}
           viewBox="0 0 740 740"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"

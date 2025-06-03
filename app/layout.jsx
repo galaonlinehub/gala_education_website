@@ -1,38 +1,31 @@
+// app/layout.jsx
 import "./globals.css";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
-import { Inter, Poppins, Urbanist, Outfit, DM_Sans } from "next/font/google";
+import { Urbanist, Quicksand } from "next/font/google";
 import QueryWrapper from "@/src/components/layout/QueryWrapper";
-
-const inter = Inter({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-inter",
-});
-
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
-  display: "swap",
-  variable: "--font-poppins",
-});
+import SEOProvider from "@/src/components/layout/SEOProvider";
+import JsonLd from "@/src/components/layout/JsonLD";
+import GoogleAnalyticsComponent from "@/src/components/analytics/GoogleAnalytics";
 
 const urbanist = Urbanist({
   subsets: ["latin"],
   display: "swap",
 });
-const outfit = Outfit({
+
+const quicksand = Quicksand({
   subsets: ["latin"],
   display: "swap",
-});
-
-const dmSans = DM_Sans({
-  subsets: ['latin'],
-  display: 'swap',
+  variable: "--font-quicksand",
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 export const metadata = {
-  title: "Gala Education",
-  description: "Empowering minds, shaping future",
+  title: {
+    template: "%s | Gala Education",
+    default: "Gala Education - Empowering minds, shaping the future",
+  },
+  description:
+    "Gala Education is an innovative online tutoring platform created by academic experts to serve Tanzanian Primary, Secondary, and High School students.",
   icons: {
     icon: [
       { url: "/favicon-96x96.png", sizes: "96x96", type: "image/png" },
@@ -58,10 +51,15 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${inter.className} ${poppins.variable}`}>
-      <body className="font-sans">
+    <html lang="en" className={`${quicksand.className} ${urbanist.variable}`}>
+      <body className="font-sans ">
         <QueryWrapper>
-          <AntdRegistry>{children}</AntdRegistry>
+          <AntdRegistry>
+            <SEOProvider />
+            <JsonLd />
+            <GoogleAnalyticsComponent />
+            {children}
+          </AntdRegistry>
         </QueryWrapper>
       </body>
     </html>

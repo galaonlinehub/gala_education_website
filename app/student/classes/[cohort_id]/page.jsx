@@ -1,31 +1,33 @@
 "use client";
-import React, { useState } from "react";
-import {
-  ArrowLeftOutlined,
-  CalendarOutlined,
-  ClockCircleOutlined,
-  DownloadOutlined,
-  BookOutlined,
-  MessageOutlined,
-  PhoneOutlined,
-  CheckOutlined,
-  BellOutlined,
-  PlayCircleOutlined,
-  MailOutlined,
-  FilePdfOutlined,
-  FileTextOutlined,
-  VideoCameraOutlined,
-} from "@ant-design/icons";
-import Image from "next/image";
+import React, { useState, use } from "react";
 import { Card, Avatar } from "antd";
+import {
+  LuArrowLeft,
+  LuBell,
+  LuBookText,
+  LuCalendar,
+  LuCheck,
+  LuClock4,
+  LuDownload,
+  LuFileMinus,
+  LuFileText,
+  LuMessageSquare,
+  LuPlay,
+  LuUsers,
+  LuVideo,
+} from "react-icons/lu";
+import { useRouter } from "next/navigation";
+import { useEnrolledTopics } from "@/src/hooks/useEnrolledTopics";
+import { useSearchParams } from "next/navigation";
+import { decrypt } from "@/src/utils/fns/encryption";
+import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
+import { img_base_url } from "@/src/config/settings";
 
-const ClassDetailsPage = ({params}) => {
-  const [showChatInput, setShowChatInput] = useState(false);
-  const { cohort_id } = params;
+const ClassDetailsPage = ({ params }) => {
+  const { cohort_id } = use(params);
 
-  console.log("Params:", params);
-
-  console.log(cohort_id)
+  const searchParams = useSearchParams();
+  const instructor_id = decrypt(searchParams.get("id"));
 
   const classData = {
     id: "BIO-454-44",
@@ -63,23 +65,23 @@ const ClassDetailsPage = ({params}) => {
       {
         name: "Reproduction Systems Textbook",
         type: "pdf",
-        icon: <FilePdfOutlined />,
+        icon: <LuFileText />,
       },
       {
         name: "Lecture Slides - Week 1-5",
         type: "slides",
-        icon: <FileTextOutlined />,
+        icon: <LuFileText />,
       },
-      { name: "Laboratory Manual", type: "pdf", icon: <FilePdfOutlined /> },
+      { name: "Laboratory Manual", type: "pdf", icon: <LuFileMinus /> },
       {
         name: "Research Paper - Comparative Reproduction",
         type: "pdf",
-        icon: <FilePdfOutlined />,
+        icon: <LuFileText />,
       },
       {
         name: "Video Tutorial - Cell Division",
         type: "video",
-        icon: <VideoCameraOutlined />,
+        icon: <LuVideo />,
       },
     ],
     assignments: [
@@ -161,13 +163,31 @@ const ClassDetailsPage = ({params}) => {
     ],
   };
 
+  const router = useRouter();
+  const {
+    cohortDetails,
+    cohortDetailsLoading,
+    instructorDetails,
+    instructorDetailsLoading,
+    instructorDetailsError,
+  } = useEnrolledTopics(cohort_id, instructor_id);
+
+  const instructor = instructorDetails?.instructor?.user;
+
   return (
     <div className="min-h-screen w-full">
-      <div className="sticky top-4 z-50 bg-white -mx-2 lg:-mx-6 w-full ">
+      <div className="sticky  top-1 inset-x-0 z-50 bg-white w-full border-b">
         <div className="px-4 h-12 flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <button className="h-10 w-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors">
-              <ArrowLeftOutlined className="text-[#001840]" />
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={() => router.back()}
+              className="h-10 w-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
+            >
+              <LuArrowLeft
+                strokeWidth={3}
+                size={24}
+                className="text-[#001840]"
+              />
             </button>
             <div className="text-lg font-semibold text-gray-800">
               My Classes
@@ -183,58 +203,70 @@ const ClassDetailsPage = ({params}) => {
 
       {/* Main Content */}
       <div className="max-w-6xl mx-auto px-4 py-6">
-        {/* Class Header */}
         <Card className="mb-6">
-          <div className="flex flex-col md:flex-row md:items-center justify-between">
+          {cohortDetailsLoading ? (
+            <div className="flex items-center justify-center w-full h-56">
+              <SlickSpinner color="blue" size={28} />
+            </div>
+          ) : (
             <div>
-              <div className="text-[#001840] font-black text-xl mb-3">
-                {classData.id}
+              <div className="flex flex-col md:flex-row md:items-center justify-between">
+                <div>
+                  <div className="text-[#001840] font-black text-xl mb-3">
+                    {cohortDetails?.cohort_name}
+                  </div>
+
+                  <div className="flex items-center space-x-2 mb-2">
+                    <span className="bg-blue-500 text-white text-xs px-2 py-1 rounded-md">
+                      {cohortDetails?.subject}
+                    </span>
+                    <span className="bg-teal-500 text-white text-xs px-2 py-1 rounded-md">
+                      {cohortDetails?.grade_level}
+                    </span>
+                  </div>
+                  <h1 className="text-2xl font-bold text-gray-800">
+                    {cohortDetails?.topic_title}
+                  </h1>
+                  <p className="text-gray-600 mt-1">
+                    {cohortDetails?.topic_description}
+                  </p>
+                </div>
+                <div className="mt-4 md:mt-0">
+                  <button
+                    disabled={true}
+                    className="bg-[#001840] hover:bg-[#001840]/90 text-white px-6 py-2 rounded-md flex items-center"
+                  >
+                    <LuVideo className="mr-2 text-xl" />
+                    <span className="text-sm">Join Next Class</span>
+                  </button>
+                </div>
               </div>
 
-              <div className="flex items-center space-x-2 mb-2">
-                <span className="bg-blue-500 text-white text-xs px-2 py-1 rounded-md">
-                  {classData.subject}
-                </span>
-                <span className="bg-teal-500 text-white text-xs px-2 py-1 rounded-md">
-                  {classData.grade}
-                </span>
-              </div>
-              <h1 className="text-2xl font-bold text-gray-800">
-                {classData.name}
-              </h1>
-              <p className="text-gray-600 mt-1">{classData.shortDescription}</p>
-            </div>
-            <div className="mt-4 md:mt-0">
-              <button className="bg-[#001840] hover:bg-[#001840]/90 text-white px-6 py-2 rounded-md flex items-center">
-                <VideoCameraOutlined className="mr-2" />
-                <span>Join Next Class</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Progress Bar */}
-          <div className="mt-6 pt-6 border-t border-gray-100">
-            <div className="flex items-center justify-between mb-2">
-              <div className="text-sm font-medium text-gray-800">
-                Your Progress:{" "}
-                <span className="text-[#001840] font-semibold">
-                  {classData.progress}%
-                </span>
-              </div>
-              <div className="text-sm text-gray-500">
-                Next class:{" "}
-                <span className="font-medium text-[#001840]">
-                  {classData.schedule.nextClass.countdown}
-                </span>
+              {/* Progress Bar */}
+              <div className="mt-6 pt-6 border-t border-gray-100">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="text-sm font-medium text-gray-800">
+                    Your Progress:{" "}
+                    <span className="text-[#001840] font-semibold">
+                      {cohortDetails?.percentage_completion}%
+                    </span>
+                  </div>
+                  <div className="text-sm text-gray-500">
+                    Next class:{" "}
+                    <span className="font-medium text-[#001840]">
+                      {classData.schedule.nextClass.countdown}
+                    </span>
+                  </div>
+                </div>
+                <div className="h-3 w-full bg-gray-100 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-[#001840] rounded-full"
+                    style={{ width: `${classData.progress}%` }}
+                  />
+                </div>
               </div>
             </div>
-            <div className="h-3 w-full bg-gray-100 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-[#001840] rounded-full"
-                style={{ width: `${classData.progress}%` }}
-              />
-            </div>
-          </div>
+          )}
         </Card>
 
         {/* Content Grid */}
@@ -256,11 +288,11 @@ const ClassDetailsPage = ({params}) => {
               </h4>
               <div className="flex items-center justify-between text-gray-600">
                 <div className="flex items-center">
-                  <CalendarOutlined className="mr-2 text-[#001840]" />
+                  <LuCalendar className="mr-2 text-[#001840]" />
                   <span>{classData.schedule.nextClass.date}</span>
                 </div>
                 <div className="flex items-center">
-                  <ClockCircleOutlined className="mr-2 text-[#001840]" />
+                  <LuClock4 className="mr-2 text-[#001840]" />
                   <span>{classData.schedule.nextClass.time}</span>
                 </div>
               </div>
@@ -280,7 +312,7 @@ const ClassDetailsPage = ({params}) => {
                   </h4>
                   <div className="space-y-2 text-sm text-gray-600">
                     <div className="flex items-center">
-                      <CalendarOutlined className="text-[#001840] mr-2" />
+                      <LuCalendar className="text-[#001840] mr-2" />
                       <span>
                         {classData.schedule.startDate} -{" "}
                         {classData.schedule.endDate}
@@ -288,7 +320,7 @@ const ClassDetailsPage = ({params}) => {
                     </div>
                     {classData.schedule.sessions.map((session, index) => (
                       <div key={index} className="flex items-center">
-                        <ClockCircleOutlined className="text-[#001840] mr-2" />
+                        <LuClock4 className="text-[#001840] mr-2" />
                         <span>
                           {session.day}: {session.time}
                         </span>
@@ -296,30 +328,6 @@ const ClassDetailsPage = ({params}) => {
                     ))}
                   </div>
                 </div>
-                {/* <div className="rounded-lg bg-blue-50 p-4">
-                  <h4 className="text-sm font-medium text-[#001840] mb-2">
-                    Upcoming Assignments
-                  </h4>
-                  <div className="space-y-2 text-sm">
-                    {classData.assignments
-                      .filter((a) => a.status === "pending")
-                      .slice(0, 3)
-                      .map((assignment, index) => (
-                        <div
-                          key={index}
-                          className="flex items-center justify-between"
-                        >
-                          <div className="flex items-center text-gray-700">
-                            <div className="w-2 h-2 rounded-full bg-orange-500 mr-2"></div>
-                            <span>{assignment.name}</span>
-                          </div>
-                          <span className="text-orange-600 text-xs font-medium">
-                            Due {assignment.dueDate}
-                          </span>
-                        </div>
-                      ))}
-                  </div>
-                </div> */}
               </div>
             </Card>
 
@@ -355,9 +363,9 @@ const ClassDetailsPage = ({params}) => {
                         }`}
                       >
                         {week.completed ? (
-                          <CheckOutlined />
+                          <LuCheck />
                         ) : week.current ? (
-                          <PlayCircleOutlined />
+                          <LuPlay />
                         ) : (
                           index + 1
                         )}
@@ -425,7 +433,7 @@ const ClassDetailsPage = ({params}) => {
                       </div>
                     </div>
                     <button className="h-10 w-10 flex items-center justify-center rounded-full bg-gray-200 text-[#001840] hover:bg-[#001840] hover:text-white transition-colors">
-                      <DownloadOutlined />
+                      <LuDownload />
                     </button>
                   </div>
                 ))}
@@ -453,7 +461,7 @@ const ClassDetailsPage = ({params}) => {
                       >
                         <div className="flex items-center">
                           <div className="w-10 h-10 flex items-center justify-center bg-orange-100 text-orange-600 rounded-lg mr-3">
-                            <FileTextOutlined />
+                            <LuFileText />
                           </div>
                           <div>
                             <div className="font-medium text-gray-800">
@@ -487,7 +495,7 @@ const ClassDetailsPage = ({params}) => {
                       >
                         <div className="flex items-center">
                           <div className="w-10 h-10 flex items-center justify-center bg-green-100 text-green-600 rounded-lg mr-3">
-                            <CheckOutlined />
+                            <LuCheck />
                           </div>
                           <div>
                             <div className="font-medium text-gray-800">
@@ -514,7 +522,7 @@ const ClassDetailsPage = ({params}) => {
                   Announcements
                 </h3>
                 <div className="flex items-center space-x-2">
-                  <BellOutlined className="text-[#001840]" />
+                  <LuBell className="text-[#001840]" />
                   <span className="text-sm text-gray-500">3 new</span>
                 </div>
               </div>
@@ -542,7 +550,7 @@ const ClassDetailsPage = ({params}) => {
                     >
                       <div className="flex">
                         <div className="mr-3 mt-1">
-                          <BellOutlined className={iconColor} />
+                          <LuBell className={iconColor} />
                         </div>
                         <div>
                           <h4 className="font-medium text-gray-800">
@@ -563,74 +571,39 @@ const ClassDetailsPage = ({params}) => {
             </Card>
           </div>
 
-          {/* Right Column - 1/3 width */}
           <div className="md:col-span-1 space-y-6">
-            {/* Instructor Card */}
-            <Card className="overflow-hidden !space-y-6">
-              {/* <div className="relative h-40 bg-gradient-to-r from-blue-500 to-indigo-600">
-                <div className="absolute bottom-0 left-0 w-full p-6 pt-16 bg-gradient-to-t from-black/60 to-transparent text-white">
-                  <h4 className="font-bold text-xl">Instructor</h4>
+            <Card className="overflow-hidden !space-y-3">
+              {instructorDetailsLoading ? (
+                <div className="h-28 flex justify-center items-center">
+                  <SlickSpinner color="blue" size={15} />
                 </div>
-              </div> */}
+              ) : (
+                <div className="w-full flex flex-col">
+                  <Avatar
+                    size={72}
+                    className="!bg-transparent/90 mb-4"
+                    src={`${img_base_url}${instructor?.profile_picture}`}
+                  />
 
-              {/* <div className="p-6 pt-12 relative"> */}
-              {/* <div className="absolute -top-10 left-6 w-20 h-20 rounded-full border-4 border-white overflow-hidden shadow-md"> */}
-              <Avatar
-                size={72}
-                className="!bg-transparent/90 mb-4"
-                src={`https://api.dicebear.com/7.x/miniavs/svg?seed=`}
-              />
-              {/* </div> */}
+                  <div className="flex flex-col">
+                    <h4 className="font-semibold text-xl text-gray-800">
+                      {instructor?.first_name} {instructor?.last_name}
+                    </h4>
+                    <p className="text-gray-500 text-xs mt-1 mb-4 line-clamp-6">
+                      {instructor?.bio}{" "}
+                    </p>
 
-              <div>
-                <h4 className="font-semibold text-xl text-gray-800">
-                  {classData.instructor.name}
-                </h4>
-                <p className="text-gray-500 text-sm mb-4">
-                  {classData.instructor.bio}
-                </p>
-
-                <div className="space-y-3 mt-4">
-                  <button
-                    className={`w-full px-4 py-2.5 rounded-md flex items-center justify-center font-medium text-sm ${
-                      showChatInput
-                        ? "bg-gray-100 text-[#001840]"
-                        : "bg-[#001840] text-white"
-                    }`}
-                    onClick={() => setShowChatInput(!showChatInput)}
-                  >
-                    <MessageOutlined className="mr-2" />
-                    <span>Message Instructor</span>
-                  </button>
-
-                  {showChatInput && (
-                    <div className="mt-3 p-3 bg-gray-50 rounded-md">
-                      <textarea
-                        placeholder="Type your message..."
-                        className="w-full p-2 rounded border border-gray-200 text-sm focus:outline-none focus:border-[#001840]"
-                        rows={3}
-                      ></textarea>
-                      <div className="flex justify-end mt-2">
-                        <button className="px-3 py-1 bg-[#001840] text-white rounded text-sm">
-                          Send
-                        </button>
-                      </div>
+                    <div className="space-y-3">
+                      <button
+                        className={`w-full px-4 py-2.5 rounded-md flex items-center justify-center font-medium text-sm bg-[#001840] text-white`}
+                      >
+                        <LuMessageSquare className="mr-2" />
+                        <span>Message Instructor</span>
+                      </button>
                     </div>
-                  )}
-
-                  <div className="grid grid-cols-2 gap-2">
-                    <button className="flex items-center justify-center px-4 py-2.5 rounded-md bg-gray-100 text-[#001840] font-medium text-sm hover:bg-gray-200 transition-colors">
-                      <MailOutlined className="mr-2" />
-                      <span>Email</span>
-                    </button>
-                    <button className="flex items-center justify-center px-4 py-2.5 rounded-md bg-gray-100 text-[#001840] font-medium text-sm hover:bg-gray-200 transition-colors">
-                      <PhoneOutlined className="mr-2" />
-                      <span>Call</span>
-                    </button>
                   </div>
                 </div>
-              </div>
-              {/* </div> */}
+              )}
             </Card>
 
             {/* Course Stats Card */}
@@ -687,7 +660,7 @@ const ClassDetailsPage = ({params}) => {
               <div className="space-y-4">
                 <div className="flex">
                   <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 mr-3 shrink-0">
-                    <CheckOutlined />
+                    <LuCheck />
                   </div>
                   <div>
                     <p className="text-gray-800 font-medium">
@@ -701,7 +674,7 @@ const ClassDetailsPage = ({params}) => {
                 </div>
                 <div className="flex">
                   <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mr-3 shrink-0">
-                    <PlayCircleOutlined />
+                    <LuPlay />
                   </div>
                   <div>
                     <p className="text-gray-800 font-medium">Attended class</p>
@@ -713,7 +686,7 @@ const ClassDetailsPage = ({params}) => {
                 </div>
                 <div className="flex">
                   <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 mr-3 shrink-0">
-                    <BookOutlined />
+                    <LuBookText />
                   </div>
                   <div>
                     <p className="text-gray-800 font-medium">
@@ -741,25 +714,25 @@ const ClassDetailsPage = ({params}) => {
               <div className="grid grid-cols-2 gap-3">
                 <button className="flex flex-col items-center justify-center p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
                   <div className="w-10 h-10 flex items-center justify-center text-[#001840] mb-2">
-                    <BookOutlined style={{ fontSize: "24px" }} />
+                    <LuBookText className="text-2xl" />
                   </div>
                   <span className="text-sm text-gray-800">Class Notes</span>
                 </button>
                 <button className="flex flex-col items-center justify-center p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
                   <div className="w-10 h-10 flex items-center justify-center text-[#001840] mb-2">
-                    <VideoCameraOutlined style={{ fontSize: "24px" }} />
+                    <LuVideo className="text-2xl" />
                   </div>
                   <span className="text-sm text-gray-800">Recordings</span>
                 </button>
                 <button className="flex flex-col items-center justify-center p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
                   <div className="w-10 h-10 flex items-center justify-center text-[#001840] mb-2">
-                    <MessageOutlined style={{ fontSize: "24px" }} />
+                    <LuUsers className="text-2xl" />
                   </div>
                   <span className="text-sm text-gray-800">Discussion</span>
                 </button>
                 <button className="flex flex-col items-center justify-center p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
                   <div className="w-10 h-10 flex items-center justify-center text-[#001840] mb-2">
-                    <FilePdfOutlined style={{ fontSize: "24px" }} />
+                    <LuFileText className="text-2xl" />
                   </div>
                   <span className="text-sm text-gray-800">Syllabus</span>
                 </button>

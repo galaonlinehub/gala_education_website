@@ -1,12 +1,16 @@
 import axios from "axios";
 import { decrypt } from "../utils/fns/encryption";
-import { USER_COOKIE_KEY } from "../config/settings";
+import { API_BASE_URL, USER_COOKIE_KEY } from "../config/settings";
 import { cookieFn } from "../utils/fns/client";
 
 export const api = axios.create({
-  baseURL: "https://galaweb.galahub.org/api",
+  baseURL: API_BASE_URL,
   headers: {
     "Content-Type": "application/json",
+    ...(process.env.NODE_ENV === "development" ||
+    process.env.NEXT_PUBLIC_BRANCH === "develop"
+      ? { "X-Dev-Request": "true" }
+      : {}),
   },
 });
 
@@ -14,12 +18,15 @@ const publicEndpoints = new Set([
   "login",
   "register",
   "verify-otp",
-  "resend-otp",
   "payment",
   "password/reset-request",
-  "reset-password",
+  "password/reset",
   "subscribe-plan",
-  "health"
+  "request-otp",
+  "subscribe-mail-list",
+  "support",
+  "team-members",
+  "health",
 ]);
 
 api.interceptors.request.use(
@@ -28,7 +35,6 @@ api.interceptors.request.use(
     const baseUrl = config.url.split("?")[0];
 
     if (config.headers["X-Use-Direct-Token"] === "true") {
-      console.log("Skipping interceptor token logic...");
       return config;
     }
 
@@ -56,7 +62,6 @@ api.interceptors.request.use(
 export const apiGet = async (endpoint, headers = {}, directToken = null) => {
   try {
     if (directToken) {
-      console.log("Using direct token for:", endpoint);
       const response = await api.get(endpoint, {
         headers: {
           ...headers,
@@ -66,19 +71,22 @@ export const apiGet = async (endpoint, headers = {}, directToken = null) => {
       });
       return response;
     }
-    console.log("Intercepting for:", endpoint);
     const response = await api.get(endpoint, { headers });
     return response;
   } catch (e) {
-    console.error(`apiGet error for ${endpoint}:`, e.message);
+    console.error(`apiGet error for ${endpoint}:`, e);
     throw e;
   }
 };
 
-
 export const apiPost = async (endpoint, data, headers = {}) => {
-  const response = await api.post(endpoint, data, { headers });
-  return response;
+  try {
+    const response = await api.post(endpoint, data, { headers });
+    return response;
+  } catch (error) {
+    console.error(`POST ${endpoint} Error:`, error);
+    throw error;
+  }
 };
 
 export const apiPut = async (endpoint, data, headers = {}) => {
@@ -93,7 +101,7 @@ export const apiPut = async (endpoint, data, headers = {}) => {
 
 export const apiPatch = async (endpoint, data, headers = {}) => {
   try {
-    const response = await api.post(endpoint, data, { headers });
+    const response = await api.patch(endpoint, data, { headers });
     return response;
   } catch (error) {
     console.error(`PATCH ${endpoint} Error:`, error);
@@ -103,7 +111,7 @@ export const apiPatch = async (endpoint, data, headers = {}) => {
 
 export const apiDelete = async (endpoint, data, headers = {}) => {
   try {
-    const response = await api.post(endpoint, data, { headers });
+    const response = await api.delete(endpoint, data, { headers });
     return response;
   } catch (error) {
     console.error(`DELETE ${endpoint} Error:`, error);

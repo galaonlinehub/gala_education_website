@@ -3,16 +3,19 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
 import { Input, Button, Card, Typography, message } from "antd";
-import {
-  LockOutlined,
-  EyeOutlined,
-  EyeInvisibleOutlined,
-} from "@ant-design/icons";
 import { HiCheckCircle } from "react-icons/hi2";
 import { IoIosCloseCircle } from "react-icons/io";
 import { decrypt } from "@/src/utils/fns/encryption";
 import Error from "../../error";
 import { apiPost } from "@/src/services/api_service";
+import { sessionStorageFn } from "@/src/utils/fns/client";
+import {
+  LuEye,
+  LuEyeOff,
+  LuLoaderCircle,
+  LuLock,
+} from "react-icons/lu";
+import { RESET_PASSWORD_EMAIL_KEY } from "@/src/config/settings";
 
 const { Title, Text } = Typography;
 
@@ -67,7 +70,7 @@ const ChangePassword = () => {
   }, []);
 
   const decryptEmail = () => {
-    const storedEmail = sessionStorage.getItem("Gala");
+    const storedEmail = sessionStorageFn.get(RESET_PASSWORD_EMAIL_KEY);
     const decryptedEmail = decrypt(storedEmail);
     if (decryptedEmail) {
       setEmail(decryptedEmail);
@@ -91,28 +94,10 @@ const ChangePassword = () => {
     </div>
   );
 
-  //   const validatePassword = (value) => {
-  //     if (!value) return "Password is required";
-  //     if (!allChecksPassed) {
-  //       return "Password must meet all requirements";
-  //     }
-  //     return true;
-  //   };
-
   const validatePassword = (value) => {
     if (!value) return "Password is required";
     if (!allChecksPassed) {
       return false;
-      //   const missingRequirements = [];
-      //   if (!passwordChecks.hasUpperCase) missingRequirements.push("uppercase letter");
-      //   if (!passwordChecks.hasLowerCase) missingRequirements.push("lowercase letter");
-      //   if (!passwordChecks.hasNumber) missingRequirements.push("number");
-      //   if (!passwordChecks.hasSpecialChar) missingRequirements.push("special character");
-      //   if (!passwordChecks.hasMinLength) missingRequirements.push("minimum length of 8 characters");
-
-      //   return missingRequirements.length > 0
-      //     ? `Missing requirements: ${missingRequirements.join(", ")}`
-      //     : true;
     }
     return true;
   };
@@ -121,8 +106,8 @@ const ChangePassword = () => {
     try {
       const formData = new FormData();
       formData.append("email", email);
-      formData.append("newPassword", data.password);
-      const response = await apiPost("/reset-password", formData);
+      formData.append("password", data.password);
+      const response = await apiPost("/password/reset", formData);
       if (response.status === 200) {
         message.success("Password changed successfully");
         router.push("/signin");
@@ -130,7 +115,7 @@ const ChangePassword = () => {
         message.error(response.data.message);
       }
     } catch (error) {
-      alert(JSON.stringify(error))
+      alert(JSON.stringify(error));
       message.error(`Failed to change password: ${error.message}`);
     }
   };
@@ -138,7 +123,6 @@ const ChangePassword = () => {
   const preventCopyPaste = (event) => {
     event.preventDefault();
   };
-
 
   if (error) {
     return <Error error={{ message: error }} />;
@@ -160,9 +144,9 @@ const ChangePassword = () => {
           <div className="mb-4">
             <label
               htmlFor="password"
-              className="block text-gray-700 font-bold mb-2"
+              className="flex text-gray-700 font-bold mb-2"
             >
-              <LockOutlined className="mr-2" /> New Password
+              <LuLock className="mr-2" /> New Password
             </label>
             <Controller
               name="password"
@@ -177,12 +161,13 @@ const ChangePassword = () => {
                   id="password"
                   placeholder="Enter new password"
                   onCopy={preventCopyPaste}
+                  autoComplete="new-password"
+                  autoCorrect="off"
+                  autoCapitalize="off"
                   onPaste={preventCopyPaste}
                   onCut={preventCopyPaste}
                   className="!h-input-height"
-                  iconRender={(visible) =>
-                    visible ? <EyeOutlined /> : <EyeInvisibleOutlined />
-                  }
+                  iconRender={(visible) => (visible ? <LuEye /> : <LuEyeOff />)}
                 />
               )}
             />
@@ -222,9 +207,9 @@ const ChangePassword = () => {
           <div className="mb-4">
             <label
               htmlFor="confirmPassword"
-              className="block text-gray-700 font-bold mb-2"
+              className="flex text-gray-700 items-center font-bold mb-2"
             >
-              <LockOutlined className="mr-2" /> Confirm Password
+              <LuLock className="mr-2" /> Confirm Password
             </label>
             <Controller
               name="confirmPassword"
@@ -239,13 +224,14 @@ const ChangePassword = () => {
                   {...field}
                   id="confirmPassword"
                   placeholder="Confirm new password"
+                  autoComplete="new-password"
+                  autoCorrect="off"
+                  autoCapitalize="off"
                   onCopy={preventCopyPaste}
                   onPaste={preventCopyPaste}
                   onCut={preventCopyPaste}
                   className="!h-input-height"
-                  iconRender={(visible) =>
-                    visible ? <EyeOutlined /> : <EyeInvisibleOutlined />
-                  }
+                  iconRender={(visible) => (visible ? <LuEye /> : <LuEyeOff />)}
                 />
               )}
             />
@@ -259,11 +245,14 @@ const ChangePassword = () => {
           <Button
             type="primary"
             htmlType="submit"
-            loading={isSubmitting}
-            disabled={!allChecksPassed}
-            className="!w-full !bg-[#030DFE] !text-white !font-bold !py-5 !px-4 !rounded disabled:opacity-50"
+            disabled={!allChecksPassed || isSubmitting}
+            className="!w-full !bg-[#030DFE] !text-white !font-bold !py-5 !px-4 !rounded disabled:!opacity-60 disabled:cursor-not-allowed"
           >
-            {!isSubmitting && "Change Password"}
+            {!isSubmitting ? (
+              <span>Change Password</span>
+            ) : (
+              <LuLoaderCircle className="animate-spin" />
+            )}
           </Button>
         </form>
       </Card>

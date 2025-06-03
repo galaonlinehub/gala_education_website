@@ -1,10 +1,7 @@
 "use client";
-
-import { useRouter } from "next/navigation";
 import {
   theme,
   Card,
-  Empty,
   Typography,
   Row,
   Col,
@@ -13,237 +10,46 @@ import {
   Progress,
   Space,
   Statistic,
-  Calendar,
-  List,
   Avatar,
   Badge,
   Tag,
-  Divider,
+  Tooltip,
 } from "antd";
 import {
-  RightOutlined,
-  BookOutlined,
   ClockCircleOutlined,
   TrophyOutlined,
-  BellOutlined,
   CheckCircleOutlined,
-  WarningOutlined,
-  UserOutlined,
 } from "@ant-design/icons";
-import { useEnrolledTopics } from "@/src/store/student/class";
-import { useUserTopics } from "@/src/store/user_topics";
 import Link from "next/link";
 import { useUser } from "@/src/hooks/useUser";
-import { GiBookCover } from "react-icons/gi";
-import { MdOutlineAssignment } from "react-icons/md";
-import CompleteProfile from "@/src/components/student/CompleteProfile";
-import { LuBookOpenCheck } from "react-icons/lu";
-
+import {
+  LuBellRing,
+  LuBookOpen,
+  LuBookOpenCheck,
+  LuUser,
+} from "react-icons/lu";
+import { img_base_url } from "@/src/config/settings";
+import { useEnrolledTopics } from "@/src/hooks/useEnrolledTopics";
+import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
+import { useRouter } from "next/navigation";
+import Updates from "@/src/components/ui/notification/Updates";
 
 const { Title, Text } = Typography;
 
 export default function Component() {
-  const router = useRouter();
-  const { user } = useUser();
-  const { enrolledTopics, loading } = useEnrolledTopics();
-  const { userTopics, topicsLoading } = useUserTopics();
   const { token } = theme.useToken();
-
-  // Simulated data for new components
-  const upcomingDeadlines = [
-    {
-      title: "Mathematics Assignment Assignment Physics ",
-      due: "2024-02-15",
-      status: "pending",
-    },
-    { title: "Physics Lab Report", due: "2024-02-18", status: "completed" },
-  ];
-
-  const recentActivities = [
-    { title: "Completed Biology Quiz", time: "2 hours ago", type: "quiz" },
-    {
-      title: "Submitted Math Assignment",
-      time: "1 day ago",
-      type: "assignment",
-    },
-  ];
-
-  // Stats Data
-  const stats = {
-    attendanceRate: 95,
-    completedAssignments: 0,
-  };
-
-  // Quick Links Component
-  const QuickLinks = () => (
-    <Card title="Quick Links" size="small" className="overflow-hidden">
-      <Space direction="vertical" className="w-full items-start">
-        <Button type="link" icon={<UserOutlined />} block className="text-left">
-          <Link href="/student/profile">Profile</Link>
-        </Button>
-        <Button
-          type="link"
-          icon={<ClockCircleOutlined />}
-          block
-          className="text-left"
-        >
-          <Link href="/student/reminders">Create Reminders</Link>
-        </Button>
-        <Button
-          disabled
-          type="link"
-          icon={<TrophyOutlined />}
-          block
-          className="text-left"
-        >
-          Grades & Progress
-        </Button>
-      </Space>
-    </Card>
-  );
-
-  const SelectedSubjects = () => (
-    <Card title="Selected subjects" size="small" className="overflow-hidden">
-      <Space direction="vertical" className=" w-44 items-start">
-        <div className="flex gap-2  items-center justify-center">
-          <GiBookCover />
-          <div className="w-32 line-clamp-1"> Mathematics </div>
-        </div>
-        <div className="flex gap-2 items-center justify-center">
-          <GiBookCover />
-          <div className="w-32 line-clamp-1"> English </div>
-        </div>
-        <div className="flex gap-2 items-center justify-center">
-          <GiBookCover />
-          <div className="w-32 line-clamp-1"> Physics </div>
-        </div>
-        <div className="flex gap-2 items-center justify-center">
-          <GiBookCover />
-          <div className="w-32 line-clamp-1"> Biology </div>
-        </div>
-        <div className="flex gap-2 items-center justify-center">
-          <GiBookCover />
-          <div className="w-32 line-clamp-1"> Art </div>
-        </div>
-      </Space>
-    </Card>
-  );
-
-  // Dashboard Header
-  const DashboardHeader = () => (
-    <Card className="border-blue-600">
-      <Row gutter={[24, 24]} align="middle">
-        <Col xs={24} md={16}>
-          <Space direction="vertical">
-            <Title level={4} style={{ margin: 0 }}>
-              Welcome back,{" "}
-              <span className="font-black">
-                {user?.first_name} {user?.last_name}
-              </span>
-              !
-            </Title>
-            <Text type="secondary">
-              Your learning dashboard - Track your progress and stay organized
-            </Text>
-          </Space>
-        </Col>
-        <Col xs={24} md={8} className="text-right">
-          <Space>
-            <Badge count={3}>
-              <Button icon={<BellOutlined />} shape="circle" />
-            </Badge>
-            <Avatar src={user?.avatar || "/default-avatar.png"} size="large" />
-          </Space>
-        </Col>
-      </Row>
-    </Card>
-  );
-
-  // Statistics Cards
-  const StatsSection = () => (
-    <Row gutter={[8, 8]}>
-      {[
-        {
-          title: "Attendance Rate",
-          value: stats.attendanceRate,
-          suffix: "%",
-          icon: <CheckCircleOutlined />,
-        },
-        {
-          title: "Completed Assignments",
-          value: stats.completedAssignments,
-          icon: <LuBookOpenCheck />,
-
-        },
-      ].map((stat, index) => (
-        <Col xs={24} sm={12} key={index}>
-          <Card className="h-28">
-            <Statistic
-               
-              title={stat.title}
-              value={stat.value}
-              valueStyle={{ color: token.colorPrimary }}
-              formatter={(value) => (
-                <div className="flex items-center space-x-2">
-                  {stat.icon}
-                  <span>{value}{stat.suffix}</span>
-                </div>
-              )}
-            />
-          </Card>
-        </Col>
-      ))}
-    </Row>
-  );
-
-  // Upcoming Reminders Component
-  const DeadlinesCard = () => (
-    <Card
-      title="Upcoming Reminders"
-      extra={<Button type="link">View All</Button>}
-    >
-      {upcomingDeadlines &&
-        upcomingDeadlines.map((item, index) => {
-          return (
-            <div key={index} className="flex flex-col border-b p-2">
-              <span className=" line-clamp-1 w-full text-xs">{item.title}</span>
-              <span className="text-xs mb-1 mt-1">{item.due}</span>
-
-              <Tag color={item.status === "completed" ? "success" : "warning"}>
-                {item.status === "completed" ? "Completed" : "Pending"}
-              </Tag>
-            </div>
-          );
-        })}
-    </Card>
-  );
-
-  // Recent Activity Component
-  const ActivityCard = () => (
-    <Card title="Recent Activity">
-      {recentActivities &&
-        recentActivities.map((item, index) => {
-          return (
-            <div key={index} className="flex gap-2 border-b p-2">
-              <CheckCircleOutlined style={{ color: "#90EE90" }} />
-              <div className="flex flex-col">
-                <span className=" line-clamp-1 w-full text-xs">
-                  {item.title}
-                </span>
-                <span className="text-xs mb-1 mt-1 italic">{item.time}</span>
-              </div>
-            </div>
-          );
-        })}
-    </Card>
-  );
+  const {
+    enrolledSubjects,
+    isFetchingEnrolledSubjects,
+    isEnrolledSubjectsError,
+    enrolledTopics,
+    enrolledTopicsLoading,
+  } = useEnrolledTopics();
 
   return (
-    <div className="h-fit  overflow-hidden">
-      <CompleteProfile />
-
+    <div className="overflow-hidden">
       <Row
-        className="max-w-[1920px] mx-auto p-4 md:p-6 h-full"
+        className="max-w-[1920px] mx-auto p-1 md:p-6 h-full"
         gutter={[
           { xs: 8, sm: 16, md: 24 },
           { xs: 8, sm: 16, md: 24 },
@@ -254,7 +60,11 @@ export default function Component() {
           <div className="sticky top-4 h-full">
             <Space direction="vertical" className="w-full h-full" size="middle">
               <QuickLinks />
-              <SelectedSubjects />
+              <SelectedSubjects
+                enrolledSubjects={enrolledSubjects}
+                isFetchingEnrolledSubjects={isFetchingEnrolledSubjects}
+                isEnrolledSubjectsError={isEnrolledSubjectsError}
+              />
             </Space>
           </div>
         </Col>
@@ -263,8 +73,11 @@ export default function Component() {
         <Col xs={24} md={16} lg={12} xl={14} className="h-full mt-1">
           <Space direction="vertical" className="w-full h-full" size="middle">
             <DashboardHeader />
-            <StatsSection />
-            <Card title="Your Classes" className="w-full">
+            <StatsSection token={token} />
+            <Card
+              title="Your Classes"
+              className="w-full  sm:[&_.ant-card-body]:!p-0"
+            >
               <Table
                 columns={[
                   {
@@ -289,11 +102,11 @@ export default function Component() {
                     render: () => <Button type="link">Enter Class</Button>,
                   },
                 ]}
-                dataSource={userTopics}
-                // loading={topicsLoading}
+                dataSource={[]}
+                loading={enrolledTopicsLoading}
                 pagination={false}
                 size="small"
-                scroll={{ x: 500 }}
+                // scroll={{ x: 500 }}
               />
             </Card>
           </Space>
@@ -312,3 +125,258 @@ export default function Component() {
     </div>
   );
 }
+
+const SelectedSubjects = ({
+  enrolledSubjects,
+  isFetchingEnrolledSubjects,
+  isEnrolledSubjectsError,
+}) => {
+  return (
+    <Card title="Selected subjects" size="small" className="overflow-hidden">
+      <div className="flex items-center justify-center flex-col gap-2">
+        {isFetchingEnrolledSubjects ? (
+          <SlickSpinner color="black" size={12} />
+        ) : isEnrolledSubjectsError ? (
+          <div className="text-xs text-red-500 text-center">
+            Failed to load subjects.
+          </div>
+        ) : enrolledSubjects.length === 0 ? (
+          <div className="text-xs text-gray-500 w-full text-center">
+            You are not enrolled in any subjects.
+          </div>
+        ) : (
+          enrolledSubjects.map((subject) => (
+            <div
+              key={subject.id}
+              className="flex gap-2 items-center justify-start w-full"
+            >
+              <LuBookOpen />
+              <div className="w-32 line-clamp-1">{subject?.name}</div>
+            </div>
+          ))
+        )}
+      </div>
+    </Card>
+  );
+};
+
+const QuickLinks = () => (
+  <Card title="Quick Links" size="small" className="overflow-hidden">
+    <Space direction="vertical" className="w-full items-start">
+      <Button type="link" icon={<LuUser />} block className="text-left">
+        <Link href="/student/profile">Profile</Link>
+      </Button>
+      <Button
+        type="link"
+        disabled
+        icon={<ClockCircleOutlined />}
+        block
+        className="text-left"
+      >
+        <Link href="/student/reminders">Create Reminders</Link>
+      </Button>
+      <Button
+        disabled
+        type="link"
+        icon={<TrophyOutlined />}
+        block
+        className="text-left"
+      >
+        Grades & Progress
+      </Button>
+    </Space>
+  </Card>
+);
+
+const DeadlinesCard = () => {
+  const isLoading = false;
+  const isError = false;
+  const upcomingDeadlines = [
+    {
+      title: "Mathematics Assignment Assignment Physics",
+      due: "2024-02-15",
+      status: "pending",
+    },
+    {
+      title: "Physics Lab Report",
+      due: "2024-02-18",
+      status: "completed",
+    },
+  ];
+
+  return (
+    <Card
+      title="Upcoming Reminders"
+      // extra={<Button type="link">View All</Button>}
+      className="min-h-[150px]"
+    >
+      <div className="flex flex-col items-center justify-center w-full h-full">
+        {isLoading ? (
+          <SlickSpinner color="black" size={12} />
+        ) : isError ? (
+          <div className="text-xs text-red-500 text-center">
+            Failed to load reminders.
+          </div>
+        ) : upcomingDeadlines.length !== 0 ? (
+          <div className="text-xs text-center text-gray-500">
+            You have no upcoming reminders.
+          </div>
+        ) : (
+          upcomingDeadlines.map((item, index) => (
+            <div
+              key={index}
+              className="flex flex-col border-b p-2 w-full h-full"
+            >
+              <span className="line-clamp-1 w-full text-xs">{item.title}</span>
+              <span className="text-xs mb-1 mt-1">{item.due}</span>
+              <Tag color={item.status === "completed" ? "success" : "warning"}>
+                {item.status === "completed" ? "Completed" : "Pending"}
+              </Tag>
+            </div>
+          ))
+        )}
+      </div>
+    </Card>
+  );
+};
+
+const DashboardHeader = () => {
+  const { user } = useUser();
+  const router = useRouter();
+
+  return (
+    <Card className="border-blue-600">
+      <Row gutter={[24, 24]} align="middle">
+        <Col xs={24} md={16}>
+          <Space direction="vertical">
+            <Title
+              level={4}
+              style={{ margin: 0, fontFamily: '"Quicksand", sans-serif' }}
+            >
+              Welcome back,{" "}
+              <span className="font-black capitalize">
+                {user?.first_name} {user?.last_name}
+              </span>
+              !
+            </Title>
+            <Text type="secondary">
+              Your learning dashboard - Track your progress and stay organized
+            </Text>
+          </Space>
+        </Col>
+        <Col xs={24} md={8} className="text-right">
+          <Space>
+            <Badge color="#001840" count={0}>
+              <Updates>
+                <Tooltip placement="top" title="Notifications">
+                  <Button
+                    className="cursor-pointer"
+                    onClick={() => {}}
+                    icon={<LuBellRing />}
+                    shape="circle"
+                  />
+                </Tooltip>
+              </Updates>
+            </Badge>
+            <Tooltip title="View Profile">
+              <Avatar
+                onClick={() => router.push("/student/profile")}
+                className="cursor-pointer"
+                src={`${img_base_url}${user?.profile_picture}`}
+                icon={<LuUser color="black" />}
+                size="large"
+              />
+            </Tooltip>
+          </Space>
+        </Col>
+      </Row>
+    </Card>
+  );
+};
+
+const StatsSection = ({ token }) => {
+  const stats = {
+    attendanceRate: 0,
+    completedAssignments: 0,
+  };
+
+  return (
+    <Row gutter={[8, 8]}>
+      {[
+        {
+          title: "Attendance Rate",
+          value: stats.attendanceRate,
+          suffix: "%",
+          icon: <CheckCircleOutlined />,
+        },
+        {
+          title: "Completed Assignments",
+          value: stats.completedAssignments,
+          icon: <LuBookOpenCheck />,
+        },
+      ].map((stat, index) => (
+        <Col xs={24} sm={12} key={index}>
+          <Card className="h-28">
+            <Statistic
+              title={stat.title}
+              value={stat.value}
+              valueStyle={{ color: token.colorPrimary }}
+              formatter={(value) => (
+                <div className="flex items-center space-x-2">
+                  {stat.icon}
+                  <span>
+                    {value}
+                    {stat.suffix}
+                  </span>
+                </div>
+              )}
+            />
+          </Card>
+        </Col>
+      ))}
+    </Row>
+  );
+};
+
+const ActivityCard = () => {
+  const isLoading = false;
+  const isError = false;
+  const recentActivities = [
+    { title: "Completed Biology Quiz", time: "2 hours ago", type: "quiz" },
+    {
+      title: "Submitted Math Assignment",
+      time: "1 day ago",
+      type: "assignment",
+    },
+  ];
+
+  return (
+    <Card title="Recent Activities">
+      <div className="flex flex-col items-center justify-center w-full h-full">
+        {isLoading ? (
+          <SlickSpinner color="black" size={12} />
+        ) : isError ? (
+          <div className="text-xs text-red-500 text-center">
+            Failed to load recent activities.
+          </div>
+        ) : recentActivities.length !== 0 ? (
+          <div className="text-center text-xs text-gray-500">
+            No recent activities available.
+          </div>
+        ) : (
+          recentActivities.map((item, index) => (
+            <div key={index} className="flex gap-2 border-b p-2">
+              <CheckCircleOutlined style={{ color: "#90EE90" }} />
+              <div className="flex flex-col">
+                <span className="line-clamp-1 w-full text-xs">
+                  {item.title}
+                </span>
+                <span className="text-xs mb-1 mt-1 italic">{item.time}</span>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+    </Card>
+  );
+};

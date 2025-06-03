@@ -71,7 +71,7 @@ const PaymentDetails = () => {
           <span className="text-sm text-gray-500">Total Amount</span>
           <div className="flex items-baseline">
             <span className="text-3xl lg:text-5xl font-black bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-gray-600">
-              Tshs {enrollMeCohort?.price.toLocaleString()}
+              Tshs {enrollMeCohort?.price?.toLocaleString()}
             </span>
             <span className="text-xl text-gray-600 ml-1">/=</span>
           </div>

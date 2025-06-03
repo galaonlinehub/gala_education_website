@@ -55,6 +55,19 @@ export const getCohortsFn = async () => {
   }
 };
 
+export const getSpecificCohortFn = async (cohortId) => {
+  try {
+    const r = await apiGet(`cohorts/${cohortId}`);
+    if (r.status === 200) {
+      return r.data.data;
+    }
+    throw new Error("Failed to fetch cohorts");
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+};
+
 const transformFormDataForAPI = (formData) => {
   const daily_slots = formData.days.map((day, index) => ({
     day_of_week: DAYS_MAP[day],
@@ -67,7 +80,8 @@ const transformFormDataForAPI = (formData) => {
     start_date: formData.startDate,
     end_date: formData.endDate,
     daily_slots,
-    description: "denis mgaya",
+    description: formData.description,
     price: formData.price,
+    subtopics: formData.subtopics
   };
 };

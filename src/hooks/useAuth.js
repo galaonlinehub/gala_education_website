@@ -1,6 +1,5 @@
 //Student sign up
 
-import { CheckCircleFilled } from "@ant-design/icons";
 import { apiGet, apiPost } from "@/src/services/api_service";
 import { encrypt } from "@/src/utils/fns/encryption";
 import { useState } from "react";
@@ -13,11 +12,13 @@ import {
 } from "../store/auth/signup";
 import { globalOptions } from "../config/tanstack";
 import { message } from "antd";
+import { LuCircleCheckBig } from "react-icons/lu";
 
-export const useAuth = (password) => {
+export const useAuth = () => {
   const [emailExists, setEmailExists] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [passwordFocused, setPasswordFocused] = useState(false);
+  const [registerError, setRegisterError] = useState("");
   const [fileList, setFileList] = useState({
     cv: [],
     transcript: [],
@@ -60,7 +61,39 @@ export const useAuth = (password) => {
     setPasswordStrength(strength);
   };
 
-  const onFinish = async (values) => {
+  const mutation = useMutation({
+    mutationFn: ({ formData, headers }) =>
+      apiPost("/register", formData, headers),
+    retry: false,
+    onSuccess: (data, variables, context) => {
+      message.success({
+        content: "Account created successfully!",
+        icon: <LuCircleCheckBig size={20} className="text-[#52c41a] !mx-1" />,
+      });
+
+      sessionStorageFn.set(
+        EMAIL_VERIFICATION_KEY,
+        encrypt(variables.formData.get("email"))
+      );
+      setOpenEmailVerificationModal(true);
+    },
+    onError: (error) => {
+      const errorMessage =
+        error?.response?.data?.email?.[0] ??
+        error?.response?.data?.message ??
+        "Something went wrong. Please try again later.";
+
+      if (error?.response?.data?.email) {
+        setEmailExists(`${errorMessage}😔`);
+        setRegisterError(errorMessage);
+      } else {
+        setRegisterError(errorMessage);
+        message.error(errorMessage);
+      }
+    },
+  });
+
+  const onFinish = (values) => {
     const isInstructor = values.role === "instructor";
     const formData = new FormData();
 
@@ -86,43 +119,17 @@ export const useAuth = (password) => {
     }
 
     formData.append("country", "Tanzania");
-
-    try {
-      const headers = isInstructor
-        ? { "Content-Type": "multipart/form-data" }
-        : { "Content-Type": "application/json" };
-
-      const { status, data } = await mutation.mutateAsync({
-        formData,
-        headers,
-      });
-
-      if (status === 201) {
-        message.success({
-          content: "Account created successfully!",
-          icon: <CheckCircleFilled style={{ color: "#52c41a" }} />,
-        });
-
-        sessionStorageFn.set(EMAIL_VERIFICATION_KEY, encrypt(values.email));
-        setOpenEmailVerificationModal(true);
-      }
-    } catch (error) {
-      const errorMessage = error.response?.data?.email?.[0]
-        ? error.response.data.email[0]
-        : "Something went wrong. Please try again later.";
-
-      if (error.response?.data?.email) {
-        setEmailExists("This email is already registered!😔");
-      } else {
-        message.error(errorMessage);
-      }
-    }
+    console.time("signup");
+    mutation.mutate({
+      formData,
+      headers: {
+        "Content-Type": isInstructor
+          ? "multipart/form-data"
+          : "application/json",
+      },
+    });
+    console.timeEnd("signup");
   };
-
-  const mutation = useMutation({
-    mutationFn: ({ formData, headers }) =>
-      apiPost("/register", formData, headers),
-  });
 
   const {
     data: plans,
@@ -161,12 +168,14 @@ export const useAuth = (password) => {
     setPasswordStrength,
     setPasswordFocused,
     setEmailExists,
-    loading: mutation.isPending,
+    mutation,
     setFileList,
     fileList,
     plans,
     isFetchingPlans,
     errorOnFetchingPlans,
     savingsPercentage,
+    registerError,
+    setRegisterError,
   };
 };

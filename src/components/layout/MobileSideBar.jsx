@@ -1,103 +1,85 @@
 import React, { useState } from "react";
 import Link from "next/link";
-import { Drawer, Menu, Avatar, Typography, Divider, Button } from "antd";
-import { LogoutOutlined, UserOutlined } from "@ant-design/icons";
+import { Drawer, Avatar, Typography, Divider, Button } from "antd";
 import { useUser } from "@/src/hooks/useUser";
-import { MdLiveTv, MdDashboard } from "react-icons/md";
-import { FaChalkboardTeacher, FaUsers } from "react-icons/fa";
 import { Signout } from "../ui/auth/signup/Signout";
+import { img_base_url } from "@/src/config/settings";
+import { LuX, LuUser, LuLogOut, LuLoaderCircle } from "react-icons/lu";
+import { usePathname, useSearchParams } from "next/navigation";
+import { links } from "@/src/utils/data/redirect";
 
-const { Text, Title } = Typography;
+const { Text } = Typography;
 
 const MobileSideBar = ({ isOpen, onClose }) => {
   const { user } = useUser();
-
-  const [showSignOutModal, setShowSignOutModal] = useState(false);
-
-  const handleSignOut = () =>{
-    setShowSignOutModal(true);
-  }
-
-  const studentMenuItems = [
-    {
-      key: "dashboard",
-      icon: <MdDashboard />,
-      label: <Link href="/student">Dashboard</Link>,
-    },
-    {
-      key: "live-lesson",
-      icon: <MdLiveTv />,
-      label: <Link href="/student/live-lesson">Live Lesson</Link>,
-    },
-    {
-      key: "assignments",
-      icon: <FaChalkboardTeacher />,
-      label: <Link href="/student/assignments">Assignments</Link>,
-    },
-    {
-      key: "social",
-      icon: <FaUsers />,
-      label: <Link href="/student/social">Social</Link>,
-    },
-  ];
-
-  const instructorMenuItems = [
-    {
-      key: "dashboard",
-      icon: <MdDashboard />,
-      label: <Link href="/instructor/">Dashboard</Link>,
-    },
-    {
-      key: "live-class",
-      icon: <MdLiveTv />,
-      label: <Link href="/instructor/live-class">Live Class</Link>,
-    },
-    {
-      key: "social",
-      icon: <FaUsers />,
-      label: <Link href="/instructor/social">Social</Link>,
-    },
-    {
-      key: "assignments",
-      icon: <FaChalkboardTeacher />,
-      label: <Link href="/instructor/assignments">Assignments</Link>,
-    },
-  ];
+  const currentUrl = usePathname();
 
   return (
     <>
       <Drawer
         title={
-          <div className="flex items-center space-x-3">
-            <Avatar size="small" icon={<UserOutlined />} />
-            <div className="flex flex-col">
-              <Text className="text-xs font-extralight">{user?.email}</Text>
-              <Text className="text-xs capitalize text-gray-500 font-thin">{user?.role}</Text>
+          <div className="flex justify-between items-center">
+            <div className="flex items-center space-x-3">
+              <Avatar
+                size={54}
+                src={
+                  user?.profile_picture &&
+                  `${img_base_url + user?.profile_picture}`
+                }
+                icon={<LuUser className="text-black" />}
+              />
+              <div className="flex flex-col">
+                <Text className="text-base font-black">
+                  {user?.first_name} {user?.last_name}
+                </Text>
+                <Text className="text-[10px] capitalize font-thin pl-1">
+                  {user?.role}
+                </Text>
+              </div>
             </div>
+            <LuX
+              className="text-3xl cursor-pointer hover:bg-gray-800 p-1 rounded-md hover:text-white"
+              onClick={onClose}
+            />
           </div>
         }
         placement="left"
         onClose={onClose}
         open={isOpen}
-        width={280}
-        body={{ padding: 0 }}
-        header={{ padding: "12px 16px" }}
+        width={380}
+        closeIcon={null}
       >
-        <Menu mode="inline" items={user?.role == "student" ? studentMenuItems : instructorMenuItems} defaultSelectedKeys={["home"]} onClick={onClose} />
+        <ul className="space-y-4">
+          {links[user?.role]?.map((item, i) => (
+            <li key={i}>
+              <Link
+                href={`/${user?.role}/${item.link}`}
+                className={`flex items-center gap-4 py-2 px-2 rounded-lg transition-colors ${
+                  currentUrl.replace(/\/$/, "") ===
+                  `/student${item.link === "." ? "" : `/${item.link}`}`
+                    ? "bg-[#001840] text-white"
+                    : "hover:bg-blue-950/20 hover:text-black"
+                }`}
+                // onClick={() => isMobile && setIsSidebarOpen(false)}
+                onClick={onClose}
+              >
+                <span className="">{item.icon}</span>
+                <span className="text-sm font-normal">{item.name}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
 
         <Divider style={{ margin: "12px 0" }} />
 
-        <div className="px-4 pb-4">
-            {user && <Signout signOutWord={" Sign Out"} />}
-        </div>
+        {<Signout onCloseSidebar={onClose} />}
 
-        <div className="px-4 pt-4 mt-auto">
+        <div className="pt-4 mt-auto">
           <Text type="secondary" className="text-xs">
-            © 2025 Gala. All rights reserved.
+            © {new Date().getFullYear()} Gala. All rights reserved.
           </Text>
         </div>
       </Drawer>
-      
     </>
   );
 };

@@ -1,62 +1,89 @@
-import React, { useState,useEffect,useRef } from 'react';
-import { FaPlane, FaRegPaperPlane } from 'react-icons/fa';
+import React, { useState, useEffect, useRef } from "react";
+import { Input, Button, List, Avatar, Typography, Card, Badge, Divider, Space } from "antd";
+import { SendOutlined, UserOutlined } from "@ant-design/icons";
 
-export const ChatSection = ({ socketRef, roomId, sender,messages,setMessages }) => {
+export const ChatSection = ({ socketRef, roomId, sender, messages, setMessages }) => {
   const [newMessage, setNewMessage] = useState("");
-  
   const messagesEndRef = useRef(null);
+  const { Text } = Typography;
 
-
-
-useEffect(() => {
-  if (messagesEndRef.current) {
-    messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
-  }
-}, [messages]);
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   const sendMessage = () => {
     if (newMessage.trim()) {
-      socketRef.current?.emit('message', {
+      socketRef.current?.emit("message", {
         roomId,
         message: newMessage,
-        userName:sender.first_name + " " + sender.last_name
+        userName: sender.first_name + " " + sender.last_name,
       });
-      
-      setMessages(prev => [...prev, {message:newMessage,sender:sender.first_name + " " + sender.last_name}]);
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          message: newMessage,
+          sender: sender.first_name + " " + sender.last_name,
+        },
+      ]);
       setNewMessage("");
     }
   };
 
+  const isCurrentUser = (senderName) => {
+    return senderName === `${sender.first_name} ${sender.last_name}`;
+  };
+
   return (
-    <div className="flex flex-col h-full relative py-2">
-      <div ref={messagesEndRef} className=" overflow-y-auto h-[60vh] ">
-        {messages.map(({sender:senderName,message}, idx) => (
-          <div key={idx} className="mb-2 flex flex-col items-start">
-            <span className={`text-xs ${senderName == sender.first_name + " " + sender.last_name ? "bg-green-300 text-green-800" :"bg-blue-300 text-blue-800"} px-2 py-1 rounded`}>
-              {senderName} 
-            </span>
-            <span className={"text-[#d0d0d0]"}>
-               {message}</span>
-          </div>
-        ))}
-        {/* <div ref={messagesEndRef} /> */}
-      </div>
-      <div className="flex gap-2 h-5[vh]   bottom-0 border-t-[1px] border-gray-800 w-full ">
-        <input
-          type="text"
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
-          className="flex-1 px-4 py-2 focus:outline-none focus:border-none  bg-transparent placeholder:text-white border-b-[1px] border-gray-200 text-white "
-          placeholder="Type a message..."
+    <Card variant={false} className="h-full flex flex-col" style={{ padding: 0 }}>
+      <div
+        ref={messagesEndRef}
+        className="overflow-y-auto px-4 py-2"
+        style={{
+          height: "50vh",
+          backgroundColor: "#f0f2f5",
+          borderRadius: "8px 8px 0 0",
+        }}
+      >
+        <List
+          itemLayout="horizontal"
+          dataSource={messages}
+          renderItem={({ sender: senderName, message }, index) => {
+            const isSelf = isCurrentUser(senderName);
+            return (
+              <List.Item
+                key={index}
+                style={{
+                  display: "flex",
+                  justifyContent: isSelf ? "flex-end" : "flex-start",
+                  padding: "8px 0",
+                  borderBottom: 'none'
+                }}
+              >
+                <Space
+                  direction="vertical"
+                  size={0}
+                  style={{
+                    display: "flex",
+                    alignItems: isSelf ? "flex-end" : "flex-start",
+                  }}
+                >
+                  <Text className="text-xs text-blue-700 font-semibold">{senderName}</Text>
+                  <div className="p-2 bg-[#dcdcdc] rounded-md w-full">
+                    <Text>{message}</Text>
+                  </div>
+                </Space>
+              </List.Item>
+            );
+          }}
         />
-        <button
-          onClick={sendMessage}
-          className="px-4 py-2 h-8 w-12 bg-blue-500 text-white rounded-md"
-        >
-          <FaRegPaperPlane className={'text-md'} />
-        </button>
       </div>
-    </div>
+      <div className="flex p-4 items-center" style={{ backgroundColor: "white" }}>
+        <Input placeholder="Type a message..." value={newMessage} onChange={(e) => setNewMessage(e.target.value)} onPressEnter={sendMessage} style={{ marginRight: 8 }} prefix={<UserOutlined style={{ color: "#bfbfbf" }} />} autoComplete="off" />
+        <Button type="primary" icon={<SendOutlined />} onClick={sendMessage} shape="circle" />
+      </div>
+    </Card>
   );
 };

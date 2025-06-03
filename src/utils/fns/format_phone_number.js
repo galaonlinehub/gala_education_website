@@ -13,10 +13,13 @@ export const formatPhoneNumber = (value) => {
   }
 };
 
-export const handlePhoneInput = (event, onChange) => {
-  const formattedValue = formatPhoneNumber(event.target.value);
-  onChange(formattedValue);
+export const handlePhoneInput = (event) => {
+  return formatPhoneNumber(event.target.value);
+  // onChange(formattedValue);
 };
+
+export const reformat_phone_number = (phone_number) =>
+  phone_number.replace(/\D/g, "");
 
 export const mask_phone_number = (number) => {
   number = number.replace(/-/g, "");

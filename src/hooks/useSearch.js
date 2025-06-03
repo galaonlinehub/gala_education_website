@@ -4,7 +4,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { apiGet } from "../services/api_service";
 import { useNewClass } from "@/src/store/student/class";
 import { useSearchResult } from "../store/search_result";
-import { sendR } from "@/res";
 
 export const useSearch = () => {
   // State management
@@ -54,7 +53,6 @@ export const useSearch = () => {
         selectedItemId.type === "instructor"
           ? response.data
           : response.data.data;
-
       return res;
     },
     enabled: !!selectedItemId.id && !!selectedItemId.type,

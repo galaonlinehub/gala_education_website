@@ -1,43 +1,52 @@
 "use client";
-import LoginVectorSvg from "@/src/utils/vector-svg/sign-in/LoginVectorSvg";
-import React, { useState } from "react";
+import clsx from "clsx";
+import debounce from "lodash.debounce";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { message, Alert } from "antd";
-import GoogleSvg from "@/src/utils/vector-svg/sign-in/GoogleSvg";
-import { handleGoogleLogin, login } from "@/src/utils/fns/auth";
-import { preventCopyPaste } from "@/src/utils/fns/general";
-import { useQueryClient } from "@tanstack/react-query";
+import { login } from "@/src/utils/fns/auth";
+import { LuEye, LuEyeOff } from "react-icons/lu";
 import { getUser } from "@/src/utils/fns/global";
+import React, { useState, useEffect, useRef } from "react";
+import { useForm, useWatch } from "react-hook-form";
+import { motion, AnimatePresence } from "framer-motion";
 import { roleRedirects } from "@/src/utils/data/redirect";
-import { LoadingOutlined } from "@ant-design/icons";
+import { preventCopyPaste } from "@/src/utils/fns/general";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import LoginVectorSvg from "@/src/utils/vector-svg/sign-in/LoginVectorSvg";
+import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
+import { Contact } from "@/src/components/layout/Contact";
+import { Modal } from "antd";
 
 const SignInPage = () => {
-  const key = crypto.randomUUID();
+  // const key = crypto.randomUUID();
   // alert(key);
 
   const router = useRouter();
   const queryClient = useQueryClient();
+  const [showPassword, setShowPassword] = useState(false);
+  const [loginModal, setLoginModal] = useState({ open: false, message: "" });
 
   const [localFeedback, setLocalFeedback] = useState({
     show: false,
-    type: "",
+    status: "",
     message: "",
   });
 
-  const errorMessage = "Unexpected Error. Try again later.";
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
+    control,
   } = useForm();
+  const watchedFields = useWatch({ name: ["email", "password"], control });
 
-  const onSubmit = async (data) => {
-    try {
-      const res = await login(data);
+  const loginMutation = useMutation({
+    mutationFn: login,
+    onSuccess: async (res) => {
       if (res === 1) {
-        // await queryClient.invalidateQueries({ queryKey: ['auth-user'] });
         const userData = await queryClient.fetchQuery({
           queryKey: ["auth-user"],
           queryFn: getUser,
@@ -45,35 +54,76 @@ const SignInPage = () => {
         });
 
         if (userData?.role) {
+          setLocalFeedback((prev) => ({
+            ...prev,
+            show: true,
+            status: "success",
+            message: "Signed in successfully, Redirecting you now…",
+          }));
+
           const redirectPath = roleRedirects[userData.role] || "/";
+
           router.push(redirectPath);
         }
       }
-    } catch (error) {
-      showError(error?.message);
-    } finally {
-      setTimeout(() => clearFeedback(), 10000);
+    },
+    onError: (error) => {
+      const message =
+        error?.response?.data?.message ??
+        error?.message ??
+        "Unexpected error occurred, Try again later";
+      if (error?.status === 403 && message.includes("vetting")) {
+        setLoginModal((p) => ({ ...p, open: true, message: message }));
+      }
+
+      setLocalFeedback((prev) => ({
+        ...prev,
+        show: true,
+        status: "error",
+        message,
+      }));
+    },
+    onSettled: () => {},
+  });
+
+  const onSubmit = (data) => {
+    loginMutation.mutate(data);
+  };
+
+  const debouncedResetRef = useRef(
+    debounce(() => {
+      setLocalFeedback((prev) => {
+        if (prev.show) {
+          loginMutation.reset();
+          return { show: false, message: "", status: "" };
+        }
+        return prev;
+      });
+    }, 700)
+  );
+
+  const prevFieldsRef = useRef(watchedFields);
+
+  useEffect(() => {
+    const debouncedReset = debouncedResetRef.current;
+    const fieldsChanged = watchedFields.some(
+      (field, index) => field !== prevFieldsRef.current[index]
+    );
+
+    if (
+      localFeedback.show &&
+      fieldsChanged &&
+      watchedFields.some((field) => field)
+    ) {
+      debouncedReset();
     }
-  };
+    prevFieldsRef.current = watchedFields;
 
-  const showError = (message) => {
-    setLocalFeedback({
-      show: true,
-      type: "error",
-      message,
-    });
-  };
-
-  const clearFeedback = () => {
-    setLocalFeedback({
-      show: false,
-      type: "",
-      message: "",
-    });
-  };
+    return () => debouncedReset.cancel();
+  }, [watchedFields, localFeedback.show]);
 
   return (
-    <div className="px-6 md:px-8 lg:px-12 xl:px-16 flex justify-center h-full">
+    <div className="px-6 md:px-8 lg:px-12 xl:px-16 flex justify-center">
       <div className="flex flex-col items-center pt-14 gap-2 lg:gap-3 w-full max-w-xl">
         <span className="font-black text-xs md:text-base">Sign In</span>
         <span className="font-black text-2xl md:text-4xl">Welcome Back</span>
@@ -82,98 +132,153 @@ const SignInPage = () => {
           where you left off and continue your learning journey!
         </span>
 
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col items-center justify-center w-full gap-2 md:gap-3 lg:gap-4"
+        <motion.div
+          animate={
+            loginMutation.isError
+              ? { x: [0, -10, 10, -8, 8, -4, 4, 0] }
+              : { x: 0 }
+          }
+          transition={{ duration: 0.6 }}
+          key={loginMutation.isError ? "error-shake" : "no-shake"}
+          className="w-full"
         >
-          {localFeedback.show && (
-            <Alert
-              showIcon
-              closable
-              message={localFeedback.message}
-              type={localFeedback.type}
-              className="!my-2 !w-full"
-            />
-          )}
-          <div className="flex flex-col gap-1 w-full">
-            <label htmlFor="email" className="font-black text-xs lg:text-sm">
-              Email *
-            </label>
-            <input
-              id="email"
-              type="email"
-              {...register("email", {
-                required: "Email is required",
-                pattern: {
-                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: "Invalid email address",
-                },
-              })}
-              autoComplete="off"
-              autoCorrect="off"
-              className={`h-input-height border-[0.5px] focus:border-[1.5px] rounded-md focus:outline-none p-2 border-[#030DFE] w-full text-xs ${
-                errors.email ? "border-red-500" : ""
-              }`}
-            />
-            {errors.email && (
-              <span className="text-red-500 text-[10px] font-light">
-                {errors.email.message}
-              </span>
-            )}
-          </div>
-
-          <div className="flex flex-col gap-1 w-full">
-            <label htmlFor="password" className="font-black text-xs lg:text-sm">
-              Password *
-            </label>
-            <input
-              id="password"
-              type="password"
-              onCopy={preventCopyPaste}
-              onPaste={preventCopyPaste}
-              onCut={preventCopyPaste}
-              {...register("password", {
-                required: "Password is required",
-                minLength: {
-                  value: 8,
-                  message: "Password must be at least 8 characters",
-                },
-              })}
-              autoComplete="off"
-              autoCorrect="off"
-              className={`h-input-height border-[0.5px] focus:border-[1.5px] rounded-md focus:outline-none p-2 border-[#030DFE] w-full text-xs ${
-                errors.password ? "border-red-500" : ""
-              }`}
-            />
-            {errors.password && (
-              <span className="text-red-500 text-[10px] font-light">
-                {errors.password.message}
-              </span>
-            )}
-          </div>
-
-          <span className="font-bold text-sm self-end">
-            Forgot
-            <span
-              className="font-bold sm:text-sm text-[#030DFE] ml-2 cursor-pointer"
-              onClick={() => router.push("/forgot-password")}
-            >
-              Password?
-            </span>
-          </span>
-
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="text-white text-base py-2 bg-[#030DFE] rounded-md w-3/4 lg:w-1/2 font-bold mt-5 disabled:opacity-60 flex items-center justify-center gap-2 text-xsdisabled:cursor-not-allowed"
+          <motion.form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col items-center justify-center w-full gap-2 md:gap-3 lg:gap-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
           >
-            {isSubmitting ? (
-              <LoadingOutlined className="text-base" />
-            ) : (
-              "Sign In"
-            )}
-          </button>
-        </form>
+            <AnimatePresence>
+              {localFeedback.show && (
+                <motion.div
+                  key={localFeedback.status}
+                  initial={
+                    localFeedback.status === "error"
+                      ? { opacity: 0, y: -5 }
+                      : { opacity: 0, scale: 0.95 }
+                  }
+                  animate={
+                    localFeedback.status === "error"
+                      ? { opacity: 1, y: 0 }
+                      : { opacity: 1, scale: 1.08 }
+                  }
+                  exit={{ opacity: 0, y: -5 }}
+                  transition={{ duration: 0.3 }}
+                  className={clsx(
+                    "w-full text-xs font-medium text-center py-2 px-3 border-[0.8px] rounded-lg shadow-sm",
+                    loginMutation.isError
+                      ? "border-red-500 text-red-600 bg-red-50"
+                      : loginMutation.isSuccess
+                      ? "border-green-500 text-green-600 bg-green-50"
+                      : ""
+                  )}
+                >
+                  {localFeedback.message}
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            <div className="flex flex-col gap-1 w-full">
+              <label htmlFor="email" className="font-black text-xs lg:text-sm">
+                Email *
+              </label>
+              <input
+                id="email"
+                {...register("email", {
+                  required: "Please enter your email address",
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    message: "Please enter valid email address",
+                  },
+                  // onChange: handleChange,
+                })}
+                autoComplete="new-password"
+                autoCorrect="off"
+                autoCapitalize="off"
+                spellCheck="false"
+                className={`h-input-height border-[0.5px] focus:border-[1.5px] rounded-md focus:outline-none p-2 border-[#030DFE] w-full text-xs ${
+                  errors.email ? "border-red-500" : ""
+                }`}
+              />
+              {errors.email && (
+                <span className="text-red-500 text-[12px] font-normal">
+                  {errors.email.message}
+                </span>
+              )}
+            </div>
+
+            <div className="flex flex-col gap-1 w-full relative">
+              <label
+                htmlFor="password"
+                className="font-black text-xs lg:text-sm"
+              >
+                Password *
+              </label>
+
+              <div className="relative">
+                <input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  onCopy={preventCopyPaste}
+                  onPaste={preventCopyPaste}
+                  onCut={preventCopyPaste}
+                  {...register("password", {
+                    required: "Please enter your password",
+
+                    // onChange: handleChange,
+                  })}
+                  autoComplete="new-password"
+                  autoCorrect="off"
+                  className={`h-input-height border-[0.5px] focus:border-[1.5px] rounded-md focus:outline-none p-2 pr-10 w-full text-xs ${
+                    errors.password ? "border-red-500" : "border-[#030DFE]"
+                  }`}
+                />
+
+                <button
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                  className="absolute top-1/2 right-2 -translate-y-1/2 text-gray-600"
+                  tabIndex={-1}
+                >
+                  {showPassword ? <LuEyeOff size={16} /> : <LuEye size={16} />}
+                </button>
+              </div>
+
+              {errors.password && (
+                <span className="text-red-500 text-[12px] font-normal">
+                  {errors.password.message}
+                </span>
+              )}
+            </div>
+
+            <span className="font-bold text-sm self-end">
+              Forgot
+              <span
+                className="font-bold sm:text-sm text-[#030DFE] ml-2 cursor-pointer"
+                onClick={() => router.push("/forgot-password")}
+              >
+                Password?
+              </span>
+            </span>
+
+            <button
+              type="submit"
+              disabled={
+                loginMutation.isPending ||
+                loginMutation.isError ||
+                loginMutation.isSuccess
+              }
+              className="text-white text-base py-2 bg-[#030DFE] rounded-md w-full font-bold mt-5 disabled:opacity-50 flex items-center justify-center gap-2 disabled:cursor-not-allowed h-11"
+            >
+              {loginMutation.isPending ? (
+                <SlickSpinner size={14} color="white" />
+              ) : (
+                "Sign In"
+              )}
+            </button>
+          </motion.form>
+        </motion.div>
 
         <span className="text-xs font-semibold mt-1 md:mt-2">
           Don&#39;t have an account?{" "}
@@ -185,19 +290,61 @@ const SignInPage = () => {
           </span>
         </span>
 
-        <button
-          onClick={handleGoogleLogin}
-          disabled={isSubmitting}
-          className="rounded-md h-12 w-full lg:w-3/4 md:w-full bg-[#001840] mt-10 text-white lg:text-base font-black disabled:opacity-70 flex items-center justify-center gap-3 lg:gap-5 px-4 py-2 text-xs md:text-sm"
-        >
-          <GoogleSvg />
-          Continue with Google
-        </button>
+        <div className="flex items-center justify-center mt-8">
+          <Contact />
+        </div>
       </div>
+      <LoginModal
+        open={loginModal.open}
+        message={loginModal.message}
+        setLoginModal={setLoginModal}
+      />
 
-      {/* <LoginVectorSvg /> */}
+      <LoginVectorSvg />
     </div>
   );
 };
 
 export default SignInPage;
+
+const LoginModal = ({ open, message, setLoginModal }) => (
+  <Modal
+    open={open}
+    footer={null}
+    onCancel={() =>
+      setLoginModal((p) => ({
+        ...p,
+        open: false,
+        message: "",
+      }))
+    }
+    title={
+      <div className="font-bold w-full text-center text-2xl text-gray-800">
+        Gala Education
+      </div>
+    }
+    className="rounded-lg"
+  >
+    <div className="flex flex-col items-center justify-center gap-3">
+      <div className="text-lg font-semibold text-center text-gray-900">
+        {message}
+      </div>
+      <div className="flex flex-col gap-2 text-center">
+        <p className="text-sm text-gray-600">
+          We are currently verifying the documents you submitted during
+          registration.
+        </p>
+        <p className="text-sm text-gray-600">
+          Verification takes 1 to 2 business days.
+        </p>
+        <p className="text-sm text-gray-600">
+          We&apos;ll reach out to you via email once the process is complete — please
+          check your inbox regularly.
+        </p>
+      </div>
+      <div className="mt-4">
+        <Contact />
+      </div>
+    </div>
+  </Modal>
+);
