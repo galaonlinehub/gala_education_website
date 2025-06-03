@@ -47,6 +47,9 @@ const RenderChat = ({
   } = useChat();
   const { user } = useUser();
 
+ 
+  console.log("Online Users:", onlineUsers);
+
   const isPreviewChat = currentChatId === "preview";
   const currentChat = chats?.find((chat) => chat.id === currentChatId);
   const recipient = currentChat?.participants.find(

@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { useLoading } from "@/src/store/loading";
 
 const ClientWrapper = ({ children }) => {
-  const { userLoading } = useUser();
+  const { userLoading, userError } = useUser();
 
   const { loading, toggleLoading } = useLoading();
 
