@@ -298,6 +298,8 @@ export const useChat = () => {
           return acc;
         }, {}),
       }));
+
+      setOnlineUsers(getOnlineUsersFromChats(apiChats));
     }
   }, [apiChats]);
 
@@ -413,7 +415,20 @@ export const useChat = () => {
     return [chat, ...updated];
   };
 
-  console.log(chats, "ppppppppppp");
+  const getOnlineUsersFromChats = (chats) => {
+    if (!chats || !Array.isArray(chats)) return [];
+    console.log("Getting online users from chats", chats);
+    return [
+      ...new Set(
+        chats.flatMap((c) =>
+          c.participants
+            .filter((p) => p.user?.status === "online")
+            .map((p) => p.user.id)
+        )
+      ),
+    ];
+  };
+
   return {
     sendMessage,
     createOrGetChatMutation,

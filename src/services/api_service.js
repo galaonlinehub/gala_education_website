@@ -3,12 +3,12 @@ import { decrypt } from "../utils/fns/encryption";
 import { API_BASE_URL, USER_COOKIE_KEY } from "../config/settings";
 import { cookieFn } from "../utils/fns/client";
 
-
 export const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     "Content-Type": "application/json",
-    ...(process.env.NODE_ENV === "development"
+    ...(process.env.NODE_ENV === "development" ||
+    process.env.NEXT_PUBLIC_BRANCH === "develop"
       ? { "X-Dev-Request": "true" }
       : {}),
   },

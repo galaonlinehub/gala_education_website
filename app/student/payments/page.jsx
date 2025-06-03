@@ -23,6 +23,7 @@ function PendingPayment() {
   const { width } = useDevice();
   const isMobile = width < 768;
 
+  console.log("Pending Cohorts:", pendingCohorts);
   return (
     <div className="mt-layout-margin px-1 sm:px-2 lg:px-4">
       <div className="mb-8">

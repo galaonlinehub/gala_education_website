@@ -132,8 +132,12 @@ jobs:
             if [ -f .env.backup ]; then
               mv .env.backup .env
             fi
-            
-            echo "🏗️ Building application..."
+
+            echo "NEXT_PUBLIC_BRANCH=${DEPLOY_BRANCH}" > .env.branch
+            cat .env.branch >> .env.local
+            cat .env.branch >> .env.production
+
+            echo "🏗️ Building application with branch env: ${DEPLOY_BRANCH}"
             npm run build
             
             echo "🧹 Clearing Next.js cache..."
