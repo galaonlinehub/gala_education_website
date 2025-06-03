@@ -14,6 +14,7 @@ const PdfViewer = ({ pdfUrl, isOpen, onClose }) => {
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [documentLoaded, setDocumentLoaded] = useState(false); // Track document loading state
   const [error, setError] = useState(null);
   const [useIframe, setUseIframe] = useState(false);
   const [scale, setScale] = useState(1.0);
@@ -22,7 +23,7 @@ const PdfViewer = ({ pdfUrl, isOpen, onClose }) => {
 
   const { type } = useDevice();
 
-    const fetchPdf = useCallback(async () => {
+  const fetchPdf = useCallback(async () => {
     if (!isOpen || useIframe) return;
 
     try {
@@ -47,6 +48,7 @@ const PdfViewer = ({ pdfUrl, isOpen, onClose }) => {
   useEffect(() => {
     if (isOpen) {
       setLoading(true);
+      setDocumentLoaded(false); // Reset document loaded state
       setError(null);
       setDocumentKey((prevKey) => prevKey + 1);
       fetchPdf();
@@ -84,6 +86,7 @@ const PdfViewer = ({ pdfUrl, isOpen, onClose }) => {
     console.log("PDF document loaded successfully with", numPages, "pages");
     setNumPages(numPages);
     setPageNumber(1);
+    setDocumentLoaded(true); // Mark document as loaded
     setLoading(false);
   }
 
@@ -94,9 +97,8 @@ const PdfViewer = ({ pdfUrl, isOpen, onClose }) => {
     setPageNumber(1);
     setError(null);
     setPdfBlob(null);
+    setDocumentLoaded(false);
   };
-
-
 
   // Navigation functions
   const goToPreviousPage = () => {
@@ -252,12 +254,7 @@ const PdfViewer = ({ pdfUrl, isOpen, onClose }) => {
                 setError("Error displaying PDF: " + error.message);
                 setLoading(false);
               }}
-              loading={
-                <div className="flex flex-col items-center justify-center h-full">
-                  <LoadingOutlined style={{ fontSize: 24 }} spin />
-                  <div className="mt-2">Rendering PDF...</div>
-                </div>
-              }
+              loading={null} // Remove Document loading component to avoid duplicate loading states
             >
               {numPages > 0 && (
                 <Page
@@ -269,9 +266,12 @@ const PdfViewer = ({ pdfUrl, isOpen, onClose }) => {
                   scale={1.2}
                   className="pdf-page"
                   loading={
-                    <div className="flex justify-center items-center h-64">
-                      <LoadingOutlined style={{ fontSize: 24 }} spin />
-                    </div>
+                    documentLoaded ? (
+                      <div className="flex justify-center items-center h-64">
+                        <LoadingOutlined style={{ fontSize: 24 }} spin />
+                        <span className="ml-2">Rendering page...</span>
+                      </div>
+                    ) : null // Don't show page loading if document isn't loaded yet
                   }
                 />
               )}
