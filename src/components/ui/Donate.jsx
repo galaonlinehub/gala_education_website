@@ -170,7 +170,7 @@ const Donate = ({ showDonatePopup, setShowDonatePopup }) => {
                 color: paymentMethod === "bank" ? "white" : "",
               }}
             >
-              Bank A/C <i>(Coming soon)</i>
+              Bank A/C
             </Radio.Button>
             <Radio.Button
               value="mobile"
@@ -345,7 +345,7 @@ const Donate = ({ showDonatePopup, setShowDonatePopup }) => {
             disabled={!selectedAmount || !isPhoneValid}
             onClick={completeDonation}
           >
-            Complete Donation
+            Complete Donation now
           </Button>
         </div>
       </TabPane>
