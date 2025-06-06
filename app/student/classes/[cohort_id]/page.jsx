@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, use } from "react";
+import React from "react";
 import { Card, Avatar } from "antd";
 import {
   LuArrowLeft,
@@ -11,7 +11,6 @@ import {
   LuDownload,
   LuFileMinus,
   LuFileText,
-  LuMessageSquare,
   LuPlay,
   LuUsers,
   LuVideo,
@@ -22,9 +21,10 @@ import { useSearchParams } from "next/navigation";
 import { decrypt } from "@/src/utils/fns/encryption";
 import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
 import { img_base_url } from "@/src/config/settings";
+import { TbMessage2 } from "react-icons/tb";
 
 const ClassDetailsPage = ({ params }) => {
-  const { cohort_id } = use(params);
+  const { cohort_id } = params;
 
   const searchParams = useSearchParams();
   const instructor_id = decrypt(searchParams.get("id"));
@@ -597,7 +597,7 @@ const ClassDetailsPage = ({ params }) => {
                       <button
                         className={`w-full px-4 py-2.5 rounded-md flex items-center justify-center font-medium text-sm bg-[#001840] text-white`}
                       >
-                        <LuMessageSquare className="mr-2" />
+                        <TbMessage2 className="mr-2" />
                         <span>Message Instructor</span>
                       </button>
                     </div>
