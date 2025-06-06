@@ -23,6 +23,9 @@ const ConfirmPlan = () => {
   const { user } = useUser();
   const currentUrl = usePathname();
 
+  const isInstructor = accountType === "instructor";
+  const isStudent = accountType === "student";
+
   const handleConfirmPayClick = (plan) => {
     const encriptedPlan = encrypt(plan);
     localStorageFn.set(PLAN_CONFIRMED_KEY, encriptedPlan);
@@ -73,7 +76,7 @@ const ConfirmPlan = () => {
                         </Text>
                       </div>
                       <div className="text-center text-gray-700 text-xs sm:text-sm overflow-hidden">
-                        {accountType === "instructor" ? (
+                        {isInstructor ? (
                           <>
                             This fee grants you full access to Gala
                             Education&apos;s teaching platform, allowing you to
@@ -126,8 +129,17 @@ const ConfirmPlan = () => {
               </div>
             ))}
           </div>
+          {isStudent && (
+            <div className="mt-5 text-center w-full lg:w-3/4">
+              <span className="font-extrabold">Note</span>: This subscription
+              package grants access to the platform and its network of available
+              teachers. It does not cover individual class fees. Students are
+              required to subscribe separately to each class they wish to attend
+              after gaining access.
+            </div>
+          )}
 
-          <div className="mt-20">
+          <div className="mt-5">
             <Contact useBillingContact={true} />
           </div>
         </div>
