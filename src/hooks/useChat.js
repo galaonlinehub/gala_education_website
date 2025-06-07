@@ -315,7 +315,7 @@ export const useChat = () => {
   useEffect(() => {
     if (chats && socketRef.current) {
       const getChatIds = () => chats.map((c) => c?.id).filter(Boolean);
-      socketRef.current.emit("social", user.id, getChatIds());
+      socketRef.current.emit("social", getChatIds());
     }
   }, [chats, user.id]);
 
