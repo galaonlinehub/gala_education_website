@@ -633,6 +633,7 @@ function Home() {
           <Animator delay={0.4}>
             <div className="py-8">
               <Button
+              disabled
                 variant="solid"
                 type="primary"
                 onClick={handleDonateVisibility}
