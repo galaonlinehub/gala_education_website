@@ -89,55 +89,7 @@ function Home() {
   const { lastDonation, isConnected } = usePaymentSocketContext();
 
   const handleDonateVisibility = () => {
-    try {
-      // First check if there's an active payment in the socket context
-
-      // Check session storage for payment reference and amount
-      const payment_reference = sessionStorageFn.get("payment_reference");
-      const amount_paid = sessionStorageFn.get("amount_paid");
-
-      if (payment_reference && amount_paid) {
-        const paymentReference = decrypt(payment_reference);
-        const amountPaid = decrypt(amount_paid);
-
-        setamountPaid(amountPaid);
-        setReferenceNumber(paymentReference);
-
-        // Check if we have recent donation status from socket
-        if (lastDonation && lastDonation.status) {
-          console.log("Live donation status:", lastDonation.status);
-
-          if (lastDonation.status === 'pending') {
-            setIsPaymentModalOpen(true);
-            return;
-          } else if (lastDonation.status === 'completed' || lastDonation.status === 'success') {
-            // Clear completed payment data
-            sessionStorageFn.remove("payment_reference");
-            sessionStorageFn.remove("amount_paid");
-            sessionStorageFn.remove("donation_msg");
-            setShowDonatePopup(true);
-            return;
-          }
-        } else {
-          // Fallback to session storage status
-          const donation_msg = sessionStorageFn.get("donation_msg");
-          if (donation_msg) {
-            const decryptedMsg = decrypt(donation_msg);
-            if (decryptedMsg === 'pending') {
-              setIsPaymentModalOpen(true);
-              return;
-            }
-          }
-        }
-      }
-
-      // No pending payment found
       setShowDonatePopup(true);
-
-    } catch (error) {
-      console.error("Error checking payment status:", error);
-      setShowDonatePopup(true);
-    }
   };
   useEffect(() => {
 
@@ -681,7 +633,6 @@ function Home() {
           <Animator delay={0.4}>
             <div className="py-8">
               <Button
-                disabled
                 variant="solid"
                 type="primary"
                 onClick={handleDonateVisibility}

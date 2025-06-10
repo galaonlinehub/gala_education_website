@@ -3,11 +3,20 @@ import { Modal, Button } from 'antd';
 import { useDonationListener } from '@/src/hooks/paymentSocketContext';
 import { PaymentStatus } from '@/src/config/settings';
 import PaymentLoadingAnimation from './PaymentLoadingAnimation';
+import { RenderReferenceState } from '../auth/signup/PaymentStatus';
+import { sessionStorageFn } from '@/src/utils/fns/client';
+import { decrypt } from '@/src/utils/fns/encryption';
 
 
 const ProcessingModal = ({ setShowProcessingModal, showProcessingModal }) => {
 
     const [showReferenceBanner, setShowReferenceBanner] = useState(null);
+
+    const payment_reference = sessionStorageFn.get("payment_reference");
+    const amount_paid = sessionStorageFn.get("amount_paid");
+
+    const paymentReference = decrypt(payment_reference);
+    const amount = decrypt(amount_paid);
 
 
     useDonationListener((paymentMsg) => {
@@ -34,7 +43,7 @@ const ProcessingModal = ({ setShowProcessingModal, showProcessingModal }) => {
             width={500}
         >
             <div className='w-full flex'>
-                {/* {showReferenceBanner == null ? <PaymentLoadingAnimation /> : } */}
+                {showReferenceBanner == null ? <PaymentLoadingAnimation /> : <RenderReferenceState reference={paymentReference} amount={amount} donation={true} />}
             </div>
         </Modal>
     );
