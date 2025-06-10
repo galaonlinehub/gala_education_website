@@ -113,7 +113,7 @@ const VideoConference = () => {
                 description: `${participant} joined the lesson meeting!`,
                 duration: 3,
                 position: "topRight",
-                customStyle: {},
+ 
               });
             });
 

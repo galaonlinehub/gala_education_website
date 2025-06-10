@@ -2,6 +2,7 @@ export const PaymentStatus = {
   INITIAL: "initial",
   LOADING: "loading",
   SUCCESS: "success",
+  PENDING: "pending",
   FAILURE: "failure",
   REFERENCE: "reference",
   CONGRATULATION: "congratulation",

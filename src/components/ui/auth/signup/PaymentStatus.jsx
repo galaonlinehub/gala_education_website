@@ -106,7 +106,7 @@ export const RenderSuccessState = ({
   onClose,
   accountType,
   setStatus,
-  queryClient,user
+  queryClient, user
 }) => {
   if (accountType === "instructor") {
     setTimeout(() => {
@@ -157,7 +157,7 @@ export const RenderSuccessState = ({
   );
 };
 
-export const RenderReferenceState = ({ reference, amount, onClose }) => (
+export const RenderReferenceState = ({ reference, amount, onClose, donation }) => (
   <div className="flex flex-col items-center py-6 xxs:py-0 xxs:p-4 min-w-[50px] max-w-[600px] mx-auto">
     <HiMiniDevicePhoneMobile className="text-[#001840] text-4xl mb-4" />
     <div className="flex flex-col gap-3 w-full">
@@ -184,7 +184,7 @@ export const RenderReferenceState = ({ reference, amount, onClose }) => (
           <LuWallet className="text-[#001840] text-xl" />
           <div className="flex flex-col items-center justify-center">
             <span className="font-medium">
-              3. Enter Amount for plan selected
+              {donation ? '3. Enter Amount' : '3. Enter Amount for plan selected'}
             </span>
             <p className="text-lg text-[#001840] font-black mt-1 text-center">
               {amount?.toLocaleString()} TZS
@@ -208,6 +208,7 @@ export const RenderReferenceState = ({ reference, amount, onClose }) => (
     >
       Done
     </button>
+
   </div>
 );
 
