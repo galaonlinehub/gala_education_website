@@ -30,9 +30,9 @@ export default function TeacherLayout({ children }) {
     (state) => state.openStickyNotification
   );
 
-  useEffect(() => {
-    openStickyNotification();
-  }, [openStickyNotification]);
+  // useEffect(() => {
+  //   openStickyNotification();
+  // }, [openStickyNotification]);
 
   return (
     <>

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Avatar, Dropdown, Skeleton } from "antd";
-import { LoadingOutlined, SmileOutlined } from "@ant-design/icons";
+import { SmileOutlined } from "@ant-design/icons";
 import clsx from "clsx";
 import { useChat } from "@/src/hooks/useChat";
 import { useUser } from "@/src/hooks/useUser";
@@ -19,6 +19,7 @@ import {
   LuPaperclip,
 } from "react-icons/lu";
 import { format, isToday, isYesterday } from "date-fns";
+import SlickSpinner from "../ui/loading/template/SlickSpinner";
 
 const RenderChat = ({
   isSmallScreen,
@@ -46,6 +47,9 @@ const RenderChat = ({
   } = useChat();
   const { user } = useUser();
 
+ 
+  console.log("Online Users:", onlineUsers);
+
   const isPreviewChat = currentChatId === "preview";
   const currentChat = chats?.find((chat) => chat.id === currentChatId);
   const recipient = currentChat?.participants.find(
@@ -60,9 +64,6 @@ const RenderChat = ({
     recipient && typingUsers.includes(recipient.user.id);
   const isRecipientOnline =
     recipient && onlineUsers.includes(recipient.user.id);
-
-  console.log(onlineUsers, "online users");
-  console.log(isRecipientOnline, "recipients that are online");
 
   useEffect(() => {
     if (chatContainerRef.current) {
@@ -90,8 +91,6 @@ const RenderChat = ({
       }
     }
   }, [currentChatId, isPreviewChat, markMessageAsRead, messages, user.id]);
-
-  const handleAttachment = () => fileInputRef.current.click();
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -180,6 +179,7 @@ const RenderChat = ({
     return acc;
   }, {});
 
+
   return (
     <div className="flex flex-col h-full w-full ">
       <div
@@ -196,7 +196,9 @@ const RenderChat = ({
 
         <div className="flex justify-between items-center w-full">
           {isFetchingChats ? (
-            <LoadingOutlined spin className="text-white p-3" />
+            <div className="p-3">
+              <SlickSpinner size={16} color="white" />
+            </div>
           ) : (
             <div className="flex items-center gap-3">
               <div className="relative">
@@ -269,7 +271,16 @@ const RenderChat = ({
       </div>
       {isFetchingChatMessages ? (
         <div className="flex justify-center items-center h-full w-full">
-          <LoadingOutlined spin />
+          <div className="shadow-xl rounded-full p-1 w-8 h-8 bg-[#001840] flex items-center justify-center">
+            <SlickSpinner size={24} color="white" />
+          </div>
+        </div>
+      ) : Object.keys(groupedMessages).length === 0 ? (
+        <div className="flex flex-col justify-center items-center h-full w-full text-gray-500">
+          <div className="text-2xl text-center">No messages yet</div>
+          <div className="text-center text-sm">
+            start conversation by sending a message in the input below
+          </div>
         </div>
       ) : (
         <div
@@ -279,10 +290,7 @@ const RenderChat = ({
           {Object.entries(groupedMessages).map(([date, msgs]) => (
             <div key={date}>
               <div className="text-center mb-4">
-                <span
-                  className="inline-block px-3 py-1 text-xs rounded-full text-gray-600"
-                  style={{ backgroundColor: "rgba(0, 24, 64, 0.08)" }}
-                >
+                <span className="inline-block px-3 py-1 text-xs rounded-full text-gray-600">
                   {date}
                 </span>
               </div>

@@ -2,11 +2,7 @@ import React from "react";
 import { Input, Empty, Skeleton, Tooltip } from "antd";
 import { IoMenu } from "react-icons/io5";
 import { CloseOutlined } from "@ant-design/icons";
-import {
-  FaUserCircle,
-  FaChalkboardTeacher,
-  FaBookReader,
-} from "react-icons/fa";
+import { FaChalkboardTeacher, FaBookReader } from "react-icons/fa";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useSearch } from "@/src/hooks/useSearch";
@@ -14,6 +10,7 @@ import { notificationService } from "@/src/components/ui/notification/Notificati
 import { useUser } from "@/src/hooks/useUser";
 import { LuBell, LuCircleUser } from "react-icons/lu";
 import Updates from "../ui/notification/Updates";
+import Clock from "../ui/Clock";
 
 const SearchResultCard = ({ data, onClick }) => {
   const { topics, teachers } = data;
@@ -131,18 +128,6 @@ const StudentSearch = () => {
   const router = useRouter();
   const { user } = useUser();
 
-  const getCurrentDate = () => {
-    const date = new Date();
-    return date.toLocaleDateString("en-US", {
-      month: "long",
-      day: "numeric",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    });
-  };
-
   return (
     <div
       ref={searchContainerRef}
@@ -234,21 +219,24 @@ const StudentSearch = () => {
               </AnimatePresence>
             </div>
           ) : (
-            <div className="font-black text-sm">{getCurrentDate()}</div>
+            <Clock />
           )}
-          <div className="lg:flex items-center space-x-3 hidden">
-            <Updates>
-              <Tooltip placement="top" title="Notifications">
-                <LuBell className="text-xl text-black hover:text-blue-600 cursor-pointer transition-colors" />
-              </Tooltip>
-            </Updates>
+          <div className="lg:flex items-center justify-center gap-8 hidden">
+            {user?.role === "student" && <Clock />}
+            <div className="flex items-center gap-3">
+              <Updates>
+                <Tooltip placement="top" title="Notifications">
+                  <LuBell className="text-xl text-black hover:text-blue-600 cursor-pointer transition-colors" />
+                </Tooltip>
+              </Updates>
 
-            <Tooltip placement="top" title="My Profile">
-              <LuCircleUser
-                className="text-xl text-black hover:text-blue-600 cursor-pointer transition-colors"
-                onClick={() => router.push(`/${user.role}/profile`)}
-              />
-            </Tooltip>
+              <Tooltip placement="top" title="My Profile">
+                <LuCircleUser
+                  className="text-xl text-black hover:text-blue-600 cursor-pointer transition-colors"
+                  onClick={() => router.push(`/${user.role}/profile`)}
+                />
+              </Tooltip>
+            </div>
           </div>
         </div>
       </div>

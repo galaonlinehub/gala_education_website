@@ -12,8 +12,13 @@ import { decrypt } from "../utils/fns/encryption";
 export const useChat = () => {
   const socketRef = useRef(null);
   const [messages, setMessages] = useState([]);
-  const { currentChatId, setCurrentChatId, previewChat, clearPreviewChat } =
-    useChatStore();
+  const {
+    currentChatId,
+    setCurrentChatId,
+    previewChat,
+    clearPreviewChat,
+    setPreviewChat,
+  } = useChatStore();
   const { user } = useUser();
   const [typingUsers, setTypingUsers] = useState([]);
   const [messageStatuses, setMessageStatuses] = useState({});
@@ -68,6 +73,8 @@ export const useChat = () => {
           },
         ];
       });
+
+      setChats((prevChats) => moveChatToTop(message.chat_id, prevChats));
     });
 
     socketRef.current.on(
@@ -165,7 +172,6 @@ export const useChat = () => {
 
     socketRef.current.on("user_offline", ({ user_id, last_active_at }) => {
       setOnlineUsers((prev) => prev.filter((id) => id !== user_id));
-      console.log("USER WENT OFFLINE", user_id, last_active_at);
       setChats((prev) =>
         prev.map((chat) => {
           return {
@@ -194,28 +200,45 @@ export const useChat = () => {
 
   const createOrGetChatMutation = useMutation({
     mutationFn: async (payload) => apiPost("/chat/get-or-create", payload),
-    onSuccess: (response) => {
-      if (currentChatId === "preview") {
-        queryClient.invalidateQueries(["chats", user.id]);
-      }
-      const chat = response.data.data;
-      setCurrentChatId(chat.id);
-      socketRef.current.emit("join_chat", chat.id);
-    },
-    onError: (error) => console.error("Failed to create or get chat:", error),
   });
+
+  const getParticipants = (chat) => chat.participants.map((p) => p.user.id);
 
   const sendMessage = async (content, recipient_id, chat_id) => {
     if (!content.trim()) return;
     try {
       let chatId = chat_id || currentChatId;
+      const wasPreview = currentChatId === "preview";
 
       if (!chatId || chatId === "preview") {
         const chatPayload = preparePayLoad(recipient_id, chat_id);
-        const chatResponse = await createOrGetChatMutation.mutateAsync(
-          chatPayload
-        );
-        chatId = chatResponse.data.data.id;
+        const res = await createOrGetChatMutation.mutateAsync(chatPayload);
+
+        const chat = res.data.data;
+
+        setCurrentChatId(chat.id);
+        chatId = chat.id;
+        setPreviewChat(null);
+
+        setChats((prev) => {
+          const updated = [...prev];
+          const index = updated.findIndex((c) => c.id === "preview");
+          if (index !== -1) updated[index] = chat;
+          return updated;
+        });
+
+        queryClient.setQueryData(["chats", user.id], (old) => {
+          const chats = old ?? [];
+          const filtered = chats.filter((c) => c.id !== chatId);
+          return [chat, ...filtered];
+        });
+
+        const initialChat = {
+          chatId: chatId,
+          startParticipants: getParticipants(chat),
+        };
+
+        socketRef.current.emit("join_chat", initialChat);
       }
 
       const message = {
@@ -224,8 +247,11 @@ export const useChat = () => {
         sender_id: user.id,
         sent_at: new Date().toISOString(),
       };
+
       socketRef.current.emit("send_message", message);
-      if (chatId === currentChatId) clearPreviewChat();
+      setChats((prevChats) => moveChatToTop(chatId, prevChats));
+
+      if (wasPreview) clearPreviewChat();
     } catch (error) {
       console.error("Failed to send message:", error);
     }
@@ -265,7 +291,6 @@ export const useChat = () => {
   useEffect(() => {
     if (apiChats) {
       setChats(apiChats);
-
       setUnreadCounts((prev) => ({
         ...prev,
         ...apiChats.reduce((acc, chat) => {
@@ -273,6 +298,8 @@ export const useChat = () => {
           return acc;
         }, {}),
       }));
+
+      setOnlineUsers(getOnlineUsersFromChats(apiChats));
     }
   }, [apiChats]);
 
@@ -288,43 +315,50 @@ export const useChat = () => {
   useEffect(() => {
     if (chats && socketRef.current) {
       const getChatIds = () => chats.map((c) => c?.id).filter(Boolean);
-      socketRef.current.emit("social", user.id, getChatIds());
+      socketRef.current.emit("social", getChatIds());
     }
   }, [chats, user.id]);
 
   useEffect(() => {
-    if (chat_messages) {
-      const normalizedMessages = chat_messages.map((msg) => ({
-        id: msg.id,
-        chat_id: msg.chat_id,
-        sender_id: msg.sender_id,
-        content: msg.content,
-        type: msg.type,
-        sent_at: msg.sent_at,
-        sent_at_iso: msg.created_at,
-        statuses: msg.statuses || [],
-        sender: msg.sender,
-      }));
-      setMessages((prev) => {
-        const merged = [...normalizedMessages];
-        prev.forEach((socketMsg) => {
-          if (!merged.some((m) => m.id === socketMsg.id))
-            merged.push(socketMsg);
-        });
-        return merged;
-      });
-
-      const initialStatuses = normalizedMessages.reduce((acc, message) => {
-        if (message.statuses?.length > 0) {
-          acc[message.id] = message.statuses.reduce((statusAcc, status) => {
-            statusAcc[status.user_id] = status.status;
-            return statusAcc;
-          }, {});
-        }
-        return acc;
-      }, {});
-      setMessageStatuses((prev) => ({ ...prev, ...initialStatuses }));
+    if (!chat_messages) {
+      setMessages([]);
+      setMessageStatuses({});
+      return;
     }
+
+    const normalizedMessages = chat_messages.map((msg) => ({
+      id: msg.id,
+      chat_id: msg.chat_id,
+      sender_id: msg.sender_id,
+      content: msg.content,
+      type: msg.type,
+      sent_at: msg.sent_at,
+      sent_at_iso: msg.created_at,
+      statuses: msg.statuses || [],
+      sender: msg.sender,
+    }));
+
+    setMessages(normalizedMessages);
+
+    // setMessages((prev) => {
+    //   // const merged = [normalizedMessages];
+    //   prev.forEach((socketMsg) => {
+    //     if (!normalizedMessages.some((m) => m.id === socketMsg.id))
+    //       normalizedMessages.push(socketMsg);
+    //   });
+    //   return normalizedMessages;
+    // });
+
+    const initialStatuses = normalizedMessages.reduce((acc, message) => {
+      if (message.statuses?.length > 0) {
+        acc[message.id] = message.statuses.reduce((statusAcc, status) => {
+          statusAcc[status.user_id] = status.status;
+          return statusAcc;
+        }, {});
+      }
+      return acc;
+    }, {});
+    setMessageStatuses((prev) => ({ ...prev, ...initialStatuses }));
   }, [chat_messages]);
 
   useEffect(() => {
@@ -370,6 +404,30 @@ export const useChat = () => {
       sender_id: m.sender_id,
     })),
   });
+
+  const moveChatToTop = (chatId, chats) => {
+    const index = chats.findIndex((c) => c.id === chatId);
+    if (index === -1) return chats;
+
+    const chat = chats[index];
+    const updated = [...chats];
+    updated.splice(index, 1);
+    return [chat, ...updated];
+  };
+
+  const getOnlineUsersFromChats = (chats) => {
+    if (!chats || !Array.isArray(chats)) return [];
+    console.log("Getting online users from chats", chats);
+    return [
+      ...new Set(
+        chats.flatMap((c) =>
+          c.participants
+            .filter((p) => p.user?.status === "online")
+            .map((p) => p.user.id)
+        )
+      ),
+    ];
+  };
 
   return {
     sendMessage,

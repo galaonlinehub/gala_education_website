@@ -262,7 +262,7 @@ const MobilePay = () => {
             Change plan
           </div>
 
-          <Contact />
+          <Contact useBillingContact={true} />
         </div>
       </Card>
       {isModalOpen && (
