@@ -53,7 +53,7 @@ export default function StudentLayout({ children }) {
         </div>
 
         {/* Sidebar */}
-        <aside className="hidden lg:block sticky top-[90px] left-0 w-[16vw] h-[calc(100vh-80px)] border-r border-[#d9d9d9] p-4 overflow-y-auto">
+        <aside className="hidden md:block sticky top-[90px] left-0 w-[16vw] h-[calc(100vh-80px)] border-r border-[#d9d9d9] p-4 overflow-y-auto">
           <ul className="space-y-4 pt-6">
             {student_links.map((item, i) => {
               const normalizedUrl = currentUrl.replace(/\/$/, "");

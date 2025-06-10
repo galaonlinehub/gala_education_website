@@ -17,7 +17,7 @@ import ClientReviewsSm from "@/src/components/home/card/ClientReviewsSm";
 import Platform from "@/src/components/home/card/Platform";
 import Pioneers from "@/src/components/home/card/Pioneers";
 import LatestNews from "@/src/components/home/card/LatestNews";
-import Donate from "@/src/components/ui/Donate";
+import Donate from "@/src/components/ui/donation/Donate";
 import VideoPlayer from "@/src/components/ui/VideoPlayer";
 import ScrollableContent from "@/src/components/ui/TeachersCard";
 import { useUser } from "@/src/hooks/useUser";
@@ -29,7 +29,7 @@ import PdfViewer from "@/src/components/home/modals/PdfViewer";
 import { Authorities } from "@/src/components/layout/Authorities";
 import VideoBackground from "@/src/components/ui/VideoBackground";
 import Animator from "@/src/components/home/animations/Animator";
-import { API_BASE_URL } from "@/src/config/settings";
+import { API_BASE_URL, socket_base_url } from "@/src/config/settings";
 import { NextSeo } from "next-seo";
 import { Tooltip } from 'antd';
 import { FaArrowRightLong } from "react-icons/fa6";
@@ -40,6 +40,13 @@ import SvgOne from "@/src/components/home/svg/SvgOne";
 import SvgTwo from "@/src/components/home/svg/SvgTwo";
 import SvgThree from "@/src/components/home/svg/SvgThree";
 import { BiChevronRight } from "react-icons/bi";
+import ConfettiButton from "@/src/components/ui/ConfettiAnimation";
+import { sessionStorageFn } from "@/src/utils/fns/client";
+import { decrypt, encrypt } from "@/src/utils/fns/encryption";
+import DonationPaymentModal from "@/src/components/ui/donation/DonationPaymentModal";
+import { io } from "socket.io-client";
+import { useDonationListener, usePaymentSocketContext } from "@/src/hooks/paymentSocketContext";
+import ProcessingModal from "@/src/components/ui/donation/ProcessingModal";
 
 
 function Home() {
@@ -49,12 +56,91 @@ function Home() {
 
   const [showPdf, setShowPdf] = useState(false);
 
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [amount, setamountPaid] = useState(false);
+  const [referenceNumber, setReferenceNumber] = useState(false);
+  const [showProcessingModal, setShowProcessingModal] = useState(false);
+
+
+
+  useDonationListener((paymentMsg) => {
+    console.log("Payment received in PaymentStep:", paymentMsg);
+
+    if (paymentMsg.status === 'success') {
+      console.log('Payment successful!');
+
+    } else if (paymentMsg.status === 'failed') {
+      console.log('Payment failed!');
+
+    }
+  });
+
+
+  const cancelPaymentModal = () => {
+    setIsPaymentModalOpen(false);
+  };
+
+  const gotoDonationForm = () => {
+    setIsPaymentModalOpen(false);
+    setShowDonatePopup(true);
+  }
+
   const financialFormPdfUrl = `${API_BASE_URL}/documents/uploads/documents/financial_form.pdf`;
+  const { lastDonation, isConnected } = usePaymentSocketContext();
 
   const handleDonateVisibility = () => {
-    setShowDonatePopup(true);
+    try {
+      // First check if there's an active payment in the socket context
+
+      // Check session storage for payment reference and amount
+      const payment_reference = sessionStorageFn.get("payment_reference");
+      const amount_paid = sessionStorageFn.get("amount_paid");
+
+      if (payment_reference && amount_paid) {
+        const paymentReference = decrypt(payment_reference);
+        const amountPaid = decrypt(amount_paid);
+
+        setamountPaid(amountPaid);
+        setReferenceNumber(paymentReference);
+
+        // Check if we have recent donation status from socket
+        if (lastDonation && lastDonation.status) {
+          console.log("Live donation status:", lastDonation.status);
+
+          if (lastDonation.status === 'pending') {
+            setIsPaymentModalOpen(true);
+            return;
+          } else if (lastDonation.status === 'completed' || lastDonation.status === 'success') {
+            // Clear completed payment data
+            sessionStorageFn.remove("payment_reference");
+            sessionStorageFn.remove("amount_paid");
+            sessionStorageFn.remove("donation_msg");
+            setShowDonatePopup(true);
+            return;
+          }
+        } else {
+          // Fallback to session storage status
+          const donation_msg = sessionStorageFn.get("donation_msg");
+          if (donation_msg) {
+            const decryptedMsg = decrypt(donation_msg);
+            if (decryptedMsg === 'pending') {
+              setIsPaymentModalOpen(true);
+              return;
+            }
+          }
+        }
+      }
+
+      // No pending payment found
+      setShowDonatePopup(true);
+
+    } catch (error) {
+      console.error("Error checking payment status:", error);
+      setShowDonatePopup(true);
+    }
   };
   useEffect(() => {
+
     if (showDonatePopup) {
       document.body.classList.add("no-scroll");
     } else {
@@ -107,10 +193,15 @@ function Home() {
               <Donate
                 setShowDonatePopup={setShowDonatePopup}
                 showDonatePopup={showDonatePopup}
+                setShowProcessingModal={setShowProcessingModal}
               />
             </div>
           </div>
         )}
+
+        <DonationPaymentModal isPaymentModalOpen={isPaymentModalOpen} cancelPaymentModal={cancelPaymentModal} referenceNumber={referenceNumber} donationAmount={amount} />
+
+        <ProcessingModal setShowProcessingModal={setShowProcessingModal} showProcessingModal={showProcessingModal} />
 
         <PdfViewer
           pdfUrl={financialFormPdfUrl}
@@ -182,6 +273,7 @@ function Home() {
             <MailingList />
           </div>
         </div>
+
 
         <div className="relative flex items-center flex-col gap-2 md:gap-12 md:flex-row px-6 h-[45rem] sm:px-12 xs:h-[45rem] sm:h-[30rem] w-full">
           <div className="relative w-full md:w-1/2 mt-14 h-fit max-sm:p-2">
@@ -589,9 +681,10 @@ function Home() {
           <Animator delay={0.4}>
             <div className="py-8">
               <Button
+                disabled
                 variant="solid"
                 type="primary"
-                onClick={() => setShowDonatePopup(true)}
+                onClick={handleDonateVisibility}
                 className="!p-4 !bg-[#030DFE] !font-bold md:text-xs !rounded-md !text-white"
               >
                 Donate Now
