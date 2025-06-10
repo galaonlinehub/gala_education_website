@@ -1,4 +1,5 @@
 "use client";
+import { MAIN_EMAIL, SUPPORT_DESK } from "@/src/config/settings";
 import React, { useState } from "react";
 
 const TermsAndPrivacyPreview = () => {
@@ -380,7 +381,7 @@ const TermsAndPrivacyPreview = () => {
                   href="mailto:edu@galahub.org?subject=Inquiry&body=Dear Gala Education,"
                   className="text-blue-600 cursor-pointer"
                 >
-                  edu@galahub.org
+                  {MAIN_EMAIL}
                 </a>
               </p>
               <p className="space-x-2">
@@ -389,7 +390,7 @@ const TermsAndPrivacyPreview = () => {
                   href="tel:+255750189902"
                   className="text-blue-600 cursor-pointer"
                 >
-                  +255 750 189 902
+                  {SUPPORT_DESK}
                 </a>
               </p>
             </div>

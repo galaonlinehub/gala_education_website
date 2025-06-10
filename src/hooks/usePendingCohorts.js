@@ -26,7 +26,7 @@ export const usePendingCohorts = () => {
 
 const getPendingCohorts = async () => {
   try {
-    const res = await apiGet("/cohorts-pending");
+    const res = await apiGet("/pending-cohort-payments");
     return res.data || [];
   } catch (e) {
     console.error(e);
