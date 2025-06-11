@@ -32,7 +32,7 @@ const PaymentStep = ({
   setActiveTab,
   setIsPhoneValid,
   isPhoneValid,
-  setShowProcessingModal
+  setShowProcessingModal,
 }) => {
   const { joinRoom, isConnected, roomName } = usePaymentSocketContext();
   const [loading, setLoading] = useState(false);
@@ -225,6 +225,7 @@ const PaymentStep = ({
                 addonBefore="255"
                 size="middle"
                 className="text-xs"
+                disabled={loading}
               />
             </Form.Item>
           </Space>
@@ -255,12 +256,12 @@ const PaymentStep = ({
             justifyContent: "space-between",
           }}
         >
-          <Button onClick={() => setActiveTab("1")}>Back</Button>
+          <Button disabled={loading} onClick={() => setActiveTab("1")}>Back</Button>
           <Button
             loading={loading}
             iconPosition="end"
             className="bg-[#001840] text-white"
-            disabled={!selectedAmount || !isPhoneValid}
+            disabled={!selectedAmount || !isPhoneValid || loading}
             onClick={completeDonation}
           >
             Complete Donation

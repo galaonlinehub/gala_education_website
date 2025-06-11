@@ -103,8 +103,6 @@ const AboutUs = () => {
     setIsModalOpen(true);
   };
 
-  console.log("data:", member);
-
   const handleCancel = () => {
     setIsModalOpen(false);
   };

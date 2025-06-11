@@ -18,7 +18,6 @@ export const PaymentSocketProvider = ({ children }) => {
     setRoomName(room);
     if (socket && socket.connected) {
       socket.emit('join', { id: room });
-      console.log(`Joined room: ${room}`);
     }
   };
 
@@ -27,27 +26,21 @@ export const PaymentSocketProvider = ({ children }) => {
 
     newSocket.on('connect', () => {
       setIsConnected(true);
-      console.log('Socket connected successfully');
 
       if (roomName) {
         newSocket.emit('join', { id: roomName });
-        console.log(`Rejoined room: ${roomName}`);
       }
     });
 
     newSocket.on('disconnect', () => {
       setIsConnected(false);
-      console.log('Socket disconnected');
     });
 
     newSocket.on('donation', (paymentMsg) => {
-      console.log('Donation event received:', paymentMsg);
 
-      // Store the raw donation message in session storage as backup
       const encryptedMsg = encrypt(JSON.stringify(paymentMsg?.status));
       sessionStorageFn.set('donation_msg', encryptedMsg);
 
-      // Update the state with the full payment message
       setLastDonation(paymentMsg?.status);
 
       // Notify all listeners
@@ -55,8 +48,6 @@ export const PaymentSocketProvider = ({ children }) => {
         listener(paymentMsg);
       });
 
-      // Log for debugging
-      console.log('Updated lastDonation state:', paymentMsg);
     });
 
     newSocket.on('connect_error', (error) => {
@@ -77,7 +68,6 @@ export const PaymentSocketProvider = ({ children }) => {
     };
   }, []);
 
-  // Separate effect to handle room joining when roomName changes
   useEffect(() => {
     if (socket && isConnected && roomName) {
       console.log(`Joining room: ${roomName}`);

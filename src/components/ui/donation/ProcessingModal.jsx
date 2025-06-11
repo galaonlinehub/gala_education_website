@@ -75,8 +75,9 @@ const ProcessingModal = ({ setShowProcessingModal, showProcessingModal }) => {
             style={{
                 borderRadius: '30px',
                 overflow: 'hidden',
-                width: 'clamp(90%, 500px, 90vw)',
+                
             }}
+            
             open={showProcessingModal}
             mask={true}
             closable={false}
@@ -84,6 +85,7 @@ const ProcessingModal = ({ setShowProcessingModal, showProcessingModal }) => {
             onCancel={() => setShowProcessingModal(false)}
             footer={null}
             centered
+            width={400}
         >
             <div className='w-full items-center p-2 justify-center flex'>
                 {renderContent()}

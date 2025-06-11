@@ -68,10 +68,10 @@ export default function PaymentFailedAnimation({setCloseFailureModal}) {
                         Payment Failed
                     </h1>
                     <p className="text-gray-600 mb-4">
-                        We couldn't process your payment
+                        We couldn&lsquo;t process your payment
                     </p>
-                    <p className="text-sm text-gray-500">
-                        Don't worry, no charges were made to your account
+                    <p className="text-xs text-gray-500">
+                        Don&lsquo;t worry, no charges were made to your account
                     </p>
                 </div>
                 <div

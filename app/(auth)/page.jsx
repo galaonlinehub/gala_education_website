@@ -62,20 +62,6 @@ function Home() {
   const [showProcessingModal, setShowProcessingModal] = useState(false);
 
 
-
-  useDonationListener((paymentMsg) => {
-    console.log("Payment received in PaymentStep:", paymentMsg);
-
-    if (paymentMsg.status === 'success') {
-      console.log('Payment successful!');
-
-    } else if (paymentMsg.status === 'failed') {
-      console.log('Payment failed!');
-
-    }
-  });
-
-
   const cancelPaymentModal = () => {
     setIsPaymentModalOpen(false);
   };
