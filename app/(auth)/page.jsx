@@ -56,23 +56,9 @@ function Home() {
 
   const [showPdf, setShowPdf] = useState(false);
 
-  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
-  const [amount, setamountPaid] = useState(false);
-  const [referenceNumber, setReferenceNumber] = useState(false);
   const [showProcessingModal, setShowProcessingModal] = useState(false);
 
-
-  const cancelPaymentModal = () => {
-    setIsPaymentModalOpen(false);
-  };
-
-  const gotoDonationForm = () => {
-    setIsPaymentModalOpen(false);
-    setShowDonatePopup(true);
-  }
-
   const financialFormPdfUrl = `${API_BASE_URL}/documents/uploads/documents/financial_form.pdf`;
-  const { lastDonation, isConnected } = usePaymentSocketContext();
 
   const handleDonateVisibility = () => {
       setShowDonatePopup(true);
@@ -136,8 +122,6 @@ function Home() {
             </div>
           </div>
         )}
-
-        {/* <DonationPaymentModal isPaymentModalOpen={isPaymentModalOpen} cancelPaymentModal={cancelPaymentModal} referenceNumber={referenceNumber} donationAmount={amount} /> */}
 
         <ProcessingModal setShowProcessingModal={setShowProcessingModal} showProcessingModal={showProcessingModal} />
 
