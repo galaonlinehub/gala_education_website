@@ -62,20 +62,6 @@ function Home() {
   const [showProcessingModal, setShowProcessingModal] = useState(false);
 
 
-
-  useDonationListener((paymentMsg) => {
-    console.log("Payment received in PaymentStep:", paymentMsg);
-
-    if (paymentMsg.status === 'success') {
-      console.log('Payment successful!');
-
-    } else if (paymentMsg.status === 'failed') {
-      console.log('Payment failed!');
-
-    }
-  });
-
-
   const cancelPaymentModal = () => {
     setIsPaymentModalOpen(false);
   };
@@ -151,7 +137,7 @@ function Home() {
           </div>
         )}
 
-        <DonationPaymentModal isPaymentModalOpen={isPaymentModalOpen} cancelPaymentModal={cancelPaymentModal} referenceNumber={referenceNumber} donationAmount={amount} />
+        {/* <DonationPaymentModal isPaymentModalOpen={isPaymentModalOpen} cancelPaymentModal={cancelPaymentModal} referenceNumber={referenceNumber} donationAmount={amount} /> */}
 
         <ProcessingModal setShowProcessingModal={setShowProcessingModal} showProcessingModal={showProcessingModal} />
 
@@ -633,7 +619,6 @@ function Home() {
           <Animator delay={0.4}>
             <div className="py-8">
               <Button
-              disabled
                 variant="solid"
                 type="primary"
                 onClick={handleDonateVisibility}
