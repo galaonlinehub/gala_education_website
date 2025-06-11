@@ -10,6 +10,7 @@ import { useTeamMembers } from "@/src/hooks/useTeamMembers";
 import { img_base_url } from "@/src/config/settings";
 import MultipleProfileSkeletons from '@/src/components/home/card/ProfileCardSkeleton';
 import Footer from "@/src/components/layout/footer";
+import ProcessingModal from "@/src/components/ui/donation/ProcessingModal";
 
 
 const { Text } = Typography;
@@ -36,8 +37,9 @@ const AboutUs = () => {
 
   const [selectedLDValue, setSelectedLDValue] = useState("Executive Team");
   const [selectedWEValue, setSelectedWEValue] = useState("System");
-  const [selecteContactsValue, setSelectedConatctsValue] =
-    useState("Contact Us");
+  const [selecteContactsValue, setSelectedConatctsValue] = useState("Contact Us");
+
+  const [showProcessingModal, setShowProcessingModal] = useState(false);
 
   const [showDonatePop, setShowDonatePop] = useState(false);
 
@@ -712,10 +714,14 @@ const AboutUs = () => {
               <Donate
                 setShowDonatePopup={setShowDonatePop}
                 showDonatePopup={showDonatePop}
+                setShowProcessingModal={setShowProcessingModal}
               />
             </div>
           </div>
         )}
+
+        <ProcessingModal setShowProcessingModal={setShowProcessingModal} showProcessingModal={showProcessingModal} />
+
       </div>
       <div className="w-full">
         <Footer />
