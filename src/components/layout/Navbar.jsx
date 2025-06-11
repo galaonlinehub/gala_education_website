@@ -13,12 +13,14 @@ import { useDevice } from "@/src/hooks/useDevice";
 import { BiWifi, BiWifiOff } from "react-icons/bi";
 import useNetwork from "@/src/hooks/useNetwork";
 import { LuGlobe, LuMenu } from "react-icons/lu";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { user } = useUser();
   const { width } = useDevice();
   const { isOnline, connectionQuality } = useNetwork();
+  const router = useRouter();
 
   const [showLanguage, setShowLanguage] = useState(false);
   const [language, setLanguage] = useState("english");
@@ -33,6 +35,10 @@ const Navbar = () => {
     setCondition(checked);
   };
 
+  const gotoHomePage = () => {
+    router.push('/');
+  }
+
   const items = [
     {
       key: "1",
@@ -42,7 +48,7 @@ const Navbar = () => {
           English
         </div>
       ),
-      onClick: () => {},
+      onClick: () => { },
     },
     {
       key: "2",
@@ -51,7 +57,7 @@ const Navbar = () => {
           Swahili
         </div>
       ),
-      onClick: () => {},
+      onClick: () => { },
       disabled: true,
     },
   ];
@@ -146,8 +152,9 @@ const Navbar = () => {
         alt={"Gala logo"}
         width={150}
         height={150}
+        onClick={gotoHomePage}
         src={"/gala-logo.png"}
-        className={"w-16 h-16 object-cover rounded-full "}
+        className={"w-16 h-16 object-cover cursor-pointer rounded-full "}
       />
 
       <ul className="text-black flex sm:gap-x-4 gap-x-2 sm:text-[12px] text-[8px] leading-[5px] items-center justify-center font-black">
@@ -161,14 +168,14 @@ const Navbar = () => {
           overlayClassName="rounded-md shadow-lg border border-gray-100"
           arrow={true}
           placement="bottom"
-          // dropdownRender={(menu) => (
-          //   <div>
-          //     <div className="text-xs font-light text-black px-4 py-2">
-          //       Choose language
-          //     </div>
-          //     {menu}
-          //   </div>
-          // )}
+        // dropdownRender={(menu) => (
+        //   <div>
+        //     <div className="text-xs font-light text-black px-4 py-2">
+        //       Choose language
+        //     </div>
+        //     {menu}
+        //   </div>
+        // )}
         >
           <Image
             width={200}
@@ -199,7 +206,7 @@ const Navbar = () => {
         {!user && (
           <div
             className="flex gap-3 items-center justify-center"
-            onClick={() => {}}
+            onClick={() => { }}
           >
             <ChooseAccont btnText={'Sign Up'} textColor={'black'} placement={'bottom'} trigger={'hover'} />
             <Link href={"/signin"} className="hover:cursor-pointer">

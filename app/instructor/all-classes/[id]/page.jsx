@@ -165,6 +165,7 @@ const ClassDetailsPage = () => {
   };
 
   const handleViewStudents = () => {
+
     setStudentsModalVisible(true);
   };
 
@@ -210,9 +211,9 @@ const ClassDetailsPage = () => {
       }
     },
     {
-      title: 'Grade',
-      dataIndex: 'grade',
-      key: 'grade',
+      title: 'Attendance',
+      dataIndex: 'attended_lessons',
+      key: 'attended_lessons',
       width: '10%',
       render: (text) => <Tag>{text}</Tag>
     },
@@ -485,31 +486,30 @@ const ClassDetailsPage = () => {
             onCancel={() => setStudentsModalVisible(false)}
             footer={null}
             width={500}
-            bodyStyle={{ padding: "16px" }}
+
           >
             <div>
-
-
               {cohortDetails?.total_enrolled_students > 0 ?
-                <div className="mb-16 flex flex-col gap-4 items-center w-full">
+                <div className="mb-16 flex flex-col gap-4 items-center w-full ">
                   <Input
                     placeholder="Search by name or email"
                     prefix={<SearchOutlined />}
-                    style={{ width: 300 }}
+                    style={{ width: '100%' }}
                     onChange={(e) => setSearchText(e.target.value)}
                     allowClear
                   />
 
-                  <Card bodyStyle={{ padding: 0 }} bordered={false} className="student-table-card">
+                  <Card style={{ width: '100%' }}>
                     <Table
-                      dataSource={classData.students}
+                      style={{ width: '100%' }}
+                      dataSource={enrolledStudents}
                       columns={studentsColumns}
                       rowKey="id"
                       pagination={{ pageSize: 5 }}
                       size="middle"
-                      scroll={{ x: 'max-content' }}
                     />
                   </Card>
+
 
                 </div>
                 : <Empty

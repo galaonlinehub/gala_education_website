@@ -17,7 +17,7 @@ import ClientReviewsSm from "@/src/components/home/card/ClientReviewsSm";
 import Platform from "@/src/components/home/card/Platform";
 import Pioneers from "@/src/components/home/card/Pioneers";
 import LatestNews from "@/src/components/home/card/LatestNews";
-import Donate from "@/src/components/ui/Donate";
+import Donate from "@/src/components/ui/donation/Donate";
 import VideoPlayer from "@/src/components/ui/VideoPlayer";
 import ScrollableContent from "@/src/components/ui/TeachersCard";
 import { useUser } from "@/src/hooks/useUser";
@@ -29,7 +29,7 @@ import PdfViewer from "@/src/components/home/modals/PdfViewer";
 import { Authorities } from "@/src/components/layout/Authorities";
 import VideoBackground from "@/src/components/ui/VideoBackground";
 import Animator from "@/src/components/home/animations/Animator";
-import { API_BASE_URL } from "@/src/config/settings";
+import { API_BASE_URL, socket_base_url } from "@/src/config/settings";
 import { NextSeo } from "next-seo";
 import { Tooltip } from 'antd';
 import { FaArrowRightLong } from "react-icons/fa6";
@@ -40,6 +40,13 @@ import SvgOne from "@/src/components/home/svg/SvgOne";
 import SvgTwo from "@/src/components/home/svg/SvgTwo";
 import SvgThree from "@/src/components/home/svg/SvgThree";
 import { BiChevronRight } from "react-icons/bi";
+import ConfettiButton from "@/src/components/ui/ConfettiAnimation";
+import { sessionStorageFn } from "@/src/utils/fns/client";
+import { decrypt, encrypt } from "@/src/utils/fns/encryption";
+import DonationPaymentModal from "@/src/components/ui/donation/DonationPaymentModal";
+import { io } from "socket.io-client";
+import { useDonationListener, usePaymentSocketContext } from "@/src/hooks/paymentSocketContext";
+import ProcessingModal from "@/src/components/ui/donation/ProcessingModal";
 
 
 function Home() {
@@ -49,12 +56,29 @@ function Home() {
 
   const [showPdf, setShowPdf] = useState(false);
 
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [amount, setamountPaid] = useState(false);
+  const [referenceNumber, setReferenceNumber] = useState(false);
+  const [showProcessingModal, setShowProcessingModal] = useState(false);
+
+
+  const cancelPaymentModal = () => {
+    setIsPaymentModalOpen(false);
+  };
+
+  const gotoDonationForm = () => {
+    setIsPaymentModalOpen(false);
+    setShowDonatePopup(true);
+  }
+
   const financialFormPdfUrl = `${API_BASE_URL}/documents/uploads/documents/financial_form.pdf`;
+  const { lastDonation, isConnected } = usePaymentSocketContext();
 
   const handleDonateVisibility = () => {
-    setShowDonatePopup(true);
+      setShowDonatePopup(true);
   };
   useEffect(() => {
+
     if (showDonatePopup) {
       document.body.classList.add("no-scroll");
     } else {
@@ -107,10 +131,15 @@ function Home() {
               <Donate
                 setShowDonatePopup={setShowDonatePopup}
                 showDonatePopup={showDonatePopup}
+                setShowProcessingModal={setShowProcessingModal}
               />
             </div>
           </div>
         )}
+
+        {/* <DonationPaymentModal isPaymentModalOpen={isPaymentModalOpen} cancelPaymentModal={cancelPaymentModal} referenceNumber={referenceNumber} donationAmount={amount} /> */}
+
+        <ProcessingModal setShowProcessingModal={setShowProcessingModal} showProcessingModal={showProcessingModal} />
 
         <PdfViewer
           pdfUrl={financialFormPdfUrl}
@@ -182,6 +211,7 @@ function Home() {
             <MailingList />
           </div>
         </div>
+
 
         <div className="relative flex items-center flex-col gap-2 md:gap-12 md:flex-row px-6 h-[45rem] sm:px-12 xs:h-[45rem] sm:h-[30rem] w-full">
           <div className="relative w-full md:w-1/2 mt-14 h-fit max-sm:p-2">
@@ -591,7 +621,7 @@ function Home() {
               <Button
                 variant="solid"
                 type="primary"
-                onClick={() => setShowDonatePopup(true)}
+                onClick={handleDonateVisibility}
                 className="!p-4 !bg-[#030DFE] !font-bold md:text-xs !rounded-md !text-white"
               >
                 Donate Now

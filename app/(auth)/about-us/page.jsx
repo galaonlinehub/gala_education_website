@@ -4,7 +4,7 @@ import { Button, Card, Divider, Input, Modal, Typography, Tabs } from "antd";
 import { Segmented, ConfigProvider } from "antd";
 import Image from "next/image";
 import { IoMailOutline } from "react-icons/io5";
-import Donate from "@/src/components/ui/Donate";
+import Donate from "@/src/components/ui/donation/Donate";
 import FaqCard from "@/src/components/home/card/FaqCard";
 import { useTeamMembers } from "@/src/hooks/useTeamMembers";
 import { img_base_url } from "@/src/config/settings";
@@ -102,8 +102,6 @@ const AboutUs = () => {
 
     setIsModalOpen(true);
   };
-
-  console.log("data:", member);
 
   const handleCancel = () => {
     setIsModalOpen(false);
