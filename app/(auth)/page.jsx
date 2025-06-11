@@ -151,7 +151,7 @@ function Home() {
           </div>
         )}
 
-        <DonationPaymentModal isPaymentModalOpen={isPaymentModalOpen} cancelPaymentModal={cancelPaymentModal} referenceNumber={referenceNumber} donationAmount={amount} />
+        {/* <DonationPaymentModal isPaymentModalOpen={isPaymentModalOpen} cancelPaymentModal={cancelPaymentModal} referenceNumber={referenceNumber} donationAmount={amount} /> */}
 
         <ProcessingModal setShowProcessingModal={setShowProcessingModal} showProcessingModal={showProcessingModal} />
 
@@ -633,7 +633,6 @@ function Home() {
           <Animator delay={0.4}>
             <div className="py-8">
               <Button
-              disabled
                 variant="solid"
                 type="primary"
                 onClick={handleDonateVisibility}

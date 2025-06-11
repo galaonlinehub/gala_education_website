@@ -6,11 +6,12 @@ import PaymentLoadingAnimation from './PaymentLoadingAnimation';
 import { RenderReferenceState } from '../auth/signup/PaymentStatus';
 import { sessionStorageFn } from '@/src/utils/fns/client';
 import { decrypt } from '@/src/utils/fns/encryption';
-
+import DonationSuccess from './DonationSuccess';
+import PaymentFailedAnimation from './DonationFailed';
 
 const ProcessingModal = ({ setShowProcessingModal, showProcessingModal }) => {
-
-    const [showReferenceBanner, setShowReferenceBanner] = useState(null);
+    // Use more descriptive state name and enum-like values
+    const [paymentState, setPaymentState] = useState('LOADING'); // 'LOADING', 'PENDING', 'SUCCESS'
 
     const payment_reference = sessionStorageFn.get("payment_reference");
     const amount_paid = sessionStorageFn.get("amount_paid");
@@ -23,16 +24,59 @@ const ProcessingModal = ({ setShowProcessingModal, showProcessingModal }) => {
         console.log("Message from socket here:", paymentMsg);
 
         if (paymentMsg.status === PaymentStatus.SUCCESS) {
-            setShowReferenceBanner(false);
-
+            setPaymentState('SUCCESS');
         } else if (paymentMsg.status === PaymentStatus.PENDING) {
-            setShowReferenceBanner(true);
+            setPaymentState('PENDING');
+        } else if (paymentMsg.status === PaymentStatus.FAILURE) {
+            setPaymentState('FAILURE');
         }
+
     });
+
+    const renderContent = () => {
+        switch (paymentState) {
+            case 'LOADING':
+                return <PaymentLoadingAnimation />;
+            case 'PENDING':
+                return (
+                    <RenderReferenceState reference={paymentReference} amount={amount} donation={true} onClose={() => {
+                        setShowProcessingModal(false);
+                        setPaymentState('LOADING');
+                    }} />
+                );
+            case 'SUCCESS':
+                return <DonationSuccess setCloseSuccessModal={() => {
+                    setShowProcessingModal(false);
+                    setPaymentState('LOADING');
+                }} />;
+            case 'FAILURE':
+                return <PaymentFailedAnimation setCloseSuccessModal={() => {
+                    setShowProcessingModal(false);
+                    setPaymentState('LOADING');
+                }} />;
+            default:
+                return <PaymentLoadingAnimation />;
+        }
+    };
 
     return (
         <Modal
-            title={<div className='w-full justify-center text-red-500 flex'>Pending Transaction</div>}
+            styles={{
+                content: {
+                    backgroundColor: 'transparent',
+                    boxShadow: 'none',
+                    padding: 0
+                },
+                body: {
+                    backgroundColor: 'white',
+                    padding: 0
+                }
+            }}
+            style={{
+                borderRadius: '30px',
+                overflow: 'hidden',
+                width: 'clamp(90%, 500px, 90vw)',
+            }}
             open={showProcessingModal}
             mask={true}
             closable={false}
@@ -40,10 +84,9 @@ const ProcessingModal = ({ setShowProcessingModal, showProcessingModal }) => {
             onCancel={() => setShowProcessingModal(false)}
             footer={null}
             centered
-            width={500}
         >
-            <div className='w-full flex'>
-                {showReferenceBanner == null ? <PaymentLoadingAnimation /> : <RenderReferenceState reference={paymentReference} amount={amount} donation={true} />}
+            <div className='w-full items-center p-2 justify-center flex'>
+                {renderContent()}
             </div>
         </Modal>
     );

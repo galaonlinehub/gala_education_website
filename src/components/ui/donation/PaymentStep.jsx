@@ -265,7 +265,6 @@ const PaymentStep = ({
           >
             Complete Donation
           </Button>
-          <ConfettiButton />
         </div>
       </Form>
     </div>
