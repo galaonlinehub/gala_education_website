@@ -30,7 +30,7 @@ const MobileSideBar = ({ isOpen, onClose }) => {
                     `${img_base_url + user?.profile_picture}`
                   }
                   icon={<LuUser className="text-black" />}
-                  onClick={() => { user?.role === 'instructor' ? router.push('/instructor/profile') : router.push('/student/profile'); onClose()}}
+                  onClick={() => {router.push(`/${user?.role}/profile`); onClose()}}
                 />
               </div>
               <div className="flex flex-col">
