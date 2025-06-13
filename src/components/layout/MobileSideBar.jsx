@@ -7,12 +7,14 @@ import { img_base_url } from "@/src/config/settings";
 import { LuX, LuUser, LuLogOut, LuLoaderCircle } from "react-icons/lu";
 import { usePathname, useSearchParams } from "next/navigation";
 import { links } from "@/src/utils/data/redirect";
+import { useRouter } from "next/navigation";
 
 const { Text } = Typography;
 
 const MobileSideBar = ({ isOpen, onClose }) => {
   const { user } = useUser();
   const currentUrl = usePathname();
+  const router = useRouter();
 
   return (
     <>
@@ -20,14 +22,17 @@ const MobileSideBar = ({ isOpen, onClose }) => {
         title={
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-3">
-              <Avatar
-                size={54}
-                src={
-                  user?.profile_picture &&
-                  `${img_base_url + user?.profile_picture}`
-                }
-                icon={<LuUser className="text-black" />}
-              />
+              <div className=" border-2 border-gray-500 rounded-full">
+                <Avatar
+                  size={54}
+                  src={
+                    user?.profile_picture &&
+                    `${img_base_url + user?.profile_picture}`
+                  }
+                  icon={<LuUser className="text-black" />}
+                  onClick={() => { user?.role === 'instructor' ? router.push('/instructor/profile') : router.push('/student/profile'); onClose()}}
+                />
+              </div>
               <div className="flex flex-col">
                 <Text className="text-base font-black">
                   {user?.first_name} {user?.last_name}
@@ -54,12 +59,11 @@ const MobileSideBar = ({ isOpen, onClose }) => {
             <li key={i}>
               <Link
                 href={`/${user?.role}/${item.link}`}
-                className={`flex items-center gap-4 py-2 px-2 rounded-lg transition-colors ${
-                  currentUrl.replace(/\/$/, "") ===
+                className={`flex items-center gap-4 py-2 px-2 rounded-lg transition-colors ${currentUrl.replace(/\/$/, "") ===
                   `/student${item.link === "." ? "" : `/${item.link}`}`
-                    ? "bg-[#001840] text-white"
-                    : "hover:bg-blue-950/20 hover:text-black"
-                }`}
+                  ? "bg-[#001840] text-white"
+                  : "hover:bg-blue-950/20 hover:text-black"
+                  }`}
                 // onClick={() => isMobile && setIsSidebarOpen(false)}
                 onClick={onClose}
               >
