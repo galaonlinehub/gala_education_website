@@ -1,3 +1,4 @@
+import { RobotFilled } from "@ant-design/icons";
 import {
   LuBox,
   LuLayoutDashboard,
@@ -6,6 +7,7 @@ import {
   LuTv,
   LuUsers,
   LuClock4,
+  LuBrain,
 } from "react-icons/lu";
 
 export const footer_links = {
@@ -112,16 +114,15 @@ export const teacher_links = [
     icon: <LuUsers />,
   },
 
-  // {
-  //   name: "Assignments",
-  //   link: "assignments",
-  //   icon: <LuListChecks />,
-  // },
-
   {
     name: "Subscriptions",
     link: "subscriptions",
     icon: <LuBox />,
+  },
+  {
+    name: "GalaAI",
+    link: "ai",
+    icon: <LuBrain />,
   },
 ];
 
@@ -158,5 +159,11 @@ export const student_links = [
     name: "Subscriptions",
     link: "subscriptions",
     icon: <LuBox />,
+  },
+
+  {
+    name: "GalaAI",
+    link: "ai",
+    icon: <LuBrain />,
   },
 ];

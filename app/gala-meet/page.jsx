@@ -17,14 +17,12 @@ const VideoConference = () => {
   const appId = JITSI_API_KEY;
   const searchParams = useSearchParams();
 
-
   const userName = searchParams.get('name');
   const userEmail = searchParams.get('email');
   const jwtToken = sessionStorageFn.get('lessonToken');
   const isModerator = sessionStorageFn.get('isModerator');
   const lessonId = sessionStorageFn.get('lessonId');
   const room = sessionStorageFn.get('roomName');
-
 
   const decryptedUserName = decrypt(userName);
   const decryptedUserEmail = decrypt(userEmail);
@@ -35,11 +33,9 @@ const VideoConference = () => {
 
   console.log("roomname:..", decryptedRoomName)
 
-
   const handleSendLessonId = (lessonId) => {
     apiPost('/complete-lesson', { 'lesson_id': lessonId });
   }
-
 
   return (
     <div className="w-screen h-screen p-4">
@@ -59,17 +55,18 @@ const VideoConference = () => {
             disableLocalVideoFlip: true,
             backgroundAlpha: 0.5,
 
-            // Logo configuration (config.js options)
-            defaultLogoUrl: '/gala_logo.png', // Your logo file in public folder
+
             toolbarButtons: [
-              'microphone', 'camera', 'closedcaptions', 'desktop',
+              'microphone', 'whiteboard', 'camera', 'closedcaptions', 'desktop',
               'fullscreen', 'fodeviceselection', 'hangup', 'profile',
               'chat', 'recording', 'livestreaming', 'etherpad',
               'sharedvideo', 'settings', 'raisehand', 'videoquality',
               'filmstrip', 'feedback', 'stats', 'shortcuts',
               'tileview', 'select-background', 'download', 'help',
-              'mute-everyone', 'security', 'whiteboard'
-            ]
+              'mute-everyone',
+            ],
+
+
           }}
           interfaceConfigOverwrite={{
             DISABLE_JOIN_LEAVE_NOTIFICATIONS: true,
@@ -77,35 +74,28 @@ const VideoConference = () => {
             HIDE_INVITE_MORE_HEADER: true,
             VIDEO_LAYOUT_FIT: 'nocrop',
             TILE_VIEW_MAX_COLUMNS: 3,
-
-            // Brand watermark configuration
-            SHOW_BRAND_WATERMARK: true,
-            BRAND_WATERMARK_LINK: 'https://edu.galahub.org/', // Optional: URL when logo is clicked
-
-            // Welcome page logo (if prejoin is enabled)
-            DEFAULT_WELCOME_PAGE_LOGO_URL: '/gala_logo.png', // Place logo.svg in your public folder
-
-            // Jitsi watermark settings
-            SHOW_JITSI_WATERMARK: false, // Hide default Jitsi logo
-            JITSI_WATERMARK_LINK: '', // Remove default Jitsi link
-
-            TOOLBAR_BUTTONS: [
-              'microphone', 'camera', 'closedcaptions', 'desktop',
-              'fullscreen', 'fodeviceselection', 'hangup', 'profile',
-              'chat', 'recording', 'livestreaming', 'etherpad',
-              'sharedvideo', 'settings', 'raisehand', 'videoquality',
-              'filmstrip', 'feedback', 'stats', 'shortcuts',
-              'tileview', 'select-background', 'download', 'help',
-              'mute-everyone', 'security', 'whiteboard'
-            ]
+            // Ensure toolbar is visible
+            TOOLBAR_ALWAYS_VISIBLE: false,
+            TOOLBAR_TIMEOUT: 4000,
           }}
+
           userInfo={{
             displayName: decryptedUserName,
             email: decryptedUserEmail,
+            // Ensure user has moderator privileges to access whiteboard
+            moderator: decryptedModerator === 'true' || user?.role === 'instructor'
           }}
+
           onApiReady={(externalApi) => {
-            // Store API reference if needed
             console.log('Jitsi Meet API ready');
+
+            // Check if whiteboard is available
+            externalApi.addListener('toolbarButtonClicked', ({ key }) => {
+              console.log(`Toolbar button clicked: ${key}`);
+              if (key === 'whiteboard') {
+                console.log('Whiteboard button clicked');
+              }
+            });
 
             externalApi.addListener('participantJoined', (participant) => {
               notificationService.info({
@@ -113,7 +103,6 @@ const VideoConference = () => {
                 description: `${participant} joined the lesson meeting!`,
                 duration: 3,
                 position: "topRight",
- 
               });
             });
 
@@ -124,7 +113,13 @@ const VideoConference = () => {
                 router.replace('/student/live-lessons');
               }
             });
+
+            // Force toolbar to show (optional)
+            setTimeout(() => {
+              externalApi.executeCommand('toggleToolbox');
+            }, 1000);
           }}
+
           getIFrameRef={(iframeRef) => {
             if (iframeRef) {
               iframeRef.style.height = '100%';
