@@ -86,18 +86,18 @@ The system uses data-driven approaches to ensure no student is left behind, whil
                             <LuBrain className="text-white text-2xl" />
                         </div>
                         <p className="max-w-xl px-4 text-sm md:text-lg font-semibold">
-                            We're building something special —{" "}
+                            We&apos;re building something special —{" "}
                             <span className="text-purple-600 font-bold">GalaAI</span> — an
                             intelligent assistant designed to help you learn faster, think
                             deeper, and get things done smarter.
                         </p>
                         <p className="max-w-xl px-4 mt-4 text-xs md:text-sm text-gray-600">
-                            While it's not quite ready to launch just yet, we're working hard
+                            While it&apos;s not quite ready to launch just yet, we&apos;re working hard
                             behind the scenes to bring you a next-generation AI experience
-                            that's worth the wait.
+                            that&apos;s worth the wait.
                         </p>
                         <div className="text-sm md:text-lg mt-4 font-medium text-gray-900">
-                            It’s coming. <span className="text-gray-500">Not today. Not tomorrow.</span><br />
+                            It&apos;s coming. <span className="text-gray-500">Not today. Not tomorrow.</span><br />
                             <span className="text-purple-600 font-semibold">But soon enough to get excited.</span>
                         </div>
                         <p className="mt-8 text-xs md:text-sm text-gray-500">
