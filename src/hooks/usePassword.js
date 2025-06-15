@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { sessionStorageFn } from "@/src/utils/fns/client";
 import { useDevice } from "@/src/hooks/useDevice";
 import { encrypt } from "@/src/utils/fns/encryption";
-import { apiPost } from "@/src/services/api_service";
+import { apiPost } from "@/src/services/api/api_service";
 import { useForm } from "react-hook-form";
 import { RESET_PASSWORD_EMAIL_KEY } from "../config/settings";
 import { message } from "antd";
@@ -167,6 +167,6 @@ export const usePassword = () => {
     otpValues,
     resendCounter,
     otpRefs,
-    setOtpStatus
+    setOtpStatus,
   };
 };

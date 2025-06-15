@@ -1,7 +1,7 @@
-import { apiGet } from "@/src/services/api_service"
+import { apiGet } from "@/src/services/api/api_service";
 
-export const getAdminUsers = async()=>{
-    const {data} = await apiGet("/users")
-    
-    return data
-}
+export const getAdminUsers = async () => {
+  const { data } = await apiGet("/users");
+
+  return data;
+};

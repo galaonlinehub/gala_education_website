@@ -93,7 +93,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { decrypt } from "../utils/fns/encryption";
 import { api } from "../config/settings";
-import { apiGet } from "../services/api_service";
+import { apiGet } from "@/src/services/api/api_service";
 
 const useWebSocket = () => {
     const [socket, setSocket] = useState(null);

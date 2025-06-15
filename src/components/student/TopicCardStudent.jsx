@@ -1,20 +1,22 @@
 import React from "react";
 import { Card, Progress, Avatar, Tooltip, Skeleton } from "antd";
-import {
-  ExclamationCircleOutlined,
-} from "@ant-design/icons";
-import { LuChevronRight, LuListChecks, LuUsers } from "react-icons/lu";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
+import { LuChevronRight, LuListChecks, LuUser, LuUsers } from "react-icons/lu";
+import { img_base_url } from "@/src/config/settings";
 
 const TopicCard = ({ details }) => {
   return (
-    <Card key={details.id} className="!overflow-hidden group cursor-pointer hover:shadow-lg transition-shadow">
+    <Card
+      key={details.id}
+      className="!overflow-hidden group cursor-pointer hover:shadow-lg transition-shadow"
+    >
       <div className="text-xl font-black text-[#001840] group-hover:text-[#2563eb] transition-colors mb-2">
         {details.cohort_name}
       </div>
 
       <div className="flex justify-between items-start mb-3">
         <div className="max-w-[70%]">
-          <p className="text-gray-600 text-[10px] mb-1">{details?.subject}</p>
+          <p className="text-gray-600 text-sm mb-1">{details?.subject}</p>
           <p className="text-gray-600 font-bold text-sm line-clamp-1">
             {details?.topic_name}
           </p>
@@ -43,9 +45,19 @@ const TopicCard = ({ details }) => {
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <Avatar
-              className="!bg-transparent/90"
-              src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${details.instructor}`}
+              className="bg-transparent/90"
+              src={
+                details.instructor_profile_picture
+                  ? `${img_base_url}${details.instructor_profile_picture}`
+                  : undefined
+              }
+              icon={
+                !details.instructor_profile_picture ? (
+                  <LuUser className="w-5 h-5 text-gray-500" />
+                ) : undefined
+              }
             />
+
             <span className="text-sm font-medium line-clamp-1 capitalize">
               {details.instructor_name}
             </span>

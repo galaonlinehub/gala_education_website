@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import notificationService from "../ui/notification/Notification";
-import { api } from "@/src/services/api_service";
+import { api } from "@/src/services/api/api_service";
 
 const NetworkMonitor = () => {
   useEffect(() => {
@@ -45,7 +45,7 @@ const NetworkMonitor = () => {
             "Your internet connection is unstable. Some features may not work properly.",
           duration: null,
           position: "top",
-          customStyle: { },
+          customStyle: {},
         });
       } else if (quality === "moderate" && prevQuality === "weak") {
         notificationService.info({
@@ -53,7 +53,7 @@ const NetworkMonitor = () => {
           description: "Your connection has improved to moderate speed.",
           duration: null,
           position: "top",
-          customStyle: { },
+          customStyle: {},
         });
       } else if (
         quality === "good" &&
@@ -64,7 +64,7 @@ const NetworkMonitor = () => {
           description: "Your internet connection is stable.",
           duration: null,
           position: "top",
-          customStyle: { },
+          customStyle: {},
         });
       } else if (prevQuality === "offline" && isOnline) {
         notificationService.success({
@@ -121,7 +121,7 @@ const NetworkMonitor = () => {
         });
 
         const latency = Date.now() - startTime;
-        console.log(latency, "this is latency")
+        console.log(latency, "this is latency");
         const newQuality =
           latency < 700 ? "good" : latency < 800 ? "moderate" : "weak";
         if (newQuality !== previousStatus.connectionQuality) {

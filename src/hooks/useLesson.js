@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { globalOptions } from "../config/tanstack";
-import { apiPost } from "../services/api_service";
+import { apiPost } from "@/src/services/api/api_service"
 
 
 export const useLesson = () => {

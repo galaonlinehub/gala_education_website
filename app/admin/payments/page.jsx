@@ -1,5 +1,5 @@
 "use client"
-import { apiGet } from '@/src/services/api_service';
+import { apiGet } from '@/src/services/api/api_service';
 import { customStyles } from '@/src/styles/admin/datatable/customStyles';
 import { paymentColumns } from '@/src/utils/data/columns/paymentColumns';
 import { useQuery } from '@tanstack/react-query';

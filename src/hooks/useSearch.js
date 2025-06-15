@@ -1,7 +1,7 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { apiGet } from "../services/api_service";
+import { apiGet } from "@/src/services/api/api_service";
 import { useNewClass } from "@/src/store/student/class";
 import { useSearchResult } from "../store/search_result";
 

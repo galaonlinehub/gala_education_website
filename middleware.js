@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { apiGet } from "./src/services/api_service";
+import { apiGet } from "@/src/services/api/api_service";
 import { USER_COOKIE_KEY } from "./src/config/settings";
 import { decrypt } from "./src/utils/fns/encryption";
 import { roleRedirects } from "@/src/utils/data/redirect";

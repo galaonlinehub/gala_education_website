@@ -31,7 +31,7 @@ import { useCohort } from "@/src/hooks/useCohort";
 import { LoadingOutlined } from "@ant-design/icons";
 import { weekOptions } from "@/src/utils/data/weekData";
 import notificationService from "@/src/components/ui/notification/Notification";
-import { apiGet } from "@/src/services/api_service";
+import { apiGet } from "@/src/services/api/api_service";
 import { useSubTopics } from "@/src/hooks/useSubTopics";
 import { useInstructorSubjects } from "@/src/hooks/useInstructorSubjects";
 import { RiCalendarScheduleLine } from "react-icons/ri";
@@ -109,7 +109,6 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
 
   const formData = watch();
 
- 
   const handleDrawerClose = useCallback(() => {
     const resetForm = () => {
       setSubtopicValues({});
