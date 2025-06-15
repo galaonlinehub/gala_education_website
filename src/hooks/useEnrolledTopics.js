@@ -41,12 +41,58 @@ export const useEnrolledTopics = (cohortId, instructor_id) => {
     isFetching: instructorDetailsLoading,
     isError: instructorDetailsError,
   } = useQuery({
-    queryKey: ["instructor-details", instructor_id],
+    queryKey: ["instructor-details", cohortId],
     queryFn: () =>
-      instructor_id
-        ? getInstructorDetails(instructor_id)
-        : Promise.resolve(null),
-    enabled: !!instructor_id,
+      cohortId ? getInstructorDetails(cohortId) : Promise.resolve(null),
+    enabled: !!cohortId,
+    ...globalOptions,
+  });
+
+  const {
+    data: classSyllabus,
+    isFetching: classSyllabusFetching,
+    isError: classSyllabusError,
+  } = useQuery({
+    queryKey: ["class-syllabus", cohortId],
+    queryFn: () =>
+      cohortId ? getClassSyllabus(cohortId) : Promise.resolve(null),
+    enabled: !!cohortId,
+    ...globalOptions,
+  });
+
+  const {
+    data: classSchedule,
+    isFetching: classScheduleFetching,
+    isError: classScheduleError,
+  } = useQuery({
+    queryKey: ["class-schedule", cohortId],
+    queryFn: () =>
+      cohortId ? getClassSchedule(cohortId) : Promise.resolve(null),
+    enabled: !!cohortId,
+    ...globalOptions,
+  });
+
+  const {
+    data: classMaterials,
+    isFetching: classMaterialsFetching,
+    isError: classMaterialsErrors,
+  } = useQuery({
+    queryKey: ["class-material", cohortId],
+    queryFn: () =>
+      cohortId ? getClassMaterials(cohortId) : Promise.resolve(null),
+    enabled: !!cohortId,
+    ...globalOptions,
+  });
+
+  const {
+    data: classAssigments,
+    isFetching: classAssigmentsFetching,
+    isError: classAssignmentsError,
+  } = useQuery({
+    queryKey: ["class-material", cohortId],
+    queryFn: () =>
+      cohortId ? getClassAssignment(cohortId) : Promise.resolve(null),
+    enabled: !!cohortId,
     ...globalOptions,
   });
 
@@ -70,6 +116,26 @@ export const useEnrolledTopics = (cohortId, instructor_id) => {
     instructorDetails,
     instructorDetailsLoading,
     instructorDetailsError,
+
+    //Class syllabus
+    classSyllabus,
+    classSyllabusFetching,
+    classSyllabusError,
+
+    //class schedule
+    classSchedule,
+    classScheduleFetching,
+    classScheduleError,
+
+    //class materials
+    classMaterials,
+    classMaterialsFetching,
+    classMaterialsErrors,
+
+    //class assignment
+    classAssigments,
+    classAssigmentsFetching,
+    classAssignmentsError,
   };
 };
 
@@ -84,9 +150,8 @@ const getCohortDetails = async (cohortId) => {
 };
 
 const getEnrolledSubjects = async () => {
-  return [];
   try {
-    const response = await apiGet("");
+    const response = await apiGet(`/user/subjects`);
     return response.data;
   } catch (e) {
     console.error(e);
@@ -94,12 +159,66 @@ const getEnrolledSubjects = async () => {
   }
 };
 
-const getInstructorDetails = async (id) => {
+const getInstructorDetails = async (cohortId) => {
   try {
-    const response = await apiGet(`instructor/${id}/details`);
+    const response = await apiGet(`cohort/${cohortId}/instructor`);
     return response.data;
   } catch (e) {
     console.error(e);
     throw e;
   }
 };
+
+const getClassSyllabus = async (cohortId) => {
+  try {
+    const response = await apiGet(`cohort/${cohortId}/syllabus`);
+    return response.data;
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+};
+
+const getClassSchedule = async (cohortId) => {
+  try {
+    const response = await apiGet(`cohort/${cohortId}/schedule`);
+    return response.data;
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+};
+const getClassMaterials = async (cohortId) => {
+  return [];
+  try {
+    const response = await apiGet(`cohort/${cohortId}/schedule`);
+    return response.data;
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+};
+
+
+const getClassAssignment = async (cohortId) => {
+  return [];
+  try {
+    const response = await apiGet(`cohort/${cohortId}/schedule`);
+    return response.data;
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+};
+
+
+// const getClassMaterials = async (cohortId) => {
+//   return [];
+//   try {
+//     const response = await apiGet(`cohort/${cohortId}/schedule`);
+//     return response.data;
+//   } catch (e) {
+//     console.error(e);
+//     throw e;
+//   }
+// };

@@ -1,4 +1,4 @@
-import { apiPost } from "@/src/services/api_service";
+import { apiPost } from "@/src/services/api/api_service";
 import {
   Card,
   Col,
