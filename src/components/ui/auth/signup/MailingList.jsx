@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Alert, Button, Checkbox, Input, message, Select } from "antd";
-import { apiPost } from "@/src/services/api_service";
+import { apiPost } from "@/src/services/api/api_service";
 import Animator from "@/src/components/home/animations/Animator";
 
 const MailingList = () => {
-
   const [alert, setAlert] = useState({
     show: false,
     type: null,
@@ -45,7 +44,7 @@ const MailingList = () => {
         });
       }
 
-        reset();
+      reset();
     } catch (e) {
       setAlert({
         show: true,
@@ -79,7 +78,6 @@ const MailingList = () => {
   };
 
   return (
-
     <form
       onSubmit={handleSubmit(onSubmit, onError)}
       className="bg-white px-6 py-4 md:w-[29rem] w-full mt-4  h-fit rounded-[15px]"
@@ -167,7 +165,8 @@ const MailingList = () => {
               {...register("phonenumber", {
                 required: "This field is mandatory.",
                 pattern: {
-                  value: /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/,
+                  value:
+                    /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/,
                   message: "Invalid Phone number",
                 },
               })}
@@ -288,7 +287,6 @@ const MailingList = () => {
         </div>
       </Animator>
     </form>
-
   );
 };
 

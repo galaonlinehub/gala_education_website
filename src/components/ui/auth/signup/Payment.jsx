@@ -9,7 +9,7 @@ import {
 import { decrypt } from "@/src/utils/fns/encryption";
 import { useTabNavigator } from "@/src/store/auth/signup";
 import { useMutation } from "@tanstack/react-query";
-import { apiPost } from "@/src/services/api_service";
+import { apiPost } from "@/src/services/api/api_service";
 import { PaymentStatus } from "@/src/config/settings";
 import { PaymentPending } from "./PaymentStatus";
 import io from "socket.io-client";
@@ -137,7 +137,7 @@ const MobilePay = () => {
     const socket = io(`${socket_base_url}payment`);
     if (!email) return;
     socket.on("connect", () => {
-      socket.emit("join", { email });
+      socket.emit("join", { id: email });
     });
 
     socket.on("paymentResponse", (msg) => {

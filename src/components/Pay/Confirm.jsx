@@ -26,7 +26,7 @@ export const ConfirmEnrollPay = () => {
     let isMounted = true;
 
     socket.on("connect", () => {
-      socket.emit("join", { email: user?.email });
+      socket.emit("join", { id: user?.email });
       console.log("connected successfully");
     });
 

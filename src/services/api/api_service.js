@@ -1,7 +1,7 @@
 import axios from "axios";
-import { decrypt } from "../utils/fns/encryption";
-import { API_BASE_URL, USER_COOKIE_KEY } from "../config/settings";
-import { cookieFn } from "../utils/fns/client";
+import { cookieFn } from "@/src/utils/fns/client";
+import { decrypt } from "@/src/utils/fns/encryption";
+import { API_BASE_URL, USER_COOKIE_KEY } from "@/src/config/settings";
 
 export const api = axios.create({
   baseURL: API_BASE_URL,

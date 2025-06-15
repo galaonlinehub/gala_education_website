@@ -1,6 +1,6 @@
 //Student sign up
 
-import { apiGet, apiPost } from "@/src/services/api_service";
+import { apiGet, apiPost } from "@/src/services/api/api_service";
 import { encrypt } from "@/src/utils/fns/encryption";
 import { useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";

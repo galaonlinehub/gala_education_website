@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { api } from "@/src/services/api_service";
+import { api } from "@/src/services/api/api_service";
 
 const useNetwork = () => {
   const [networkStatus, setNetworkStatus] = useState({
     isOnline: navigator.onLine,
-    connectionQuality: "unknown", 
+    connectionQuality: "unknown",
   });
 
   useEffect(() => {

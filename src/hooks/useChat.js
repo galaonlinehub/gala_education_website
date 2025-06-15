@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useMemo } from "react";
 import io from "socket.io-client";
-import { apiPost, apiGet, apiDelete } from "@/src/services/api_service";
+import { apiPost, apiGet, apiDelete } from "@/src/services/api/api_service";
 import { useUser } from "./useUser";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { cookieFn } from "../utils/fns/client";
@@ -8,10 +8,20 @@ import { socket_base_url, USER_COOKIE_KEY } from "../config/settings";
 import useChatStore from "../store/chat/chat";
 import { message } from "antd";
 import { decrypt } from "../utils/fns/encryption";
+import { EVENTS } from "../utils/data/events";
+import { MESSAGE_STATUSES } from "../utils/data/message";
+import {
+  handleMessageIdUpadate,
+  handleMessageStatusBatchUpdate,
+  handleMessageStatusUpdate,
+  handleNewMessage,
+  normalizedMessages,
+} from "../utils/fns/chat";
+import { format } from "date-fns";
 
 export const useChat = () => {
   const socketRef = useRef(null);
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState({});
   const {
     currentChatId,
     setCurrentChatId,
@@ -21,7 +31,7 @@ export const useChat = () => {
   } = useChatStore();
   const { user } = useUser();
   const [typingUsers, setTypingUsers] = useState([]);
-  const [messageStatuses, setMessageStatuses] = useState({});
+  const [messageReceipts, setMessageReceipts] = useState({});
   const [sidebarTyping, setSidebarTyping] = useState({});
   const [unreadCounts, setUnreadCounts] = useState({});
   const [chats, setChats] = useState([]);
@@ -51,92 +61,40 @@ export const useChat = () => {
       },
     });
 
-    socketRef.current.on("user_online", (user_id) => {
+    socketRef.current.on(EVENTS.USER_ONLINE, (user_id) => {
       setOnlineUsers((prev) => [...new Set([...prev, user_id])]);
     });
 
-    socketRef.current.on("new_message", (message) => {
-      setMessages((prev) => {
-        if (prev.some((m) => m.id === message.message_id)) return prev;
-        return [
-          ...prev,
-          {
-            id: message.message_id,
-            chat_id: message.chat_id,
-            sender_id: message.sender_id,
-            content: message.content,
-            type: message.type || "text",
-            sent_at: message.sent_at,
-            sent_at_iso: message.sent_at_iso,
-            statuses: [],
-            isTemp: true,
-          },
-        ];
-      });
-
-      setChats((prevChats) => moveChatToTop(message.chat_id, prevChats));
+    socketRef.current.on(EVENTS.NEW_MESSAGE, (message) => {
+      handleNewMessage(message, setMessages, setChats);
     });
 
     socketRef.current.on(
-      "message_status_batch",
-      ({ user_id, message_ids, status }) => {
-        setMessageStatuses((prev) => {
-          const updated = { ...prev };
-
-          message_ids?.forEach((message_id) => {
-            updated[message_id] = {
-              ...(updated[message_id] || {}),
-              [user_id]: status,
-            };
-          });
-          return updated;
-        });
-
-        setMessages((prev) =>
-          prev.map((msg) => {
-            const shouldUpdate = message_ids?.includes(msg.id);
-            if (!shouldUpdate) return msg;
-
-            return {
-              ...msg,
-              statuses: [
-                ...msg.statuses.filter((s) => s.user_id !== user_id),
-                { user_id, status, message_id: msg.id },
-              ],
-            };
-          })
-        );
-      }
+      EVENTS.MESSAGE_STATUS_BATCH,
+      handleMessageStatusBatchUpdate(setMessages, setMessageReceipts)
     );
 
-    socketRef.current.on("message_id_updated", ({ old_id, new_id }) => {
-      setMessages((prev) =>
-        prev.map((msg) =>
-          msg.id == old_id ? { ...msg, id: new_id, isTemp: false } : msg
-        )
-      );
+    socketRef.current.on(
+      EVENTS.MESSAGE_ID_UPDATE,
+      handleMessageIdUpadate(setMessages, setMessageReceipts)
+    );
 
-      setMessageStatuses((prev) => {
-        const updated = { ...prev };
-        if (prev[old_id]) {
-          updated[new_id] = prev[old_id];
-          delete updated[old_id];
-        }
-        return updated;
-      });
-    });
+    socketRef.current.on(
+      EVENTS.MESSAGE_SENT,
+      handleMessageStatusUpdate(MESSAGE_STATUSES.SENT, setMessages)
+    );
 
-    socketRef.current.on("user_typing", ({ user_id }) => {
+    socketRef.current.on(EVENTS.USER_TYPING, ({ user_id }) => {
       setTypingUsers((prev) =>
         prev.includes(user_id) ? prev : [...prev, user_id]
       );
     });
 
-    socketRef.current.on("user_stop_typing", ({ user_id }) => {
+    socketRef.current.on(EVENTS.USER_STOP_TYPING, ({ user_id }) => {
       setTypingUsers((prev) => prev.filter((id) => id !== user_id));
     });
 
-    socketRef.current.on("sidebar_typing", ({ chat_id, user_id }) => {
+    socketRef.current.on(EVENTS.USER_SIDEBAR_TYPING, ({ chat_id, user_id }) => {
       setSidebarTyping((prev) => ({
         ...prev,
         [chat_id]: prev[chat_id]?.includes(user_id)
@@ -145,15 +103,18 @@ export const useChat = () => {
       }));
     });
 
-    socketRef.current.on("sidebar_stop_typing", ({ chat_id, user_id }) => {
-      setSidebarTyping((prev) => ({
-        ...prev,
-        [chat_id]: prev[chat_id]?.filter((id) => id !== user_id) || [],
-      }));
-    });
+    socketRef.current.on(
+      EVENTS.USER_SIDEBAR_STOP_TYPING,
+      ({ chat_id, user_id }) => {
+        setSidebarTyping((prev) => ({
+          ...prev,
+          [chat_id]: prev[chat_id]?.filter((id) => id !== user_id) || [],
+        }));
+      }
+    );
 
     socketRef.current.on(
-      "sidebar_new_message",
+      EVENTS.SIDEBAR_NEW_MESSAGE,
       ({ chat_id, message, unread_count }) => {
         setChats((p) =>
           p.map((c) => (c.id == chat_id ? { ...c, last_message: message } : c))
@@ -164,13 +125,13 @@ export const useChat = () => {
     );
 
     socketRef.current.on(
-      "sidebar_unread_reset",
+      EVENTS.SIDEBAR_UNREAD_RESET,
       ({ chat_id, unread_count }) => {
         setUnreadCounts((prev) => ({ ...prev, [chat_id]: unread_count }));
       }
     );
 
-    socketRef.current.on("user_offline", ({ user_id, last_active_at }) => {
+    socketRef.current.on(EVENTS.USER_OFFLINE, ({ user_id, last_active_at }) => {
       setOnlineUsers((prev) => prev.filter((id) => id !== user_id));
       setChats((prev) =>
         prev.map((chat) => {
@@ -242,14 +203,20 @@ export const useChat = () => {
       }
 
       const message = {
+        id: new Date().toISOString(),
         chat_id: chatId,
-        content,
         sender_id: user.id,
-        sent_at: new Date().toISOString(),
+        content,
+        type: "text",
+        sent_at: format(new Date().toISOString(), "HH:mm a").toLowerCase(),
+        sent_at_iso: new Date().toISOString(),
+        status: MESSAGE_STATUSES.SENDING,
+        statuses: [],
       };
 
-      socketRef.current.emit("send_message", message);
-      setChats((prevChats) => moveChatToTop(chatId, prevChats));
+      handleNewMessage(message, setMessages, setChats);
+      socketRef.current.emit(EVENTS.SEND_MESSAGE, message);
+      // setChats((prevChats) => moveChatToTop(chatId, prevChats));
 
       if (wasPreview) clearPreviewChat();
     } catch (error) {
@@ -303,6 +270,8 @@ export const useChat = () => {
     }
   }, [apiChats]);
 
+  console.log(apiChats, "THIS ARE API CHATS");
+
   const getChats = async () => {
     try {
       const res = await apiGet(`/chat/chats`);
@@ -317,39 +286,19 @@ export const useChat = () => {
       const getChatIds = () => chats.map((c) => c?.id).filter(Boolean);
       socketRef.current.emit("social", getChatIds());
     }
-  }, [chats, user.id]);
+  }, [chats]);
 
   useEffect(() => {
     if (!chat_messages) {
-      setMessages([]);
-      setMessageStatuses({});
+      setMessages({});
+      setMessageReceipts({});
       return;
     }
 
-    const normalizedMessages = chat_messages.map((msg) => ({
-      id: msg.id,
-      chat_id: msg.chat_id,
-      sender_id: msg.sender_id,
-      content: msg.content,
-      type: msg.type,
-      sent_at: msg.sent_at,
-      sent_at_iso: msg.created_at,
-      statuses: msg.statuses || [],
-      sender: msg.sender,
-    }));
+    const normalized = normalizedMessages(chat_messages);
+    setMessages(normalized);
 
-    setMessages(normalizedMessages);
-
-    // setMessages((prev) => {
-    //   // const merged = [normalizedMessages];
-    //   prev.forEach((socketMsg) => {
-    //     if (!normalizedMessages.some((m) => m.id === socketMsg.id))
-    //       normalizedMessages.push(socketMsg);
-    //   });
-    //   return normalizedMessages;
-    // });
-
-    const initialStatuses = normalizedMessages.reduce((acc, message) => {
+    const initialStatuses = Object.values(normalized).reduce((acc, message) => {
       if (message.statuses?.length > 0) {
         acc[message.id] = message.statuses.reduce((statusAcc, status) => {
           statusAcc[status.user_id] = status.status;
@@ -358,7 +307,7 @@ export const useChat = () => {
       }
       return acc;
     }, {});
-    setMessageStatuses((prev) => ({ ...prev, ...initialStatuses }));
+    setMessageReceipts((prev) => ({ ...prev, ...initialStatuses }));
   }, [chat_messages]);
 
   useEffect(() => {
@@ -405,16 +354,6 @@ export const useChat = () => {
     })),
   });
 
-  const moveChatToTop = (chatId, chats) => {
-    const index = chats.findIndex((c) => c.id === chatId);
-    if (index === -1) return chats;
-
-    const chat = chats[index];
-    const updated = [...chats];
-    updated.splice(index, 1);
-    return [chat, ...updated];
-  };
-
   const getOnlineUsersFromChats = (chats) => {
     if (!chats || !Array.isArray(chats)) return [];
     console.log("Getting online users from chats", chats);
@@ -442,7 +381,7 @@ export const useChat = () => {
     unreadCounts,
     isFetchingChatMessages,
     messages,
-    messageStatuses,
+    messageReceipts,
     markMessageAsRead,
     onlineUsers,
   };
