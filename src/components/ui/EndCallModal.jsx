@@ -76,7 +76,7 @@ const EndCallModal = ({
                   Important Note
                 </Text>
                 <Text className="text-sm text-amber-700">
-                  Once you leave, you'll be autmatically ending the lesson and marking it as completed.
+                  Once you leave, you&apos;ll be autmatically ending the lesson and marking it as completed.
                 </Text>
               </div>
             </div>
