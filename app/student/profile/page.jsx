@@ -380,7 +380,7 @@ const StudentProfile = () => {
                       <LuMail /> <span>Email</span>
                     </div>
                   </div>
-                  <div className="pl-6 font-medium">{user?.email}</div>
+                  <div className="pl-6 font-medium truncate">{user?.email}</div>
                 </div>
 
                 <div className="group">

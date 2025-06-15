@@ -82,58 +82,60 @@ export default function TeacherClasses() {
   };
 
   const columns = [
-    {
-      title: "Class",
-      dataIndex: "class",
-      key: "subject",
-      render: (text) => <Text strong>{text}</Text>,
-    },
-    {
-      title: "Start Date",
-      dataIndex: "startDate",
-      key: "startDate",
-      render: (date) => (
-        <Space>
-          <IoCalendarClearSharp color="green" />
-
-          {date}
-        </Space>
-      ),
-    },
-    {
-      title: "End Date",
-      dataIndex: "endDate",
-      key: "endDate",
-      render: (date) => (
-        <Space>
-          <IoCalendarClearSharp color="red" />
-
-          {date}
-        </Space>
-      ),
-    },
-    {
-      title: "Students",
-      dataIndex: "students",
-      key: "students",
-      render: (count) => (
-        <Space>
-          <LuUsers />
-          {count}
-        </Space>
-      ),
-    },
-    {
-      title: "Action",
-      key: "action",
-
-      render: (_, record) => (
-        <Button type="link" onClick={() => gotoCohortDetails(record.cohortId)}>
-          View Details
-        </Button>
-      ),
-    },
-  ];
+  {
+    title: "Class",
+    dataIndex: "class",
+    key: "subject",
+    width: 250, // Remove the "25%" and use fixed pixel width
+    render: (text) => <Text strong>{text}</Text>,
+  },
+  {
+    title: "Start Date",
+    dataIndex: "startDate",
+    key: "startDate",
+    width: 140,
+    render: (date) => (
+      <Space>
+        <IoCalendarClearSharp color="green" />
+        {date}
+      </Space>
+    ),
+  },
+  {
+    title: "End Date",
+    dataIndex: "endDate",
+    key: "endDate",
+    width: 140,
+    render: (date) => (
+      <Space>
+        <IoCalendarClearSharp color="red" />
+        {date}
+      </Space>
+    ),
+  },
+  {
+    title: "Students",
+    dataIndex: "students",
+    key: "students",
+    width: 100,
+    render: (count) => (
+      <Space>
+        <LuUsers />
+        {count}
+      </Space>
+    ),
+  },
+  {
+    title: "Action",
+    key: "action",
+    width: 120,
+    render: (_, record) => (
+      <Button type="link" onClick={() => gotoCohortDetails(record.cohortId)}>
+        View Details
+      </Button>
+    ),
+  }
+];
 
   const handleOtpChange = (index, value) => {
     if (!/^\d*$/.test(value)) return;
@@ -173,27 +175,24 @@ export default function TeacherClasses() {
   };
 
   // // Responsive column settings
-  const getResponsiveColumns = () => {
-    if (device?.type === "mobile") {
-      return columns.map((col) => ({
-        ...col,
-        render: (text, record) => {
-          if (col.key === "action") {
-            return (
-              <Button
-                type="link"
-                onClick={() => gotoCohortDetails(record.cohortId)}
-              >
-                View Details
-              </Button>
-            );
-          }
-          return col.render ? col.render(text, record) : text;
-        },
-      }));
-    }
-    return columns;
-  };
+ const getResponsiveColumns = () => {
+  if (device?.type === "mobile") {
+    return columns.map((col) => ({
+      ...col, // This preserves the width property
+      render: (text, record) => {
+        if (col.key === "action") {
+          return (
+            <Button type="link" onClick={() => gotoCohortDetails(record.cohortId)}>
+              View Details
+            </Button>
+          );
+        }
+        return col.render ? col.render(text, record) : text;
+      },
+    }));
+  }
+  return columns;
+};
 
   // Mobile-friendly table settings
   const getTableSettings = () => ({
@@ -214,9 +213,8 @@ export default function TeacherClasses() {
       <Layout className=" bg-white">
         <Content className="p-3 md:p-6">
           <div
-            className={`space-y-4 md:space-y-6 ${
-              !isProfileCompleted ? "pointer-events-none opacity-30" : ""
-            }`}
+            className={`space-y-4 md:space-y-6 ${!isProfileCompleted ? "pointer-events-none opacity-30" : ""
+              }`}
           >
             <Card>
               <Row align="middle" justify="space-between" gutter={[16, 16]}>
@@ -360,11 +358,7 @@ export default function TeacherClasses() {
                     <TableSkeleton />
                   ) : (
                     <div className="overflow-x-auto">
-                      <Table
-                        columns={getResponsiveColumns()}
-                        dataSource={InstructorCohorts}
-                        {...getTableSettings()}
-                      />
+                      <Table columns={getResponsiveColumns()} dataSource={InstructorCohorts} {...getTableSettings()} />
                     </div>
                   )}
                 </Card>

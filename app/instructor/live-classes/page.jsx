@@ -51,9 +51,10 @@ const ClassCard = ({ classData }) => {
     sessionStorageFn.set("lessonToken", encryptedLesssonToken);
     sessionStorageFn.set("isModerator", encryptedModeratorvalue);
     sessionStorageFn.set("lessonId", encryptedLessonId);
+    sessionStorageFn.set("roomName", encryptedRoomName);
 
     
-    router.push(`/gala-meet?room=${encryptedRoomName}&name=${encryptedUserName}&email=${encryptedUserEmail}`);
+    router.push(`/gala-meet?room=${encryptedLessonId}&name=${encryptedUserName}&email=${encryptedUserEmail}`);
 
     setIsModalOpen(false);
 

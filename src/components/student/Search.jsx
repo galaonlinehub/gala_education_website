@@ -221,7 +221,7 @@ const StudentSearch = () => {
           ) : (
             <Clock />
           )}
-          <div className="lg:flex items-center justify-center gap-8 hidden">
+          <div className="md:flex items-center justify-center gap-8 hidden">
             {user?.role === "student" && <Clock />}
             <div className="flex items-center gap-3">
               <Updates>
@@ -230,12 +230,14 @@ const StudentSearch = () => {
                 </Tooltip>
               </Updates>
 
-              <Tooltip placement="top" title="My Profile">
-                <LuCircleUser
-                  className="text-xl text-black hover:text-blue-600 cursor-pointer transition-colors"
-                  onClick={() => router.push(`/${user.role}/profile`)}
-                />
-              </Tooltip>
+            
+                <Tooltip placement="top" title="My Profile">
+                  <LuCircleUser
+                    className="text-xl text-black hover:text-blue-600 cursor-pointer transition-colors"
+                    onClick={() => router.push(`/${user.role}/profile`)}
+                  />
+                </Tooltip>
+
             </div>
           </div>
         </div>

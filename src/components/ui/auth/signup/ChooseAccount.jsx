@@ -6,8 +6,9 @@ import React from "react";
 import { usePathname } from "next/navigation";
 import { FaChalkboardTeacher } from "react-icons/fa";
 import { PiStudentBold } from "react-icons/pi";
+import { FaArrowRightLong } from "react-icons/fa6";
 
-const ChooseAccount = () => {
+const ChooseAccount = ({ btnText, textColor, btnIcon, btnClassname, placement , trigger }) => {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -52,25 +53,27 @@ const ChooseAccount = () => {
     <section>
       <Dropdown
         menu={{ items }}
-        placement="bottom"
+        placement={placement}
         disabled={isDisabled}
-        overlayClassName="rounded-md shadow-lg border border-gray-100"
-        trigger={["hover"]}
+        // overlayClassName="rounded-md shadow-lg border border-gray-100"
+        trigger={[trigger]}
         arrow={true}
       >
-        <button
-          className={`text-black transition-all ${
-            isDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
-          }`}
-          onClick={(e) => {
-            if (isDisabled) {
-              e.preventDefault();
-              return;
-            }
-          }}
-        >
-          <span>Sign Up</span>
-        </button>
+        <div className={`flex ${btnClassname} gap-2 items-center`}>
+          {btnIcon}
+          <button
+            className={`text-black transition-all ${isDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+              }`}
+            onClick={(e) => {
+              if (isDisabled) {
+                e.preventDefault();
+                return;
+              }
+            }}
+          >
+            <span className={`text-${textColor}`}>{btnText}</span>
+          </button>
+        </div>
       </Dropdown>
     </section>
   );

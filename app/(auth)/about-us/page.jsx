@@ -4,12 +4,13 @@ import { Button, Card, Divider, Input, Modal, Typography, Tabs } from "antd";
 import { Segmented, ConfigProvider } from "antd";
 import Image from "next/image";
 import { IoMailOutline } from "react-icons/io5";
-import Donate from "@/src/components/ui/Donate";
+import Donate from "@/src/components/ui/donation/Donate";
 import FaqCard from "@/src/components/home/card/FaqCard";
 import { useTeamMembers } from "@/src/hooks/useTeamMembers";
 import { img_base_url } from "@/src/config/settings";
 import MultipleProfileSkeletons from '@/src/components/home/card/ProfileCardSkeleton';
 import Footer from "@/src/components/layout/footer";
+import ProcessingModal from "@/src/components/ui/donation/ProcessingModal";
 
 
 const { Text } = Typography;
@@ -36,8 +37,9 @@ const AboutUs = () => {
 
   const [selectedLDValue, setSelectedLDValue] = useState("Executive Team");
   const [selectedWEValue, setSelectedWEValue] = useState("System");
-  const [selecteContactsValue, setSelectedConatctsValue] =
-    useState("Contact Us");
+  const [selecteContactsValue, setSelectedConatctsValue] = useState("Contact Us");
+
+  const [showProcessingModal, setShowProcessingModal] = useState(false);
 
   const [showDonatePop, setShowDonatePop] = useState(false);
 
@@ -102,8 +104,6 @@ const AboutUs = () => {
 
     setIsModalOpen(true);
   };
-
-  console.log("data:", member);
 
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -714,10 +714,14 @@ const AboutUs = () => {
               <Donate
                 setShowDonatePopup={setShowDonatePop}
                 showDonatePopup={showDonatePop}
+                setShowProcessingModal={setShowProcessingModal}
               />
             </div>
           </div>
         )}
+
+        <ProcessingModal setShowProcessingModal={setShowProcessingModal} showProcessingModal={showProcessingModal} />
+
       </div>
       <div className="w-full">
         <Footer />

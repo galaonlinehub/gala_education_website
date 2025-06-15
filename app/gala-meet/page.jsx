@@ -16,23 +16,25 @@ const VideoConference = () => {
   const appId = JITSI_API_KEY;
   const searchParams = useSearchParams();
 
-  const roomName = searchParams.get("room");
-  const userName = searchParams.get("name");
-  const userEmail = searchParams.get("email");
-  const jwtToken = sessionStorageFn.get("lessonToken");
-  const isModerator = sessionStorageFn.get("isModerator");
-  const lessonId = sessionStorageFn.get("lessonId");
+  const userName = searchParams.get('name');
+  const userEmail = searchParams.get('email');
+  const jwtToken = sessionStorageFn.get('lessonToken');
+  const isModerator = sessionStorageFn.get('isModerator');
+  const lessonId = sessionStorageFn.get('lessonId');
+  const room = sessionStorageFn.get('roomName');
 
-  const decryptedRoomName = decrypt(roomName);
   const decryptedUserName = decrypt(userName);
   const decryptedUserEmail = decrypt(userEmail);
   const decryptedJwtToken = decrypt(jwtToken);
+  const decryptedRoomName = decrypt(room);
   const decryptedModerator = decrypt(isModerator);
   const decryptedLessonId = decrypt(lessonId);
 
+  console.log("roomname:..", decryptedRoomName)
+
   const handleSendLessonId = (lessonId) => {
-    apiPost("/complete-lesson", { lesson_id: lessonId });
-  };
+    apiPost('/complete-lesson', { 'lesson_id': lessonId });
+  }
 
   return (
     <div className="w-screen h-screen p-4">
@@ -51,6 +53,19 @@ const VideoConference = () => {
             disableThirdPartyRequests: true,
             disableLocalVideoFlip: true,
             backgroundAlpha: 0.5,
+
+
+            toolbarButtons: [
+              'microphone', 'whiteboard', 'camera', 'closedcaptions', 'desktop',
+              'fullscreen', 'fodeviceselection', 'hangup', 'profile',
+              'chat', 'recording', 'livestreaming', 'etherpad',
+              'sharedvideo', 'settings', 'raisehand', 'videoquality',
+              'filmstrip', 'feedback', 'stats', 'shortcuts',
+              'tileview', 'select-background', 'download', 'help',
+              'mute-everyone',
+            ],
+
+
           }}
           interfaceConfigOverwrite={{
             DISABLE_JOIN_LEAVE_NOTIFICATIONS: true,
@@ -58,70 +73,59 @@ const VideoConference = () => {
             HIDE_INVITE_MORE_HEADER: true,
             VIDEO_LAYOUT_FIT: "nocrop",
             TILE_VIEW_MAX_COLUMNS: 3,
-            TOOLBAR_BUTTONS: [
-              "microphone",
-              "camera",
-              "closedcaptions",
-              "desktop",
-              "fullscreen",
-              "fodeviceselection",
-              "hangup",
-              "profile",
-              "chat",
-              "recording",
-              "livestreaming",
-              "etherpad",
-              "sharedvideo",
-              "settings",
-              "raisehand",
-              "videoquality",
-              "filmstrip",
-              "feedback",
-              "stats",
-              "shortcuts",
-              "tileview",
-              "select-background",
-              "download",
-              "help",
-              "mute-everyone",
-              "security",
-            ],
+            // Ensure toolbar is visible
+            TOOLBAR_ALWAYS_VISIBLE: false,
+            TOOLBAR_TIMEOUT: 4000,
           }}
+
           userInfo={{
             displayName: decryptedUserName,
             email: decryptedUserEmail,
+            // Ensure user has moderator privileges to access whiteboard
+            moderator: decryptedModerator === 'true' || user?.role === 'instructor'
           }}
-          onApiReady={(externalApi) => {
-            // Store API reference if needed
-            console.log("Jitsi Meet API ready");
 
-            externalApi.addListener("participantJoined", (participant) => {
+          onApiReady={(externalApi) => {
+            console.log('Jitsi Meet API ready');
+
+            // Check if whiteboard is available
+            externalApi.addListener('toolbarButtonClicked', ({ key }) => {
+              console.log(`Toolbar button clicked: ${key}`);
+              if (key === 'whiteboard') {
+                console.log('Whiteboard button clicked');
+              }
+            });
+
+            externalApi.addListener('participantJoined', (participant) => {
               notificationService.info({
                 message: "User joined",
                 description: `${participant} joined the lesson meeting!`,
-                duration: null,
+                duration: 3,
                 position: "topRight",
-                customStyle: {},
               });
             });
 
-            externalApi.addListener("videoConferenceLeft", () => {
-              // const response = handleSendLessonId(decryptedLessonId);
-              // console.log("response", response);
-              if (user?.role == "instructor") {
-                router.replace("/instructor/live-classes");
+            externalApi.addListener('videoConferenceLeft', () => {
+              if (user?.role == 'instructor') {
+                router.replace('/instructor/live-classes');
               } else {
-                router.replace("/student/live-lessons");
+                router.replace('/student/live-lessons');
               }
             });
+
+            // Force toolbar to show (optional)
+            setTimeout(() => {
+              externalApi.executeCommand('toggleToolbox');
+            }, 1000);
           }}
+
           getIFrameRef={(iframeRef) => {
             if (iframeRef) {
-              iframeRef.style.height = "100%";
-              iframeRef.style.width = "100%";
-              iframeRef.style.border = "none";
-              iframeRef.style.borderRadius = "12px";
-              iframeRef.style.overflow = "hidden";
+              iframeRef.style.height = '100%';
+              iframeRef.style.width = '100%';
+              iframeRef.style.border = 'none';
+              iframeRef.style.borderRadius = '12px';
+              iframeRef.style.overflow = 'hidden';
             }
           }}
         />
