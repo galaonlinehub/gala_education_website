@@ -7,14 +7,9 @@ import { HiCheckCircle } from "react-icons/hi2";
 import { IoIosCloseCircle } from "react-icons/io";
 import { decrypt } from "@/src/utils/fns/encryption";
 import Error from "../../error";
-import { apiPost } from "@/src/services/api_service";
+import { apiPost } from "@/src/services/api/api_service";
 import { sessionStorageFn } from "@/src/utils/fns/client";
-import {
-  LuEye,
-  LuEyeOff,
-  LuLoaderCircle,
-  LuLock,
-} from "react-icons/lu";
+import { LuEye, LuEyeOff, LuLoaderCircle, LuLock } from "react-icons/lu";
 import { RESET_PASSWORD_EMAIL_KEY } from "@/src/config/settings";
 
 const { Title, Text } = Typography;

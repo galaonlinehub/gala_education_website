@@ -5,7 +5,8 @@ import { USER_COOKIE_KEY } from "../config/settings";
 import { globalOptions } from "../config/tanstack";
 import { useRouter, usePathname } from "next/navigation";
 import { roleRedirects } from "../utils/data/redirect";
-import { apiPost, apiPut } from "../services/api_service";
+import {  apiPost, apiPut } from "@/src/services/api/api_service";
+
 
 export const useUser = () => {
   const router = useRouter();

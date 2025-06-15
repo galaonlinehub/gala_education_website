@@ -9,6 +9,8 @@ import {
   LuClock4,
   LuBrain,
 } from "react-icons/lu";
+import { TbHexagon } from "react-icons/tb";
+import { ThreeUsers } from "../vector-svg/ThreeUsersSvg";
 
 export const footer_links = {
   Services: [
@@ -117,7 +119,7 @@ export const teacher_links = [
   {
     name: "Subscriptions",
     link: "subscriptions",
-    icon: <LuBox />,
+    icon: <TbHexagon />,
   },
   {
     name: "GalaAI",
@@ -147,7 +149,7 @@ export const student_links = [
   {
     name: "Social",
     link: "social",
-    icon: <LuUsers />,
+    icon: <ThreeUsers />,
   },
   {
     name: "Awaiting",
@@ -158,7 +160,7 @@ export const student_links = [
   {
     name: "Subscriptions",
     link: "subscriptions",
-    icon: <LuBox />,
+    icon: <TbHexagon />,
   },
 
   {

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { globalOptions } from "../config/tanstack";
 import { useQuery } from "@tanstack/react-query";
 import { useEnrollMe } from "../store/student/useEnrollMe";
-import { apiGet } from "../services/api_service";
+import { apiGet } from "@/src/services/api/api_service";
 
 export const useEnroll = () => {
   const { enrollCohortId } = useEnrollMe();
