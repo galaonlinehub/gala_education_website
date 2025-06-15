@@ -43,13 +43,13 @@ const themes = {
     textColor: "white",
   },
   info: {
-    backgroundColor: "#1890ff",
+    backgroundColor: "#2E67F8",
     textColor: "white",
   },
 };
 
 const formatContent = (text, isMessage, textColor) => (
-  <span className={`text-${textColor} ${isMessage ? "text-sm" : "text-xs"}`}>
+  <span className={`text-${textColor} font-semibold ${isMessage ? "text-sm" : "text-xs"}`}>
     {text}
   </span>
 );
@@ -160,6 +160,7 @@ const notificationService = {
     message,
     description = "",
     duration = 3,
+    icon,
     closable = true,
     position = "top",
     customStyle = {},
@@ -180,7 +181,7 @@ const notificationService = {
       closable,
       duration,
       closeIcon: null,
-      icon: <LuBellRing />,
+      icon: icon,
     });
   },
 
