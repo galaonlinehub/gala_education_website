@@ -24,17 +24,33 @@ const AiChatInterface = () => {
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
-    const galaEducationResponse = `Gala Education represents a revolutionary approach to learning that transforms traditional educational paradigms through innovative technology and personalized learning experiences. At its core, Gala Education is designed to make learning more engaging, accessible, and effective by leveraging cutting-edge artificial intelligence and adaptive learning systems.
+    const galaEducationResponse = `A curriculum is a structured educational plan that outlines what students should learn, how they should learn it, and when they should learn it throughout their educational journey. It serves as a comprehensive framework that guides teaching and learning processes, encompassing not only the content to be taught but also the methods of instruction, assessment strategies, and the overall educational philosophy of an institution or educational system.
+    
+    At its core, a curriculum represents the totality of learning experiences provided to students. It includes the formal subjects and courses, the sequence in which they are presented, the teaching methodologies employed, the resources and materials used, and the evaluation methods applied to measure student progress. A well-designed curriculum aligns with educational goals and societal needs while considering the developmental stages and learning capabilities of students at different levels.
 
-The platform creates individualized learning pathways that adapt to each student's unique pace, learning style, and interests. What sets Gala Education apart is its commitment to democratizing quality education by breaking down geographical and economic barriers.
 
-Key features include:
-• Real-time & advanced learning mechanisms
-• Advanced analytics for progress tracking
-• Collaborative learning communities
-• Focus on critical thinking and digital literacy
+The curriculum serves multiple purposes in an educational system. It ensures consistency in educational delivery across different schools and regions, provides a roadmap for teachers to follow in their instruction, establishes standards for student achievement, and creates a framework for educational accountability. Additionally, it reflects the values, culture, and aspirations of a society, preparing students not only with academic knowledge but also with the skills and competencies needed to contribute meaningfully to their communities and the broader society.
 
-The system uses data-driven approaches to ensure no student is left behind, while fostering curious, confident, and capable learners who can thrive in our rapidly evolving world.`;
+Primary Education (Standards I-VII, ages 7-14):
+
+Focuses on building basic literacy and numeracy skills
+Covers core subjects: Kiswahili, English, Mathematics, Science, Social Studies, Civics, Geography, History
+Includes practical subjects: Agriculture, Arts and Crafts, Physical Education
+Uses progressive structure where each standard builds on the previous one
+
+Secondary Education - Two Levels:
+Ordinary Level (Forms I-IV, ages 14-18):
+
+Core subjects: Mathematics, English, Kiswahili, sciences (Biology, Chemistry, Physics), Geography, History, Civics
+Additional subjects: Computer Studies, Agriculture, Commerce, vocational subjects
+Culminates in Certificate of Secondary Education Examination (Form IV) that determines eligibility for further education
+
+Advanced Level (Forms V-VI):
+
+For students who completed ordinary level successfully
+Offers specialized, in-depth study in selected subject combinations
+Three main tracks: science combinations, arts combinations, commercial combinations
+Designed to prepare students for specific higher education pathways and university entrance`;
 
     const handleSubmit = () => {
         if (isStreaming) return;
@@ -45,8 +61,10 @@ The system uses data-driven approaches to ensure no student is left behind, whil
         let currentIndex = 0;
         const streamInterval = setInterval(() => {
             if (currentIndex < galaEducationResponse.length) {
-                setStreamedText(galaEducationResponse.substring(0, currentIndex + 1));
-                currentIndex++;
+                // Increase streaming speed by adding 3-5 characters at once
+                const chunkSize = Math.min(5, galaEducationResponse.length - currentIndex);
+                setStreamedText(galaEducationResponse.substring(0, currentIndex + chunkSize));
+                currentIndex += chunkSize;
 
                 if (contentRef.current) {
                     contentRef.current.scrollTop = contentRef.current.scrollHeight;
@@ -55,7 +73,7 @@ The system uses data-driven approaches to ensure no student is left behind, whil
                 clearInterval(streamInterval);
                 setIsStreaming(false);
             }
-        }, 30);
+        }, 5); // Reduced from 30ms to 5ms for super fast streaming
 
         streamingRef.current = streamInterval;
     };
@@ -110,7 +128,7 @@ The system uses data-driven approaches to ensure no student is left behind, whil
                         <div className="flex justify-end">
                             <div className="flex items-start gap-3 max-w-[85%]">
                                 <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-2xl rounded-tr-md shadow-lg order-2">
-                                    <p className="text-sm">What is Gala Education?</p>
+                                    <p className="text-sm">What is a curriculum?</p>
                                 </div>
                                 <div className="flex items-center justify-center w-8 h-8 bg-green-500 rounded-full flex-shrink-0 order-1">
                                     <UserOutlined className="text-white text-sm" />
@@ -141,7 +159,7 @@ The system uses data-driven approaches to ensure no student is left behind, whil
                 <div className="max-w-4xl mx-auto flex gap-3 items-center">
                     <textarea
                         readOnly
-                        value="What is Gala Education?"
+                        value="What is a curriculum?"
                         rows={2}
                         className="flex-1 p-3 border border-gray-300 rounded-xl resize-none cursor-not-allowed text-sm"
                     />
