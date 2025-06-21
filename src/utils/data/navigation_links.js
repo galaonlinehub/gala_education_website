@@ -149,7 +149,7 @@ export const student_links = [
   {
     name: "Social",
     link: "social",
-    icon: <ThreeUsers />,
+    icon: <LuUsers/>
   },
   {
     name: "Awaiting",

@@ -93,12 +93,12 @@ export default function TeacherLayout({ children }) {
         </div>
       </main>
 
-      {!isInstalled && installPrompt && (
+      {/* {!isInstalled && installPrompt && (
         <FloatingActionButton
           position="bottom-center"
           onClick={handleInstallClick}
         ></FloatingActionButton>
-      )}
+      )} */}
       <Subscribe />
       <InstructorCompleteProfile />
 

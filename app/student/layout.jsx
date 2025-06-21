@@ -108,12 +108,12 @@ export default function StudentLayout({ children }) {
         </div> 
       </main>
 
-      {!isInstalled && installPrompt && (
+      {/* {!isInstalled && installPrompt && (
         <FloatingActionButton
           position="bottom-center"
           onClick={handleInstallClick}
         ></FloatingActionButton>
-      )}
+      )} */}
 
       <NewClass />
       <CompleteProfile />

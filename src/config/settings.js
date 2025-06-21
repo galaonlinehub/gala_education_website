@@ -24,7 +24,8 @@ export const CURRENT_CHAT_KEY =
 export const USER_HAS_ACCEPTED_COOKIES_KEY =
   "1f17695c-c729-4300-9175-d9686b88cbc9";
 export const RESET_PASSWORD_EMAIL_KEY = "e4e70c35-1afa-4e04-9347-165d0050a908";
-export const JITSI_API_KEY = "vpaas-magic-cookie-c9d16b98edef4d1b82af5d11fc75293b";
+export const JITSI_API_KEY =
+  "vpaas-magic-cookie-c9d16b98edef4d1b82af5d11fc75293b";
 
 export const SUPPORT_EMAIL = "support@galahub.org";
 export const MAIN_EMAIL = "edu@galahub.org";
@@ -40,3 +41,5 @@ export const MAIN_URL = "https://edu.galahub.org";
 export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 export const img_base_url = process.env.NEXT_PUBLIC_IMAGE_BASE_URL;
 export const socket_base_url = process.env.NEXT_PUBLIC_SOCKET_BASE_URL;
+export const openai_api_key = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
+export const openai_base_url = process.env.NEXT_PUBLIC_OPENAI_BASE_URL;

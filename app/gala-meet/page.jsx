@@ -1,20 +1,18 @@
-
-'use client';
-import { JaaSMeeting } from '@jitsi/react-sdk';
-import { JITSI_API_KEY } from '@/src/config/settings';
-import { useSearchParams } from 'next/navigation';
-import { sessionStorageFn } from '@/src/utils/fns/client';
-import { decrypt } from '@/src/utils/fns/encryption';
-import notificationService from '@/src/components/ui/notification/Notification';
-import { useRouter } from 'next/navigation';
-import { useUser } from '@/src/hooks/useUser';
-import { apiPost } from '@/src/services/api/api_service';
-import { LuBell, LuBellRing, LuBrain } from 'react-icons/lu';
-import EndCallModal from '@/src/components/ui/EndCallModal';
-import { useState, useRef, useEffect } from 'react';
+"use client";
+import { JaaSMeeting } from "@jitsi/react-sdk";
+import { JITSI_API_KEY } from "@/src/config/settings";
+import { useSearchParams } from "next/navigation";
+import { sessionStorageFn } from "@/src/utils/fns/client";
+import { decrypt } from "@/src/utils/fns/encryption";
+import notificationService from "@/src/components/ui/notification/Notification";
+import { useRouter } from "next/navigation";
+import { useUser } from "@/src/hooks/useUser";
+import { apiPost } from "@/src/services/api/api_service";
+import { LuBellRing } from "react-icons/lu";
+import EndCallModal from "@/src/components/ui/EndCallModal";
+import { useState, useRef, useEffect } from "react";
 
 const VideoConference = () => {
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [pendingHangup, setPendingHangup] = useState(false);
   const externalApiRef = useRef(null);
@@ -111,54 +109,18 @@ const VideoConference = () => {
     };
   }, [pendingHangup]);
 
-  const handleEndCall = () => {
-    if (pendingHangup && externalApiRef.current) {
-      // Actually end the call now
-      externalApiRef.current.executeCommand('hangup');
-      setPendingHangup(false);
-    }
-
-    if (user?.role == 'instructor') {
-      router.replace('/instructor/live-classes');
-    } else {
-      router.replace('/student/live-lessons');
-    }
-  }
-
-  const handleCancelEndCall = () => {
-    setIsModalOpen(false);
-    setPendingHangup(false);
-    window.location.reload();
-  }
-
-
-  // Handle before unload (when user closes tab/browser)
-  const handleBeforeUnload = () => {
-    const isModerator = decryptedModerator === 'true' || user?.role === 'instructor';
-
-    if (isModerator && externalApiRef.current) {
-      // End conference for all participants when moderator closes tab
-      externalApiRef.current.executeCommand('endConference');
-    }
-  }
-
-  // Function to intercept hangup attempts
-  const interceptHangup = () => {
-    setPendingHangup(true);
-    setIsModalOpen(true);
-    return false; // Prevent the default hangup action
-  }
-
   useEffect(() => {
     // Add global click listener to intercept hangup button clicks
     const handleToolbarClick = (event) => {
       // Check if the clicked element or its parent is the hangup button
       const target = event.target;
-      const hangupButton = target.closest('[data-testid="hangup"]') ||
+      const hangupButton =
+        target.closest('[data-testid="hangup"]') ||
         target.closest('.toolbox-button[aria-label*="Leave"]') ||
         target.closest('.toolbox-button[aria-label*="Hang up"]') ||
-        target.closest('.hangup-button') ||
-        (target.classList.contains('toolbox-button') && target.getAttribute('aria-label')?.includes('Leave'));
+        target.closest(".hangup-button") ||
+        (target.classList.contains("toolbox-button") &&
+          target.getAttribute("aria-label")?.includes("Leave"));
 
       if (hangupButton && !pendingHangup) {
         event.preventDefault();
@@ -168,10 +130,10 @@ const VideoConference = () => {
     };
 
     // Use capture phase to intercept before Jitsi handles the click
-    document.addEventListener('click', handleToolbarClick, true);
+    document.addEventListener("click", handleToolbarClick, true);
 
     return () => {
-      document.removeEventListener('click', handleToolbarClick, true);
+      document.removeEventListener("click", handleToolbarClick, true);
     };
   }, [pendingHangup]);
 
@@ -235,7 +197,8 @@ const VideoConference = () => {
             displayName: decryptedUserName,
             email: decryptedUserEmail,
 
-            moderator: decryptedModerator === 'true' || user?.role === 'instructor'
+            moderator:
+              decryptedModerator === "true" || user?.role === "instructor",
           }}
           onApiReady={(externalApi) => {
             // Store the API reference for later use
@@ -243,24 +206,25 @@ const VideoConference = () => {
 
             // Override the hangup command to show confirmation first
 
-            const originalExecuteCommand = externalApi.executeCommand.bind(externalApi);
+            const originalExecuteCommand =
+              externalApi.executeCommand.bind(externalApi);
             externalApi.executeCommand = (command, ...args) => {
-              if (command === 'hangup' && !pendingHangup) {
+              if (command === "hangup" && !pendingHangup) {
                 interceptHangup();
                 return;
               }
               return originalExecuteCommand(command, ...args);
             };
 
+            externalApi.addListener("participantJoined", (participant) => {
+              console.log("Participant joined:", participant);
 
-            externalApi.addListener('participantJoined', (participant) => {
-              console.log('Participant joined:', participant);
-
-              const isModerator = decryptedModerator === 'true' || user?.role === 'instructor';
+              const isModerator =
+                decryptedModerator === "true" || user?.role === "instructor";
 
               if (isModerator) {
-                const participantName = participant.displayName || 'Unknown User';
-
+                const participantName =
+                  participant.displayName || "Unknown User";
 
                 notificationService.info({
                   message: "User joined",
@@ -270,21 +234,19 @@ const VideoConference = () => {
                   icon: <LuBellRing size={18} />,
                   customStyle: {
                     paddingLeft: "8px",
-                    backgroundColor: '#001840',
-                    color: "white"
-                  }
+                    backgroundColor: "#001840",
+                    color: "white",
+                  },
                 });
-
-
-
               }
             });
 
-            externalApi.addListener('participantLeft', (participant) => {
-              const isModerator = decryptedModerator === 'true' || user?.role === 'instructor';
+            externalApi.addListener("participantLeft", (participant) => {
+              const isModerator =
+                decryptedModerator === "true" || user?.role === "instructor";
 
               if (isModerator) {
-                const student = participant.displayName || 'A student';
+                const student = participant.displayName || "A student";
 
                 if (!participant.moderator) {
                   notificationService.info({
@@ -296,36 +258,35 @@ const VideoConference = () => {
                     customStyle: {
                       paddingLeft: "8px",
 
-                      backgroundColor: '#001840',
-                      color: "white"
-                    }
+                      backgroundColor: "#001840",
+                      color: "white",
+                    },
                   });
                 }
               }
             });
 
-            externalApi.addListener('videoConferenceLeft', () => {
-              if (user?.role == 'instructor' && !pendingHangup) {
+            externalApi.addListener("videoConferenceLeft", () => {
+              if (user?.role == "instructor" && !pendingHangup) {
                 setIsModalOpen(true);
               } else {
                 router.replace("/student/live-lessons");
               }
-
             });
 
             // Listen for when the conference ends (for all participants)
-            externalApi.addListener('videoConferenceEnded', () => {
-              console.log('Conference ended by moderator');
+            externalApi.addListener("videoConferenceEnded", () => {
+              console.log("Conference ended by moderator");
               if (!pendingHangup) {
                 setIsModalOpen(true);
               }
             });
 
-
             // Add beforeunload event listener for moderator
-            const isModerator = decryptedModerator === 'true' || user?.role === 'instructor';
+            const isModerator =
+              decryptedModerator === "true" || user?.role === "instructor";
             if (isModerator) {
-              window.addEventListener('beforeunload', handleBeforeUnload);
+              window.addEventListener("beforeunload", handleBeforeUnload);
             }
 
             setTimeout(() => {
@@ -343,9 +304,10 @@ const VideoConference = () => {
           }}
         />
       ) : (
-
-        <div className='w-full flex items-center font-semibold bg-black text-white justify-center'>
-          <span className='text-xs md:text-sm'>You are not authorized to join this session!</span>
+        <div className="w-full flex items-center font-semibold bg-black text-white justify-center">
+          <span className="text-xs md:text-sm">
+            You are not authorized to join this session!
+          </span>
         </div>
       )}
 

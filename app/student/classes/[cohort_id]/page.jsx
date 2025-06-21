@@ -267,7 +267,7 @@ const ClassDetailsPage = ({ params }) => {
                   <div className="text-sm text-gray-500">
                     Next class:{" "}
                     <span className="font-medium text-[#001840]">
-                      {classSchedule?.nextClass.countdown}
+                      {classSchedule?.nextClass?.countdown}
                     </span>
                   </div>
                 </div>
@@ -290,20 +290,20 @@ const ClassDetailsPage = ({ params }) => {
                   Next Class
                 </h3>
                 <span className="bg-blue-500 text-white text-xs px-3 py-1 rounded-md">
-                  {classSchedule?.nextClass.countdown}
+                  {classSchedule?.nextClass?.countdown}
                 </span>
               </div>
               <h4 className="text-xl font-medium text-gray-800 mb-2">
-                {classSchedule?.nextClass.topic}
+                {classSchedule?.nextClass?.topic}
               </h4>
               <div className="flex items-center justify-between text-gray-600">
                 <div className="flex items-center">
                   <LuCalendar className="mr-2 text-[#001840]" />
-                  <span>{classSchedule?.nextClass.date}</span>
+                  <span>{classSchedule?.nextClass?.date}</span>
                 </div>
                 <div className="flex items-center">
                   <LuClock4 className="mr-2 text-[#001840]" />
-                  <span>{classSchedule?.nextClass.time}</span>
+                  <span>{classSchedule?.nextClass?.time}</span>
                 </div>
               </div>
             </Card>
