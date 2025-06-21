@@ -16,6 +16,7 @@ const VideoConference = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [pendingHangup, setPendingHangup] = useState(false);
   const externalApiRef = useRef(null);
+
   const router = useRouter();
   const { user } = useUser();
 
@@ -108,6 +109,34 @@ const VideoConference = () => {
     };
   }, [pendingHangup]);
 
+  useEffect(() => {
+    // Add global click listener to intercept hangup button clicks
+    const handleToolbarClick = (event) => {
+      // Check if the clicked element or its parent is the hangup button
+      const target = event.target;
+      const hangupButton =
+        target.closest('[data-testid="hangup"]') ||
+        target.closest('.toolbox-button[aria-label*="Leave"]') ||
+        target.closest('.toolbox-button[aria-label*="Hang up"]') ||
+        target.closest(".hangup-button") ||
+        (target.classList.contains("toolbox-button") &&
+          target.getAttribute("aria-label")?.includes("Leave"));
+
+      if (hangupButton && !pendingHangup) {
+        event.preventDefault();
+        event.stopPropagation();
+        interceptHangup();
+      }
+    };
+
+    // Use capture phase to intercept before Jitsi handles the click
+    document.addEventListener("click", handleToolbarClick, true);
+
+    return () => {
+      document.removeEventListener("click", handleToolbarClick, true);
+    };
+  }, [pendingHangup]);
+
   return (
     <div className="w-screen h-screen p-4">
       {decryptedJwtToken?.token ? (
@@ -167,6 +196,7 @@ const VideoConference = () => {
           userInfo={{
             displayName: decryptedUserName,
             email: decryptedUserEmail,
+
             moderator:
               decryptedModerator === "true" || user?.role === "instructor",
           }}
@@ -175,6 +205,7 @@ const VideoConference = () => {
             externalApiRef.current = externalApi;
 
             // Override the hangup command to show confirmation first
+
             const originalExecuteCommand =
               externalApi.executeCommand.bind(externalApi);
             externalApi.executeCommand = (command, ...args) => {
@@ -226,6 +257,7 @@ const VideoConference = () => {
                     position: "topRight",
                     customStyle: {
                       paddingLeft: "8px",
+
                       backgroundColor: "#001840",
                       color: "white",
                     },
