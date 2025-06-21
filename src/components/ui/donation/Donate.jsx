@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Modal, Steps, Button, Input, Select, Row, Col, Typography, Space, Form, Radio, Divider, InputNumber, Card, Tabs, Tooltip, message } from "antd";
-import { apiPost } from "@/src/services/api_service";
+import { apiPost } from "@/src/services/api/api_service";
 import { io } from "socket.io-client";
 import DonationStep from "./DonationStep";
 import PaymentStep from "./PaymentStep";

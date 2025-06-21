@@ -10,7 +10,6 @@ import Link from "next/link";
 import { encrypt } from "@/src/utils/fns/encryption";
 
 const ClassList = () => {
-  const [open, setOpen] = React.useState(true);
   const { enrolledTopics, enrolledTopicsLoading, enrolledTopicsError } =
     useEnrolledTopics();
 

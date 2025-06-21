@@ -20,7 +20,7 @@ import { useEnroll } from "@/src/hooks/useEnroll";
 import { useMutation } from "@tanstack/react-query";
 import { PaymentStatus } from "@/src/config/settings";
 import notificationService from "../ui/notification/Notification";
-import { apiPost } from "@/src/services/api_service";
+import { apiPost } from "@/src/services/api/api_service";
 import { useEnrollPay } from "@/src/store/student/useEnrollMe";
 
 const PaymentDetails = () => {

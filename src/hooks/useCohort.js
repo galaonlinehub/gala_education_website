@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { apiGet, apiPost } from "../services/api_service";
+import { apiGet, apiPost } from "@/src/services/api/api_service";
 import { DAYS_MAP } from "../utils/data/days_of_the_week";
 
 export const useCohort = () => {

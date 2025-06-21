@@ -19,7 +19,7 @@ import {
   LuLoaderCircle,
 } from "react-icons/lu";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiGet, apiPut } from "@/src/services/api_service";
+import { apiGet, apiPut } from "@/src/services/api/api_service";
 import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
 import clsx from "clsx";
 

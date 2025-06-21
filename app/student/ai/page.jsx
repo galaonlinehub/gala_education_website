@@ -1,5 +1,5 @@
-import AiChatInterface from '@/src/components/ai/AiChatInterface'
 import React from 'react'
+import AiChatInterface from '@/src/components/ai/AiChatInterface'
 
 const AiChat = () => {
   return (
