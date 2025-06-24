@@ -33,3 +33,4 @@ const getPendingCohorts = async () => {
     throw new Error("Failed to fetch pending cohorts", e);
   }
 };
+

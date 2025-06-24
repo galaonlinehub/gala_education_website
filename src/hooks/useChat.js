@@ -3,11 +3,11 @@ import io from "socket.io-client";
 import { apiPost, apiGet, apiDelete } from "@/src/services/api_service";
 import { useUser } from "./useUser";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { cookieFn } from "../utils/fns/client";
 import { socket_base_url, USER_COOKIE_KEY } from "../config/settings";
 import useChatStore from "../store/chat/chat";
 import { message } from "antd";
 import { decrypt } from "../utils/fns/encryption";
+import { cookieFn } from "../utils/fns/client";
 
 export const useChat = () => {
   const socketRef = useRef(null);

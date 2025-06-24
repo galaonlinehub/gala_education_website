@@ -3,6 +3,7 @@ import { useForm, Controller } from "react-hook-form";
 import { Alert, Button, Checkbox, Input, message, Select } from "antd";
 import { apiPost } from "@/src/services/api_service";
 import Animator from "@/src/components/home/animations/Animator";
+import { useTranslations } from "@/src/hooks/useTranslations";
 
 const MailingList = () => {
 
@@ -29,7 +30,7 @@ const MailingList = () => {
         formData.append(key, data[key]);
       });
 
-      console.log("The form data", formData);
+     
 
       const response = await apiPost("/support", formData, {
         headers: {
@@ -78,6 +79,8 @@ const MailingList = () => {
     setAlert({ show: false, type: null, message: null });
   };
 
+  const t = useTranslations("home")
+
   return (
 
     <form
@@ -86,11 +89,10 @@ const MailingList = () => {
     >
       <Animator delay={0.2} direction="down">
         <h1 className="font-black sm:text-xs text-[12px] mb-2">
-          Are you interested in a session and want to know more?
+          {t('mailingList.welcome')}
         </h1>
         <h2 className="sm:text-xs text-[10px]">
-          Fill out the form and you will be contacted as soon as <br />
-          possible by our office
+          {t('mailingList.fill-form')}
         </h2>
         {alert.show && (
           <Alert
@@ -246,8 +248,7 @@ const MailingList = () => {
             )}
           />
           <span className="text-[10px]  py-3">
-            I authorize the processing of personal data for purposes related to
-            the performance of institutional activities * ( Information)
+            {t('mailingList.authorize-personal')}
           </span>
         </div>
 
@@ -272,8 +273,7 @@ const MailingList = () => {
             )}
           />
           <span className="text-[10px] py-3">
-            I authorize the processing of data for sending informative material
-            (Information)
+           {t('mailingList.authorize-material')}
           </span>
         </div>
 

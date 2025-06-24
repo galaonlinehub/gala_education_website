@@ -13,6 +13,8 @@ import { useDevice } from "@/src/hooks/useDevice";
 import { BiWifi, BiWifiOff } from "react-icons/bi";
 import useNetwork from "@/src/hooks/useNetwork";
 import { LuGlobe, LuMenu } from "react-icons/lu";
+import { useLanguageStore } from "@/src/store/useLanguageStore";
+import { useTranslations } from "@/src/hooks/useTranslations";
 
 const Navbar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -20,8 +22,12 @@ const Navbar = () => {
   const { width } = useDevice();
   const { isOnline, connectionQuality } = useNetwork();
 
-  const [showLanguage, setShowLanguage] = useState(false);
-  const [language, setLanguage] = useState("english");
+  // const [showLanguage, setShowLanguage] = useState(false);
+  // const [language, setLanguage] = useState("english");
+
+  const locale = useLanguageStore((s) => s.locale);
+  const setLocale = useLanguageStore((s) => s.setLocale);
+  const t = useTranslations('auth')
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -36,13 +42,14 @@ const Navbar = () => {
   const items = [
     {
       key: "1",
-      // icon: <LuGlobe className="text-xl" />,
+      
       label: (
         <div className="flex flex-col items-center text-sm font-medium">
           English
         </div>
       ),
-      onClick: () => {},
+      onClick: () => setLocale('en'),
+      disabled: locale === 'en'
     },
     {
       key: "2",
@@ -51,8 +58,8 @@ const Navbar = () => {
           Swahili
         </div>
       ),
-      onClick: () => {},
-      disabled: true,
+      onClick: () => setLocale('sw'),
+      disabled: locale === 'sw',
     },
   ];
 
@@ -181,7 +188,7 @@ const Navbar = () => {
 
         <li>
           <Link href={"/"} className="hover:cursor-pointer tex-black">
-            Home
+            {t('home')}
           </Link>
         </li>
         {user && (
@@ -193,7 +200,7 @@ const Navbar = () => {
         )}
         <li>
           <Link href={"/about-us"} className="hover:cursor-pointer tex-black">
-            About Us
+            {t('about-us')}
           </Link>
         </li>
         {!user && (

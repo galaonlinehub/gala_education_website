@@ -9,11 +9,11 @@ import { IoDiamond } from "react-icons/io5";
 function UserCard({ user: { instructor_id,name, role,is_verified } }) {
   const queryClient = useQueryClient();
   
-  const handleVerify = async () => {
+  const handleVerify = async (status) => {
           
           const instructorData = {
             instructor_id,
-            status: "verify",
+            status,
         }
 
             await apiPost("approve-instructor",instructorData); 
@@ -51,10 +51,10 @@ function UserCard({ user: { instructor_id,name, role,is_verified } }) {
                     </div>
                 </div>
             {role == "instructor" &&   <div className='flex  justify-center gap-2 py-2 w-full'>
-                  {is_verified !== "verified" && <button onClick={handleVerify} className='flex items-center gap-x-2'>
+                  {is_verified !== "verified" && <button onClick={()=>handleVerify("reject")} className='flex items-center gap-x-2'>
                   <Tag className='cursor-pointer' color={ "red"}>reject</Tag>
                   </button>}
-                  <button disabled={is_verified == "verified"} onClick={handleVerify} className='flex items-center gap-x-2'>
+                  <button disabled={is_verified == "verified"} onClick={()=>handleVerify("verify")} className='flex items-center gap-x-2'>
                   <Tag className='cursor-pointer' color={is_verified == "verified" ? "green" : "purple"}>{is_verified == "verified" ? "verified":"verify"}</Tag>
                   </button>
                 </div>}

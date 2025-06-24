@@ -34,6 +34,8 @@ import VideoBackground from "@/src/components/ui/VideoBackground";
 import Animator from "@/src/components/home/animations/Animator";
 import { API_BASE_URL } from "@/src/config/settings";
 import { NextSeo } from "next-seo";
+import { useTranslations } from "@/src/hooks/useTranslations";
+import { useLanguageStore } from "@/src/store/useLanguageStore";
 
 function Home() {
   const [showDonatePopup, setShowDonatePopup] = useState(false);
@@ -59,11 +61,16 @@ function Home() {
     };
   }, [showDonatePopup]);
 
+  const t = useTranslations('home');
+  const locale = useLanguageStore((s) => s.locale);
+
+  
+
   return (
     <>
       <NextSeo
         title="Online Tutoring for Tanzanian Students | Gala Education"
-        description="Empowering minds, shaping the future. Gala Education offers AI-powered learning and online courses for students of all levels."
+        description={"Empowering minds, shaping the future. Gala Education offers AI-powered learning and online courses for students of all levels."}
         additionalMetaTags={[
           {
             name: "keywords",
@@ -129,8 +136,9 @@ function Home() {
               </div>
               <Animator delay={0.2}>
                 <h2 className="text-white font-bold sm:leading-[30px] leading-[15px] sm:text-[20px] text-[12px]">
-                  Empowering minds, shaping futures - Gala Education, your
-                  <br /> pathway to success.
+                  {/* Empowering minds, shaping futures - Gala Education, your
+                  <br /> pathway to success. */}
+                  {t('welcome')}
                 </h2>
               </Animator>
             </div>
@@ -147,25 +155,12 @@ function Home() {
             <div className="flex flex-col gap-4 w-full h-3/4">
               <Animator delay={0.2} className="w-full flex justify-center">
                 <span className="mt-16 text-center text-4xl font-black md:font-bold md:text-xl">
-                  Our Story
+                  {t('ourStory.title')}
                 </span>
               </Animator>
               <Animator direction="left" delay={0.2}>
                 <div className="text-xs leading-loose text-justify md:text-left ">
-                  In Tanzania, many families face the heart-wrenching struggle
-                  of providing quality education for their children due to a
-                  severe lack of qualified teachers and resources. Gala
-                  Education was born from a deep desire to change this reality,
-                  offering hope through high-quality online tutoring for
-                  Primary, Secondary, and High School students. We not only
-                  provide jobs for teachers but also reinvest our profits into
-                  building classrooms, libraries, hiring part-time instructors
-                  and more, bringing dreams within reach for countless children
-                  across Tanzania. Additionally, our platform offers a variety
-                  of short courses designed to equip young Tanzanians with
-                  practical, self-employable skills taught by experts in various
-                  fields. Join us in making a profound difference, one student
-                  at a time.
+                 {t('ourStory.content')}
                 </div>
               </Animator>
             </div>
@@ -175,69 +170,69 @@ function Home() {
         <div className="relative flex items-center w-full mt-0 md:h-[60rem] lg:h-[50rem] ">
           <div className=" w-full mt-2 py-4 px-6 flex gap-5 items-center flex-col h-fit">
             <Animator delay={0.2}>
-              <h1 className="font-black text-4xl">Our services</h1>
+              <h1 className="font-black text-4xl">{t('ourServices.title')}</h1>
             </Animator>
             <Animator delay={0.2}>
               <h2 className="text-center text-xs">
-                We aim to integrate AI to provide personalized, AI-powered
-                tutoring and learning experiences
+                {t('ourServices.subtitle-1')}
                 <br />
-                tailored to each student&apos;s unique needs and progress.
+                {t('ourServices.subtitle-2')}
+                
               </h2>
             </Animator>
             <div className="hidden md:block">
               <div className="sm:grid flex mt-4  max-sm:w-[98%] overflow-x-auto sm:grid-cols-3 md:gap-10 gap-20 ">
                 <Animator direction="top" delay={0.2}>
                   <Card2
-                    title={"Personalized Subject Tutoring"}
+                    title={t('ourServices.card1.title')}
                     image={"/service1.jpeg"}
                     desc={
-                      "Tailored one-on-one sessions in core subjects such as math, science, English, and social studies, focusing on the student's specific needs and learning pace."
+                      t('ourServices.card1.desc')  
                     }
                   />
                 </Animator>
                 <Animator direction="top" delay={0.4}>
                   <Card2
-                    title={"STEM Enrichment Programs"}
+                    title={t('ourServices.card2.title')}
                     image={"/service2.jpeg"}
                     desc={
-                      "Specialized tutoring in science, technology, engineering, and math for students interested in deepening their knowledge or exploring STEM fields."
+                      t('ourServices.card2.desc')
                     }
                   />
                 </Animator>
                 <Animator direction="top" delay={0.6}>
                   <Card2
-                    title={"Special Education Support"}
+                    title={t('ourServices.card3.title')}
                     image={"/service3.jpeg"}
                     desc={
-                      "Customized sessions for students with learning disabilities or special needs, providing them with the tools and support to thrive academically."
+                      t('ourServices.card3.desc')
                     }
                   />
                 </Animator>
                 <Animator direction="top" delay={0.8}>
                   <Card2
-                    title={"Test and Exam Preparation"}
+                    title={t('ourServices.card4.title')}
                     image={"/service4.jpeg"}
                     desc={
-                      "Focused tutoring to prepare students for standardized tests, school exams, and quizzes, including practice tests and study strategies."
+                      t('ourServices.card4.desc')
                     }
                   />
                 </Animator>
                 <Animator direction="top" delay={1}>
                   <Card2
-                    title={"Reading and Literacy Support"}
+                    title={t('ourServices.card5.title')}
                     image={"/service5.jpeg"}
                     desc={
-                      "Personalized reading programs to improve comprehension, vocabulary, and fluency, particularly for early learners or those struggling with literacy."
+                      t('ourServices.card5.desc')
                     }
                   />
                 </Animator>
                 <Animator direction="top" delay={1.2}>
                   <Card2
-                    title={"Study Skills Coaching"}
+                    title={t('ourServices.card6.title')}
                     image={"/service6.jpeg"}
                     desc={
-                      "CSessions aimed at improving time management, organization, and study techniques to enhance overall academic performance."
+                      t('ourServices.card6.desc')
                     }
                   />
                 </Animator>
@@ -255,33 +250,32 @@ function Home() {
               <div className=" w-full flex flex-col items-center gap-3 p-4">
                 <Animator delay={0.2}>
                   <h1 className="font-black w-full text-center px-3 !text-3xl">
-                    Register with us!
+                    {t('registerWithUs')}
                   </h1>
                 </Animator>
 
                 <Animator className="w-full flex justify-center" delay={0.2}>
                   <h3 className="text-center text-xs md:w-2/3 w-full mb-4 leading-relaxed sm:px-6 ">
-                    Join Gala Education today - register as a teacher or student
-                    and unlock endless learning opportunities!
+                    {t('registerWithUs.desc')}
                   </h3>
                 </Animator>
                 <div className="flex sm:gap-5 gap-2 overflow-x-auto px-2 max-sm:w-[98%] ">
                   <Animator delay={0.2}>
                     <RegisterCard
-                      title={"Register as teacher"}
+                      title={t('registerAsTeacher.title')}
                       image={"/donate_and_funds.jpeg"}
                       desc={
-                        "Become part of our team of educators and help deliver exceptional learning experiences."
+                        t('registerAsTeacher.desc')
                       }
                       type={"instructor"}
                     />
                   </Animator>
                   <Animator delay={0.4}>
                     <RegisterCard
-                      title={"Register as student"}
+                      title={t('registerAsStudent.title')}
                       image={"/register_student.jpeg"}
                       desc={
-                        "Join our community of learners and be part of the journey to excellence in education!"
+                        t("registerAsStudent.desc")
                       }
                       type={"student"}
                     />
