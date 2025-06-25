@@ -1,7 +1,9 @@
 import axios from "axios";
 import * as React from "react";
 import { useForm } from "react-hook-form";
-import { openai_api_key, openai_base_url } from "../config/settings";
+import {  openai_base_url, USER_COOKIE_KEY } from "../config/settings";
+import { cookieFn } from "../utils/fns/client";
+import { decrypt } from "../utils/fns/encryption";
 
 export const useAi = () => {
   const [isStreaming, setIsStreaming] = React.useState(false);
@@ -10,7 +12,8 @@ export const useAi = () => {
     typeof window !== "undefined" ? window.innerWidth : 1200
   );
   const contentRef = React.useRef(null);
-
+  const token = decrypt(cookieFn.get(USER_COOKIE_KEY));
+  
   const { register, reset, watch } = useForm();
   const prompt = watch("prompt");
 
@@ -23,11 +26,11 @@ export const useAi = () => {
 
     try {
       const { data } = await axios.post(
-        `${openai_base_url}chat/completions`,
-        askGalaObject(),
+        `https://ai.galahub.org/ask-gala`,
+        {question:prompt},
         {
           headers: {
-            Authorization: `Bearer ${openai_api_key}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -40,11 +43,7 @@ export const useAi = () => {
     }
   };
 
-  const askGalaObject = () => ({
-    model: "gpt-4.1-mini",
-    store: true,
-    messages: [{ role: "user", content: prompt }],
-  });
+  
 
   React.useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
@@ -69,9 +68,9 @@ export const useAi = () => {
   });
 
   const handleOpenAiResponse = (res) => ({
-    id: res?.id,
-    role: res?.choices[0]?.message?.role,
-    content: res?.choices[0]?.message?.content,
+    id: new Date().toISOString(),
+    role: "gala",
+    content: res?.answer,
   });
 
   const handleMessage = (message) => {
