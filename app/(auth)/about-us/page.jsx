@@ -6,12 +6,11 @@ import Image from "next/image";
 import { IoMailOutline } from "react-icons/io5";
 import Donate from "@/src/components/ui/donation/Donate";
 import FaqCard from "@/src/components/home/card/FaqCard";
-import { useTeamMembers } from "@/src/hooks/useTeamMembers";
+import { useTeamMembers } from "@/src/hooks/data/useTeamMembers";
 import { img_base_url } from "@/src/config/settings";
-import MultipleProfileSkeletons from '@/src/components/home/card/ProfileCardSkeleton';
+import MultipleProfileSkeletons from "@/src/components/home/card/ProfileCardSkeleton";
 import Footer from "@/src/components/layout/footer";
 import ProcessingModal from "@/src/components/ui/donation/ProcessingModal";
-
 
 const { Text } = Typography;
 
@@ -37,7 +36,8 @@ const AboutUs = () => {
 
   const [selectedLDValue, setSelectedLDValue] = useState("Executive Team");
   const [selectedWEValue, setSelectedWEValue] = useState("System");
-  const [selecteContactsValue, setSelectedConatctsValue] = useState("Contact Us");
+  const [selecteContactsValue, setSelectedConatctsValue] =
+    useState("Contact Us");
 
   const [showProcessingModal, setShowProcessingModal] = useState(false);
 
@@ -135,7 +135,13 @@ const AboutUs = () => {
             <div className="flex flex-col gap-4 w-full">
               <div className="flex gap-2">
                 <div>
-                  <Image src="/about-us/team-placeholder.png" width={100} height={60} alt="user_photo" className="w-full max-w-[80px] sm:max-w-[150px] md:max-w-[180px] lg:max-w-[180px] object-cover rounded-xl" />
+                  <Image
+                    src="/about-us/team-placeholder.png"
+                    width={100}
+                    height={60}
+                    alt="user_photo"
+                    className="w-full max-w-[80px] sm:max-w-[150px] md:max-w-[180px] lg:max-w-[180px] object-cover rounded-xl"
+                  />
                 </div>
                 <div className="flex flex-col items-start justify-end ml-2">
                   <Text className="font-bold text-[10px]">{member?.name}</Text>
@@ -576,37 +582,41 @@ const AboutUs = () => {
                 High School students. Our mission is to provide high-quality
                 education while creating employment opportunities for teachers
                 across Tanzania. Recognizing the critical shortage of qualified
-                teachers, we meticulously designed our platform to bridge this gap
-                and ensure that every student receives the education they deserve.
-                At Gala Education, we believe that education is the foundation for
-                a better future. Our platform not only focuses on delivering
-                top-notch tutoring services but also reinvests its profits into
-                various philanthropic activities. These include building
-                classrooms, libraries, and other educational infrastructure across
-                Tanzania, ensuring that students from all backgrounds have access
-                to conducive learning environments. In addition to our primary and
-                secondary education services.
+                teachers, we meticulously designed our platform to bridge this
+                gap and ensure that every student receives the education they
+                deserve. At Gala Education, we believe that education is the
+                foundation for a better future. Our platform not only focuses on
+                delivering top-notch tutoring services but also reinvests its
+                profits into various philanthropic activities. These include
+                building classrooms, libraries, and other educational
+                infrastructure across Tanzania, ensuring that students from all
+                backgrounds have access to conducive learning environments. In
+                addition to our primary and secondary education services.
               </Typography>
               <Typography className="text-xs lg:text-sm text-justify !leading-loose">
                 {" "}
-                Gala Education offers a range of short courses aimed at equipping
-                Tanzanian youth with practical, self-employable skills. These
-                courses are taught by a diverse team of academics, executives, and
-                industry-leading experts, providing learners with valuable
-                insights and hands-on experience in various fields. Accessing our
-                services is simple. All you need is a device and a stable internet
-                connection to join our online tutoring sessions. Our user-friendly
-                platform makes it easy for students to connect with skilled tutors
-                and access high-quality educational resources from the comfort of
-                their homes. Join us at Gala Education as we strive to make
-                quality education accessible to every child in Tanzania,
-                empowering the next generation with the knowledge and skills they
-                need to succeed.
+                Gala Education offers a range of short courses aimed at
+                equipping Tanzanian youth with practical, self-employable
+                skills. These courses are taught by a diverse team of academics,
+                executives, and industry-leading experts, providing learners
+                with valuable insights and hands-on experience in various
+                fields. Accessing our services is simple. All you need is a
+                device and a stable internet connection to join our online
+                tutoring sessions. Our user-friendly platform makes it easy for
+                students to connect with skilled tutors and access high-quality
+                educational resources from the comfort of their homes. Join us
+                at Gala Education as we strive to make quality education
+                accessible to every child in Tanzania, empowering the next
+                generation with the knowledge and skills they need to succeed.
               </Typography>
             </div>
 
             <div className="flex flex-col mt-6">
-              <Text id="leadership" ref={sectionRefs.leadership} className="font-black text-lg lg:text-2xl py-2">
+              <Text
+                id="leadership"
+                ref={sectionRefs.leadership}
+                className="font-black text-lg lg:text-2xl py-2"
+              >
                 Leadership/Governance
               </Text>
               <div className="flex flex-col w-full py-3">
@@ -620,14 +630,30 @@ const AboutUs = () => {
                     },
                   }}
                 >
-                  <Segmented className="font-bold" options={["Executive Team", "Advisory Board", "Board of Directors", "Governance Docs"]} size="middle" value={selectedLDValue} onChange={setSelectedLDValue} block />
+                  <Segmented
+                    className="font-bold"
+                    options={[
+                      "Executive Team",
+                      "Advisory Board",
+                      "Board of Directors",
+                      "Governance Docs",
+                    ]}
+                    size="middle"
+                    value={selectedLDValue}
+                    onChange={setSelectedLDValue}
+                    block
+                  />
                 </ConfigProvider>
               </div>
               <div className="md:p-3">{renderLDView(selectedLDValue)}</div>
             </div>
 
             <div className="flex flex-col mt-6">
-              <Text id="expectations" ref={sectionRefs.expectations} className="font-black text-lg lg:text-2xl pt-2">
+              <Text
+                id="expectations"
+                ref={sectionRefs.expectations}
+                className="font-black text-lg lg:text-2xl pt-2"
+              >
                 What to expect
               </Text>
               <div className="flex flex-col w-full py-3">
@@ -641,25 +667,73 @@ const AboutUs = () => {
                     },
                   }}
                 >
-                  <Segmented className="font-bold" options={["System", "Language", "For teachers", "For students"]} size="middle" value={selectedWEValue} onChange={setSelectedWEValue} block />
+                  <Segmented
+                    className="font-bold"
+                    options={[
+                      "System",
+                      "Language",
+                      "For teachers",
+                      "For students",
+                    ]}
+                    size="middle"
+                    value={selectedWEValue}
+                    onChange={setSelectedWEValue}
+                    block
+                  />
                 </ConfigProvider>
               </div>
               <div className="md:p-6">{renderWEView(selectedWEValue)}</div>
             </div>
 
             <div className="flex flex-col mt-8">
-              <Text id="outreach" ref={sectionRefs.outreach} className="font-black text-lg lg:text-2xl py-2">
+              <Text
+                id="outreach"
+                ref={sectionRefs.outreach}
+                className="font-black text-lg lg:text-2xl py-2"
+              >
                 Outreach efforts
               </Text>
-              <Text className="font-black text-sm">You are making a difference</Text>
-              <Text className="text-xs lg:text-sm xxs:leading-loose lg:leading-loose text-justify">Gala Education Financial Aid wing is an extension of our platform that collaborates with organizations to enhance learning opportunities and support educational initiatives in local and global communities. We provide assistance in education, emergency response, family empowerment, hunger relief, and more.</Text>
+              <Text className="font-black text-sm">
+                You are making a difference
+              </Text>
+              <Text className="text-xs lg:text-sm xxs:leading-loose lg:leading-loose text-justify">
+                Gala Education Financial Aid wing is an extension of our
+                platform that collaborates with organizations to enhance
+                learning opportunities and support educational initiatives in
+                local and global communities. We provide assistance in
+                education, emergency response, family empowerment, hunger
+                relief, and more.
+              </Text>
               <div className="w-full relative py-6">
-                <Image src="/about-us/outreach.png" width={300} height={300} alt="outreach_image" className="w-full" />
-                <Text className="absolute left-6 bottom-10 text-xs md:text-sm font-bold text-white p-3 bg-[#0000004D]/30">Serve your community from wherever you are</Text>
+                <Image
+                  src="/about-us/outreach.png"
+                  width={300}
+                  height={300}
+                  alt="outreach_image"
+                  className="w-full"
+                />
+                <Text className="absolute left-6 bottom-10 text-xs md:text-sm font-bold text-white p-3 bg-[#0000004D]/30">
+                  Serve your community from wherever you are
+                </Text>
               </div>
-              <Text className="text-xs lg:text-sm xxs:leading-loose lg:leading-loose text-justify">Community impact is at the heart of Gala Education. A portion of every contribution is dedicated to outreach, supporting strategic partnerships that address real needs both locally and globally. From empowering schools to providing essential resources for those in need, we are committed to driving meaningful change in education and beyond. We believe in investing generously, serving consistently, and collaborating strategically to create lasting impact. There’s a place for everyone to get involved—join us in shaping a brighter future for learners and communities in need.</Text>
+              <Text className="text-xs lg:text-sm xxs:leading-loose lg:leading-loose text-justify">
+                Community impact is at the heart of Gala Education. A portion of
+                every contribution is dedicated to outreach, supporting
+                strategic partnerships that address real needs both locally and
+                globally. From empowering schools to providing essential
+                resources for those in need, we are committed to driving
+                meaningful change in education and beyond. We believe in
+                investing generously, serving consistently, and collaborating
+                strategically to create lasting impact. There’s a place for
+                everyone to get involved—join us in shaping a brighter future
+                for learners and communities in need.
+              </Text>
               <div className="w-full justify-center flex py-4 mb-10">
-                <Button onClick={showDonatePopupModal} size="middle" className="font-semibold w-64 bg-[#F2EFEF]">
+                <Button
+                  onClick={showDonatePopupModal}
+                  size="middle"
+                  className="font-semibold w-64 bg-[#F2EFEF]"
+                >
                   Donate for the cause
                 </Button>
               </div>
@@ -677,35 +751,76 @@ const AboutUs = () => {
                     },
                   }}
                 >
-                  <Segmented className="font-bold" options={["Contact Us", "FAQs"]} size="middle" value={selecteContactsValue} onChange={setSelectedConatctsValue} block />
+                  <Segmented
+                    className="font-bold"
+                    options={["Contact Us", "FAQs"]}
+                    size="middle"
+                    value={selecteContactsValue}
+                    onChange={setSelectedConatctsValue}
+                    block
+                  />
                 </ConfigProvider>
               </div>
-              <div className="md:p-3 mt-4">{renderContactsView(selecteContactsValue)}</div>
+              <div className="md:p-3 mt-4">
+                {renderContactsView(selecteContactsValue)}
+              </div>
             </div>
-
           </div>
           <div className="hidden md:flex fixed right-3 top-0 bottom-0 md:w-48 lg:w-56 items-center justify-center">
             <div className="flex flex-col items-center w-full space-y-4">
-              <Text onClick={() => scrollToSection(sectionRefs.aboutUs)} className={`text-right  text-gray-400 w-full  p-2 cursor-pointer ${activeSection === "aboutUs" ? "text-white font-bold border-r-4 rounded-r-md border-black bg-gradient-to-l from-gray-500 to-transparent px-4 py-2" : "hover:text-blue-700"}`}>
+              <Text
+                onClick={() => scrollToSection(sectionRefs.aboutUs)}
+                className={`text-right  text-gray-400 w-full  p-2 cursor-pointer ${
+                  activeSection === "aboutUs"
+                    ? "text-white font-bold border-r-4 rounded-r-md border-black bg-gradient-to-l from-gray-500 to-transparent px-4 py-2"
+                    : "hover:text-blue-700"
+                }`}
+              >
                 About Us
               </Text>
-              <Text onClick={() => scrollToSection(sectionRefs.leadership)} className={`text-right  text-gray-400  w-full  p-2  cursor-pointer ${activeSection === "leadership" ? "text-white font-bold border-r-4 rounded-r-md border-black bg-gradient-to-l from-gray-500 to-transparent px-4 py-2" : "hover:text-blue-700"}`}>
+              <Text
+                onClick={() => scrollToSection(sectionRefs.leadership)}
+                className={`text-right  text-gray-400  w-full  p-2  cursor-pointer ${
+                  activeSection === "leadership"
+                    ? "text-white font-bold border-r-4 rounded-r-md border-black bg-gradient-to-l from-gray-500 to-transparent px-4 py-2"
+                    : "hover:text-blue-700"
+                }`}
+              >
                 Leadership
               </Text>
-              <Text onClick={() => scrollToSection(sectionRefs.expectations)} className={`text-right  text-gray-400 w-full  p-2  cursor-pointer ${activeSection === "expectations" ? "text-white font-bold border-r-4 rounded-r-md border-black bg-gradient-to-l from-gray-500 to-transparent px-4 py-2" : "hover:text-blue-700"}`}>
+              <Text
+                onClick={() => scrollToSection(sectionRefs.expectations)}
+                className={`text-right  text-gray-400 w-full  p-2  cursor-pointer ${
+                  activeSection === "expectations"
+                    ? "text-white font-bold border-r-4 rounded-r-md border-black bg-gradient-to-l from-gray-500 to-transparent px-4 py-2"
+                    : "hover:text-blue-700"
+                }`}
+              >
                 What to expect
               </Text>
-              <Text onClick={() => scrollToSection(sectionRefs.outreach)} className={`text-right text-gray-400 w-full  p-2  cursor-pointer ${activeSection === "outreach" ? "text-white font-bold border-r-4 rounded-r-md border-black bg-gradient-to-l from-gray-500 to-transparent px-4 py-2" : "hover:text-blue-700"}`}>
+              <Text
+                onClick={() => scrollToSection(sectionRefs.outreach)}
+                className={`text-right text-gray-400 w-full  p-2  cursor-pointer ${
+                  activeSection === "outreach"
+                    ? "text-white font-bold border-r-4 rounded-r-md border-black bg-gradient-to-l from-gray-500 to-transparent px-4 py-2"
+                    : "hover:text-blue-700"
+                }`}
+              >
                 Outreach efforts
               </Text>
-              <Text onClick={() => scrollToSection(sectionRefs.contact)} className={`text-right text-gray-400 w-full  p-2  cursor-pointer ${activeSection === "contact" ? "text-white font-bold border-r-4 rounded-r-md border-black bg-gradient-to-l from-gray-500 to-transparent px-4 py-2" : "hover:text-blue-700"}`}>
+              <Text
+                onClick={() => scrollToSection(sectionRefs.contact)}
+                className={`text-right text-gray-400 w-full  p-2  cursor-pointer ${
+                  activeSection === "contact"
+                    ? "text-white font-bold border-r-4 rounded-r-md border-black bg-gradient-to-l from-gray-500 to-transparent px-4 py-2"
+                    : "hover:text-blue-700"
+                }`}
+              >
                 Contact Us
               </Text>
             </div>
           </div>
-
         </div>
-
 
         {BiographyModal()}
         {showDonatePop && (
@@ -720,8 +835,10 @@ const AboutUs = () => {
           </div>
         )}
 
-        <ProcessingModal setShowProcessingModal={setShowProcessingModal} showProcessingModal={showProcessingModal} />
-
+        <ProcessingModal
+          setShowProcessingModal={setShowProcessingModal}
+          showProcessingModal={showProcessingModal}
+        />
       </div>
       <div className="w-full">
         <Footer />

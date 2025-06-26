@@ -4,8 +4,8 @@ import { Modal, Button } from "antd";
 import { logout } from "@/src/utils/fns/auth";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 import notificationService from "../../notification/Notification";
-import { useDevice } from "@/src/hooks/useDevice";
-import { useUser } from "@/src/hooks/useUser";
+import { useDevice } from "@/src/hooks/misc/useDevice";
+import { useUser } from "@/src/hooks/data/useUser";
 import SlickSpinner from "../../loading/template/SlickSpinner";
 import StuckSpinner from "../../loading/template/StuckSpinner";
 

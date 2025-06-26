@@ -2,7 +2,7 @@
 import React, { useRef, useState, useEffect, useCallback } from "react";
 import { Modal, Button, Alert } from "antd";
 import { Document, Page, pdfjs } from "react-pdf";
-import { useDevice } from "@/src/hooks/useDevice";
+import { useDevice } from "@/src/hooks/misc/useDevice";
 import { LoadingOutlined } from "@ant-design/icons";
 import { LuDownload } from "react-icons/lu";
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { IoAddOutline } from "react-icons/io5";
 import { MdInstallDesktop, MdInstallMobile } from "react-icons/md";
-import { useDevice } from "@/src/hooks/useDevice";
+import { useDevice } from "@/src/hooks/misc/useDevice";
 
 export const FloatingActionButton = ({
   icon = <IoAddOutline />,

@@ -6,7 +6,7 @@ import {
   ArrowRightOutlined,
   CheckCircleFilled,
 } from "@ant-design/icons";
-import { useUser } from "@/src/hooks/useUser";
+import { useUser } from "@/src/hooks/data/useUser";
 import Image from "next/image";
 import {
   handlePhoneInput,

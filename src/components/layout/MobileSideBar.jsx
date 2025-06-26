@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { Drawer, Avatar, Typography, Divider, Button } from "antd";
-import { useUser } from "@/src/hooks/useUser";
+import { useUser } from "@/src/hooks/data/useUser";
 import { Signout } from "../ui/auth/signup/Signout";
 import { img_base_url } from "@/src/config/settings";
 import { LuX, LuUser, LuLogOut, LuLoaderCircle } from "react-icons/lu";
@@ -30,7 +30,10 @@ const MobileSideBar = ({ isOpen, onClose }) => {
                     `${img_base_url + user?.profile_picture}`
                   }
                   icon={<LuUser className="text-black" />}
-                  onClick={() => {router.push(`/${user?.role}/profile`); onClose()}}
+                  onClick={() => {
+                    router.push(`/${user?.role}/profile`);
+                    onClose();
+                  }}
                 />
               </div>
               <div className="flex flex-col">
@@ -59,11 +62,12 @@ const MobileSideBar = ({ isOpen, onClose }) => {
             <li key={i}>
               <Link
                 href={`/${user?.role}/${item.link}`}
-                className={`flex items-center gap-4 py-2 px-2 rounded-lg transition-colors ${currentUrl.replace(/\/$/, "") ===
+                className={`flex items-center gap-4 py-2 px-2 rounded-lg transition-colors ${
+                  currentUrl.replace(/\/$/, "") ===
                   `/student${item.link === "." ? "" : `/${item.link}`}`
-                  ? "bg-[#001840] text-white"
-                  : "hover:bg-blue-950/20 hover:text-black"
-                  }`}
+                    ? "bg-[#001840] text-white"
+                    : "hover:bg-blue-950/20 hover:text-black"
+                }`}
                 // onClick={() => isMobile && setIsSidebarOpen(false)}
                 onClick={onClose}
               >

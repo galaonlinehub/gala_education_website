@@ -1,7 +1,7 @@
 import { RenderChat } from "./ChatBody";
 import { RenderSidebar } from "./ChatSidebar";
 import useChatStore from "@/src/store/chat/chat";
-import { useDevice } from "@/src/hooks/useDevice";
+import { useDevice } from "@/src/hooks/misc/useDevice";
 import { LuSendHorizontal } from "react-icons/lu";
 
 const Chat = () => {
@@ -12,16 +12,21 @@ const Chat = () => {
   const { width } = useDevice();
   const isSmallScreen = width <= 768;
 
-
   const NoChatsMessage = () => (
     <div className="flex items-center justify-center h-full bg-gray-50">
       <div className="text-center p-6">
-        <div className="w-24 h-24 mx-auto mb-4 flex items-center justify-center rounded-full" style={{ backgroundColor: "rgba(0, 24, 64, 0.1)" }}>
+        <div
+          className="w-24 h-24 mx-auto mb-4 flex items-center justify-center rounded-full"
+          style={{ backgroundColor: "rgba(0, 24, 64, 0.1)" }}
+        >
           <LuSendHorizontal className={`text-[32px] text-[${MAIN_COLOR}]`} />
         </div>
-        <h3 className={`text-lg font-semibold mb-2 text-[${MAIN_COLOR}]`}>Your Messages</h3>
+        <h3 className={`text-lg font-semibold mb-2 text-[${MAIN_COLOR}]`}>
+          Your Messages
+        </h3>
         <p className="text-sm text-gray-500 max-w-xs">
-          You don&apos;t have any conversations yet. Start a new one to chat with your classmates and teachers.
+          You don&apos;t have any conversations yet. Start a new one to chat
+          with your classmates and teachers.
         </p>
       </div>
     </div>
@@ -33,11 +38,21 @@ const Chat = () => {
         {!isSmallScreen && (
           <div className="flex h-full">
             <div className="w-1/3 border-r border-gray-200">
-              <RenderSidebar MAIN_COLOR={MAIN_COLOR} TEXT_COLOR={TEXT_COLOR} currentTab="direct" setCurrentTab={() => {}} />
+              <RenderSidebar
+                MAIN_COLOR={MAIN_COLOR}
+                TEXT_COLOR={TEXT_COLOR}
+                currentTab="direct"
+                setCurrentTab={() => {}}
+              />
             </div>
             <div className="w-2/3 h-full">
               {currentChatId !== null ? (
-                <RenderChat isSmallScreen={false} MAIN_COLOR={MAIN_COLOR} TEXT_COLOR={TEXT_COLOR} MAIN_COLOR_LIGHT={MAIN_COLOR_LIGHT} />
+                <RenderChat
+                  isSmallScreen={false}
+                  MAIN_COLOR={MAIN_COLOR}
+                  TEXT_COLOR={TEXT_COLOR}
+                  MAIN_COLOR_LIGHT={MAIN_COLOR_LIGHT}
+                />
               ) : (
                 <NoChatsMessage />
               )}
@@ -47,9 +62,19 @@ const Chat = () => {
         {isSmallScreen && (
           <div className="h-full w-full">
             {currentChatId !== null ? (
-              <RenderChat isSmallScreen={true} MAIN_COLOR={MAIN_COLOR} TEXT_COLOR={TEXT_COLOR} MAIN_COLOR_LIGHT={MAIN_COLOR_LIGHT} />
+              <RenderChat
+                isSmallScreen={true}
+                MAIN_COLOR={MAIN_COLOR}
+                TEXT_COLOR={TEXT_COLOR}
+                MAIN_COLOR_LIGHT={MAIN_COLOR_LIGHT}
+              />
             ) : (
-              <RenderSidebar MAIN_COLOR={MAIN_COLOR} TEXT_COLOR={TEXT_COLOR} currentTab="direct" setCurrentTab={() => {}} />
+              <RenderSidebar
+                MAIN_COLOR={MAIN_COLOR}
+                TEXT_COLOR={TEXT_COLOR}
+                currentTab="direct"
+                setCurrentTab={() => {}}
+              />
             )}
           </div>
         )}
@@ -59,4 +84,3 @@ const Chat = () => {
 };
 
 export { Chat };
-

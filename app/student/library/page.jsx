@@ -3,18 +3,15 @@
 import { useState, useEffect } from "react";
 import ReadMoreContainer from "@/src/components/ui/ReadMore";
 import { useEnrolledTopics, useNewClass } from "@/src/store/student/class";
-import { useUser } from "@/src/hooks/useUser";
+import { useUser } from "@/src/hooks/data/useUser";
 
 import { IoIosAdd } from "react-icons/io";
-
 
 const Library = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const { setOpenNewClass } = useNewClass();
   const { user } = useUser();
   const { enrolledTopincs } = useEnrolledTopics();
-
- 
 
   const mySubjects = [
     {

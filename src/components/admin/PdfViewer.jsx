@@ -1,35 +1,40 @@
 "use client";
-import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { Document, Page } from 'react-pdf';
-import { pdfjs } from 'react-pdf';
-import axios from 'axios';
-import { useDevice } from '@/src/hooks/useDevice';
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { Document, Page } from "react-pdf";
+import { pdfjs } from "react-pdf";
+import axios from "axios";
+import { useDevice } from "@/src/hooks/misc/useDevice";
 
-function PdfViewer({pdfPath,width=400}) {
-  const [pageNumber, setPageNumber] = useState(1); 
+function PdfViewer({ pdfPath, width = 400 }) {
+  const [pageNumber, setPageNumber] = useState(1);
   const [numPages, setNumPages] = useState(null);
-  const {type} =useDevice() 
+  const { type } = useDevice();
 
   const fetchPdf = async () => {
-    const response = await axios.get(`https://galaweb.galahub.org/api/documents/${pdfPath}`, {
-      responseType: 'blob', 
-    });
+    const response = await axios.get(
+      `https://galaweb.galahub.org/api/documents/${pdfPath}`,
+      {
+        responseType: "blob",
+      }
+    );
     console.log(response.data);
-    const pdfBlob = response.data; 
-    const pdfUrl = URL.createObjectURL(pdfBlob); 
+    const pdfBlob = response.data;
+    const pdfUrl = URL.createObjectURL(pdfBlob);
     return pdfUrl;
   };
 
-
-  const { data: pdfFile, isLoading, error } = useQuery({
-    queryKey: ['pdf'], 
-    queryFn: fetchPdf, 
+  const {
+    data: pdfFile,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["pdf"],
+    queryFn: fetchPdf,
   });
 
-  
   const onDocumentLoadSuccess = ({ numPages }) => {
-    setNumPages(numPages); 
+    setNumPages(numPages);
   };
 
   if (isLoading) {
@@ -40,13 +45,13 @@ function PdfViewer({pdfPath,width=400}) {
     return <p className="text-xs">No PDF available</p>;
   }
 
-  const pdfFileObj = `https://galaweb.galahub.org/api/documents/${pdfPath}`
-  
+  const pdfFileObj = `https://galaweb.galahub.org/api/documents/${pdfPath}`;
+
   return (
-    <div className='flex justify-center items-center  w-32'>
+    <div className="flex justify-center items-center  w-32">
       {pdfFile ? (
         <Document
-          file={pdfFileObj} 
+          file={pdfFileObj}
           onLoadSuccess={onDocumentLoadSuccess}
           className="w-4/5 flex items-center justify-center sm:w-full"
         >

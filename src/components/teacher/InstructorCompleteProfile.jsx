@@ -9,10 +9,10 @@ import {
   Upload,
   message,
 } from "antd";
-import { useUser } from "@/src/hooks/useUser";
-import { useSpecialNeeds } from "@/src/hooks/useSpecialNeeds";
-import { useSubject } from "@/src/hooks/useSubject";
-import { useGrade } from "@/src/hooks/useGrade";
+import { useUser } from "@/src/hooks/data/useUser";
+import { useSpecialNeeds } from "@/src/hooks/data/useSpecialNeeds";
+import { useSubject } from "@/src/hooks/data/useSubject";
+import { useGrade } from "@/src/hooks/data/useGrade";
 import { Stage, Success, Verify } from "../student/CompleteProfile";
 import { LANGUAGES } from "@/src/utils/data/lang";
 import {
@@ -99,7 +99,6 @@ const Save = ({
   const { grades } = useGrade();
   const isEditMode = status === Stage.EDIT;
 
-
   const handleFormSubmit = async (values) => {
     try {
       const formData = new FormData();
@@ -129,7 +128,6 @@ const Save = ({
           }
         }
       });
-
 
       updateProfile(formData, {
         onSuccess: () => {
