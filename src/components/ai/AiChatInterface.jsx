@@ -57,7 +57,7 @@ const AiChatInterface = () => {
                     </div>
                   </div>
                 )}
-                {role === "assistant" && (
+                {role === "gala" && (
                   <div className="flex justify-start">
                     <div className="flex items-start gap-3 max-w-[90%]">
                       <div className="flex items-center justify-center w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex-shrink-0">
