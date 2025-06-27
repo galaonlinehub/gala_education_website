@@ -1,7 +1,7 @@
 "use client";
 
 import TemplateLoader from "../ui/loading/template/TemplateLoader";
-import { useUser } from "@/src/hooks/useUser";
+import { useUser } from "@/src/hooks/data/useUser";
 import { useEffect } from "react";
 import { useLoading } from "@/src/store/loading";
 

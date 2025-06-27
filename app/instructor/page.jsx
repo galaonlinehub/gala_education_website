@@ -38,14 +38,14 @@ import {
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { apiGet, apiPost } from "@/src/services/api/api_service";
-import { useUser } from "@/src/hooks/useUser";
-import { useDevice } from "@/src/hooks/useDevice";
+import { useUser } from "@/src/hooks/data/useUser";
+import { useDevice } from "@/src/hooks/misc/useDevice";
 
-import { useInstructorSubjects } from "@/src/hooks/useInstructorSubjects";
-import { useInstructorCohorts } from "@/src/hooks/useInstructorCohorts";
+import { useInstructorSubjects } from "@/src/hooks/data/useInstructorSubjects";
+import { useInstructorCohorts } from "@/src/hooks/data/useInstructorCohorts";
 
 import { IoCalendarClearSharp } from "react-icons/io5";
-import { useCohort } from "@/src/hooks/useCohort";
+import { useCohort } from "@/src/hooks/data/useCohort";
 import { encrypt } from "@/src/utils/fns/encryption";
 import ClassCreationWizard from "./create-class/CreateClass";
 import TableSkeleton from "@/src/components/teacher/TableSkeleton";
@@ -82,60 +82,60 @@ export default function TeacherClasses() {
   };
 
   const columns = [
-  {
-    title: "Class",
-    dataIndex: "class",
-    key: "subject",
-    width: 250, // Remove the "25%" and use fixed pixel width
-    render: (text) => <Text strong>{text}</Text>,
-  },
-  {
-    title: "Start Date",
-    dataIndex: "startDate",
-    key: "startDate",
-    width: 140,
-    render: (date) => (
-      <Space>
-        <IoCalendarClearSharp color="green" />
-        {date}
-      </Space>
-    ),
-  },
-  {
-    title: "End Date",
-    dataIndex: "endDate",
-    key: "endDate",
-    width: 140,
-    render: (date) => (
-      <Space>
-        <IoCalendarClearSharp color="red" />
-        {date}
-      </Space>
-    ),
-  },
-  {
-    title: "Students",
-    dataIndex: "students",
-    key: "students",
-    width: 100,
-    render: (count) => (
-      <Space>
-        <LuUsers />
-        {count}
-      </Space>
-    ),
-  },
-  {
-    title: "Action",
-    key: "action",
-    width: 120,
-    render: (_, record) => (
-      <Button type="link" onClick={() => gotoCohortDetails(record.cohortId)}>
-        View Details
-      </Button>
-    ),
-  }
-];
+    {
+      title: "Class",
+      dataIndex: "class",
+      key: "subject",
+      width: 250, // Remove the "25%" and use fixed pixel width
+      render: (text) => <Text strong>{text}</Text>,
+    },
+    {
+      title: "Start Date",
+      dataIndex: "startDate",
+      key: "startDate",
+      width: 140,
+      render: (date) => (
+        <Space>
+          <IoCalendarClearSharp color="green" />
+          {date}
+        </Space>
+      ),
+    },
+    {
+      title: "End Date",
+      dataIndex: "endDate",
+      key: "endDate",
+      width: 140,
+      render: (date) => (
+        <Space>
+          <IoCalendarClearSharp color="red" />
+          {date}
+        </Space>
+      ),
+    },
+    {
+      title: "Students",
+      dataIndex: "students",
+      key: "students",
+      width: 100,
+      render: (count) => (
+        <Space>
+          <LuUsers />
+          {count}
+        </Space>
+      ),
+    },
+    {
+      title: "Action",
+      key: "action",
+      width: 120,
+      render: (_, record) => (
+        <Button type="link" onClick={() => gotoCohortDetails(record.cohortId)}>
+          View Details
+        </Button>
+      ),
+    },
+  ];
 
   const handleOtpChange = (index, value) => {
     if (!/^\d*$/.test(value)) return;
@@ -175,24 +175,27 @@ export default function TeacherClasses() {
   };
 
   // // Responsive column settings
- const getResponsiveColumns = () => {
-  if (device?.type === "mobile") {
-    return columns.map((col) => ({
-      ...col, // This preserves the width property
-      render: (text, record) => {
-        if (col.key === "action") {
-          return (
-            <Button type="link" onClick={() => gotoCohortDetails(record.cohortId)}>
-              View Details
-            </Button>
-          );
-        }
-        return col.render ? col.render(text, record) : text;
-      },
-    }));
-  }
-  return columns;
-};
+  const getResponsiveColumns = () => {
+    if (device?.type === "mobile") {
+      return columns.map((col) => ({
+        ...col, // This preserves the width property
+        render: (text, record) => {
+          if (col.key === "action") {
+            return (
+              <Button
+                type="link"
+                onClick={() => gotoCohortDetails(record.cohortId)}
+              >
+                View Details
+              </Button>
+            );
+          }
+          return col.render ? col.render(text, record) : text;
+        },
+      }));
+    }
+    return columns;
+  };
 
   // Mobile-friendly table settings
   const getTableSettings = () => ({
@@ -213,8 +216,9 @@ export default function TeacherClasses() {
       <Layout className=" bg-white">
         <Content className="p-3 md:p-6">
           <div
-            className={`space-y-4 md:space-y-6 ${!isProfileCompleted ? "pointer-events-none opacity-30" : ""
-              }`}
+            className={`space-y-4 md:space-y-6 ${
+              !isProfileCompleted ? "pointer-events-none opacity-30" : ""
+            }`}
           >
             <Card>
               <Row align="middle" justify="space-between" gutter={[16, 16]}>
@@ -358,7 +362,11 @@ export default function TeacherClasses() {
                     <TableSkeleton />
                   ) : (
                     <div className="overflow-x-auto">
-                      <Table columns={getResponsiveColumns()} dataSource={InstructorCohorts} {...getTableSettings()} />
+                      <Table
+                        columns={getResponsiveColumns()}
+                        dataSource={InstructorCohorts}
+                        {...getTableSettings()}
+                      />
                     </div>
                   )}
                 </Card>

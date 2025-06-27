@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { FaFolderOpen } from "react-icons/fa";
-import { useEnrolledTopics } from "@/src/hooks/useEnrolledTopics";
+import { useEnrolledTopics } from "@/src/hooks/data/useEnrolledTopics";
 import {
   TopicCard,
   TopicCardSkeleton,

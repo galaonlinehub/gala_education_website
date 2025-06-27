@@ -2,7 +2,7 @@
 import React from "react";
 import { SendOutlined, UserOutlined } from "@ant-design/icons";
 import { LuBrain } from "react-icons/lu";
-import { useAi } from "@/src/hooks/useAi";
+import { useAi } from "@/src/hooks/ui/useAi";
 import { getLength, getValues } from "@/src/utils/fns/general";
 import SlickSpinner from "../ui/loading/template/SlickSpinner";
 

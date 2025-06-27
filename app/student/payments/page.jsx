@@ -9,8 +9,8 @@ import {
   RenderSuccessState,
   RenderLoadingState,
 } from "@/src/components/ui/auth/signup/PaymentStatus";
-import { usePendingCohorts } from "@/src/hooks/usePendingCohorts";
-import { useDevice } from "@/src/hooks/useDevice";
+import { usePendingCohorts } from "@/src/hooks/data/usePendingCohorts";
+import { useDevice } from "@/src/hooks/misc/useDevice";
 import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
 
 function PendingPayment() {
