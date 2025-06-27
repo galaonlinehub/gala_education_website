@@ -1,9 +1,9 @@
 import axios from "axios";
 import * as React from "react";
 import { useForm } from "react-hook-form";
-import { USER_COOKIE_KEY } from "../config/settings";
-import { cookieFn } from "../utils/fns/client";
-import { decrypt } from "../utils/fns/encryption";
+import { USER_COOKIE_KEY } from "../../config/settings";
+import { cookieFn } from "../../utils/fns/client";
+import { decrypt } from "../../utils/fns/encryption";
 
 export const useAi = () => {
   const [isStreaming, setIsStreaming] = React.useState(false);
