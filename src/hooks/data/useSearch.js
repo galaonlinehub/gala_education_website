@@ -120,7 +120,7 @@ export const useSearch = () => {
 
   const handleResultClick = useCallback(
     (item) => {
-      const type = item.user ? "instructor" : "topic";
+      const type = item?.type;
       setSelectedItemId({ id: item.id, type });
       setIsSearching((prev) => ({ ...prev, resultsVisible: false }));
       setOpenNewClass(true);
