@@ -1,5 +1,5 @@
 import React from "react";
-import { Input, Empty, Skeleton, Tooltip } from "antd";
+import { Input, Empty, Skeleton, Tooltip, Avatar } from "antd";
 import { IoMenu } from "react-icons/io5";
 import { CloseOutlined } from "@ant-design/icons";
 import { FaChalkboardTeacher, FaBookReader } from "react-icons/fa";
@@ -8,12 +8,13 @@ import { useRouter } from "next/navigation";
 import { useSearch } from "@/src/hooks/data/useSearch";
 import { notificationService } from "@/src/components/ui/notification/Notification";
 import { useUser } from "@/src/hooks/data/useUser";
-import { LuBell, LuCircleUser } from "react-icons/lu";
+import { LuBell, LuCircleUser, LuUser } from "react-icons/lu";
 import Updates from "../ui/notification/Updates";
 import Clock from "../ui/Clock";
 import LoaderCircle from "@/app/student/search/page";
 import StuckSpinner from "../ui/loading/template/StuckSpinner";
 import SlickSpinner from "../ui/loading/template/SlickSpinner";
+import { img_base_url } from "@/src/config/settings";
 
 const SearchResultCard = ({ data, onClick }) => {
   const { topics, teachers } = data;
@@ -96,9 +97,11 @@ const SearchResultCard = ({ data, onClick }) => {
                 >
                   <div className="flex items-center space-x-4">
                     <div className="">
-                      <div className="w-16 h-16 rounded-full bg-gradient-to-r from-violet-500 to-violet-500 flex items-center justify-center">
-                        <LuCircleUser className="text-3xl text-white" />
-                      </div>
+                      <Avatar
+                        src={`${img_base_url}${teacher.user?.profile_picture}`}
+                        icon={<LuUser />}
+                        className="w-12 h-12 border border-violet-900"
+                      />
                     </div>
                     <div>
                       <h4 className="font-semibold text-gray-800 capitalize">
@@ -167,41 +170,9 @@ const StudentSearch = () => {
                     <div className="bg-white rounded-xl shadow-2xl border border-gray-100 max-h-[70vh] overflow-y-auto">
                       {isSearching.loading ? (
                         <div className="h-[16rem] flex items-center justify-center">
-                          {/* <StuckSpinner
-                            strokeLinecap="square"
-                            strokeWidth={6}
-                            size={30}
-                            variant="dotted"
-                          /> */}
                           <SlickSpinner size={30} />
                         </div>
                       ) : (
-                        // <div className="p-6 text-center">
-                        //   <div className="grid gap-2">
-                        //     {[...Array(3)].map((_, index) => (
-                        //       <div
-                        //         key={index}
-                        //         className="rounded-lg p-3 flex justify-between items-center"
-                        //       >
-                        //         <div className="flex-grow pr-4">
-                        //           <Skeleton
-                        //             active
-                        //             title={false}
-                        //             paragraph={{
-                        //               rows: 2,
-                        //               width: ["80%", "100%", "100%"],
-                        //             }}
-                        //           />
-                        //         </div>
-                        //         <Skeleton.Avatar
-                        //           active
-                        //           size="large"
-                        //           shape="circle"
-                        //         />
-                        //       </div>
-                        //     ))}
-                        //   </div>
-                        // </div>
                         <>
                           {isResultsEmpty ? (
                             <div className="p-4 text-center">
