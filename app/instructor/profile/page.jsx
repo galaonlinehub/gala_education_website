@@ -47,22 +47,18 @@ import {
   HeartOutlined,
   EyeOutlined
 } from '@ant-design/icons';
-import { FaIdCard } from "react-icons/fa";
 import { BsPerson, BsPersonBadge } from "react-icons/bs";
 import { MdSubject, MdClass } from "react-icons/md";
 import { GrGroup } from "react-icons/gr";
 import { TbDisabled } from "react-icons/tb";
-import { CiTrophy } from "react-icons/ci";
-import { FaStar } from "react-icons/fa";
-import { BiSolidCommentDetail } from "react-icons/bi";
 import { LuUser } from 'react-icons/lu';
-import { useUser } from '@/src/hooks/useUser';
-import { useInstructorCohorts } from '@/src/hooks/useInstructorCohorts';
-import { useInstructorSubjects } from '@/src/hooks/useInstructorSubjects';
-import { useInstructorProfile } from '@/src/hooks/useInstructorProfile';
-import { useSubject } from '@/src/hooks/useSubject';
-import { useGrade } from '@/src/hooks/useGrade';
-import { useSpecialNeeds } from '@/src/hooks/useSpecialNeeds';
+import { useUser } from '@/src/hooks/data/useUser';
+import { useInstructorCohorts } from '@/src/hooks/data/useInstructorCohorts';
+import { useInstructorSubjects } from '@/src/hooks/data/useInstructorSubjects';
+import { useInstructorProfile } from '@/src/hooks/data/useInstructorProfile';
+import { useSubject } from '@/src/hooks/data/useSubject';
+import { useGrade } from '@/src/hooks/data/useGrade';
+import { useSpecialNeeds } from '@/src/hooks/data/useSpecialNeeds';
 import { img_base_url } from '@/src/config/settings';
 
 const { Content } = Layout;

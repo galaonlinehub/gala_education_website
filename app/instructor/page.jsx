@@ -7,7 +7,7 @@ import { UserOutlined, CameraOutlined, BookOutlined, ClockCircleOutlined, Calend
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { apiGet, apiPost } from "@/src/services/api_service";
+import { apiGet, apiPost } from "@/src/services/api/api_service";
 import { useUser } from "@/src/hooks/data/useUser";
 import { useDevice } from "@/src/hooks/misc/useDevice";
 import { useInstructorSubjects } from "@/src/hooks/data/useInstructorSubjects";
