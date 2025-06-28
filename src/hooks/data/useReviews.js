@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { globalOptions } from "../../config/tanstack";
-import { apiGet, apiPut } from "../../services/api_service";
+import { apiGet, apiPut } from "../../services/api/api_service";
 import { useUser } from "./useUser";
 
 export const useReviews = (cohortId) => {

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { globalOptions } from "../../config/tanstack";
-import { apiGet } from "../../services/api_service";
+import { apiGet } from "../../services/api/api_service";
 
 
 export const useStudentReviews = (cohortId, instructorId) => {
