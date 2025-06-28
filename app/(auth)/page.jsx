@@ -230,7 +230,7 @@ function Home() {
           </div>
         </div>
 
-        <div className="relative flex items-center w-full mt-0 md:h-[60rem] mt-5 lg:h-[50rem] ">
+        <div className="relative flex items-center w-full md:h-[60rem] mt-5 lg:h-[50rem] ">
           <div className=" w-full mt-2 py-4 px-6 flex gap-5 items-center flex-col h-fit">
             <Animator delay={0.2}>
               <h1 className="font-black text-4xl">Our services</h1>
@@ -250,7 +250,7 @@ function Home() {
                     title={"Personalized Subject Tutoring"}
                     image={"/service1.jpeg"}
                     desc={
-                      "Tailored one-on-one sessions in core subjects such as math, science, English, and social studies, focusing on the student's specific needs and learning pace."
+                      "Tailored one-on-one sessions in core subjects like math, science, English, and social studies, focusing on the student's specific needs and learning pace."
                     }
                   />
                 </Animator>
@@ -268,7 +268,7 @@ function Home() {
                     title={"Special Education Support"}
                     image={"/service3.jpeg"}
                     desc={
-                      "Customized sessions for students with learning disabilities or special needs, providing them with the tools and support to thrive academically."
+                      "Customized sessions for students with learning disabilities or special needs, providing them with tools and support to thrive academically."
                     }
                   />
                 </Animator>
