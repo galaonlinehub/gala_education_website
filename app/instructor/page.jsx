@@ -15,7 +15,7 @@ import { useInstructorSubjects } from "@/src/hooks/useInstructorSubjects";
 import { useInstructorCohorts } from "@/src/hooks/useInstructorCohorts";
 
 import { IoCalendarClearSharp } from "react-icons/io5";
-import { useCohort } from "@/src/hooks/useCohort";
+import { useCohort } from "@/src/hooks/data/useCohort";
 import { encrypt } from "@/src/utils/fns/encryption";
 import ClassCreationWizard from "./create-class/CreateClass";
 import TableSkeleton from "@/src/components/teacher/TableSkeleton";
@@ -31,8 +31,10 @@ export default function TeacherClasses() {
   const device = useDevice();
 
   const { user } = useUser();
-  const { instructorSubjects, isInstructorSubjectsPending } = useInstructorSubjects();
-  const { InstructorCohorts, isInstructorCohortsPending } = useInstructorCohorts(2);
+  const { instructorSubjects, isInstructorSubjectsPending } =
+    useInstructorSubjects();
+  const { InstructorCohorts, isInstructorCohortsPending } =
+    useInstructorCohorts(2);
 
   const [openAddNewClass, setOpenAddNewClass] = useState(false);
 
@@ -184,7 +186,7 @@ export default function TeacherClasses() {
   const gotoCohortDetails = (cohortId) => {
     const encryptedId = encrypt(cohortId);
     router.push(`/instructor/all-classes/${encryptedId}`);
-  }
+  };
 
   return (
     <>
@@ -290,7 +292,7 @@ export default function TeacherClasses() {
                       <Button
                         type="default"
                         className="w-full border-orange-300 text-orange-600 hover:border-orange-400"
-                        onClick={()=>router.push(`/${user?.role}/reviews`)}
+                        onClick={() => router.push(`/${user?.role}/reviews`)}
                       >
                         View Reviews
                       </Button>

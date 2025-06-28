@@ -2,7 +2,7 @@
 
 import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
 import { img_base_url } from "@/src/config/settings";
-import { useUpcomingLessons } from "@/src/hooks/useUpcomigLessons";
+import { useUpcomingLessons } from "@/src/hooks/data/useUpcomigLessons";
 import { Avatar, Button, Card, Collapse, Modal, Tag } from "antd";
 import React, { useState } from "react";
 import {
@@ -16,10 +16,10 @@ import {
   LuCheckCheck,
   LuX,
 } from "react-icons/lu";
-import { useLesson } from "@/src/hooks/useLesson";
+import { useLesson } from "@/src/hooks/data/useLesson";
 import { encrypt } from "@/src/utils/fns/encryption";
 import { useRouter } from "next/navigation";
-import { useUser } from "@/src/hooks/useUser";
+import { useUser } from "@/src/hooks/data/useUser";
 import { sessionStorageFn } from "@/src/utils/fns/client";
 
 const { Panel } = Collapse;
@@ -37,7 +37,6 @@ const ClassCard = ({ classData }) => {
     setIsModalOpen(true);
   };
 
-
   const handleCancel = () => {
     setIsModalOpen(false);
   };
@@ -45,14 +44,13 @@ const ClassCard = ({ classData }) => {
   console.log("console:.", classData);
 
   const handleJoin = async () => {
-
     const lessonToken = await getLessonToken(classData.link);
     const lessonId = `${classData.lesson_id}`;
     const roomName = `${classData.class_name}`;
 
     const userName = `${user?.first_name} ${user?.last_name}`;
     const userEmail = `${user?.email}`;
-    const isModerator = user?.role == 'instructor' ? 'true' : 'false';
+    const isModerator = user?.role == "instructor" ? "true" : "false";
 
     const encryptedLesssonToken = encrypt(lessonToken);
     const encryptedModeratorvalue = encrypt(isModerator);
@@ -67,12 +65,12 @@ const ClassCard = ({ classData }) => {
     sessionStorageFn.set("lessonId", encryptedLessonId);
     sessionStorageFn.set("roomName", encryptedRoomName);
 
-    router.push(`/gala-meet?room=${encryptedLessonId}&name=${encryptedUserName}&email=${encryptedUserEmail}`);
+    router.push(
+      `/gala-meet?room=${encryptedLessonId}&name=${encryptedUserName}&email=${encryptedUserEmail}`
+    );
 
     setIsModalOpen(false);
-
   };
-
 
   return (
     <Card
@@ -134,8 +132,9 @@ const ClassCard = ({ classData }) => {
             type="primary"
             onClick={showConfirmModal}
             target="_blank"
-            className={`!bg-[#001840] !text-white !font-medium !rounded-md !px-4 !py-1 !h-auto !border-none transition-transform duration-200 ${isHovered ? "!scale-105 !bg-[#003380]" : ""
-              }`}
+            className={`!bg-[#001840] !text-white !font-medium !rounded-md !px-4 !py-1 !h-auto !border-none transition-transform duration-200 ${
+              isHovered ? "!scale-105 !bg-[#003380]" : ""
+            }`}
             icon={<LuVideo />}
           >
             Join
@@ -147,8 +146,9 @@ const ClassCard = ({ classData }) => {
         bordered={false}
         expandIcon={({ isActive }) => (
           <LuInfo
-            className={`h-5 w-5 text-[#001840] transition-transform ${isActive ? "rotate-180" : ""
-              }`}
+            className={`h-5 w-5 text-[#001840] transition-transform ${
+              isActive ? "rotate-180" : ""
+            }`}
           />
         )}
         className="!bg-transparent"
@@ -179,7 +179,6 @@ const ClassCard = ({ classData }) => {
         className="confirm-join-modal"
       >
         <div className="py-4">
-
           <div className="flex justify-center mb-6">
             <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center">
               <LuVideo className="text-4xl text-[#001840]" />
@@ -197,12 +196,15 @@ const ClassCard = ({ classData }) => {
 
             <div className="flex items-center gap-2 text-sm text-gray-600 mb-1">
               <LuCalendar className="flex-shrink-0" />
-              <span>{classData.date}, {classData.time}</span>
+              <span>
+                {classData.date}, {classData.time}
+              </span>
             </div>
           </div>
 
           <p className="text-gray-600 text-xs lg:text-sm text-center mb-6">
-            You&apos;re about to join a live interactive session. Make sure your camera and microphone are working properly.
+            You&apos;re about to join a live interactive session. Make sure your
+            camera and microphone are working properly.
           </p>
 
           <div className="flex gap-3 justify-center">
@@ -289,8 +291,6 @@ const LiveLessons = () => {
             <ClassCard key={classData.key} classData={classData} />
           ))
         )}
-
-
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import { useUserSubscriptions } from "@/src/hooks/useSubscription";
+import { useUserSubscriptions } from "@/src/hooks/data/useSubscription";
 import { Card, Tooltip } from "antd";
 import React from "react";
 import {

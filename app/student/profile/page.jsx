@@ -1,8 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import { Avatar, Input, Form, Button, message, Tooltip } from "antd";
-import { useUser } from "@/src/hooks/useUser";
-import { useDevice } from "@/src/hooks/useDevice";
+import { useUser } from "@/src/hooks/data/useUser";
+import { useDevice } from "@/src/hooks/misc/useDevice";
 import { img_base_url } from "@/src/config/settings";
 import {
   LuBookOpenText,
@@ -19,7 +19,7 @@ import {
   LuLoaderCircle,
 } from "react-icons/lu";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiGet, apiPut } from "@/src/services/api_service";
+import { apiGet, apiPut } from "@/src/services/api/api_service";
 import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
 import clsx from "clsx";
 

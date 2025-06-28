@@ -25,7 +25,7 @@ import {
 import { LuMessageSquare, LuBook } from "react-icons/lu";
 
 import { useEnrolledTopics } from "@/src/hooks/useEnrolledTopics";
-import { useStudentReviews } from "@/src/hooks/useStudentReviews";
+import { useStudentReviews } from "@/src/hooks/data/useStudentReviews";
 import { img_base_url } from "@/src/config/settings";
 import { apiPut } from "@/src/services/api_service";
 import { IoChevronForwardCircle } from "react-icons/io5";

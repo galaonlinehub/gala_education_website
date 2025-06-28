@@ -119,7 +119,7 @@ export const teacher_links = [
   {
     name: "Subscriptions",
     link: "subscriptions",
-    icon: <LuBox />,
+    icon: <TbHexagon />,
   },
   {
     name: "GalaAI",
@@ -154,7 +154,7 @@ export const student_links = [
   {
     name: "Social",
     link: "social",
-    icon: <LuUsers />,
+    icon: <LuUsers/>
   },
   {
     name: "Awaiting",
@@ -165,7 +165,7 @@ export const student_links = [
   {
     name: "Subscriptions",
     link: "subscriptions",
-    icon: <LuBox />,
+    icon: <TbHexagon />,
   },
 
   {

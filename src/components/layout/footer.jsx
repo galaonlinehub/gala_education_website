@@ -1,4 +1,4 @@
-import { apiPost } from "@/src/services/api_service";
+import { apiPost } from "@/src/services/api/api_service";
 import { footer_links } from "@/src/utils/data/links";
 import FooterVectors from "@/src/utils/vector-svg/FooterVectors";
 import { useMutation } from "@tanstack/react-query";

@@ -7,7 +7,7 @@ import { decrypt } from "@/src/utils/fns/encryption";
 import { useRouter } from "next/navigation";
 import { maskEmail } from "@/src/utils/fns/mask_email";
 import { ReloadOutlined } from "@ant-design/icons";
-import { apiPost } from "@/src/services/api_service";
+import { apiPost } from "@/src/services/api/api_service";
 import { sessionStorageFn } from "@/src/utils/fns/client";
 import { EMAIL_VERIFICATION_KEY } from "@/src/config/settings";
 import clsx from "clsx";

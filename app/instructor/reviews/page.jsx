@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Rate, Avatar, Badge, Tag, Divider, Empty, Button } from 'antd';
 import { UserOutlined, BookOutlined, StarOutlined, MessageOutlined, CalendarOutlined, TeamOutlined } from '@ant-design/icons';
-import { useReviews } from '@/src/hooks/useReviews';
+import { useReviews } from '@/src/hooks/data/useReviews';
 import { useInstructorCohorts } from '@/src/hooks/useInstructorCohorts';
 import { LuArrowLeft, LuBook, LuBookA, LuBookImage, LuCalendar, LuLibrary, LuMessageSquare } from 'react-icons/lu';
 import { IoArrowBackCircle, IoChevronForwardCircle } from 'react-icons/io5';

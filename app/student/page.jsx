@@ -21,7 +21,7 @@ import {
   CheckCircleOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
-import { useUser } from "@/src/hooks/useUser";
+import { useUser } from "@/src/hooks/data/useUser";
 import {
   LuBellRing,
   LuBookOpen,
@@ -29,7 +29,7 @@ import {
   LuUser,
 } from "react-icons/lu";
 import { img_base_url } from "@/src/config/settings";
-import { useEnrolledTopics } from "@/src/hooks/useEnrolledTopics";
+import { useEnrolledTopics } from "@/src/hooks/data/useEnrolledTopics";
 import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
 import { useRouter } from "next/navigation";
 import Updates from "@/src/components/ui/notification/Updates";
@@ -45,6 +45,8 @@ export default function Component() {
     enrolledTopics,
     enrolledTopicsLoading,
   } = useEnrolledTopics();
+
+  console.log(enrolledTopics);
 
   return (
     <div className="min-h-screen">
@@ -76,78 +78,100 @@ export default function Component() {
               <StatsSection token={token} />
               <Card
                 title={
-                  <span style={{ color: '#001840', fontWeight: 'bold' }}>
+                  <span style={{ color: "#001840", fontWeight: "bold" }}>
                     Your Classes
                   </span>
                 }
                 className="w-full shadow-lg"
                 style={{
-                  background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(59,130,246,0.05) 100%)',
-                  border: '1px solid rgba(0,24,64,0.1)',
-                  borderRadius: '12px'
+                  background:
+                    "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(59,130,246,0.05) 100%)",
+                  border: "1px solid rgba(0,24,64,0.1)",
+                  borderRadius: "12px",
                 }}
-                bodyStyle={{ 
-                  padding: '0',
-                  overflow: 'auto'
+                bodyStyle={{
+                  padding: "0",
+                  overflow: "auto",
                 }}
               >
                 <div className="overflow-x-auto">
                   <Table
                     columns={[
                       {
-                        title: <span style={{ color: '#001840', fontWeight: 'bold' }}>Class</span>,
-                        dataIndex: "subtopic_name",
-                        key: "subtopic_name",
+                        title: (
+                          <span
+                            style={{ color: "#001840", fontWeight: "bold" }}
+                          >
+                            Class
+                          </span>
+                        ),
+                        dataIndex: "cohort_name",
+                        key: "cohort_name",
                         ellipsis: {
                           showTitle: false,
                         },
-                        render: (text) => (
-                          <Tooltip placement="topLeft" title={text}>
-                            <span className="text-xs sm:text-sm truncate block max-w-[120px] sm:max-w-[200px]" style={{ color: '#001840' }}>
-                              {text}
+                        render: (cohort_name) => (
+                          <Tooltip placement="topLeft" title={cohort_name}>
+                            <span
+                              className="text-xs sm:text-sm truncate block max-w-[120px] sm:max-w-[200px]"
+                              style={{ color: "#001840" }}
+                            >
+                              {cohort_name}
                             </span>
                           </Tooltip>
                         ),
                       },
                       {
-                        title: <span style={{ color: '#001840', fontWeight: 'bold' }}>Progress</span>,
+                        title: (
+                          <span
+                            style={{ color: "#001840", fontWeight: "bold" }}
+                          >
+                            Progress
+                          </span>
+                        ),
                         dataIndex: "progress",
                         key: "progress",
                         width: "35%",
-                        render: (progress) => (
-                          <Progress 
-                            percent={progress} 
-                            size="small" 
-                            className="min-w-[80px]"
-                            strokeColor={{
-                              '0%': '#001840',
-                              '100%': '#3b82f6',
-                            }}
-                          />
-                        ),
+                        render: (progress) => {
+
+                          return (
+                            <span className="text-black">{progress}%</span>
+                            // <Progress
+                            //   percent={progress}
+                            //   size="small"
+                            //   className="min-w-[80px]"
+                            //   strokeColor={{
+                            //     "0%": "#001840",
+                            //     "100%": "#3b82f6",
+                            //   }}
+                            // />
+                          );
+                        },
                       },
                       {
-                        title: <span style={{ color: '#001840', fontWeight: 'bold' }}>Action</span>,
+                        title: (
+                          <span
+                            style={{ color: "#001840", fontWeight: "bold" }}
+                          >
+                            Action
+                          </span>
+                        ),
                         key: "action",
                         width: "25%",
                         render: () => (
-                          <Button 
-                            type="primary" 
+                          <Button
+                            disabled={true}
+                            type="primary"
                             size="small"
-                            className="p-0 text-xs sm:text-sm"
-                            style={{
-                              background: 'linear-gradient(135deg, #001840 0%, #3b82f6 100%)',
-                              border: 'none',
-                              borderRadius: '8px'
-                            }}
+                            className="p-2 !text-xs sm:text-sm bg-black"
                           >
                             Enter
                           </Button>
                         ),
                       },
                     ]}
-                    dataSource={[]}
-                    loading={enrolledTopicsLoading}
+                    dataSource={enrolledTopics}
+                    loading={false}
                     pagination={false}
                     size="small"
                     scroll={{ x: 400 }}
@@ -178,51 +202,46 @@ const SelectedSubjects = ({
   isEnrolledSubjectsError,
 }) => {
   return (
-    <Card 
+    <Card
       title={
-        <span style={{ color: '#001840', fontWeight: 'bold' }}>
+        <span style={{ color: "#001840", fontWeight: "bold" }}>
           Selected subjects
         </span>
       }
-      size="small" 
+      size="small"
       className="w-full shadow-lg"
       style={{
-        background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(59,130,246,0.05) 100%)',
-        border: '1px solid rgba(0,24,64,0.1)',
-        borderRadius: '12px'
+        background:
+          "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(59,130,246,0.05) 100%)",
+        border: "1px solid rgba(0,24,64,0.1)",
+        borderRadius: "12px",
       }}
-      bodyStyle={{ padding: '12px' }}
+      bodyStyle={{ padding: "12px" }}
     >
-      <div className="flex items-center justify-center flex-col gap-2 min-h-[100px]">
+      <div className="min-h-[100px]">
         {isFetchingEnrolledSubjects ? (
-          <SlickSpinner color="#001840" size={12} />
+          <div className="flex items-center justify-center h-full w-full">
+            <SlickSpinner color="#001840" size={20} />
+          </div>
         ) : isEnrolledSubjectsError ? (
-          <div className="text-xs text-red-500 text-center">
+          <div className="flex items-center justify-center w-full h-full text-xs text-red-500 text-center">
             Failed to load subjects.
           </div>
         ) : enrolledSubjects.length === 0 ? (
-          <div className="text-xs text-center" style={{ color: '#001840', opacity: 0.7 }}>
+          <div className="flex items-center justify-center w-full h-full text-xs text-center opacity-70 text-[#001840]">
             You are not enrolled in any subjects.
           </div>
         ) : (
-          enrolledSubjects.map((subject) => (
+          enrolledSubjects.map((subject, index) => (
             <div
-              key={subject.id}
-              className="flex gap-2 items-center justify-start w-full p-2 rounded-lg transition-all duration-200"
-              style={{
-                background: 'linear-gradient(135deg, rgba(0,24,64,0.05) 0%, rgba(59,130,246,0.05) 100%)',
-                border: '1px solid rgba(0,24,64,0.1)'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'linear-gradient(135deg, rgba(0,24,64,0.1) 0%, rgba(59,130,246,0.1) 100%)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'linear-gradient(135deg, rgba(0,24,64,0.05) 0%, rgba(59,130,246,0.05) 100%)';
-              }}
+              key={index}
+              className="flex flex-col gap-2 justify-start w-full rounded-lg"
             >
-              <LuBookOpen className="flex-shrink-0" style={{ color: '#001840' }} />
-              <div className="flex-1 text-xs sm:text-sm truncate min-w-0" style={{ color: '#001840' }}>
-                {subject?.name}
+              <div className="flex items-center gap-2">
+                <LuBookOpen className="flex-shrink-0 text-[#001840]" />
+                <div className="flex-1 text-xs sm:text-sm truncate min-w-0 text-[#001840]">
+                  {subject}
+                </div>
               </div>
             </div>
           ))
@@ -235,42 +254,44 @@ const SelectedSubjects = ({
 const QuickLinks = () => (
   <Card
     title={
-      <span style={{ color: '#001840', fontWeight: 'bold' }}>
-        Quick Links
-      </span>
+      <span style={{ color: "#001840", fontWeight: "bold" }}>Quick Links</span>
     }
     size="small"
     className="w-full shadow-lg"
     style={{
-      background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(59,130,246,0.05) 100%)',
-      border: '1px solid rgba(0,24,64,0.1)',
-      borderRadius: '12px'
+      background:
+        "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(59,130,246,0.05) 100%)",
+      border: "1px solid rgba(0,24,64,0.1)",
+      borderRadius: "12px",
     }}
-    bodyStyle={{ padding: '12px' }}
+    bodyStyle={{ padding: "12px" }}
   >
-    <Space
-      direction="vertical"
-      className="w-full"
-      size="small"
-    >
+    <Space direction="vertical" className="w-full" size="small">
       <Button
         type="text"
-        icon={<LuUser style={{ color: '#001840' }} />}
+        icon={<LuUser style={{ color: "#001840" }} />}
         block
         className="text-left h-auto py-2 px-2 flex items-center justify-start min-w-0 rounded-lg transition-all duration-200"
         style={{
-          background: 'linear-gradient(135deg, rgba(0,24,64,0.05) 0%, rgba(59,130,246,0.05) 100%)',
-          border: '1px solid rgba(0,24,64,0.1)',
-          color: '#001840'
+          background:
+            "linear-gradient(135deg, rgba(0,24,64,0.05) 0%, rgba(59,130,246,0.05) 100%)",
+          border: "1px solid rgba(0,24,64,0.1)",
+          color: "#001840",
         }}
         onMouseEnter={(e) => {
-          e.currentTarget.style.background = 'linear-gradient(135deg, rgba(0,24,64,0.1) 0%, rgba(59,130,246,0.1) 100%)';
+          e.currentTarget.style.background =
+            "linear-gradient(135deg, rgba(0,24,64,0.1) 0%, rgba(59,130,246,0.1) 100%)";
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.background = 'linear-gradient(135deg, rgba(0,24,64,0.05) 0%, rgba(59,130,246,0.05) 100%)';
+          e.currentTarget.style.background =
+            "linear-gradient(135deg, rgba(0,24,64,0.05) 0%, rgba(59,130,246,0.05) 100%)";
         }}
       >
-        <Link href="/student/profile" className="flex-1 text-left truncate min-w-0 text-xs sm:text-sm" style={{ color: '#001840' }}>
+        <Link
+          href="/student/profile"
+          className="flex-1 text-left truncate min-w-0 text-xs sm:text-sm"
+          style={{ color: "#001840" }}
+        >
           Profile
         </Link>
       </Button>
@@ -278,17 +299,24 @@ const QuickLinks = () => (
       <Button
         type="text"
         disabled
-        icon={<ClockCircleOutlined style={{ color: '#001840', opacity: 0.5 }} />}
+        icon={
+          <ClockCircleOutlined style={{ color: "#001840", opacity: 0.5 }} />
+        }
         block
         className="text-left h-auto py-2 px-2 flex items-center justify-start min-w-0 rounded-lg"
         style={{
-          background: 'linear-gradient(135deg, rgba(0,24,64,0.03) 0%, rgba(59,130,246,0.03) 100%)',
-          border: '1px solid rgba(0,24,64,0.05)',
-          color: '#001840',
-          opacity: 0.5
+          background:
+            "linear-gradient(135deg, rgba(0,24,64,0.03) 0%, rgba(59,130,246,0.03) 100%)",
+          border: "1px solid rgba(0,24,64,0.05)",
+          color: "#001840",
+          opacity: 0.5,
         }}
       >
-        <Link href="/student/reminders" className="flex-1 text-left truncate min-w-0 text-xs sm:text-sm" style={{ color: '#001840' }}>
+        <Link
+          href="/student/reminders"
+          className="flex-1 text-left truncate min-w-0 text-xs sm:text-sm"
+          style={{ color: "#001840" }}
+        >
           <span className="hidden sm:inline">Create Reminders</span>
           <span className="sm:hidden">Reminders</span>
         </Link>
@@ -297,14 +325,15 @@ const QuickLinks = () => (
       <Button
         disabled
         type="text"
-        icon={<TrophyOutlined style={{ color: '#001840', opacity: 0.5 }} />}
+        icon={<TrophyOutlined style={{ color: "#001840", opacity: 0.5 }} />}
         block
         className="text-left h-auto py-2 px-2 flex items-center justify-start min-w-0 rounded-lg"
         style={{
-          background: 'linear-gradient(135deg, rgba(0,24,64,0.03) 0%, rgba(59,130,246,0.03) 100%)',
-          border: '1px solid rgba(0,24,64,0.05)',
-          color: '#001840',
-          opacity: 0.5
+          background:
+            "linear-gradient(135deg, rgba(0,24,64,0.03) 0%, rgba(59,130,246,0.03) 100%)",
+          border: "1px solid rgba(0,24,64,0.05)",
+          color: "#001840",
+          opacity: 0.5,
         }}
       >
         <span className="flex-1 text-left truncate min-w-0 text-xs sm:text-sm">
@@ -320,32 +349,32 @@ const DeadlinesCard = () => {
   return (
     <Card
       title={
-        <span style={{ color: '#001840', fontWeight: 'bold' }}>
-          Upcoming Reminders
-        </span>
+        <div className="w-full">
+          <span className="text-[#001840] font-bold block">
+            Upcoming Reminders
+          </span>
+        </div>
       }
       className="w-full shadow-lg"
       style={{
-        background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(59,130,246,0.05) 100%)',
-        border: '1px solid rgba(0,24,64,0.1)',
-        borderRadius: '12px'
+        background:
+          "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(59,130,246,0.05) 100%)",
+        border: "1px solid rgba(0,24,64,0.1)",
+        borderRadius: "12px",
       }}
-      bodyStyle={{ padding: '12px' }}
+      bodyStyle={{ padding: "12px" }}
     >
       <div className="min-h-[120px] flex flex-col items-center justify-center">
-        <div className="text-center p-4 rounded-lg" style={{
-          background: 'linear-gradient(135deg, rgba(0,24,64,0.05) 0%, rgba(59,130,246,0.05) 100%)',
-          border: '1px solid rgba(0,24,64,0.1)'
-        }}>
-          <ClockCircleOutlined 
-            style={{ 
-              fontSize: '24px', 
-              color: '#001840',
+        <div className="text-center p-4 rounded-lg">
+          <ClockCircleOutlined
+            style={{
+              fontSize: "24px",
+              color: "#001840",
               opacity: 0.6,
-              marginBottom: '8px'
-            }} 
+              marginBottom: "8px",
+            }}
           />
-          <div className="text-sm text-center" style={{ color: '#001840', opacity: 0.7 }}>
+          <div className="text-sm text-center opacity-70 text-[001840]">
             No reminders set
           </div>
         </div>
@@ -359,12 +388,13 @@ const DashboardHeader = () => {
   const router = useRouter();
 
   return (
-    <Card 
+    <Card
       className="w-full shadow-lg"
       style={{
-        background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(59,130,246,0.05) 100%)',
-        border: '2px solid #001840',
-        borderRadius: '12px'
+        background:
+          "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(59,130,246,0.05) 100%)",
+        border: "2px solid #001840",
+        borderRadius: "12px",
       }}
     >
       <Row gutter={[16, 16]} align="middle">
@@ -372,13 +402,13 @@ const DashboardHeader = () => {
           <Space direction="vertical" size="small">
             <Title
               level={4}
-              style={{ 
-                margin: 0, 
+              style={{
+                margin: 0,
                 fontFamily: '"Quicksand", sans-serif',
-                background: 'linear-gradient(135deg, #001840 0%, #3b82f6 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text'
+                background: "linear-gradient(135deg, #001840 0%, #3b82f6 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
               }}
               className="text-sm sm:text-base md:text-lg"
             >
@@ -388,7 +418,11 @@ const DashboardHeader = () => {
               </span>
               !
             </Title>
-            <Text type="secondary" className="text-xs sm:text-sm" style={{ color: '#001840', opacity: 0.7 }}>
+            <Text
+              type="secondary"
+              className="text-xs sm:text-sm"
+              style={{ color: "#001840", opacity: 0.7 }}
+            >
               Your learning dashboard - Track your progress and stay organized
             </Text>
           </Space>
@@ -400,13 +434,14 @@ const DashboardHeader = () => {
                 <Tooltip placement="top" title="Notifications">
                   <Button
                     className="cursor-pointer shadow-md"
-                    onClick={() => { }}
-                    icon={<LuBellRing style={{ color: '#001840' }} />}
+                    onClick={() => {}}
+                    icon={<LuBellRing style={{ color: "#001840" }} />}
                     shape="circle"
                     size="small"
                     style={{
-                      background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(59,130,246,0.1) 100%)',
-                      border: '1px solid rgba(0,24,64,0.2)'
+                      background:
+                        "linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(59,130,246,0.1) 100%)",
+                      border: "1px solid rgba(0,24,64,0.2)",
                     }}
                   />
                 </Tooltip>
@@ -416,12 +451,17 @@ const DashboardHeader = () => {
               <Avatar
                 onClick={() => router.push("/student/profile")}
                 className="cursor-pointer shadow-md"
-                src={user?.profile_picture ? `${img_base_url}${user?.profile_picture}` : undefined}
-                icon={<LuUser style={{ color: '#001840' }} />}
+                src={
+                  user?.profile_picture
+                    ? `${img_base_url}${user?.profile_picture}`
+                    : undefined
+                }
+                icon={<LuUser style={{ color: "#001840" }} />}
                 size="default"
                 style={{
-                  background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(59,130,246,0.1) 100%)',
-                  border: '2px solid #001840'
+                  background:
+                    "linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(59,130,246,0.1) 100%)",
+                  border: "2px solid #001840",
                 }}
               />
             </Tooltip>
@@ -454,33 +494,42 @@ const StatsSection = ({ token }) => {
         },
       ].map((stat, index) => (
         <Col xs={24} sm={12} key={index}>
-          <Card 
+          <Card
             className="h-20 sm:h-24 md:h-28 shadow-lg"
             style={{
-              background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(59,130,246,0.05) 100%)',
-              border: '1px solid rgba(0,24,64,0.1)',
-              borderRadius: '12px'
+              background:
+                "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(59,130,246,0.05) 100%)",
+              border: "1px solid rgba(0,24,64,0.1)",
+              borderRadius: "12px",
             }}
           >
             <Statistic
               title={
-                <span className="text-xs sm:text-sm truncate block" style={{ color: '#001840', fontWeight: 'bold' }}>
+                <span
+                  className="text-xs sm:text-sm truncate block"
+                  style={{ color: "#001840", fontWeight: "bold" }}
+                >
                   {stat.title}
                 </span>
               }
               value={stat.value}
-              valueStyle={{ 
-                background: 'linear-gradient(135deg, #001840 0%, #3b82f6 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-                fontSize: '16px',
-                lineHeight: '1.2',
-                fontWeight: 'bold'
+              valueStyle={{
+                background: "linear-gradient(135deg, #001840 0%, #3b82f6 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+                fontSize: "16px",
+                lineHeight: "1.2",
+                fontWeight: "bold",
               }}
               formatter={(value) => (
                 <div className="flex items-center space-x-1 sm:space-x-2">
-                  <span className="text-sm sm:text-base" style={{ color: '#001840' }}>{stat.icon}</span>
+                  <span
+                    className="text-sm sm:text-base"
+                    style={{ color: "#001840" }}
+                  >
+                    {stat.icon}
+                  </span>
                   <span className="text-sm sm:text-base">
                     {value}
                     {stat.suffix}
@@ -497,33 +546,34 @@ const StatsSection = ({ token }) => {
 
 const ActivityCard = () => {
   return (
-    <Card 
+    <Card
       title={
-        <span style={{ color: '#001840', fontWeight: 'bold' }}>
+        <span style={{ color: "#001840", fontWeight: "bold" }}>
           Recent Activities
         </span>
       }
       className="w-full shadow-lg"
       style={{
-        background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(59,130,246,0.05) 100%)',
-        border: '1px solid rgba(0,24,64,0.1)',
-        borderRadius: '12px'
+        background:
+          "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(59,130,246,0.05) 100%)",
+        border: "1px solid rgba(0,24,64,0.1)",
+        borderRadius: "12px",
       }}
     >
       <div className="min-h-[120px] flex flex-col items-center justify-center">
-        <div className="text-center p-4 rounded-lg" style={{
-          background: 'linear-gradient(135deg, rgba(0,24,64,0.05) 0%, rgba(59,130,246,0.05) 100%)',
-          border: '1px solid rgba(0,24,64,0.1)'
-        }}>
-          <CheckCircleOutlined 
-            style={{ 
-              fontSize: '24px', 
-              color: '#001840',
+        <div className="text-center p-4 rounded-lg">
+          <CheckCircleOutlined
+            style={{
+              fontSize: "24px",
+              color: "#001840",
               opacity: 0.6,
-              marginBottom: '8px'
-            }} 
+              marginBottom: "8px",
+            }}
           />
-          <div className="text-sm text-center" style={{ color: '#001840', opacity: 0.7 }}>
+          <div
+            className="text-sm text-center"
+            style={{ color: "#001840", opacity: 0.7 }}
+          >
             No recent activity
           </div>
         </div>

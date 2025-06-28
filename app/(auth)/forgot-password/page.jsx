@@ -10,7 +10,7 @@ import {
   LuX,
 } from "react-icons/lu";
 import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
-import { usePassword } from "@/src/hooks/usePassword";
+import { usePassword } from "@/src/hooks/data/usePassword";
 import { SUPPORT_EMAIL } from "@/src/config/settings";
 import { Contact } from "@/src/components/layout/Contact";
 

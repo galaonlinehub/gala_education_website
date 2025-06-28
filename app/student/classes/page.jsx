@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { FaFolderOpen } from "react-icons/fa";
-import { useEnrolledTopics } from "@/src/hooks/useEnrolledTopics";
+import { useEnrolledTopics } from "@/src/hooks/data/useEnrolledTopics";
 import {
   TopicCard,
   TopicCardSkeleton,
@@ -10,7 +10,6 @@ import Link from "next/link";
 import { encrypt } from "@/src/utils/fns/encryption";
 
 const ClassList = () => {
-  const [open, setOpen] = React.useState(true);
   const { enrolledTopics, enrolledTopicsLoading, enrolledTopicsError } =
     useEnrolledTopics();
 

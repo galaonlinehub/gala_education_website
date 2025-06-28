@@ -2,8 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { Avatar, Dropdown, Skeleton } from "antd";
 import { SmileOutlined } from "@ant-design/icons";
 import clsx from "clsx";
-import { useChat } from "@/src/hooks/useChat";
-import { useUser } from "@/src/hooks/useUser";
+import { useChat } from "@/src/hooks/chat/useChat";
+import { useUser } from "@/src/hooks/data/useUser";
 import useChatStore from "@/src/store/chat/chat";
 import { img_base_url } from "@/src/config/settings";
 import TypingIndicator from "../ui/loading/template/Typing";
@@ -17,9 +17,12 @@ import {
   LuVideoOff,
   LuPhoneOff,
   LuPaperclip,
+  LuClock4,
+  LuCircleAlert,
 } from "react-icons/lu";
 import { format, isToday, isYesterday } from "date-fns";
 import SlickSpinner from "../ui/loading/template/SlickSpinner";
+import { getEntries, getValues, hasData } from "@/src/utils/fns/general";
 
 const RenderChat = ({
   isSmallScreen,
@@ -41,14 +44,11 @@ const RenderChat = ({
     sendTypingStatus,
     deleteChatMutation,
     isFetchingChatMessages,
-    messageStatuses,
+    messageReceipts,
     markMessageAsRead,
     onlineUsers,
   } = useChat();
   const { user } = useUser();
-
- 
-  console.log("Online Users:", onlineUsers);
 
   const isPreviewChat = currentChatId === "preview";
   const currentChat = chats?.find((chat) => chat.id === currentChatId);
@@ -73,8 +73,8 @@ const RenderChat = ({
   }, [messages, isRecipientTyping]);
 
   useEffect(() => {
-    if (!isPreviewChat && messages.length > 0) {
-      const unread_messages = messages.filter((m) => {
+    if (!isPreviewChat && hasData(messages)) {
+      const unread_messages = getValues(messages).filter((m) => {
         if (m.isTemp) return false;
         const isNotSender = m.sender_id !== user.id;
         const userStatus = m.statuses?.find((s) => s.user_id === user.id);
@@ -150,24 +150,32 @@ const RenderChat = ({
   const renderTicks = (message) => {
     if (message.sender_id !== user.id) return null;
     const recipientId = recipient?.user.id;
-    const socketStatus = messageStatuses[message.id]?.[recipientId];
+    const socketStatus = messageReceipts[message.id]?.[recipientId];
     const fetchedStatus = message.statuses?.find(
       (s) => s.user_id === recipientId
     )?.status;
-    const status = socketStatus ?? fetchedStatus ?? "sent";
+    const status = socketStatus ?? fetchedStatus ?? message.status;
     switch (status) {
+      case "sending":
+        return <LuClock4 size={12} className="animate-spin text-white" />;
       case "sent":
-        return <LuCheck size={12} className="text-gray-200" />;
+        return <LuCheck size={14} strokeWidth={3} className="text-gray-200" />;
       case "delivered":
-        return <LuCheckCheck size={12} className="text-gray-200" />;
+        return (
+          <LuCheckCheck size={14} strokeWidth={3} className="text-gray-200" />
+        );
       case "read":
-        return <LuCheckCheck size={12} className="text-blue-500" />;
+        return (
+          <LuCheckCheck size={14} strokeWidth={3} className="text-blue-500" />
+        );
+      case "failed":
+        return <LuCircleAlert size={12} className="text-red-500" />;
       default:
-        return <LuCheck size={12} className="text-gray-200" />;
+        return <LuClock4 size={12} className="animate-spin text-white" />;
     }
   };
 
-  const groupedMessages = messages.reduce((acc, msg) => {
+  const groupedMessages = getValues(messages).reduce((acc, msg) => {
     const date = new Date(msg.sent_at_iso);
     const key = isToday(date)
       ? "Today"
@@ -178,7 +186,6 @@ const RenderChat = ({
     acc[key].push(msg);
     return acc;
   }, {});
-
 
   return (
     <div className="flex flex-col h-full w-full ">
@@ -275,7 +282,7 @@ const RenderChat = ({
             <SlickSpinner size={24} color="white" />
           </div>
         </div>
-      ) : Object.keys(groupedMessages).length === 0 ? (
+      ) : getValues(groupedMessages).length === 0 ? (
         <div className="flex flex-col justify-center items-center h-full w-full text-gray-500">
           <div className="text-2xl text-center">No messages yet</div>
           <div className="text-center text-sm">
@@ -285,9 +292,9 @@ const RenderChat = ({
       ) : (
         <div
           ref={chatContainerRef}
-          className="flex-grow overflow-y-auto p-4 space-y-3"
+          className="flex-grow overflow-y-auto p-4 space-y-3 overflow-x-clip"
         >
-          {Object.entries(groupedMessages).map(([date, msgs]) => (
+          {getEntries(groupedMessages).map(([date, msgs]) => (
             <div key={date}>
               <div className="text-center mb-4">
                 <span className="inline-block px-3 py-1 text-xs rounded-full text-gray-600">
@@ -328,22 +335,25 @@ const RenderChat = ({
                       {getSenderName(message.sender_id)}
                     </span>
                     <div
-                      className={`px-3 py-2 rounded-2xl flex gap-2 w-full ${
+                      className={`px-3 py-2 rounded-2xl w-full ${
                         isSender(message.sender_id)
                           ? "text-white bg-[#001840] rounded-tr-none"
                           : "bg-gray-200 text-gray-800 rounded-tl-none"
                       }`}
                     >
-                      <p className="text-xs min-w-0">{message.content}</p>
-                      <div
-                        className={clsx(
-                          "text-[8px] self-end shrink-0 whitespace-nowrap flex gap-1 justify-end items-end",
-                          isSender(message.sender_id)
-                            ? "text-gray-100"
-                            : "text-gray-500"
-                        )}
-                      >
-                        {message.sent_at} {renderTicks(message)}
+                      <div className="flex flex-wrap items-end gap-x-2">
+                        <p className="text-xs flex-1 min-w-0 whitespace-normal break-words">
+                          {message.content}
+                        </p>
+                        <div
+                          className={`text-[8px] shrink-0 whitespace-nowrap flex gap-2 items-end justify-center ml-2 ${
+                            isSender(message.sender_id)
+                              ? "text-gray-100"
+                              : "text-gray-500"
+                          }`}
+                        >
+                          {message.sent_at} {renderTicks(message)}
+                        </div>
                       </div>
                     </div>
                   </div>

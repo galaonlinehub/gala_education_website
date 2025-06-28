@@ -19,7 +19,7 @@ import {
   CheckCircleFilled,
   FilePdfOutlined,
 } from "@ant-design/icons";
-import { useAuth } from "@/src/hooks/useAuth";
+import { useAuth } from "@/src/hooks/data/useAuth";
 import EmailVerification from "./EmailVerification";
 import { useRouter } from "next/navigation";
 import clsx from "clsx";

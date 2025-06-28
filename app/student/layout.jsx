@@ -6,7 +6,7 @@ import Navbar from "@/src/components/layout/Navbar";
 import StudentSearch from "@/src/components/student/Search";
 import { student_links } from "@/src/utils/data/navigation_links";
 import { FloatingActionButton } from "@/src/components/ui/Fab";
-import useInstallPrompt from "@/src/hooks/useInstallPrompt";
+import useInstallPrompt from "@/src/hooks/misc/useInstallPrompt";
 import NewClass from "@/src/components/student/NewClass";
 import { usePathname, useSearchParams } from "next/navigation";
 import { CompleteProfile } from "@/src/components/student/CompleteProfile";
@@ -101,19 +101,17 @@ export default function StudentLayout({ children }) {
 
         {/* Main Content */}
 
-        
-
         <div className="flex-1 px-2 xxs:px-3 lg:px-5 py-2 w-full lg:w-[80vw] overflow-y-auto h-[calc(100vh-90px)]">
           {children}
-        </div> 
+        </div>
       </main>
 
-      {!isInstalled && installPrompt && (
+      {/* {!isInstalled && installPrompt && (
         <FloatingActionButton
           position="bottom-center"
           onClick={handleInstallClick}
         ></FloatingActionButton>
-      )}
+      )} */}
 
       <NewClass />
       <CompleteProfile />
