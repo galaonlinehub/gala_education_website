@@ -12,7 +12,7 @@ export const usePendingCohorts = () => {
     queryFn: getPendingCohorts,
     retry: 1,
     staleTime: 1000 * 60 * 5,
-    enabled: false,
+    enabled: true,
     placeholderData: [],
     ...globalOptions,
   });
@@ -26,8 +26,8 @@ export const usePendingCohorts = () => {
 
 const getPendingCohorts = async () => {
   try {
-    const res = await apiGet("/pending-cohort-payments");
-    return res.data || [];
+    const res = await apiGet("/pending-cohorts");
+    return res.data;
   } catch (e) {
     console.error(e);
     throw new Error("Failed to fetch pending cohorts", e);

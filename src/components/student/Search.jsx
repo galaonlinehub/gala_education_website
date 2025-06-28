@@ -1,121 +1,224 @@
 import React from "react";
-import { Input, Empty, Skeleton, Tooltip } from "antd";
-import { IoMenu } from "react-icons/io5";
-import { CloseOutlined } from "@ant-design/icons";
-import { FaChalkboardTeacher, FaBookReader } from "react-icons/fa";
-import { AnimatePresence, motion } from "framer-motion";
-import { useRouter } from "next/navigation";
-import { useSearch } from "@/src/hooks/data/useSearch";
-import { notificationService } from "@/src/components/ui/notification/Notification";
-import { useUser } from "@/src/hooks/data/useUser";
-import { LuBell, LuCircleUser } from "react-icons/lu";
-import Updates from "../ui/notification/Updates";
 import Clock from "../ui/Clock";
-import LoaderCircle from "@/app/student/search/page";
-import StuckSpinner from "../ui/loading/template/StuckSpinner";
+import { IoMenu } from "react-icons/io5";
+import { useRouter } from "next/navigation";
+import Updates from "../ui/notification/Updates";
+import { CloseOutlined } from "@ant-design/icons";
+import { useUser } from "@/src/hooks/data/useUser";
+import { Input, Empty, Tooltip, Avatar } from "antd";
+import { img_base_url } from "@/src/config/settings";
+import { useSearch } from "@/src/hooks/data/useSearch";
+import { AnimatePresence, motion } from "framer-motion";
 import SlickSpinner from "../ui/loading/template/SlickSpinner";
+import { FaChalkboardTeacher, FaBookReader } from "react-icons/fa";
+import { LuBell, LuChevronRight, LuCircleUser, LuUser } from "react-icons/lu";
 
 const SearchResultCard = ({ data, onClick }) => {
   const { topics, teachers } = data;
 
   const cardVariants = {
-    hover: { y: -8, transition: { duration: 0.3 } },
+    hover: { y: -2, transition: { duration: 0.2, ease: "easeOut" } },
   };
 
   const itemVariants = {
-    hover: { x: 8, transition: { duration: 0.2 } },
+    hover: {
+      scale: 1.01,
+      transition: { duration: 0.2, ease: "easeOut" },
+    },
   };
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      variants={cardVariants}
+      className="w-full max-w-6xl mx-auto space-y-8 text-black"
     >
       {/* Topics Section */}
       {topics && topics.length > 0 && (
-        <div className="relative bg-gray-50">
-          <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-blue-500 to-cyan-500" />
-          <div className="p-6">
-            <div className="flex items-center mb-4">
-              <div className="bg-gradient-to-r from-blue-500 to-cyan-500 p-2 rounded-lg">
-                <FaBookReader className="text-xl text-white" />
+        <motion.section
+          variants={cardVariants}
+          whileHover="hover"
+          className="bg-white overflow-hidden"
+        >
+          {/* Header */}
+          <div className="px-6 py-4 border-b border-gray-200">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center justify-center w-10 h-10 rounded-lg">
+                <FaBookReader className="text-lg text-black" />
               </div>
-              <h3 className="ml-3 text-xl font-bold bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent">
-                Topics
-              </h3>
+              <div>
+                <h2 className="text-xl font-medium">Topics</h2>
+                <p className="text-xs text-gray-800">
+                  {topics.length} topic{topics.length !== 1 ? "s" : ""} found
+                </p>
+              </div>
             </div>
-            <div className="grid gap-3">
-              {topics.map((topic) => (
+          </div>
+
+          {/* Content */}
+          <div className="p-6">
+            <div className="space-y-3">
+              {topics.map(({ id, type, subject, title }, index) => (
                 <motion.div
-                  key={topic.id}
+                  key={id}
                   variants={itemVariants}
                   whileHover="hover"
-                  className="rounded-xl p-4 shadow-sm hover:shadow-md  
-                  border-l-4 border-transparent hover:border-l-cyan-500
-                  transform transition-all duration-300 cursor-pointer"
-                  onClick={() => onClick(topic)}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{
+                    opacity: 1,
+                    x: 0,
+                    transition: { delay: index * 0.1 },
+                  }}
+                  className="group relative hover:bg-gray-50 rounded-lg p-4 border border-gray-200 hover:border-black hover:shadow-sm transition-all duration-300 cursor-pointer"
+                  onClick={() => onClick({ id, type })}
                 >
-                  <div className="flex justify-between items-center">
-                    <div className="flex-1">
-                      <h4 className="font-semibold text-gray-800">
-                        {topic.title}
-                      </h4>
-                      <div className="flex items-center mt-2 space-x-2"></div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1 min-w-0 pl-3">
+                      <span
+                        className="font-semibold text-gray-900 group-hover:text-black text-base leading-tight">
+                        {title}
+                      </span>
+                      {subject && (
+                        <p className="text-xs text-gray-600 mt-1 line-clamp-2">
+                          {subject}
+                        </p>
+                      )}
+                    </div>
+                    <div className="flex items-center ml-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <LuChevronRight />
                     </div>
                   </div>
                 </motion.div>
               ))}
             </div>
           </div>
-        </div>
+        </motion.section>
       )}
 
       {/* Instructors Section */}
       {teachers && teachers.length > 0 && (
-        <div className="relative bg-gray-50">
-          <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-cyan-500 to-teal-500" />
-          <div className="p-6">
-            <div className="flex items-center mb-4">
-              <div className="bg-gradient-to-r from-violet-500 to-violet-500 p-2 rounded-lg">
-                <FaChalkboardTeacher className="text-xl text-white" />
+        <motion.section
+          variants={cardVariants}
+          whileHover="hover"
+          className="border-t border-gray-200 overflow-hidden"
+        >
+          {/* Header */}
+          <div className="px-6 py-4 border-b border-gray-200">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center justify-center w-10 h-10 rounded-lg">
+                <FaChalkboardTeacher className="text-lg text-black" />
               </div>
-              <h3 className="ml-3 text-xl font-bold bg-gradient-to-r from-violet-500 to-violet-500 bg-clip-text text-transparent">
-                Instructors
-              </h3>
-            </div>
-            <div className="grid lg:grid-cols-2 gap-4">
-              {teachers.map((teacher) => (
-                <motion.div
-                  key={teacher.id}
-                  variants={itemVariants}
-                  whileHover="hover"
-                  className="rounded-xl p-4 bg-gradient-to-r from-violet-50 to-violet-50
-                  hover:shadow-md cursor-pointer transform transition-all duration-300"
-                  onClick={() => onClick(teacher)}
-                >
-                  <div className="flex items-center space-x-4">
-                    <div className="">
-                      <div className="w-16 h-16 rounded-full bg-gradient-to-r from-violet-500 to-violet-500 flex items-center justify-center">
-                        <LuCircleUser className="text-3xl text-white" />
-                      </div>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-gray-800 capitalize">
-                        {teacher.user.first_name} {teacher.user.last_name}
-                      </h4>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
+              <div>
+                <h2 className="text-xl font-bold">Instructors</h2>
+                <p className="text-xs text-gray-800">
+                  {teachers.length} instructor{teachers.length !== 1 ? "s" : ""}{" "}
+                  found
+                </p>
+              </div>
             </div>
           </div>
-        </div>
+
+          {/* Content */}
+          <div className="p-6">
+            <div className="space-y-3">
+              {teachers.map(
+                (
+                  { instructor_id: id, name, profile_picture, subjects, type },
+                  index
+                ) => (
+                  <motion.div
+                    key={id}
+                    variants={itemVariants}
+                    whileHover="hover"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{
+                      opacity: 1,
+                      y: 0,
+                      transition: { delay: index * 0.1 },
+                    }}
+                    className="group w-full hover:bg-gray-100 rounded-lg p-4 
+                           border border-gray-200 hover:border-black hover:shadow-sm
+                           transition-all duration-300 cursor-pointer"
+                    onClick={() => onClick({ id, type })}
+                  >
+                    <div className="flex items-center gap-4 w-full pl-3">
+                      <div className="flex-shrink-0">
+                        <Avatar
+                          src={
+                            profile_picture
+                              ? `${img_base_url}${profile_picture}`
+                              : undefined
+                          }
+                          icon={<LuUser color="black" />}
+                          className="w-14 h-14 border-[0.8px] hover:border-2 border-gray-300 group-hover:border-black 
+                                   transition-colors duration-300"
+                        />
+                      </div>
+
+                      {/* Content */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between w-full">
+                          <div className="flex-1 min-w-0">
+                            {/* Name */}
+                            <h3
+                              className="font-semibold text-gray-900 group-hover:text-black 
+                                       text-lg leading-tight capitalize mb-1"
+                            >
+                              {name}
+                            </h3>
+
+                            {/* Subjects */}
+                            <div className="text-sm text-gray-600">
+                              {subjects && subjects.length > 0 ? (
+                                <div className="flex flex-wrap gap-1">
+                                  {subjects.slice(0, 4).map((subject, i) => (
+                                    <span
+                                      key={i}
+                                      className="inline-block bg-white border-[0.8px] border-gray-300 group-hover:border-gray-400
+                                             px-2 py-1 rounded text-xs capitalize transition-colors duration-300"
+                                    >
+                                      {subject}
+                                    </span>
+                                  ))}
+                                  {subjects.length > 4 && (
+                                    <span className="inline-block bg-black text-white px-2 py-1 rounded text-xs">
+                                      +{subjects.length - 4} more
+                                    </span>
+                                  )}
+                                </div>
+                              ) : (
+                                <span className="text-gray-400 italic text-xs">
+                                  No subjects listed
+                                </span>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Action Indicator */}
+                          <div
+                            className="flex items-center ml-4 opacity-0 group-hover:opacity-100 
+                                      transition-opacity duration-300 flex-shrink-0"
+                          >
+                            <div className="text-right">
+                              <div className="text-xs text-black font-medium flex items-center gap-1">
+                                <span>View Profile</span>
+                                <LuChevronRight />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                )
+              )}
+            </div>
+          </div>
+        </motion.section>
       )}
     </motion.div>
   );
 };
-
 const StudentSearch = () => {
   const {
     searchTerm,
@@ -167,41 +270,9 @@ const StudentSearch = () => {
                     <div className="bg-white rounded-xl shadow-2xl border border-gray-100 max-h-[70vh] overflow-y-auto">
                       {isSearching.loading ? (
                         <div className="h-[16rem] flex items-center justify-center">
-                          {/* <StuckSpinner
-                            strokeLinecap="square"
-                            strokeWidth={6}
-                            size={30}
-                            variant="dotted"
-                          /> */}
-                          <SlickSpinner size={30} />
+                          <SlickSpinner color="black" size={30} />
                         </div>
                       ) : (
-                        // <div className="p-6 text-center">
-                        //   <div className="grid gap-2">
-                        //     {[...Array(3)].map((_, index) => (
-                        //       <div
-                        //         key={index}
-                        //         className="rounded-lg p-3 flex justify-between items-center"
-                        //       >
-                        //         <div className="flex-grow pr-4">
-                        //           <Skeleton
-                        //             active
-                        //             title={false}
-                        //             paragraph={{
-                        //               rows: 2,
-                        //               width: ["80%", "100%", "100%"],
-                        //             }}
-                        //           />
-                        //         </div>
-                        //         <Skeleton.Avatar
-                        //           active
-                        //           size="large"
-                        //           shape="circle"
-                        //         />
-                        //       </div>
-                        //     ))}
-                        //   </div>
-                        // </div>
                         <>
                           {isResultsEmpty ? (
                             <div className="p-4 text-center">
