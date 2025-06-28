@@ -13,6 +13,8 @@ const ClassList = () => {
   const { enrolledTopics, enrolledTopicsLoading, enrolledTopicsError } =
     useEnrolledTopics();
 
+ 
+
   return (
     <div className="px-2 lg:px-6 py-4">
       <div className="max-w-7xl mx-auto">
@@ -50,15 +52,10 @@ const ClassList = () => {
               </p>
             </div>
           ) : (
-            enrolledTopics?.map((classItem) => (
-              <Link
-                href={`/student/classes/${classItem.cohort_id}?id=${encrypt(
-                  classItem?.instructor_id
-                )}`}
-                key={classItem.cohort_id}
-              >
-                <TopicCard details={classItem} />
-              </Link>
+            enrolledTopics?.map((classItem, index) => (
+              <TopicCard details={classItem} key={index} detailsLink={`/student/classes/${classItem.cohort_id}?id=${encrypt(
+                classItem?.instructor_id
+              )}`} />
             ))
           )}
         </div>

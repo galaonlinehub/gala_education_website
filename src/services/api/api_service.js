@@ -92,7 +92,7 @@ export const apiPost = async (endpoint, data, headers = {}) => {
 
 export const apiPut = async (endpoint, data, headers = {}) => {
   try {
-    const response = await api.post(endpoint, data, { headers });
+    const response = await api.put(endpoint, data, { headers });
     return response;
   } catch (error) {
     console.error(`PUT ${endpoint} Error:`, error);

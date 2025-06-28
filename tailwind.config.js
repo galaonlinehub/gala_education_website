@@ -39,6 +39,7 @@ const tailwindConfig = {
       },
       animation: {
         "wave-pulse": "wavePulse 1.5s infinite",
+        'bounce-horizontal': 'bounce-horizontal 1s infinite',
       },
       keyframes: {
         wavePulse: {
@@ -49,6 +50,16 @@ const tailwindConfig = {
             boxShadow: "0 0 0 10px rgba(0, 255, 0, 0)",
           },
         },
+        'bounce-horizontal': {
+          '0%, 100%': {
+            transform: 'translateX(0)',
+            'animation-timing-function': 'cubic-bezier(0.8, 0, 1, 1)'
+          },
+          '50%': {
+            transform: 'translateX(25%)',
+            'animation-timing-function': 'cubic-bezier(0, 0, 0.2, 1)'
+          }
+        }
       },
       screens: {
         xxs: "280px",

@@ -36,8 +36,7 @@ export const useInstructorCohorts = (pageSize = null) => {
     queryKey: ["instructor_cohorts", user?.instructor_id, pageSize],
     queryFn: getInstructorCohorts,
     ...globalOptions,
-    // Only fetch if we have the instructor_id
-    enabled: !!user?.instructor_id,
+    enabled: !!user?.instructor_id
   });
 
   return {

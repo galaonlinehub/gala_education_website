@@ -284,7 +284,7 @@ function Home() {
                     title={"Personalized Subject Tutoring"}
                     image={"/service1.jpeg"}
                     desc={
-                      "Tailored one-on-one sessions in core subjects such as math, science, English, and social studies, focusing on the student's specific needs and learning pace."
+                      "Tailored one-on-one sessions in core subjects like math, science, English, and social studies, focusing on the student's specific needs and learning pace."
                     }
                   />
                 </Animator>
@@ -302,7 +302,7 @@ function Home() {
                     title={"Special Education Support"}
                     image={"/service3.jpeg"}
                     desc={
-                      "Customized sessions for students with learning disabilities or special needs, providing them with the tools and support to thrive academically."
+                      "Customized sessions for students with learning disabilities or special needs, providing them with tools and support to thrive academically."
                     }
                   />
                 </Animator>
