@@ -100,7 +100,7 @@ const SearchResultCard = ({ data, onClick }) => {
         <motion.section
           variants={cardVariants}
           whileHover="hover"
-          className="border-t border-gray-200 overflow-hidden"
+          className="border-t border-gray-200 overflow-clip"
         >
           {/* Header */}
           <div className="px-6 py-4 border-b border-gray-200">
@@ -141,7 +141,7 @@ const SearchResultCard = ({ data, onClick }) => {
                            transition-all duration-300 cursor-pointer"
                     onClick={() => onClick({ id, type })}
                   >
-                    <div className="flex items-center gap-4 w-full pl-3">
+                    <div className="flex items-center gap-4 w-full pl-3 overflow-clip">
                       <div className="flex-shrink-0">
                         <Avatar
                           src={
@@ -162,16 +162,16 @@ const SearchResultCard = ({ data, onClick }) => {
                             {/* Name */}
                             <h3
                               className="font-semibold text-gray-900 group-hover:text-black 
-                                       text-lg leading-tight capitalize mb-1"
+                                       text-lg leading-tight capitalize mb-1 whitespace-nowrap"
                             >
                               {name}
                             </h3>
 
                             {/* Subjects */}
-                            <div className="text-sm text-gray-600">
+                            <div className="text-sm text-gray-600 flex">
                               {subjects && subjects.length > 0 ? (
                                 <div className="flex flex-wrap gap-1">
-                                  {subjects.slice(0, 4).map((subject, i) => (
+                                  {subjects.slice(0, 3).map((subject, i) => (
                                     <span
                                       key={i}
                                       className="inline-block bg-white border-[0.8px] border-gray-300 group-hover:border-gray-400
@@ -180,14 +180,14 @@ const SearchResultCard = ({ data, onClick }) => {
                                       {subject}
                                     </span>
                                   ))}
-                                  {subjects.length > 4 && (
-                                    <span className="inline-block bg-black text-white px-2 py-1 rounded text-xs">
-                                      +{subjects.length - 4} more
+                                  {subjects.length > 3 && (
+                                    <span className="inline-block whitespace-nowrap bg-black text-white px-2 py-1 rounded text-xs">
+                                      +{subjects.length - 3}
                                     </span>
                                   )}
                                 </div>
                               ) : (
-                                <span className="text-gray-400 italic text-xs">
+                                <span className="text-gray-400 italic text-xs whitespace-nowrap">
                                   No subjects listed
                                 </span>
                               )}

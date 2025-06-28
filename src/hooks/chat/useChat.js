@@ -49,7 +49,7 @@ export const useChat = () => {
     isConnected,
     socketId,
     state: connectionState,
-  } = useSocketConnection(namespace);
+  } = useSocketConnection({ namespace, useInternalToken: true, user, isDev });
   const { emit } = useSocketEmit(namespace);
 
   // useEffect(() => {
@@ -171,30 +171,30 @@ export const useChat = () => {
   //   // };
   // }, [isDev, user.id]);
 
-  const socketInitialized = useRef(false);
+  // const socketInitialized = useRef(false);
 
-  useEffect(() => {
-    if (!user?.id || socketInitialized.current) return;
+  // useEffect(() => {
+  //   if (!user?.id || socketInitialized.current) return;
 
-    const token = decrypt(cookieFn.get(USER_COOKIE_KEY));
-    if (!token) {
-      console.error("No token available for socket authentication");
-      return;
-    }
+  //   const token = decrypt(cookieFn.get(USER_COOKIE_KEY));
+  //   if (!token) {
+  //     console.error("No token available for socket authentication");
+  //     return;
+  //   }
 
-    getSocket(namespace, {
-      query: { user_id: user.id, mode: isDev ? "development" : "" },
-      auth: { token },
-      transportOptions: {
-        polling: {
-          extraHeaders: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      },
-    });
-    socketInitialized.current = true;
-  }, [user?.id, isDev]);
+  //   getSocket(namespace, {
+  //     query: { user_id: user.id, mode: isDev ? "development" : "" },
+  //     auth: { token },
+  //     transportOptions: {
+  //       polling: {
+  //         extraHeaders: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       },
+  //     },
+  //   });
+  //   socketInitialized.current = true;
+  // }, [user?.id, isDev]);
 
   useChatSocketEvents(namespace, {
     setOnlineUsers,
@@ -325,7 +325,6 @@ export const useChat = () => {
       setOnlineUsers(getOnlineUsersFromChats(apiChats));
     }
   }, [apiChats]);
-
 
   const getChats = async () => {
     try {
