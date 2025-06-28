@@ -16,7 +16,7 @@ import { LuChevronRight, LuListChecks, LuStar, LuUsers } from "react-icons/lu";
 import Link from "next/link";
 import { BsStar, BsStarFill } from "react-icons/bs";
 import { PiStarBold, PiStarFill, PiStarLight } from "react-icons/pi";
-import { apiPost } from "@/src/services/api_service";
+import { apiPost } from "@/src/services/api/api_service";
 const { TextArea } = Input;
 
 const TopicCard = ({ details, detailsLink }) => {
@@ -25,10 +25,6 @@ const TopicCard = ({ details, detailsLink }) => {
   const [comment, setComment] = useState('');
 
   const [messageApi, contextHolder] = message.useMessage();
-
-  console.log("Cohort data", details);
-
-
 
   const [rateValue, setRateValue] = useState(null);
 

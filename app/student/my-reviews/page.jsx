@@ -6,7 +6,6 @@ import {
   Button,
   Typography,
   Space,
-  Tag,
   Avatar,
   Divider,
   Modal,
@@ -14,7 +13,6 @@ import {
   message,
   Row,
   Col,
-  Empty,
   Badge,
 } from "antd";
 import {
@@ -23,14 +21,13 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import { LuMessageSquare, LuBook } from "react-icons/lu";
-
-import { useEnrolledTopics } from "@/src/hooks/useEnrolledTopics";
+import { useEnrolledTopics } from "@/src/hooks/data/useEnrolledTopics";
 import { useStudentReviews } from "@/src/hooks/data/useStudentReviews";
 import { img_base_url } from "@/src/config/settings";
-import { apiPut } from "@/src/services/api_service";
+import { apiPut } from "@/src/services/api/api_service";
 import { IoChevronForwardCircle } from "react-icons/io5";
 
-const { Title, Text, Paragraph } = Typography;
+const { Text, Paragraph } = Typography;
 const { TextArea } = Input;
 
 const UserReviewsInterface = () => {
@@ -41,12 +38,6 @@ const UserReviewsInterface = () => {
     useEnrolledTopics();
 
   const { studentInstructorReviews, studentCohortReviews, refetchInstructorReviews, refetchCohortReviews } = useStudentReviews(cohort_id, instructor_id);
-
-  console.log("studentInstructorReviews:..", studentInstructorReviews);
-  console.log("studentCohortReviews:..", studentCohortReviews);
-  console.log("enrolledTopics:..", enrolledTopics);
-
-
   const [activeTab, setActiveTab] = useState("instructor_reviews");
   const [selectedReview, setSelectedReview] = useState(null);
   const [editModalVisible, setEditModalVisible] = useState(false);
@@ -215,7 +206,7 @@ const UserReviewsInterface = () => {
           <div className="text-right">
             <Button
               type="primary"
-               className="!bg-[#001840] !text-xs sm:!text-sm"
+              className="!bg-[#001840] !text-xs sm:!text-sm"
               icon={<EditOutlined />}
               onClick={() => handleEditReview(review)}
             >
@@ -228,7 +219,7 @@ const UserReviewsInterface = () => {
   );
 
   const renderCohortReviewDetails = (review) => (
-   <Row gutter={[24, 24]}>
+    <Row gutter={[24, 24]}>
       <Col span={24}>
         <Card hoverable className="rounded-xl shadow-lg">
           <div className="mb-4">
@@ -252,7 +243,7 @@ const UserReviewsInterface = () => {
           <div className="text-right">
             <Button
               type="primary"
-               className="!bg-[#001840] !text-xs sm:!text-sm"
+              className="!bg-[#001840] !text-xs sm:!text-sm"
               icon={<EditOutlined />}
               onClick={() => handleEditReview(review)}
             >
@@ -382,7 +373,7 @@ const UserReviewsInterface = () => {
             <div className="text-right">
               <Space>
                 <Button
-                 className="!text-xs sm:!text-sm"
+                  className="!text-xs sm:!text-sm"
                   onClick={() => {
                     setEditModalVisible(false);
                     setEditingReview(null);
