@@ -8,13 +8,10 @@ import { UserOutlined, CameraOutlined, BookOutlined, ClockCircleOutlined, Calend
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { apiGet, apiPost } from "@/src/services/api_service";
-import { useUser } from "@/src/hooks/useUser";
-import { useDevice } from "@/src/hooks/useDevice";
-
-import { useInstructorSubjects } from "@/src/hooks/useInstructorSubjects";
-import { useInstructorCohorts } from "@/src/hooks/useInstructorCohorts";
-
-import { IoCalendarClearSharp } from "react-icons/io5";
+import { useUser } from "@/src/hooks/data/useUser";
+import { useDevice } from "@/src/hooks/misc/useDevice";
+import { useInstructorSubjects } from "@/src/hooks/data/useInstructorSubjects";
+import { useInstructorCohorts } from "@/src/hooks/data/useInstructorCohorts";
 import { useCohort } from "@/src/hooks/data/useCohort";
 import { encrypt } from "@/src/utils/fns/encryption";
 import ClassCreationWizard from "./create-class/CreateClass";
