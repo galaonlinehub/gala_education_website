@@ -52,8 +52,8 @@ const ClassList = () => {
               </p>
             </div>
           ) : (
-            enrolledTopics?.map((classItem) => (
-              <TopicCard details={classItem} detailsLink={`/student/classes/${classItem.cohort_id}?id=${encrypt(
+            enrolledTopics?.map((classItem, index) => (
+              <TopicCard details={classItem} key={index} detailsLink={`/student/classes/${classItem.cohort_id}?id=${encrypt(
                 classItem?.instructor_id
               )}`} />
             ))

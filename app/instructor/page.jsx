@@ -283,7 +283,7 @@ export default function TeacherClasses() {
                       <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3">
                         <MdOutlineRateReview className="text-orange-600 text-lg" />
                       </div>
-                      <Title level={5} className="!mb-2">Students' Reviews</Title>
+                      <Title level={5} className="!mb-2">Students&apos; Reviews</Title>
                       <Text type="secondary" className="text-sm">
                         See what Students have to say about you / your class
                       </Text>

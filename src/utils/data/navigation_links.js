@@ -11,6 +11,7 @@ import {
   LuBook,
 } from "react-icons/lu";
 import { MdOutlineInsertComment } from "react-icons/md";
+import { TbHexagon } from "react-icons/tb";
 
 export const footer_links = {
   Services: [

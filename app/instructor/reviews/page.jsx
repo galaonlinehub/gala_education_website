@@ -335,7 +335,7 @@ const ReviewsAndRatings = () => {
                 </div>
 
                 <p className="text-gray-700 leading-relaxed bg-gray-50 p-2 sm:p-3 rounded-lg text-xs sm:text-sm">
-                  "{review.comment}"
+                  &quot;{review.comment}&quot;
                 </p>
 
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mt-3 pt-3 border-t gap-2">
@@ -489,7 +489,7 @@ const ReviewsAndRatings = () => {
                     </div>
 
                     <p className="text-gray-700 leading-relaxed bg-gray-50 p-2 sm:p-3 rounded-lg mb-3 text-xs sm:text-sm">
-                      "{review.comment}"
+                      &quot;{review.comment}&quot;
                     </p>
 
                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center text-xs text-gray-500 gap-2">
