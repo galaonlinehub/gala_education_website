@@ -86,13 +86,13 @@ const AiUserAgreement = () => {
 
                     <Paragraph>
                         <strong>Effective Date:</strong> Ongoing<br />
-                        <strong>Issued By:</strong> Gala Education Group Ltd (hereinafter "Gala Education")<br />
+                        <strong>Issued By:</strong> Gala Education Group Ltd (hereinafter &quot;Gala Education&quot;)<br />
                         <strong>Applies To:</strong> All users of GalaAI (students, teachers, and institutional partners)<br />
                         <strong>Jurisdiction:</strong> United Republic of Tanzania
                     </Paragraph>
 
                     <Paragraph>
-                        This Digital User Agreement ("Agreement") governs your use of GalaAI, an AI-powered academic assistance platform owned and operated by Gala Education. By accessing or using GalaAI in any way, you consent to the terms and conditions of this Agreement.
+                        This Digital User Agreement (&quot;Agreement&quot;) governs your use of GalaAI, an AI-powered academic assistance platform owned and operated by Gala Education. By accessing or using GalaAI in any way, you consent to the terms and conditions of this Agreement.
                     </Paragraph>
 
                     <Title level={4}>1. GENERAL TERMS</Title>
@@ -132,7 +132,7 @@ const AiUserAgreement = () => {
                         The following actions are strictly prohibited:
                     </Paragraph>
                     <ul>
-                        <li>2.2.1 Using GalaAI to cheat on exams, tests, or assignments, or to submit AI-generated work in violation of your academic institution's rules.</li>
+                        <li>2.2.1 Using GalaAI to cheat on exams, tests, or assignments, or to submit AI-generated work in violation of your academic institution&apos;s rules.</li>
                         <li>2.2.2 Uploading or inputting illegal, defamatory, sexually explicit, discriminatory, or misleading content.</li>
                         <li>2.2.3 Attempting to reverse-engineer, copy, sell, distribute, or otherwise exploit GalaAI technologies or its outputs.</li>
                         <li>2.2.4 Circumventing any access controls or security features within the GalaAI system.</li>
@@ -143,7 +143,7 @@ const AiUserAgreement = () => {
                         <strong>2.3 Compliance with Academic Policies</strong>
                     </Paragraph>
                     <Paragraph>
-                        Users remain fully responsible for complying with the codes of conduct and academic honesty policies of their educational institutions. GalaAI outputs are not guaranteed to meet any institution's originality, referencing, or assessment standards.
+                        Users remain fully responsible for complying with the codes of conduct and academic honesty policies of their educational institutions. GalaAI outputs are not guaranteed to meet any institution&apos;s originality, referencing, or assessment standards.
                     </Paragraph>
 
                     <Title level={4}>3. DATA PRIVACY AND COLLECTION</Title>
@@ -206,7 +206,7 @@ const AiUserAgreement = () => {
                         <strong>5.1 As-Is Basis</strong>
                     </Paragraph>
                     <Paragraph>
-                        GalaAI is provided "as-is" and "as-available." Gala Education makes no warranties, expressed or implied, regarding:
+                        GalaAI is provided &quot;as-is&quot; and &quot;as-available.&quot; Gala Education makes no warranties, expressed or implied, regarding:
                     </Paragraph>
                     <ul>
                         <li>The accuracy, completeness, or timeliness of AI-generated content.</li>
