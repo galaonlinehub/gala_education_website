@@ -98,7 +98,7 @@ const LibraryInterface = () => {
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-200 to-indigo-200 rounded-3xl blur-3xl opacity-30 transform rotate-6"></div>
                 <div className="relative z-10 h-full">
                   <Image
-                    src='/read.png'
+                    src='/read-min.png'
                     alt='Online Library'
                     fill
                     className='object-contain drop-shadow-2xl'
