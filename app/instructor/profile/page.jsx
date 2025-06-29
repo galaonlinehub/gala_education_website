@@ -82,6 +82,11 @@ const TeacherProfile = () => {
   const [modalType, setModalType] = useState('');
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
 
+  const certifications = [
+    "Ordinary level Education Certificate",
+    "Advanced level Education Certificate"
+  ];
+
   // Track window width for responsive design
   React.useEffect(() => {
     const handleResize = () => {
@@ -196,6 +201,14 @@ const TeacherProfile = () => {
       instructorSubjects?.some((sub) => sub.name === subject.name)
     )
     .map((subject) => subject.id);
+
+  const selectedGradeIds = grades
+    ?.filter(grade => instructorProfile?.grade_levels.some(gl => gl.name === grade.name))
+    .map(grade => grade.id);
+
+  const selectedSpecialNeedsIds = special_needs
+    ?.filter(special => instructorProfile?.special_needs.some(sn => sn.name === special.name))
+    .map(special => special.id);
 
   return (
     <div className="min-h-screen bg-gradient-to-br">

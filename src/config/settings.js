@@ -15,6 +15,7 @@ export const SIGN_UP_CHOOSE_ACCOUNT_KEY =
 export const EMAIL_VERIFICATION_KEY = "e67e4931-4518-4369-b011-fa078beefac1";
 export const PLAN_CONFIRMED_KEY = "b6694dca-72a9-41c1-82e9-befd10a51d5e";
 export const STUDENT_CONTRACT_KEY = "45a95407-631c-45e8-b691-b01ea943c3d6";
+export const AI_CONTRACT_KEY = "7f2b9d83-4a1e-4c72-9856-3e7f8a2b5c94";
 export const INSTRUCTOR_CONTRACT_KEY = "45dab10c-ce9f-40fd-9254-6b429efda2ee";
 export const EMAIL_VERIFICATION_MODAL_KEY =
   "1a56cd1c-ba85-48cf-ac45-0991bc732fb2";
