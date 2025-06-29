@@ -5,6 +5,7 @@ import { LuBrain } from "react-icons/lu";
 import { useAi } from "@/src/hooks/ui/useAi";
 import { getLength, getValues } from "@/src/utils/fns/general";
 import SlickSpinner from "../ui/loading/template/SlickSpinner";
+import AiUserAgreement from "./AiUserAgreement";
 
 const AiChatInterface = () => {
   const {
@@ -107,6 +108,7 @@ const AiChatInterface = () => {
           )}
         </div>
       </div>
+      <AiUserAgreement />
     </div>
   );
 };
