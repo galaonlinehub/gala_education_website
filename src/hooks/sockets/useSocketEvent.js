@@ -1,6 +1,6 @@
 // hooks/useSocket.js
 import { useEffect, useCallback, useRef } from "react";
-import { listen } from "../../services/socket/socket-api";
+import { listen } from "@/src/services/socket/socket-api";
 
 /**
  * Modern socket event hook with automatic cleanup

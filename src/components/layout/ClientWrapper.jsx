@@ -1,21 +1,19 @@
 "use client";
 
-import TemplateLoader from "../ui/loading/template/TemplateLoader";
-import { useUser } from "@/src/hooks/data/useUser";
-import { useEffect } from "react";
-import { useLoading } from "@/src/store/loading";
+import ErrorScreen from "@/src/components/ui/ErrorScreen";
+import { useClientWrapper } from "@/src/hooks/ui/useClientWrapper";
+import TemplateLoader from "@/src/components/ui/loading/template/TemplateLoader";
 
 const ClientWrapper = ({ children }) => {
-  const { userLoading, userError } = useUser();
-
-  const { loading, toggleLoading } = useLoading();
-
-  useEffect(() => {
-    !userLoading && toggleLoading();
-  }, [toggleLoading, userLoading]);
+  const { loading, error, userFetching, handleRetry, isReady, connections } =
+    useClientWrapper();
 
   if (loading) {
     return <TemplateLoader />;
+  }
+
+  if (error) {
+    return <ErrorScreen isRetrying={userFetching} onRetry={handleRetry} />;
   }
 
   return children;

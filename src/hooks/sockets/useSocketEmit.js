@@ -1,5 +1,5 @@
 import { useCallback, useState, useMemo } from "react";
-import { emit } from "../../services/socket/socket-api";
+import { emit } from "@/src/services/socket/socket-api";
 
 /**
  * Modern emit hook with status tracking

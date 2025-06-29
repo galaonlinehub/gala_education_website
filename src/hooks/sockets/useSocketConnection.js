@@ -1,14 +1,14 @@
-import { useEffect, useState, useMemo } from "react";
 import {
   getConnectionState,
   getSocket,
   isHealthy,
   onConnectionEvent,
-} from "../../services/socket/socket-api";
-import { decrypt } from "@/src/utils/fns/encryption";
+} from "@/src/services/socket/socket-api";
 import { cookieFn } from "@/src/utils/fns/client";
-import { USER_COOKIE_KEY } from "@/src/config/settings";
+import { useEffect, useState, useMemo } from "react";
 import { state } from "@/src/services/socket/config";
+import { decrypt } from "@/src/utils/fns/encryption";
+import { USER_COOKIE_KEY } from "@/src/config/settings";
 
 /**
  * Hook for managing socket connection status and optionally initializing a connection.
@@ -50,13 +50,15 @@ export const useSocketConnection = ({
 
     const token = decrypt(cookieFn.get(USER_COOKIE_KEY));
     if (!token) {
-      console.error("[useSocketConnection] No token available for socket authentication");
+      console.error(
+        "[useSocketConnection] No token available for socket authentication"
+      );
       return null;
     }
 
     return {
       query: {
-        ...(user?.id ? { user_id: user.id } : {}),
+        ...(user?.id ? { user_id: user?.id } : {}),
         ...(isDev ? { mode: "development" } : {}),
       },
       auth: { token },
@@ -110,8 +112,14 @@ export const useSocketConnection = ({
     };
 
     // Subscribe to socket events
-    const cleanupConnect = onConnectionEvent("connection:connected", handleConnect);
-    const cleanupDisconnect = onConnectionEvent("connection:disconnected", handleDisconnect);
+    const cleanupConnect = onConnectionEvent(
+      "connection:connected",
+      handleConnect
+    );
+    const cleanupDisconnect = onConnectionEvent(
+      "connection:disconnected",
+      handleDisconnect
+    );
     const cleanupError = onConnectionEvent("connection:error", handleError);
 
     let socket = null;

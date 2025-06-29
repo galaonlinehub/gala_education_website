@@ -1,6 +1,5 @@
-// hooks/useSocket.js
 import { useEffect, useState } from "react";
-import { getSocket } from "../../services/socket/socket-api";
+import { getSocket } from "@/src/services/socket/socket-api";
 
 /**
  * Auto-reconnect hook with exponential backoff

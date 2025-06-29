@@ -44,7 +44,7 @@
 //     const existingChat = chats.find(
 //       (chat) =>
 //         chat.created_by === user?.id &&
-//         chat.participants.some((p) => p.user.id === details?.id)
+//         chat.participants.some((p) => p.user?.id === details?.id)
 //     );
 
 //     if (existingChat) {
@@ -244,7 +244,6 @@
 //   );
 // };
 
-
 "use client";
 import React from "react";
 import { GoVerified, GoBook } from "react-icons/go";
@@ -290,7 +289,7 @@ const InstructorSearchResult = ({ details }) => {
     const existingChat = chats.find(
       (chat) =>
         chat.created_by === user?.id &&
-        chat.participants.some((p) => p.user.id === details?.id)
+        chat.participants.some((p) => p.user?.id === details?.id)
     );
 
     if (existingChat) {
@@ -334,15 +333,18 @@ const InstructorSearchResult = ({ details }) => {
             <span className="hidden xs:inline"> Students</span>
           </span>
         </div>
-        
+
         <div className="flex items-center gap-1 sm:gap-2 min-w-0 flex-shrink-0">
-          <FaStar size={12} className="sm:w-4 sm:h-4 text-yellow-400 flex-shrink-0" />
+          <FaStar
+            size={12}
+            className="sm:w-4 sm:h-4 text-yellow-400 flex-shrink-0"
+          />
           <span className="text-[10px] sm:text-xs whitespace-nowrap">
             {4.5}
             <span className="hidden md:inline"> ({60})</span>
           </span>
         </div>
-        
+
         <div className="flex items-center gap-1 sm:gap-2 min-w-0 flex-shrink-0">
           <FaClock size={12} className="sm:w-4 sm:h-4 flex-shrink-0" />
           <span className="text-[10px] sm:text-xs whitespace-nowrap truncate">
@@ -361,7 +363,7 @@ const InstructorSearchResult = ({ details }) => {
               className="!bg-transparent/90 flex-shrink-0 !w-8 !h-8 sm:!w-10 sm:!h-10 lg:!w-12 lg:!h-12 transition-transform duration-300 hover:scale-110"
               src="https://api.dicebear.com/7.x/miniavs/svg?seed=2"
             />
-            
+
             <div className="min-w-0 flex-1 space-y-1 sm:space-y-2">
               <div className="flex flex-wrap items-center gap-1 sm:gap-2">
                 <div className="flex items-center gap-1 min-w-0">
@@ -376,7 +378,7 @@ const InstructorSearchResult = ({ details }) => {
                     }
                   />
                 </div>
-                
+
                 <Badge
                   count={
                     <div className="!text-[8px] sm:!text-[10px] !flex !justify-center !items-center !gap-1 rounded-full bg-yellow-500 !px-1 sm:!px-2 !py-1 !text-white !font-extralight whitespace-nowrap">
@@ -400,15 +402,24 @@ const InstructorSearchResult = ({ details }) => {
           {/* Achievement Badges - Fully Responsive */}
           <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-1 sm:gap-2 text-[12px] sm:text-[14px]">
             <div className="rounded-lg bg-gray-50 flex items-center justify-center py-1 sm:py-2 px-2 sm:px-3 gap-1 sm:gap-2 transition-all duration-200 hover:bg-gray-100 hover:scale-105">
-              <FaRegStar size={14} className="sm:w-5 sm:h-5 lg:w-6 lg:h-6 flex-shrink-0" />
+              <FaRegStar
+                size={14}
+                className="sm:w-5 sm:h-5 lg:w-6 lg:h-6 flex-shrink-0"
+              />
               <span className="truncate">Top Rated</span>
             </div>
             <div className="rounded-lg bg-gray-50 flex items-center justify-center py-1 sm:py-2 px-2 sm:px-3 gap-1 sm:gap-2 transition-all duration-200 hover:bg-gray-100 hover:scale-105">
-              <FaRegMessage size={14} className="sm:w-5 sm:h-5 lg:w-6 lg:h-6 flex-shrink-0" />
+              <FaRegMessage
+                size={14}
+                className="sm:w-5 sm:h-5 lg:w-6 lg:h-6 flex-shrink-0"
+              />
               <span className="truncate">Quick</span>
             </div>
             <div className="rounded-lg bg-gray-50 flex items-center justify-center py-1 sm:py-2 px-2 sm:px-3 gap-1 sm:gap-2 transition-all duration-200 hover:bg-gray-100 hover:scale-105 xs:col-span-2 lg:col-span-1">
-              <GoShieldCheck size={14} className="sm:w-5 sm:h-5 lg:w-6 lg:h-6 flex-shrink-0" />
+              <GoShieldCheck
+                size={14}
+                className="sm:w-5 sm:h-5 lg:w-6 lg:h-6 flex-shrink-0"
+              />
               <span className="truncate">Expert</span>
             </div>
           </div>
@@ -438,7 +449,7 @@ const InstructorSearchResult = ({ details }) => {
                 )}
               </div>
             </div>
-            
+
             <div className="flex-shrink-0 flex justify-center sm:justify-end">
               <Tooltip title={`Chat with ${details?.name}`}>
                 <div className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-all duration-200 hover:scale-110 cursor-pointer">
@@ -456,8 +467,8 @@ const InstructorSearchResult = ({ details }) => {
       {/* Topics and Cohorts */}
       <div className="space-y-3 sm:space-y-4 lg:space-y-6">
         {details?.topics?.map((topic, index) => (
-          <Card 
-            key={index} 
+          <Card
+            key={index}
             className="[&_.ant-card-body]:!p-2 md:[&_.ant-card-body]:!p-4 !text-black !text-[10px] sm:!text-xs !transition-all !duration-300 hover:!shadow-lg hover:!scale-[1.01] !overflow-hidden"
           >
             {/* Topic Header */}
@@ -504,15 +515,26 @@ const InstructorSearchResult = ({ details }) => {
                   {/* Cohort Stats */}
                   <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 gap-1 sm:gap-2">
                     <div className="flex border border-black/10 bg-white px-2 py-1 items-center justify-center text-[8px] sm:text-[10px] rounded-sm gap-1 font-bold transition-all duration-200 hover:bg-gray-50">
-                      <FaRegClock size={8} className="sm:w-3 sm:h-3 flex-shrink-0" />
+                      <FaRegClock
+                        size={8}
+                        className="sm:w-3 sm:h-3 flex-shrink-0"
+                      />
                       <span className="truncate">{cohort?.total_weeks}w</span>
                     </div>
                     <div className="flex border border-black/10 bg-white px-2 py-1 items-center justify-center text-[8px] sm:text-[10px] rounded-sm gap-1 font-bold transition-all duration-200 hover:bg-gray-50">
-                      <LuUsers size={8} className="sm:w-3 sm:h-3 flex-shrink-0" />
-                      <span className="truncate">{cohort?.total_enrolled_students}</span>
+                      <LuUsers
+                        size={8}
+                        className="sm:w-3 sm:h-3 flex-shrink-0"
+                      />
+                      <span className="truncate">
+                        {cohort?.total_enrolled_students}
+                      </span>
                     </div>
                     <div className="flex border border-black/10 bg-white px-2 py-1 items-center justify-center text-[8px] sm:text-[10px] rounded-sm gap-1 font-bold transition-all duration-200 hover:bg-gray-50 xs:col-span-2 sm:col-span-1">
-                      <GoBook size={8} className="sm:w-3 sm:h-3 flex-shrink-0" />
+                      <GoBook
+                        size={8}
+                        className="sm:w-3 sm:h-3 flex-shrink-0"
+                      />
                       <span className="truncate">{cohort?.start_date}</span>
                     </div>
                   </div>

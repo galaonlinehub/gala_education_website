@@ -53,17 +53,17 @@ const RenderChat = ({
   const isPreviewChat = currentChatId === "preview";
   const currentChat = chats?.find((chat) => chat.id === currentChatId);
   const recipient = currentChat?.participants.find(
-    (p) => p.user.id !== user.id
+    (p) => p.user?.id !== user?.id
   );
   const displayName =
     currentChat?.participants
-      .filter((p) => p.user.id !== user.id)
+      .filter((p) => p.user?.id !== user?.id)
       .map((p) => `${p.user.first_name} ${p.user.last_name}`)
       .join(", ") || "Chat";
   const isRecipientTyping =
-    recipient && typingUsers.includes(recipient.user.id);
+    recipient && typingUsers.includes(recipient.user?.id);
   const isRecipientOnline =
-    recipient && onlineUsers.includes(recipient.user.id);
+    recipient && onlineUsers.includes(recipient.user?.id);
 
   useEffect(() => {
     if (chatContainerRef.current) {
@@ -76,8 +76,8 @@ const RenderChat = ({
     if (!isPreviewChat && hasData(messages)) {
       const unread_messages = getValues(messages).filter((m) => {
         if (m.isTemp) return false;
-        const isNotSender = m.sender_id !== user.id;
-        const userStatus = m.statuses?.find((s) => s.user_id === user.id);
+        const isNotSender = m.sender_id !== user?.id;
+        const userStatus = m.statuses?.find((s) => s.user_id === user?.id);
         const needsMarking = !userStatus
           ? true
           : (userStatus.status === "sent" ||
@@ -90,7 +90,7 @@ const RenderChat = ({
         markMessageAsRead(unread_messages);
       }
     }
-  }, [currentChatId, isPreviewChat, markMessageAsRead, messages, user.id]);
+  }, [currentChatId, isPreviewChat, markMessageAsRead, messages, user?.id]);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -124,7 +124,7 @@ const RenderChat = ({
     e.preventDefault();
     if (!newMessage.trim()) return;
     try {
-      const recipientId = recipient?.user.id;
+      const recipientId = recipient?.user?.id;
       if (!recipientId) throw new Error("No recipient ID found");
       const chatId = isPreviewChat ? null : currentChatId;
       await sendMessage(newMessage, recipientId, chatId);
@@ -136,20 +136,20 @@ const RenderChat = ({
   };
 
   const getSenderName = (senderId) => {
-    if (senderId === user.id) return "You";
+    if (senderId === user?.id) return "You";
     const sender = currentChat?.participants.find(
-      (p) => p.user.id === senderId
+      (p) => p.user?.id === senderId
     );
     return sender
       ? `${sender.user.first_name} ${sender.user.last_name}`
       : "Unknown";
   };
 
-  const isSender = (idx) => idx === user.id;
+  const isSender = (idx) => idx === user?.id;
 
   const renderTicks = (message) => {
-    if (message.sender_id !== user.id) return null;
-    const recipientId = recipient?.user.id;
+    if (message.sender_id !== user?.id) return null;
+    const recipientId = recipient?.user?.id;
     const socketStatus = messageReceipts[message.id]?.[recipientId];
     const fetchedStatus = message.statuses?.find(
       (s) => s.user_id === recipientId
@@ -311,7 +311,7 @@ const RenderChat = ({
                       : "justify-start"
                   )}
                 >
-                  {message.sender_id !== user.id && (
+                  {message.sender_id !== user?.id && (
                     <div className="mr-2 self-end mb-1">
                       <Avatar
                         src={

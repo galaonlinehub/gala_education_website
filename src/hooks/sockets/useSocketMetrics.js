@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getMetrics } from "../../services/socket/socket-api";
+import { getMetrics } from "@/src/services/socket/socket-api";
 
 /**
  * Socket metrics hook for monitoring

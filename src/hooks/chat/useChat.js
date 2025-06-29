@@ -49,7 +49,11 @@ export const useChat = () => {
     isConnected,
     socketId,
     state: connectionState,
-  } = useSocketConnection({ namespace, useInternalToken: true, user, isDev });
+  } = useSocketConnection({
+    namespace: "chat",
+    initialize: false,
+  });
+
   const { emit } = useSocketEmit(namespace);
 
   // useEffect(() => {
@@ -62,7 +66,7 @@ export const useChat = () => {
   //   }
 
   //   socketRef.current = io(`${socket_base_url}chat`, {
-  //     query: { user_id: user.id, mode: isDev ? "development" : "" },
+  //     query: { user_id: user?.id, mode: isDev ? "development" : "" },
   //     auth: { token },
   //     transportOptions: {
   //       polling: {
@@ -150,7 +154,7 @@ export const useChat = () => {
   //         return {
   //           ...chat,
   //           participants: chat.participants.map((p) =>
-  //             p.user.id === user_id
+  //             p.user?.id === user_id
   //               ? {
   //                   ...p,
   //                   user: {
@@ -167,9 +171,9 @@ export const useChat = () => {
 
   //   // return () => {
   //   //   socketRef.current.close();
-  //   //   console.log("THIS IS ME DISCONNECTING", user.id);
+  //   //   console.log("THIS IS ME DISCONNECTING", user?.id);
   //   // };
-  // }, [isDev, user.id]);
+  // }, [isDev, user?.id]);
 
   // const socketInitialized = useRef(false);
 
@@ -183,7 +187,7 @@ export const useChat = () => {
   //   }
 
   //   getSocket(namespace, {
-  //     query: { user_id: user.id, mode: isDev ? "development" : "" },
+  //     query: { user_id: user?.id, mode: isDev ? "development" : "" },
   //     auth: { token },
   //     transportOptions: {
   //       polling: {
@@ -210,7 +214,7 @@ export const useChat = () => {
     mutationFn: async (payload) => apiPost("/chat/get-or-create", payload),
   });
 
-  const getParticipants = (chat) => chat.participants.map((p) => p.user.id);
+  const getParticipants = (chat) => chat.participants.map((p) => p.user?.id);
 
   const sendMessage = async (content, recipient_id, chat_id) => {
     if (!content.trim()) return;
@@ -235,7 +239,7 @@ export const useChat = () => {
           return updated;
         });
 
-        queryClient.setQueryData(["chats", user.id], (old) => {
+        queryClient.setQueryData(["chats", user?.id], (old) => {
           const chats = old ?? [];
           const filtered = chats.filter((c) => c.id !== chatId);
           return [chat, ...filtered];
@@ -259,7 +263,7 @@ export const useChat = () => {
       const message = {
         id: new Date().toISOString(),
         chat_id: chatId,
-        sender_id: user.id,
+        sender_id: user?.id,
         content,
         type: "text",
         sent_at: format(new Date().toISOString(), "HH:mm a").toLowerCase(),
@@ -305,7 +309,7 @@ export const useChat = () => {
   };
 
   const { data: apiChats, isFetching: isFetchingChats } = useQuery({
-    queryKey: ["chats", user.id],
+    queryKey: ["chats", user?.id],
     queryFn: () => getChats(),
     staleTime: Infinity,
     enabled: true,
@@ -402,7 +406,7 @@ export const useChat = () => {
   const deleteChatMutation = useMutation({
     mutationFn: () => apiDelete(`/chat/${currentChatId}/delete`),
     onSuccess: () => {
-      queryClient.invalidateQueries(["chats", user.id]);
+      queryClient.invalidateQueries(["chats", user?.id]);
       setCurrentChatId(null);
       message.success("Chat deleted successfully");
     },
@@ -414,14 +418,14 @@ export const useChat = () => {
 
   // const sendTypingStatus = (isTyping) => {
   //   if (!currentChatId || currentChatId === "preview") return;
-  //   const payload = { chat_id: currentChatId, user_id: user.id };
+  //   const payload = { chat_id: currentChatId, user_id: user?.id };
   //   socketRef.current.emit(isTyping ? "typing" : "stop_typing", payload);
   // };
 
   const sendTypingStatus = async (isTyping) => {
     if (!currentChatId || currentChatId === "preview") return;
 
-    const payload = { chat_id: currentChatId, user_id: user.id };
+    const payload = { chat_id: currentChatId, user_id: user?.id };
 
     if (!isConnected) {
       console.warn(
@@ -488,7 +492,7 @@ export const useChat = () => {
   };
 
   const unreadMessageData = (unread_messages) => ({
-    user_id: user.id,
+    user_id: user?.id,
     chat_id: currentChatId,
     messages: unread_messages.map((m) => ({
       message_id: m.id,
@@ -504,13 +508,12 @@ export const useChat = () => {
         chats.flatMap((c) =>
           c.participants
             .filter((p) => p.user?.status === "online")
-            .map((p) => p.user.id)
+            .map((p) => p.user?.id)
         )
       ),
     ];
   };
 
-  console.log(user.id, "this is user id");
 
   return {
     sendMessage,

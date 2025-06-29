@@ -43,3 +43,5 @@ export const img_base_url = process.env.NEXT_PUBLIC_IMAGE_BASE_URL;
 export const socket_base_url = process.env.NEXT_PUBLIC_SOCKET_BASE_URL;
 export const openai_api_key = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
 export const openai_base_url = process.env.NEXT_PUBLIC_OPENAI_BASE_URL;
+
+export const isDev = process.env.NODE_ENV === "development";

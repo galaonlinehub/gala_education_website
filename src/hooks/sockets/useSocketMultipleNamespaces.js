@@ -1,13 +1,13 @@
-import { useEffect, useMemo, useState } from "react";
 import {
   getConnectionState,
   getSocket,
   isHealthy,
   onConnectionEvent,
-  state,
-} from "../../services/socket/socket-api";
-import { decrypt } from "@/src/utils/fns/encryption";
+} from "@/src/services/socket/socket-api";
+import { useEffect, useMemo, useState } from "react";
 import { cookieFn } from "@/src/utils/fns/client";
+import { state } from "@/src/services/socket/config";
+import { decrypt } from "@/src/utils/fns/encryption";
 import { USER_COOKIE_KEY } from "@/src/config/settings";
 
 /**
@@ -18,12 +18,12 @@ import { USER_COOKIE_KEY } from "@/src/config/settings";
  *     namespace: string,
  *     initialize?: boolean,
  *     useInternalToken?: boolean,
- *     user?: object,
+ *     userId?: number,
  *     isDev?: boolean,
  *     options?: object
  *   }
  */
-export const useMultipleNamespacesConnection = (configs = []) => {
+export const useSocketMultipleNamespaces = (configs = []) => {
   const [connections, setConnections] = useState({});
 
   const computedConfigs = useMemo(() => {
@@ -33,7 +33,7 @@ export const useMultipleNamespacesConnection = (configs = []) => {
         initialize = true,
         useInternalToken = false,
         options = null,
-        user = null,
+        userId = null,
         isDev = false,
       } = config;
 
@@ -43,12 +43,12 @@ export const useMultipleNamespacesConnection = (configs = []) => {
         const token = decrypt(cookieFn.get(USER_COOKIE_KEY));
         if (!token) {
           console.warn(`[${namespace}] No token available`);
-          return { namespace, options: null, initialize: false }; // skip init
+          return { namespace, options: null, initialize: false };
         }
 
         finalOptions = {
           query: {
-            ...(user?.id ? { user_id: user.id } : {}),
+            ...(userId ? { user_id: userId } : {}),
             ...(isDev ? { mode: "development" } : {}),
           },
           auth: { token },
@@ -81,10 +81,9 @@ export const useMultipleNamespacesConnection = (configs = []) => {
       setConnections(newStates);
     };
 
-    // Init sockets
     computedConfigs.forEach(({ namespace, initialize, options }) => {
       if (initialize && options) {
-        getSocket(namespace, options); // will only connect if not already
+        getSocket(namespace, options);
       }
     });
 
