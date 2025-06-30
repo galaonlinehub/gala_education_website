@@ -1,16 +1,9 @@
 import axios from "axios";
 import * as React from "react";
 import { useForm } from "react-hook-form";
-<<<<<<< HEAD:src/hooks/useAi.js
-import { openai_base_url, USER_COOKIE_KEY } from "../config/settings";
-import { cookieFn } from "../utils/fns/client";
-import { decrypt } from "../utils/fns/encryption";
-import { fetchWithStream, generateRandomUUID } from "../utils/fns/ai";
-=======
 import { USER_COOKIE_KEY } from "../../config/settings";
 import { cookieFn } from "../../utils/fns/client";
 import { decrypt } from "../../utils/fns/encryption";
->>>>>>> a0cfcd2b22653650f94b665aef1d3bef6537c785:src/hooks/ui/useAi.js
 
 export const useAi = () => {
     const [isStreaming, setIsStreaming] = React.useState(false);

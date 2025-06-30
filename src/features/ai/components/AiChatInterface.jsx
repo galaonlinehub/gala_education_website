@@ -7,6 +7,7 @@ import { getLength } from "@/src/utils/fns/general";
 import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
 import { StreamingMarkdown } from "./StreamingMarkdown";
 import StreamingMarkdownMessage from "./StreamingMarkdownMessage";
+import AiUserAgreement from "@/src/components/ai/AiUserAgreement";
 
 const AiChatInterface = () => {
     const {
@@ -147,6 +148,7 @@ const AiChatInterface = () => {
                     )}
                 </div>
             </div>
+            <AiUserAgreement/>
         </div>
     );
 };
