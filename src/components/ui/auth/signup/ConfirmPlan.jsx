@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
-import { useAuth } from "@/src/hooks/useAuth";
+import { useAuth } from "@/src/hooks/data/useAuth";
 import { Card, Button, Typography, Tag, Badge } from "antd";
 import { encrypt } from "@/src/utils/fns/encryption";
 import { localStorageFn } from "@/src/utils/fns/client";
 import { useAccountType, useTabNavigator } from "@/src/store/auth/signup";
 import { PLAN_CONFIRMED_KEY } from "@/src/config/settings";
 import { useRouter } from "next/navigation";
-import { useUser } from "@/src/hooks/useUser";
+import { useUser } from "@/src/hooks/data/useUser";
 import { usePathname } from "next/navigation";
 import { LuCircleCheckBig } from "react-icons/lu";
 import SlickSpinner from "../../loading/template/SlickSpinner";

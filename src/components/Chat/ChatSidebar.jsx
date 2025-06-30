@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Avatar, Input, Skeleton } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
-import { useChat } from "@/src/hooks/useChat";
+import { useChat } from "@/src/hooks/chat/useChat";
 import { img_base_url } from "@/src/config/settings";
 import useChatStore from "@/src/store/chat/chat";
 import { LuUser, LuMessagesSquare } from "react-icons/lu";
 import clsx from "clsx";
-import { useUser } from "@/src/hooks/useUser";
+import { useUser } from "@/src/hooks/data/useUser";
 import SlickSpinner from "../ui/loading/template/SlickSpinner";
 
 const RenderSidebar = ({ currentTab, setCurrentTab, MAIN_COLOR }) => {
@@ -114,6 +114,7 @@ const RenderSidebar = ({ currentTab, setCurrentTab, MAIN_COLOR }) => {
                         alt={participant.email}
                         size={52}
                         icon={<LuUser className="text-black" />}
+                        className="border-2 border-[#001840]"
                       />
                       {participant.online && (
                         <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></div>

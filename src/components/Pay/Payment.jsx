@@ -6,7 +6,7 @@ import {
   MobilePay,
   SwitchPay,
 } from "./PaymentDetails";
-import { useDevice } from "@/src/hooks/useDevice";
+import { useDevice } from "@/src/hooks/misc/useDevice";
 import { usePay, usePaySteps } from "@/src/store/pay";
 import { ConfirmEnrollPay } from "./Confirm";
 

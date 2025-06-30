@@ -13,7 +13,7 @@ import { apiPost } from "@/src/services/api/api_service";
 import { PaymentStatus } from "@/src/config/settings";
 import { PaymentPending } from "./PaymentStatus";
 import io from "socket.io-client";
-import { useUser } from "@/src/hooks/useUser";
+import { useUser } from "@/src/hooks/data/useUser";
 import SlickSpinner from "../../loading/template/SlickSpinner";
 import { Contact } from "@/src/components/layout/Contact";
 

@@ -6,12 +6,12 @@ import Image from "next/image";
 import React, { useState } from "react";
 import ChooseAccont from "@/src/components/ui/auth/signup/ChooseAccount";
 import { Signout } from "../ui/auth/signup/Signout";
-import { useUser } from "@/src/hooks/useUser";
+import { useUser } from "@/src/hooks/data/useUser";
 import AboutUs from "../home/modals/AboutUs";
 import MobileSideBar from "./MobileSideBar";
-import { useDevice } from "@/src/hooks/useDevice";
+import { useDevice } from "@/src/hooks/misc/useDevice";
 import { BiWifi, BiWifiOff } from "react-icons/bi";
-import useNetwork from "@/src/hooks/useNetwork";
+import useNetwork from "@/src/hooks/misc/useNetwork";
 import { LuGlobe, LuMenu } from "react-icons/lu";
 import { useRouter } from "next/navigation";
 
@@ -36,8 +36,8 @@ const Navbar = () => {
   };
 
   const gotoHomePage = () => {
-    router.push('/');
-  }
+    router.push("/");
+  };
 
   const items = [
     {
@@ -48,7 +48,7 @@ const Navbar = () => {
           English
         </div>
       ),
-      onClick: () => { },
+      onClick: () => {},
     },
     {
       key: "2",
@@ -57,7 +57,7 @@ const Navbar = () => {
           Swahili
         </div>
       ),
-      onClick: () => { },
+      onClick: () => {},
       disabled: true,
     },
   ];
@@ -168,14 +168,14 @@ const Navbar = () => {
           overlayClassName="rounded-md shadow-lg border border-gray-100"
           arrow={true}
           placement="bottom"
-        // dropdownRender={(menu) => (
-        //   <div>
-        //     <div className="text-xs font-light text-black px-4 py-2">
-        //       Choose language
-        //     </div>
-        //     {menu}
-        //   </div>
-        // )}
+          // dropdownRender={(menu) => (
+          //   <div>
+          //     <div className="text-xs font-light text-black px-4 py-2">
+          //       Choose language
+          //     </div>
+          //     {menu}
+          //   </div>
+          // )}
         >
           <Image
             width={200}
@@ -206,9 +206,14 @@ const Navbar = () => {
         {!user && (
           <div
             className="flex gap-3 items-center justify-center"
-            onClick={() => { }}
+            onClick={() => {}}
           >
-            <ChooseAccont btnText={'Sign Up'} textColor={'black'} placement={'bottom'} trigger={'hover'} />
+            <ChooseAccont
+              btnText={"Sign Up"}
+              textColor={"black"}
+              placement={"bottom"}
+              trigger={"hover"}
+            />
             <Link href={"/signin"} className="hover:cursor-pointer">
               <li>Sign In</li>
             </Link>

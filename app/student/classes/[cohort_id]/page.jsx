@@ -16,7 +16,7 @@ import {
   LuVideo,
 } from "react-icons/lu";
 import { useRouter } from "next/navigation";
-import { useEnrolledTopics } from "@/src/hooks/useEnrolledTopics";
+import { useEnrolledTopics } from "@/src/hooks/data/useEnrolledTopics";
 import { useSearchParams } from "next/navigation";
 import { decrypt } from "@/src/utils/fns/encryption";
 import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";

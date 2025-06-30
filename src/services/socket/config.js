@@ -74,7 +74,7 @@ export const createConnection = (namespace = "default", options = {}) => {
   if (typeof window === "undefined") return null;
 
   const socketOptions = {
-    transports: ["websocket"],
+    transports: ["websocket", "polling"],
     reconnectionAttempts: Infinity,
     reconnectionDelay: 1000,
     reconnectionDelayMax: 5000,

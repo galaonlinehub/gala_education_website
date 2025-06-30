@@ -2,11 +2,15 @@
 import React from "react";
 import { SendOutlined, UserOutlined } from "@ant-design/icons";
 import { LuBrain } from "react-icons/lu";
-import { useAi } from "@/src/hooks/useAi";
+import { useAi } from "@/src/hooks/ui/useAi";
 import { getLength, getValues } from "@/src/utils/fns/general";
 import SlickSpinner from "../ui/loading/template/SlickSpinner";
+<<<<<<< HEAD
 import { StreamingMarkdown } from "./StreamingMarkdown";
 import StreamingMarkdownMessage from "./StreamingMarkdownMessage";
+=======
+import AiUserAgreement from "./AiUserAgreement";
+>>>>>>> a0cfcd2b22653650f94b665aef1d3bef6537c785
 
 const AiChatInterface = () => {
     const {
@@ -145,7 +149,14 @@ const AiChatInterface = () => {
                 </div>
             </div>
         </div>
+<<<<<<< HEAD
     );
+=======
+      </div>
+      <AiUserAgreement />
+    </div>
+  );
+>>>>>>> a0cfcd2b22653650f94b665aef1d3bef6537c785
 };
 
 export default AiChatInterface;

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Form, Input, Select, Button, Typography, Card, Progress } from "antd";
 import { disabilities } from "@/src/utils/data/disabilities";
-import { useAuth } from "@/src/hooks/useAuth";
+import { useAuth } from "@/src/hooks/data/useAuth";
 import EmailVerification from "./EmailVerification";
 import { useRouter } from "next/navigation";
 import clsx from "clsx";

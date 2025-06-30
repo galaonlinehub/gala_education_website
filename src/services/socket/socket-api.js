@@ -1,11 +1,15 @@
-import { createConnection, state } from "@/config";
+import { createConnection, eventEmitter, state } from "./config";
 
 export const getSocket = (namespace = "default", options = {}) => {
-  if (!state.connections.has(namespace)) {
-    createConnection(namespace, options);
+  const existing = state.connections.get(namespace);
+
+  if (!existing && options?.auth?.token) {
+    return createConnection(namespace, options);
   }
-  return state.connections.get(namespace);
+
+  return existing;
 };
+
 
 export const emit = (namespace, event, data, options = {}) => {
   const { priority = "normal" } = options;

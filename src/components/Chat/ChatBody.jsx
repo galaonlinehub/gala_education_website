@@ -2,8 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { Avatar, Dropdown, Skeleton } from "antd";
 import { SmileOutlined } from "@ant-design/icons";
 import clsx from "clsx";
-import { useChat } from "@/src/hooks/useChat";
-import { useUser } from "@/src/hooks/useUser";
+import { useChat } from "@/src/hooks/chat/useChat";
+import { useUser } from "@/src/hooks/data/useUser";
 import useChatStore from "@/src/store/chat/chat";
 import { img_base_url } from "@/src/config/settings";
 import TypingIndicator from "../ui/loading/template/Typing";
@@ -49,8 +49,6 @@ const RenderChat = ({
     onlineUsers,
   } = useChat();
   const { user } = useUser();
-
-
 
   const isPreviewChat = currentChatId === "preview";
   const currentChat = chats?.find((chat) => chat.id === currentChatId);

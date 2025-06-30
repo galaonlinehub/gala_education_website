@@ -1,4 +1,4 @@
-import { useDevice } from "@/src/hooks/useDevice";
+import { useDevice } from "@/src/hooks/misc/useDevice";
 
 const LoginVectorSvg = () => {
   const { width } = useDevice();
