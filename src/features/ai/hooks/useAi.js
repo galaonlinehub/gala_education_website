@@ -1,22 +1,21 @@
-import axios from "axios";
+"use client"
 import * as React from "react";
 import { useForm } from "react-hook-form";
-import { openai_base_url, USER_COOKIE_KEY } from "../config/settings";
-import { cookieFn } from "../utils/fns/client";
-import { decrypt } from "../utils/fns/encryption";
-import { fetchWithStream, generateRandomUUID } from "../utils/fns/ai";
+import { useGalaAiResponse } from "@/src/features/ai";
+import { generateRandomUUID } from "@/src/utils/fns/ai";
 
 export const useAi = () => {
     const [isStreaming, setIsStreaming] = React.useState(false);
-    const [openAiMessage, setOpenAiMessage] = React.useState({});
+    const [openAiMessage, setOpenAiMessage] = React.useState([]);
     const [windowWidth, setWindowWidth] = React.useState(
         typeof window !== "undefined" ? window.innerWidth : 1200
     );
     const contentRef = React.useRef(null);
-    const token = decrypt(cookieFn.get(USER_COOKIE_KEY));
 
     const { register, reset, watch } = useForm();
     const prompt = watch("prompt");
+
+    const { mutate,isPending } = useGalaAiResponse();
 
     const askGala = async () => {
         if (prompt.trim() === "") return;
@@ -33,17 +32,16 @@ export const useAi = () => {
             // await fetchWithStream(token, prompt, (chunk) => {
             //     setMarkDown((prev) => prev + chunk);
             // });
-            const { data } = await axios.post(
-                `https://ai.galahub.org/ask-gala`,
-                { question: prompt },
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-            const msg = handleOpenAiResponse(data);
-            handleMessage(msg);
+            mutate(prompt, {
+                onSuccess: (data) => {
+                    
+                    const msg = handleOpenAiResponse(data);
+                    handleMessage(msg);
+                },
+                onError: (err) => {
+                    console.log(err);
+                },
+            });
         } catch (e) {
             console.error(e);
         } finally {
@@ -64,7 +62,7 @@ export const useAi = () => {
     }, [openAiMessage]);
 
     const handleReset = () => {
-        setOpenAiMessage({});
+        setOpenAiMessage([]);
     };
 
     const handleUserMessage = () => ({
@@ -76,14 +74,11 @@ export const useAi = () => {
     const handleOpenAiResponse = (res) => ({
         id: new Date().toISOString(),
         role: "gala",
-        content: res?.answer,
+        content: res,
     });
 
     const handleMessage = (message) => {
-        return setOpenAiMessage((prev) => ({
-            ...prev,
-            [message?.id]: message,
-        }));
+        return setOpenAiMessage((prev) => [...prev, message]);
     };
 
     const handleEnterSubmit = (e) => {
@@ -104,5 +99,6 @@ export const useAi = () => {
         openAiMessage,
         handleEnterSubmit,
         isStreaming,
+        isPending
     };
 };

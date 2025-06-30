@@ -2,9 +2,9 @@
 import React from "react";
 import { SendOutlined, UserOutlined } from "@ant-design/icons";
 import { LuBrain } from "react-icons/lu";
-import { useAi } from "@/src/hooks/useAi";
-import { getLength, getValues } from "@/src/utils/fns/general";
-import SlickSpinner from "../ui/loading/template/SlickSpinner";
+import { useAi } from "@/src/features/ai";
+import { getLength } from "@/src/utils/fns/general";
+import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
 import { StreamingMarkdown } from "./StreamingMarkdown";
 import StreamingMarkdownMessage from "./StreamingMarkdownMessage";
 
@@ -16,6 +16,7 @@ const AiChatInterface = () => {
         handleReset,
         register,
         askGala,
+        isPending,
         openAiMessage,
         handleEnterSubmit,
     } = useAi();
@@ -26,7 +27,7 @@ const AiChatInterface = () => {
                 ref={contentRef}
                 className="overflow-y-scroll p-6 h-[90%] md:h-[85%] bg-whit shadow-inner"
             >
-                {getLength(openAiMessage) === 0 ? (
+                {openAiMessage.length === 0 ? (
                     <div className="flex flex-col items-center justify-center h-full text-center text-gray-700">
                         <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full mb-4">
                             <LuBrain className="text-white text-2xl" />
@@ -48,10 +49,10 @@ const AiChatInterface = () => {
                     </div>
                 ) : (
                     <div className="space-y-6 max-w-4xl mx-auto">
-                        {getValues(openAiMessage).map(({ id, role, content }, idx, all) => {
+                        {openAiMessage.map(({ id, role, content }, idx) => {
                                 if (role === "user") {
                                     return (
-                                        <div className="flex justify-end" key={idx}>
+                                        <div className="flex justify-end" key={id}>
                                             <div className="flex items-start gap-3 max-w-[85%]">
                                                 <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-2xl rounded-tr-md shadow-lg order-2">
                                                     <p className="text-sm">
@@ -66,19 +67,17 @@ const AiChatInterface = () => {
                                     );
                                 }
                                 if (role === "gala") {
-                                    const lastGalaMessageId = [...all]
-                                        .reverse()
-                                        .find((msg) => msg.role === "gala")?.id;
-                                    const isLastGala = id === lastGalaMessageId;
+                                    
+                                    const isLastGala = idx === openAiMessage.length -1;
 
                                     return (
-                                        <React.Fragment key={idx}>
+                                        <React.Fragment key={id}>
                                             {isLastGala ? (
+                                                
                                                 <StreamingMarkdownMessage
                                                     fullText={content}
                                                     isLoading={isStreaming}
-                                                    isLastGala={isLastGala}
-                                                />
+                                                    />
                                             ) : (
                                                 <div className="flex justify-start">
                                                     <div className="flex items-start gap-3 max-w-[90%]">
@@ -100,6 +99,10 @@ const AiChatInterface = () => {
                                             )}
                                         </React.Fragment>
                                     );
+                                }
+
+                                if(isPending){
+                                    return "Gala is thinking"
                                 }
 
                                 return null;
