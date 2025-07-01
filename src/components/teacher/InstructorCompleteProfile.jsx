@@ -23,6 +23,7 @@ import { LuCamera, LuUser } from "react-icons/lu";
 import SlickSpinner from "../ui/loading/template/SlickSpinner";
 import clsx from "clsx";
 import { Signout } from "../ui/auth/signup/Signout";
+const { TextArea } = Input;
 
 const InstructorCompleteProfile = () => {
   const [status, setStatus] = useState(Stage.SAVE);
@@ -367,6 +368,21 @@ const Save = ({
                 </Select.Option>
               ))}
             </Select>
+          </Form.Item>
+
+          <Form.Item name="bio" rules={[
+            {
+              required: true,
+              message: (
+                <span className="text-xs ">Bio is required</span>
+              ),
+            },
+          ]}>
+            <TextArea
+              className="!text-xs !rounded-lg !p-1 !pl-2"
+              placeholder="Type your bio. This will be visible to students"
+              autoSize={{ minRows: 3, maxRows: 5 }}
+            />
           </Form.Item>
         </>
       )}
