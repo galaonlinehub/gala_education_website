@@ -1,12 +1,13 @@
-'use client'
+"use client";
 import Navbar from "@/src/components/layout/Navbar";
+import { PaymentSocketProvider } from "@/src/hooks/misc/paymentSocketContext";
 
 export default function AuthLayout({ children }) {
   return (
     <div>
       <Navbar />
-      <main className="flex-1 w-screen h-screen overflow-y-scroll max-h-screen pt-16 md:pt-24">
-        {children}
+      <main className="w-screen h-screen overflow-y-scroll max-h-screen pt-12">
+        <PaymentSocketProvider>{children}</PaymentSocketProvider>
       </main>
     </div>
   );

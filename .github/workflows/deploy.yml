@@ -39,15 +39,15 @@ jobs:
             echo "PM2_APP_NAME=main" >> $GITHUB_ENV
             echo "DOMAIN=edu.galahub.org" >> $GITHUB_ENV
             echo "PORT=3457" >> $GITHUB_ENV
-            echo "OTHER_PM2_APP=nextjs-dev" >> $GITHUB_ENV
+            echo "OTHER_PM2_APP=dev" >> $GITHUB_ENV
             echo "OTHER_PORT=3347" >> $GITHUB_ENV
 
           else
             echo "DEPLOY_PATH=/var/www/next" >> $GITHUB_ENV
-            echo "PM2_APP_NAME=nextjs-dev" >> $GITHUB_ENV
+            echo "PM2_APP_NAME=dev" >> $GITHUB_ENV
             echo "DOMAIN=edutz.galahub.org" >> $GITHUB_ENV
             echo "PORT=3347" >> $GITHUB_ENV
-            echo "OTHER_PM2_APP=nextjs-main" >> $GITHUB_ENV
+            echo "OTHER_PM2_APP=main" >> $GITHUB_ENV
             echo "OTHER_PORT=3457" >> $GITHUB_ENV
 
           fi
@@ -132,8 +132,9 @@ jobs:
             if [ -f .env.backup ]; then
               mv .env.backup .env
             fi
-            
-            echo "🏗️ Building application..."
+
+
+            echo "🏗️ Building application with branch env: ${DEPLOY_BRANCH}"
             npm run build
             
             echo "🧹 Clearing Next.js cache..."

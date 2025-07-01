@@ -2,7 +2,7 @@
 import React from "react";
 import { Carousel } from "antd";
 import Card2 from "./Card2";
-import { useTranslations } from "@/src/hooks/useTranslations";
+import { useTranslations } from "@/src/hooks/translation/useTranslations";
 
 const OurServicesCard = () => {
   const contentStyle = {

@@ -6,7 +6,7 @@ import Navbar from "@/src/components/layout/Navbar";
 import StudentSearch from "@/src/components/student/Search";
 import { student_links } from "@/src/utils/data/navigation_links";
 import { FloatingActionButton } from "@/src/components/ui/Fab";
-import useInstallPrompt from "@/src/hooks/useInstallPrompt";
+import useInstallPrompt from "@/src/hooks/misc/useInstallPrompt";
 import NewClass from "@/src/components/student/NewClass";
 import { usePathname, useSearchParams } from "next/navigation";
 import { CompleteProfile } from "@/src/components/student/CompleteProfile";
@@ -36,7 +36,7 @@ export default function StudentLayout({ children }) {
     <>
       <Navbar />
       <StudentSearch />
-      <main className="flex flex-col lg:flex-row w-full mt-20">
+      <main className="flex flex-col md:flex-row w-full mt-20">
         <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
           <div className="absolute left-1/2 top-20 w-52 h-52 hidden md:block">
             <RightTiltedBook />
@@ -53,7 +53,11 @@ export default function StudentLayout({ children }) {
         </div>
 
         {/* Sidebar */}
-        <aside className="hidden lg:block sticky top-[90px] left-0 w-[16vw] h-[calc(100vh-80px)] border-r border-[#d9d9d9] p-4 overflow-y-auto">
+        <aside
+          className={
+            "hidden md:block sticky top-[90px] left-0 w-[24vw] lg:w-[16vw] h-[calc(100vh-80px)] border-r border-[#d9d9d9] p-4 overflow-y-auto"
+          }
+        >
           <ul className="space-y-4 pt-6">
             {student_links.map((item, i) => {
               const normalizedUrl = currentUrl.replace(/\/$/, "");
@@ -96,17 +100,18 @@ export default function StudentLayout({ children }) {
         </aside>
 
         {/* Main Content */}
+
         <div className="flex-1 px-2 xxs:px-3 lg:px-5 py-2 w-full lg:w-[80vw] overflow-y-auto h-[calc(100vh-90px)]">
           {children}
         </div>
       </main>
 
-      {!isInstalled && installPrompt && (
+      {/* {!isInstalled && installPrompt && (
         <FloatingActionButton
           position="bottom-center"
           onClick={handleInstallClick}
         ></FloatingActionButton>
-      )}
+      )} */}
 
       <NewClass />
       <CompleteProfile />

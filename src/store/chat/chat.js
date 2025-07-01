@@ -5,8 +5,6 @@ import { decrypt, encrypt } from "@/src/utils/fns/encryption";
 
 const useChatStore = create((set, get) => ({
   currentChatId: sessionStorageFn.get(CURRENT_CHAT_KEY) ?? null,
-  messages: [],
-  users: [],
   previewChat: null,
 
   setCurrentChatId: (chatId) =>
@@ -14,10 +12,7 @@ const useChatStore = create((set, get) => ({
       sessionStorageFn.set(CURRENT_CHAT_KEY, chatId);
       return { ...state, currentChatId: chatId };
     }),
-  setMessages: (messages) => set({ messages }),
-  addMessage: (message) =>
-    set((state) => ({ messages: [...state.messages, message] })),
-  setUsers: (users) => set({ users }),
+
 
   setPreviewChat: (chatData) => {
     if (chatData) {

@@ -1,4 +1,4 @@
-import { useDevice } from "@/src/hooks/useDevice";
+import { useDevice } from "@/src/hooks/misc/useDevice";
 import { useStickyNotification } from "@/src/store/notification/notification";
 import { LuX } from "react-icons/lu";
 

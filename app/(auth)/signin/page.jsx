@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { login } from "@/src/utils/fns/auth";
 import { LuEye, LuEyeOff } from "react-icons/lu";
 import { getUser } from "@/src/utils/fns/global";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { motion, AnimatePresence } from "framer-motion";
 import { roleRedirects } from "@/src/utils/data/redirect";
@@ -13,6 +13,8 @@ import { preventCopyPaste } from "@/src/utils/fns/general";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import LoginVectorSvg from "@/src/utils/vector-svg/sign-in/LoginVectorSvg";
 import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
+import { Contact } from "@/src/components/layout/Contact";
+import { Modal } from "antd";
 
 const SignInPage = () => {
   // const key = crypto.randomUUID();
@@ -21,6 +23,7 @@ const SignInPage = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const [showPassword, setShowPassword] = useState(false);
+  const [loginModal, setLoginModal] = useState({ open: false, message: "" });
 
   const [localFeedback, setLocalFeedback] = useState({
     show: false,
@@ -69,6 +72,10 @@ const SignInPage = () => {
         error?.response?.data?.message ??
         error?.message ??
         "Unexpected error occurred, Try again later";
+      if (error?.status === 403 && message.includes("vetting")) {
+        setLoginModal((p) => ({ ...p, open: true, message: message }));
+      }
+
       setLocalFeedback((prev) => ({
         ...prev,
         show: true,
@@ -83,18 +90,37 @@ const SignInPage = () => {
     loginMutation.mutate(data);
   };
 
+  const debouncedResetRef = useRef(
+    debounce(() => {
+      setLocalFeedback((prev) => {
+        if (prev.show) {
+          loginMutation.reset();
+          return { show: false, message: "", status: "" };
+        }
+        return prev;
+      });
+    }, 700)
+  );
+
+  const prevFieldsRef = useRef(watchedFields);
+
   useEffect(() => {
-    const resetFeedback = debounce(() => {
-      if (localFeedback.show) {
-        setLocalFeedback({ show: false, message: "", status: "" });
-        loginMutation.reset();
-      }
-    }, 500);
+    const debouncedReset = debouncedResetRef.current;
+    const fieldsChanged = watchedFields.some(
+      (field, index) => field !== prevFieldsRef.current[index]
+    );
 
-    resetFeedback();
+    if (
+      localFeedback.show &&
+      fieldsChanged &&
+      watchedFields.some((field) => field)
+    ) {
+      debouncedReset();
+    }
+    prevFieldsRef.current = watchedFields;
 
-    return () => resetFeedback.cancel();
-  }, [watchedFields]);
+    return () => debouncedReset.cancel();
+  }, [watchedFields, localFeedback.show]);
 
   return (
     <div className="px-6 md:px-8 lg:px-12 xl:px-16 flex justify-center">
@@ -263,7 +289,16 @@ const SignInPage = () => {
             Sign Up
           </span>
         </span>
+
+        <div className="flex items-center justify-center mt-8">
+          <Contact />
+        </div>
       </div>
+      <LoginModal
+        open={loginModal.open}
+        message={loginModal.message}
+        setLoginModal={setLoginModal}
+      />
 
       <LoginVectorSvg />
     </div>
@@ -271,3 +306,45 @@ const SignInPage = () => {
 };
 
 export default SignInPage;
+
+const LoginModal = ({ open, message, setLoginModal }) => (
+  <Modal
+    open={open}
+    footer={null}
+    onCancel={() =>
+      setLoginModal((p) => ({
+        ...p,
+        open: false,
+        message: "",
+      }))
+    }
+    title={
+      <div className="font-bold w-full text-center text-2xl text-gray-800">
+        Gala Education
+      </div>
+    }
+    className="rounded-lg"
+  >
+    <div className="flex flex-col items-center justify-center gap-3">
+      <div className="text-lg font-semibold text-center text-gray-900">
+        {message}
+      </div>
+      <div className="flex flex-col gap-2 text-center">
+        <p className="text-sm text-gray-600">
+          We are currently verifying the documents you submitted during
+          registration.
+        </p>
+        <p className="text-sm text-gray-600">
+          Verification takes 1 to 2 business days.
+        </p>
+        <p className="text-sm text-gray-600">
+          We&apos;ll reach out to you via email once the process is complete — please
+          check your inbox regularly.
+        </p>
+      </div>
+      <div className="mt-4">
+        <Contact />
+      </div>
+    </div>
+  </Modal>
+);

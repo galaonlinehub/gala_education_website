@@ -6,21 +6,21 @@ import Image from "next/image";
 import React, { useState } from "react";
 import ChooseAccont from "@/src/components/ui/auth/signup/ChooseAccount";
 import { Signout } from "../ui/auth/signup/Signout";
-import { useUser } from "@/src/hooks/useUser";
-import AboutUs from "../home/modals/AboutUs";
+import { useUser } from "@/src/hooks/data/useUser";
 import MobileSideBar from "./MobileSideBar";
-import { useDevice } from "@/src/hooks/useDevice";
+import { useDevice } from "@/src/hooks/misc/useDevice";
 import { BiWifi, BiWifiOff } from "react-icons/bi";
-import useNetwork from "@/src/hooks/useNetwork";
-import { LuGlobe, LuMenu } from "react-icons/lu";
+import useNetwork from "@/src/hooks/misc/useNetwork";
+import { LuMenu } from "react-icons/lu";
 import { useLanguageStore } from "@/src/store/useLanguageStore";
-import { useTranslations } from "@/src/hooks/useTranslations";
-
+import { useTranslations } from "@/src/hooks/translation/useTranslations";
+import { useRouter } from "next/navigation";
 const Navbar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { user } = useUser();
   const { width } = useDevice();
   const { isOnline, connectionQuality } = useNetwork();
+  const router = useRouter();
 
   // const [showLanguage, setShowLanguage] = useState(false);
   // const [language, setLanguage] = useState("english");
@@ -37,6 +37,10 @@ const Navbar = () => {
   const [condition, setCondition] = useState(false);
   const changeCondition = (checked) => {
     setCondition(checked);
+  };
+
+  const gotoHomePage = () => {
+    router.push("/");
   };
 
   const items = [
@@ -153,8 +157,9 @@ const Navbar = () => {
         alt={"Gala logo"}
         width={150}
         height={150}
+        onClick={gotoHomePage}
         src={"/gala-logo.png"}
-        className={"w-16 h-16 object-cover rounded-full "}
+        className={"w-16 h-16 object-cover cursor-pointer rounded-full "}
       />
 
       <ul className="text-black flex sm:gap-x-4 gap-x-2 sm:text-[12px] text-[8px] leading-[5px] items-center justify-center font-black">
@@ -208,7 +213,12 @@ const Navbar = () => {
             className="flex gap-3 items-center justify-center"
             onClick={() => {}}
           >
-            <ChooseAccont />
+            <ChooseAccont
+              btnText={"Sign Up"}
+              textColor={"black"}
+              placement={"bottom"}
+              trigger={"hover"}
+            />
             <Link href={"/signin"} className="hover:cursor-pointer">
               <li>Sign In</li>
             </Link>

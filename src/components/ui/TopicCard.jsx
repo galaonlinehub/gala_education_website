@@ -12,7 +12,6 @@ import { useEnrollMe } from "@/src/store/student/useEnrollMe";
 const TopicCard = ({ classInfo }) => {
   const { setEnrollMe, setEnrollCohort } = useEnrollMe();
 
-
   const handleEnroll = () => {
     setEnrollMe(true);
     setEnrollCohort(classInfo?.cohort_id);

@@ -1,6 +1,6 @@
 import { USER_COOKIE_KEY } from "@/src/config/settings";
 import { cookieFn, localStorageFn, sessionStorageFn } from "./client";
-import { apiPost, apiGet } from "@/src/services/api_service";
+import { apiPost, apiGet } from "@/src/services/api/api_service";
 import { encrypt } from "./encryption";
 
 const errorMessage = "Something went wrong, Please try again later!";
@@ -32,11 +32,9 @@ export const login = async (data) => {
   } catch (error) {
     if (error?.status === 401) {
       throw new Error("Oops! Wrong credentials. Please check and try again 🤔");
+    } else if (error?.status === 403) {
+      throw error;
     }
     throw new Error(`${errorMessage}😬`);
   }
 };
-
-
-
-

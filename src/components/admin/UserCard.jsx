@@ -1,29 +1,26 @@
 "use client";
-import { apiPost } from "@/src/services/api_service";
+import { apiPost } from "@/src/services/api/api_service";
 import { useQueryClient } from "@tanstack/react-query";
 import { message, Tag } from "antd";
 import Image from "next/image";
 import React from "react";
 import { IoDiamond } from "react-icons/io5";
 
-function UserCard({ user: { instructor_id,name, role,is_verified } }) {
-  const queryClient = useQueryClient();
-  
-  const handleVerify = async (status) => {
-          
-          const instructorData = {
-            instructor_id,
-            status,
-        }
+function UserCard({ user: { instructor_id, name, role, is_verified } }) {
+    const queryClient = useQueryClient();
 
-            await apiPost("approve-instructor",instructorData); 
-          queryClient.invalidateQueries(["user"]);
-          message.success(
-             "User verified successfully"
-          );
-      };  
-  
-  return (
+    const handleVerify = async () => {
+        const instructorData = {
+            instructor_id,
+            status: "verify",
+        };
+
+        await apiPost("approve-instructor", instructorData);
+        queryClient.invalidateQueries(["user"]);
+        message.success("User verified successfully");
+    };
+
+    return (
         <div className="flex items-center flex-col h-[14rem] sm:h-[16rem] w-[12rem] sm:w-[16rem] relative shadow bg-white">
             <div className="h-[6rem] sm:h-[8rem] w-full bg-blue-400 absolute" />
             <div className="absolute flex flex-col items-center top-16 ">
@@ -50,14 +47,38 @@ function UserCard({ user: { instructor_id,name, role,is_verified } }) {
                         </span>
                     </div>
                 </div>
-            {role == "instructor" &&   <div className='flex  justify-center gap-2 py-2 w-full'>
-                  {is_verified !== "verified" && <button onClick={()=>handleVerify("reject")} className='flex items-center gap-x-2'>
-                  <Tag className='cursor-pointer' color={ "red"}>reject</Tag>
-                  </button>}
-                  <button disabled={is_verified == "verified"} onClick={()=>handleVerify("verify")} className='flex items-center gap-x-2'>
-                  <Tag className='cursor-pointer' color={is_verified == "verified" ? "green" : "purple"}>{is_verified == "verified" ? "verified":"verify"}</Tag>
-                  </button>
-                </div>}
+                {role == "instructor" && (
+                    <div className="flex  justify-center gap-2 py-2 w-full">
+                        {is_verified !== "verified" && (
+                            <button
+                                onClick={() => handleVerify("reject")}
+                                className="flex items-center gap-x-2"
+                            >
+                                <Tag className="cursor-pointer" color={"red"}>
+                                    reject
+                                </Tag>
+                            </button>
+                        )}
+                        <button
+                            disabled={is_verified == "verified"}
+                            onClick={() => handleVerify("verify")}
+                            className="flex items-center gap-x-2"
+                        >
+                            <Tag
+                                className="cursor-pointer"
+                                color={
+                                    is_verified == "verified"
+                                        ? "green"
+                                        : "purple"
+                                }
+                            >
+                                {is_verified == "verified"
+                                    ? "verified"
+                                    : "verify"}
+                            </Tag>
+                        </button>
+                    </div>
+                )}
             </div>
         </div>
     );

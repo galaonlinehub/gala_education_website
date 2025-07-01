@@ -1,5 +1,5 @@
 "use client";
-import { apiGet } from "@/src/services/api_service";
+import { apiGet } from "@/src/services/api/api_service";
 import { customStyles } from "@/src/styles/admin/datatable/customStyles";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
@@ -10,15 +10,15 @@ function Subjects() {
   const [selectedRows, setSelectedRows] = React.useState([]);
   const [toggleCleared, setToggleCleared] = React.useState(false);
 
-  const getSubjects = async ()=>{
-    const {data} = await apiGet('subjects');
+  const getSubjects = async () => {
+    const { data } = await apiGet("subjects");
     return data;
-  }
+  };
 
-  const {data:subjects} = useQuery({
-    queryKey:['subjects'],
-    queryFn:getSubjects
-  })
+  const { data: subjects } = useQuery({
+    queryKey: ["subjects"],
+    queryFn: getSubjects,
+  });
 
   const columns = [
     {
@@ -46,14 +46,18 @@ function Subjects() {
     setSelectedRows(state.selectedRows);
   }, []);
 
-
   return (
     <div>
       <DataTable
         title={
           <div className="w-full flex justify-between px-2">
             <span className="text-xs text-blue-500">Subjects</span>
-            <Link href={'/admin/subjects/add-new'} className="text-xs text-blue-500 hover:underline">+ new subject</Link>
+            <Link
+              href={"/admin/subjects/add-new"}
+              className="text-xs text-blue-500 hover:underline"
+            >
+              + new subject
+            </Link>
           </div>
         }
         columns={columns}
@@ -61,7 +65,6 @@ function Subjects() {
         customStyles={customStyles}
         // pagination
       />
-      
     </div>
   );
 }

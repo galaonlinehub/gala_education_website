@@ -1,4 +1,3 @@
-// app/layout.jsx
 import "./globals.css";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { Urbanist, Quicksand } from "next/font/google";
@@ -15,7 +14,6 @@ const urbanist = Urbanist({
 const quicksand = Quicksand({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-quicksand",
   weight: ["300", "400", "500", "600", "700"],
 });
 
@@ -51,8 +49,8 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${quicksand.className} ${urbanist.variable}`}>
-      <body className="font-sans">
+    <html lang="en">
+      <body className={quicksand.className}>
         <QueryWrapper>
           <AntdRegistry>
             <SEOProvider />

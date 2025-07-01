@@ -2,8 +2,8 @@
 
 import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
 import { img_base_url } from "@/src/config/settings";
-import { useUpcomingLessons } from "@/src/hooks/useUpcomigLessons";
-import { Avatar, Button, Card, Collapse, Tag } from "antd";
+import { useUpcomingLessons } from "@/src/hooks/data/useUpcomigLessons";
+import { Avatar, Button, Card, Collapse, Modal, Tag } from "antd";
 import React, { useState } from "react";
 import {
   LuCalendar,
@@ -13,12 +13,64 @@ import {
   LuInfo,
   LuFolderOpen,
   LuUser,
+  LuCheckCheck,
+  LuX,
 } from "react-icons/lu";
+import { useLesson } from "@/src/hooks/data/useLesson";
+import { encrypt } from "@/src/utils/fns/encryption";
+import { useRouter } from "next/navigation";
+import { useUser } from "@/src/hooks/data/useUser";
+import { sessionStorageFn } from "@/src/utils/fns/client";
 
 const { Panel } = Collapse;
 
 const ClassCard = ({ classData }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const router = useRouter();
+  const { user } = useUser();
+
+  const { lessonToken, lessonTokenPending, getLessonToken } = useLesson();
+
+  const showConfirmModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
+  console.log("console:.", classData);
+
+  const handleJoin = async () => {
+    const lessonToken = await getLessonToken(classData.link);
+    const lessonId = `${classData.lesson_id}`;
+    const roomName = `${classData.class_name}`;
+
+    const userName = `${user?.first_name} ${user?.last_name}`;
+    const userEmail = `${user?.email}`;
+    const isModerator = user?.role == "instructor" ? "true" : "false";
+
+    const encryptedLesssonToken = encrypt(lessonToken);
+    const encryptedModeratorvalue = encrypt(isModerator);
+    const encryptedLessonId = encrypt(lessonId);
+
+    const encryptedRoomName = encrypt(roomName);
+    const encryptedUserName = encrypt(userName);
+    const encryptedUserEmail = encrypt(userEmail);
+
+    sessionStorageFn.set("lessonToken", encryptedLesssonToken);
+    sessionStorageFn.set("isModerator", encryptedModeratorvalue);
+    sessionStorageFn.set("lessonId", encryptedLessonId);
+    sessionStorageFn.set("roomName", encryptedRoomName);
+
+    router.push(
+      `/gala-meet?room=${encryptedLessonId}&name=${encryptedUserName}&email=${encryptedUserEmail}`
+    );
+
+    setIsModalOpen(false);
+  };
 
   return (
     <Card
@@ -78,7 +130,7 @@ const ClassCard = ({ classData }) => {
         <div className="flex items-center">
           <Button
             type="primary"
-            href={classData.link}
+            onClick={showConfirmModal}
             target="_blank"
             className={`!bg-[#001840] !text-white !font-medium !rounded-md !px-4 !py-1 !h-auto !border-none transition-transform duration-200 ${
               isHovered ? "!scale-105 !bg-[#003380]" : ""
@@ -118,6 +170,61 @@ const ClassCard = ({ classData }) => {
           },
         ]}
       />
+      <Modal
+        open={isModalOpen}
+        footer={null}
+        onCancel={handleCancel}
+        centered
+        closeIcon={<LuX className="text-gray-500 hover:text-gray-700" />}
+        className="confirm-join-modal"
+      >
+        <div className="py-4">
+          <div className="flex justify-center mb-6">
+            <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center">
+              <LuVideo className="text-4xl text-[#001840]" />
+            </div>
+          </div>
+
+          <h3 className="text-xl font-semibold text-center mb-2">
+            Join Live Class
+          </h3>
+
+          <div className="bg-gray-50 rounded-lg p-4 mb-6">
+            <div className="font-medium text-gray-800 mb-2">
+              {classData.class_name}: {classData.topic}
+            </div>
+
+            <div className="flex items-center gap-2 text-sm text-gray-600 mb-1">
+              <LuCalendar className="flex-shrink-0" />
+              <span>
+                {classData.date}, {classData.time}
+              </span>
+            </div>
+          </div>
+
+          <p className="text-gray-600 text-xs lg:text-sm text-center mb-6">
+            You&apos;re about to join a live interactive session. Make sure your
+            camera and microphone are working properly.
+          </p>
+
+          <div className="flex gap-3 justify-center">
+            <Button
+              onClick={handleCancel}
+              className="!border-gray-300 !text-gray-700 !px-5 !h-10 !rounded-md"
+            >
+              Cancel
+            </Button>
+            <Button
+              type="primary"
+              onClick={handleJoin}
+              className="!bg-[#001840] !border-none !text-white !px-5 !h-10 !rounded-md !flex !items-center !gap-1"
+              icon={<LuCheckCheck />}
+            >
+              Confirm & Join
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </Card>
   );
 };

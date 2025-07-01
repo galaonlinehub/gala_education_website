@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
-import { PaymentStatus } from "@/src/config/settings";
-import { LuCircleX, LuFolder, LuUsers } from "react-icons/lu";
+import { img_base_url, PaymentStatus } from "@/src/config/settings";
+import { LuCircleX, LuFolder, LuUsers, LuUser } from "react-icons/lu";
 import TopicCardSkeleton from "@/src/components/student/TopicCardStudent";
 import { Card, Button, Avatar, Tooltip, Modal } from "antd";
 import {
@@ -9,8 +9,8 @@ import {
   RenderSuccessState,
   RenderLoadingState,
 } from "@/src/components/ui/auth/signup/PaymentStatus";
-import { usePendingCohorts } from "@/src/hooks/usePendingCohorts";
-import { useDevice } from "@/src/hooks/useDevice";
+import { usePendingCohorts } from "@/src/hooks/data/usePendingCohorts";
+import { useDevice } from "@/src/hooks/misc/useDevice";
 import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
 
 function PendingPayment() {
@@ -70,9 +70,7 @@ function PendingPayment() {
           </div>
         ) : (
           pendingCohorts?.map((classItem) => (
-            <div key={classItem.cohort_id}>
-              <PendingTopicCard details={classItem} />
-            </div>
+            <PendingTopicCard key={classItem.cohort_id} {...classItem} />
           ))
         )}
       </div>
@@ -80,26 +78,18 @@ function PendingPayment() {
   );
 }
 
-const generateRandomReference = () => {
-  return `REF${Math.floor(Math.random() * 10000000)
-    .toString()
-    .padStart(7, "0")}TZ`;
-};
-
-const PendingTopicCard = ({ details }) => {
+const PendingTopicCard = ({
+  topic,
+  cohort_name,
+  subject,
+  total_student_enrolled,
+  instructor_name,
+  payment_reference,
+  amount,
+  instructor_profile_picture,cohort_start_date
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [paymentStep, setPaymentStep] = useState("initial");
-  const [reference] = useState(generateRandomReference());
-
-  const {
-    topic,
-    cohort_id,
-    cohort_name,
-    subject,
-    total_student_enrolled,
-    instructor_name,
-    amount,
-  } = details;
 
   const showModal = (e) => {
     e.preventDefault();
@@ -129,7 +119,7 @@ const PendingTopicCard = ({ details }) => {
       default:
         return (
           <RenderReferenceState
-            reference={reference}
+            reference={payment_reference}
             amount={amount}
             onClose={handleComplete}
           />
@@ -139,17 +129,14 @@ const PendingTopicCard = ({ details }) => {
 
   return (
     <>
-      <Card
-        key={details?.id}
-        className="!overflow-hidden group cursor-pointer hover:shadow-lg transition-shadow"
-      >
+      <Card className="!overflow-hidden group cursor-pointer hover:shadow-lg transition-shadow">
         <div className="flex items-center justify-between mb-2 gap-2">
           <div className="w-2/3">
             <div className="text-xl font-black text-[#001840] group-hover:text-[#2563eb] transition-colors capitalize mb-2">
-              {cohort_id}
+              {cohort_name}
             </div>
             <div className="w-full">
-              <p className="text-gray-600 text-[10px]">{subject}</p>
+              <p className="text-gray-600 text-[10px]">{subject?.name}</p>
               <p className="text-gray-600 font-bold text-sm line-clamp-1">
                 {topic}
               </p>
@@ -159,7 +146,8 @@ const PendingTopicCard = ({ details }) => {
             <div className="flex flex-col items-start gap-1">
               <Avatar
                 className="!bg-transparent/90"
-                src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${instructor_name}`}
+                src={`${img_base_url}${instructor_profile_picture}`}
+                icon={<LuUser />}
               />
               <span className="text-xs font-medium line-clamp-1 capitalize">
                 {instructor_name}
@@ -168,9 +156,7 @@ const PendingTopicCard = ({ details }) => {
             <Tooltip title="Enrolled Students">
               <div className="flex items-center gap-1 text-gray-600">
                 <LuUsers />
-                <span className="text-[10px]">
-                  {total_student_enrolled}/100
-                </span>
+                <span className="text-[10px]">{total_student_enrolled}/10</span>
               </div>
             </Tooltip>
           </div>
@@ -178,8 +164,8 @@ const PendingTopicCard = ({ details }) => {
         <div className="mb-3 text-xs flex justify-between items-center">
           <div className="w-2/3 flex items-center gap-2">
             <span>Starts on</span>
-            <span className="text-gray-500 text-xs font-semibold ml-3">
-              {new Date().toLocaleDateString()}
+            <span className="text-gray-500 text-xs font-semibold">
+              {cohort_start_date}
             </span>
           </div>
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useUser } from "@/src/hooks/useUser";
+import { useUser } from "@/src/hooks/data/useUser";
 import { Modal, Steps, Button, Drawer } from "antd";
 import ConfirmPlan from "../ui/auth/signup/ConfirmPlan";
 import SignupPay from "@/src/components/ui/auth/signup/Payment";
@@ -8,9 +8,8 @@ import { useTabNavigator } from "@/src/store/auth/signup";
 import { createStyles, useTheme } from "antd-style";
 import { Signout } from "../ui/auth/signup/Signout";
 
-
 export default function Subscribe() {
-  const {user} = useUser();
+  const { user } = useUser();
   const { activeTab } = useTabNavigator();
 
   const modalStyles = {
@@ -32,7 +31,6 @@ export default function Subscribe() {
       content: <SignupPay />,
     },
   ];
-
 
   return (
     <Drawer

@@ -1,11 +1,11 @@
-import { apiPost } from "@/src/services/api_service";
+import { apiPost } from "@/src/services/api/api_service";
 import { footer_links } from "@/src/utils/data/links";
 import FooterVectors from "@/src/utils/vector-svg/FooterVectors";
 import { useMutation } from "@tanstack/react-query";
 import clsx from "clsx";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { LuCircleCheckBig, LuLoaderCircle, LuX } from "react-icons/lu";
+import { LuCircleCheckBig, LuX } from "react-icons/lu";
 import SlickSpinner from "../ui/loading/template/SlickSpinner";
 
 function Footer() {

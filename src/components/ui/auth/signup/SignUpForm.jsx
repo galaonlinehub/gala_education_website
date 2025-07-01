@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Form, Input, Select, Button, Typography, Card, Progress } from "antd";
 import { disabilities } from "@/src/utils/data/disabilities";
-import { useAuth } from "@/src/hooks/useAuth";
+import { useAuth } from "@/src/hooks/data/useAuth";
 import EmailVerification from "./EmailVerification";
 import { useRouter } from "next/navigation";
 import clsx from "clsx";
@@ -17,6 +17,7 @@ import {
 } from "react-icons/lu";
 import SlickSpinner from "../../loading/template/SlickSpinner";
 import { preventCopyPaste } from "@/src/utils/fns/general";
+import { Contact } from "@/src/components/layout/Contact";
 
 const { Text } = Typography;
 
@@ -318,6 +319,10 @@ const SignUpForm = () => {
           >
             Sign In
           </Button>
+        </div>
+
+        <div className="w-full flex items-center justify-center mt-1">
+          <Contact />
         </div>
       </Card>
       <EmailVerification />

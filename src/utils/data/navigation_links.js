@@ -1,3 +1,4 @@
+import { CommentOutlined, RobotFilled } from "@ant-design/icons";
 import {
   LuBox,
   LuLayoutDashboard,
@@ -6,7 +7,11 @@ import {
   LuTv,
   LuUsers,
   LuClock4,
+  LuBrain,
+  LuBook,
 } from "react-icons/lu";
+import { MdOutlineInsertComment } from "react-icons/md";
+import { TbHexagon } from "react-icons/tb";
 
 export const footer_links = {
   Services: [
@@ -112,16 +117,20 @@ export const teacher_links = [
     icon: <LuUsers />,
   },
 
-  // {
-  //   name: "Assignments",
-  //   link: "assignments",
-  //   icon: <LuListChecks />,
-  // },
-
   {
     name: "Subscriptions",
     link: "subscriptions",
-    icon: <LuBox />,
+    icon: <TbHexagon />,
+  },
+  {
+    name: "GalaAI",
+    link: "ai",
+    icon: <LuBrain />,
+  },
+  {
+    name: "Library",
+    link: "library",
+    icon: <LuBook />,
   },
 ];
 
@@ -146,7 +155,7 @@ export const student_links = [
   {
     name: "Social",
     link: "social",
-    icon: <LuUsers />,
+    icon: <LuUsers/>
   },
   {
     name: "Awaiting",
@@ -157,6 +166,22 @@ export const student_links = [
   {
     name: "Subscriptions",
     link: "subscriptions",
-    icon: <LuBox />,
+    icon: <TbHexagon />,
+  },
+
+  {
+    name: "GalaAI",
+    link: "ai",
+    icon: <LuBrain />,
+  },
+  {
+    name: "My Reviews",
+    link: "my-reviews",
+    icon: <MdOutlineInsertComment />,
+  },
+  {
+    name: "Library",
+    link: "library",
+    icon: <LuBook />,
   },
 ];

@@ -9,12 +9,13 @@ import {
 import { decrypt } from "@/src/utils/fns/encryption";
 import { useTabNavigator } from "@/src/store/auth/signup";
 import { useMutation } from "@tanstack/react-query";
-import { apiPost } from "@/src/services/api_service";
+import { apiPost } from "@/src/services/api/api_service";
 import { PaymentStatus } from "@/src/config/settings";
 import { PaymentPending } from "./PaymentStatus";
 import io from "socket.io-client";
-import { useUser } from "@/src/hooks/useUser";
+import { useUser } from "@/src/hooks/data/useUser";
 import SlickSpinner from "../../loading/template/SlickSpinner";
+import { Contact } from "@/src/components/layout/Contact";
 
 const MobilePay = () => {
   const [validationMessage, setValidationMessage] = useState("");
@@ -35,7 +36,8 @@ const MobilePay = () => {
   const isValidPhoneNumber = (number) => {
     if (!number || number.length !== 9) return false;
     if (!["6", "7"].includes(number[0])) return false;
-    if (!["1", "2", "3", "4", "5", "6", "7","8", "9"].includes(number[1])) return false;
+    if (!["1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(number[1]))
+      return false;
     if (!["1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(number[2]))
       return false;
     return true;
@@ -114,7 +116,7 @@ const MobilePay = () => {
       };
 
       try {
-        const response = await apiPost("subscribe-plan", data);
+        const response = await apiPost("/subscribe-plan", data);
         return response.data;
       } catch (error) {
         console.error("API call failed:", error);
@@ -135,16 +137,12 @@ const MobilePay = () => {
     const socket = io(`${socket_base_url}payment`);
     if (!email) return;
     socket.on("connect", () => {
-      socket.emit("join", { email });
+      socket.emit("join", { id: email });
     });
 
     socket.on("paymentResponse", (msg) => {
       if (msg.status === "success") {
         setPaymentStatus(PaymentStatus.SUCCESS);
-
-        setTimeout(() => {
-          window.location.href = "/signin";
-        }, 10000);
       } else {
         setPaymentStatus(PaymentStatus.REFERENCE);
       }
@@ -155,7 +153,7 @@ const MobilePay = () => {
     });
 
     return () => socket.close();
-  }, [email]);
+  }, [email, user]);
 
   useEffect(() => {
     const getEmail = () => {
@@ -256,13 +254,15 @@ const MobilePay = () => {
             Request Payment
           </Button>
         </form>
-        <div className="w-full mt-6">
-          <span
+        <div className="w-full mt-6 flex justify-between">
+          <div
             onClick={goBack}
             className="font-bold text-[#010798] text-xs cursor-pointer border border-[#010798] p-2 rounded-md"
           >
             Change plan
-          </span>
+          </div>
+
+          <Contact useBillingContact={true} />
         </div>
       </Card>
       {isModalOpen && (

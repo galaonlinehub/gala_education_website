@@ -1,18 +1,20 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { Drawer, Avatar, Typography, Divider, Button } from "antd";
-import { useUser } from "@/src/hooks/useUser";
+import { useUser } from "@/src/hooks/data/useUser";
 import { Signout } from "../ui/auth/signup/Signout";
 import { img_base_url } from "@/src/config/settings";
 import { LuX, LuUser, LuLogOut, LuLoaderCircle } from "react-icons/lu";
 import { usePathname, useSearchParams } from "next/navigation";
 import { links } from "@/src/utils/data/redirect";
+import { useRouter } from "next/navigation";
 
 const { Text } = Typography;
 
 const MobileSideBar = ({ isOpen, onClose }) => {
   const { user } = useUser();
   const currentUrl = usePathname();
+  const router = useRouter();
 
   return (
     <>
@@ -20,14 +22,20 @@ const MobileSideBar = ({ isOpen, onClose }) => {
         title={
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-3">
-              <Avatar
-                size={54}
-                src={
-                  user?.profile_picture &&
-                  `${img_base_url + user?.profile_picture}`
-                }
-                icon={<LuUser className="text-black" />}
-              />
+              <div className=" border-2 border-gray-500 rounded-full">
+                <Avatar
+                  size={54}
+                  src={
+                    user?.profile_picture &&
+                    `${img_base_url + user?.profile_picture}`
+                  }
+                  icon={<LuUser className="text-black" />}
+                  onClick={() => {
+                    router.push(`/${user?.role}/profile`);
+                    onClose();
+                  }}
+                />
+              </div>
               <div className="flex flex-col">
                 <Text className="text-base font-black">
                   {user?.first_name} {user?.last_name}

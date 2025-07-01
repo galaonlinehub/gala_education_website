@@ -1,10 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Result, Modal, Progress } from "antd";
-import { PaymentStatus } from "@/src/config/settings";
+import { PaymentStatus, SUPPORT_EMAIL } from "@/src/config/settings";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import { HiMiniDevicePhoneMobile } from "react-icons/hi2";
-import { useDevice } from "@/src/hooks/useDevice";
-import { useRouter } from "next/navigation";
+import { useDevice } from "@/src/hooks/misc/useDevice";
 import InstructorSignUpFeedback from "@/src/components/teacher/InstructorSignUpFeedback";
 import SlickSpinner from "../../loading/template/SlickSpinner";
 import {
@@ -16,42 +15,48 @@ import {
 } from "react-icons/lu";
 import { useAccountType } from "@/src/store/auth/signup";
 import { usePathname } from "next/navigation";
-import { useUser } from "@/src/hooks/useUser";
+import { useUser } from "@/src/hooks/data/useUser";
+import { Contact } from "@/src/components/layout/Contact";
+import { useQueryClient } from "@tanstack/react-query";
 
-export const RenderLoadingState = () => {
+export const RenderLoadingState = ({ setStatus }) => {
   const [percent, setPercent] = useState(0);
-  const [seconds, setSeconds] = useState(30);
+  const [seconds, setSeconds] = useState(45);
 
   useEffect(() => {
-    const duration = 30 * 1000;
-    const intervalTime = 100;
-    const steps = duration / intervalTime;
-    const percentIncrement = 100 / steps;
-    const secondsDecrement = 30 / steps;
-
     const interval = setInterval(() => {
       setPercent((prevPercent) => {
-        if (prevPercent >= 100) {
-          clearInterval(interval);
-          setSeconds(0);
-          return 100;
-        }
-        return prevPercent + percentIncrement;
+        if (prevPercent >= 93) return prevPercent;
+        return prevPercent + 1;
       });
 
       setSeconds((prevSeconds) => {
-        if (prevSeconds <= 0) return 0;
-        return prevSeconds - secondsDecrement;
+        if (prevSeconds <= 5) return prevSeconds;
+        return prevSeconds - 1;
       });
-    }, intervalTime);
+    }, 500);
 
-    return () => clearInterval(interval);
-  }, []);
+    const timeout = setTimeout(() => {
+      setStatus(PaymentStatus.FAILURE);
+    }, 60000);
+
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timeout);
+    };
+  }, [setStatus]);
+
+  const statusMessages = [
+    "Initiating secure connection...",
+    "Verifying transaction details...",
+    "Checking payment gateway...",
+    "Encrypting your data...",
+    "Almost there! Finalizing payment...",
+  ];
 
   const getStatusMessage = () => {
-    if (percent < 33) return "Initiating secure connection...";
-    if (percent < 66) return "Verifying transaction details...";
-    return "Almost there! Finalizing payment...";
+    const index = Math.floor((percent / 100) * statusMessages.length);
+    return statusMessages[index % statusMessages.length];
   };
 
   return (
@@ -97,19 +102,34 @@ export const RenderLoadingState = () => {
   );
 };
 
-export const RenderSuccessState = ({ onClose, accountType, setStatus }) => {
+export const RenderSuccessState = ({
+  onClose,
+  accountType,
+  setStatus,
+
+  queryClient,
+  user,
+}) => {
   if (accountType === "instructor") {
     setTimeout(() => {
       setStatus(PaymentStatus.CONGRATULATION);
-    }, 8000);
+      queryClient.invalidateQueries(["auth-user"]);
+    }, 10000);
   }
 
   const onDone = () => {
     if (accountType === "instructor") {
       setStatus(PaymentStatus.CONGRATULATION);
     } else {
+      if (!user) {
+        setTimeout(() => {
+          window.location.href = "/signin";
+        }, 5000);
+      }
       onClose();
     }
+
+    queryClient.invalidateQueries(["auth-user"]);
   };
 
   return (
@@ -139,7 +159,12 @@ export const RenderSuccessState = ({ onClose, accountType, setStatus }) => {
   );
 };
 
-export const RenderReferenceState = ({ reference, amount, onClose }) => (
+export const RenderReferenceState = ({
+  reference,
+  amount,
+  onClose,
+  donation,
+}) => (
   <div className="flex flex-col items-center py-6 xxs:py-0 xxs:p-4 min-w-[50px] max-w-[600px] mx-auto">
     <HiMiniDevicePhoneMobile className="text-[#001840] text-4xl mb-4" />
     <div className="flex flex-col gap-3 w-full">
@@ -166,7 +191,9 @@ export const RenderReferenceState = ({ reference, amount, onClose }) => (
           <LuWallet className="text-[#001840] text-xl" />
           <div className="flex flex-col items-center justify-center">
             <span className="font-medium">
-              3. Enter Amount for plan selected
+              {donation
+                ? "3. Enter Amount"
+                : "3. Enter Amount for plan selected"}
             </span>
             <p className="text-lg text-[#001840] font-black mt-1 text-center">
               {amount?.toLocaleString()} TZS
@@ -194,6 +221,7 @@ export const RenderReferenceState = ({ reference, amount, onClose }) => (
 );
 
 export const RenderFailureState = ({ onClose, setStatus, mutationFn }) => {
+  const mailto = `mailto:${SUPPORT_EMAIL}?subject=Payment%20Failure`;
   const reload = () => {
     setStatus(PaymentStatus.LOADING);
     mutationFn();
@@ -217,8 +245,8 @@ export const RenderFailureState = ({ onClose, setStatus, mutationFn }) => {
           <p className="text-gray-500 line-clamp-3 text-[12px] xxs:text-xs lg:text-sm">
             Please try again or
             <a
-              className="mx-1 text-blue-500 text-[12px] xxs:text-xs lg:text-sm"
-              href="mailto:support@galahub.org?subject=Payment%20Failure"
+              className="mx-1 text-[#030DFE] hover:text-[#030DFE]/70 text-[12px] xxs:text-xs lg:text-sm"
+              href={mailto}
             >
               Contact Support
             </a>
@@ -262,7 +290,9 @@ export const PaymentPending = ({
   const [modalSize, setModalSize] = useState({ width: 520, height: 520 });
   const { accountType, setAccountType } = useAccountType();
   const url = usePathname();
-  const user = useUser();
+  const { user: rawUser } = useUser();
+  const user = useMemo(() => rawUser, [rawUser]);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     const updateSize = () => {
@@ -282,7 +312,7 @@ export const PaymentPending = ({
       const newUrl = url.split("/")[1];
       setAccountType(newUrl);
     }
-  }, []);
+  }, [setAccountType, url, user]);
 
   return (
     <Modal
@@ -308,12 +338,16 @@ export const PaymentPending = ({
         },
       }}
     >
-      {status === PaymentStatus.LOADING && <RenderLoadingState />}
+      {status === PaymentStatus.LOADING && (
+        <RenderLoadingState setStatus={setStatus} />
+      )}
       {status === PaymentStatus.SUCCESS && (
         <RenderSuccessState
           onClose={onClose}
           accountType={String(accountType)}
           setStatus={setStatus}
+          queryClient={queryClient}
+          user={user}
         />
       )}
       {status === PaymentStatus.REFERENCE && (
@@ -334,6 +368,10 @@ export const PaymentPending = ({
       {status === PaymentStatus.CONGRATULATION && (
         <InstructorSignUpFeedback onClose={onClose} />
       )}
+
+      <div className="mt-2">
+        <Contact useBillingContact={true} />
+      </div>
     </Modal>
   );
 };
