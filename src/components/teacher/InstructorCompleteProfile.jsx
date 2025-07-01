@@ -370,7 +370,14 @@ const Save = ({
             </Select>
           </Form.Item>
 
-          <Form.Item name="bio">
+          <Form.Item name="bio" rules={[
+            {
+              required: true,
+              message: (
+                <span className="text-xs ">Bio is required</span>
+              ),
+            },
+          ]}>
             <TextArea
               className="!text-xs !rounded-lg !p-1 !pl-2"
               placeholder="Type your bio. This will be visible to students"
