@@ -71,7 +71,7 @@ const InstructorCompleteProfile = () => {
           </div>
         </div>
       }
-      open={user?.completed_profile && user?.has_active_subscription}
+      open={!user?.completed_profile && user?.has_active_subscription}
       closable={false}
       maskClosable={false}
       footer={null}
