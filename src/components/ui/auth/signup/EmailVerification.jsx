@@ -83,7 +83,7 @@ const EmailVerification = () => {
               <div className="text-green-500">
                 <LuCheck className="text-2xl" />
                 <span>Email Successfully Verified!</span>
-                <span>Hold on a moment. You'll be directed to the next stage.</span>
+                <span>Hold on a moment. You&apos;ll be directed to the next stage.</span>
               </div>
             ) : verifyMutate.isError ? (
               verifyMutate?.error?.status === 429 ? <div className="flex flex-col items-center justify-center gap-2">
