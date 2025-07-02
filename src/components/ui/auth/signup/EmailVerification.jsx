@@ -80,15 +80,15 @@ const EmailVerification = () => {
           )}
           {
             (verifyMutate.isSuccess ? (
-              <div className="text-green-500">
+              <div className="text-green-500 flex items-center justify-center">
                 <LuCheck className="text-2xl" />
-                <span>Email Successfully Verified!</span>
-                <span>Hold on a moment. You&apos;ll be directed to the next stage.</span>
+                <span className="text-center">Email Successfully Verified!</span>
+                <span className="text-center">Hold on a moment. You&apos;ll be directed to the next stage.</span>
               </div>
             ) : verifyMutate.isError ? (
               verifyMutate?.error?.status === 429 ? <div className="flex flex-col items-center justify-center gap-2">
                 <LuTriangleAlert className="text-yellow-400 text-2xl" />
-                <span className="font-bold">{verifyMutate.error?.response?.data?.message || verifyMutate.error?.message || "Email Verification Failed!"}</span>
+                <span className="font-bold text-center">{verifyMutate.error?.response?.data?.message || verifyMutate.error?.message || "Email Verification Failed!"}</span>
               </div> : <div className="text-red-500 flex flex-col items-center justify-center gap-2">
                 <LuBan className="text-2xl" />
                 <span>Email Verification Failed!</span>
