@@ -5,6 +5,7 @@ import QueryWrapper from "@/src/components/layout/QueryWrapper";
 import SEOProvider from "@/src/components/layout/SEOProvider";
 import JsonLd from "@/src/components/layout/JsonLD";
 import GoogleAnalyticsComponent from "@/src/components/analytics/GoogleAnalytics";
+import { Toaster } from "react-hot-toast";
 
 const urbanist = Urbanist({
   subsets: ["latin"],
@@ -55,6 +56,7 @@ export default function RootLayout({ children }) {
           <AntdRegistry>
             <SEOProvider />
             <JsonLd />
+            <Toaster/>
             <GoogleAnalyticsComponent />
             {children}
           </AntdRegistry>

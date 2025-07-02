@@ -1,13 +1,15 @@
 import { MESSAGE_STATUSES } from "@/src/utils/data/message";
-import { EVENTS } from "../../utils/data/events";
+import { EVENTS } from "@/src/utils/data/events";
 import {
   handleMessageIdUpadate,
   handleMessageStatusBatchUpdate,
   handleMessageStatusUpdate,
   handleNewMessage,
   normalizedMessages,
-} from "../../utils/fns/chat";
-import { useSocketEvent } from "../sockets/useSocketEvent";
+} from "@/src/utils/fns/chat";
+import { useSocketEvent } from "@/src/hooks/sockets/useSocketEvent";
+import toast from "react-hot-toast";
+
 
 export const useChatSocketEvents = (
   namespace,
@@ -25,9 +27,32 @@ export const useChatSocketEvents = (
     setOnlineUsers((prev) => [...new Set([...prev, user_id])]);
   });
 
+  // useSocketEvent(namespace, EVENTS.NEW_MESSAGE, (message) => {
+  //   handleNewMessage(message, setMessages, setChats);
+  // });
+
   useSocketEvent(namespace, EVENTS.NEW_MESSAGE, (message) => {
-    handleNewMessage(message, setMessages, setChats);
-  });
+  handleNewMessage(message, setMessages, setChats);
+
+  // const isOwnMessage = message.sender_id === user?.id;
+  if (true) {
+    toast.custom((t) => (
+      <div
+        className={`max-w-xs bg-white shadow-md rounded-lg p-4 text-sm transition-all ${
+          t.visible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
+        }`}
+      >
+        <p className="text-gray-800 font-semibold">
+          New message from {message.sender?.name || "Someone"}
+        </p>
+        <p className="text-gray-600 truncate">{message.content}</p>
+      </div>
+    ), {
+      position: "bottom-right",
+      duration: 5000,
+    });
+  }
+});
 
   useSocketEvent(
     namespace,

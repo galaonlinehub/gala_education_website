@@ -11,9 +11,6 @@ import { decrypt } from "../../utils/fns/encryption";
 import { EVENTS } from "../../utils/data/events";
 import { MESSAGE_STATUSES } from "../../utils/data/message";
 import {
-  handleMessageIdUpadate,
-  handleMessageStatusBatchUpdate,
-  handleMessageStatusUpdate,
   handleNewMessage,
   normalizedMessages,
 } from "../../utils/fns/chat";
@@ -42,7 +39,6 @@ export const useChat = () => {
   const [onlineUsers, setOnlineUsers] = useState([]);
 
   const queryClient = useQueryClient();
-  const isDev = process.env.NODE_ENV === "development";
   const namespace = "chat";
 
   const {
