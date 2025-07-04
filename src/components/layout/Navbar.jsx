@@ -1,150 +1,25 @@
 "use client";
 
-import { Tooltip, message, Dropdown, Menu } from "antd";
 import Link from "next/link";
 import Image from "next/image";
-import React, { useState } from "react";
+import { Dropdown } from "antd";
+import { LuMenu } from "react-icons/lu";
+import { useNav } from "@/src/hooks/ui/useNav";
+import MobileSideBar from "@/src/components/layout/MobileSideBar";
+import { Signout } from "@/src/components/ui/auth/signup/Signout";
 import ChooseAccont from "@/src/components/ui/auth/signup/ChooseAccount";
-import { Signout } from "../ui/auth/signup/Signout";
-import { useUser } from "@/src/hooks/data/useUser";
-import AboutUs from "../home/modals/AboutUs";
-import MobileSideBar from "./MobileSideBar";
-import { useDevice } from "@/src/hooks/misc/useDevice";
-import { BiWifi, BiWifiOff } from "react-icons/bi";
-import useNetwork from "@/src/hooks/misc/useNetwork";
-import { LuGlobe, LuMenu } from "react-icons/lu";
-import { useRouter } from "next/navigation";
 
 const Navbar = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const { user } = useUser();
-  const { width } = useDevice();
-  const { isOnline, connectionQuality } = useNetwork();
-  const router = useRouter();
-
-  const [showLanguage, setShowLanguage] = useState(false);
-  const [language, setLanguage] = useState("english");
-
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
-
-  const [open, setOpen] = useState(false);
-  const [condition, setCondition] = useState(false);
-  const changeCondition = (checked) => {
-    setCondition(checked);
-  };
-
-  const gotoHomePage = () => {
-    router.push("/");
-  };
-
-  const items = [
-    {
-      key: "1",
-      // icon: <LuGlobe className="text-xl" />,
-      label: (
-        <div className="flex flex-col items-center text-sm font-medium">
-          English
-        </div>
-      ),
-      onClick: () => {},
-    },
-    {
-      key: "2",
-      label: (
-        <div className="flex flex-col items-center text-sm px-3 font-medium">
-          Swahili
-        </div>
-      ),
-      onClick: () => {},
-      disabled: true,
-    },
-  ];
-
-  const confirm = () => {
-    setOpen(false);
-    message.success("English language chosen.");
-  };
-  const cancel = () => {
-    setOpen(false);
-    message.success("Swahili language chosen.");
-  };
-  const handleOpenChange = (newOpen) => {
-    if (!newOpen) {
-      setOpen(newOpen);
-      return;
-    }
-    if (condition) {
-      confirm();
-    } else {
-      setOpen(newOpen);
-    }
-  };
-
-  const getIcon = () => {
-    if (!isOnline) {
-      return (
-        <Tooltip
-          placement="bottom"
-          title={
-            <NetworkMessage
-              message={
-                "You're offline. Please connect to Wi-Fi or enable mobile data."
-              }
-            />
-          }
-        >
-          <BiWifiOff className="text-red-600 text-xl animate-bounce" />
-        </Tooltip>
-      );
-    }
-    switch (connectionQuality) {
-      case "good":
-        return (
-          <Tooltip
-            placement="bottom"
-            title={
-              <NetworkMessage
-                message={"Your internet connection is strong and stable."}
-              />
-            }
-          >
-            <BiWifi className="text-green-600 text-xl animate-pulse" />
-          </Tooltip>
-        );
-      case "moderate":
-        return (
-          <Tooltip
-            placement="bottom"
-            title={
-              <NetworkMessage
-                message={"Your connection is working but could be better."}
-              />
-            }
-          >
-            <BiWifi className="text-yellow-600 text-xl" />
-          </Tooltip>
-        );
-      case "weak":
-        return (
-          <Tooltip
-            placement="bottom"
-            title={
-              <NetworkMessage
-                message={
-                  "Your internet connection is weak and may be unstable."
-                }
-              />
-            }
-          >
-            <BiWifi className="text-orange-600 text-xl animate-bounce" />
-          </Tooltip>
-        );
-      default:
-        return <BiWifi className="text-gray-600 text-xl" />;
-    }
-  };
+  const {
+    width,
+    user,
+    gotoHomePage,
+    toggleSidebar,
+    isSidebarOpen,
+    getIcon,
+    items,
+    handleOpenChange,
+  } = useNav();
 
   return (
     <nav className="h-12 flex justify-between max-w-screen items-center fixed top-0 inset-x-0 z-50 lg:px-10 sm:px-6 px-2 bg-white">
@@ -168,14 +43,6 @@ const Navbar = () => {
           overlayClassName="rounded-md shadow-lg border border-gray-100"
           arrow={true}
           placement="bottom"
-          // dropdownRender={(menu) => (
-          //   <div>
-          //     <div className="text-xs font-light text-black px-4 py-2">
-          //       Choose language
-          //     </div>
-          //     {menu}
-          //   </div>
-          // )}
         >
           <Image
             width={200}
@@ -240,7 +107,4 @@ const Navbar = () => {
   );
 };
 
-const NetworkMessage = ({ message }) => {
-  return <div className="text-xs text-center p-1">{message}</div>;
-};
 export default Navbar;
