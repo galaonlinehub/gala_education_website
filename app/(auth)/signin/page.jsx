@@ -1,126 +1,27 @@
 "use client";
 import clsx from "clsx";
-import debounce from "lodash.debounce";
-import { useRouter } from "next/navigation";
-import { login } from "@/src/utils/fns/auth";
+import { Modal } from "antd";
 import { LuEye, LuEyeOff } from "react-icons/lu";
-import { getUser } from "@/src/utils/fns/global";
-import React, { useState, useEffect, useRef } from "react";
-import { useForm, useWatch } from "react-hook-form";
+import { useLogin } from "@/src/hooks/ui/useLogin";
 import { motion, AnimatePresence } from "framer-motion";
-import { roleRedirects } from "@/src/utils/data/redirect";
+import { Contact } from "@/src/components/layout/Contact";
 import { preventCopyPaste } from "@/src/utils/fns/general";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import LoginVectorSvg from "@/src/utils/vector-svg/sign-in/LoginVectorSvg";
 import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
-import { Contact } from "@/src/components/layout/Contact";
-import { Modal } from "antd";
 
 const SignInPage = () => {
-  // const key = crypto.randomUUID();
-  // alert(key);
-
-  const router = useRouter();
-  const queryClient = useQueryClient();
-  const [showPassword, setShowPassword] = useState(false);
-  const [loginModal, setLoginModal] = useState({ open: false, message: "" });
-
-  const [localFeedback, setLocalFeedback] = useState({
-    show: false,
-    status: "",
-    message: "",
-  });
-
-  const togglePasswordVisibility = () => {
-    setShowPassword((prev) => !prev);
-  };
-
   const {
+    localFeedback,
+    loginMutation,
+    onSubmit,
     register,
     handleSubmit,
-    formState: { errors },
-    control,
-  } = useForm();
-  const watchedFields = useWatch({ name: ["email", "password"], control });
-
-  const loginMutation = useMutation({
-    mutationFn: login,
-    onSuccess: async (res) => {
-      if (res === 1) {
-        const userData = await queryClient.fetchQuery({
-          queryKey: ["auth-user"],
-          queryFn: getUser,
-          staleTime: Infinity,
-        });
-
-        if (userData?.role) {
-          setLocalFeedback((prev) => ({
-            ...prev,
-            show: true,
-            status: "success",
-            message: "Signed in successfully, Redirecting you now…",
-          }));
-
-          const redirectPath = roleRedirects[userData.role] || "/";
-
-          router.push(redirectPath);
-        }
-      }
-    },
-    onError: (error) => {
-      const message =
-        error?.response?.data?.message ??
-        error?.message ??
-        "Unexpected error occurred, Try again later";
-      if (error?.status === 403 && message.includes("vetting")) {
-        setLoginModal((p) => ({ ...p, open: true, message: message }));
-      }
-
-      setLocalFeedback((prev) => ({
-        ...prev,
-        show: true,
-        status: "error",
-        message,
-      }));
-    },
-    onSettled: () => {},
-  });
-
-  const onSubmit = (data) => {
-    loginMutation.mutate(data);
-  };
-
-  const debouncedResetRef = useRef(
-    debounce(() => {
-      setLocalFeedback((prev) => {
-        if (prev.show) {
-          loginMutation.reset();
-          return { show: false, message: "", status: "" };
-        }
-        return prev;
-      });
-    }, 700)
-  );
-
-  const prevFieldsRef = useRef(watchedFields);
-
-  useEffect(() => {
-    const debouncedReset = debouncedResetRef.current;
-    const fieldsChanged = watchedFields.some(
-      (field, index) => field !== prevFieldsRef.current[index]
-    );
-
-    if (
-      localFeedback.show &&
-      fieldsChanged &&
-      watchedFields.some((field) => field)
-    ) {
-      debouncedReset();
-    }
-    prevFieldsRef.current = watchedFields;
-
-    return () => debouncedReset.cancel();
-  }, [watchedFields, localFeedback.show]);
+    togglePasswordVisibility,
+    showPassword,
+    loginModal,
+    errors,
+    setLoginModal,
+  } = useLogin();
 
   return (
     <div className="px-6 md:px-8 lg:px-12 xl:px-16 flex justify-center text-sm">
@@ -209,10 +110,7 @@ const SignInPage = () => {
             </div>
 
             <div className="flex flex-col gap-1 w-full relative">
-              <label
-                htmlFor="password"
-                className="font-black"
-              >
+              <label htmlFor="password" className="font-black">
                 Password *
               </label>
 
@@ -336,8 +234,8 @@ const LoginModal = ({ open, message, setLoginModal }) => (
           Verification takes 1 to 2 business days.
         </p>
         <p className="text-sm text-gray-600">
-          We&apos;ll reach out to you via email once the process is complete — please
-          check your inbox regularly.
+          We&apos;ll reach out to you via email once the process is complete —
+          please check your inbox regularly.
         </p>
       </div>
       <div className="mt-4">
