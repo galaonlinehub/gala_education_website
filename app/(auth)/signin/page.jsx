@@ -92,7 +92,6 @@ const SignInPage = () => {
                     value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                     message: "Please enter valid email address",
                   },
-                  // onChange: handleChange,
                 })}
                 autoComplete="new-password"
                 autoCorrect="off"
