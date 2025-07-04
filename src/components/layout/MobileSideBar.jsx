@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
-import { Drawer, Avatar, Typography, Divider, Button } from "antd";
-import { useUser } from "@/src/hooks/data/useUser";
-import { Signout } from "../ui/auth/signup/Signout";
-import { img_base_url } from "@/src/config/settings";
-import { LuX, LuUser, LuLogOut, LuLoaderCircle } from "react-icons/lu";
-import { usePathname, useSearchParams } from "next/navigation";
-import { links } from "@/src/utils/data/redirect";
 import { useRouter } from "next/navigation";
+import { LuX, LuUser } from "react-icons/lu";
+import { usePathname } from "next/navigation";
+import { links } from "@/src/utils/data/redirect";
+import { useUser } from "@/src/hooks/data/useUser";
+import { img_base_url } from "@/src/config/settings";
+import { Drawer, Avatar, Typography, Divider } from "antd";
+import { Signout } from "@/src/components/ui/auth/signup/Signout";
 
 const { Text } = Typography;
 
@@ -37,10 +37,10 @@ const MobileSideBar = ({ isOpen, onClose }) => {
                 />
               </div>
               <div className="flex flex-col">
-                <Text className="text-base font-black">
+                <Text className="text-xl font-black">
                   {user?.first_name} {user?.last_name}
                 </Text>
-                <Text className="text-[10px] capitalize font-thin pl-1">
+                <Text className="text-sm capitalize font-thin pl-1">
                   {user?.role}
                 </Text>
               </div>
@@ -68,11 +68,10 @@ const MobileSideBar = ({ isOpen, onClose }) => {
                     ? "bg-[#001840] text-white"
                     : "hover:bg-blue-950/20 hover:text-black"
                 }`}
-                // onClick={() => isMobile && setIsSidebarOpen(false)}
                 onClick={onClose}
               >
-                <span className="">{item.icon}</span>
-                <span className="text-sm font-normal">{item.name}</span>
+                <span className="text-2xl">{item.icon}</span>
+                <span className="text-lg font-semibold">{item.name}</span>
               </Link>
             </li>
           ))}
@@ -83,7 +82,7 @@ const MobileSideBar = ({ isOpen, onClose }) => {
         {<Signout onCloseSidebar={onClose} />}
 
         <div className="pt-4 mt-auto">
-          <Text type="secondary" className="text-xs">
+          <Text type="secondary" className="text-sm">
             © {new Date().getFullYear()} Gala. All rights reserved.
           </Text>
         </div>
