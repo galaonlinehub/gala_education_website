@@ -123,11 +123,11 @@ const SignInPage = () => {
   }, [watchedFields, localFeedback.show]);
 
   return (
-    <div className="px-6 md:px-8 lg:px-12 xl:px-16 flex justify-center">
+    <div className="px-6 md:px-8 lg:px-12 xl:px-16 flex justify-center text-sm">
       <div className="flex flex-col items-center pt-14 gap-2 lg:gap-3 w-full max-w-xl">
-        <span className="font-black text-xs md:text-base">Sign In</span>
+        <span className="font-black">Sign In</span>
         <span className="font-black text-2xl md:text-4xl">Welcome Back</span>
-        <span className="text-xs md:text-sm font-medium text-center px-4 sm:px-8">
+        <span className="font-medium text-center px-1 sm:px-8">
           Welcome back! We&#39;re excited to see you again, let&#39;s pick up
           where you left off and continue your learning journey!
         </span>
@@ -180,7 +180,7 @@ const SignInPage = () => {
             </AnimatePresence>
 
             <div className="flex flex-col gap-1 w-full">
-              <label htmlFor="email" className="font-black text-xs lg:text-sm">
+              <label htmlFor="email" className="font-black">
                 Email *
               </label>
               <input
@@ -211,7 +211,7 @@ const SignInPage = () => {
             <div className="flex flex-col gap-1 w-full relative">
               <label
                 htmlFor="password"
-                className="font-black text-xs lg:text-sm"
+                className="font-black"
               >
                 Password *
               </label>
@@ -225,8 +225,6 @@ const SignInPage = () => {
                   onCut={preventCopyPaste}
                   {...register("password", {
                     required: "Please enter your password",
-
-                    // onChange: handleChange,
                   })}
                   autoComplete="new-password"
                   autoCorrect="off"
@@ -280,7 +278,7 @@ const SignInPage = () => {
           </motion.form>
         </motion.div>
 
-        <span className="text-xs font-semibold mt-1 md:mt-2">
+        <span className="font-semibold mt-4 md:mt-6">
           Don&#39;t have an account?{" "}
           <span
             className="text-[#030DFE] cursor-pointer"
