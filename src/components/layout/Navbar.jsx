@@ -18,7 +18,7 @@ const Navbar = () => {
     isSidebarOpen,
     getIcon,
     items,
-    handleOpenChange,
+    handleOpenChange, setIsSidebarOpen
   } = useNav();
 
   return (

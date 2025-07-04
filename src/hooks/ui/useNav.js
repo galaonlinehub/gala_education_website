@@ -146,5 +146,6 @@ export const useNav = () => {
     getIcon,
     items,
     handleOpenChange,
+    setIsSidebarOpen
   };
 };
