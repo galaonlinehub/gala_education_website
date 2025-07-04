@@ -1,10 +1,10 @@
 import { Tooltip, message } from "antd";
 import React, { useState } from "react";
-import { useUser } from "@/src/hooks/data/useUser";
-import { useDevice } from "@/src/hooks/misc/useDevice";
-import { BiWifi, BiWifiOff } from "react-icons/bi";
-import useNetwork from "@/src/hooks/misc/useNetwork";
 import { useRouter } from "next/navigation";
+import { BiWifi, BiWifiOff } from "react-icons/bi";
+import { useUser } from "@/src/hooks/data/useUser";
+import useNetwork from "@/src/hooks/misc/useNetwork";
+import { useDevice } from "@/src/hooks/misc/useDevice";
 import { NetworkMessage } from "@/src/components/ui/NetworkMessage";
 
 export const useNav = () => {
