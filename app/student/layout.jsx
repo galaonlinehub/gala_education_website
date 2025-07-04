@@ -86,7 +86,7 @@ export default function StudentLayout({ children }) {
                     <span className="text-2xl">{item.icon}</span>
                     <span
                       className={clsx(
-                        "text-sm font-black",
+                        "text-base font-bold",
                         isActive && "font-[900]"
                       )}
                     >

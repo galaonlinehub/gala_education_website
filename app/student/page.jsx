@@ -136,15 +136,6 @@ export default function Component() {
 
                           return (
                             <span className="text-black">{progress}%</span>
-                            // <Progress
-                            //   percent={progress}
-                            //   size="small"
-                            //   className="min-w-[80px]"
-                            //   strokeColor={{
-                            //     "0%": "#001840",
-                            //     "100%": "#3b82f6",
-                            //   }}
-                            // />
                           );
                         },
                       },
