@@ -18,7 +18,8 @@ const Navbar = () => {
     isSidebarOpen,
     getIcon,
     items,
-    handleOpenChange, setIsSidebarOpen
+    handleOpenChange,
+    setIsSidebarOpen,
   } = useNav();
 
   return (
@@ -32,10 +33,10 @@ const Navbar = () => {
         className={"w-16 h-16 object-cover cursor-pointer rounded-full "}
       />
 
-      <ul className="text-black flex sm:gap-x-4 gap-x-2 sm:text-[12px] text-[8px] leading-[5px] items-center justify-center font-black">
+      <ul className="text-black flex sm:gap-x-6 gap-x-4 text-[12px] xxs:text-xs md:text-sm leading-[5px] items-center justify-center font-black">
         <div className="cursor-pointer">{getIcon()}</div>
 
-        <Dropdown
+        {/* <Dropdown
           menu={{ items }}
           trigger={["click"]}
           open={open}
@@ -51,10 +52,10 @@ const Navbar = () => {
             src="/language_translate.png"
             className="w-5 h-5 object-cover bg-white/45 cursor-pointer"
           />
-        </Dropdown>
+        </Dropdown> */}
 
         <li>
-          <Link href={"/"} className="hover:cursor-pointer tex-black">
+          <Link href={"/"} className="hover:cursor-pointer text-black">
             Home
           </Link>
         </li>
@@ -66,7 +67,7 @@ const Navbar = () => {
           </li>
         )}
         <li>
-          <Link href={"/about-us"} className="hover:cursor-pointer tex-black">
+          <Link href={"/about-us"} className="hover:cursor-pointer text-black">
             About Us
           </Link>
         </li>
