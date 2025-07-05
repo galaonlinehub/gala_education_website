@@ -1,16 +1,13 @@
-import { RobotFilled } from "@ant-design/icons";
 import {
-  LuBox,
   LuLayoutDashboard,
   LuLayoutList,
-  LuListChecks,
   LuTv,
   LuUsers,
   LuClock4,
   LuBrain,
 } from "react-icons/lu";
-import { TbHexagon } from "react-icons/tb";
-import { ThreeUsers } from "../vector-svg/ThreeUsersSvg";
+import { MdOutlineDiamond } from "react-icons/md";
+
 
 export const footer_links = {
   Services: [
@@ -119,7 +116,7 @@ export const teacher_links = [
   {
     name: "Subscriptions",
     link: "subscriptions",
-    icon: <TbHexagon />,
+    icon: <MdOutlineDiamond />,
   },
   {
     name: "GalaAI",
@@ -160,7 +157,7 @@ export const student_links = [
   {
     name: "Subscriptions",
     link: "subscriptions",
-    icon: <TbHexagon />,
+    icon: <MdOutlineDiamond />,
   },
 
   {
