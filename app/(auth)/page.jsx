@@ -40,15 +40,6 @@ import SvgOne from "@/src/components/home/svg/SvgOne";
 import SvgTwo from "@/src/components/home/svg/SvgTwo";
 import SvgThree from "@/src/components/home/svg/SvgThree";
 import { BiChevronRight } from "react-icons/bi";
-import ConfettiButton from "@/src/components/ui/ConfettiAnimation";
-import { sessionStorageFn } from "@/src/utils/fns/client";
-import { decrypt, encrypt } from "@/src/utils/fns/encryption";
-import DonationPaymentModal from "@/src/components/ui/donation/DonationPaymentModal";
-import { io } from "socket.io-client";
-import {
-  useDonationListener,
-  usePaymentSocketContext,
-} from "@/src/hooks/misc/paymentSocketContext";
 import ProcessingModal from "@/src/components/ui/donation/ProcessingModal";
 
 function Home() {

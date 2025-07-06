@@ -5,7 +5,7 @@ import { USER_COOKIE_KEY } from "../../config/settings";
 import { globalOptions } from "../../config/tanstack";
 import { useRouter, usePathname } from "next/navigation";
 import { roleRedirects } from "../../utils/data/redirect";
-import { apiPost, apiPut } from "@/src/services/api/api_service";
+import { apiPost } from "@/src/services/api/api_service";
 
 export const useUser = () => {
   const router = useRouter();
@@ -39,7 +39,7 @@ export const useUser = () => {
 
   const updateProfile = useMutation({
     mutationFn: async (data) => {
-      const response = await apiPut("/update-user", data, {
+      const response = await apiPost("/update-user", data, {
         "Content-Type": "multipart/form-data",
       });
       return response.data;
