@@ -72,7 +72,6 @@ export const useEmailVerification = () => {
     const verifyMutate = useMutation({
         mutationFn: (data) => verifyOtp(data),
         onSuccess: () => {
-            setHasVerified(true);
             setTimeout(() => {
                 setActiveTab(1);
                 setOpenEmailVerificationModal(false);
@@ -80,7 +79,6 @@ export const useEmailVerification = () => {
         },
         onError: (e) => {
             console.error(e.response?.data?.message || e.message);
-            setHasVerified(false);
         }
 
     })
