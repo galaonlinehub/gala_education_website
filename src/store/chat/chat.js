@@ -1,93 +1,3 @@
-// import { create } from "zustand";
-// import { sessionStorageFn } from "@/src/utils/fns/client";
-// import { CURRENT_CHAT_KEY, PREVIEW_CHAT_KEY } from "@/src/config/settings";
-// import { decrypt, encrypt } from "@/src/utils/fns/encryption";
-
-// const useChatStore = create((set, get) => ({
-//   currentChatId: sessionStorageFn.get(CURRENT_CHAT_KEY) ?? null,
-//   previewChat: null,
-
-//   setCurrentChatId: (chatId) =>
-//     set((state) => {
-//       sessionStorageFn.set(CURRENT_CHAT_KEY, chatId);
-//       return { ...state, currentChatId: chatId };
-//     }),
-
-
-//   setPreviewChat: (chatData) => {
-//     if (chatData) {
-//       const encryptedData = encrypt({
-//         first_name: chatData.first_name,
-//         last_name: chatData.last_name,
-//         recepient_id: chatData.recepient_id,
-//       });
-//       sessionStorageFn.set(PREVIEW_CHAT_KEY, encryptedData);
-//     } else {
-//       sessionStorageFn.remove(PREVIEW_CHAT_KEY);
-//     }
-
-//     const previewChatData = chatData
-//       ? {
-//           id: "preview",
-//           title: null,
-//           participants: [
-//             {
-//               id: chatData.recepient_id,
-//               user: {
-//                 id: chatData.recepient_id,
-//                 first_name: chatData.first_name,
-//                 last_name: chatData.last_name,
-//                 profile_picture: null,
-//               },
-//             },
-//           ],
-//           created_at: new Date().toISOString(),
-//         }
-//       : null;
-
-//     set({ previewChat: previewChatData });
-//   },
-
-//   initializePreviewChat: () => {
-//     const encryptedPreview = sessionStorageFn.get(PREVIEW_CHAT_KEY);
-//     if (encryptedPreview) {
-//       const preview = decrypt(encryptedPreview);
-//       if (preview) {
-//         const previewChatData = {
-//           id: "preview",
-//           title: null,
-//           participants: [
-//             {
-//               id: preview.recepient_id,
-//               user: {
-//                 id: preview.recepient_id,
-//                 first_name: preview.first_name,
-//                 last_name: preview.last_name,
-//                 profile_picture: null,
-//               },
-//             },
-//           ],
-//           created_at: new Date().toISOString(),
-//         };
-//         set({ previewChat: previewChatData });
-//       }
-//     }
-//   },
-
-//   clearPreviewChat: () => {
-//     sessionStorageFn.remove(PREVIEW_CHAT_KEY);
-//     set({ previewChat: null });
-//   },
-// }));
-
-// export default useChatStore;
-
-
-
-
-
-
-
 // src/store/chat/chatStore.js
 import { create } from "zustand";
 import { sessionStorageFn } from "@/src/utils/fns/client";
@@ -100,7 +10,6 @@ import { MESSAGE_STATUSES } from "@/src/utils/data/message";
 import { handleNewMessage, normalizedMessages } from "@/src/utils/fns/chat";
 import { format } from "date-fns";
 import { debounce } from "lodash";
-import { useChatSocketEvents } from "@/src/hooks/chat/useChatSocketEvents";
 
 const useChatStore = create((set, get) => ({
   currentChatId: sessionStorageFn.get(CURRENT_CHAT_KEY) ?? null,
@@ -225,24 +134,22 @@ const useChatStore = create((set, get) => ({
         typeof updater === "function" ? updater(state.onlineUsers) : updater,
     })),
 
-  // Socket listeners
-  initializeSocketListeners: (namespace) => {
-    useChatSocketEvents(namespace, {
-      setOnlineUsers: get().setOnlineUsers,
-      setMessages: get().setMessages,
-      setChats: get().setChats,
-      setTypingUsers: get().setTypingUsers,
-      setMessageReceipts: get().setMessageReceipts,
-      setSidebarTyping: get().setSidebarTyping,
-      setUnreadCounts: get().setUnreadCounts,
-    });
-  },
-
   // Actions
   sendMessage: async (content, recipient_id, chat_id, user, emit, connections) => {
     if (!content.trim() || !connections?.chat?.connected) {
       if (!connections?.chat?.connected) {
         console.warn("No connection to chat namespace. Message will be queued.");
+        emit("chat", EVENTS.SEND_MESSAGE, {
+          id: new Date().toISOString(),
+          chat_id: chat_id || get().currentChatId,
+          sender_id: user?.id,
+          content,
+          type: "text",
+          sent_at: format(new Date().toISOString(), "HH:mm a").toLowerCase(),
+          sent_at_iso: new Date().toISOString(),
+          status: MESSAGE_STATUSES.SENDING,
+          statuses: [],
+        }, { priority: "high" });
       }
       return;
     }
@@ -266,11 +173,15 @@ const useChatStore = create((set, get) => ({
           const updated = [...state.chats];
           const index = updated.findIndex((c) => c.id === "preview");
           if (index !== -1) updated[index] = chat;
+          else updated.push(chat);
           return { chats: updated };
         });
 
-        const initialChat = { chatId: chat.id, startParticipants: chat.participants.map((p) => p.user?.id) };
-        const joinSuccess = await emit(EVENTS.JOIN_CHAT, initialChat);
+        const initialChat = {
+          chatId: chat.id,
+          startParticipants: chat.participants.map((p) => p.user?.id),
+        };
+        const joinSuccess = await emit("chat", EVENTS.JOIN_CHAT, initialChat, { priority: "high" });
         if (!joinSuccess) {
           console.warn("Failed to join chat, action queued.");
         }
@@ -289,10 +200,12 @@ const useChatStore = create((set, get) => ({
       };
 
       handleNewMessage(message, get().setMessages, get().setChats);
-      const sendSuccess = await emit(EVENTS.SEND_MESSAGE, message, { priority: "high" });
+      const sendSuccess = await emit("chat", EVENTS.SEND_MESSAGE, message, { priority: "high" });
       if (wasPreview) get().clearPreviewChat();
+      return sendSuccess;
     } catch (error) {
       console.error("Failed to send message:", error);
+      return false;
     }
   },
 
@@ -302,6 +215,7 @@ const useChatStore = create((set, get) => ({
       return res.data.data;
     } catch (error) {
       console.error("Failed to fetch chats:", error);
+      return [];
     }
   },
 
@@ -311,6 +225,7 @@ const useChatStore = create((set, get) => ({
       return res.data.data;
     } catch (error) {
       console.error("Failed to fetch messages:", error);
+      return [];
     }
   },
 
@@ -332,22 +247,30 @@ const useChatStore = create((set, get) => ({
     if (!get().currentChatId || get().currentChatId === "preview" || !connections?.chat?.connected) {
       if (!connections?.chat?.connected) {
         console.warn("No connection to chat namespace. Typing event will be queued.");
+        emit("chat", isTyping ? EVENTS.TYPING : EVENTS.STOP_TYPING, {
+          chat_id: get().currentChatId,
+          user_id: user?.id,
+        }, { priority: "normal" });
       }
       return;
     }
     const payload = { chat_id: get().currentChatId, user_id: user?.id };
     try {
       const success = await emit(
+        "chat",
         isTyping ? EVENTS.TYPING : EVENTS.STOP_TYPING,
-        payload
+        payload,
+        { priority: "normal" }
       );
       if (!success) {
         console.warn(
           `Failed to emit ${isTyping ? "typing" : "stop typing"} event, action queued.`
         );
       }
+      return success;
     } catch (error) {
       console.error(`Error emitting ${isTyping ? "typing" : "stop typing"} event:`, error);
+      return false;
     }
   },
 
@@ -355,6 +278,14 @@ const useChatStore = create((set, get) => ({
     if (!get().currentChatId || get().currentChatId === "preview" || !connections?.chat?.connected) {
       if (!connections?.chat?.connected) {
         console.warn("No connection to chat namespace. Read event will be queued.");
+        emit("chat", EVENTS.MESSAGE_READ, {
+          user_id: user?.id,
+          chat_id: get().currentChatId,
+          messages: unread_messages.map((m) => ({
+            message_id: m.id,
+            sender_id: m.sender_id,
+          })),
+        }, { priority: "high" });
       }
       return;
     }
@@ -367,27 +298,32 @@ const useChatStore = create((set, get) => ({
       })),
     };
     try {
-      const success = await emit(EVENTS.MESSAGE_READ, payload, { priority: "high" });
+      const success = await emit("chat", EVENTS.MESSAGE_READ, payload, { priority: "high" });
       if (!success) {
         console.warn("Failed to emit message read event, action queued.");
       }
+      return success;
     } catch (error) {
       console.error("Error emitting message read event:", error);
+      return false;
     }
   },
 
   emitSocialEvent: debounce(async (chatIds, emit, connections) => {
     if (!connections?.chat?.connected) {
       console.warn("No connection to chat namespace. Social event will be queued.");
+      emit("chat", EVENTS.SOCIAL, chatIds, { priority: "normal" });
       return;
     }
     try {
-      const success = await emit(EVENTS.SOCIAL, chatIds);
+      const success = await emit("chat", EVENTS.SOCIAL, chatIds, { priority: "normal" });
       if (!success) {
         console.warn("Failed to emit social event, action queued.");
       }
+      return success;
     } catch (error) {
       console.error("Error emitting social event:", error);
+      return false;
     }
   }, 1000),
 
@@ -406,8 +342,3 @@ const useChatStore = create((set, get) => ({
 }));
 
 export default useChatStore;
-
-// Initialize socket listeners (call this in a component or layout)
-export const initializeChatSocket = (namespace) => {
-  useChatStore.getState().initializeSocketListeners(namespace);
-};
