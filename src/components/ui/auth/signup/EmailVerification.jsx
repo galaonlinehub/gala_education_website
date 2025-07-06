@@ -80,7 +80,7 @@ const EmailVerification = () => {
           )}
           {
             (verifyMutate.isSuccess ? (
-              <div className="text-green-500 flex items-center justify-center">
+              <div className="text-green-500 flex flex-col items-center justify-center">
                 <LuCheck className="text-2xl" />
                 <span className="text-center">Email Successfully Verified!</span>
                 <span className="text-center">Hold on a moment. You&apos;ll be directed to the next stage.</span>
