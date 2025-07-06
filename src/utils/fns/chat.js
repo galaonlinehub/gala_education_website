@@ -67,8 +67,7 @@ export const handleMessageIdUpadate = (setMessages, setMessageReceipts) => {
 
 const moveChatToTop = (chatId, chats) => {
   const index = chats.findIndex((c) => c.id === chatId);
-  if (index === -1) return chats;
-
+  if (index === -1 || index === 0) return chats;
   const chat = chats[index];
   const updated = [...chats];
   updated.splice(index, 1);
@@ -96,48 +95,54 @@ export const normalizedMessages = (messages) =>
 //   setMessageReceipts
 // ) => {
 //   return ({ user_ids, message_ids, status }) => {
+//     console.log("emitted here at athe beginning")
 //     if (!Array.isArray(user_ids) || !Array.isArray(message_ids)) return;
+
+//     console.log(user_ids, message_ids, status);
+//     console.log(typeof user_ids, typeof message_ids, typeof status);
 
 //     setMessageReceipts((prev) => {
 //       const updated = { ...prev };
 
 //       for (const message_id of message_ids) {
 //         const current = updated[message_id] || {};
+
 //         for (const user_id of user_ids) {
 //           current[user_id] = status;
 //         }
+
 //         updated[message_id] = current;
 //       }
 
 //       return updated;
 //     });
 
-//     // setMessageReceipts((prev) => {
-//     //   const updated = { ...prev };
+//     setMessages((prev) => {
+//       const updated = { ...prev };
 
-//     //   message_ids?.forEach((message_id) => {
-//     //     updated[message_id] = {
-//     //       ...(updated[message_id] || {}),
-//     //       [user_id]: status,
-//     //     };
-//     //   });
-//     //   return updated;
-//     // });
+//       for (const message_id of message_ids) {
+//         const message = updated[message_id];
+//         if (!message) continue;
 
-//     setMessages((prev) =>
-//       prev.map((msg) => {
-//         const shouldUpdate = message_ids?.includes(msg.id);
-//         if (!shouldUpdate) return msg;
+//         // Remove statuses of involved user_ids
+//         const filteredStatuses =
+//           message.statuses?.filter((s) => !user_ids.includes(s.user_id)) || [];
 
-//         return {
-//           ...msg,
-//           statuses: [
-//             ...msg.statuses.filter((s) => s.user_id !== user_id),
-//             { user_id, status, message_id: msg.id },
-//           ],
+//         // Add new statuses
+//         const newStatuses = user_ids.map((user_id) => ({
+//           user_id,
+//           status,
+//           message_id,
+//         }));
+
+//         updated[message_id] = {
+//           ...message,
+//           statuses: [...filteredStatuses, ...newStatuses],
 //         };
-//       })
-//     );
+//       }
+
+//       return updated;
+//     });
 //   };
 // };
 
@@ -146,53 +151,46 @@ export const handleMessageStatusBatchUpdate = (
   setMessageReceipts
 ) => {
   return ({ user_ids, message_ids, status }) => {
-    console.log("emitted here at athe beginning")
+    console.log("emitted here at the beginning");
     if (!Array.isArray(user_ids) || !Array.isArray(message_ids)) return;
 
     console.log(user_ids, message_ids, status);
     console.log(typeof user_ids, typeof message_ids, typeof status);
 
-    setMessageReceipts((prev) => {
-      const updated = { ...prev };
+    setMessageReceipts((prevReceipts) => {
+      setMessages((prevMessages) => {
+        const updatedReceipts = { ...prevReceipts };
+        const updatedMessages = { ...prevMessages };
 
-      for (const message_id of message_ids) {
-        const current = updated[message_id] || {};
+        for (const message_id of message_ids) {
+          const currentReceipt = updatedReceipts[message_id] || {};
+          for (const user_id of user_ids) {
+            currentReceipt[user_id] = status;
+          }
+          updatedReceipts[message_id] = currentReceipt;
 
-        for (const user_id of user_ids) {
-          current[user_id] = status;
+          const message = updatedMessages[message_id];
+          if (!message) continue;
+
+          const filteredStatuses =
+            message.statuses?.filter((s) => !user_ids.includes(s.user_id)) ||
+            [];
+          const newStatuses = user_ids.map((user_id) => ({
+            user_id,
+            status,
+            message_id,
+          }));
+
+          updatedMessages[message_id] = {
+            ...message,
+            statuses: [...filteredStatuses, ...newStatuses],
+          };
         }
 
-        updated[message_id] = current;
-      }
+        return updatedMessages;
+      });
 
-      return updated;
-    });
-
-    setMessages((prev) => {
-      const updated = { ...prev };
-
-      for (const message_id of message_ids) {
-        const message = updated[message_id];
-        if (!message) continue;
-
-        // Remove statuses of involved user_ids
-        const filteredStatuses =
-          message.statuses?.filter((s) => !user_ids.includes(s.user_id)) || [];
-
-        // Add new statuses
-        const newStatuses = user_ids.map((user_id) => ({
-          user_id,
-          status,
-          message_id,
-        }));
-
-        updated[message_id] = {
-          ...message,
-          statuses: [...filteredStatuses, ...newStatuses],
-        };
-      }
-
-      return updated;
+      return updatedReceipts;
     });
   };
 };

@@ -252,7 +252,7 @@ const StudentSearch = () => {
                 allowClear={{
                   clearIcon: (
                     <CloseOutlined
-                      className="text-gray-500 hover:text-red-500 transition-colors"
+                      className="text-gray-500 hover:text-red-500 transition-colors !border-black"
                       onClick={clearSearch}
                     />
                   ),

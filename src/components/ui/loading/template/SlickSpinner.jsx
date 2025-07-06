@@ -1,5 +1,11 @@
-"use client"
-const SlickSpinner = ({ size = 20, color = "#3b82f6", strokeWidth = "6" }) => {
+"use client";
+
+const SlickSpinner = ({
+  size = 20,
+  color = "black",
+  strokeWidth = "6",
+  strokeLinecap = "square", 
+}) => {
   return (
     <div className="inline-flex items-center justify-center">
       <svg
@@ -16,18 +22,17 @@ const SlickSpinner = ({ size = 20, color = "#3b82f6", strokeWidth = "6" }) => {
           fill="none"
           stroke={color}
           strokeWidth={strokeWidth}
+          strokeLinecap={strokeLinecap} 
         />
       </svg>
 
       <style jsx>{`
-        /* 🔁 Controls how fast the spinner rotates */
         @keyframes spin-custom {
           100% {
             transform: rotate(360deg);
           }
         }
 
-        /* 🔁 Controls the stroke dash behavior */
         @keyframes dash {
           0% {
             stroke-dasharray: 1, 150;
@@ -48,7 +53,6 @@ const SlickSpinner = ({ size = 20, color = "#3b82f6", strokeWidth = "6" }) => {
         }
 
         .loader-path {
-          stroke-linecap: round;
           animation: dash 1.6s ease-in-out infinite;
         }
       `}</style>
@@ -57,4 +61,3 @@ const SlickSpinner = ({ size = 20, color = "#3b82f6", strokeWidth = "6" }) => {
 };
 
 export default SlickSpinner;
-

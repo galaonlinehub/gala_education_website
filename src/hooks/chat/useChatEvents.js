@@ -1,3 +1,5 @@
+// src/hooks/chat/useChatSocketEvents.js
+import { useEffect, useCallback, useRef } from "react";
 import { MESSAGE_STATUSES } from "@/src/utils/data/message";
 import { EVENTS } from "@/src/utils/data/events";
 import {
@@ -5,11 +7,10 @@ import {
   handleMessageStatusBatchUpdate,
   handleMessageStatusUpdate,
   handleNewMessage,
-  normalizedMessages,
 } from "@/src/utils/fns/chat";
 import { useSocketEvent } from "@/src/hooks/sockets/useSocketEvent";
-import toast from "react-hot-toast";
-
+import { showMessageToast } from "@/src/utils/fns/notification";
+import { useSound } from "../misc/useSound";
 
 export const useChatSocketEvents = (
   namespace,
@@ -23,68 +24,69 @@ export const useChatSocketEvents = (
     setUnreadCounts,
   }
 ) => {
-  useSocketEvent(namespace, EVENTS.USER_ONLINE, (user_id) => {
-    setOnlineUsers((prev) => [...new Set([...prev, user_id])]);
-  });
+  const { play } = useSound("/sounds/audio-1.wav");
+  const isInitialized = useRef(false);
+  const instanceId = useRef(Math.random().toString(36).substring(2, 9));
 
-  // useSocketEvent(namespace, EVENTS.NEW_MESSAGE, (message) => {
-  //   handleNewMessage(message, setMessages, setChats);
-  // });
-
-  useSocketEvent(namespace, EVENTS.NEW_MESSAGE, (message) => {
-  handleNewMessage(message, setMessages, setChats);
-
-  // const isOwnMessage = message.sender_id === user?.id;
-  if (true) {
-    toast.custom((t) => (
-      <div
-        className={`max-w-xs bg-white shadow-md rounded-lg p-4 text-sm transition-all ${
-          t.visible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
-        }`}
-      >
-        <p className="text-gray-800 font-semibold">
-          New message from {message.sender?.name || "Someone"}
-        </p>
-        <p className="text-gray-600 truncate">{message.content}</p>
-      </div>
-    ), {
-      position: "bottom-right",
-      duration: 5000,
-    });
-  }
-});
-
-  useSocketEvent(
-    namespace,
-    EVENTS.MESSAGE_STATUS_BATCH,
-    handleMessageStatusBatchUpdate(setMessages, setMessageReceipts)
+  const _handleMessageIdUpdate = useCallback(
+    (...args) => handleMessageIdUpadate(setMessages, setMessageReceipts)(...args),
+    [setMessages, setMessageReceipts]
   );
 
-  useSocketEvent(
-    namespace,
-    EVENTS.MESSAGE_ID_UPDATE,
-    handleMessageIdUpadate(setMessages, setMessageReceipts)
+  const handleBatchUpdate = useCallback(
+    (data) => {
+      console.log(`BATCH handled [Instance ${instanceId.current}]`, data);
+      if (Array.isArray(data)) {
+        data.forEach((batch) =>
+          handleMessageStatusBatchUpdate(setMessages, setMessageReceipts)(batch)
+        );
+      } else {
+        handleMessageStatusBatchUpdate(setMessages, setMessageReceipts)(data);
+      }
+    },
+    [setMessages, setMessageReceipts]
   );
 
-  useSocketEvent(
-    namespace,
-    EVENTS.MESSAGE_SENT,
-    handleMessageStatusUpdate(MESSAGE_STATUSES.SENT, setMessages)
+  const sentStatusHandler = useCallback(
+    (data) => {
+      console.log(`MESSAGE_SENT handled [Instance ${instanceId.current}]`, data);
+      handleMessageStatusUpdate(MESSAGE_STATUSES.SENT, setMessages)(data);
+    },
+    [setMessages]
   );
 
-  useSocketEvent(namespace, EVENTS.USER_TYPING, ({ user_id }) => {
-    setTypingUsers((prev) =>
-      prev.includes(user_id) ? prev : [...prev, user_id]
-    );
-  });
+  const handleUserOnline = useCallback(
+    (user_id) => {
+      setOnlineUsers((prev) => [...new Set([...prev, user_id])]);
+    },
+    [setOnlineUsers]
+  );
 
-  useSocketEvent(namespace, EVENTS.USER_STOP_TYPING, ({ user_id }) => {
-    setTypingUsers((prev) => prev.filter((id) => id !== user_id));
-  });
+  const handleMessage = useCallback(
+    (message) => {
+      showMessageToast(message, { onPlaySound: play });
+      handleNewMessage(message, setMessages, setChats);
+    },
+    [play, setMessages, setChats]
+  );
 
-  useSocketEvent(
-    namespace,
-    EVENTS.USER_SIDEBAR_TYPING,
+  const handleUserTyping = useCallback(
+    ({ user_id }) => {
+      setTypingUsers((prev) =>
+        prev.includes(user_id) ? prev : [...prev, user_id]
+      );
+    },
+    [setTypingUsers]
+  );
+
+  const handleUserStopTyping = useCallback(
+    ({ user_id }) => {
+      setTypingUsers((prev) => prev.filter((id) => id !== user_id));
+    },
+    [setTypingUsers]
+  );
+
+  const handleSidebarTyping = useCallback(
     ({ chat_id, user_id }) => {
       setSidebarTyping((prev) => ({
         ...prev,
@@ -92,37 +94,103 @@ export const useChatSocketEvents = (
           ? prev[chat_id]
           : [...(prev[chat_id] || []), user_id],
       }));
-    }
+    },
+    [setSidebarTyping]
   );
 
-  useSocketEvent(
-    namespace,
-    EVENTS.USER_SIDEBAR_STOP_TYPING,
+  const handleSidebarStopTyping = useCallback(
     ({ chat_id, user_id }) => {
       setSidebarTyping((prev) => ({
         ...prev,
         [chat_id]: prev[chat_id]?.filter((id) => id !== user_id) || [],
       }));
-    }
+    },
+    [setSidebarTyping]
   );
 
-  useSocketEvent(
-    namespace,
-    EVENTS.SIDEBAR_NEW_MESSAGE,
+  const handleSidebarNewMessage = useCallback(
     ({ chat_id, message, unread_count }) => {
-      setChats((p) =>
-        p.map((c) => (c.id == chat_id ? { ...c, last_message: message } : c))
+      setChats((prev) =>
+        prev.map((chat) =>
+          chat.id === chat_id ? { ...chat, last_message: message } : chat
+        )
       );
-
       setUnreadCounts((prev) => ({ ...prev, [chat_id]: unread_count }));
-    }
+    },
+    [setChats, setUnreadCounts]
   );
 
-  useSocketEvent(
-    namespace,
-    EVENTS.SIDEBAR_UNREAD_RESET,
+  const handleSidebarUnreadReset = useCallback(
     ({ chat_id, unread_count }) => {
       setUnreadCounts((prev) => ({ ...prev, [chat_id]: unread_count }));
-    }
+    },
+    [setUnreadCounts]
   );
+
+  // Register socket events at the top level
+  const cleanupUserOnline = useSocketEvent(namespace, EVENTS.USER_ONLINE, handleUserOnline);
+  const cleanupNewMessage = useSocketEvent(namespace, EVENTS.NEW_MESSAGE, handleMessage);
+  const cleanupBatchUpdate = useSocketEvent(namespace, EVENTS.MESSAGE_STATUS_BATCH, handleBatchUpdate);
+  const cleanupMessageIdUpdate = useSocketEvent(namespace, EVENTS.MESSAGE_ID_UPDATE, _handleMessageIdUpdate);
+  const cleanupMessageSent = useSocketEvent(namespace, EVENTS.MESSAGE_SENT, sentStatusHandler);
+  const cleanupUserTyping = useSocketEvent(namespace, EVENTS.USER_TYPING, handleUserTyping);
+  const cleanupUserStopTyping = useSocketEvent(namespace, EVENTS.USER_STOP_TYPING, handleUserStopTyping);
+  const cleanupSidebarTyping = useSocketEvent(namespace, EVENTS.USER_SIDEBAR_TYPING, handleSidebarTyping);
+  const cleanupSidebarStopTyping = useSocketEvent(
+    namespace,
+    EVENTS.USER_SIDEBAR_STOP_TYPING,
+    handleSidebarStopTyping
+  );
+  const cleanupSidebarNewMessage = useSocketEvent(
+    namespace,
+    EVENTS.SIDEBAR_NEW_MESSAGE,
+    handleSidebarNewMessage
+  );
+  const cleanupSidebarUnreadReset = useSocketEvent(
+    namespace,
+    EVENTS.SIDEBAR_UNREAD_RESET,
+    handleSidebarUnreadReset
+  );
+
+  useEffect(() => {
+    if (isInitialized.current) return;
+
+    const localInstanceId = instanceId.current;
+
+    console.log(
+      `Registering socket events for namespace: ${namespace} [Instance ${localInstanceId}]`
+    );
+    isInitialized.current = true;
+
+    return () => {
+      console.log(
+        `Cleaning up socket events for namespace: ${namespace} [Instance ${localInstanceId}]`
+      );
+      isInitialized.current = false;
+      cleanupUserOnline();
+      cleanupNewMessage();
+      cleanupBatchUpdate();
+      cleanupMessageIdUpdate();
+      cleanupMessageSent();
+      cleanupUserTyping();
+      cleanupUserStopTyping();
+      cleanupSidebarTyping();
+      cleanupSidebarStopTyping();
+      cleanupSidebarNewMessage();
+      cleanupSidebarUnreadReset();
+    };
+  }, [
+    namespace,
+    cleanupUserOnline,
+    cleanupNewMessage,
+    cleanupBatchUpdate,
+    cleanupMessageIdUpdate,
+    cleanupMessageSent,
+    cleanupUserTyping,
+    cleanupUserStopTyping,
+    cleanupSidebarTyping,
+    cleanupSidebarStopTyping,
+    cleanupSidebarNewMessage,
+    cleanupSidebarUnreadReset,
+  ]);
 };
