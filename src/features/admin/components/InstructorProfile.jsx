@@ -47,7 +47,14 @@ function InstructorProfile({ user }) {
     );
   };
   return (
-    <div className="flex flex-col sm:flex-row  gap-3 px-2 py-4">
+    <div className="flex flex-col  px-2 py-4">
+      <div className="flex">
+        <div className="basis-3/12 grid grid-cols-2">
+        <div className="text-blue-500 border-b-2 p-1 border-blue-500 text-center cursor-pointer">Profile</div>
+        <div className='border-b-2  border-gray-200 p-1 text-center cursor-pointer'>Attachments</div>
+        </div>
+        <div className="border-b-2 basis-9/12  border-gray-200"/>
+      </div>
       <Card className="basis-1/2" variant="borderless" title="Basic Details">
         <section className="flex flex-col justify-between gap-y-3">
           <CardContent itemKey={"Fullname"} value={user?.name} />

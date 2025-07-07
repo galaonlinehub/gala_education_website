@@ -7,13 +7,9 @@ import { getAdminUsers } from "@/src/utils/fns/admin";
 
 function Users() {
   
-    const { data, isLoading } = useQuery({
-        queryKey: ["userData"],
-        queryFn: getAdminUsers,
-    });
+    // const { data, isLoading } = use
 
-    console.log(data);
-
+  
     return (
         <div>
             {isLoading ? (

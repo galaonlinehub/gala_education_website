@@ -18,13 +18,10 @@ function AdminMain({ children }) {
   return (
     <div className="flex w-screen">
       <AdminSidebar />
-      <main className="fixed left-0 sm:left-[240px] sm:w-[calc(100vw-240px)] bg-[#ecf0fa] h-screen overflow-hidden">
+      <main className="fixed left-0 sm:left-[240px] sm:w-[calc(100vw-240px)] bg-white h-screen overflow-hidden">
         <AdminNavbar />
-        <section className="bg-[#ecf0fa] h-[calc(100vh-64px)] overflow-auto ">
+        <section className="h-[calc(100vh-64px)] overflow-auto ">
           <div className="p-4 min-h-screen">{children}</div>
-          <footer className="w-full text-[#d9d9d9] text-center py-2 bg-blue-900">
-            Galahub @2025 v1.0
-          </footer>
         </section>
       </main>
 

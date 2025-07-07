@@ -42,7 +42,7 @@ const StudentProfile = () => {
   } = useQuery({
     queryKey: ["recent-activities"],
     queryFn: async () => {
-      const response = await apiGet("/ecent-activities");
+      const response = await apiGet("/recent-activities");
       return response.data || [];
     },
     enabled: false,

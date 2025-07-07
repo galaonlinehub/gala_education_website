@@ -1,11 +1,9 @@
 "use client";
 import React, { useState } from "react";
 import { Switch } from "antd";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import InstructorProfile from "@/src/components/admin/InstructorProfile";
-import { apiGet, apiPost } from "@/src/services/api/api_service";
-import UserCard from "@/src/components/admin/UserCard";
-import { useRouter } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import { InstructorProfile, UserCard } from "@/src/features/admin";
+import { apiGet } from "@/src/services/api/api_service";
 
 function ProfileId({ params: { id } }) {
     const [active, setActive] = useState(true);
@@ -16,13 +14,10 @@ function ProfileId({ params: { id } }) {
         return data;
     };
 
-    const { data, error, isLoading } = useQuery({
+    const { data, isLoading } = useQuery({
         queryKey: ["user", id],
         queryFn: getDetails,
     });
-
-    const queryClient = useQueryClient();
-    const router = useRouter();
 
     return (
         <>
