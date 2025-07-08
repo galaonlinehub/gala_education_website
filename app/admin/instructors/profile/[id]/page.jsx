@@ -39,10 +39,15 @@ function ProfileId({ params: { id } }) {
                     <div className="flex justify-between">
                         <UserCard
                             user={{
-                                instructor_id: data?.instructor?.id,
+                                instructor_id: data?.instructor_id,
                                 name: data?.name,
                                 role: data?.role,
-                                is_verified: data?.instructor?.is_verified,
+                                is_verified: data?.is_verified,
+                                total_students:data?.student_count,
+                                total_cohorts:data?.active_cohorts,
+                                has_active_subscription:data?.has_active_subscription,
+                                subscription_type:data?.subscription_type,
+                                status:data?.status
                             }}
                         />
                     </div>

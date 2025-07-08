@@ -6,7 +6,7 @@ import { Avatar, Divider, message, Tag } from "antd";
 import React from "react";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 
-function UserCard({ user: { instructor_id, name, role, is_verified } }) {
+function UserCard({ user: { instructor_id, name, role,status, is_verified,total_cohorts,total_students,has_active_subscription,subscription_type } }) {
     const queryClient = useQueryClient();
 
     const handleVerify = async (status) => {
@@ -39,10 +39,10 @@ function UserCard({ user: { instructor_id, name, role, is_verified } }) {
                                 {role}
                             </h2>
                             <h2 className="text-indigo-500 text-xs">
-                                edu.galahub.org
+                                edu.galahub.org({is_verified})
                             </h2>
                             <div className="flex gap-x-2">
-                                {is_verified == "verified" ? (<>
+                                {is_verified !== "verified" ? (<>
                                 <button
                                     onClick={()=>handleVerify("reject")}
                                     className=" text-center  p-2 bg-red-600 text-white font-semibold rounded text-xs w-[6rem]"
@@ -66,24 +66,24 @@ function UserCard({ user: { instructor_id, name, role, is_verified } }) {
                 <div className="grid grid-cols-2">
                     <span className="text-xs font-black text-ink-heading">Status</span>
                     <div>
-                      <Tag color="green">active</Tag>
+                      <Tag color={status ?"green":"red"}>{status ? "active":"inactive"}</Tag>
                     </div>
                 </div>
                 <div className="grid grid-cols-2">
                     <span className="text-xs font-black text-ink-heading">Total cohorts</span>
-                    <span>25</span>
+                    <span>{total_cohorts}</span>
                 </div>
                 <div className="grid grid-cols-2">
                     <span className="text-xs font-black text-ink-heading">Total students</span>
-                    <span>25</span>
+                    <span>{total_students}</span>
                 </div>
                 <div className="grid grid-cols-2">
                     <span className="text-xs font-black text-ink-heading">Subscription status</span>
-                    <span>25</span>
+                    <span>{has_active_subscription ? "subscribed" : "not subscribed"}</span>
                 </div>
                 <div className="grid grid-cols-2">
                     <span className="text-xs font-black text-ink-heading">Subscription type</span>
-                    <span>25</span>
+                    <span>{subscription_type}</span>
                 </div>
                
             </div>

@@ -3,6 +3,7 @@ import { FaBook, FaNewspaper, FaPeopleRoof, FaUsers } from "react-icons/fa6";
 import { GoHome } from "react-icons/go";
 import { GrDocumentStore } from "react-icons/gr";
 import {  MdEventAvailable, MdPayment } from "react-icons/md";
+import { IoDiamond } from "react-icons/io5";
 
 export const footer_links = {
   Services: [
@@ -126,6 +127,11 @@ export const adminLinks = [
     name: "Events",
     icon: MdEventAvailable,
     link: "/admin/events",
+  },
+  {
+    name: "Subscription",
+    icon: IoDiamond,
+    link: "/admin/subscriptions",
   },
   {
     name: "Payments",

@@ -30,7 +30,7 @@ export const instructorColumns = [
         selector: (row) => row.total_students,
     },
     {
-        name: "Subscription Status",
+        name: "Verification",
         cell: (row) => (
             <Tag color={row.verified === "verified" ? "green" : row.verified === "pending" ? "orange":"red"}>
                 {row.verified}
