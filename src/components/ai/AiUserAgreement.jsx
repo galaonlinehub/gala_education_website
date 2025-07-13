@@ -86,7 +86,7 @@ const AiUserAgreement = () => {
 
                     <Paragraph>
                         <strong>Effective Date:</strong> Ongoing<br />
-                        <strong>Issued By:</strong> Gala Education Group Ltd (hereinafter &quot;Gala Education&quot;)<br />
+                        <strong>Issued By:</strong> Galahub Company Limited (hereinafter &quot;Gala Education&quot;)<br />
                         <strong>Applies To:</strong> All users of GalaAI (students, teachers, and institutional partners)<br />
                         <strong>Jurisdiction:</strong> United Republic of Tanzania
                     </Paragraph>

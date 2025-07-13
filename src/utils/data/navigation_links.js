@@ -1,3 +1,4 @@
+import AiLogo from "@/src/components/ai/AiLogo";
 import { CommentOutlined, RobotFilled } from "@ant-design/icons";
 import {
   LuBox,
@@ -174,11 +175,11 @@ export const student_links = [
     link: "ai",
     icon: <LuBrain />,
   },
-  {
-    name: "My Reviews",
-    link: "my-reviews",
-    icon: <MdOutlineInsertComment />,
-  },
+  // {
+  //   name: "My Reviews",
+  //   link: "my-reviews",
+  //   icon: <MdOutlineInsertComment />,
+  // },
   {
     name: "Library",
     link: "library",

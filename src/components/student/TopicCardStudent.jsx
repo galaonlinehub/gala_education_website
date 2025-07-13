@@ -17,59 +17,14 @@ import Link from "next/link";
 import { BsStar, BsStarFill } from "react-icons/bs";
 import { PiStarBold, PiStarFill, PiStarLight } from "react-icons/pi";
 import { apiPost } from "@/src/services/api/api_service";
-const { TextArea } = Input;
+
 
 const TopicCard = ({ details, detailsLink }) => {
-  const [passedValue, setPassedValue] = useState("");
-  const [openRatingModal, setOpenRatingModal] = useState(false);
-  const [comment, setComment] = useState('');
-
-  const [messageApi, contextHolder] = message.useMessage();
-
-  const [rateValue, setRateValue] = useState(null);
-
-  const openRatingmodal = (value) => {
-    setPassedValue(value);
-    setOpenRatingModal(true);
-  };
-
-  const closeModal = () => {
-    setOpenRatingModal(false);
-    setRateValue(null);
-    setComment('');
-  };
-
-  const handleRating = (value) => {
-    setRateValue(value);
-    console.log("Selected rating:", value);
-  };
-
-  const handleSubmitRating = async (value) => {
 
 
-    if (rateValue == null && comment == '') {
-      messageApi.info('Please provide a rating or comment!');
-      return;
-    }
-
-    const response = await apiPost('/reviews', {
-      type: value == 'Teacher' ? 'instructor' : 'cohort',
-      id: value == 'Teacher' ? details.instructor_id : details.cohort_id,
-      rating: rateValue ?? '',
-      comment: comment ?? ''
-    });
-
-    setOpenRatingModal(false);
-    setRateValue(null);
-    setComment('');
-
-    messageApi.success(response.data);
-
-  }
 
   return (
     <>
-      {contextHolder}
       <Card
         key={details.id}
         className="!overflow-hidden group cursor-pointer hover:shadow-lg transition-shadow"
@@ -147,7 +102,7 @@ const TopicCard = ({ details, detailsLink }) => {
             </Link>
           </div>
 
-          <div>
+          {/* <div>
             <div className="flex flex-wrap gap-2 justify-between mt-5 p-1.5 border rounded-xl items-center text-[#001840] font-medium">
               <Button
                 onClick={() => openRatingmodal("Class")}
@@ -162,74 +117,12 @@ const TopicCard = ({ details, detailsLink }) => {
                 Rate Teacher
               </Button>
             </div>
-          </div>
+          </div> */}
 
         </div>
 
 
-        <Modal
-          open={openRatingModal}
-          onCancel={closeModal}
-          onOk={closeModal}
-          footer={[
-            <Button key="cancel" onClick={closeModal}>
-              Cancel
-            </Button>,
-            <Button className="!bg-[#001840] !text-white" key="sbmit" onClick={() => handleSubmitRating(passedValue)}>
-              Submit
-            </Button>,
-          ]}
-        >
-          <Divider>
-            <div className="flex justify-center gap-2">
-              <span className="font-light">Rate</span>{" "}
-              {passedValue == "Teacher" ? (
-                <span className="font-bold">{details.instructor_name}</span>
-              ) : (
-                <span className="font-bold">{details.cohort_name}</span>
-              )}
-            </div>
-          </Divider>
-
-
-          <div className="flex flex-col justify-center text-center items-center">
-            {passedValue == "Teacher" ?
-              <p className="text-sm">
-                Rate this teacher fairly based on teaching effectiveness,
-                communication, and support. Share your honest thoughts to help
-                us enhance teaching quality.
-              </p> : <p className="text-sm">
-                Consider your academic growth and engagement when rating this
-                class. Rate how well this class supported your learning goals.
-              </p>}
-            <div className="w-full mt-3 flex gap-2 items-center justify-center">
-              {[1, 2, 3, 4, 5].map((star, index) => {
-                const isActive = star <= rateValue;
-                const StarIcon = isActive ? PiStarFill : PiStarLight;
-                return (
-                  <StarIcon
-                    key={index}
-                    size={40}
-                    color={isActive ? "#ffdf00" : "gray"}
-                    onClick={() => handleRating(star)}
-                    style={{ cursor: "pointer" }}
-                  />
-                );
-              })}
-            </div>
-            <div className="w-full mt-5 flex">
-              <TextArea
-                rows={4}
-                name="student_comment"
-                placeholder="Write your comment here"
-                value={comment}
-                onChange={(e) => setComment(e.target.value)}
-              />
-
-            </div>
-          </div>
-
-        </Modal>
+        
       </Card>
     </>
   );

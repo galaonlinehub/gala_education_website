@@ -282,7 +282,7 @@ export default function TeacherClasses() {
                       </div>
                       <Title level={5} className="!mb-2">Students&apos; Reviews</Title>
                       <Text type="secondary" className="text-sm">
-                        See what Students have to say about you / your class
+                        See what Students have to say about you
                       </Text>
                     </div>
                     <div className="pt-4">

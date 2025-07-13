@@ -246,15 +246,15 @@
 
 
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { GoVerified, GoBook } from "react-icons/go";
 import { FaUsers, FaStar, FaClock } from "react-icons/fa";
-import { Avatar, Badge, Card, Button, Skeleton, Tooltip } from "antd";
+import { Avatar, Badge, Card, Button, Skeleton, Tooltip, Modal, Rate, Col, Row, Typography, Divider, List, Space, Tag } from "antd";
 import { FaRegStar } from "react-icons/fa";
 import { FaRegMessage, FaRegClock } from "react-icons/fa6";
 import { GoShieldCheck } from "react-icons/go";
 import { BsGlobe } from "react-icons/bs";
-import { LuMessageSquare, LuUsers } from "react-icons/lu";
+import { LuEye, LuMessageSquare, LuUsers } from "react-icons/lu";
 import { useEnrollMe } from "@/src/store/student/useEnrollMe";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/src/hooks/data/useUser";
@@ -266,6 +266,16 @@ import useChatStore from "@/src/store/chat/chat";
 import { useChat } from "@/src/hooks/chat/useChat";
 import { TbMessage } from "react-icons/tb";
 import { useCallback } from "react";
+import { useReviews } from "@/src/hooks/data/useReviews";
+import {
+  StarFilled, UserOutlined,
+  CalendarOutlined,
+} from "@ant-design/icons";
+import { img_base_url } from '@/src/config/settings';
+
+
+
+const { Title, Text, Paragraph } = Typography;
 
 const InstructorSearchResult = ({ details }) => {
   const { setEnrollMe, setEnrollCohort } = useEnrollMe();
@@ -274,6 +284,10 @@ const InstructorSearchResult = ({ details }) => {
   const { chats } = useChat();
   const { user } = useUser();
   const router = useRouter();
+  const [openReviewsModal, setOpenReviewsModal] = useState(false);
+  const [instructorId, setInstructorId] = useState();
+
+  const { instructorReviews, instructorSummary, isInstructorSummaryPending, isInstructorReviewsPending } = useReviews(null, details.instructor_id);
 
   const handleEnroll = (idx) => {
     setEnrollMe(true);
@@ -319,9 +333,90 @@ const InstructorSearchResult = ({ details }) => {
     createPreviewChat();
   };
 
+  const closeModal = () => {
+    setOpenReviewsModal(false);
+  }
+
   useCallback(() => {
     console.log(details);
   }, [details]);
+
+
+  console.log("Reviews:", instructorReviews)
+  console.log("Summary of it:", instructorSummary)
+  console.log("Deatils", details)
+
+
+  const dummyReviews = [
+    {
+      id: 1,
+      studentName: "Sarah Johnson",
+      studentAvatar: null,
+      rating: 5,
+      subject: "Mathematics",
+      reviewText: "Excellent teacher! Makes complex concepts easy to understand. Very patient and always willing to help during office hours.",
+      date: "2024-06-15",
+
+
+    },
+    {
+      id: 2,
+      studentName: "Michael Chen",
+      studentAvatar: null,
+      rating: 4,
+      subject: "Mathematics",
+      reviewText: "Good teaching style and clear explanations. Assignments are fair and tests are reasonable. Would recommend to other students.",
+      date: "2024-06-10",
+
+
+    },
+    {
+      id: 3,
+      studentName: "Emma Rodriguez",
+      studentAvatar: null,
+      rating: 5,
+      subject: "Advanced Calculus",
+      reviewText: "One of the best professors I've had! Very knowledgeable and passionate about the subject. Creates a supportive learning environment.",
+      date: "2024-05-28",
+
+
+    },
+    {
+      id: 4,
+      studentName: "David Kim",
+      studentAvatar: null,
+      rating: 3,
+      subject: "Statistics",
+      reviewText: "Decent teacher but sometimes goes too fast through material. Office hours are helpful though.",
+      date: "2024-05-20",
+
+
+    },
+    {
+      id: 5,
+      studentName: "Jessica Martinez",
+      studentAvatar: null,
+      rating: 5,
+      subject: "Linear Algebra",
+      reviewText: "Amazing professor! Very organized, clear lectures, and fair grading. Really cares about student success.",
+      date: "2024-05-15",
+
+
+    }
+  ];
+
+  const handleViewReviews = () => {
+    setOpenReviewsModal(true);
+  }
+
+  const averageRating = dummyReviews.reduce((sum, review) => sum + review.rating, 0) / dummyReviews.length;
+
+  // Count ratings by star
+  const ratingCounts = dummyReviews.reduce((acc, review) => {
+    acc[review.rating] = (acc[review.rating] || 0) + 1;
+    return acc;
+  }, {});
+
 
   return (
     <div className="w-full max-w-full mx-auto space-y-4 sm:space-y-6 lg:space-y-8 text-xs overflow-hidden p-3 md:p-12">
@@ -334,7 +429,7 @@ const InstructorSearchResult = ({ details }) => {
             <span className="hidden xs:inline"> Students</span>
           </span>
         </div>
-        
+
         <div className="flex items-center gap-1 sm:gap-2 min-w-0 flex-shrink-0">
           <FaStar size={12} className="sm:w-4 sm:h-4 text-yellow-400 flex-shrink-0" />
           <span className="text-[10px] sm:text-xs whitespace-nowrap">
@@ -342,7 +437,7 @@ const InstructorSearchResult = ({ details }) => {
             <span className="hidden md:inline"> ({60})</span>
           </span>
         </div>
-        
+
         <div className="flex items-center gap-1 sm:gap-2 min-w-0 flex-shrink-0">
           <FaClock size={12} className="sm:w-4 sm:h-4 flex-shrink-0" />
           <span className="text-[10px] sm:text-xs whitespace-nowrap truncate">
@@ -361,7 +456,7 @@ const InstructorSearchResult = ({ details }) => {
               className="!bg-transparent/90 flex-shrink-0 !w-8 !h-8 sm:!w-10 sm:!h-10 lg:!w-12 lg:!h-12 transition-transform duration-300 hover:scale-110"
               src="https://api.dicebear.com/7.x/miniavs/svg?seed=2"
             />
-            
+
             <div className="min-w-0 flex-1 space-y-1 sm:space-y-2">
               <div className="flex flex-wrap items-center gap-1 sm:gap-2">
                 <div className="flex items-center gap-1 min-w-0">
@@ -376,13 +471,23 @@ const InstructorSearchResult = ({ details }) => {
                     }
                   />
                 </div>
-                
+
                 <Badge
                   count={
                     <div className="!text-[8px] sm:!text-[10px] !flex !justify-center !items-center !gap-1 rounded-full bg-yellow-500 !px-1 sm:!px-2 !py-1 !text-white !font-extralight whitespace-nowrap">
                       <FaRegStar size={8} className="sm:w-3 sm:h-3" />
                       <span className="hidden xs:inline">Top Rated</span>
-                      <span className="xs:hidden">Top</span>
+                      <span className="xs:hidden">Top Rated</span>
+                    </div>
+                  }
+                />
+                <Badge
+                  onClick={handleViewReviews}
+                  className="!cursor-pointer"
+                  count={
+                    <div className="!text-[8px] sm:!text-[10px] !flex !justify-center !items-center !gap-1 rounded-full bg-black !px-1 sm:!px-2 !py-1 !text-white !font-extralight whitespace-nowrap">
+                      <LuEye size={8} className="sm:w-3 sm:h-3" />
+                      <span className="xs:inline">View reviews</span>
                     </div>
                   }
                 />
@@ -438,7 +543,7 @@ const InstructorSearchResult = ({ details }) => {
                 )}
               </div>
             </div>
-            
+
             <div className="flex-shrink-0 flex justify-center sm:justify-end">
               <Tooltip title={`Chat with ${details?.name}`}>
                 <div className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-all duration-200 hover:scale-110 cursor-pointer">
@@ -453,11 +558,99 @@ const InstructorSearchResult = ({ details }) => {
         </div>
       </Card>
 
+
+      {/* Review Modal */}
+      <Modal
+        open={openReviewsModal}
+        onCancel={closeModal}
+        onOk={closeModal}
+        width={800}
+
+        title={
+          <div className="w-full flex justify-center">
+            <Title level={4} style={{ margin: 0 }}>
+              Reviews for {details?.name}
+            </Title>
+          </div>
+        }
+        footer={[
+          <Button key="cancel" onClick={closeModal}>
+            Close
+          </Button>,
+        ]}
+      >
+
+        <div className="w-full flex justify-center">
+          <Row justify="center" align="middle">
+            <Col span={24}>
+              <div style={{ textAlign: 'center' }}>
+                <Title level={2} style={{ margin: 0, color: '#faad14' }}>
+                  {Number(instructorSummary?.average_rating || 0).toFixed(1)}
+                </Title>
+
+                <Rate disabled defaultValue={instructorSummary?.average_rating} />
+                <div>
+                  <Text type="secondary">Based on {instructorReviews?.length} reviews</Text>
+                </div>
+              </div>
+            </Col>
+          </Row>
+        </div>
+
+        <Divider />
+
+        {/* Reviews List */}
+        <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
+          <List
+            itemLayout="vertical"
+            dataSource={instructorReviews}
+            renderItem={(review) => (
+              <List.Item
+                key={review.id}
+                style={{
+                  border: '1px solid #f0f0f0',
+                  borderRadius: '8px',
+                  padding: '16px',
+                  marginBottom: '12px'
+                }}
+              >
+                <List.Item.Meta
+                  avatar={<Avatar
+                    src={review.student_profile_picture && `${img_base_url + review.student_profile_picture}`}
+                    size={window.innerWidth < 640 ? 36 : 48}
+                    icon={<UserOutlined />}
+                    className="bg-gradient-to-r flex-shrink-0"
+                  />}
+                  title={
+                    <Space>
+                      <Text strong>{review.student_name}</Text>
+                    </Space>
+                  }
+                  description={
+                    <Space>
+                      <Rate disabled defaultValue={review.rating} size="small" />
+                      <Text type="secondary">
+                        <CalendarOutlined /> {review.created_at}
+                      </Text>
+                    </Space>
+                  }
+                />
+                <Paragraph style={{ marginTop: 8 }}>
+                  {review.comment}
+                </Paragraph>
+
+              </List.Item>
+            )}
+          />
+        </div>
+      </Modal>
+
+
       {/* Topics and Cohorts */}
       <div className="space-y-3 sm:space-y-4 lg:space-y-6">
         {details?.topics?.map((topic, index) => (
-          <Card 
-            key={index} 
+          <Card
+            key={index}
             className="[&_.ant-card-body]:!p-2 md:[&_.ant-card-body]:!p-4 !text-black !text-[10px] sm:!text-xs !transition-all !duration-300 hover:!shadow-lg hover:!scale-[1.01] !overflow-hidden"
           >
             {/* Topic Header */}
