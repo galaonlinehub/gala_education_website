@@ -74,7 +74,7 @@ const DashboardPieChart = () => {
       </div>
       <div className="grid grid-cols-3">
               {
-                data.map(({color,name},index)=><div className="flex gap-x-2 items-center text-xs" index={index}>
+                data.map(({color,name},index)=><div key={index} className="flex gap-x-2 items-center text-xs" index={index}>
                     <span>{name}</span>
                     <span style={{backgroundColor:color}} className="w-3 h-3 rounded-full" />
                 </div>)

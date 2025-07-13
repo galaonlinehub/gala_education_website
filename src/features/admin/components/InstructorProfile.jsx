@@ -56,6 +56,9 @@ function InstructorProfile({ user }) {
             </Card>
         );
     });
+    
+    MiniPdfViewer.displayName = 'MiniPdfViewer';
+
     return (
         <div className="flex flex-col  px-2 py-4 gap-y-4">
             <div className="flex">
