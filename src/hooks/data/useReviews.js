@@ -3,18 +3,18 @@ import { globalOptions } from "../../config/tanstack";
 import { apiGet, apiPut } from "../../services/api/api_service";
 import { useUser } from "./useUser";
 
-export const useReviews = (cohortId) => {
+export const useReviews = (cohortId, instructorId) => {
     const { user } = useUser();
 
     const getInstructorReviews = async () => {
-        if (!user?.instructor_id) {
-            return null;
-        }
 
+        console.log("here is insturctor id:", instructorId);
         try {
-            const response = await apiGet(`/reviews/instructor/${user?.instructor_id}`);
+            const id = user?.instructor_id ?? instructorId;
+            const response = await apiGet(`/reviews/instructor/${id}`);
+
             if (response.status === 200) {
-                return response.data.data;
+                return response.data;
             }
             return null;
         } catch (error) {
@@ -22,6 +22,7 @@ export const useReviews = (cohortId) => {
             throw error;
         }
     };
+
 
     const getCohortReviewsSummary = async () => {
         try {
@@ -37,12 +38,11 @@ export const useReviews = (cohortId) => {
     };
 
     const getInstructorReviewsSummary = async () => {
-        if (!user?.instructor_id) {
-            return null;
-        }
 
         try {
-            const response = await apiGet(`/reviews/instructor/${user?.instructor_id}/summary`);
+            const id = user.instructor_id ?? instructorId;
+            const response = await apiGet(`/reviews/instructor/${id}/summary`);
+
             if (response.status === 200) {
                 return response.data;
             }
@@ -52,6 +52,7 @@ export const useReviews = (cohortId) => {
             throw error;
         }
     };
+
 
     const getCohortReviews = async () => {
         try {
@@ -66,17 +67,20 @@ export const useReviews = (cohortId) => {
         }
     };
 
+    const id = user?.instructor_id ?? instructorId;
+
     const instructorReviewsQuery = useQuery({
-        queryKey: ["instructor-reviews", user?.instructor_id],
+        queryKey: ["instructor-reviews", id],
         queryFn: getInstructorReviews,
-        enabled: !!user?.instructor_id,
+        enabled: !!id,
         ...globalOptions,
     });
 
+
     const instructorReviewsQuerySummary = useQuery({
-        queryKey: ["instructor-summary", user?.instructor_id],
+        queryKey: ["instructor-summary",id],
         queryFn: getInstructorReviewsSummary,
-        enabled: !!user?.instructor_id,
+        enabled: !!id,
         ...globalOptions,
     });
 

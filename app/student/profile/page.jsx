@@ -169,7 +169,7 @@ const StudentProfile = () => {
                   >
                     <div className="flex items-center">
                       <h1 className="text-2xl md:text-3xl font-bold text-black capitalize">
-                        {user?.first_name} {user?.last_name}
+                        {user?.name}
                       </h1>
                       <LuPencil
                         className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer text-blue-500"
@@ -186,7 +186,7 @@ const StudentProfile = () => {
                   form={formName}
                   onFinish={handleNameSave}
                   initialValues={{
-                    name: `${user?.first_name} ${user?.last_name}`,
+                    name: `${user?.name}`,
                   }}
                 >
                   <Form.Item name="name" className="mb-1">
