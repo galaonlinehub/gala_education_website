@@ -10,11 +10,13 @@ import React,{useState} from "react";
 
 function PartnerSchools() {
     const [page, setPage] = useState(1);
+    const [search, setSearch] = useState("");
 
     const { data, isLoading, isFetching, error } = usePaginationQuery(
         "partnerSchools",
-        getPartnerSchools,
-        page
+        ()=>getPartnerSchools(page,search),
+        page,
+        search
     );
 
     console.log("We are in here and the data is ",error);

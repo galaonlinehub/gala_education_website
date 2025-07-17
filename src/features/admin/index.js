@@ -3,6 +3,7 @@ export * from './api/users.api'
 export * from './hooks/useUsers.hooks'
 export * from './hooks/useSpecialPassInstructor.hooks'
 export * from './hooks/usePaginationQuery.hooks'
+export * from './hooks/useCreatePartnerSchool.hooks'
 export * from './styles'
 export * from './columns/student.columns'
 export * from './columns/partnerSchools.columns'
@@ -17,6 +18,7 @@ export {default as DashboardCard} from './components/DashboardCard';
 export {default as DashboardPieChart} from './components/DashboardPieChart';
 export {default as DashboardLineChart} from './components/DashboardLineChart';
 export {default as InstructorProfile} from './components/InstructorProfile';
+export {default as PartnerSchoolSelect} from './components/PartnerSchoolSelect';
 export {default as PdfViewer} from './components/PdfViewer';
 export {default as RecentCustomers} from './components/RecentCustomers';
 export {default as StudentProfile} from './components/StudentProfile';

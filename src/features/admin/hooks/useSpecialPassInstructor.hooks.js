@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { message } from "antd";
 import { LuCircleCheckBig } from "react-icons/lu";
+import { useRouter } from "next/navigation";
 
 export const useSpecialPassInstructor = () => {
   const [emailExists, setEmailExists] = useState(false);
@@ -14,6 +15,7 @@ export const useSpecialPassInstructor = () => {
     oLevelCertificate: [],
     aLevelCertificate: [],
   });
+  const router = useRouter()
 
 
   const mutation = useMutation({
@@ -25,6 +27,8 @@ export const useSpecialPassInstructor = () => {
         content: "Account created successfully!",
         icon: <LuCircleCheckBig size={20} className="text-[#52c41a] !mx-1" />,
       });
+      router.push('/admin/instructors/');
+
     },
     onError: (error) => {
       const errorMessage =
@@ -73,7 +77,8 @@ export const useSpecialPassInstructor = () => {
       headers: {
         "Content-Type":  "multipart/form-data"
       },
-    });
+    }
+  );
     console.timeEnd("signup");
   };
 

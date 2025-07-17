@@ -2,66 +2,42 @@
 import { Button, Form, Typography, Input, message, Modal, Upload } from "antd";
 import React, { useState } from "react";
 import { FaImage } from "react-icons/fa6";
-import { LuUpload } from "react-icons/lu";
-
+import { useCreatePartnerSchool } from "@/src/features/admin";
 
 const { Text } = Typography;
 
 function CreatePartnerSchool() {
-    const [openModal, setOpenModal] = useState(false);
     const [form] = Form.useForm();
-    const [fileList, setFileList] = useState([]);
+    const {
+        handleOnFinish,
+        openModal,
+        handleOpen,
+        handleClose,
+        beforeUpload,
+        handleFileChange,
+        fileList,
+    } = useCreatePartnerSchool();
 
-    const handleClose = () => {
-        setOpenModal(false);
-    };
+    const onFinish = (data) => {
+        const formData = new FormData();
+        formData.append("name", data.name);
+        formData.append("email", data.email);
+        formData.append("phone_number", data.phone_number);
 
-    const handleOpen = () => {
-        setOpenModal(true);
-    };
-
-    const beforeUpload = (file) => {
-        const isImage = ["image/jpeg", "image/jpg", "image/png"].includes(
-            file.type
-        );
-        const isValidSize = file.size / 1024 / 1024 < 2;
-
-        if (!isImage) {
-            message.error("Only valid picture is allowed");
-            return Upload.LIST_IGNORE;
-        }
-
-        if (!isValidSize) {
-            message.error("Picture must be smaller than 2MB");
-            return Upload.LIST_IGNORE;
-        }
-
-        return true;
-    };
-
-    const handleFileChange = ({ fileList }, type) => {
-        const validFiles = fileList.filter((file) => {
-            const isImage = ["image/jpeg", "image/jpg", "image/png"].includes(
-                file.type
+        if (fileList.school_logo && fileList.school_logo.length > 0) {
+            formData.append(
+                "school_logo",
+                fileList.school_logo[0].originFileObj
             );
-            const isNotError = file.status !== "error";
-            const isUnder2MB = file.size && file.size / 1024 / 1024 < 2;
+        }
 
-            return isImage && isNotError && isUnder2MB;
-        });
-
-        setFileList((prev) => ({
-            ...prev,
-            [type]: validFiles,
-        }));
+        handleOnFinish(formData);
     };
-
-    const onFinish = () => {};
 
     const uploadButton = (text, miniText) => (
         <div className="flex flex-col gap-1">
             <Button
-                icon={<LuUpload />}
+                icon={<FaImage />}
                 className="!w-full !bg-[#001840] hover:!opacity-90 !text-white !h-input-height !flex !items-center !justify-center !text-xs !outline-none focus:!outline-none hover:!outline-none hover:!border-transparent hover:!box-shadow-none"
             >
                 {text}
@@ -100,11 +76,11 @@ function CreatePartnerSchool() {
                     form={form}
                     onFinish={onFinish}
                     onFieldsChange={() => {
-                        mutation.reset();
+                        // mutation.reset();
                     }}
                     className="flex flex-col lg:flex-row items-center justify-center gap-3 lg:gap-6 !w-full"
                 >
-                    <div className="w-full lg:w-6/12 flex flex-col">
+                    <div className="w-full  flex flex-col">
                         <Form.Item
                             name="name"
                             rules={[
@@ -135,7 +111,7 @@ function CreatePartnerSchool() {
                         </Form.Item>
 
                         <Form.Item
-                            name="Phonenumber"
+                            name="phone_number"
                             rules={[
                                 {
                                     required: true,
@@ -149,9 +125,12 @@ function CreatePartnerSchool() {
                             />
                         </Form.Item>
                         <Form.Item
-                            name="school_photo"
+                            name="school_logo"
                             rules={[
-                                { required: true, message: "CV is required" },
+                                {
+                                    required: true,
+                                    message: "School Logo is required",
+                                },
                             ]}
                             className="!w-full"
                         >
@@ -159,36 +138,36 @@ function CreatePartnerSchool() {
                                 accept=".jpg,.jpeg,.png"
                                 listType="picture"
                                 beforeUpload={beforeUpload}
-                                onChange={(info) =>
-                                    handleFileChange(info, "school_photo")
-                                }
-                                fileList={fileList.cv}
+                                onChange={handleFileChange}
+                                fileList={fileList.school_logo}
                                 maxCount={1}
                             >
-                                {uploadButton("Upload School", "")}
+                                {uploadButton("Upload School Logo", "")}
                             </Upload>
                         </Form.Item>
-                    <Form.Item className="w-full lg:w-2/12">
-                        <Button
-                            // disabled={
-                            //     mutation.isPending ||
-                            //     !isAgreementChecked ||
-                            //     mutation.isSuccess ||
-                            //     mutation.isError
-                            // }
-                            type="primary"
-                            htmlType="submit"
-                            className={
-                                "!flex !items-center !justify-center !w-full !font-normal !py-4 !text-white !border-transparent disabled:!cursor-not-allowed disabled:!opacity-70 !bg-[#010798] hover:!opacity-80"
-                            }
-                        >
-                            {/* {mutation.isPending ? (
+                        <Form.Item className="w-full">
+                            <Button
+                                // disabled={
+                                //     mutation.isPending ||
+                                //     !isAgreementChecked ||
+                                //     mutation.isSuccess ||
+                                //     mutation.isError
+                                // }
+                                type="primary"
+                                htmlType="submit"
+                                className={
+                                    "!flex !items-center !justify-center !w-full !font-normal !py-4 px-2 !text-white !border-transparent disabled:!cursor-not-allowed disabled:!opacity-70 !bg-[#010798] hover:!opacity-80"
+                                }
+                            >
+                                {/* {mutation.isPending ? (
                                 <SlickSpinner size={14} color="white" />
                             ) : ( */}
-                            <span className="font-semibold">Apply</span>
-                            {/* // )} */}
-                        </Button>
-                    </Form.Item>
+                                <div className="font-semibold w-full">
+                                    Create
+                                </div>
+                                {/* // )} */}
+                            </Button>
+                        </Form.Item>
                     </div>
                 </Form>
             </Modal>

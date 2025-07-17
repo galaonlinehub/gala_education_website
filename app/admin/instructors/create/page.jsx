@@ -24,7 +24,10 @@ import clsx from "clsx";
 import { LuUpload } from "react-icons/lu";
 import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
 import { IoChevronDownCircleOutline } from "react-icons/io5";
-import { useSpecialPassInstructor } from "@/src/features/admin";
+import {
+    PartnerSchoolSelect,
+    useSpecialPassInstructor,
+} from "@/src/features/admin";
 
 const { Text } = Typography;
 
@@ -33,7 +36,6 @@ const CreateSpecialPassInstructor = () => {
     const router = useRouter();
 
     const {
-        
         onFinish,
         emailExists,
         setEmailExists,
@@ -249,7 +251,7 @@ const CreateSpecialPassInstructor = () => {
                             ]}
                         >
                             <Select
-                                suffixIcon={<IoChevronDownCircleOutline/>}
+                                suffixIcon={<IoChevronDownCircleOutline />}
                                 options={[
                                     {
                                         value: "special_pass",
@@ -272,7 +274,7 @@ const CreateSpecialPassInstructor = () => {
                             ]}
                         >
                             <Select
-                                suffixIcon={<IoChevronDownCircleOutline/>}
+                                suffixIcon={<IoChevronDownCircleOutline />}
                                 options={[
                                     { value: 7, label: "One week" },
                                     { value: 30, label: "One Month" },
@@ -283,21 +285,20 @@ const CreateSpecialPassInstructor = () => {
                                 placeholder={"User Pass Duration"}
                             />
                         </Form.Item>
-                        <Form.Item name="partner_school">
-                            <Select
-                                suffixIcon={<IoChevronDownCircleOutline/>}
-                                options={[
-                                    { value: null, label: "None" },
-                                    { value: 1, label: "Ilboru High School" },
-                                    { value: 2, label: "Ahmes Boys" },
-                                    {
-                                        value: 3,
-                                        label: "Feza Boys High School",
-                                    },
-                                ]}
-                                className="!h-[42px]"
-                                placeholder={"Partner School"}
-                            />
+                        <Form.Item
+                            name="partner_school"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "Please select a partner school",
+                                },
+                            ]}
+                            getValueFromEvent={(val) => {
+                                console.log("📦 Raw event from Select:", val);
+                                return val; // or val?.value if you want just the ID
+                            }}
+                        >
+                            <PartnerSchoolSelect />
                         </Form.Item>
                         <Form.Item initialValue="instructor" name="role" hidden>
                             <Input type="hidden" />
@@ -406,7 +407,7 @@ const CreateSpecialPassInstructor = () => {
                             {mutation.isPending ? (
                                 <SlickSpinner size={14} color="white" />
                             ) : (
-                                <span className="font-semibold">Apply</span>
+                                <span className="font-semibold">Create</span>
                             )}
                         </Button>
                     </Form.Item>

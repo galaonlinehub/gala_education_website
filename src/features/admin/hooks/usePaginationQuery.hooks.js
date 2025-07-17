@@ -4,11 +4,13 @@ export const usePaginationQuery = (
   key,
   queryFn,
   page,
-  additionalParams
+  additionalParams = {}
 ) => {
+  const queryParams = { page, ...additionalParams };
+
   return useQuery({
-    queryKey: [key, page, additionalParams],
-    queryFn: () => queryFn({ page, ...additionalParams }),
+    queryKey: [key, queryParams], 
+    queryFn: () => queryFn(queryParams),
     placeholderData: keepPreviousData,
   });
 };
