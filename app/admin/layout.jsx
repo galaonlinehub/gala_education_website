@@ -1,4 +1,4 @@
-import AdminMain from "@/src/components/admin/AdminMain";
+import {AdminMain} from "@/src/features/admin";
 
 export default function AdminLayout({ children }) {
   return (

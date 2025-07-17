@@ -229,7 +229,7 @@ const MobilePay = () => {
       };
 
       try {
-        const response = await apiPost("join_cohort", data);
+        const response = await apiPost("join-cohort", data);
         return response.data;
       } catch (error) {
         console.error("API call failed:", error);
