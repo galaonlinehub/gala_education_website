@@ -22,7 +22,7 @@ function AdminPage() {
             </div>
 
             {/* cards */}
-            <div className="grid sm:grid-cols-3 gap-6 ">
+            <div className="grid sm:grid-cols-3 sm:gap-6 gap-2">
                 <DashboardCard
                     title={"Students"}
                     bg={"bg-purple-300/20 text-purple-500"}
@@ -44,7 +44,7 @@ function AdminPage() {
                     icon={MdOutlineClass}
                 />
             </div>
-            <div className="grid grid-cols-3 gap-x-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 md:gap-x-4">
                 <DashboardLineChart />
                 <DashboardPieChart />
             </div>

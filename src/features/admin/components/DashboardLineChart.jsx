@@ -31,13 +31,13 @@ const DashboardLineChart = () => {
   return (
     <div className="w-full max-w-4xl mx-auto p-6 rounded shadow relative col-span-2">
       <div className="flex items-center justify-between mb-8">
-        <h2 className="text-base font-semibold text-gray-800">Revenue Summary</h2>
+        <h2 className="text-base font-semibold text-gray-800 hidden sm:block">Revenue Summary</h2>
         <div className="flex gap-2">
           {Object.keys(streamColors).map((stream) => (
             <button
               key={stream}
               onClick={() => setActiveStream(stream)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+              className={`sm:px-4 sm:py-2 px-2 py-1 rounded-full text-xs sm:text-sm font-medium transition-all ${
                 activeStream === stream
                   ? 'text-white shadow-md'
                   : 'text-gray-600 bg-gray-100 hover:bg-gray-200'
