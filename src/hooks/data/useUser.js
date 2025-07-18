@@ -1,11 +1,11 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getUser } from "../../utils/fns/global";
 import { cookieFn } from "../../utils/fns/client";
-import { USER_COOKIE_KEY } from "../../config/settings";
 import { globalOptions } from "../../config/tanstack";
+import { USER_COOKIE_KEY } from "../../config/settings";
 import { useRouter, usePathname } from "next/navigation";
 import { roleRedirects } from "../../utils/data/redirect";
 import { apiPost, apiPut } from "@/src/services/api/api_service";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const useUser = () => {
   const router = useRouter();

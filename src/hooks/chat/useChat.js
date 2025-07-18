@@ -1,7 +1,6 @@
 // src/hooks/chat/useChat.js
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useUser } from "../data/useUser";
-import { apiGet, apiDelete } from "@/src/services/api/api_service";
 import { message } from "antd";
 import { useSocketEmit } from "../sockets/useSocketEmit";
 import { useEffect, useMemo } from "react";
@@ -126,7 +125,7 @@ export const useChat = () => {
     const interval = setInterval(() => {
       const metrics = getMetrics();
       console.log("Socket Metrics:", metrics);
-    }, 5000); // Log every 5 seconds
+    }, 5000); 
     return () => clearInterval(interval);
   }, []);
 

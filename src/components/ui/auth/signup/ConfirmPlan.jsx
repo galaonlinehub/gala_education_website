@@ -11,6 +11,7 @@ import { usePathname } from "next/navigation";
 import { LuCircleCheckBig } from "react-icons/lu";
 import SlickSpinner from "../../loading/template/SlickSpinner";
 import { Contact } from "@/src/components/layout/Contact";
+import Link from "next/link";
 
 const { Text } = Typography;
 
@@ -48,7 +49,15 @@ const ConfirmPlan = () => {
           <SlickSpinner color="#030DFE" />
         </div>
       ) : plans ? (
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-center mt-4 md:mt-8">
+          {accountType === "student" && (
+            <Link href={"/signin"} className="w-fit">
+              {" "}
+              <button className="rounded-full py-3 px-8 bg-[#010798] text-white my-6 cursor-pointer hover:scale-105 transition-transform ease-in-out duration-500 hover:bg-[#010798]/90">
+                Try Free Version
+              </button>
+            </Link>
+          )}
           <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 justify-center items-center">
             {plans.map((plan) => (
               <div

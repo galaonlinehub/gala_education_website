@@ -121,7 +121,6 @@ const NetworkMonitor = () => {
         });
 
         const latency = Date.now() - startTime;
-        console.log(latency, "this is latency");
         const newQuality =
           latency < 700 ? "good" : latency < 800 ? "moderate" : "weak";
         if (newQuality !== previousStatus.connectionQuality) {
