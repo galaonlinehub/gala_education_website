@@ -39,7 +39,7 @@ export const useUser = () => {
 
   const updateProfile = useMutation({
     mutationFn: async (data) => {
-      const response = await apiPut("/update-user", data, {
+      const response = await apiPost("/update-user", data, {
         "Content-Type": "multipart/form-data",
       });
       return response.data;

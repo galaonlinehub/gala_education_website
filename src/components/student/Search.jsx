@@ -5,13 +5,14 @@ import { useRouter } from "next/navigation";
 import Updates from "../ui/notification/Updates";
 import { CloseOutlined } from "@ant-design/icons";
 import { useUser } from "@/src/hooks/data/useUser";
-import { Input, Empty, Tooltip, Avatar } from "antd";
+import { Input, Empty, Tooltip, Avatar, Button } from "antd";
 import { img_base_url } from "@/src/config/settings";
 import { useSearch } from "@/src/hooks/data/useSearch";
 import { AnimatePresence, motion } from "framer-motion";
 import SlickSpinner from "../ui/loading/template/SlickSpinner";
 import { FaChalkboardTeacher, FaBookReader } from "react-icons/fa";
 import { LuBell, LuChevronRight, LuCircleUser, LuUser } from "react-icons/lu";
+import { useSubscribeStore } from "@/src/store/subscribeStore";
 
 const SearchResultCard = ({ data, onClick }) => {
   const { topics, teachers } = data;
@@ -234,6 +235,8 @@ const StudentSearch = () => {
   const router = useRouter();
   const { user } = useUser();
 
+  const { setSubscribeOpen } = useSubscribeStore();
+
   return (
     <div
       ref={searchContainerRef}
@@ -302,7 +305,10 @@ const StudentSearch = () => {
               </AnimatePresence>
             </div>
           ) : (
-            <Clock />
+            <>
+              <Clock /> {(user?.has_free_trial && !user?.has_active_subscription) && <Button onClick={() => setSubscribeOpen(true)} variant="solid" type="primary" className="!rounded-full !bg-black !text-white sm:hidden !font-semibold !text-xs hover:!bg-gray-700 !py-2">Subscribe now</Button>}
+
+            </>
           )}
           <div className="md:flex items-center justify-center gap-8 hidden">
             {user?.role === "student" && <Clock />}

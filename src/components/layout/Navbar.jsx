@@ -1,6 +1,6 @@
 "use client";
 
-import { Tooltip, message, Dropdown, Menu } from "antd";
+import { Tooltip, message, Dropdown, Menu, Button } from "antd";
 import Link from "next/link";
 import Image from "next/image";
 import React, { useState } from "react";
@@ -14,6 +14,8 @@ import { BiWifi, BiWifiOff } from "react-icons/bi";
 import useNetwork from "@/src/hooks/misc/useNetwork";
 import { LuGlobe, LuMenu } from "react-icons/lu";
 import { useRouter } from "next/navigation";
+import Subscribe from "../Pay/Subscribe";
+import { useSubscribeStore } from "@/src/store/subscribeStore";
 
 const Navbar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -21,6 +23,8 @@ const Navbar = () => {
   const { width } = useDevice();
   const { isOnline, connectionQuality } = useNetwork();
   const router = useRouter();
+
+  const { setSubscribeOpen } = useSubscribeStore();
 
   const [showLanguage, setShowLanguage] = useState(false);
   const [language, setLanguage] = useState("english");
@@ -48,7 +52,7 @@ const Navbar = () => {
           English
         </div>
       ),
-      onClick: () => {},
+      onClick: () => { },
     },
     {
       key: "2",
@@ -57,7 +61,7 @@ const Navbar = () => {
           Swahili
         </div>
       ),
-      onClick: () => {},
+      onClick: () => { },
       disabled: true,
     },
   ];
@@ -81,6 +85,10 @@ const Navbar = () => {
       setOpen(newOpen);
     }
   };
+
+  const toggleDrawer = () => {
+    setDrawerOpen(prev => !prev);
+  }
 
   const getIcon = () => {
     if (!isOnline) {
@@ -158,6 +166,16 @@ const Navbar = () => {
       />
 
       <ul className="text-black flex sm:gap-x-4 gap-x-2 sm:text-[12px] text-[8px] leading-[5px] items-center justify-center font-black">
+        {user?.has_free_trial && !user?.has_active_subscription && (
+          <Button
+            onClick={() => setSubscribeOpen(true)}
+            variant="solid"
+            type="primary"
+            className="!rounded-full !bg-[#001840] !text-white hidden sm:block !font-semibold !text-xs hover:!bg-gray-700 !py-2"
+          >
+            Subscribe now
+          </Button>
+        )}
         <div className="cursor-pointer">{getIcon()}</div>
 
         <Dropdown
@@ -168,14 +186,14 @@ const Navbar = () => {
           overlayClassName="rounded-md shadow-lg border border-gray-100"
           arrow={true}
           placement="bottom"
-          // dropdownRender={(menu) => (
-          //   <div>
-          //     <div className="text-xs font-light text-black px-4 py-2">
-          //       Choose language
-          //     </div>
-          //     {menu}
-          //   </div>
-          // )}
+        // dropdownRender={(menu) => (
+        //   <div>
+        //     <div className="text-xs font-light text-black px-4 py-2">
+        //       Choose language
+        //     </div>
+        //     {menu}
+        //   </div>
+        // )}
         >
           <Image
             width={200}
@@ -206,7 +224,7 @@ const Navbar = () => {
         {!user && (
           <div
             className="flex gap-3 items-center justify-center"
-            onClick={() => {}}
+            onClick={() => { }}
           >
             <ChooseAccont
               btnText={"Sign Up"}
@@ -236,6 +254,7 @@ const Navbar = () => {
           onClose={() => setIsSidebarOpen(false)}
         />
       )}
+      {/* <Subscribe openDrawer={drawerOpen} /> */}
     </nav>
   );
 };
