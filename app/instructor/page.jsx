@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 
-import { Layout, Card, Typography, Space, Modal, Form, Input, Button, Row, Col, Select, Statistic, Avatar, Tag, Table, Upload, message, Skeleton, Flex, Empty, Badge, Divider } from "antd";
+import { Layout, Card, Typography, Space, Modal, Form, Input, Button, Row, Col, Select, Statistic, Avatar, Tag, Table, Upload, message, Skeleton, Flex, Empty, Badge, Divider, Tooltip } from "antd";
 import { UserOutlined, CameraOutlined, BookOutlined, ClockCircleOutlined, CalendarOutlined, TeamOutlined, PlusOutlined, LoadingOutlined, RightOutlined, TrophyOutlined, FireOutlined } from "@ant-design/icons";
 
 import Image from "next/image";
@@ -42,6 +42,8 @@ export default function TeacherClasses() {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
 
   const { cohorts } = useCohort();
+
+  const hasFreeTrail = user?.has_free_trial;
 
   const inputRefs = useRef([]);
 
@@ -258,13 +260,16 @@ export default function TeacherClasses() {
                       </Text>
                     </div>
                     <div className="pt-4">
-                      <Button
-                        type="default"
-                        className="w-full border-green-400 hover:bg-green-700"
-                        onClick={handleAddNew}
-                      >
-                        Add New Class
-                      </Button>
+                      <Tooltip title={hasFreeTrail ? 'This is only available in Premium' : ''} >
+                        <Button
+                          disabled={hasFreeTrail}
+                          type="default"
+                          className={`${hasFreeTrail ? '!text-black hover:!text-black hover:bg-green-300' : ''} w-full border-green-400 hover:bg-green-700`}
+                          onClick={handleAddNew}
+                        >
+                          Add New Class
+                        </Button>
+                      </Tooltip>
                     </div>
                   </div>
                 </Card>
@@ -286,13 +291,16 @@ export default function TeacherClasses() {
                       </Text>
                     </div>
                     <div className="pt-4">
-                      <Button
-                        type="default"
-                        className="w-full border-orange-300 text-orange-600 hover:border-orange-400"
-                        onClick={() => router.push(`/${user?.role}/reviews`)}
-                      >
-                        View Reviews
-                      </Button>
+                      <Tooltip title={hasFreeTrail ? 'This is only available in Premium' : ''} >
+                        <Button
+                          type="default"
+                          disabled={hasFreeTrail}
+                          className={`${hasFreeTrail ? '!text-black hover:!text-black hover:bg-orange-300' : ''} w-full border-orange-300 text-orange-600 hover:border-orange-400`}
+                          onClick={() => router.push(`/${user?.role}/reviews`)}
+                        >
+                          View Reviews
+                        </Button>
+                      </Tooltip>
                     </div>
                   </div>
                 </Card>
@@ -415,14 +423,17 @@ export default function TeacherClasses() {
                           <Title level={5} type="secondary">No classes yet</Title>
                           <Text type="secondary">Create your first class to get started</Text>
                           <br />
-                          <Button
-                            type="primary"
-                            icon={<PlusOutlined />}
-                            onClick={handleAddNew}
-                            className="mt-4 bg-blue-600 border-blue-600"
-                          >
-                            Create Your First Class
-                          </Button>
+                          <Tooltip title={hasFreeTrail ? 'This is only available in Premium' : ''} >
+                            <Button
+                              type="primary"
+                              disabled={hasFreeTrail}
+                              icon={<PlusOutlined />}
+                              onClick={handleAddNew}
+                              className="mt-4 bg-blue-600 border-blue-600"
+                            >
+                              Create Your First Class
+                            </Button>
+                          </Tooltip>
                         </div>
                       }
                       image={Empty.PRESENTED_IMAGE_SIMPLE}
@@ -481,7 +492,7 @@ export default function TeacherClasses() {
             </div>
           </Modal>
         </Content>
-      </Layout>
+      </Layout >
 
       <ClassCreationWizard openAddNewClass={openAddNewClass} setOpenAddNewClass={setOpenAddNewClass} />
 
