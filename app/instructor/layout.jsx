@@ -7,7 +7,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Navbar from "@/src/components/layout/Navbar";
 import { FloatingActionButton } from "@/src/components/ui/Fab";
-import useInstallPrompt from "@/src/hooks/useInstallPrompt";
+import useInstallPrompt from "@/src/hooks/misc/useInstallPrompt";
 import RightTiltedBook from "@/src/utils/vector-svg/vectors/CombinedBlock";
 import KidInPicture from "@/src/utils/vector-svg/vectors/KidInPicture";
 import Clock from "@/src/utils/vector-svg/vectors/Clock";
@@ -18,10 +18,13 @@ import StudentSearch from "@/src/components/student/Search";
 import InstructorCompleteProfile from "@/src/components/teacher/InstructorCompleteProfile";
 import StickyNotification from "@/src/components/ui/notification/StickyNotification";
 import { useStickyNotification } from "@/src/store/notification/notification";
+import { useUser } from "@/src/hooks/data/useUser";
+import { Tooltip } from "antd";
 
 export default function TeacherLayout({ children }) {
   const pathname = usePathname();
   const { installPrompt, isInstalled, handleInstallClick } = useInstallPrompt();
+  const { user } = useUser()
 
   const notificationOpen = useStickyNotification(
     (state) => state.notificationOpen
@@ -56,37 +59,46 @@ export default function TeacherLayout({ children }) {
         </div>
 
         {/* Sidebar */}
-        <aside
-          className={
-            "hidden md:block sticky top-[90px] left-0 w-[24vw] lg:w-[16vw] h-[calc(100vh-80px)] border-r border-[#d9d9d9] p-4 overflow-y-auto"
-          }
+     <aside
+  className="hidden md:block sticky top-[90px] left-0 w-[24vw] lg:w-[16vw] h-[calc(100vh-80px)] border-r border-[#d9d9d9] p-4 overflow-y-auto"
+>
+  <ul className="space-y-4 pt-6">
+    {teacher_links.map((item, i) => {
+      const href = `/instructor/${item.link}`;
+      const isDashboard = item.link === ".";
+      const isActive =
+        pathname.startsWith(href) ||
+        (isDashboard && pathname === "/instructor");
+
+      const hasFreeTrial = user?.has_free_trial;
+      const isDisabled = hasFreeTrial && !isDashboard;
+
+      return (
+        <Tooltip
+          color="#001840"
+          title={isDisabled ? "This is only available in Premium" : ""}
+          key={i}
         >
-          <ul className="space-y-4 pt-6">
-            {teacher_links.map((item, i) => {
-              const href = `/instructor/${item.link}`;
+          <Link
+            href={href}
+            onClick={(e) => {
+              if (isDisabled) e.preventDefault(); 
+            }}
+            className={`flex items-center gap-3 p-2 rounded-lg transition-colors
+              ${isActive ? "bg-[#001840] text-white hover:bg-[#001840] font-extrabold" : "text-black hover:bg-blue-950/20"}
+              ${isDisabled ? "text-gray-400 cursor-not-allowed hover:bg-transparent" : ""}
+            `}
+          >
+            <span className="text-2xl">{item.icon}</span>
+            <span className="font-semibold text-sm">{item.name}</span>
+          </Link>
+        </Tooltip>
+      );
+    })}
+  </ul>
+</aside>
 
-              const isActive =
-                pathname.startsWith(href) ||
-                (item.link === "." && "/instructor" == pathname);
 
-              return (
-                <li key={i}>
-                  <Link
-                    href={href}
-                    className={`flex items-center gap-3 p-2 rounded-lg transition-colors ${
-                      isActive
-                        ? "bg-[#001840] text-white hover:bg-[#001840] font-extrabold"
-                        : "text-black hover:bg-blue-950/20"
-                    }`}
-                  >
-                    <span className="text-2xl">{item.icon}</span>
-                    <span className="font-semibold text-sm">{item.name}</span>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </aside>
 
         <div className="flex-1 px-2 lg:px-6 py-2 w-full lg:w-[80vw] overflow-y-auto h-[calc(100vh-90px)]">
           {children}

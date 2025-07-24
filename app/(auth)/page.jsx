@@ -20,7 +20,7 @@ import LatestNews from "@/src/components/home/card/LatestNews";
 import Donate from "@/src/components/ui/donation/Donate";
 import VideoPlayer from "@/src/components/ui/VideoPlayer";
 import ScrollableContent from "@/src/components/ui/TeachersCard";
-import { useUser } from "@/src/hooks/useUser";
+import { useUser } from "@/src/hooks/data/useUser";
 import Footer from "@/src/components/layout/footer";
 import { useCookies } from "@/src/store/auth/signup";
 import { Button } from "antd";
@@ -31,7 +31,7 @@ import VideoBackground from "@/src/components/ui/VideoBackground";
 import Animator from "@/src/components/home/animations/Animator";
 import { API_BASE_URL, socket_base_url } from "@/src/config/settings";
 import { NextSeo } from "next-seo";
-import { Tooltip } from 'antd';
+import { Tooltip } from "antd";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { LuCircleCheckBig } from "react-icons/lu";
 import ChooseAccount from "@/src/components/ui/auth/signup/ChooseAccount";
@@ -40,14 +40,7 @@ import SvgOne from "@/src/components/home/svg/SvgOne";
 import SvgTwo from "@/src/components/home/svg/SvgTwo";
 import SvgThree from "@/src/components/home/svg/SvgThree";
 import { BiChevronRight } from "react-icons/bi";
-import ConfettiButton from "@/src/components/ui/ConfettiAnimation";
-import { sessionStorageFn } from "@/src/utils/fns/client";
-import { decrypt, encrypt } from "@/src/utils/fns/encryption";
-import DonationPaymentModal from "@/src/components/ui/donation/DonationPaymentModal";
-import { io } from "socket.io-client";
-import { useDonationListener, usePaymentSocketContext } from "@/src/hooks/paymentSocketContext";
 import ProcessingModal from "@/src/components/ui/donation/ProcessingModal";
-
 
 function Home() {
   const [showDonatePopup, setShowDonatePopup] = useState(false);
@@ -61,10 +54,9 @@ function Home() {
   const financialFormPdfUrl = `${API_BASE_URL}/documents/uploads/documents/financial_form.pdf`;
 
   const handleDonateVisibility = () => {
-      setShowDonatePopup(true);
+    setShowDonatePopup(true);
   };
   useEffect(() => {
-
     if (showDonatePopup) {
       document.body.classList.add("no-scroll");
     } else {
@@ -110,7 +102,6 @@ function Home() {
       />
 
       <div className="overflow-x-hidden relative w-full mx-auto h-full">
-
         {showDonatePopup && (
           <div className="fixed inset-0 bg-black bg-opacity-70 !z-[80] flex justify-center items-center">
             <div className="p-1 rounded-lg w-full items-center justify-center flex ">
@@ -123,7 +114,10 @@ function Home() {
           </div>
         )}
 
-        <ProcessingModal setShowProcessingModal={setShowProcessingModal} showProcessingModal={showProcessingModal} />
+        <ProcessingModal
+          setShowProcessingModal={setShowProcessingModal}
+          showProcessingModal={showProcessingModal}
+        />
 
         <PdfViewer
           pdfUrl={financialFormPdfUrl}
@@ -156,38 +150,70 @@ function Home() {
                 </h2>
               </Animator>
               <Animator delay={0.2}>
-                <div className="w-full flex items-center sm:items-start flex-col sm:flex-row gap-6 text-white mt-8">
+                <div className="flex items-center justify-center mx-auto flex-col sm:flex-row gap-6 text-white mt-8">
                   <div className="flex flex-col gap-2 text-xs sm:text-base">
-                    <span className="font-bold sm:text-[19px] text-center sm:text-start text-sm">For Students</span>
-                    <div className="flex gap-3 items-center justify-center sm:justify-start">
-                      <LuCircleCheckBig color="blue" className="w-5 h-5 flex-shrink-0" />
-                      <span>Collaborative digital learning</span>
-                    </div>
-                    <div className="flex gap-3 items-center justify-center sm:justify-start">
-                      <LuCircleCheckBig color="blue" className="w-5 h-5 flex-shrink-0" />
-                      <span>All curriculums supported</span>
-                    </div>
-                    <div className="flex gap-3 items-center justify-center sm:justify-start">
-                      <LuCircleCheckBig color="blue" className="w-5 h-5 flex-shrink-0" />
-                      <span>Teachers of all subjects</span>
+                    <span className="font-bold sm:text-[19px] text-center sm:text-start text-sm">
+                      For Students
+                    </span>
+                    <div className="flex flex-col gap-2">
+                      <div className="flex gap-2 items-center">
+                        <LuCircleCheckBig
+                          color="blue"
+                          className="w-5 h-5 flex-shrink-0"
+                        />
+                        <span>Collaborative digital learning</span>
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <LuCircleCheckBig
+                          color="blue"
+                          className="w-5 h-5 flex-shrink-0"
+                        />
+                        <span>All curriculums supported</span>
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <LuCircleCheckBig
+                          color="blue"
+                          className="w-5 h-5 flex-shrink-0"
+                        />
+                        <span>Teachers of all subjects</span>
+                      </div>
                     </div>
                   </div>
                   <div className="flex flex-col gap-2 text-xs sm:text-base">
-                    <span className="font-bold sm:text-[19px] text-center sm:text-start text-sm">For Teachers</span>
-                    <div className="flex gap-3 items-center justify-center sm:justify-start">
-                      <LuCircleCheckBig color="blue" className="w-5 h-5 flex-shrink-0" />
+                    <span className="font-bold sm:text-[19px] text-center sm:text-start text-sm">
+                      For Teachers
+                    </span>
+                    <div className="flex flex-col gap-2">
+                     <div className="flex gap-2 items-center">
+                      <LuCircleCheckBig
+                        color="blue"
+                        className="w-5 h-5 flex-shrink-0"
+                      />
                       <span>Self employment</span>
                     </div>
-                    <div className="flex gap-3 items-center justify-center sm:justify-start">
-                      <LuCircleCheckBig color="blue" className="w-5 h-5 flex-shrink-0" />
+                    <div className="flex gap-2 items-center">
+                      <LuCircleCheckBig
+                        color="blue"
+                        className="w-5 h-5 flex-shrink-0"
+                      />
                       <span>Quick payments within 24 hours</span>
                     </div>
+                   </div>
                   </div>
                 </div>
               </Animator>
               <Animator delay={0.2} direction="left">
-                <div className="mt-12 items-center justify-center sm:justify-start flex w-full mb-8">
-                  <ChooseAccount btnText={'Enroll Now'} textColor={'white'} btnIcon={<FaArrowRightLong className="text-white" />} placement={'bottomRight'} trigger={'click'} btnClassname={'p-2 bg-[#030DFE] text-xs sm:text-base !font-bold rounded-md'} />
+                <div className="mt-12 items-center justify-center sm:justify-start flex mb-8">
+                  <ChooseAccount
+                    btnText={"Enroll Now"}
+                    textColor={"white"}
+                    btnIcon={<FaArrowRightLong className="text-white" />}
+                    placement={"bottomRight"}
+                    trigger={"click"}
+                    btnClassname={
+                      "p-2 bg-[#030DFE] text-xs sm:text-base !font-bold rounded-md"
+                    }
+                  />
                 </div>
               </Animator>
             </div>
@@ -195,7 +221,6 @@ function Home() {
             <MailingList />
           </div>
         </div>
-
 
         <div className="relative flex items-center flex-col gap-2 md:gap-12 md:flex-row px-6 h-[45rem] sm:px-12 xs:h-[45rem] sm:h-[30rem] w-full">
           <div className="relative w-full md:w-1/2 mt-14 h-fit max-sm:p-2">
@@ -230,7 +255,7 @@ function Home() {
           </div>
         </div>
 
-        <div className="relative flex items-center w-full mt-0 md:h-[60rem] mt-5 lg:h-[50rem] ">
+        <div className="relative flex items-center w-full md:h-[60rem] mt-5 lg:h-[50rem] ">
           <div className=" w-full mt-2 py-4 px-6 flex gap-5 items-center flex-col h-fit">
             <Animator delay={0.2}>
               <h1 className="font-black text-4xl">Our services</h1>
@@ -250,7 +275,7 @@ function Home() {
                     title={"Personalized Subject Tutoring"}
                     image={"/service1.jpeg"}
                     desc={
-                      "Tailored one-on-one sessions in core subjects such as math, science, English, and social studies, focusing on the student's specific needs and learning pace."
+                      "Tailored one-on-one sessions in core subjects like math, science, English, and social studies, focusing on the student's specific needs and learning pace."
                     }
                   />
                 </Animator>
@@ -268,7 +293,7 @@ function Home() {
                     title={"Special Education Support"}
                     image={"/service3.jpeg"}
                     desc={
-                      "Customized sessions for students with learning disabilities or special needs, providing them with the tools and support to thrive academically."
+                      "Customized sessions for students with learning disabilities or special needs, providing them with tools and support to thrive academically."
                     }
                   />
                 </Animator>
@@ -592,13 +617,14 @@ function Home() {
             </h1>
           </Animator>
 
-
           <Animator delay={0.4} className="w-full flex justify-center">
             <h2 className="text-xs md:w-2/3 w-full px-4 text-center py-4">
-              Your support provides vital resources and opportunities that help children, especially in underserved areas, access quality education. Together, we can break barriers to learning and ensure every child has the chance to grow, learn, and thrive.
+              Your support provides vital resources and opportunities that help
+              children, especially in underserved areas, access quality
+              education. Together, we can break barriers to learning and ensure
+              every child has the chance to grow, learn, and thrive.
             </h2>
           </Animator>
-
 
           <Animator delay={0.4}>
             <div className="py-8">
@@ -611,14 +637,9 @@ function Home() {
                 Donate Now
               </Button>
             </div>
-
           </Animator>
 
-
-
-
           <div className="relative w-full px-4 overflow-hidden">
-
             <button
               onClick={() => {
                 const container = document.getElementById("scroll-container");
@@ -629,12 +650,10 @@ function Home() {
               <BiChevronRight className="w-6 h-6 text-black" />
             </button>
 
-
             <div
               id="scroll-container"
               className="flex gap-4 items-end justify-start md:justify-center mt-3 h-fit mb-8 py-4 px-4 overflow-x-auto scroll-smooth snap-x snap-mandatory"
             >
-
               <div className="lg:w-44 w-44 md:w-32 flex-shrink-0 flex flex-col gap-3 snap-start">
                 <Animator delay={0.1}>
                   <div className="bg-[url('/donation/village_child.png')] bg-cover bg-center h-[18rem] p-3 rounded-3xl">
@@ -654,13 +673,12 @@ function Home() {
                         85 <span className="text-lg">%</span>
                       </p>
                       <p className="text-xs font-medium mt-2">
-                        Literacy improvement rate in schools we&apos;ve partnered with
+                        Literacy improvement rate in schools we&apos;ve
+                        partnered with
                       </p>
                     </div>
                   </div>
                 </Animator>
-
-
               </div>
 
               <Animator delay={0.3}>
@@ -668,13 +686,12 @@ function Home() {
                   <div className="flex flex-col justify-end h-full">
                     <p className="text-4xl font-bold leading-none">800+</p>
                     <p className="text-xs font-medium mt-2 mb-4">
-                      Tanzanian teachers empowered through our daily training programs.
+                      Tanzanian teachers empowered through our daily training
+                      programs.
                     </p>
                   </div>
                 </div>
               </Animator>
-
-
 
               <Animator delay={0.4}>
                 <div className="lg:w-44 w-44 md:w-32 h-[13rem] flex-shrink-0 rounded-3xl p-3 relative bg-[#7A87A3] text-white snap-start">
@@ -682,31 +699,27 @@ function Home() {
                     <div className="font-bold text-base sm:text-lg md:text-sm px-2">
                       Join many people building a better tomorrow.
                     </div>
-                    <div
-
-                      className="!p-2 !bg-black !font-bold items-center flex justify-center text-xs md:text-xs !rounded-xl !text-white"
-                    >
+                    <div className="!p-2 !bg-black !font-bold items-center flex justify-center text-xs md:text-xs !rounded-xl !text-white">
                       <span>Join Us Today</span>
                     </div>
                   </div>
                   <SvgThree className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2/3 h-2/3 opacity-70" />
                 </div>
-
               </Animator>
 
               <Animator delay={0.5}>
                 <div className="lg:w-44 w-44 md:w-32 bg-[url('/donation/village_class.png')] bg-cover bg-center h-[20rem] flex-shrink-0 rounded-3xl p-3 snap-start text-white">
                   <div className="flex flex-col justify-end h-full">
-                    <p className="text-xs font-bold">Real stories, real impact</p>
+                    <p className="text-xs font-bold">
+                      Real stories, real impact
+                    </p>
                     <p className="text-xs font-medium mb-4">
-                      Witness how your support changes lives—from classrooms to communities
+                      Witness how your support changes lives—from classrooms to
+                      communities
                     </p>
                   </div>
                 </div>
               </Animator>
-
-
-
 
               <div className="lg:w-44 w-44 md:w-32 flex-shrink-0 flex flex-col gap-3 snap-start">
                 <Animator delay={0.6}>
@@ -719,21 +732,20 @@ function Home() {
                       </p>
                     </div>
                   </div>
-
                 </Animator>
 
                 <Animator delay={0.7}>
                   <div className="bg-[url('/donation/students_in_class.png')] bg-cover bg-center h-[10rem] p-3 rounded-3xl text-white">
                     <div className="flex flex-col justify-end h-full">
-                      <p className="text-xs font-medium">Give the gift of learning</p>
+                      <p className="text-xs font-medium">
+                        Give the gift of learning
+                      </p>
                       <p className="text-xs font-medium mb-4">
                         Empower a new generation of leaders.
                       </p>
                     </div>
                   </div>
                 </Animator>
-
-
               </div>
             </div>
           </div>

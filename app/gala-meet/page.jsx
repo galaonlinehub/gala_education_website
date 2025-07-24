@@ -6,7 +6,7 @@ import { sessionStorageFn } from "@/src/utils/fns/client";
 import { decrypt } from "@/src/utils/fns/encryption";
 import notificationService from "@/src/components/ui/notification/Notification";
 import { useRouter } from "next/navigation";
-import { useUser } from "@/src/hooks/useUser";
+import { useUser } from "@/src/hooks/data/useUser";
 import { apiPost } from "@/src/services/api/api_service";
 import { LuBellRing } from "react-icons/lu";
 import EndCallModal from "@/src/components/ui/EndCallModal";

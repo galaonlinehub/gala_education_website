@@ -1,17 +1,21 @@
 import { useState } from "react";
-import { useUser } from "@/src/hooks/useUser";
+import { useUser } from "@/src/hooks/data/useUser";
 import { Modal, Steps, Button, Drawer } from "antd";
 import ConfirmPlan from "../ui/auth/signup/ConfirmPlan";
 import SignupPay from "@/src/components/ui/auth/signup/Payment";
 import { useTabNavigator } from "@/src/store/auth/signup";
+import { useSubscribeStore } from "@/src/store/subscribeStore";
 
 import { createStyles, useTheme } from "antd-style";
 import { Signout } from "../ui/auth/signup/Signout";
 
-
-export default function Subscribe() {
-  const {user} = useUser();
+export default function Subscribe({ openDrawer }) {
+  const { user } = useUser();
   const { activeTab } = useTabNavigator();
+
+  const { subscribeOpen } = useSubscribeStore();
+
+  console.log("User data", user)
 
   const modalStyles = {
     mask: {
@@ -33,7 +37,6 @@ export default function Subscribe() {
     },
   ];
 
-
   return (
     <Drawer
       title={
@@ -47,7 +50,7 @@ export default function Subscribe() {
       placement="left"
       width={1124}
       centered={false}
-      open={!user?.has_active_subscription}
+      open={subscribeOpen || (!user?.has_free_trial && !user?.has_active_subscription)}
       closable={false}
       styles={modalStyles}
     >

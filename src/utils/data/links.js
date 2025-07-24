@@ -1,6 +1,9 @@
-import { FaBook, FaNewspaper, FaUsers } from "react-icons/fa6";
-
-import { MdDashboard, MdEventAvailable, MdPayment } from "react-icons/md";
+import { LiaSchoolSolid } from "react-icons/lia";
+import { FaBook, FaNewspaper, FaPeopleRoof, FaUsers } from "react-icons/fa6";
+import { GoHome } from "react-icons/go";
+import { GrDocumentStore } from "react-icons/gr";
+import {  MdEventAvailable, MdPayment } from "react-icons/md";
+import { IoDiamond } from "react-icons/io5";
 
 export const footer_links = {
   Services: [
@@ -92,13 +95,23 @@ export const footer_links = {
 export const adminLinks = [
   {
     name: "Dashboard",
-    icon: MdDashboard,
+    icon: GoHome,
     link: "/admin",
   },
   {
-    name: "Users",
+    name: "Students",
     icon: FaUsers,
-    link: "/admin/users",
+    link: "/admin/students",
+  },
+  {
+    name: "Instructors",
+    icon: FaPeopleRoof,
+    link: "/admin/instructors",
+  },
+  {
+    name: "Partner Schools",
+    icon: LiaSchoolSolid,
+    link: "/admin/partner-schools",
   },
   {
     name: "Subjects",
@@ -116,9 +129,19 @@ export const adminLinks = [
     link: "/admin/events",
   },
   {
+    name: "Subscription",
+    icon: IoDiamond,
+    link: "/admin/subscriptions",
+  },
+  {
     name: "Payments",
     icon: MdPayment,
     link: "/admin/payments",
+  },
+  {
+    name: "Logs",
+    icon: GrDocumentStore,
+    link: "/admin/logs",
   },
 ];
 

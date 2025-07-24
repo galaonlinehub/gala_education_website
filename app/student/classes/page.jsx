@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { FaFolderOpen } from "react-icons/fa";
-import { useEnrolledTopics } from "@/src/hooks/useEnrolledTopics";
+import { useEnrolledTopics } from "@/src/hooks/data/useEnrolledTopics";
 import {
   TopicCard,
   TopicCardSkeleton,
@@ -12,6 +12,8 @@ import { encrypt } from "@/src/utils/fns/encryption";
 const ClassList = () => {
   const { enrolledTopics, enrolledTopicsLoading, enrolledTopicsError } =
     useEnrolledTopics();
+
+ 
 
   return (
     <div className="px-2 lg:px-6 py-4">
@@ -50,15 +52,10 @@ const ClassList = () => {
               </p>
             </div>
           ) : (
-            enrolledTopics?.map((classItem) => (
-              <Link
-                href={`/student/classes/${classItem.cohort_id}?id=${encrypt(
-                  classItem?.instructor_id
-                )}`}
-                key={classItem.cohort_id}
-              >
-                <TopicCard details={classItem} />
-              </Link>
+            enrolledTopics?.map((classItem, index) => (
+              <TopicCard details={classItem} key={index} detailsLink={`/student/classes/${classItem.cohort_id}?id=${encrypt(
+                classItem?.instructor_id
+              )}`} />
             ))
           )}
         </div>

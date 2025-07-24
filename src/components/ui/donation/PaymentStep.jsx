@@ -17,7 +17,10 @@ import { useEffect, useMemo, useState } from "react";
 import ConfettiButton from "../ConfettiAnimation";
 import { sessionStorageFn } from "@/src/utils/fns/client";
 import { encrypt } from "@/src/utils/fns/encryption";
-import { useDonationListener, usePaymentSocketContext } from "@/src/hooks/paymentSocketContext";
+import {
+  useDonationListener,
+  usePaymentSocketContext,
+} from "@/src/hooks/misc/paymentSocketContext";
 import { PaymentStatus } from "@/src/config/settings";
 
 const { Title, Paragraph, Text } = Typography;
@@ -37,8 +40,6 @@ const PaymentStep = ({
   const { joinRoom, isConnected, roomName } = usePaymentSocketContext();
   const [loading, setLoading] = useState(false);
 
-
-
   const room_name = useMemo(
     () => crypto.randomUUID().replace(/-/g, "").substring(0, 10),
     []
@@ -49,13 +50,10 @@ const PaymentStep = ({
   }, [room_name, joinRoom]);
 
   useDonationListener((paymentMsg) => {
-
-    if (paymentMsg.status === 'success') {
-      console.log('Payment successful!');
-
-    } else if (paymentMsg.status === 'failed') {
-      console.log('Payment failed!');
-
+    if (paymentMsg.status === "success") {
+      console.log("Payment successful!");
+    } else if (paymentMsg.status === "failed") {
+      console.log("Payment failed!");
     }
   });
 
@@ -76,20 +74,24 @@ const PaymentStep = ({
 
         const response = await apiPost("/make-donation", donationData);
 
-        const encryptedPaymentReference = encrypt(response.data.order_response?.data[0]?.payment_token);
+        const encryptedPaymentReference = encrypt(
+          response.data.order_response?.data[0]?.payment_token
+        );
         const encryptedAmount = encrypt(selectedAmount);
 
         sessionStorageFn.set("payment_reference", encryptedPaymentReference);
         sessionStorageFn.set("amount_paid", encryptedAmount);
 
-        console.log("Payment token:", response.data.order_response?.data[0]?.payment_token);
+        console.log(
+          "Payment token:",
+          response.data.order_response?.data[0]?.payment_token
+        );
 
         setLoading(false);
         form.resetFields();
         setShowDonatePopup(false);
 
         setShowProcessingModal(true);
-
       })
       .catch((error) => {
         console.error("Validation failed:", error);
@@ -99,8 +101,6 @@ const PaymentStep = ({
 
   return (
     <div>
-      
-
       <Form form={form} layout="vertical">
         <div style={{ marginBottom: "16px" }}>
           <Text strong>Choose payment method</Text>
@@ -256,7 +256,9 @@ const PaymentStep = ({
             justifyContent: "space-between",
           }}
         >
-          <Button disabled={loading} onClick={() => setActiveTab("1")}>Back</Button>
+          <Button disabled={loading} onClick={() => setActiveTab("1")}>
+            Back
+          </Button>
           <Button
             loading={loading}
             iconPosition="end"

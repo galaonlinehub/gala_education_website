@@ -5,6 +5,7 @@ export const EVENTS = {
   MESSAGE_SENT: "message_sent",
   MESSAGE_ID_UPDATE: "message_id_updated",
   MESSAGE_STATUS_BATCH: "message_status_batch",
+  MESSAGE_READ: "message_read",
 
   SIDEBAR_NEW_MESSAGE: "sidebar_new_message",
   SIDEBAR_UNREAD_RESET: "sidebar_unread_reset",
@@ -17,4 +18,12 @@ export const EVENTS = {
 
   USER_OFFLINE: "user_offline",
   USER_ONLINE: "user_online",
+
+  //Chat
+  JOIN_CHAT: "join_chat",
+  SOCIAL: "social",
+
+  //typing
+  TYPING: "typing",
+  STOP_TYPING: "stop_typing",
 };

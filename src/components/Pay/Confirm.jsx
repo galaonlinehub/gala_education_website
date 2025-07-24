@@ -7,7 +7,7 @@ import {
   RenderFailureState,
 } from "../ui/auth/signup/PaymentStatus";
 import { useEnrollMe, useEnrollPay } from "@/src/store/student/useEnrollMe";
-import { useUser } from "@/src/hooks/useUser";
+import { useUser } from "@/src/hooks/data/useUser";
 import io from "socket.io-client";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -19,7 +19,10 @@ export const ConfirmEnrollPay = () => {
 
   const handleClose = () => setEnrollPayStatus(null);
 
-  const amount = queryClient.getQueryData(["enrollMeCohort", enrollCohortId])?.price;
+  const amount = queryClient.getQueryData([
+    "enrollMeCohort",
+    enrollCohortId,
+  ])?.price;
 
   useEffect(() => {
     const socket = io("https://edusockets.galahub.org/payment");
@@ -54,12 +57,21 @@ export const ConfirmEnrollPay = () => {
     <div className="flex items-center justify-center w-full h-[calc(100vh-20rem)]">
       <div className="lg:w-1/2 w-full mx-auto">
         {enrollPayStatus === PaymentStatus.LOADING && <RenderLoadingState />}
-        {enrollPayStatus === PaymentStatus.SUCCESS && <RenderSuccessState onClose={handleClose} />}
+        {enrollPayStatus === PaymentStatus.SUCCESS && (
+          <RenderSuccessState onClose={handleClose} />
+        )}
         {enrollPayStatus === PaymentStatus.REFERENCE && (
-          <RenderReferenceState reference={reference} amount={amount} onClose={handleClose} />
+          <RenderReferenceState
+            reference={reference}
+            amount={amount}
+            onClose={handleClose}
+          />
         )}
         {(enrollPayStatus === PaymentStatus.FAILURE || !enrollPayStatus) && (
-          <RenderFailureState onClose={handleClose} setStatus={setEnrollPayStatus} />
+          <RenderFailureState
+            onClose={handleClose}
+            setStatus={setEnrollPayStatus}
+          />
         )}
       </div>
     </div>

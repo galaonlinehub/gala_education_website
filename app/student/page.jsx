@@ -21,7 +21,7 @@ import {
   CheckCircleOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
-import { useUser } from "@/src/hooks/useUser";
+import { useUser } from "@/src/hooks/data/useUser";
 import {
   LuBellRing,
   LuBookOpen,
@@ -29,7 +29,7 @@ import {
   LuUser,
 } from "react-icons/lu";
 import { img_base_url } from "@/src/config/settings";
-import { useEnrolledTopics } from "@/src/hooks/useEnrolledTopics";
+import { useEnrolledTopics } from "@/src/hooks/data/useEnrolledTopics";
 import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
 import { useRouter } from "next/navigation";
 import Updates from "@/src/components/ui/notification/Updates";
@@ -45,6 +45,8 @@ export default function Component() {
     enrolledTopics,
     enrolledTopicsLoading,
   } = useEnrolledTopics();
+
+  console.log(enrolledTopics);
 
   return (
     <div className="min-h-screen">
@@ -103,18 +105,18 @@ export default function Component() {
                             Class
                           </span>
                         ),
-                        dataIndex: "subtopic_name",
-                        key: "subtopic_name",
+                        dataIndex: "cohort_name",
+                        key: "cohort_name",
                         ellipsis: {
                           showTitle: false,
                         },
-                        render: (text) => (
-                          <Tooltip placement="topLeft" title={text}>
+                        render: (cohort_name) => (
+                          <Tooltip placement="topLeft" title={cohort_name}>
                             <span
                               className="text-xs sm:text-sm truncate block max-w-[120px] sm:max-w-[200px]"
                               style={{ color: "#001840" }}
                             >
-                              {text}
+                              {cohort_name}
                             </span>
                           </Tooltip>
                         ),
@@ -130,17 +132,21 @@ export default function Component() {
                         dataIndex: "progress",
                         key: "progress",
                         width: "35%",
-                        render: (progress) => (
-                          <Progress
-                            percent={progress}
-                            size="small"
-                            className="min-w-[80px]"
-                            strokeColor={{
-                              "0%": "#001840",
-                              "100%": "#3b82f6",
-                            }}
-                          />
-                        ),
+                        render: (progress) => {
+
+                          return (
+                            <span className="text-black">{progress}%</span>
+                            // <Progress
+                            //   percent={progress}
+                            //   size="small"
+                            //   className="min-w-[80px]"
+                            //   strokeColor={{
+                            //     "0%": "#001840",
+                            //     "100%": "#3b82f6",
+                            //   }}
+                            // />
+                          );
+                        },
                       },
                       {
                         title: (
@@ -154,23 +160,18 @@ export default function Component() {
                         width: "25%",
                         render: () => (
                           <Button
+                            disabled={true}
                             type="primary"
                             size="small"
-                            className="p-0 text-xs sm:text-sm"
-                            style={{
-                              background:
-                                "linear-gradient(135deg, #001840 0%, #3b82f6 100%)",
-                              border: "none",
-                              borderRadius: "8px",
-                            }}
+                            className="p-2 !text-xs sm:text-sm bg-black"
                           >
                             Enter
                           </Button>
                         ),
                       },
                     ]}
-                    dataSource={[]}
-                    loading={enrolledTopicsLoading}
+                    dataSource={enrolledTopics}
+                    loading={false}
                     pagination={false}
                     size="small"
                     scroll={{ x: 400 }}
@@ -220,7 +221,7 @@ const SelectedSubjects = ({
       <div className="min-h-[100px]">
         {isFetchingEnrolledSubjects ? (
           <div className="flex items-center justify-center h-full w-full">
-            <SlickSpinner color="#001840" size={12} />
+            <SlickSpinner color="#001840" size={20} />
           </div>
         ) : isEnrolledSubjectsError ? (
           <div className="flex items-center justify-center w-full h-full text-xs text-red-500 text-center">
@@ -348,9 +349,11 @@ const DeadlinesCard = () => {
   return (
     <Card
       title={
-        <span style={{ color: "#001840", fontWeight: "bold" }}>
-          Upcoming Reminders
-        </span>
+        <div className="w-full">
+          <span className="text-[#001840] font-bold block">
+            Upcoming Reminders
+          </span>
+        </div>
       }
       className="w-full shadow-lg"
       style={{
@@ -362,14 +365,7 @@ const DeadlinesCard = () => {
       bodyStyle={{ padding: "12px" }}
     >
       <div className="min-h-[120px] flex flex-col items-center justify-center">
-        <div
-          className="text-center p-4 rounded-lg"
-          style={{
-            background:
-              "linear-gradient(135deg, rgba(0,24,64,0.05) 0%, rgba(59,130,246,0.05) 100%)",
-            border: "1px solid rgba(0,24,64,0.1)",
-          }}
-        >
+        <div className="text-center p-4 rounded-lg">
           <ClockCircleOutlined
             style={{
               fontSize: "24px",
@@ -378,10 +374,7 @@ const DeadlinesCard = () => {
               marginBottom: "8px",
             }}
           />
-          <div
-            className="text-sm text-center"
-            style={{ color: "#001840", opacity: 0.7 }}
-          >
+          <div className="text-sm text-center opacity-70 text-[001840]">
             No reminders set
           </div>
         </div>
@@ -568,14 +561,7 @@ const ActivityCard = () => {
       }}
     >
       <div className="min-h-[120px] flex flex-col items-center justify-center">
-        <div
-          className="text-center p-4 rounded-lg"
-          style={{
-            background:
-              "linear-gradient(135deg, rgba(0,24,64,0.05) 0%, rgba(59,130,246,0.05) 100%)",
-            border: "1px solid rgba(0,24,64,0.1)",
-          }}
-        >
+        <div className="text-center p-4 rounded-lg">
           <CheckCircleOutlined
             style={{
               fontSize: "24px",

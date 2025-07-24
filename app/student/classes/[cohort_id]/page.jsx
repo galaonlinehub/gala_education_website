@@ -1,6 +1,6 @@
 "use client";
-import React from "react";
-import { Card, Avatar } from "antd";
+import React, { useState } from "react";
+import { Card, Avatar, message, Modal, Button, Divider, Input } from "antd";
 import {
   LuArrowLeft,
   LuBell,
@@ -16,18 +16,71 @@ import {
   LuVideo,
 } from "react-icons/lu";
 import { useRouter } from "next/navigation";
-import { useEnrolledTopics } from "@/src/hooks/useEnrolledTopics";
+import { useEnrolledTopics } from "@/src/hooks/data/useEnrolledTopics";
 import { useSearchParams } from "next/navigation";
 import { decrypt } from "@/src/utils/fns/encryption";
 import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
 import { img_base_url } from "@/src/config/settings";
 import { TbMessage2 } from "react-icons/tb";
+import { StarFilled, StarOutlined } from "@ant-design/icons";
+import { BsStar, BsStarFill } from "react-icons/bs";
+import { PiStarBold, PiStarFill, PiStarLight } from "react-icons/pi";
+import { apiPost } from "@/src/services/api/api_service";
+
+const { TextArea } = Input;
 
 const ClassDetailsPage = ({ params }) => {
   const { cohort_id } = params;
 
   const searchParams = useSearchParams();
   const instructor_id = decrypt(searchParams.get("id"));
+
+  const [passedValue, setPassedValue] = useState("");
+  const [openRatingModal, setOpenRatingModal] = useState(false);
+  const [rateValue, setRateValue] = useState(null);
+  const [comment, setComment] = useState('');
+  const [messageApi, contextHolder] = message.useMessage();
+
+
+  const openRatingmodal = (value) => {
+    setPassedValue(value);
+    setOpenRatingModal(true);
+  };
+
+  const closeModal = () => {
+    setOpenRatingModal(false);
+    setRateValue(null);
+    setComment('');
+  };
+
+  const handleRating = (value) => {
+    setRateValue(value);
+    console.log("Selected rating:", value);
+  };
+
+  const handleSubmitRating = async () => {
+
+
+    if (rateValue == null && comment == '') {
+      messageApi.info('Please provide a rating or comment!');
+      return;
+    }
+
+    const response = await apiPost('/reviews', {
+      type: 'instructor',
+      id: instructor_id,
+      rating: rateValue ?? '',
+      comment: comment ?? ''
+    });
+
+    setOpenRatingModal(false);
+    setRateValue(null);
+    setComment('');
+
+    messageApi.success(response.data);
+
+  }
+
 
   const classData = {
     id: "BIO-454-44",
@@ -186,6 +239,7 @@ const ClassDetailsPage = ({ params }) => {
 
   return (
     <div className="min-h-screen w-full">
+      {contextHolder}
       <div className="sticky  top-1 inset-x-0 z-50 bg-white w-full border-b">
         <div className="px-4 h-12 flex items-center justify-between">
           <div className="flex items-center space-x-2">
@@ -369,13 +423,12 @@ const ClassDetailsPage = ({ params }) => {
                         className={`relative ${week.current ? "mb-8" : ""}`}
                       >
                         <div
-                          className={`absolute -left-8 w-6 h-6 rounded-full flex items-center justify-center ${
-                            week.completed
-                              ? "bg-green-100 text-green-600"
-                              : week.current
+                          className={`absolute -left-8 w-6 h-6 rounded-full flex items-center justify-center ${week.completed
+                            ? "bg-green-100 text-green-600"
+                            : week.current
                               ? "bg-blue-100 text-blue-600 ring-4 ring-blue-50"
                               : "bg-gray-100 text-gray-400"
-                          }`}
+                            }`}
                         >
                           {week.completed ? (
                             <LuCheck />
@@ -387,21 +440,19 @@ const ClassDetailsPage = ({ params }) => {
                         </div>
 
                         <div
-                          className={`${
-                            week.current
-                              ? "bg-blue-50 rounded-lg p-4 border border-blue-100"
-                              : ""
-                          }`}
+                          className={`${week.current
+                            ? "bg-blue-50 rounded-lg p-4 border border-blue-100"
+                            : ""
+                            }`}
                         >
                           <h4 className="text-sm font-semibold text-gray-800">
                             Week {week.week}
                           </h4>
                           <p
-                            className={`${
-                              week.current
-                                ? "text-blue-700 font-medium"
-                                : "text-gray-600"
-                            }`}
+                            className={`${week.current
+                              ? "text-blue-700 font-medium"
+                              : "text-gray-600"
+                              }`}
                           >
                             {week.topic}
                           </p>
@@ -508,6 +559,62 @@ const ClassDetailsPage = ({ params }) => {
                 </div>
               </div>
 
+              <Modal
+                open={openRatingModal}
+                onCancel={closeModal}
+                onOk={closeModal}
+                footer={[
+                  <Button key="cancel" onClick={closeModal}>
+                    Cancel
+                  </Button>,
+                  <Button className="!bg-[#001840] !text-white" key="sbmit" onClick={() => handleSubmitRating()}>
+                    Submit
+                  </Button>,
+                ]}
+              >
+                <Divider>
+                  <div className="flex justify-center gap-2">
+                    <span className="font-light">Rate</span>
+                    <span className="font-bold">{instructorDetails?.name}</span>
+                  </div>
+                </Divider>
+
+
+                <div className="flex flex-col justify-center text-center items-center">
+                  <p className="text-sm">
+                    Rate this teacher fairly based on teaching effectiveness,
+                    communication, and support. Share your honest thoughts to help
+                    us enhance teaching quality.
+                  </p>
+                  <div className="w-full mt-3 flex gap-2 items-center justify-center">
+                    {[1, 2, 3, 4, 5].map((star, index) => {
+                      const isActive = star <= rateValue;
+                      const StarIcon = isActive ? PiStarFill : PiStarLight;
+                      return (
+                        <StarIcon
+                          key={index}
+                          size={40}
+                          color={isActive ? "#ffdf00" : "gray"}
+                          onClick={() => handleRating(star)}
+                          style={{ cursor: "pointer" }}
+                        />
+                      );
+                    })}
+                  </div>
+                  <div className="w-full mt-5 flex">
+                    <TextArea
+                      rows={4}
+                      name="student_comment"
+                      placeholder="Write your comment here"
+                      value={comment}
+                      onChange={(e) => setComment(e.target.value)}
+                    />
+
+                  </div>
+                </div>
+
+              </Modal>
+
               {/* <div>
                 <h4 className="font-medium text-gray-800 mb-4 flex items-center">
                   <div className="w-2 h-2 rounded-full bg-green-500 mr-2"></div>
@@ -566,15 +673,15 @@ const ClassDetailsPage = ({ params }) => {
                       announcement.type === "info"
                         ? "bg-blue-50 border-blue-500"
                         : announcement.type === "success"
-                        ? "bg-green-50 border-green-500"
-                        : "bg-gray-50 border-gray-300";
+                          ? "bg-green-50 border-green-500"
+                          : "bg-gray-50 border-gray-300";
 
                     const iconColor =
                       announcement.type === "info"
                         ? "text-blue-500"
                         : announcement.type === "success"
-                        ? "text-green-500"
-                        : "text-gray-500";
+                          ? "text-green-500"
+                          : "text-gray-500";
 
                     return (
                       <div
@@ -634,6 +741,16 @@ const ClassDetailsPage = ({ params }) => {
                         <TbMessage2 className="mr-2 md:text-2xl" />
                         <div className="flex gap-2">
                           <span>Message</span>
+                          <span>Instructor</span>
+                        </div>
+                      </button>
+                      <button
+                        onClick={() => openRatingmodal("Teacher")}
+                        className={`w-full px-4 py-2.5 rounded-md flex items-center justify-center font-medium text-sm bg-[#001840] text-white`}
+                      >
+                        <StarOutlined className="mr-2 md:text-2xl" />
+                        <div className="flex gap-2">
+                          <span>Rate</span>
                           <span>Instructor</span>
                         </div>
                       </button>

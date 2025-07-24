@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Gala Education
 
-## Getting Started
+**Empowering minds, shaping futures – your pathway to success.**
 
-First, run the development server:
+## 🌍 About Us
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+In Tanzania, countless families face immense challenges in accessing quality education due to a shortage of qualified teachers and limited educational resources. **Gala Education** was founded to bridge this gap — transforming lives through accessible, high-quality **online tutoring** for **Primary, Secondary**, and **High School** students.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+We are more than just a digital learning platform — we're a **movement for educational equity and empowerment**.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## 🎯 Our Mission
 
-## Learn More
+To empower students across Tanzania with personalized, high-quality education while creating employment opportunities for teachers and reinvesting in local communities.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📚 What We Offer
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### 🔹 For Students
+- 💻 **Collaborative digital learning** tailored for different learning styles  
+- 📘 **Support for all national and international curriculums**  
+- 👩‍🏫 **Qualified teachers for all subjects and levels**  
+- 🧠 **Short courses** on practical, self-employable skills taught by industry experts  
 
-## Deploy on Vercel
+### 🔹 For Teachers
+- 💼 **Self-employment opportunities** through online tutoring  
+- ⏱️ **Fast payments** — get paid within **24 hours**  
+- 🌱 **Supportive teaching environment** with growth potential  
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## 💡 How We Make a Difference
+
+Gala Education is committed to **reinvesting profits** into:
+- Building **classrooms** and **libraries**
+- Hiring **part-time instructors**
+- Expanding access to **educational tools and infrastructure**
+
+Every lesson delivered helps build a brighter future for children in Tanzania.
+
+---
+
+## 🚀 Get Involved
+
+Whether you're a student eager to learn or a teacher ready to inspire, **Gala Education** welcomes you.
+
+👉 **[Enroll Now](#)**
+
+---
+
+## 🏷️ Tagline  
+**"Empowering minds, shaping futures – Gala Education, your pathway to success."**
+
+---
+
+## 📫 Contact
+
+For more information or to partner with us, please reach out:  
+📧 **info@galaeducation.org**  
+🌐 **www.galaeducation.org**
+
+---
+
+Together, let’s **make a profound difference** — one student at a time.

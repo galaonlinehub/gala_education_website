@@ -1,27 +1,35 @@
-import React, { useEffect } from "react";
-import { useAuth } from "@/src/hooks/useAuth";
-import { Card, Button, Typography, Tag, Badge } from "antd";
+import React, { useEffect, useState } from "react";
+import { useAuth } from "@/src/hooks/data/useAuth";
+import { Card, Button, Typography, message, Badge, Divider } from "antd";
 import { encrypt } from "@/src/utils/fns/encryption";
 import { localStorageFn } from "@/src/utils/fns/client";
 import { useAccountType, useTabNavigator } from "@/src/store/auth/signup";
 import { PLAN_CONFIRMED_KEY } from "@/src/config/settings";
 import { useRouter } from "next/navigation";
-import { useUser } from "@/src/hooks/useUser";
+import { useUser } from "@/src/hooks/data/useUser";
 import { usePathname } from "next/navigation";
-import { LuCircleCheckBig } from "react-icons/lu";
+import { LuCircleCheckBig, LuPersonStanding, LuUser, LuX } from "react-icons/lu";
 import SlickSpinner from "../../loading/template/SlickSpinner";
 import { Contact } from "@/src/components/layout/Contact";
+import { apiPost } from "@/src/services/api/api_service";
+import { LoadingOutlined } from "@ant-design/icons";
+import Subscribe from "@/src/components/Pay/Subscribe";
+import { useSubscribeStore } from "@/src/store/subscribeStore";
 
 const { Text } = Typography;
 
 const ConfirmPlan = () => {
   const { setActiveTab, activeTab } = useTabNavigator();
   const { setAccountType, accountType } = useAccountType();
+  const [messageApi, contextHolder] = message.useMessage();
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { plans, isFetchingPlans, errorOnFetchingPlans, savingsPercentage } =
     useAuth();
-  const { user } = useUser();
+  const { user, refetchUser } = useUser();
   const currentUrl = usePathname();
+
+  const { setSubscribeOpen } = useSubscribeStore();
 
   const isInstructor = accountType === "instructor";
   const isStudent = accountType === "student";
@@ -32,6 +40,24 @@ const ConfirmPlan = () => {
     setActiveTab(activeTab + 1);
   };
 
+  const activateFreeTrial = async () => {
+    setLoading(true)
+    const response = await apiPost('/create-user-pass', { email: user?.email })
+    refetchUser()
+
+
+    const { active } = response.data;
+
+    if (active) {
+      setLoading(false)
+      messageApi.success('Your free trial has been activated!')
+    } else {
+      setLoading(false)
+      messageApi.error('Free trial activation failed!')
+    }
+
+  }
+
   useEffect(() => {
     if (user) {
       const userAccountType = currentUrl.split("/")[1];
@@ -41,14 +67,19 @@ const ConfirmPlan = () => {
     }
   }, [currentUrl, setAccountType, user]);
 
+  console.log("User", user)
+
   return (
     <div className="!px-4 flex flex-col lg:flex-row gap-8 lg:gap-12 justify-center items-center mt-4">
+      {contextHolder}
+
       {isFetchingPlans ? (
         <div className="mt-32">
           <SlickSpinner color="#030DFE" />
         </div>
       ) : plans ? (
         <div className="flex flex-col items-center justify-center">
+
           <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 justify-center items-center">
             {plans.map((plan) => (
               <div
@@ -123,11 +154,14 @@ const ConfirmPlan = () => {
                           CONTINUE
                         </Button>
                       </div>
+
                     </div>
                   </Card>
                 </Badge.Ribbon>
               </div>
+
             ))}
+
           </div>
           {isStudent && (
             <div className="mt-5 text-center w-full lg:w-3/4">
@@ -139,9 +173,18 @@ const ConfirmPlan = () => {
             </div>
           )}
 
-          <div className="mt-5">
+          <div className="mt-5 flex flex-col w-full items-center justify-center">
+            <Divider />
+            <span className="font-bold"> {user?.has_free_trial ? '' : 'Or'}</span>
+            <div className="py-4 flex flex-col gap-1">
+              <Button loading={loading} onClick={user?.has_free_trial ? () => setSubscribeOpen(false) : activateFreeTrial}
+                icon={user?.has_free_trial ? <LuX /> : <LuUser />}
+                className="!font-semibold !bg-[#010798] !h-9 !text-white hover:!opacity-80">{user?.has_free_trial ? 'Close' : 'Continue with Free Trial'}</Button>
+              <span className="text-xs text-blue-600">Free trial will only offer you limited access</span>
+            </div>
             <Contact useBillingContact={true} />
           </div>
+
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center gap-2 md:gap-4 mt-8">
@@ -154,6 +197,7 @@ const ConfirmPlan = () => {
           <Button onClick={() => router.push("/")}>Return Home</Button>
         </div>
       )}
+
     </div>
   );
 };

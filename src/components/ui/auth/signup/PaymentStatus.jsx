@@ -3,7 +3,7 @@ import { Result, Modal, Progress } from "antd";
 import { PaymentStatus, SUPPORT_EMAIL } from "@/src/config/settings";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import { HiMiniDevicePhoneMobile } from "react-icons/hi2";
-import { useDevice } from "@/src/hooks/useDevice";
+import { useDevice } from "@/src/hooks/misc/useDevice";
 import InstructorSignUpFeedback from "@/src/components/teacher/InstructorSignUpFeedback";
 import SlickSpinner from "../../loading/template/SlickSpinner";
 import {
@@ -15,7 +15,7 @@ import {
 } from "react-icons/lu";
 import { useAccountType } from "@/src/store/auth/signup";
 import { usePathname } from "next/navigation";
-import { useUser } from "@/src/hooks/useUser";
+import { useUser } from "@/src/hooks/data/useUser";
 import { Contact } from "@/src/components/layout/Contact";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -107,8 +107,8 @@ export const RenderSuccessState = ({
   accountType,
   setStatus,
 
-  queryClient, user
-
+  queryClient,
+  user,
 }) => {
   if (accountType === "instructor") {
     setTimeout(() => {
@@ -159,7 +159,12 @@ export const RenderSuccessState = ({
   );
 };
 
-export const RenderReferenceState = ({ reference, amount, onClose, donation }) => (
+export const RenderReferenceState = ({
+  reference,
+  amount,
+  onClose,
+  donation,
+}) => (
   <div className="flex flex-col items-center py-6 xxs:py-0 xxs:p-4 min-w-[50px] max-w-[600px] mx-auto">
     <HiMiniDevicePhoneMobile className="text-[#001840] text-4xl mb-4" />
     <div className="flex flex-col gap-3 w-full">
@@ -186,7 +191,9 @@ export const RenderReferenceState = ({ reference, amount, onClose, donation }) =
           <LuWallet className="text-[#001840] text-xl" />
           <div className="flex flex-col items-center justify-center">
             <span className="font-medium">
-              {donation ? '3. Enter Amount' : '3. Enter Amount for plan selected'}
+              {donation
+                ? "3. Enter Amount"
+                : "3. Enter Amount for plan selected"}
             </span>
             <p className="text-lg text-[#001840] font-black mt-1 text-center">
               {amount?.toLocaleString()} TZS
@@ -210,7 +217,6 @@ export const RenderReferenceState = ({ reference, amount, onClose, donation }) =
     >
       Done
     </button>
-
   </div>
 );
 

@@ -24,16 +24,16 @@ import {
   FiCreditCard,
 } from "react-icons/fi";
 import dayjs from "dayjs";
-import { useGrade } from "@/src/hooks/useGrade";
-import { useTopic } from "@/src/hooks/useTopic";
+import { useGrade } from "@/src/hooks/data/useGrade";
+import { useTopic } from "@/src/hooks/data/useTopic";
 import { DAYS_MAP } from "@/src/utils/data/days_of_the_week";
-import { useCohort } from "@/src/hooks/useCohort";
+import { useCohort } from "@/src/hooks/data/useCohort";
 import { LoadingOutlined } from "@ant-design/icons";
 import { weekOptions } from "@/src/utils/data/weekData";
 import notificationService from "@/src/components/ui/notification/Notification";
 import { apiGet } from "@/src/services/api/api_service";
-import { useSubTopics } from "@/src/hooks/useSubTopics";
-import { useInstructorSubjects } from "@/src/hooks/useInstructorSubjects";
+import { useSubTopics } from "@/src/hooks/data/useSubTopics";
+import { useInstructorSubjects } from "@/src/hooks/data/useInstructorSubjects";
 import { RiCalendarScheduleLine } from "react-icons/ri";
 import { FaArrowTurnDown } from "react-icons/fa6";
 

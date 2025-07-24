@@ -1,4 +1,5 @@
-import { RobotFilled } from "@ant-design/icons";
+import AiLogo from "@/src/components/ai/AiLogo";
+import { CommentOutlined, RobotFilled } from "@ant-design/icons";
 import {
   LuBox,
   LuLayoutDashboard,
@@ -8,9 +9,10 @@ import {
   LuUsers,
   LuClock4,
   LuBrain,
+  LuBook,
 } from "react-icons/lu";
+import { MdOutlineInsertComment } from "react-icons/md";
 import { TbHexagon } from "react-icons/tb";
-import { ThreeUsers } from "../vector-svg/ThreeUsersSvg";
 
 export const footer_links = {
   Services: [
@@ -126,6 +128,11 @@ export const teacher_links = [
     link: "ai",
     icon: <LuBrain />,
   },
+  {
+    name: "Library",
+    link: "library",
+    icon: <LuBook />,
+  },
 ];
 
 export const student_links = [
@@ -167,5 +174,15 @@ export const student_links = [
     name: "GalaAI",
     link: "ai",
     icon: <LuBrain />,
+  },
+  // {
+  //   name: "My Reviews",
+  //   link: "my-reviews",
+  //   icon: <MdOutlineInsertComment />,
+  // },
+  {
+    name: "Library",
+    link: "library",
+    icon: <LuBook />,
   },
 ];
