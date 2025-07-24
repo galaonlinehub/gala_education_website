@@ -17,6 +17,7 @@ import StudentsInClass from "@/src/utils/vector-svg/vectors/StudentsInClass";
 import RightTiltedBook from "@/src/utils/vector-svg/vectors/CombinedBlock";
 import StickyNotification from "@/src/components/ui/notification/StickyNotification";
 import { useStickyNotification } from "@/src/store/notification/notification";
+import { PartnerSchool } from "@/src/components/student/PartnerSchool";
 
 export default function StudentLayout({ children }) {
   const { installPrompt, isInstalled, handleInstallClick } = useInstallPrompt();
@@ -116,6 +117,7 @@ export default function StudentLayout({ children }) {
       <NewClass />
       <CompleteProfile />
       <Subscribe />
+      <PartnerSchool/>
       {notificationOpen && <StickyNotification />}
     </>
   );

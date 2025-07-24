@@ -22,6 +22,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiGet, apiPut } from "@/src/services/api/api_service";
 import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
 import clsx from "clsx";
+import { useSchoolPartnerStore } from "@/src/store/student/schoolPartnerStore";
 
 const StudentProfile = () => {
   const { user, updateProfile, isUpdatingProfile } = useUser();
@@ -34,6 +35,7 @@ const StudentProfile = () => {
   const [editName, setEditName] = useState(false);
   const [editContact, setEditContact] = useState(false);
   const [profilePicture, setProfilePicture] = useState(null);
+  const open = useSchoolPartnerStore((state) => state.open);
 
   const {
     data: activities,
@@ -241,11 +243,17 @@ const StudentProfile = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Main Content - 2/3 width on large screens */}
         <div className="lg:col-span-2">
-          {/* Learning Progress Card */}
           <div className="bg-white rounded-lg shadow-md p-6 mb-6 border">
-            <h2 className="text-xl font-bold mb-4">Learning Progress</h2>
+            <div className="flex justify-between gap-3">
+              <h2 className="text-xl font-bold mb-4">Learning Progress</h2>
+              <button
+                onClick={open}
+                className="bg-[#001840] rounded-md text-white px-3 hover:scale-105 transation-all ease-in-out duration-200 xs:h-8 font-bold text-sm"
+              >
+                Add School
+              </button>
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="bg-gray-50 rounded-md p-4 flex items-center justify-between">
                 <div>
