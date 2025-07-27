@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { LuCalendar, LuClock, LuInfo } from 'react-icons/lu';
 
-import { sessionStorageFn } from '@/src/utils/fns/client';
+import { localStorageFn, sessionStorageFn } from '@/src/utils/fns/client';
 
 
 export default function CountdownTimer() {
@@ -20,7 +20,7 @@ export default function CountdownTimer() {
 
         // Try to get existing target date from memory (in real app, use localStorage)
         const storedTarget = typeof window !== 'undefined' ?
-            sessionStorageFn.get('countdownTarget') : null;
+            localStorageFn.get('countdownTarget') : null;
 
         if (storedTarget) {
             targetDate = new Date(storedTarget);
@@ -31,7 +31,7 @@ export default function CountdownTimer() {
 
             // Store target date (in real app, use localStorage for persistence across browser sessions)
             if (typeof window !== 'undefined') {
-                sessionStorageFn.set('countdownTarget', targetDate.toISOString());
+                localStorageFn.set('countdownTarget', targetDate.toISOString());
             }
         }
 
@@ -72,7 +72,7 @@ export default function CountdownTimer() {
         setTargetDate(newTarget);
 
         if (typeof window !== 'undefined') {
-            window.sessionStorage?.setItem('countdownTarget', newTarget.toISOString());
+            localStorageFn.set('countdownTarget', newTarget.toISOString());
         }
     };
 
