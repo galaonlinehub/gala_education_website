@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
+
+import { useUser } from "./useUser";
 import { globalOptions } from "../../config/tanstack";
 import { apiGet, apiPut } from "../../services/api/api_service";
-import { useUser } from "./useUser";
 
 export const useReviews = (cohortId, instructorId) => {
     const { user } = useUser();

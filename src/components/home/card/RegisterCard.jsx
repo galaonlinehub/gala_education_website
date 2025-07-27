@@ -1,10 +1,11 @@
 "use client";
 
-import { useAccountType } from "@/src/store/auth/signup";
 import { message } from "antd";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
+
+import { useAccountType } from "@/src/store/auth/signup";
 
 function RegisterCard({ image, title, desc, type }) {
   const { setAccountType } = useAccountType();

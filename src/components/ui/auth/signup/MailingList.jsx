@@ -1,8 +1,9 @@
+import { Alert, Button, Checkbox, Input, message, Select } from "antd";
 import React, { useState, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { Alert, Button, Checkbox, Input, message, Select } from "antd";
-import { apiPost } from "@/src/services/api/api_service";
+
 import Animator from "@/src/components/home/animations/Animator";
+import { apiPost } from "@/src/services/api/api_service";
 
 const MailingList = () => {
   const [alert, setAlert] = useState({

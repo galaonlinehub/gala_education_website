@@ -1,21 +1,24 @@
-import { useState, useEffect } from "react";
+import { useMutation } from "@tanstack/react-query";
 import { Button, Input, Card } from "antd";
-import { localStorageFn, sessionStorageFn } from "@/src/utils/fns/client";
+import { useState, useEffect } from "react";
+import io from "socket.io-client";
+
+import { Contact } from "@/src/components/layout/Contact";
 import {
   EMAIL_VERIFICATION_KEY,
   PLAN_CONFIRMED_KEY,
   socket_base_url,
 } from "@/src/config/settings";
-import { decrypt } from "@/src/utils/fns/encryption";
-import { useTabNavigator } from "@/src/store/auth/signup";
-import { useMutation } from "@tanstack/react-query";
-import { apiPost } from "@/src/services/api/api_service";
 import { PaymentStatus } from "@/src/config/settings";
-import { PaymentPending } from "./PaymentStatus";
-import io from "socket.io-client";
 import { useUser } from "@/src/hooks/data/useUser";
+import { apiPost } from "@/src/services/api/api_service";
+import { useTabNavigator } from "@/src/store/auth/signup";
+import { localStorageFn, sessionStorageFn } from "@/src/utils/fns/client";
+import { decrypt } from "@/src/utils/fns/encryption";
+
+import { PaymentPending } from "./PaymentStatus";
 import SlickSpinner from "../../loading/template/SlickSpinner";
-import { Contact } from "@/src/components/layout/Contact";
+
 
 const MobilePay = () => {
   const [validationMessage, setValidationMessage] = useState("");

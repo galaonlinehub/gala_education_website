@@ -1,4 +1,3 @@
-import { useUserSubscriptions } from "@/src/hooks/data/useSubscription";
 import { Card, Tooltip } from "antd";
 import React from "react";
 import {
@@ -13,6 +12,9 @@ import {
   LuShieldCheck,
   LuOctagonAlert,
 } from "react-icons/lu";
+
+import { useUserSubscriptions } from "@/src/hooks/data/useSubscription";
+
 import SlickSpinner from "./loading/template/SlickSpinner";
 
 const Subscriptions = () => {

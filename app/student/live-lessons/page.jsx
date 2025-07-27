@@ -1,9 +1,7 @@
 "use client";
 
-import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
-import { img_base_url } from "@/src/config/settings";
-import { useUpcomingLessons } from "@/src/hooks/data/useUpcomigLessons";
 import { Avatar, Button, Card, Collapse, Modal, Segmented, Tag } from "antd";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import {
   LuCalendar,
@@ -16,9 +14,10 @@ import {
   LuCheckCheck,
   LuX,
 } from "react-icons/lu";
+
+import { img_base_url } from "@/src/config/settings";
 import { useLesson } from "@/src/hooks/data/useLesson";
-import { encrypt } from "@/src/utils/fns/encryption";
-import { useRouter } from "next/navigation";
+import { useUpcomingLessons } from "@/src/hooks/data/useUpcomigLessons";
 import { useUser } from "@/src/hooks/data/useUser";
 import { sessionStorageFn } from "@/src/utils/fns/client";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -74,7 +73,7 @@ const ClassCard = ({ classData, status }) => {
     setIsModalOpen(false);
   };
 
-  const isDisabled = status === 'Pending' || status === 'Completed' || status === 'Canceled';
+  const isDisabled = status === 'Missed' || status === 'Completed' || status === 'Canceled';
 
   return (
     <Card
@@ -278,7 +277,7 @@ const LiveLessons = () => {
         value={alignValue}
         style={{ marginBottom: 8 }}
         onChange={setAlignValue}
-        options={["Upcoming", "Pending", "Completed", "Canceled"]}
+        options={["Upcoming", "Missed", "Completed", "Canceled"]}
         className="custom-segmented"
       />
 
@@ -310,7 +309,7 @@ const LiveLessons = () => {
 
 
 
-      {alignValue == "Pending" && (
+      {alignValue == "Missed" && (
         <div className="space-y-3">
           {isFetchingUpcomingLessons ? (
             <div className="flex justify-center gap-2 items-center w-full py-40 md:py-64">
@@ -321,7 +320,7 @@ const LiveLessons = () => {
             upcomingLessons
               .filter((lesson) => lesson.status === "Upcoming" && isPastLesson(lesson))
               .map((classData) => (
-                <ClassCard key={classData.id} classData={classData} status={'Pending'} />
+                <ClassCard key={classData.id} classData={classData} status={'Missed'} />
               ))
           ) : (
             <div className="flex justify-center items-center w-full py-32">

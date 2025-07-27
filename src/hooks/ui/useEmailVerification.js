@@ -1,13 +1,14 @@
+import { useMutation } from "@tanstack/react-query";
 import { message, Modal } from "antd";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+
+import { EMAIL_VERIFICATION_KEY } from "@/src/config/settings";
+import { apiPost } from "@/src/services/api/api_service";
 import { useEmailVerificationModalOpen } from "@/src/store/auth/signup";
 import { useTabNavigator } from "@/src/store/auth/signup";
-import { decrypt } from "@/src/utils/fns/encryption";
-import { useRouter } from "next/navigation";
-import { apiPost } from "@/src/services/api/api_service";
 import { sessionStorageFn } from "@/src/utils/fns/client";
-import { EMAIL_VERIFICATION_KEY } from "@/src/config/settings";
-import { useMutation } from "@tanstack/react-query";
+import { decrypt } from "@/src/utils/fns/encryption";
 
 export const useEmailVerification = () => {
     const openEmailVerificationModal = useEmailVerificationModalOpen(
@@ -72,7 +73,6 @@ export const useEmailVerification = () => {
     const verifyMutate = useMutation({
         mutationFn: (data) => verifyOtp(data),
         onSuccess: () => {
-            setHasVerified(true);
             setTimeout(() => {
                 setActiveTab(1);
                 setOpenEmailVerificationModal(false);
@@ -80,7 +80,6 @@ export const useEmailVerification = () => {
         },
         onError: (e) => {
             console.error(e.response?.data?.message || e.message);
-            setHasVerified(false);
         }
 
     })

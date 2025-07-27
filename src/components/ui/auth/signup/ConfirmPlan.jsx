@@ -1,20 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { useAuth } from "@/src/hooks/data/useAuth";
+
 import { Card, Button, Typography, message, Badge, Divider } from "antd";
-import { encrypt } from "@/src/utils/fns/encryption";
-import { localStorageFn } from "@/src/utils/fns/client";
-import { useAccountType, useTabNavigator } from "@/src/store/auth/signup";
-import { PLAN_CONFIRMED_KEY } from "@/src/config/settings";
 import { useRouter } from "next/navigation";
-import { useUser } from "@/src/hooks/data/useUser";
 import { usePathname } from "next/navigation";
-import { LuCircleCheckBig, LuPersonStanding, LuUser, LuX } from "react-icons/lu";
-import SlickSpinner from "../../loading/template/SlickSpinner";
+import React, { useEffect, useState } from "react";
+import { LuCircleCheckBig, LuUser, LuX } from "react-icons/lu";
+
 import { Contact } from "@/src/components/layout/Contact";
+import { PLAN_CONFIRMED_KEY } from "@/src/config/settings";
+import { useAuth } from "@/src/hooks/data/useAuth";
+import { useUser } from "@/src/hooks/data/useUser";
 import { apiPost } from "@/src/services/api/api_service";
-import { LoadingOutlined } from "@ant-design/icons";
-import Subscribe from "@/src/components/Pay/Subscribe";
+import { useAccountType, useTabNavigator } from "@/src/store/auth/signup";
 import { useSubscribeStore } from "@/src/store/subscribeStore";
+import { localStorageFn } from "@/src/utils/fns/client";
+import { encrypt } from "@/src/utils/fns/encryption";
+
+import SlickSpinner from "../../loading/template/SlickSpinner";
 
 const { Text } = Typography;
 

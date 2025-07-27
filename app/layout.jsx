@@ -1,10 +1,12 @@
 import "./globals.css";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { Urbanist, Quicksand } from "next/font/google";
+import { Toaster } from "react-hot-toast";
+
+import GoogleAnalyticsComponent from "@/src/components/analytics/GoogleAnalytics";
+import JsonLd from "@/src/components/layout/JsonLD";
 import QueryWrapper from "@/src/components/layout/QueryWrapper";
 import SEOProvider from "@/src/components/layout/SEOProvider";
-import JsonLd from "@/src/components/layout/JsonLD";
-import GoogleAnalyticsComponent from "@/src/components/analytics/GoogleAnalytics";
 
 const urbanist = Urbanist({
   subsets: ["latin"],
@@ -59,6 +61,7 @@ export default function RootLayout({ children }) {
             {children}
           </AntdRegistry>
         </QueryWrapper>
+          <Toaster position="top-center" reverseOrder={false} />
       </body>
     </html>
   );

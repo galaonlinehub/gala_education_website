@@ -23,7 +23,9 @@ const nextConfig = {
       },
     ]
   },
-  productionBrowserSourceMaps: false
+  productionBrowserSourceMaps: false,
+
+  
 
   
 };

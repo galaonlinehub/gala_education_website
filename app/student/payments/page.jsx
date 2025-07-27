@@ -1,17 +1,18 @@
 "use client";
-import React, { useState } from "react";
-import { img_base_url, PaymentStatus } from "@/src/config/settings";
-import { LuCircleX, LuFolder, LuUsers, LuUser } from "react-icons/lu";
-import TopicCardSkeleton from "@/src/components/student/TopicCardStudent";
 import { Card, Button, Avatar, Tooltip, Modal } from "antd";
+import React, { useState } from "react";
+import { LuCircleX, LuFolder, LuUsers, LuUser } from "react-icons/lu";
+
+import TopicCardSkeleton from "@/src/components/student/TopicCardStudent";
 import {
   RenderReferenceState,
   RenderSuccessState,
   RenderLoadingState,
 } from "@/src/components/ui/auth/signup/PaymentStatus";
+import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
+import { img_base_url, PaymentStatus } from "@/src/config/settings";
 import { usePendingCohorts } from "@/src/hooks/data/usePendingCohorts";
 import { useDevice } from "@/src/hooks/misc/useDevice";
-import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
 
 function PendingPayment() {
   const {
@@ -86,7 +87,8 @@ const PendingTopicCard = ({
   instructor_name,
   payment_reference,
   amount,
-  instructor_profile_picture,cohort_start_date
+  instructor_profile_picture,
+  cohort_start_date,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [paymentStep, setPaymentStep] = useState("initial");
@@ -94,14 +96,10 @@ const PendingTopicCard = ({
   const showModal = (e) => {
     e.preventDefault();
     setIsModalOpen(true);
-    setPaymentStep("initial");
   };
 
   const handleComplete = () => {
     setPaymentStep(PaymentStatus.LOADING);
-    setTimeout(() => {
-      setPaymentStep(PaymentStatus.SUCCESS);
-    }, 2000);
   };
 
   const handleClose = () => {
@@ -121,7 +119,7 @@ const PendingTopicCard = ({
           <RenderReferenceState
             reference={payment_reference}
             amount={amount}
-            onClose={handleComplete}
+            onClose={handleClose}
           />
         );
     }

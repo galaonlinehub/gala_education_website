@@ -1,6 +1,6 @@
 "use client";
-import { Controller } from "react-hook-form";
 import { Input, Button, Card, Space } from "antd";
+import { Controller } from "react-hook-form";
 import {
   LuCircleCheckBig,
   LuKeySquare,
@@ -9,10 +9,11 @@ import {
   LuSendHorizontal,
   LuX,
 } from "react-icons/lu";
-import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
-import { usePassword } from "@/src/hooks/data/usePassword";
-import { SUPPORT_EMAIL } from "@/src/config/settings";
+
 import { Contact } from "@/src/components/layout/Contact";
+import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
+import { SUPPORT_EMAIL } from "@/src/config/settings";
+import { usePassword } from "@/src/hooks/data/usePassword";
 
 const ForgotPassword = () => {
   const {

@@ -76,7 +76,7 @@ export default function CountdownTimer() {
 
     return (
         <div className="flex items-center justify-center p-4 mt-8">
-            <div className="bg-[#001840] bg-gradient-to-br rounded-3xl p-8 md:p-12 shadow-2xl border border-white/20 max-w-2xl w-full">
+            <div className="bg-[#001840]/80 bg-gradient-to-br rounded-3xl p-8 md:p-12 shadow-2xl border border-white/20 max-w-2xl w-full">
                 {/* Header */}
                 <div className="text-center mb-8">
                     <div className="flex items-center justify-center mb-4">

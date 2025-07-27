@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { globalOptions } from "../../config/tanstack";
+
 import { apiGet } from "@/src/services/api/api_service";
+
+import { globalOptions } from "../../config/tanstack";
 
 export const useTeamMembers = () => {
   const getTeamMembers = async () => {

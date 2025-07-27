@@ -1,6 +1,7 @@
+import { LuX } from "react-icons/lu";
+
 import { useDevice } from "@/src/hooks/misc/useDevice";
 import { useStickyNotification } from "@/src/store/notification/notification";
-import { LuX } from "react-icons/lu";
 
 const StickyNotification = () => {
   const closeStickyNotification = useStickyNotification(

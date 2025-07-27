@@ -1,5 +1,5 @@
-import AiLogo from "@/src/components/ai/AiLogo";
 import { CommentOutlined, RobotFilled } from "@ant-design/icons";
+import { HiOutlineChatBubbleLeftRight } from "react-icons/hi2";
 import {
   LuBox,
   LuLayoutDashboard,
@@ -10,6 +10,9 @@ import {
   LuClock4,
   LuBrain,
   LuBook,
+  LuGem,
+  LuHexagon,
+  LuDiamond,
 } from "react-icons/lu";
 import { MdOutlineInsertComment } from "react-icons/md";
 import { TbHexagon } from "react-icons/tb";
@@ -103,35 +106,35 @@ export const teacher_links = [
   {
     name: "Dashboard",
     link: ".",
-    icon: <LuLayoutDashboard />,
+    icon: <LuLayoutDashboard strokeWidth={1.5}  />,
   },
 
   {
     name: "Live Classes",
     link: "live-classes",
-    icon: <LuTv />,
+    icon: <LuTv  strokeWidth={1.5} />,
   },
 
   {
-    name: "Social",
+    name: "Chats",
     link: "social",
-    icon: <LuUsers />,
+    icon: <HiOutlineChatBubbleLeftRight strokeWidth={1.5}  />,
   },
 
   {
     name: "Subscriptions",
     link: "subscriptions",
-    icon: <TbHexagon />,
+    icon: <LuGem strokeWidth={1.5}  />,
   },
   {
     name: "GalaAI",
     link: "ai",
-    icon: <LuBrain />,
+    icon: <LuDiamond strokeWidth={1.5} />,
   },
   {
     name: "Library",
     link: "library",
-    icon: <LuBook />,
+    icon: <LuBook strokeWidth={1.5}  />,
   },
 ];
 
@@ -139,41 +142,41 @@ export const student_links = [
   {
     name: "Dashboard",
     link: ".",
-    icon: <LuLayoutDashboard />,
+    icon: <LuLayoutDashboard strokeWidth={1.5}  />,
   },
   {
     name: "Live Lessons",
     link: "live-lessons",
-    icon: <LuTv />,
+    icon: <LuTv strokeWidth={1.5}  />,
   },
 
   {
     name: "Classes",
     link: "classes",
-    icon: <LuLayoutList />,
+    icon: <LuLayoutList strokeWidth={1.5} />,
   },
 
   {
-    name: "Social",
+    name: "Chats",
     link: "social",
-    icon: <LuUsers/>
+    icon: <HiOutlineChatBubbleLeftRight strokeWidth={1.5} />,
   },
   {
-    name: "Awaiting",
+    name: "Pending",
     link: "payments",
-    icon: <LuClock4 />,
+    icon: <LuClock4 strokeWidth={1.5}  />,
   },
 
   {
     name: "Subscriptions",
     link: "subscriptions",
-    icon: <TbHexagon />,
+    icon: <LuGem strokeWidth={1.5}  />,
   },
 
   {
     name: "GalaAI",
     link: "ai",
-    icon: <LuBrain />,
+    icon: <LuDiamond strokeWidth={1.5}  />,
   },
   // {
   //   name: "My Reviews",
@@ -183,6 +186,6 @@ export const student_links = [
   {
     name: "Library",
     link: "library",
-    icon: <LuBook />,
+    icon: <LuBook strokeWidth={1.5}  />,
   },
 ];

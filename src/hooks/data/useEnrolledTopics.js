@@ -1,7 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
+
+import { apiGet } from "@/src/services/api/api_service";
+
 import { globalOptions } from "../../config/tanstack";
 import { getEnrolledTopics } from "../../utils/fns/global";
-import { apiGet } from "@/src/services/api/api_service";
 
 export const useEnrolledTopics = (cohortId, instructor_id) => {
   const {

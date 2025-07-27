@@ -6,9 +6,9 @@ import { Signout } from "../ui/auth/signup/Signout";
 import { img_base_url } from "@/src/config/settings";
 import { LuX, LuUser, LuLogOut, LuLoaderCircle } from "react-icons/lu";
 import { usePathname, useSearchParams } from "next/navigation";
-import { links } from "@/src/utils/data/redirect";
 import { useRouter } from "next/navigation";
 import clsx from "clsx";
+import { links } from "@/src/utils/data/redirect";
 
 const { Text } = Typography;
 

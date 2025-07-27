@@ -1,6 +1,7 @@
-import QuoteVector from "@/src/utils/vector-svg/QuoteVector";
 import Image from "next/image";
 import React from "react";
+
+import QuoteVector from "@/src/utils/vector-svg/QuoteVector";
 
 const ClientReviews = ({clientName,clientMessage,clientImage}) => {
   return (

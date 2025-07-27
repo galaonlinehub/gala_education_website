@@ -1,8 +1,9 @@
+import { Modal, Typography, Checkbox } from "antd";
+import React, { useEffect, useState } from "react";
+
 import { INSTRUCTOR_CONTRACT_KEY } from "@/src/config/settings";
 import { sessionStorageFn } from "@/src/utils/fns/client";
 import { decrypt, encrypt } from "@/src/utils/fns/encryption";
-import { Modal, Typography, Checkbox } from "antd";
-import React, { useEffect, useState } from "react";
 
 const { Text, Paragraph } = Typography;
 

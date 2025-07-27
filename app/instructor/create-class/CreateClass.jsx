@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { useForm } from "react-hook-form";
+import { LoadingOutlined } from "@ant-design/icons";
 import {
   Steps,
   Select,
@@ -13,6 +12,10 @@ import {
   Tag,
   Input,
 } from "antd";
+import dayjs from "dayjs";
+import React, { useState, useEffect, useCallback } from "react";
+import { useForm } from "react-hook-form";
+import { FaArrowTurnDown } from "react-icons/fa6";
 import {
   FiCheck,
   FiArrowRight,
@@ -23,19 +26,18 @@ import {
   FiBookOpen,
   FiCreditCard,
 } from "react-icons/fi";
-import dayjs from "dayjs";
-import { useGrade } from "@/src/hooks/data/useGrade";
-import { useTopic } from "@/src/hooks/data/useTopic";
-import { DAYS_MAP } from "@/src/utils/data/days_of_the_week";
-import { useCohort } from "@/src/hooks/data/useCohort";
-import { LoadingOutlined } from "@ant-design/icons";
-import { weekOptions } from "@/src/utils/data/weekData";
-import notificationService from "@/src/components/ui/notification/Notification";
-import { apiGet } from "@/src/services/api/api_service";
-import { useSubTopics } from "@/src/hooks/data/useSubTopics";
-import { useInstructorSubjects } from "@/src/hooks/data/useInstructorSubjects";
 import { RiCalendarScheduleLine } from "react-icons/ri";
-import { FaArrowTurnDown } from "react-icons/fa6";
+
+import notificationService from "@/src/components/ui/notification/Notification";
+import { useCohort } from "@/src/hooks/data/useCohort";
+import { useGrade } from "@/src/hooks/data/useGrade";
+import { useInstructorSubjects } from "@/src/hooks/data/useInstructorSubjects";
+import { useSubTopics } from "@/src/hooks/data/useSubTopics";
+import { useTopic } from "@/src/hooks/data/useTopic";
+import { apiGet } from "@/src/services/api/api_service";
+import { DAYS_MAP } from "@/src/utils/data/days_of_the_week";
+import { weekOptions } from "@/src/utils/data/weekData";
+
 
 const componentStyles = {
   select: {

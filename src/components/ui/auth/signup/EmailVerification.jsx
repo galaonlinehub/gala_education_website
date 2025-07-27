@@ -1,11 +1,13 @@
-import clsx from "clsx";
-import React from "react";
 import { ReloadOutlined } from "@ant-design/icons";
 import { Modal, Button } from "antd";
-import { maskEmail } from "@/src/utils/fns/mask_email";
-import LoadingState from "../../loading/template/LoadingSpinner";
-import { useEmailVerification } from "@/src/hooks/ui/useEmailVerification";
+import clsx from "clsx";
+import React from "react";
 import { LuBan, LuCheck, LuTriangleAlert } from "react-icons/lu";
+
+import { useEmailVerification } from "@/src/hooks/ui/useEmailVerification";
+import { maskEmail } from "@/src/utils/fns/mask_email";
+
+import LoadingState from "../../loading/template/LoadingSpinner";
 
 const EmailVerification = () => {
 
@@ -80,7 +82,7 @@ const EmailVerification = () => {
           )}
           {
             (verifyMutate.isSuccess ? (
-              <div className="text-green-500 flex items-center justify-center">
+              <div className="text-green-500 flex flex-col items-center justify-center">
                 <LuCheck className="text-2xl" />
                 <span className="text-center">Email Successfully Verified!</span>
                 <span className="text-center">Hold on a moment. You&apos;ll be directed to the next stage.</span>

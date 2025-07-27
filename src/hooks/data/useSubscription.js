@@ -1,6 +1,8 @@
 import { useQueries } from "@tanstack/react-query";
-import { globalOptions } from "../../config/tanstack";
+
 import { apiGet } from "@/src/services/api/api_service";
+
+import { globalOptions } from "../../config/tanstack";
 
 const getSubscriptions = async (type) => {
   const endpoint = `/user-subscriptions?type=${type}`;
