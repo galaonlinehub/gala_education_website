@@ -15,8 +15,6 @@ import { roleRedirects } from "@/src/utils/data/redirect";
 import { login } from "@/src/utils/fns/auth";
 import { preventCopyPaste } from "@/src/utils/fns/general";
 import { getUser } from "@/src/utils/fns/global";
-
-
 import LoginVectorSvg from "@/src/utils/vector-svg/sign-in/LoginVectorSvg";
 
 

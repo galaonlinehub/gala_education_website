@@ -1,4 +1,5 @@
 "use client";
+import { Tooltip } from "antd";
 import clsx from "clsx";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
@@ -12,19 +13,15 @@ import { PartnerSchool } from "@/src/components/student/PartnerSchool";
 import StudentSearch from "@/src/components/student/Search";
 import { FloatingActionButton } from "@/src/components/ui/Fab";
 import StickyNotification from "@/src/components/ui/notification/StickyNotification";
+import { useUser } from "@/src/hooks/data/useUser";
 import useInstallPrompt from "@/src/hooks/misc/useInstallPrompt";
 import { useStickyNotification } from "@/src/store/notification/notification";
 import { student_links } from "@/src/utils/data/navigation_links";
 import Clock from "@/src/utils/vector-svg/vectors/Clock";
 import RightTiltedBook from "@/src/utils/vector-svg/vectors/CombinedBlock";
-
 import KidInPicture from "@/src/utils/vector-svg/vectors/KidInPicture";
 import StudentsInClass from "@/src/utils/vector-svg/vectors/StudentsInClass";
 
-import StickyNotification from "@/src/components/ui/notification/StickyNotification";
-import { useStickyNotification } from "@/src/store/notification/notification";
-import { useUser } from "@/src/hooks/data/useUser";
-import { Tooltip } from "antd";
 
 export default function StudentLayout({ children }) {
   const { installPrompt, isInstalled, handleInstallClick } = useInstallPrompt();

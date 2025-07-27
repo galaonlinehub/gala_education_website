@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { FaBell, FaUserCircle } from "react-icons/fa";
+
 import "../globals.css";
+import { Tooltip } from "antd";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -10,8 +10,8 @@ import Navbar from "@/src/components/layout/Navbar";
 import Subscribe from "@/src/components/pay/Subscribe";
 import StudentSearch from "@/src/components/student/Search";
 import InstructorCompleteProfile from "@/src/components/teacher/InstructorCompleteProfile";
-import { FloatingActionButton } from "@/src/components/ui/Fab";
 import StickyNotification from "@/src/components/ui/notification/StickyNotification";
+import { useUser } from "@/src/hooks/data/useUser";
 import useInstallPrompt from "@/src/hooks/misc/useInstallPrompt";
 import { useStickyNotification } from "@/src/store/notification/notification";
 import { teacher_links } from "@/src/utils/data/navigation_links";
@@ -20,14 +20,6 @@ import RightTiltedBook from "@/src/utils/vector-svg/vectors/CombinedBlock";
 import KidInPicture from "@/src/utils/vector-svg/vectors/KidInPicture";
 import StudentsInClass from "@/src/utils/vector-svg/vectors/StudentsInClass";
 
-import { teacher_links } from "@/src/utils/data/navigation_links";
-import Subscribe from "@/src/components/Pay/Subscribe";
-import StudentSearch from "@/src/components/student/Search";
-import InstructorCompleteProfile from "@/src/components/teacher/InstructorCompleteProfile";
-import StickyNotification from "@/src/components/ui/notification/StickyNotification";
-import { useStickyNotification } from "@/src/store/notification/notification";
-import { useUser } from "@/src/hooks/data/useUser";
-import { Tooltip } from "antd";
 
 export default function TeacherLayout({ children }) {
   const pathname = usePathname();
