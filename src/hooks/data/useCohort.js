@@ -61,7 +61,7 @@ export const getSpecificCohortFn = async (cohortId) => {
   try {
     const r = await apiGet(`cohorts/${cohortId}`);
     if (r.status === 200) {
-      return r.data.data;
+      return r.data;
     }
     throw new Error("Failed to fetch cohorts");
   } catch (e) {

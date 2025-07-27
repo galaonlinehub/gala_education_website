@@ -28,5 +28,5 @@ export const useEnroll = () => {
 
 const getEnrollMeCohort = async (idx) => {
   const res = await apiGet(`cohorts/${idx}`);
-  return res.data.data;
+  return res.data;
 };

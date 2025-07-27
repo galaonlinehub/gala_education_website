@@ -14,7 +14,7 @@ const getUpcomingLessons = async () => {
 export const useUpcomingLessons = () => {
   const {
     data = [],
-    isFetching,
+    isPending,
     isLoading,
   } = useQuery({
     queryKey: ["upcoming-lessons"],
@@ -24,7 +24,7 @@ export const useUpcomingLessons = () => {
 
   return {
     upcomingLessons: data,
-    isFetchingUpcomingLessons: isFetching,
+    isFetchingUpcomingLessons: isPending,
     isLoadingUpcomingLessons: isLoading,
   };
 };

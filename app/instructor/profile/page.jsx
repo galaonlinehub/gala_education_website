@@ -85,8 +85,10 @@ const TeacherProfile = () => {
 
   const certifications = [
     "Ordinary level Education Certificate",
-    "Advanced level Education Certificate"
+    // "Advanced level Education Certificate"
   ];
+
+  console.log("USER :...", user)
 
   // Track window width for responsive design
   React.useEffect(() => {
