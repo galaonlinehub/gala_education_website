@@ -121,7 +121,7 @@ const SearchResultCard = ({ data, onClick }) => {
           </div>
 
           {/* Content */}
-          <div className="p-6">
+          <div className="p-3 sm:p-6">
             <div className="space-y-3">
               {teachers.map(
                 (
@@ -138,12 +138,12 @@ const SearchResultCard = ({ data, onClick }) => {
                       y: 0,
                       transition: { delay: index * 0.1 },
                     }}
-                    className="group w-full hover:bg-gray-100 rounded-lg p-4 
-                           border border-gray-200 hover:border-black hover:shadow-sm
-                           transition-all duration-300 cursor-pointer"
+                    className="group w-full hover:bg-gray-100 rounded-lg p-3 sm:p-4 
+                     border border-gray-200 hover:border-black hover:shadow-sm
+                     transition-all duration-300 cursor-pointer"
                     onClick={() => onClick({ id, type })}
                   >
-                    <div className="flex items-center gap-4 w-full pl-3">
+                    <div className="flex items-center gap-3 sm:gap-4 w-full pl-1 sm:pl-3">
                       <div className="flex-shrink-0">
                         <Avatar
                           src={
@@ -152,8 +152,8 @@ const SearchResultCard = ({ data, onClick }) => {
                               : undefined
                           }
                           icon={<LuUser color="black" />}
-                          className="w-14 h-14 border-[0.8px] hover:border-2 border-gray-300 group-hover:border-black 
-                                   transition-colors duration-300"
+                          className="w-12 h-12 sm:w-14 sm:h-14 border-[0.8px] hover:border-2 border-gray-300 group-hover:border-black 
+                           transition-colors duration-300"
                         />
                       </div>
 
@@ -164,27 +164,27 @@ const SearchResultCard = ({ data, onClick }) => {
                             {/* Name */}
                             <h3
                               className="font-semibold text-gray-900 group-hover:text-black 
-                                       text-lg leading-tight capitalize mb-1"
+                             text-base sm:text-lg leading-tight capitalize mb-1"
                             >
                               {name}
                             </h3>
 
                             {/* Subjects */}
-                            <div className="text-sm text-gray-600">
+                            <div className="text-xs sm:text-sm text-gray-600">
                               {subjects && subjects.length > 0 ? (
                                 <div className="flex flex-wrap gap-1">
-                                  {subjects.slice(0, 4).map((subject, i) => (
+                                  {subjects.slice(0, window.innerWidth < 640 ? 2 : 4).map((subject, i) => (
                                     <span
                                       key={i}
                                       className="inline-block bg-white border-[0.8px] border-gray-300 group-hover:border-gray-400
-                                             px-2 py-1 rounded text-xs capitalize transition-colors duration-300"
+                                     px-1.5 py-0.5 sm:px-2 sm:py-1 rounded text-xs capitalize transition-colors duration-300"
                                     >
                                       {subject}
                                     </span>
                                   ))}
-                                  {subjects.length > 4 && (
-                                    <span className="inline-block bg-black text-white px-2 py-1 rounded text-xs">
-                                      +{subjects.length - 4} more
+                                  {subjects.length > (window.innerWidth < 640 ? 2 : 4) && (
+                                    <span className="inline-block bg-black text-white px-1.5 py-0.5 sm:px-2 sm:py-1 rounded text-xs">
+                                      +{subjects.length - (window.innerWidth < 640 ? 2 : 4)} more
                                     </span>
                                   )}
                                 </div>
@@ -198,13 +198,13 @@ const SearchResultCard = ({ data, onClick }) => {
 
                           {/* Action Indicator */}
                           <div
-                            className="flex items-center ml-4 opacity-0 group-hover:opacity-100 
-                                      transition-opacity duration-300 flex-shrink-0"
+                            className="flex items-center ml-2 sm:ml-4 opacity-0 group-hover:opacity-100 
+                            transition-opacity duration-300 flex-shrink-0"
                           >
                             <div className="text-right">
                               <div className="text-xs text-black font-medium flex items-center gap-1">
-                                <span>View Profile</span>
-                                <LuChevronRight />
+                                <span className="hidden sm:inline">View Profile</span>
+                                <LuChevronRight className="w-4 h-4" />
                               </div>
                             </div>
                           </div>

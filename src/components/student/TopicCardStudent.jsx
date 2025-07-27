@@ -17,6 +17,7 @@ import { BsStar, BsStarFill } from "react-icons/bs";
 import { LuChevronRight, LuListChecks, LuStar, LuUsers } from "react-icons/lu";
 import { PiStarBold, PiStarFill, PiStarLight } from "react-icons/pi";
 
+import { img_base_url } from "@/src/config/settings";
 import { apiPost } from "@/src/services/api/api_service";
 
 
@@ -65,7 +66,10 @@ const TopicCard = ({ details, detailsLink }) => {
             <div className="flex items-center gap-2">
               <Avatar
                 className="!bg-transparent/90"
-                src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${details.instructor}`}
+                src={
+                  `${img_base_url}${details?.instructor_profile_picture}` ||
+                  undefined
+                }
               />
               <span className="text-sm font-medium line-clamp-1 capitalize">
                 {details.instructor_name}
@@ -123,7 +127,7 @@ const TopicCard = ({ details, detailsLink }) => {
         </div>
 
 
-        
+
       </Card>
     </>
   );
