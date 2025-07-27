@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
-import { sessionStorageFn } from '@/src/utils/fns/client';
 import { LuCalendar, LuClock, LuInfo } from 'react-icons/lu';
+
+import { sessionStorageFn } from '@/src/utils/fns/client';
+
 
 export default function CountdownTimer() {
     const [timeLeft, setTimeLeft] = useState({

@@ -1,8 +1,10 @@
 "use client";
 
+import { LoadingOutlined } from "@ant-design/icons";
 import { Avatar, Button, Card, Collapse, Modal, Segmented, Tag } from "antd";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { FaVideoSlash } from "react-icons/fa6";
 import {
   LuCalendar,
   LuClock,
@@ -20,8 +22,7 @@ import { useLesson } from "@/src/hooks/data/useLesson";
 import { useUpcomingLessons } from "@/src/hooks/data/useUpcomigLessons";
 import { useUser } from "@/src/hooks/data/useUser";
 import { sessionStorageFn } from "@/src/utils/fns/client";
-import { LoadingOutlined } from "@ant-design/icons";
-import { FaVideoSlash } from "react-icons/fa6";
+
 
 const { Panel } = Collapse;
 
