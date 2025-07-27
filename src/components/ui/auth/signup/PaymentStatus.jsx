@@ -111,7 +111,6 @@ export const RenderSuccessState = ({
   onClose,
   accountType,
   setStatus,
-
   queryClient,
   user,
 }) => {
