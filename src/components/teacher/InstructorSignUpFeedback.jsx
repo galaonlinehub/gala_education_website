@@ -1,6 +1,7 @@
-import InstructorSignUpFeedbackSvg from "@/src/utils/vector-svg/sign-up/InstructorSignUpFeedbackSvg";
 import { Button } from "antd";
 import { useRouter } from "next/navigation";
+
+import InstructorSignUpFeedbackSvg from "@/src/utils/vector-svg/sign-up/InstructorSignUpFeedbackSvg";
 
 const InstructorSignUpFeedback = ({ onClose }) => {
   const router = useRouter();

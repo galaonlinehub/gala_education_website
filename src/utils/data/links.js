@@ -1,9 +1,9 @@
-import { LiaSchoolSolid } from "react-icons/lia";
 import { FaBook, FaNewspaper, FaPeopleRoof, FaUsers } from "react-icons/fa6";
 import { GoHome } from "react-icons/go";
 import { GrDocumentStore } from "react-icons/gr";
-import {  MdEventAvailable, MdPayment } from "react-icons/md";
 import { IoDiamond } from "react-icons/io5";
+import { LiaSchoolSolid } from "react-icons/lia";
+import {  MdEventAvailable, MdPayment } from "react-icons/md";
 
 export const footer_links = {
   Services: [

@@ -1,9 +1,11 @@
 "use client";
 
-import TemplateLoader from "../ui/loading/template/TemplateLoader";
-import { useUser } from "@/src/hooks/data/useUser";
 import { useEffect } from "react";
+
+import { useUser } from "@/src/hooks/data/useUser";
 import { useLoading } from "@/src/store/loading";
+
+import TemplateLoader from "../ui/loading/template/TemplateLoader";
 
 const ClientWrapper = ({ children }) => {
   const { userLoading, userError } = useUser();

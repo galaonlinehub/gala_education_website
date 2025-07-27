@@ -1,6 +1,7 @@
 "use client";
-import { MAIN_EMAIL, SUPPORT_DESK } from "@/src/config/settings";
 import React, { useState } from "react";
+
+import { MAIN_EMAIL, SUPPORT_DESK } from "@/src/config/settings";
 
 const TermsAndPrivacyPreview = () => {
   const [activeTab, setActiveTab] = useState("terms");

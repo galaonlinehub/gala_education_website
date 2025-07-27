@@ -1,23 +1,43 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-
-import { Layout, Card, Typography, Space, Modal, Form, Input, Button, Row, Col, Select, Statistic, Avatar, Tag, Table, Upload, message, Skeleton, Flex, Empty, Badge, Divider, Tooltip } from "antd";
-import { UserOutlined, CameraOutlined, BookOutlined, ClockCircleOutlined, CalendarOutlined, TeamOutlined, PlusOutlined, LoadingOutlined, RightOutlined, TrophyOutlined, FireOutlined } from "@ant-design/icons";
-
+import { PlusOutlined, RightOutlined } from "@ant-design/icons";
+import {
+  Layout,
+  Card,
+  Typography,
+  Modal,
+  Form,
+  Input,
+  Button,
+  Row,
+  Col,
+  Table,
+  Skeleton,
+  Empty,
+  Badge,
+  Tooltip,
+} from "antd";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { apiGet, apiPost } from "@/src/services/api/api_service";
+import { useState, useRef } from "react";
+import {
+  LuBook,
+  LuUsers,
+  LuGraduationCap,
+  LuCalendar,
+} from "react-icons/lu";
+import { MdOutlineRateReview } from "react-icons/md";
+
+import TableSkeleton from "@/src/components/teacher/TableSkeleton";
+import { useCohort } from "@/src/hooks/data/useCohort";
+import { useInstructorCohorts } from "@/src/hooks/data/useInstructorCohorts";
+import { useInstructorSubjects } from "@/src/hooks/data/useInstructorSubjects";
 import { useUser } from "@/src/hooks/data/useUser";
 import { useDevice } from "@/src/hooks/misc/useDevice";
-import { useInstructorSubjects } from "@/src/hooks/data/useInstructorSubjects";
-import { useInstructorCohorts } from "@/src/hooks/data/useInstructorCohorts";
-import { useCohort } from "@/src/hooks/data/useCohort";
+import { apiPost } from "@/src/services/api/api_service";
 import { encrypt } from "@/src/utils/fns/encryption";
+
 import ClassCreationWizard from "./create-class/CreateClass";
-import TableSkeleton from "@/src/components/teacher/TableSkeleton";
-import { LuBook, LuUser, LuUsers, LuGraduationCap, LuClock, LuCalendar } from "react-icons/lu";
-import { MdOutlineRateReview } from "react-icons/md";
 
 const { Title, Text, Paragraph } = Typography;
 const { Content } = Layout;
@@ -57,13 +77,15 @@ export default function TeacherClasses() {
       dataIndex: "class",
       key: "subject",
       width: device?.type === "mobile" ? 150 : 250,
-      fixed: device?.type === "mobile" ? 'left' : false,
+      fixed: device?.type === "mobile" ? "left" : false,
       render: (text) => (
         <div className="flex items-center space-x-2">
           <div className="w-6 h-6 md:w-8 md:h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
             <LuBook className="text-blue-600 text-xs md:text-sm" />
           </div>
-          <Text strong className="text-gray-800 text-xs md:text-sm truncate">{text}</Text>
+          <Text strong className="text-gray-800 text-xs md:text-sm truncate">
+            {text}
+          </Text>
         </div>
       ),
     },
@@ -77,7 +99,9 @@ export default function TeacherClasses() {
           <div className="w-5 h-5 md:w-6 md:h-6 bg-green-100 rounded-full flex items-center justify-center">
             <LuCalendar className="text-green-600 text-xs" />
           </div>
-          <Text className="text-xs text-gray-600 text-center leading-tight">{date}</Text>
+          <Text className="text-xs text-gray-600 text-center leading-tight">
+            {date}
+          </Text>
         </div>
       ),
     },
@@ -91,7 +115,9 @@ export default function TeacherClasses() {
           <div className="w-5 h-5 md:w-6 md:h-6 bg-red-100 rounded-full flex items-center justify-center">
             <LuCalendar className="text-red-600 text-xs" />
           </div>
-          <Text className="text-xs text-gray-600 text-center leading-tight">{date}</Text>
+          <Text className="text-xs text-gray-600 text-center leading-tight">
+            {date}
+          </Text>
         </div>
       ),
     },
@@ -111,7 +137,7 @@ export default function TeacherClasses() {
       title: "Action",
       key: "action",
       width: device?.type === "mobile" ? 60 : 120,
-      fixed: device?.type === "mobile" ? 'right' : false,
+      fixed: device?.type === "mobile" ? "right" : false,
       render: (_, record) => (
         <Button
           type="text"
@@ -119,12 +145,16 @@ export default function TeacherClasses() {
           className="text-blue-600 hover:bg-blue-50 font-medium px-1"
           onClick={() => gotoCohortDetails(record.cohortId)}
         >
-          {device?.type === "mobile" ? <RightOutlined /> : (
-            <>View <RightOutlined className="text-xs ml-1" /></>
+          {device?.type === "mobile" ? (
+            <RightOutlined />
+          ) : (
+            <>
+              View <RightOutlined className="text-xs ml-1" />
+            </>
           )}
         </Button>
       ),
-    }
+    },
   ];
 
   const handleOtpChange = (index, value) => {
@@ -171,7 +201,7 @@ export default function TeacherClasses() {
   const getTableSettings = () => ({
     scroll: {
       x: device?.type === "mobile" ? 440 : false,
-      y: device?.type === "mobile" ? 300 : false
+      y: device?.type === "mobile" ? 300 : false,
     },
     pagination: {
       simple: device?.type === "mobile",
@@ -191,38 +221,60 @@ export default function TeacherClasses() {
     <>
       <Layout className="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
         <Content className="p-4 md:p-8">
-          <div className={`max-w-7xl mx-auto space-y-6 ${!isProfileCompleted ? "pointer-events-none opacity-30" : ""}`}>
-
+          <div
+            className={`max-w-7xl mx-auto space-y-6 ${
+              !isProfileCompleted ? "pointer-events-none opacity-30" : ""
+            }`}
+          >
             {/* Header Section */}
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
               <div className="bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-8 md:px-8 md:py-12">
                 <Row align="middle" gutter={[24, 24]}>
                   <Col xs={24} lg={16}>
                     <div className="text-white">
-                      <Title level={device?.type === "mobile" ? 3 : 2} className="!text-white !mb-2">
-                        Welcome back, <span className="capitalize">{user?.first_name}! 👋</span>
+                      <Title
+                        level={device?.type === "mobile" ? 3 : 2}
+                        className="!text-white !mb-2"
+                      >
+                        Welcome back,{" "}
+                        <span className="capitalize">
+                          {user?.first_name}! 👋
+                        </span>
                       </Title>
                       <Paragraph className="!text-blue-100 text-lg !mb-6">
-                        Ready to inspire minds and shape futures? Your digital classroom awaits your expertise.
+                        Ready to inspire minds and shape futures? Your digital
+                        classroom awaits your expertise.
                       </Paragraph>
 
                       <Row gutter={[24, 16]} className="mt-6">
                         <Col xs={12} sm={8}>
                           <div className="text-center">
-                            <div className="text-3xl font-bold text-white">{user?.active_cohorts || 0}</div>
-                            <div className="text-blue-200 text-sm">Active Classes</div>
+                            <div className="text-3xl font-bold text-white">
+                              {user?.active_cohorts || 0}
+                            </div>
+                            <div className="text-blue-200 text-sm">
+                              Active Classes
+                            </div>
                           </div>
                         </Col>
                         <Col xs={12} sm={8}>
                           <div className="text-center">
-                            <div className="text-3xl font-bold text-white">{user?.student_count || 0}</div>
-                            <div className="text-blue-200 text-sm">Total Students</div>
+                            <div className="text-3xl font-bold text-white">
+                              {user?.student_count || 0}
+                            </div>
+                            <div className="text-blue-200 text-sm">
+                              Total Students
+                            </div>
                           </div>
                         </Col>
                         <Col xs={12} sm={8}>
                           <div className="text-center">
-                            <div className="text-3xl font-bold text-white">{user?.teaching_hours || 0}</div>
-                            <div className="text-blue-200 text-sm">Teaching Hours</div>
+                            <div className="text-3xl font-bold text-white">
+                              {user?.teaching_hours || 0}
+                            </div>
+                            <div className="text-blue-200 text-sm">
+                              Teaching Hours
+                            </div>
                           </div>
                         </Col>
                       </Row>
@@ -247,24 +299,36 @@ export default function TeacherClasses() {
               <Col xs={24} sm={12} lg={12}>
                 <Card
                   className="h-full hover:shadow-md transition-all duration-300 border-0 bg-gradient-to-br from-green-50 to-emerald-50"
-                  styles={{ body: { padding: '20px', height: '100%' } }}
+                  styles={{ body: { padding: "20px", height: "100%" } }}
                 >
                   <div className="flex flex-col h-full justify-between text-center">
                     <div>
                       <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
                         <PlusOutlined className="text-green-600 text-lg" />
                       </div>
-                      <Title level={5} className="!mb-2">Create Class</Title>
+                      <Title level={5} className="!mb-2">
+                        Create Class
+                      </Title>
                       <Text type="secondary" className="text-sm">
                         Start new learning sessions by creating a new class
                       </Text>
                     </div>
                     <div className="pt-4">
-                      <Tooltip title={hasFreeTrail ? 'This is only available in Premium' : ''} >
+                      <Tooltip
+                        title={
+                          hasFreeTrail
+                            ? "This is only available in Premium"
+                            : ""
+                        }
+                      >
                         <Button
                           disabled={hasFreeTrail}
                           type="default"
-                          className={`${hasFreeTrail ? '!text-black hover:!text-black hover:bg-green-300' : ''} w-full border-green-400 hover:bg-green-700`}
+                          className={`${
+                            hasFreeTrail
+                              ? "!text-black hover:!text-black hover:bg-green-300"
+                              : ""
+                          } w-full border-green-400 hover:bg-green-700`}
                           onClick={handleAddNew}
                         >
                           Add New Class
@@ -278,24 +342,36 @@ export default function TeacherClasses() {
               <Col xs={24} sm={12} lg={12}>
                 <Card
                   className="h-full hover:shadow-md transition-all duration-300 border-0 bg-gradient-to-br from-orange-50 to-amber-50"
-                  styles={{ body: { padding: '20px', height: '100%' } }}
+                  styles={{ body: { padding: "20px", height: "100%" } }}
                 >
                   <div className="flex flex-col h-full justify-between text-center">
                     <div>
                       <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3">
                         <MdOutlineRateReview className="text-orange-600 text-lg" />
                       </div>
-                      <Title level={5} className="!mb-2">Students&apos; Reviews</Title>
+                      <Title level={5} className="!mb-2">
+                        Students&apos; Reviews
+                      </Title>
                       <Text type="secondary" className="text-sm">
                         See what Students have to say about you
                       </Text>
                     </div>
                     <div className="pt-4">
-                      <Tooltip title={hasFreeTrail ? 'This is only available in Premium' : ''} >
+                      <Tooltip
+                        title={
+                          hasFreeTrail
+                            ? "This is only available in Premium"
+                            : ""
+                        }
+                      >
                         <Button
                           type="default"
                           disabled={hasFreeTrail}
-                          className={`${hasFreeTrail ? '!text-black hover:!text-black hover:bg-orange-300' : ''} w-full border-orange-300 text-orange-600 hover:border-orange-400`}
+                          className={`${
+                            hasFreeTrail
+                              ? "!text-black hover:!text-black hover:bg-orange-300"
+                              : ""
+                          } w-full border-orange-300 text-orange-600 hover:border-orange-400`}
                           onClick={() => router.push(`/${user?.role}/reviews`)}
                         >
                           View Reviews
@@ -307,8 +383,6 @@ export default function TeacherClasses() {
               </Col>
             </Row>
 
-
-
             <Row gutter={[24, 24]}>
               {/* Your Subjects */}
               <Col xs={24} xl={10}>
@@ -318,11 +392,15 @@ export default function TeacherClasses() {
                       <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
                         <LuBook className="text-blue-600" />
                       </div>
-                      <div className="text-sm md:text-lg !mb-0">Your Subjects</div>
+                      <div className="text-sm md:text-lg !mb-0">
+                        Your Subjects
+                      </div>
                     </div>
                   }
                   className="h-full shadow-sm border-0"
-                  bodyStyle={{ padding: device?.type === "mobile" ? '16px' : '24px' }}
+                  bodyStyle={{
+                    padding: device?.type === "mobile" ? "16px" : "24px",
+                  }}
                 >
                   {isInstructorSubjectsPending ? (
                     <div className="space-y-3">
@@ -363,7 +441,9 @@ export default function TeacherClasses() {
                         <div className="text-center py-8">
                           <Text type="secondary">No subjects assigned yet</Text>
                           <br />
-                          <Text type="secondary" className="text-sm">Your teaching subjects will appear here</Text>
+                          <Text type="secondary" className="text-sm">
+                            Your teaching subjects will appear here
+                          </Text>
                         </div>
                       }
                       image={Empty.PRESENTED_IMAGE_SIMPLE}
@@ -381,15 +461,21 @@ export default function TeacherClasses() {
                         <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
                           <LuGraduationCap className="text-green-600" />
                         </div>
-                        <div className="text-sm md:text-lg !mb-0">Your Classes</div>
+                        <div className="text-sm md:text-lg !mb-0">
+                          Your Classes
+                        </div>
                       </div>
 
                       <div className="flex items-center space-x-2">
                         {InstructorCohorts?.length > 0 && (
                           <Button
                             type="text"
-                            size={device?.type === "mobile" ? "small" : "middle"}
-                            onClick={() => router.push("/instructor/all-classes")}
+                            size={
+                              device?.type === "mobile" ? "small" : "middle"
+                            }
+                            onClick={() =>
+                              router.push("/instructor/all-classes")
+                            }
                             className="text-blue-600 hover:bg-blue-50 font-medium"
                           >
                             View All <RightOutlined className="text-xs ml-1" />
@@ -399,7 +485,9 @@ export default function TeacherClasses() {
                     </div>
                   }
                   className="h-full shadow-sm border-0"
-                  bodyStyle={{ padding: device?.type === "mobile" ? '16px' : '24px' }}
+                  bodyStyle={{
+                    padding: device?.type === "mobile" ? "16px" : "24px",
+                  }}
                 >
                   {isInstructorCohortsPending ? (
                     <TableSkeleton />
@@ -420,10 +508,20 @@ export default function TeacherClasses() {
                       description={
                         <div className="text-center py-12">
                           <LuGraduationCap className="text-4xl text-gray-300 mx-auto mb-4" />
-                          <Title level={5} type="secondary">No classes yet</Title>
-                          <Text type="secondary">Create your first class to get started</Text>
+                          <Title level={5} type="secondary">
+                            No classes yet
+                          </Title>
+                          <Text type="secondary">
+                            Create your first class to get started
+                          </Text>
                           <br />
-                          <Tooltip title={hasFreeTrail ? 'This is only available in Premium' : ''} >
+                          <Tooltip
+                            title={
+                              hasFreeTrail
+                                ? "This is only available in Premium"
+                                : ""
+                            }
+                          >
                             <Button
                               type="primary"
                               disabled={hasFreeTrail}
@@ -448,8 +546,12 @@ export default function TeacherClasses() {
           <Modal
             title={
               <div className="text-center">
-                <Title level={4} className="!mb-2">Verify Your Phone</Title>
-                <Text type="secondary">Enter the 6-digit code sent to your phone</Text>
+                <Title level={4} className="!mb-2">
+                  Verify Your Phone
+                </Title>
+                <Text type="secondary">
+                  Enter the 6-digit code sent to your phone
+                </Text>
               </div>
             }
             open={showOtpModal}
@@ -476,7 +578,12 @@ export default function TeacherClasses() {
               </div>
 
               <div className="flex justify-between items-center">
-                <Button type="text" size="large" onClick={handleResendCode} className="text-blue-600">
+                <Button
+                  type="text"
+                  size="large"
+                  onClick={handleResendCode}
+                  className="text-blue-600"
+                >
                   Resend Code
                 </Button>
                 <Button
@@ -492,9 +599,12 @@ export default function TeacherClasses() {
             </div>
           </Modal>
         </Content>
-      </Layout >
+      </Layout>
 
-      <ClassCreationWizard openAddNewClass={openAddNewClass} setOpenAddNewClass={setOpenAddNewClass} />
+      <ClassCreationWizard
+        openAddNewClass={openAddNewClass}
+        setOpenAddNewClass={setOpenAddNewClass}
+      />
 
       <style jsx global>{`
         .custom-table .ant-table-thead > tr > th {
@@ -505,40 +615,40 @@ export default function TeacherClasses() {
           padding: 8px 12px;
           font-size: 12px;
         }
-        
+
         .custom-table .ant-table-tbody > tr > td {
           border-bottom: 1px solid #f1f5f9;
           padding: 12px 8px;
         }
-        
+
         .custom-table .ant-table-tbody > tr:hover > td {
           background: #f8fafc !important;
         }
-        
+
         @media (max-width: 768px) {
           .custom-table .ant-table-thead > tr > th {
             padding: 6px 4px;
             font-size: 11px;
           }
-          
+
           .custom-table .ant-table-tbody > tr > td {
             padding: 8px 4px;
           }
-          
+
           .custom-table .ant-table-container {
             border-radius: 8px;
           }
-          
+
           .custom-table .ant-table-content {
             border-radius: 8px;
           }
         }
-        
+
         .ant-table-wrapper {
           border-radius: 12px;
           overflow: hidden;
         }
-        
+
         .ant-table-container {
           border-radius: 12px;
         }

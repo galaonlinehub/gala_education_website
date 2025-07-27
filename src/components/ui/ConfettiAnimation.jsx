@@ -1,7 +1,7 @@
 'use client';
 
-import { useRef, useEffect } from 'react';
 import confetti from 'canvas-confetti';
+import { useRef, useEffect } from 'react';
 
 export default function ConfettiButton() {
   const canvasRef = useRef(null); // ✅ Initialize with null, not 0

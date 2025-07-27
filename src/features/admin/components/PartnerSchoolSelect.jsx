@@ -1,7 +1,8 @@
 "use client";
 import { Select, Spin } from "antd";
-import { useState, useMemo, useCallback, useEffect } from "react";
 import debounce from "lodash.debounce";
+import { useState, useMemo, useCallback, useEffect } from "react";
+
 import { getPartnerSchools, usePaginationQuery } from "@/src/features/admin";
 
 const PartnerSchoolSelect = ({value,onChange}) => {

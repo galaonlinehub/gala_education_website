@@ -1,11 +1,9 @@
-import { useState, useEffect, useMemo } from "react";
-import { Result, Modal, Progress } from "antd";
-import { PaymentStatus, SUPPORT_EMAIL } from "@/src/config/settings";
 import { CloseCircleOutlined } from "@ant-design/icons";
+import { useQueryClient } from "@tanstack/react-query";
+import { Result, Modal, Progress } from "antd";
+import { usePathname } from "next/navigation";
+import { useState, useEffect, useMemo } from "react";
 import { HiMiniDevicePhoneMobile } from "react-icons/hi2";
-import { useDevice } from "@/src/hooks/misc/useDevice";
-import InstructorSignUpFeedback from "@/src/components/teacher/InstructorSignUpFeedback";
-import SlickSpinner from "../../loading/template/SlickSpinner";
 import {
   LuCircleCheckBig,
   LuHash,
@@ -13,11 +11,18 @@ import {
   LuShieldCheck,
   LuWallet,
 } from "react-icons/lu";
-import { useAccountType } from "@/src/store/auth/signup";
-import { usePathname } from "next/navigation";
-import { useUser } from "@/src/hooks/data/useUser";
+
 import { Contact } from "@/src/components/layout/Contact";
-import { useQueryClient } from "@tanstack/react-query";
+import InstructorSignUpFeedback from "@/src/components/teacher/InstructorSignUpFeedback";
+import { PaymentStatus, SUPPORT_EMAIL } from "@/src/config/settings";
+import { useUser } from "@/src/hooks/data/useUser";
+import { useDevice } from "@/src/hooks/misc/useDevice";
+import { useAccountType } from "@/src/store/auth/signup";
+
+import SlickSpinner from "../../loading/template/SlickSpinner";
+
+
+
 
 export const RenderLoadingState = ({ setStatus }) => {
   const [percent, setPercent] = useState(0);

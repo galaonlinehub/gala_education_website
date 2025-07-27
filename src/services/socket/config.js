@@ -1,5 +1,6 @@
-import { socket_base_url } from "@/src/config/settings";
 import { io } from "socket.io-client";
+
+import { socket_base_url } from "@/src/config/settings";
 
 export const state = {
   connections: new Map(),

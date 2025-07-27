@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+
 import { globalOptions } from "../../config/tanstack";
 import { getTopics } from "../../utils/fns/topic";
 

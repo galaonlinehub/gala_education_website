@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+
 import { detectDevice } from "@/src/utils/fns/detect-device";
 
 export const useDevice = () => {

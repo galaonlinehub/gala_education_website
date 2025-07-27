@@ -1,6 +1,8 @@
 import { useEffect } from "react";
-import notificationService from "../ui/notification/Notification";
+
 import { api } from "@/src/services/api/api_service";
+
+import notificationService from "../ui/notification/Notification";
 
 const NetworkMonitor = () => {
   useEffect(() => {

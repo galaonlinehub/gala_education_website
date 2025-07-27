@@ -1,15 +1,18 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import io from "socket.io-client";
+
 import { PaymentStatus } from "@/src/config/settings";
+import { useUser } from "@/src/hooks/data/useUser";
+import { useEnrollMe, useEnrollPay } from "@/src/store/student/useEnrollMe";
+
 import {
   RenderSuccessState,
   RenderLoadingState,
   RenderReferenceState,
   RenderFailureState,
 } from "../ui/auth/signup/PaymentStatus";
-import { useEnrollMe, useEnrollPay } from "@/src/store/student/useEnrollMe";
-import { useUser } from "@/src/hooks/data/useUser";
-import io from "socket.io-client";
-import { useQueryClient } from "@tanstack/react-query";
+
 
 export const ConfirmEnrollPay = () => {
   const { setEnrollPayStatus, reference, enrollPayStatus } = useEnrollPay();

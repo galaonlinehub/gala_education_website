@@ -1,10 +1,12 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef, useState } from "react";
+
+import { globalOptions } from "@/src/config/tanstack";
 import { apiGet } from "@/src/services/api/api_service";
 import { useNewClass } from "@/src/store/student/class";
+
 import { useSearchResult } from "../../store/search_result";
-import { globalOptions } from "@/src/config/tanstack";
 
 export const useSearch = () => {
   // State management

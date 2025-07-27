@@ -1,5 +1,22 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import {
+  CalendarOutlined,
+  ClockCircleOutlined,
+  TeamOutlined,
+  TrophyOutlined,
+  DollarOutlined,
+  InfoCircleOutlined,
+  UserOutlined,
+  ScheduleOutlined,
+  SaveOutlined,
+  EditOutlined,
+  SearchOutlined,
+  MailOutlined,
+  CheckCircleOutlined,
+  CloseCircleOutlined,
+  MoneyCollectOutlined,
+  LoadingOutlined,
+} from "@ant-design/icons";
 import {
   Card,
   Progress,
@@ -26,35 +43,19 @@ import {
   Spin,
   Empty,
 } from "antd";
-import {
-  CalendarOutlined,
-  ClockCircleOutlined,
-  TeamOutlined,
-  TrophyOutlined,
-  DollarOutlined,
-  InfoCircleOutlined,
-  UserOutlined,
-  ScheduleOutlined,
-  SaveOutlined,
-  EditOutlined,
-  SearchOutlined,
-  MailOutlined,
-  CheckCircleOutlined,
-  CloseCircleOutlined,
-  MoneyCollectOutlined,
-  LoadingOutlined,
-} from "@ant-design/icons";
-import { FcCalendar } from "react-icons/fc";
-import { MdOutlineFileUpload } from "react-icons/md";
-import { FaMoneyBillWave } from "react-icons/fa";
 import dayjs from "dayjs";
 import { useParams } from "next/navigation";
-import { decrypt } from "@/src/utils/fns/encryption";
-import { getSpecificCohortFn } from "@/src/hooks/data/useCohort";
-import { useUser } from "@/src/hooks/data/useUser";
+import React, { useEffect, useState } from "react";
+import { FaMoneyBillWave } from "react-icons/fa";
+import { FcCalendar } from "react-icons/fc";
+import { MdOutlineFileUpload } from "react-icons/md";
+
 import CohortDetailsSkeleton from "@/src/components/teacher/CohortDetailsSkeleton";
 import { img_base_url } from "@/src/config/settings";
+import { getSpecificCohortFn } from "@/src/hooks/data/useCohort";
 import { useCohortEnrolledStudents } from "@/src/hooks/data/useCohortEnrolledStudents";
+import { useUser } from "@/src/hooks/data/useUser";
+import { decrypt } from "@/src/utils/fns/encryption";
 
 const { Title, Text, Paragraph } = Typography;
 const { Option } = Select;

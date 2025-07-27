@@ -1,6 +1,6 @@
 import { CloseCircleFilled } from '@ant-design/icons';
-import { useState, useEffect, useRef } from 'react';
 import confetti from 'canvas-confetti';
+import { useState, useEffect, useRef } from 'react';
 
 export default function DonationSuccess({setCloseSuccessModal}) {
     const [showConfetti, setShowConfetti] = useState(false);

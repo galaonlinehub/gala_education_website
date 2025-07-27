@@ -1,5 +1,3 @@
-"use client";
-
 import { create } from "zustand";
 const useEnrollMe = create((set) => ({
   enrollMe: false,

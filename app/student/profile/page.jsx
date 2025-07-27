@@ -1,9 +1,8 @@
 "use client";
-import React, { useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Avatar, Input, Form, Button, message, Tooltip } from "antd";
-import { useUser } from "@/src/hooks/data/useUser";
-import { useDevice } from "@/src/hooks/misc/useDevice";
-import { img_base_url } from "@/src/config/settings";
+import clsx from "clsx";
+import React, { useState } from "react";
 import {
   LuBookOpenText,
   LuCalendar,
@@ -17,11 +16,16 @@ import {
   LuX,
   LuImage,
   LuLoaderCircle,
+  LuPlus,
 } from "react-icons/lu";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiGet, apiPut } from "@/src/services/api/api_service";
+
+import { CancelSchoolPartner } from "@/src/components/student/CancelSchoolPartner";
 import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
-import clsx from "clsx";
+import { img_base_url } from "@/src/config/settings";
+import { useUser } from "@/src/hooks/data/useUser";
+import { useDevice } from "@/src/hooks/misc/useDevice";
+import { apiGet, apiPut } from "@/src/services/api/api_service";
+import { useSchoolPartnerStore } from "@/src/store/student/schoolPartnerStore";
 
 const StudentProfile = () => {
   const { user, updateProfile, isUpdatingProfile } = useUser();
@@ -34,6 +38,7 @@ const StudentProfile = () => {
   const [editName, setEditName] = useState(false);
   const [editContact, setEditContact] = useState(false);
   const [profilePicture, setProfilePicture] = useState(null);
+  const open = useSchoolPartnerStore((state) => state.open);
 
   const {
     data: activities,
@@ -241,11 +246,20 @@ const StudentProfile = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Main Content - 2/3 width on large screens */}
         <div className="lg:col-span-2">
-          {/* Learning Progress Card */}
           <div className="bg-white rounded-lg shadow-md p-6 mb-6 border">
-            <h2 className="text-xl font-bold mb-4">Learning Progress</h2>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold">Learning Progress</h2>
+              {!user.partner_school && (
+                <button
+                  onClick={open}
+                  className="text-xs text-white bg-[#001840] font-medium rounded-md px-2 py-1 hover:scale-105 ease-in-out transition-all duration-300 border-[1px] border-[#001840] flex items-center gap-0.5"
+                >
+                  <LuPlus size={15} strokeWidth={2}/>
+                 <span> Add your school</span>
+                </button>
+              )}
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="bg-gray-50 rounded-md p-4 flex items-center justify-between">
                 <div>
@@ -408,17 +422,6 @@ const StudentProfile = () => {
                   phone: user?.phone_number,
                 }}
               >
-                {/* <Form.Item
-                  name="email"
-                  label={
-                    <span className="flex items-center gap-2">
-                      <LuMail /> Email
-                    </span>
-                  }
-                >
-                  <Input />
-                </Form.Item> */}
-
                 <div className="mb-4">
                   <div className="flex items-center gap-2 text-gray-500 mb-1">
                     <LuMail /> Email
@@ -430,18 +433,6 @@ const StudentProfile = () => {
                     </span>
                   </div>
                 </div>
-
-                {/* <Form.Item
-                  name="phone"
-                  label={
-                    <span className="flex items-center gap-2">
-                      <LuPhone /> Phone
-                    </span>
-                  }
-                >
-                  <Input />
-                </Form.Item> */}
-
                 <div className="mb-4">
                   <div className="flex items-center gap-2 text-gray-500 mb-1">
                     <LuPhone /> Phone
@@ -485,6 +476,25 @@ const StudentProfile = () => {
               </Form>
             )}
           </div>
+          {user?.partner_school && (
+            <div className="bg-white rounded-lg shadow-md p-6 mb-6 border flex flex-col gap-2 overflow-hidden">
+              <div className="flex justify-between items-center">
+                <span>Your School</span>
+                <div className="flex gap-2 items-center">
+                  <Tooltip color="#001840" title="Change school">
+                    <button
+                      onClick={open}
+                      className="rounded-full p-1.5 hover:scale-105 transation-all ease-in-out duration-200 text-xs hover:bg-blue-200 hover:text-blue-600"
+                    >
+                      <LuPencil />
+                    </button>
+                  </Tooltip>
+                  <CancelSchoolPartner />
+                </div>
+              </div>
+              <span className="font-bold">{user.partner_school}</span>
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -1,4 +1,12 @@
+import {
+  CreditCardOutlined,
+  UserOutlined,
+  CalendarOutlined,
+  LockOutlined,
+} from "@ant-design/icons";
+import { useMutation } from "@tanstack/react-query";
 import { Button, Input, Card, Switch } from "antd";
+import React, { useState, useEffect } from "react";
 import { CiCreditCard1, CiMobile4, CiCreditCardOff } from "react-icons/ci";
 import {
   FaRegClock,
@@ -8,20 +16,15 @@ import {
   FaUsers,
 } from "react-icons/fa";
 import { GoShieldCheck } from "react-icons/go";
-import React, { useState, useEffect } from "react";
-import { usePay, usePaySteps } from "@/src/store/pay";
-import {
-  CreditCardOutlined,
-  UserOutlined,
-  CalendarOutlined,
-  LockOutlined,
-} from "@ant-design/icons";
-import { useEnroll } from "@/src/hooks/data/useEnroll";
-import { useMutation } from "@tanstack/react-query";
+
 import { PaymentStatus } from "@/src/config/settings";
-import notificationService from "../ui/notification/Notification";
+import { useEnroll } from "@/src/hooks/data/useEnroll";
 import { apiPost } from "@/src/services/api/api_service";
+import { usePay, usePaySteps } from "@/src/store/pay";
 import { useEnrollPay } from "@/src/store/student/useEnrollMe";
+
+import notificationService from "../ui/notification/Notification";
+
 
 const PaymentDetails = () => {
   const { enrollMeCohort, enrollMeCohortIsFetching, enrollMeCohortError } =

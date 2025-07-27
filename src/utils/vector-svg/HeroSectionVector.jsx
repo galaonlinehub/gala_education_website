@@ -1,5 +1,6 @@
-import Card1 from "@/src/components/home/card/Card1";
 import React from "react";
+
+import Card1 from "@/src/components/home/card/Card1";
 
 const HeroSectionVector = ()=>{
     return (

@@ -1,17 +1,18 @@
 "use client";
-import React, { useState } from "react";
-import { img_base_url, PaymentStatus } from "@/src/config/settings";
-import { LuCircleX, LuFolder, LuUsers, LuUser } from "react-icons/lu";
-import TopicCardSkeleton from "@/src/components/student/TopicCardStudent";
 import { Card, Button, Avatar, Tooltip, Modal } from "antd";
+import React, { useState } from "react";
+import { LuCircleX, LuFolder, LuUsers, LuUser } from "react-icons/lu";
+
+import TopicCardSkeleton from "@/src/components/student/TopicCardStudent";
 import {
   RenderReferenceState,
   RenderSuccessState,
   RenderLoadingState,
 } from "@/src/components/ui/auth/signup/PaymentStatus";
+import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
+import { img_base_url, PaymentStatus } from "@/src/config/settings";
 import { usePendingCohorts } from "@/src/hooks/data/usePendingCohorts";
 import { useDevice } from "@/src/hooks/misc/useDevice";
-import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
 
 function PendingPayment() {
   const {

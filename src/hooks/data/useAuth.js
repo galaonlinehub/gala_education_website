@@ -1,18 +1,21 @@
 //Student sign up
 
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { message } from "antd";
+import { useState } from "react";
+import { LuCircleCheckBig } from "react-icons/lu";
+
 import { apiGet, apiPost } from "@/src/services/api/api_service";
 import { encrypt } from "@/src/utils/fns/encryption";
-import { useState } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { sessionStorageFn } from "../../utils/fns/client";
+
 import { EMAIL_VERIFICATION_KEY } from "../../config/settings";
+import { globalOptions } from "../../config/tanstack";
 import {
   useAccountType,
   useEmailVerificationModalOpen,
 } from "../../store/auth/signup";
-import { globalOptions } from "../../config/tanstack";
-import { message } from "antd";
-import { LuCircleCheckBig } from "react-icons/lu";
+import { sessionStorageFn } from "../../utils/fns/client";
+
 
 export const useAuth = () => {
   const [emailExists, setEmailExists] = useState(false);

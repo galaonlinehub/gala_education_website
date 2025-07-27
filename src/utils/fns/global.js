@@ -1,6 +1,5 @@
-import { apiGet, apiPost } from "@/src/services/api/api_service";
+import { apiGet } from "@/src/services/api/api_service";
 import { useSearchResult } from "@/src/store/search_result";
-import { useEnrolledTopics } from "@/src/store/student/class";
 import { useUserTopics } from "@/src/store/user_topics";
 
 export const getUser = async () => {

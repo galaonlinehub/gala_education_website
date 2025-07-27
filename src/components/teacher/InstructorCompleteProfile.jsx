@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import {
   Modal,
   Form,
@@ -9,20 +8,23 @@ import {
   Upload,
   message,
 } from "antd";
-import { useUser } from "@/src/hooks/data/useUser";
+import clsx from "clsx";
+import React, { useState } from "react";
+import { LuCamera, LuUser } from "react-icons/lu";
+
+import { useGrade } from "@/src/hooks/data/useGrade";
 import { useSpecialNeeds } from "@/src/hooks/data/useSpecialNeeds";
 import { useSubject } from "@/src/hooks/data/useSubject";
-import { useGrade } from "@/src/hooks/data/useGrade";
-import { Stage, Success, Verify } from "../student/CompleteProfile";
+import { useUser } from "@/src/hooks/data/useUser";
 import { LANGUAGES } from "@/src/utils/data/lang";
 import {
   handlePhoneInput,
   reformat_phone_number,
 } from "@/src/utils/fns/format_phone_number";
-import { LuCamera, LuUser } from "react-icons/lu";
-import SlickSpinner from "../ui/loading/template/SlickSpinner";
-import clsx from "clsx";
+
+import { Stage, Success, Verify } from "../student/CompleteProfile";
 import { Signout } from "../ui/auth/signup/Signout";
+import SlickSpinner from "../ui/loading/template/SlickSpinner";
 const { TextArea } = Input;
 
 const InstructorCompleteProfile = () => {

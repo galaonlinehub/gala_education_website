@@ -1,10 +1,11 @@
 "use client";
-import { apiPost } from "@/src/services/api/api_service";
 import { VerifiedOutlined } from "@ant-design/icons";
 import { useQueryClient } from "@tanstack/react-query";
 import { Avatar, Divider, message, Tag } from "antd";
 import React from "react";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
+
+import { apiPost } from "@/src/services/api/api_service";
 
 function UserCard({ user: { instructor_id, name, role,status, is_verified,total_cohorts,total_students,has_active_subscription,subscription_type } }) {
     const queryClient = useQueryClient();

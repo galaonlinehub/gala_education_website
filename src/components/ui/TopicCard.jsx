@@ -1,12 +1,13 @@
 "use client";
-import React from "react";
 import { Card, Avatar, Badge, Button, Skeleton } from "antd";
-import { FaUsers } from "react-icons/fa";
-import { GoVerified, GoBook } from "react-icons/go";
-import { FaRegClock } from "react-icons/fa6";
-import { GoShieldCheck } from "react-icons/go";
+import React from "react";
 import { BsGlobe } from "react-icons/bs";
+import { FaUsers } from "react-icons/fa";
+import { FaRegClock } from "react-icons/fa6";
+import { GoVerified, GoBook } from "react-icons/go";
+import { GoShieldCheck } from "react-icons/go";
 import { LuUsers } from "react-icons/lu";
+
 import { useEnrollMe } from "@/src/store/student/useEnrollMe";
 
 const TopicCard = ({ classInfo }) => {

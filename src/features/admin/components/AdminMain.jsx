@@ -1,14 +1,16 @@
 "use client";
+import { Drawer } from "antd";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import React from "react";
+import { MdClose } from "react-icons/md";
+
+import { useStore } from "@/src/store/navigation";
+import { adminLinks } from "@/src/utils/data/links";
+
 import AdminNavbar from "./AdminNavbar";
 import AdminSidebar from "./AdminSidebar";
-import { useStore } from "@/src/store/navigation";
-import { Drawer } from "antd";
-import { adminLinks } from "@/src/utils/data/links";
-import Link from "next/link";
-import Image from "next/image";
-import { usePathname } from "next/navigation";
-import { MdClose } from "react-icons/md";
 
 function AdminMain({ children }) {
   const openMenu = useStore((state) => state.openMenu);

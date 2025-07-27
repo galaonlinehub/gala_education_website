@@ -1,7 +1,8 @@
 import { Input } from "antd";
 import React from "react";
-import AddSubtopic from "./AddSubtopic";
 import { useFieldArray, useFormContext } from "react-hook-form";
+
+import AddSubtopic from "./AddSubtopic";
 
 function AddTopic({ index, removeTopic, totalTopics }) {
   const { control,setValue,getValues } = useFormContext();

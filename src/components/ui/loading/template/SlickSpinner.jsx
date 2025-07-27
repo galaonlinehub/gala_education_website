@@ -1,5 +1,10 @@
-"use client"
-const SlickSpinner = ({ size = 20, color = "#3b82f6", strokeWidth = "6" }) => {
+"use client";
+const SlickSpinner = ({
+  size = 20,
+  color = "#001840",
+  strokeWidth = "6",
+  lineCap = "round",
+}) => {
   return (
     <div className="inline-flex items-center justify-center">
       <svg
@@ -16,6 +21,7 @@ const SlickSpinner = ({ size = 20, color = "#3b82f6", strokeWidth = "6" }) => {
           fill="none"
           stroke={color}
           strokeWidth={strokeWidth}
+          strokeLinecap={lineCap}
         />
       </svg>
 
@@ -57,4 +63,3 @@ const SlickSpinner = ({ size = 20, color = "#3b82f6", strokeWidth = "6" }) => {
 };
 
 export default SlickSpinner;
-

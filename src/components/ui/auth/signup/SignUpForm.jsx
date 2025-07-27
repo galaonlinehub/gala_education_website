@@ -1,10 +1,7 @@
-import React, { useState } from "react";
 import { Form, Input, Select, Button, Typography, Card, Progress } from "antd";
-import { disabilities } from "@/src/utils/data/disabilities";
-import { useAuth } from "@/src/hooks/data/useAuth";
-import EmailVerification from "./EmailVerification";
-import { useRouter } from "next/navigation";
 import clsx from "clsx";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 import {
   LuCheck,
   LuCircleCheck,
@@ -15,9 +12,15 @@ import {
   LuShieldCheck,
   LuUser,
 } from "react-icons/lu";
-import SlickSpinner from "../../loading/template/SlickSpinner";
-import { preventCopyPaste } from "@/src/utils/fns/general";
+
 import { Contact } from "@/src/components/layout/Contact";
+import { useAuth } from "@/src/hooks/data/useAuth";
+import { disabilities } from "@/src/utils/data/disabilities";
+import { preventCopyPaste } from "@/src/utils/fns/general";
+
+import EmailVerification from "./EmailVerification";
+import SlickSpinner from "../../loading/template/SlickSpinner";
+
 
 const { Text } = Typography;
 

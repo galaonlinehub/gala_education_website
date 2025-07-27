@@ -1,6 +1,7 @@
 "use client";
 import { Avatar, Tag } from "antd";
 import React from "react";
+
 import CustomDataTable from "./CustomDataTable";
 
 function RecentCustomers() {

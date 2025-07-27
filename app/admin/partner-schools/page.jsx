@@ -1,4 +1,6 @@
 "use client";
+import React,{useState} from "react";
+
 import {
     CreatePartnerSchool,
     CustomDataTableWithQuery,
@@ -6,7 +8,6 @@ import {
     partnerSchoolColumns,
     usePaginationQuery,
 } from "@/src/features/admin";
-import React,{useState} from "react";
 
 function PartnerSchools() {
     const [page, setPage] = useState(1);
