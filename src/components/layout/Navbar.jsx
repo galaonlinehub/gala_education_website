@@ -16,7 +16,7 @@ import { useSubscribeStore } from "@/src/store/subscribeStore";
 
 import MobileSideBar from "./MobileSideBar";
 import AboutUs from "../home/modals/AboutUs";
-import Subscribe from "../Pay/Subscribe";
+import Subscribe from "../pay/Subscribe";
 import { Signout } from "../ui/auth/signup/Signout";
 
 
