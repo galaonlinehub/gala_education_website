@@ -1,7 +1,8 @@
 "use client";
 import React from "react";
-import AddTopic from "./AddTopic";
 import { useFieldArray, useFormContext } from "react-hook-form";
+
+import AddTopic from "./AddTopic";
 
 function AddNewSubjectTopics() {
   const { control } = useFormContext();

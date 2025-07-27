@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
 import { Button, Flex, Modal } from 'antd';
+import React, { useState } from 'react';
 const TeacherSurvey = () => {
   const [open, setOpen] = useState(false);
   const [openResponsive, setOpenResponsive] = useState(false);

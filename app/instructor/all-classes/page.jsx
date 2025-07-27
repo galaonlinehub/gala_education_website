@@ -1,18 +1,4 @@
 "use client";
-import React, { useState } from "react";
-import {
-  Card,
-  Row,
-  Col,
-  Button,
-  Avatar,
-  Space,
-  Tag,
-  Tooltip,
-  Typography,
-  Input,
-  Spin,
-} from "antd";
 import {
   PlusOutlined,
   BookOutlined,
@@ -26,31 +12,47 @@ import {
   FieldTimeOutlined,
   ClockCircleOutlined,
 } from "@ant-design/icons";
-import ClassCreationWizard from "../create-class/CreateClass";
-import { useUser } from "@/src/hooks/data/useUser";
-import { useInstructorCohorts } from "@/src/hooks/data/useInstructorCohorts";
-import { useCohort } from "@/src/hooks/data/useCohort";
+import {
+  Card,
+  Row,
+  Col,
+  Button,
+  Avatar,
+  Space,
+  Tag,
+  Tooltip,
+  Typography,
+  Input,
+  Spin,
+} from "antd";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 import { BiSolidDetail } from "react-icons/bi";
 import { BsFillCalendar2EventFill } from "react-icons/bs";
 import { GiBookCover } from "react-icons/gi";
 import { MdTopic } from "react-icons/md";
-import { useRouter } from "next/navigation";
+
 // Import your local image assets for each subject
-import englishImage from "@/public/subjects/english.jpeg";
-import mathImage from "@/public/subjects/mathematics.jpeg";
 import biologyImage from "@/public/subjects/biology.jpeg";
 import chemistryImage from "@/public/subjects/chemistry.jpeg";
-import physicsImage from "@/public/subjects/physics.jpeg";
-import geographyImage from "@/public/subjects/geography.jpeg";
 import civicsImage from "@/public/subjects/civics.jpeg";
-import historyImage from "@/public/subjects/history.jpeg";
 
 // Import more subject images as needed
 
 // Default image for fallback
 import defaultImage from "@/public/subjects/default.jpeg";
+import englishImage from "@/public/subjects/english.jpeg";
+import geographyImage from "@/public/subjects/geography.jpeg";
+import historyImage from "@/public/subjects/history.jpeg";
+import mathImage from "@/public/subjects/mathematics.jpeg";
+import physicsImage from "@/public/subjects/physics.jpeg";
 import CohortCardSkeleton from "@/src/components/teacher/CohortCardSkeleton";
+import { useCohort } from "@/src/hooks/data/useCohort";
+import { useInstructorCohorts } from "@/src/hooks/data/useInstructorCohorts";
+import { useUser } from "@/src/hooks/data/useUser";
 import { encrypt } from "@/src/utils/fns/encryption";
+
+import ClassCreationWizard from "../create-class/CreateClass";
 
 const { Title, Text, Paragraph } = Typography;
 const { Meta } = Card;

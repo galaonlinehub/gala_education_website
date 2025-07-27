@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
+
 import { apiGet } from "@/src/services/api/api_service";
+import { roleRedirects } from "@/src/utils/data/redirect";
+
 import { USER_COOKIE_KEY } from "./src/config/settings";
 import { decrypt } from "./src/utils/fns/encryption";
-import { roleRedirects } from "@/src/utils/data/redirect";
 
 const AUTH_CONFIG = {
   PUBLIC_ROUTES: ["/", "/signin", "/signup"],

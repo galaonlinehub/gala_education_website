@@ -1,7 +1,9 @@
-import clsx from "clsx";
 import Modal from "antd/es/modal/Modal";
-import { motion, AnimatePresence } from "framer-motion";
+import { LuCircleAlert, LuCircleCheckBig } from "react-icons/lu";
+
+import { useUser } from "@/src/hooks/data/useUser";
 import { usePartnerSchool } from "@/src/hooks/ui/usePartnerSchool";
+
 import SlickSpinner from "../ui/loading/template/SlickSpinner";
 
 export const PartnerSchool = () => {
@@ -15,30 +17,32 @@ export const PartnerSchool = () => {
     mutation,
     onSchoolPartnered,
     errors,
-    errMessage,
     resetMutation,
+    resetForm,
+    clearErrors,
   } = usePartnerSchool();
+
 
   return (
     <Modal open={isOpen} footer={null} closable={false}>
       <div className="space-y-6">
         <div className="flex flex-col gap-2">
-          <div className="font-medium text-lg">Do you belong to a school?</div>
+          <div className="text-base">Do you belong to a school?</div>
           <div className="flex gap-3 text-sm">
             <button
               onClick={toggleAffiliate}
               disabled={isAffiliated}
-              className="bg-[#001840] text-white rounded w-16 h-7 cursor-pointer hover:scale-110 disabled:scale-100 transition-transform ease-in-out duration-200 disabled:bg-[#001840]/60 disabled:cursor-not-allowed"
+              className="bg-[#001840] text-white rounded w-16 h-7 cursor-pointer hover:scale-110 disabled:scale-100 transition-transform ease-in-out duration-200 disabled:bg-[#001840]/60 disabled:cursor-not-allowed text-xs"
             >
               Yes
             </button>
             <button
               disabled={mutation.isPending}
               onClick={() => {
-                toggleAffiliate();
+                resetForm();
                 close();
               }}
-              className="border border-[#001840] text-[#001840] rounded w-16 h-7 cursor-pointer hover:scale-110 transition-transform ease-in-out duration-200 disabled:border-gray-300 disabled:text-gray-300 disabled:cursor-not-allowed disabled:scale-100"
+              className="border border-[#001840] text-[#001840] rounded w-16 h-7 cursor-pointer hover:scale-110 transition-transform ease-in-out duration-200 disabled:border-gray-300 disabled:text-gray-300 disabled:cursor-not-allowed disabled:scale-100 text-xs"
             >
               No
             </button>
@@ -49,38 +53,6 @@ export const PartnerSchool = () => {
           data-isAffiliated={isAffiliated}
           className="data-[isAffiliated=false]:hidden flex flex-col gap-1"
         >
-          <div className="min-h-[45px]">
-            <AnimatePresence>
-              {(mutation.isError || mutation.isSuccess) && errMessage && (
-                <motion.div
-                  layout
-                  initial={{
-                    opacity: 0,
-                    scaleY: 0,
-                  }}
-                  animate={{
-                    opacity: 1,
-                    scaleY: 1,
-                  }}
-                  exit={{
-                    opacity: 0,
-                    scaleY: 0,
-                  }}
-                  transition={{ duration: 0.3 }}
-                  className={clsx(
-                    "text-xs border-[0.5px] w-full rounded text-center overflow-hidden",
-                    "my-2 py-1.5",
-                    mutation.isError
-                      ? "border-red-500 text-red-500 bg-red-50"
-                      : "border-green-500 text-green-500 bg-green-50"
-                  )}
-                >
-                  {errMessage}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-
           <div>
             Please enter the code provided in school or with your teacher
           </div>
@@ -88,16 +60,31 @@ export const PartnerSchool = () => {
             <input
               className="bg-[#001840]/10 w-full rounded-md h-9 outline-none focus:border-2 p-2"
               placeholder="e.g, IL-QWERTY"
+              autoComplete="off"
+              autoCorrect="off"
               {...register("code", {
                 required: "Please provide school code",
-                onChange: (e) => {
+                onChange: () => {
                   resetMutation();
+                  clearErrors("_success");
                 },
               })}
             />
             {errors.code && (
-              <p className="text-red-500 text-xs px-2 py-0.5">
-                {errors.code.message}
+              <p className="text-red-500 text-xs p-1  flex items-center gap-1 font-medium">
+                <LuCircleAlert size={17} strokeWidth={2.5} />
+                <span>{errors.code.message}</span>
+              </p>
+            )}
+
+            {errors._success && (
+              <p className="text-green-600 text-sm flex items-center gap-1 p-1">
+                <LuCircleCheckBig size={17} />
+                <span>
+                  {errors._success.message}
+                  <strong className="mx-1">{errors._success.schoolName}</strong>
+                  .
+                </span>
               </p>
             )}
           </div>
@@ -109,7 +96,7 @@ export const PartnerSchool = () => {
             {mutation.isPending ? (
               <SlickSpinner color="white" size={16} />
             ) : (
-              <>Submit</>
+              <>Join</>
             )}
           </button>
         </form>

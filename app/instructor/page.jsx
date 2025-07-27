@@ -1,23 +1,27 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
 
-import { Layout, Card, Typography, Space, Modal, Form, Input, Button, Row, Col, Select, Statistic, Avatar, Tag, Table, Upload, message, Skeleton, Flex, Empty, Badge, Divider } from "antd";
 import { UserOutlined, CameraOutlined, BookOutlined, ClockCircleOutlined, CalendarOutlined, TeamOutlined, PlusOutlined, LoadingOutlined, RightOutlined, TrophyOutlined, FireOutlined } from "@ant-design/icons";
-
+import { Layout, Card, Typography, Space, Modal, Form, Input, Button, Row, Col, Select, Statistic, Avatar, Tag, Table, Upload, message, Skeleton, Flex, Empty, Badge, Divider } from "antd";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { apiGet, apiPost } from "@/src/services/api/api_service";
-import { useUser } from "@/src/hooks/data/useUser";
-import { useDevice } from "@/src/hooks/misc/useDevice";
-import { useInstructorSubjects } from "@/src/hooks/data/useInstructorSubjects";
-import { useInstructorCohorts } from "@/src/hooks/data/useInstructorCohorts";
-import { useCohort } from "@/src/hooks/data/useCohort";
-import { encrypt } from "@/src/utils/fns/encryption";
-import ClassCreationWizard from "./create-class/CreateClass";
-import TableSkeleton from "@/src/components/teacher/TableSkeleton";
+import { useState, useRef, useEffect } from "react";
 import { LuBook, LuUser, LuUsers, LuGraduationCap, LuClock, LuCalendar } from "react-icons/lu";
 import { MdOutlineRateReview } from "react-icons/md";
+
+import TableSkeleton from "@/src/components/teacher/TableSkeleton";
+import { useCohort } from "@/src/hooks/data/useCohort";
+import { useInstructorCohorts } from "@/src/hooks/data/useInstructorCohorts";
+import { useInstructorSubjects } from "@/src/hooks/data/useInstructorSubjects";
+import { useUser } from "@/src/hooks/data/useUser";
+import { useDevice } from "@/src/hooks/misc/useDevice";
+import { apiGet, apiPost } from "@/src/services/api/api_service";
+import { encrypt } from "@/src/utils/fns/encryption";
+
+import ClassCreationWizard from "./create-class/CreateClass";
+
+
+
 
 const { Title, Text, Paragraph } = Typography;
 const { Content } = Layout;

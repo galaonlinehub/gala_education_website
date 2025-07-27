@@ -1,7 +1,8 @@
 "use client";
-import React, { useState } from "react";
-import { Switch } from "antd";
 import { useQuery } from "@tanstack/react-query";
+import { Switch } from "antd";
+import React, { useState } from "react";
+
 import { InstructorProfile, UserCard } from "@/src/features/admin";
 import { apiGet } from "@/src/services/api/api_service";
 

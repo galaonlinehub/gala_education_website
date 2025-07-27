@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { globalOptions } from "../../config/tanstack";
+
 import { apiPost } from "@/src/services/api/api_service";
+
+import { globalOptions } from "../../config/tanstack";
 
 export const useLesson = () => {
   const getLessonToken = async (roomLink) => {

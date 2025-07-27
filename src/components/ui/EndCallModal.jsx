@@ -1,9 +1,9 @@
 'use client';
-import React, { useState } from 'react';
 import { Modal, Button, Typography, Space, Avatar } from 'antd';
-import { LuPhoneOff, LuUserSearch } from 'react-icons/lu';
+import React, { useState } from 'react';
 import { BsClock } from 'react-icons/bs';
 import { FiAlertTriangle } from 'react-icons/fi';
+import { LuPhoneOff, LuUserSearch } from 'react-icons/lu';
 
 
 const { Title, Text } = Typography;

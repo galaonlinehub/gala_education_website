@@ -1,15 +1,16 @@
 "use client";
 
-import React, { useEffect } from "react";
 import { Steps, message } from "antd";
-import SignUpForm from "@/src/components/ui/auth/signup/SignUpForm";
-import SignupPay from "@/src/components/ui/auth/signup/Payment";
-import InstructorSignUpForm from "@/src/components/ui/auth/signup/InstructorSignUpForm";
-import ConfirmPlan from "@/src/components/ui/auth/signup/ConfirmPlan";
-import { useTabNavigator, useAccountType } from "@/src/store/auth/signup";
-import { SIGN_UP_NAVIGATOR_KEY } from "@/src/config/settings";
-import StudentContract from "@/src/components/teacher/InstructorContract";
+import React, { useEffect } from "react";
+
 import InstructorContract from "@/src/components/student/StudentContract";
+import StudentContract from "@/src/components/teacher/InstructorContract";
+import ConfirmPlan from "@/src/components/ui/auth/signup/ConfirmPlan";
+import InstructorSignUpForm from "@/src/components/ui/auth/signup/InstructorSignUpForm";
+import SignupPay from "@/src/components/ui/auth/signup/Payment";
+import SignUpForm from "@/src/components/ui/auth/signup/SignUpForm";
+import { SIGN_UP_NAVIGATOR_KEY } from "@/src/config/settings";
+import { useTabNavigator, useAccountType } from "@/src/store/auth/signup";
 
 const SignupPage = () => {
   const { accountType } = useAccountType();

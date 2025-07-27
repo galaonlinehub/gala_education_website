@@ -1,4 +1,12 @@
-import React, { useState } from "react";
+import {
+  UserOutlined,
+  MailOutlined,
+  LockOutlined,
+  IdcardOutlined,
+  InfoCircleOutlined,
+  CheckCircleFilled,
+  FilePdfOutlined,
+} from "@ant-design/icons";
 import {
   Form,
   Input,
@@ -10,23 +18,18 @@ import {
   Progress,
   Tooltip,
 } from "antd";
-import {
-  UserOutlined,
-  MailOutlined,
-  LockOutlined,
-  IdcardOutlined,
-  InfoCircleOutlined,
-  CheckCircleFilled,
-  FilePdfOutlined,
-} from "@ant-design/icons";
-import { useAuth } from "@/src/hooks/data/useAuth";
-import EmailVerification from "./EmailVerification";
-import { useRouter } from "next/navigation";
 import clsx from "clsx";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 import { LuCheck, LuUpload } from "react-icons/lu";
-import SlickSpinner from "../../loading/template/SlickSpinner";
-import { preventCopyPaste } from "@/src/utils/fns/general";
+
 import { Contact } from "@/src/components/layout/Contact";
+import { useAuth } from "@/src/hooks/data/useAuth";
+import { preventCopyPaste } from "@/src/utils/fns/general";
+
+import EmailVerification from "./EmailVerification";
+import SlickSpinner from "../../loading/template/SlickSpinner";
+
 
 const { Text } = Typography;
 

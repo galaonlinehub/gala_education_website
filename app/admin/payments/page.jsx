@@ -1,10 +1,11 @@
 "use client"
-import { apiGet } from '@/src/services/api/api_service';
-import { customStyles } from '@/src/styles/admin/datatable/customStyles';
-import { paymentColumns } from '@/src/utils/data/columns/paymentColumns';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react'
 import DataTable from 'react-data-table-component';
+
+import { apiGet } from '@/src/services/api/api_service';
+import { customStyles } from '@/src/styles/admin/datatable/customStyles';
+import { paymentColumns } from '@/src/utils/data/columns/paymentColumns';
 
 function Payments() {
   

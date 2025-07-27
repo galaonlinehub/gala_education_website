@@ -1,46 +1,51 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import { Button } from "antd";
+import { Tooltip } from "antd";
 import Image from "next/image";
+import { NextSeo } from "next-seo";
+import React, { useEffect, useState } from "react";
+import { BiChevronRight } from "react-icons/bi";
+import { FaArrowRightLong } from "react-icons/fa6";
+import { LuCircleCheckBig } from "react-icons/lu";
+import { pdfjs } from "react-pdf";
+
+import Animator from "@/src/components/home/animations/Animator";
 import Card1 from "@/src/components/home/card/Card1";
-import RegisterCard from "@/src/components/home/card/RegisterCard";
-import PioneerCard from "@/src/components/home/card/PioneerCard";
 import NewsCard from "@/src/components/home/card/NewsCard";
+import PioneerCard from "@/src/components/home/card/PioneerCard";
+import RegisterCard from "@/src/components/home/card/RegisterCard";
 import Events from "@/src/components/home/card/Events";
 import Card2 from "@/src/components/home/card/Card2";
-import MailingList from "@/src/components/ui/auth/signup/MailingList";
+import RegisterWithUs from "@/src/components/home/card/RegisterWithUs";
 import AcceptCookies from "@/src/components/layout/Cookies";
+import MailingList from "@/src/components/ui/auth/signup/MailingList";
 import ClientReviews from "@/src/components/home/card/ClientReviews";
 import FaqCard from "@/src/components/home/card/FaqCard";
 import OurServicesCard from "@/src/components/home/card/OurServicesCard";
-import RegisterWithUs from "@/src/components/home/card/RegisterWithUs";
 import ClientReviewsSm from "@/src/components/home/card/ClientReviewsSm";
 import Platform from "@/src/components/home/card/Platform";
 import Pioneers from "@/src/components/home/card/Pioneers";
 import LatestNews from "@/src/components/home/card/LatestNews";
 import Donate from "@/src/components/ui/donation/Donate";
-import VideoPlayer from "@/src/components/ui/VideoPlayer";
+import ProcessingModal from "@/src/components/ui/donation/ProcessingModal";
 import ScrollableContent from "@/src/components/ui/TeachersCard";
+import VideoPlayer from "@/src/components/ui/VideoPlayer";
 import { useUser } from "@/src/hooks/data/useUser";
 import Footer from "@/src/components/layout/footer";
 import { useCookies } from "@/src/store/auth/signup";
-import { Button } from "antd";
-import { pdfjs } from "react-pdf";
+
+
 import PdfViewer from "@/src/components/home/modals/PdfViewer";
 import { Authorities } from "@/src/components/layout/Authorities";
 import VideoBackground from "@/src/components/ui/VideoBackground";
-import Animator from "@/src/components/home/animations/Animator";
 import { API_BASE_URL, socket_base_url } from "@/src/config/settings";
-import { NextSeo } from "next-seo";
-import { Tooltip } from "antd";
-import { FaArrowRightLong } from "react-icons/fa6";
-import { LuCircleCheckBig } from "react-icons/lu";
+
+
 import ChooseAccount from "@/src/components/ui/auth/signup/ChooseAccount";
 import SvgFour from "@/src/components/home/svg/SvgFour";
 import SvgOne from "@/src/components/home/svg/SvgOne";
 import SvgTwo from "@/src/components/home/svg/SvgTwo";
 import SvgThree from "@/src/components/home/svg/SvgThree";
-import { BiChevronRight } from "react-icons/bi";
-import ProcessingModal from "@/src/components/ui/donation/ProcessingModal";
 
 function Home() {
   const [showDonatePopup, setShowDonatePopup] = useState(false);

@@ -1,6 +1,7 @@
-import React, { useState } from "react";
 import { Collapse, Select } from "antd";
+import React, { useState } from "react";
 import { IoIosArrowDropdownCircle } from "react-icons/io";
+
 import "../../../../app/globals.css";
 import Animator from "../animations/Animator";
 

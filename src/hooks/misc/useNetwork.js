@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import { api } from "@/src/services/api/api_service";
 
 const useNetwork = () => {

@@ -1,17 +1,19 @@
-import React from "react";
-import Clock from "../ui/Clock";
-import { IoMenu } from "react-icons/io5";
-import { useRouter } from "next/navigation";
-import Updates from "../ui/notification/Updates";
 import { CloseOutlined } from "@ant-design/icons";
-import { useUser } from "@/src/hooks/data/useUser";
 import { Input, Empty, Tooltip, Avatar } from "antd";
+import { AnimatePresence, motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+import React from "react";
+import { FaChalkboardTeacher, FaBookReader } from "react-icons/fa";
+import { IoMenu } from "react-icons/io5";
+import { LuBell, LuChevronRight, LuCircleUser, LuUser } from "react-icons/lu";
+
 import { img_base_url } from "@/src/config/settings";
 import { useSearch } from "@/src/hooks/data/useSearch";
-import { AnimatePresence, motion } from "framer-motion";
+import { useUser } from "@/src/hooks/data/useUser";
+
+import Clock from "../ui/Clock";
 import SlickSpinner from "../ui/loading/template/SlickSpinner";
-import { FaChalkboardTeacher, FaBookReader } from "react-icons/fa";
-import { LuBell, LuChevronRight, LuCircleUser, LuUser } from "react-icons/lu";
+import Updates from "../ui/notification/Updates";
 
 const SearchResultCard = ({ data, onClick }) => {
   const { topics, teachers } = data;
@@ -74,8 +76,7 @@ const SearchResultCard = ({ data, onClick }) => {
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex-1 min-w-0 pl-3">
-                      <span
-                        className="font-semibold text-gray-900 group-hover:text-black text-base leading-tight">
+                      <span className="font-semibold text-gray-900 group-hover:text-black text-base leading-tight">
                         {title}
                       </span>
                       {subject && (
@@ -244,7 +245,7 @@ const StudentSearch = () => {
           {user?.role === "student" ? (
             <div className="w-full md:w-[653px] relative">
               <Input.Search
-                placeholder="Search subjects, teachers or topics..."
+                placeholder="Search teachers or topics..."
                 prefix={<IoMenu className="text-gray-400 mr-2" />}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}

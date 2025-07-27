@@ -1,10 +1,12 @@
 "use client";
-import React, { useRef, useState, useEffect, useCallback } from "react";
-import { Modal, Button, Alert } from "antd";
-import { Document, Page, pdfjs } from "react-pdf";
-import { useDevice } from "@/src/hooks/misc/useDevice";
 import { LoadingOutlined } from "@ant-design/icons";
+import { Modal, Button, Alert } from "antd";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 import { LuDownload } from "react-icons/lu";
+import { Document, Page, pdfjs } from "react-pdf";
+
+import { useDevice } from "@/src/hooks/misc/useDevice";
+
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 

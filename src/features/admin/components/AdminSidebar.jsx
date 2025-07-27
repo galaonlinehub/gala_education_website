@@ -1,9 +1,10 @@
 "use client";
-import { adminLinks } from "@/src/utils/data/links";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
+
+import { adminLinks } from "@/src/utils/data/links";
 
 function AdminSidebar() {
     const pathname = usePathname();

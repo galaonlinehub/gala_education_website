@@ -1,19 +1,22 @@
 "use client";
 
 import { Tooltip, message, Dropdown, Menu } from "antd";
-import Link from "next/link";
 import Image from "next/image";
-import React, { useState } from "react";
-import ChooseAccont from "@/src/components/ui/auth/signup/ChooseAccount";
-import { Signout } from "../ui/auth/signup/Signout";
-import { useUser } from "@/src/hooks/data/useUser";
-import AboutUs from "../home/modals/AboutUs";
-import MobileSideBar from "./MobileSideBar";
-import { useDevice } from "@/src/hooks/misc/useDevice";
-import { BiWifi, BiWifiOff } from "react-icons/bi";
-import useNetwork from "@/src/hooks/misc/useNetwork";
-import { LuGlobe, LuMenu } from "react-icons/lu";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import { BiWifi, BiWifiOff } from "react-icons/bi";
+import { LuGlobe, LuMenu } from "react-icons/lu";
+
+import ChooseAccont from "@/src/components/ui/auth/signup/ChooseAccount";
+import { useUser } from "@/src/hooks/data/useUser";
+import { useDevice } from "@/src/hooks/misc/useDevice";
+import useNetwork from "@/src/hooks/misc/useNetwork";
+
+import MobileSideBar from "./MobileSideBar";
+import AboutUs from "../home/modals/AboutUs";
+import { Signout } from "../ui/auth/signup/Signout";
+
 
 const Navbar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);

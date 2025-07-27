@@ -1,6 +1,6 @@
+import Image from "next/image";
 import React, { useRef, useState, useEffect } from "react";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
-import Image from "next/image";
 
 const ScrollableContent = () => {
   const scrollContainerRef = useRef(null);

@@ -1,5 +1,9 @@
 "use client";
-import React, { useState } from "react";
+import {
+  EditOutlined,
+  CalendarOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import {
   Card,
   Rate,
@@ -15,17 +19,14 @@ import {
   Col,
   Badge,
 } from "antd";
-import {
-  EditOutlined,
-  CalendarOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
+import React, { useState } from "react";
+import { IoChevronForwardCircle } from "react-icons/io5";
 import { LuMessageSquare, LuBook } from "react-icons/lu";
+
+import { img_base_url } from "@/src/config/settings";
 import { useEnrolledTopics } from "@/src/hooks/data/useEnrolledTopics";
 import { useStudentReviews } from "@/src/hooks/data/useStudentReviews";
-import { img_base_url } from "@/src/config/settings";
 import { apiPut } from "@/src/services/api/api_service";
-import { IoChevronForwardCircle } from "react-icons/io5";
 
 const { Text, Paragraph } = Typography;
 const { TextArea } = Input;

@@ -1,5 +1,10 @@
 "use client";
 import {
+  ClockCircleOutlined,
+  TrophyOutlined,
+  CheckCircleOutlined,
+} from "@ant-design/icons";
+import {
   theme,
   Card,
   Typography,
@@ -15,24 +20,20 @@ import {
   Tag,
   Tooltip,
 } from "antd";
-import {
-  ClockCircleOutlined,
-  TrophyOutlined,
-  CheckCircleOutlined,
-} from "@ant-design/icons";
 import Link from "next/link";
-import { useUser } from "@/src/hooks/data/useUser";
+import { useRouter } from "next/navigation";
 import {
   LuBellRing,
   LuBookOpen,
   LuBookOpenCheck,
   LuUser,
 } from "react-icons/lu";
+
+import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
+import Updates from "@/src/components/ui/notification/Updates";
 import { img_base_url } from "@/src/config/settings";
 import { useEnrolledTopics } from "@/src/hooks/data/useEnrolledTopics";
-import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
-import { useRouter } from "next/navigation";
-import Updates from "@/src/components/ui/notification/Updates";
+import { useUser } from "@/src/hooks/data/useUser";
 
 const { Title, Text } = Typography;
 

@@ -1,13 +1,15 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { message } from "antd";
+import { format } from "date-fns";
 import { useEffect, useRef, useState, useMemo } from "react";
 import io from "socket.io-client";
+
 import { apiPost, apiGet, apiDelete } from "@/src/services/api/api_service";
-import { useUser } from "../data/useUser";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { cookieFn } from "../../utils/fns/client";
+import { getSocket } from "@/src/services/socket/socket-api";
+
+import { useChatSocketEvents } from "./useChatEvents";
 import { socket_base_url, USER_COOKIE_KEY } from "../../config/settings";
 import useChatStore from "../../store/chat/chat";
-import { message } from "antd";
-import { decrypt } from "../../utils/fns/encryption";
 import { EVENTS } from "../../utils/data/events";
 import { MESSAGE_STATUSES } from "../../utils/data/message";
 import {
@@ -17,11 +19,12 @@ import {
   handleNewMessage,
   normalizedMessages,
 } from "../../utils/fns/chat";
-import { format } from "date-fns";
+import { cookieFn } from "../../utils/fns/client";
+import { decrypt } from "../../utils/fns/encryption";
+import { useUser } from "../data/useUser";
 import { useSocketConnection } from "../sockets/useSocketConnection";
-import { useChatSocketEvents } from "./useChatEvents";
 import { useSocketEmit } from "../sockets/useSocketEmit";
-import { getSocket } from "@/src/services/socket/socket-api";
+
 
 export const useChat = () => {
   const socketRef = useRef(null);

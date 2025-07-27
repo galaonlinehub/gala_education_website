@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { MdMarkEmailUnread } from "react-icons/md";
+
 import { resendActivationLink } from "@/src/features/activation";
 
 function ExpiredActivationLink() {

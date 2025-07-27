@@ -1,20 +1,24 @@
 "use client";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Modal } from "antd";
 import clsx from "clsx";
+import { motion, AnimatePresence } from "framer-motion";
 import debounce from "lodash.debounce";
 import { useRouter } from "next/navigation";
-import { login } from "@/src/utils/fns/auth";
-import { LuEye, LuEyeOff } from "react-icons/lu";
-import { getUser } from "@/src/utils/fns/global";
 import React, { useState, useEffect, useRef } from "react";
 import { useForm, useWatch } from "react-hook-form";
-import { motion, AnimatePresence } from "framer-motion";
-import { roleRedirects } from "@/src/utils/data/redirect";
-import { preventCopyPaste } from "@/src/utils/fns/general";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import LoginVectorSvg from "@/src/utils/vector-svg/sign-in/LoginVectorSvg";
-import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
+import { LuEye, LuEyeOff } from "react-icons/lu";
+
 import { Contact } from "@/src/components/layout/Contact";
-import { Modal } from "antd";
+import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
+import { roleRedirects } from "@/src/utils/data/redirect";
+import { login } from "@/src/utils/fns/auth";
+import { preventCopyPaste } from "@/src/utils/fns/general";
+import { getUser } from "@/src/utils/fns/global";
+
+
+import LoginVectorSvg from "@/src/utils/vector-svg/sign-in/LoginVectorSvg";
+
 
 const SignInPage = () => {
   // const key = crypto.randomUUID();

@@ -1,6 +1,10 @@
 "use client";
-import React, { useState } from "react";
+import { StarFilled, StarOutlined } from "@ant-design/icons";
 import { Card, Avatar, message, Modal, Button, Divider, Input } from "antd";
+import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import React, { useState } from "react";
+import { BsStar, BsStarFill } from "react-icons/bs";
 import {
   LuArrowLeft,
   LuBell,
@@ -15,17 +19,16 @@ import {
   LuUsers,
   LuVideo,
 } from "react-icons/lu";
-import { useRouter } from "next/navigation";
-import { useEnrolledTopics } from "@/src/hooks/data/useEnrolledTopics";
-import { useSearchParams } from "next/navigation";
-import { decrypt } from "@/src/utils/fns/encryption";
+import { PiStarBold, PiStarFill, PiStarLight } from "react-icons/pi";
+import { TbMessage2 } from "react-icons/tb";
+
 import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
 import { img_base_url } from "@/src/config/settings";
-import { TbMessage2 } from "react-icons/tb";
-import { StarFilled, StarOutlined } from "@ant-design/icons";
-import { BsStar, BsStarFill } from "react-icons/bs";
-import { PiStarBold, PiStarFill, PiStarLight } from "react-icons/pi";
+import { useEnrolledTopics } from "@/src/hooks/data/useEnrolledTopics";
 import { apiPost } from "@/src/services/api/api_service";
+import { decrypt } from "@/src/utils/fns/encryption";
+
+
 
 const { TextArea } = Input;
 

@@ -1,23 +1,24 @@
 "use client";
 import clsx from "clsx";
 import Link from "next/link";
-import React, { useState, useEffect } from "react";
-import Navbar from "@/src/components/layout/Navbar";
-import StudentSearch from "@/src/components/student/Search";
-import { student_links } from "@/src/utils/data/navigation_links";
-import { FloatingActionButton } from "@/src/components/ui/Fab";
-import useInstallPrompt from "@/src/hooks/misc/useInstallPrompt";
-import NewClass from "@/src/components/student/NewClass";
 import { usePathname, useSearchParams } from "next/navigation";
+import React, { useState, useEffect } from "react";
+
+import Navbar from "@/src/components/layout/Navbar";
+import Subscribe from "@/src/components/pay/Subscribe";
 import { CompleteProfile } from "@/src/components/student/CompleteProfile";
-import Subscribe from "@/src/components/Pay/Subscribe";
-import KidInPicture from "@/src/utils/vector-svg/vectors/KidInPicture";
-import Clock from "@/src/utils/vector-svg/vectors/Clock";
-import StudentsInClass from "@/src/utils/vector-svg/vectors/StudentsInClass";
-import RightTiltedBook from "@/src/utils/vector-svg/vectors/CombinedBlock";
-import StickyNotification from "@/src/components/ui/notification/StickyNotification";
-import { useStickyNotification } from "@/src/store/notification/notification";
+import NewClass from "@/src/components/student/NewClass";
 import { PartnerSchool } from "@/src/components/student/PartnerSchool";
+import StudentSearch from "@/src/components/student/Search";
+import { FloatingActionButton } from "@/src/components/ui/Fab";
+import StickyNotification from "@/src/components/ui/notification/StickyNotification";
+import useInstallPrompt from "@/src/hooks/misc/useInstallPrompt";
+import { useStickyNotification } from "@/src/store/notification/notification";
+import { student_links } from "@/src/utils/data/navigation_links";
+import Clock from "@/src/utils/vector-svg/vectors/Clock";
+import RightTiltedBook from "@/src/utils/vector-svg/vectors/CombinedBlock";
+import KidInPicture from "@/src/utils/vector-svg/vectors/KidInPicture";
+import StudentsInClass from "@/src/utils/vector-svg/vectors/StudentsInClass";
 
 export default function StudentLayout({ children }) {
   const { installPrompt, isInstalled, handleInstallClick } = useInstallPrompt();
@@ -117,7 +118,7 @@ export default function StudentLayout({ children }) {
       <NewClass />
       <CompleteProfile />
       <Subscribe />
-      <PartnerSchool/>
+      <PartnerSchool />
       {notificationOpen && <StickyNotification />}
     </>
   );

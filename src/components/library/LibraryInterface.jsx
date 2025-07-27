@@ -1,8 +1,9 @@
 'use client';
+import { BookOutlined, FileTextOutlined, ReadOutlined, CloudDownloadOutlined, MobileOutlined, SearchOutlined } from '@ant-design/icons';
+import { Typography, Card, Space, Tag, Row, Col, Divider, Button } from 'antd';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
-import { Typography, Card, Space, Tag, Row, Col, Divider, Button } from 'antd';
-import { BookOutlined, FileTextOutlined, ReadOutlined, CloudDownloadOutlined, MobileOutlined, SearchOutlined } from '@ant-design/icons';
+
 import Animator from '../home/animations/Animator';
 
 const { Title, Paragraph, Text } = Typography;

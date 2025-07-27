@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { BsFillPlayFill, BsPauseFill, BsFillVolumeMuteFill, BsFillVolumeUpFill } from 'react-icons/bs';
+
 import Animator from '../home/animations/Animator';
 
 const VideoPlayer = ({ videoSrc }) => {

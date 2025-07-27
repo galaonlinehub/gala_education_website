@@ -1,4 +1,5 @@
 import Image from "next/image";
+
 import Animator from "../home/animations/Animator";
 
 export const Authorities = () => {

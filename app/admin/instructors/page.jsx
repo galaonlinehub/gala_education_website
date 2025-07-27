@@ -1,12 +1,13 @@
 "use client";
+import Link from "next/link";
+import { useState } from "react";
+
 import {
     CustomDataTableWithQuery,
     getInstructors,
     instructorColumns,
 } from "@/src/features/admin";
 import { usePaginationQuery } from "@/src/features/admin";
-import Link from "next/link";
-import { useState } from "react";
 
 function Instructors() {
     const [page, setPage] = useState(1);

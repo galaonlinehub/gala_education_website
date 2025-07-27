@@ -1,16 +1,17 @@
 "use client";
-import React, { useState, useRef, useEffect } from "react";
 import { Button, Card, Divider, Input, Modal, Typography, Tabs } from "antd";
 import { Segmented, ConfigProvider } from "antd";
 import Image from "next/image";
+import React, { useState, useRef, useEffect } from "react";
 import { IoMailOutline } from "react-icons/io5";
-import Donate from "@/src/components/ui/donation/Donate";
+
 import FaqCard from "@/src/components/home/card/FaqCard";
-import { useTeamMembers } from "@/src/hooks/data/useTeamMembers";
-import { img_base_url } from "@/src/config/settings";
 import MultipleProfileSkeletons from "@/src/components/home/card/ProfileCardSkeleton";
 import Footer from "@/src/components/layout/footer";
+import Donate from "@/src/components/ui/donation/Donate";
 import ProcessingModal from "@/src/components/ui/donation/ProcessingModal";
+import { img_base_url } from "@/src/config/settings";
+import { useTeamMembers } from "@/src/hooks/data/useTeamMembers";
 
 const { Text } = Typography;
 

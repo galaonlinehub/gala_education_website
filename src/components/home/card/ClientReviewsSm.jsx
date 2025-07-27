@@ -1,5 +1,6 @@
-import React from "react";
 import { Carousel } from "antd";
+import React from "react";
+
 import ClientReviews from "./ClientReviews";
 
 const ClientReviewsSm = () => {

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
 import { Card, Skeleton, Space } from 'antd';
+import React, { useState } from 'react';
 
 const ClassCardSkeleton = () => {
   return (

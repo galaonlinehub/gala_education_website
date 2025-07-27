@@ -1,12 +1,13 @@
 "use client";
-import { useAccountType, useTabNavigator } from "@/src/store/auth/signup";
 import { Dropdown } from "antd";
 import { useRouter } from "next/navigation";
-import React from "react";
 import { usePathname } from "next/navigation";
+import React from "react";
 import { FaChalkboardTeacher } from "react-icons/fa";
-import { PiStudentBold } from "react-icons/pi";
 import { FaArrowRightLong } from "react-icons/fa6";
+import { PiStudentBold } from "react-icons/pi";
+
+import { useAccountType, useTabNavigator } from "@/src/store/auth/signup";
 
 const ChooseAccount = ({ btnText, textColor, btnIcon, btnClassname, placement , trigger }) => {
   const router = useRouter();

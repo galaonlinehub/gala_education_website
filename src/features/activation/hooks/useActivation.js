@@ -1,5 +1,6 @@
-import { useResendActivationMutation, useVerifyAccountMutation } from "@/src/features/activation";
 import { useCallback } from "react";
+
+import { useResendActivationMutation, useVerifyAccountMutation } from "@/src/features/activation";
 
 export const useActivation = () => {
     const {mutate:verifyLinkMutate,isPending:verifyLinkIsPending,isError:verifyLinkIsError,error:verifyLinkError} = useVerifyAccountMutation();
