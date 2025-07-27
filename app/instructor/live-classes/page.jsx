@@ -18,10 +18,11 @@ import { useRouter } from "next/navigation";
 import { useUser } from "@/src/hooks/data/useUser";
 import { sessionStorageFn } from "@/src/utils/fns/client";
 import { encrypt } from "@/src/utils/fns/encryption";
+import { FaVideoSlash } from "react-icons/fa6";
 
 const { Panel } = Collapse;
 
-const ClassCard = ({ classData }) => {
+const ClassCard = ({ classData, status }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
@@ -65,6 +66,8 @@ const ClassCard = ({ classData }) => {
     setIsModalOpen(false);
   };
 
+  const isDisabled = status === 'Pending' || status === 'Completed' || status === 'Canceled';
+
   return (
     <>
       <Card
@@ -78,7 +81,7 @@ const ClassCard = ({ classData }) => {
           className="!text-white !font-medium !rounded-full !px-2 !py-0.5 !mb-2 !inline-flex !items-center !gap-1"
         >
           <LuClock className="h-3 w-3 text-yellow-300" />
-          {classData.status}
+          {status}
         </Tag>
         <div className="flex w-full mt-4 flex-col sm:flex-row sm:items-center justify-between gap-4 px-2 md:px-4 py-2">
           <div className="flex-1 flex flex-col sm:flex-row sm:items-center gap-4">
@@ -112,13 +115,12 @@ const ClassCard = ({ classData }) => {
           <div className="flex items-center">
             <Button
               type="primary"
-              // href={classData.link}
+              disabled={isDisabled}
               onClick={showConfirmModal}
               target="_blank"
-              className={`!bg-[#001840] !text-white !font-medium !rounded-md !px-4 !py-1 !h-auto !border-none transition-transform duration-200 ${
-                isHovered ? "!scale-105 !bg-[#003380]" : ""
-              }`}
-              icon={<LuVideo />}
+              className={`${isDisabled ? '!bg-[#d9dadb] !text-black' : '!bg-[#001840] !text-white'}   !font-medium !rounded-md !px-4 !py-1 !h-auto !border-none transition-transform duration-200 ${isHovered ? "!scale-105 !bg-[#003380]" : ""
+                }`}
+              icon={isDisabled ? <FaVideoSlash /> : <LuVideo />}
             >
               Join
             </Button>
@@ -129,9 +131,8 @@ const ClassCard = ({ classData }) => {
           bordered={false}
           expandIcon={({ isActive }) => (
             <LuInfo
-              className={`h-5 w-5 text-[#001840] transition-transform ${
-                isActive ? "rotate-180" : ""
-              }`}
+              className={`h-5 w-5 text-[#001840] transition-transform ${isActive ? "rotate-180" : ""
+                }`}
             />
           )}
           className="!mt-4 !bg-transparent"
@@ -220,6 +221,18 @@ const InstructorLiveLessons = () => {
 
   const [alignValue, setAlignValue] = useState("Upcoming");
 
+  const isPastLesson = (lesson) => {
+    const lessonDateTime = new Date(`${lesson.date} ${lesson.time}`);
+    const now = new Date();
+    return now > lessonDateTime;
+  };
+
+  const isFutureLesson = (lesson) => {
+    const lessonDateTime = new Date(`${lesson.date} ${lesson.time}`);
+    const now = new Date();
+    return lessonDateTime > now;
+  };
+
   return (
     <div className="w-full p-4 mt-layout-margin">
       <div className="flex flex-col justify-center gap-1 mb-4">
@@ -240,26 +253,54 @@ const InstructorLiveLessons = () => {
         value={alignValue}
         style={{ marginBottom: 8 }}
         onChange={setAlignValue}
-        options={["Upcoming", "Completed", "Canceled"]}
+        options={["Upcoming", "Pending", "Completed", "Canceled"]}
+        className="custom-segmented"
       />
 
-      {alignValue == "Upcoming" && (
+      {alignValue === "Upcoming" && (
         <div className="space-y-3">
           {isFetchingUpcomingLessons ? (
             <div className="flex justify-center gap-2 items-center w-full py-40 md:py-64">
-              <LoadingOutlined className="text-3xl text-[#001840]" spin />{" "}
+              <LoadingOutlined className="text-3xl text-[#001840]" spin />
               <span className="text-xs">Loading lessons...</span>
             </div>
-          ) : upcomingLessons?.filter((lesson) => lesson.status === "Upcoming")
-              .length > 0 ? (
+          ) : (() => {
+            const upcoming = upcomingLessons
+              ?.filter(lesson => lesson.status === "Upcoming" && isFutureLesson(lesson)) || [];
+
+            return upcoming.length > 0 ? (
+              upcoming.map(classData => (
+                <ClassCard key={classData.id} classData={classData} status={'Upcoming'} />
+              ))
+            ) : (
+              <div className="flex justify-center items-center w-full py-32">
+                <p className="text-gray-500 text-xs md:text-sm">
+                  No upcoming classes found.
+                </p>
+              </div>
+            );
+          })()}
+        </div>
+      )}
+
+
+
+      {alignValue == "Pending" && (
+        <div className="space-y-3">
+          {isFetchingUpcomingLessons ? (
+            <div className="flex justify-center gap-2 items-center w-full py-40 md:py-64">
+              <LoadingOutlined className="text-3xl text-[#001840]" spin />
+              <span className="text-xs">Loading lessons...</span>
+            </div>
+          ) : upcomingLessons?.filter((lesson) => lesson.status === "Upcoming").length > 0 ? (
             upcomingLessons
-              .filter((lesson) => lesson.status === "Upcoming")
+              .filter((lesson) => lesson.status === "Upcoming" && isPastLesson(lesson))
               .map((classData) => (
-                <ClassCard key={classData.id} classData={classData} />
+                <ClassCard key={classData.id} classData={classData} status={'Pending'} />
               ))
           ) : (
             <div className="flex justify-center items-center w-full py-32">
-              <p className="text-gray-500 text-xs md:text-sm  ">
+              <p className="text-gray-500 text-xs md:text-sm">
                 No upcoming classes found.
               </p>
             </div>
@@ -275,11 +316,11 @@ const InstructorLiveLessons = () => {
               <span className="text-xs">Loading lessons...</span>
             </div>
           ) : upcomingLessons?.filter((lesson) => lesson.status === "Completed")
-              .length > 0 ? (
+            .length > 0 ? (
             upcomingLessons
               .filter((lesson) => lesson.status === "Completed")
               .map((classData) => (
-                <ClassCard key={classData.id} classData={classData} />
+                <ClassCard key={classData.id} classData={classData} status={'Completed'} />
               ))
           ) : (
             <div className="flex justify-center items-center w-full py-32">
@@ -299,11 +340,11 @@ const InstructorLiveLessons = () => {
               <span className="text-xs">Loading lessons...</span>
             </div>
           ) : upcomingLessons?.filter((lesson) => lesson.status === "Canceled")
-              .length > 0 ? (
+            .length > 0 ? (
             upcomingLessons
               .filter((lesson) => lesson.status === "Canceled")
               .map((classData) => (
-                <ClassCard key={classData.id} classData={classData} />
+                <ClassCard key={classData.id} classData={classData} status={'Canceled'} />
               ))
           ) : (
             <div className="flex justify-center items-center w-full py-32">
@@ -314,24 +355,6 @@ const InstructorLiveLessons = () => {
           )}
         </div>
       )}
-
-      {/* <div className="space-y-3">
-        {isFetchingUpcomingLessons ? (
-          <div className="flex justify-center gap-2 items-center w-full py-40 md:py-64">
-            <LoadingOutlined className="text-3xl text-[#001840]" spin /> <span className="text-xs">Loading lessons...</span>
-          </div>
-        ) : upcomingLessons?.length > 0 ? (
-          upcomingLessons.map((classData) => (
-            <ClassCard key={classData.id} classData={classData} />
-          ))
-        ) : (
-          <div className="flex justify-center items-center w-full py-16">
-            <p className="text-gray-500">No upcoming classes found.</p>
-          </div>
-        )}
-      </div> */}
-
-      {/* Confirmation modal */}
     </div>
   );
 };

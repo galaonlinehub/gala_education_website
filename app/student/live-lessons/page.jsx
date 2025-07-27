@@ -3,7 +3,7 @@
 import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
 import { img_base_url } from "@/src/config/settings";
 import { useUpcomingLessons } from "@/src/hooks/data/useUpcomigLessons";
-import { Avatar, Button, Card, Collapse, Modal, Tag } from "antd";
+import { Avatar, Button, Card, Collapse, Modal, Segmented, Tag } from "antd";
 import React, { useState } from "react";
 import {
   LuCalendar,
@@ -21,10 +21,12 @@ import { encrypt } from "@/src/utils/fns/encryption";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/src/hooks/data/useUser";
 import { sessionStorageFn } from "@/src/utils/fns/client";
+import { LoadingOutlined } from "@ant-design/icons";
+import { FaVideoSlash } from "react-icons/fa6";
 
 const { Panel } = Collapse;
 
-const ClassCard = ({ classData }) => {
+const ClassCard = ({ classData, status }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -72,6 +74,8 @@ const ClassCard = ({ classData }) => {
     setIsModalOpen(false);
   };
 
+  const isDisabled = status === 'Pending' || status === 'Completed' || status === 'Canceled';
+
   return (
     <Card
       className="!flex !flex-col !w-full !shadow-sm hover:!shadow-md !rounded-xl !bg-white [&_.ant-card-body]:!p-2 md:[&_.ant-card-body]:!p-4"
@@ -83,7 +87,7 @@ const ClassCard = ({ classData }) => {
         className="!text-white !font-medium !rounded-full !px-2 !py-0.5 !mb-2 !inline-flex !items-center !gap-1"
       >
         <LuClock className="h-3 w-3 text-yellow-300" />
-        {classData.status}
+        {status}
       </Tag>
       <div className="flex w-full flex-col sm:flex-row sm:items-center justify-between gap-4 px-4 md:px-8 py-1">
         <div className="flex-1 flex flex-col sm:flex-row sm:items-center gap-4 md:gap-12">
@@ -130,12 +134,12 @@ const ClassCard = ({ classData }) => {
         <div className="flex items-center">
           <Button
             type="primary"
+            disabled={isDisabled}
             onClick={showConfirmModal}
             target="_blank"
-            className={`!bg-[#001840] !text-white !font-medium !rounded-md !px-4 !py-1 !h-auto !border-none transition-transform duration-200 ${
-              isHovered ? "!scale-105 !bg-[#003380]" : ""
-            }`}
-            icon={<LuVideo />}
+            className={`${isDisabled ? '!bg-[#d9dadb] !text-black' : '!bg-[#001840] !text-white'}   !font-medium !rounded-md !px-4 !py-1 !h-auto !border-none transition-transform duration-200 ${isHovered ? "!scale-105 !bg-[#003380]" : ""
+              }`}
+            icon={ isDisabled ? <FaVideoSlash /> :<LuVideo />}
           >
             Join
           </Button>
@@ -146,9 +150,8 @@ const ClassCard = ({ classData }) => {
         bordered={false}
         expandIcon={({ isActive }) => (
           <LuInfo
-            className={`h-5 w-5 text-[#001840] transition-transform ${
-              isActive ? "rotate-180" : ""
-            }`}
+            className={`h-5 w-5 text-[#001840] transition-transform ${isActive ? "rotate-180" : ""
+              }`}
           />
         )}
         className="!bg-transparent"
@@ -236,62 +239,147 @@ const LiveLessons = () => {
     isLoadingUpcomingLessons,
   } = useUpcomingLessons();
 
+  console.log("upcomingLessons", upcomingLessons)
+
+  const [alignValue, setAlignValue] = useState("Upcoming");
+
+  const isPastLesson = (lesson) => {
+    const lessonDateTime = new Date(`${lesson.date} ${lesson.time}`);
+    const now = new Date();
+    return now > lessonDateTime;
+  };
+
+  const isFutureLesson = (lesson) => {
+    const lessonDateTime = new Date(`${lesson.date} ${lesson.time}`);
+    const now = new Date();
+    return lessonDateTime > now;
+  };
+
+
+
+
   return (
-    <div className="w-full py-4">
-      <div className="flex flex-col justify-center gap-1 mb-4 w-full">
+    <div className="w-full p-4 mt-layout-margin">
+      <div className="flex flex-col justify-center gap-1 mb-4">
         <div className="flex items-center gap-2">
+          <LuVideo className="text-2xl md:text-4xl text-[#001840] flex-shrink-0" />
           <span className="font-semibold text-lg md:text-2xl text-[#001840] tracking-tight">
             Live Learning Center
           </span>
         </div>
-        <div className="text-xs md:text-sm text-gray-600 leading-relaxed w-full md:max-w-4xl">
+        <p className="text-xs md:text-sm text-gray-600 leading-relaxed max-w-4xl px-3">
           Participate in Live, Interactive Classes Delivered in Real Time with
           Dynamic Lessons and Engaging Discussions
-        </div>
+        </p>
       </div>
-      <div className="space-y-3">
-        {isFetchingUpcomingLessons ? (
-          <div className="flex w-full justify-center py-3 md:py-12">
-            <div className="flex justify-center items-center bg-white rounded-full shadow-md w-fit p-1 shadow-gray-400">
-              <SlickSpinner color="#001840" size={26} />
+
+      <Segmented
+        block
+        value={alignValue}
+        style={{ marginBottom: 8 }}
+        onChange={setAlignValue}
+        options={["Upcoming", "Pending", "Completed", "Canceled"]}
+        className="custom-segmented"
+      />
+
+      {alignValue === "Upcoming" && (
+        <div className="space-y-3">
+          {isFetchingUpcomingLessons ? (
+            <div className="flex justify-center gap-2 items-center w-full py-40 md:py-64">
+              <LoadingOutlined className="text-3xl text-[#001840]" spin />
+              <span className="text-xs">Loading lessons...</span>
             </div>
-          </div>
-        ) : isLoadingUpcomingLessons ? (
-          <div className="flex w-full justify-center py-3 md:py-24">
-            <svg
-              class="size-14 animate-spin"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                stroke-width="4"
-                opacity="0.25"
-              />
-              <path
-                d="M12 2a10 10 0 0 1 10 10"
-                stroke="currentColor"
-                stroke-width="4"
-              />
-            </svg>
-          </div>
-        ) : upcomingLessons.length === 0 ? (
-          <div className="flex flex-col justify-center items-center py-24">
-            <LuFolderOpen color="#001840" size={48} />
-            <span className="text-gray-500 text-center text-sm md:text-base">
-              You currently have no upcoming lessons scheduled
-            </span>
-          </div>
-        ) : (
-          upcomingLessons.map((classData) => (
-            <ClassCard key={classData.key} classData={classData} />
-          ))
-        )}
-      </div>
+          ) : (() => {
+            const upcoming = upcomingLessons
+              ?.filter(lesson => lesson.status === "Upcoming" && isFutureLesson(lesson)) || [];
+
+            return upcoming.length > 0 ? (
+              upcoming.map(classData => (
+                <ClassCard key={classData.id} classData={classData} status={'Upcoming'} />
+              ))
+            ) : (
+              <div className="flex justify-center items-center w-full py-32">
+                <p className="text-gray-500 text-xs md:text-sm">
+                  No upcoming classes found.
+                </p>
+              </div>
+            );
+          })()}
+        </div>
+      )}
+
+
+
+      {alignValue == "Pending" && (
+        <div className="space-y-3">
+          {isFetchingUpcomingLessons ? (
+            <div className="flex justify-center gap-2 items-center w-full py-40 md:py-64">
+              <LoadingOutlined className="text-3xl text-[#001840]" spin />
+              <span className="text-xs">Loading lessons...</span>
+            </div>
+          ) : upcomingLessons?.filter((lesson) => lesson.status === "Upcoming").length > 0 ? (
+            upcomingLessons
+              .filter((lesson) => lesson.status === "Upcoming" && isPastLesson(lesson))
+              .map((classData) => (
+                <ClassCard key={classData.id} classData={classData} status={'Pending'} />
+              ))
+          ) : (
+            <div className="flex justify-center items-center w-full py-32">
+              <p className="text-gray-500 text-xs md:text-sm">
+                No upcoming classes found.
+              </p>
+            </div>
+          )}
+        </div>
+      )}
+
+      {alignValue == "Completed" && (
+        <div className="space-y-3">
+          {isFetchingUpcomingLessons ? (
+            <div className="flex justify-center gap-2 items-center w-full py-40 md:py-64">
+              <LoadingOutlined className="text-3xl text-[#001840]" spin />{" "}
+              <span className="text-xs">Loading lessons...</span>
+            </div>
+          ) : upcomingLessons?.filter((lesson) => lesson.status === "Completed")
+            .length > 0 ? (
+            upcomingLessons
+              .filter((lesson) => lesson.status === "Completed")
+              .map((classData) => (
+                <ClassCard key={classData.id} classData={classData} status={'Completed'} />
+              ))
+          ) : (
+            <div className="flex justify-center items-center w-full py-32">
+              <p className="text-gray-500 text-xs md:text-sm">
+                No Completed classes found.
+              </p>
+            </div>
+          )}
+        </div>
+      )}
+
+      {alignValue == "Canceled" && (
+        <div className="space-y-3">
+          {isFetchingUpcomingLessons ? (
+            <div className="flex justify-center gap-2 items-center w-full py-40 md:py-64">
+              <LoadingOutlined className="text-3xl text-[#001840]" spin />{" "}
+              <span className="text-xs">Loading lessons...</span>
+            </div>
+          ) : upcomingLessons?.filter((lesson) => lesson.status === "Canceled")
+            .length > 0 ? (
+            upcomingLessons
+              .filter((lesson) => lesson.status === "Canceled")
+              .map((classData) => (
+                <ClassCard key={classData.id} classData={classData} status={'Canceled'} />
+              ))
+          ) : (
+            <div className="flex justify-center items-center w-full py-32">
+              <p className="text-gray-500 text-xs md:text-sm">
+                No Canceled classes found.
+              </p>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };

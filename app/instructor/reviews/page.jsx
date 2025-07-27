@@ -250,7 +250,7 @@ const ReviewsAndRatings = () => {
   //     <>
   //       <Button
   //         type="link"
-  //         className=" mb-2 !text-blue-900 font-semibold p-2 bg-blue-100/50 hover:!text-blue-800 hover:!bg-blue-100 text-sm"
+  //         className=" mb-2 !text-blue-900 font-semibold p-2 bg-blue-100/50 hover:!text-blue-800 hover:!bg-blue-100 text-sm"  
   //         onClick={() => setSelectedClass(false)}
   //       >
   //         <IoArrowBackCircle size={20} /> Back to Classes

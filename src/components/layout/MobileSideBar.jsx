@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
-import { Drawer, Avatar, Typography, Divider, Button } from "antd";
+import { Drawer, Avatar, Typography, Divider, Button, Tooltip } from "antd";
 import { useUser } from "@/src/hooks/data/useUser";
 import { Signout } from "../ui/auth/signup/Signout";
 import { img_base_url } from "@/src/config/settings";
@@ -8,6 +8,7 @@ import { LuX, LuUser, LuLogOut, LuLoaderCircle } from "react-icons/lu";
 import { usePathname, useSearchParams } from "next/navigation";
 import { links } from "@/src/utils/data/redirect";
 import { useRouter } from "next/navigation";
+import clsx from "clsx";
 
 const { Text } = Typography;
 
@@ -58,24 +59,37 @@ const MobileSideBar = ({ isOpen, onClose }) => {
         closeIcon={null}
       >
         <ul className="space-y-4">
-          {links[user?.role]?.map((item, i) => (
-            <li key={i}>
-              <Link
-                href={`/${user?.role}/${item.link}`}
-                className={`flex items-center gap-4 py-2 px-2 rounded-lg transition-colors ${
-                  currentUrl.replace(/\/$/, "") ===
-                  `/student${item.link === "." ? "" : `/${item.link}`}`
-                    ? "bg-[#001840] text-white"
-                    : "hover:bg-blue-950/20 hover:text-black"
-                }`}
-                // onClick={() => isMobile && setIsSidebarOpen(false)}
-                onClick={onClose}
-              >
-                <span className="">{item.icon}</span>
-                <span className="text-sm font-normal">{item.name}</span>
-              </Link>
-            </li>
-          ))}
+          {links[user?.role]?.map((item, i) => {
+            const href = `/${user?.role}${item.link === "." ? "" : `/${item.link}`}`;
+            const isActive = currentUrl.replace(/\/$/, "") === href;
+
+            const hasFreeTrial = user?.has_free_trial;
+            const isDashboard = item.link === ".";
+
+            const isDisabled = hasFreeTrial && !isDashboard;
+
+            return (
+              <li key={i}>
+                <Tooltip title={isDisabled ? 'This is only available in Premium' : ''}>
+                  <Link
+                    href={href}
+                    onClick={(e) => {
+                      if (isDisabled) { e.preventDefault() } else onClose();
+                    }}
+                    className={clsx("flex items-center gap-4 py-2 px-2 rounded-lg transition-colors", isActive
+                      ? "bg-[#001840] text-white"
+                      : "hover:bg-blue-950/20 hover:text-black",
+                      isDisabled ? "text-gray-400 cursor-not-allowed hover:bg-transparent" : ""
+                    )}
+                  >
+                    <span>{item.icon}</span>
+                    <span className="text-sm font-normal">{item.name}</span>
+                  </Link>
+                </Tooltip>
+              </li>
+            );
+          })}
+
         </ul>
 
         <Divider style={{ margin: "12px 0" }} />

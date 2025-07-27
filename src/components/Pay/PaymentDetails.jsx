@@ -64,6 +64,8 @@ const PaymentDetails = () => {
       </Card>
     );
   }
+
+  console.log("enrollMeCohortDta", enrollMeCohort)
   return (
     <Card className="!flex !flex-col !items-start !justify-start !w-full !lg:w-1/2 !border-none">
       <div className="w-full mb-6">
