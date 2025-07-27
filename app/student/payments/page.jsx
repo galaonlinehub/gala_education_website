@@ -87,7 +87,8 @@ const PendingTopicCard = ({
   instructor_name,
   payment_reference,
   amount,
-  instructor_profile_picture,cohort_start_date
+  instructor_profile_picture,
+  cohort_start_date,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [paymentStep, setPaymentStep] = useState("initial");
@@ -95,14 +96,10 @@ const PendingTopicCard = ({
   const showModal = (e) => {
     e.preventDefault();
     setIsModalOpen(true);
-    setPaymentStep("initial");
   };
 
   const handleComplete = () => {
     setPaymentStep(PaymentStatus.LOADING);
-    setTimeout(() => {
-      setPaymentStep(PaymentStatus.SUCCESS);
-    }, 2000);
   };
 
   const handleClose = () => {
@@ -122,7 +119,7 @@ const PendingTopicCard = ({
           <RenderReferenceState
             reference={payment_reference}
             amount={amount}
-            onClose={handleComplete}
+            onClose={handleClose}
           />
         );
     }
