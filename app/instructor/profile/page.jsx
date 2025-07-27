@@ -49,7 +49,7 @@ import {
 import React, { useState } from "react";
 import { BsPerson, BsPersonBadge } from "react-icons/bs";
 import { GrGroup } from "react-icons/gr";
-import { LuUser } from 'react-icons/lu';
+import { LuSchool, LuUser } from 'react-icons/lu';
 import { MdSubject, MdClass } from "react-icons/md";
 import { TbDisabled } from "react-icons/tb";
 
@@ -58,6 +58,7 @@ import { useGrade } from '@/src/hooks/data/useGrade';
 import { useInstructorCohorts } from '@/src/hooks/data/useInstructorCohorts';
 import { useInstructorProfile } from '@/src/hooks/data/useInstructorProfile';
 import { useInstructorSubjects } from '@/src/hooks/data/useInstructorSubjects';
+import { useReviews } from '@/src/hooks/data/useReviews';
 import { useSpecialNeeds } from '@/src/hooks/data/useSpecialNeeds';
 import { useSubject } from '@/src/hooks/data/useSubject';
 import { useUser } from '@/src/hooks/data/useUser';
@@ -83,13 +84,13 @@ const TeacherProfile = () => {
   const [modalType, setModalType] = useState('');
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
 
+  const { instructorSummary } = useReviews();
+
   const certifications = [
     "Ordinary level Education Certificate",
     // "Advanced level Education Certificate"
   ];
-
-  console.log("USER :...", user)
-
+  
   // Track window width for responsive design
   React.useEffect(() => {
     const handleResize = () => {
@@ -243,15 +244,21 @@ const TeacherProfile = () => {
                 </div>
 
                 <div className={`${isMobile ? 'mt-4' : ''}`}>
-                  <Title level={2} className="!text-white !mb-1">
+                  <div className="!text-white text-xl font-semibold">
                     {user?.first_name} {user?.last_name}
-                  </Title>
+                  </div>
                   <div className="flex items-center gap-2 justify-center lg:justify-start">
                     <Badge status="processing" />
-                    <Text className="text-white/90 text-lg capitalize">
+                    <div className="text-white/90 text-sm capitalize">
                       {user?.role}
-                    </Text>
+                    </div>
                   </div>
+                  {user?.partner_school != null && <div className="flex items-center gap-2 mt-2 rounded-md bg-blue-200 px-2 py-1 justify-center lg:justify-start">
+                    <LuSchool color='#4169e1' />
+                    <div className="text-blue-700/90 text-sm capitalize">
+                      {user?.partner_school}
+                    </div>
+                  </div>}
                 </div>
               </div>
 
@@ -315,7 +322,7 @@ const TeacherProfile = () => {
             <Card className="text-center border border-yellow-400 shadow-lg hover:shadow-xl transition-shadow bg-gradient-to-r text-white">
               <Statistic
                 title={<span className="text-black">Rating</span>}
-                value={user?.rating || 0}
+                value={instructorSummary?.average_rating || 0}
                 precision={1}
                 prefix={<StarOutlined className="text-yellow-500" />}
                 suffix="/5"
@@ -327,7 +334,7 @@ const TeacherProfile = () => {
             <Card className="text-center border border-purple-400 shadow-lg hover:shadow-xl transition-shadow bg-gradient-to-r text-white">
               <Statistic
                 title={<span className="text-black">Reviews</span>}
-                value={user?.reviews || 0}
+                value={instructorSummary?.total_reviews || 0}
                 prefix={<MessageOutlined className="text-purple-500" />}
                 valueStyle={{ color: 'black', fontSize: isMobile ? '24px' : '32px' }}
               />
