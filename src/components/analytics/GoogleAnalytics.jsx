@@ -10,9 +10,6 @@ export default function GoogleAnalyticsComponent() {
     return null;
   }
   if (process.env.NODE_ENV !== "production") {
-    console.warn(
-      "Google Analytics is only enabled in production. Check NODE_ENV in .env.local"
-    );
     return null;
   }
 

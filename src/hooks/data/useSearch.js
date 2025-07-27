@@ -9,7 +9,6 @@ import { useNewClass } from "@/src/store/student/class";
 import { useSearchResult } from "../../store/search_result";
 
 export const useSearch = () => {
-  // State management
   const [searchTerm, setSearchTerm] = useState("");
   const [isSearching, setIsSearching] = useState({
     loading: false,
