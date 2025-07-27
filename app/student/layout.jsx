@@ -17,12 +17,19 @@ import { useStickyNotification } from "@/src/store/notification/notification";
 import { student_links } from "@/src/utils/data/navigation_links";
 import Clock from "@/src/utils/vector-svg/vectors/Clock";
 import RightTiltedBook from "@/src/utils/vector-svg/vectors/CombinedBlock";
+
 import KidInPicture from "@/src/utils/vector-svg/vectors/KidInPicture";
 import StudentsInClass from "@/src/utils/vector-svg/vectors/StudentsInClass";
+
+import StickyNotification from "@/src/components/ui/notification/StickyNotification";
+import { useStickyNotification } from "@/src/store/notification/notification";
+import { useUser } from "@/src/hooks/data/useUser";
+import { Tooltip } from "antd";
 
 export default function StudentLayout({ children }) {
   const { installPrompt, isInstalled, handleInstallClick } = useInstallPrompt();
   const currentUrl = usePathname();
+  const { user } = useUser();
   const notificationOpen = useStickyNotification(
     (state) => state.notificationOpen
   );
@@ -64,9 +71,8 @@ export default function StudentLayout({ children }) {
             {student_links.map((item, i) => {
               const normalizedUrl = currentUrl.replace(/\/$/, "");
 
-              const itemUrl = `/student${
-                item.link === "." ? "" : `/${item.link}`
-              }`;
+              const itemUrl = `/student${item.link === "." ? "" : `/${item.link}`
+                }`;
 
               const isDashboard = itemUrl === "/student";
 
@@ -74,15 +80,28 @@ export default function StudentLayout({ children }) {
                 ? normalizedUrl === itemUrl
                 : normalizedUrl.startsWith(itemUrl);
 
+              const hasFreeTrial = user?.has_free_trial;
+              const isDisabled = hasFreeTrial && !isDashboard;
+
+
               return (
-                <li key={i}>
+                <Tooltip
+                  color="#001840"
+                  title={isDisabled ? "This is only available in Premium" : ""}
+                  key={i}
+                >
                   <Link
+                    key={i}
                     href={itemUrl}
+                    onClick={(e) => {
+                      if (isDisabled) e.preventDefault();
+                    }}
                     className={clsx(
                       "flex items-center gap-3 py-2 px-2 rounded-lg transition-colors",
                       isActive
                         ? "bg-[#001840] text-white"
-                        : "hover:bg-blue-950/20"
+                        : "hover:bg-blue-950/20",
+                      isDisabled ? "text-gray-400 cursor-not-allowed hover:bg-transparent" : ""
                     )}
                   >
                     <span className="text-2xl">{item.icon}</span>
@@ -95,7 +114,7 @@ export default function StudentLayout({ children }) {
                       {item.name}
                     </span>
                   </Link>
-                </li>
+                </Tooltip>
               );
             })}
           </ul>

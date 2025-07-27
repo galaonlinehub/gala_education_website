@@ -297,6 +297,10 @@ const InstructorSearchResult = ({ details }) => {
     setEnrollCohort(idx);
   };
 
+  console.log("DETAILS:..", details)
+
+  const hasFreeTrial = user?.has_free_trial;
+
   const navigateToChat = (chatId) => {
     setCurrentChatId(chatId);
     router.push(`/${user?.role}/social`);
@@ -349,76 +353,9 @@ const InstructorSearchResult = ({ details }) => {
   console.log("Summary of it:", instructorSummary)
   console.log("Deatils", details)
 
-
-  const dummyReviews = [
-    {
-      id: 1,
-      studentName: "Sarah Johnson",
-      studentAvatar: null,
-      rating: 5,
-      subject: "Mathematics",
-      reviewText: "Excellent teacher! Makes complex concepts easy to understand. Very patient and always willing to help during office hours.",
-      date: "2024-06-15",
-
-
-    },
-    {
-      id: 2,
-      studentName: "Michael Chen",
-      studentAvatar: null,
-      rating: 4,
-      subject: "Mathematics",
-      reviewText: "Good teaching style and clear explanations. Assignments are fair and tests are reasonable. Would recommend to other students.",
-      date: "2024-06-10",
-
-
-    },
-    {
-      id: 3,
-      studentName: "Emma Rodriguez",
-      studentAvatar: null,
-      rating: 5,
-      subject: "Advanced Calculus",
-      reviewText: "One of the best professors I've had! Very knowledgeable and passionate about the subject. Creates a supportive learning environment.",
-      date: "2024-05-28",
-
-
-    },
-    {
-      id: 4,
-      studentName: "David Kim",
-      studentAvatar: null,
-      rating: 3,
-      subject: "Statistics",
-      reviewText: "Decent teacher but sometimes goes too fast through material. Office hours are helpful though.",
-      date: "2024-05-20",
-
-
-    },
-    {
-      id: 5,
-      studentName: "Jessica Martinez",
-      studentAvatar: null,
-      rating: 5,
-      subject: "Linear Algebra",
-      reviewText: "Amazing professor! Very organized, clear lectures, and fair grading. Really cares about student success.",
-      date: "2024-05-15",
-
-
-    }
-  ];
-
   const handleViewReviews = () => {
     setOpenReviewsModal(true);
   }
-
-  const averageRating = dummyReviews.reduce((sum, review) => sum + review.rating, 0) / dummyReviews.length;
-
-  // Count ratings by star
-  const ratingCounts = dummyReviews.reduce((acc, review) => {
-    acc[review.rating] = (acc[review.rating] || 0) + 1;
-    return acc;
-  }, {});
 
 
   return (
@@ -436,16 +373,15 @@ const InstructorSearchResult = ({ details }) => {
         <div className="flex items-center gap-1 sm:gap-2 min-w-0 flex-shrink-0">
           <FaStar size={12} className="sm:w-4 sm:h-4 text-yellow-400 flex-shrink-0" />
           <span className="text-[10px] sm:text-xs whitespace-nowrap">
-            {4.5}
-            <span className="hidden md:inline"> ({60})</span>
+            {Number(instructorSummary?.average_rating || 0).toFixed(1)}
+            <span className="hidden md:inline"> ({instructorReviews?.length})</span>
           </span>
         </div>
 
         <div className="flex items-center gap-1 sm:gap-2 min-w-0 flex-shrink-0">
           <FaClock size={12} className="sm:w-4 sm:h-4 flex-shrink-0" />
           <span className="text-[10px] sm:text-xs whitespace-nowrap truncate">
-            2h
-            <span className="hidden sm:inline"> avg</span>
+            {details?.teaching_hours}
           </span>
         </div>
       </div>
@@ -530,7 +466,7 @@ const InstructorSearchResult = ({ details }) => {
                     key={index}
                     count={
                       <div className="bg-black text-white text-[8px] sm:text-[10px] px-1 sm:px-2 py-1 rounded-sm truncate max-w-[120px] transition-all duration-200 hover:scale-105">
-                        {sub?.name}
+                        {sub}
                       </div>
                     }
                   />
@@ -701,25 +637,31 @@ const InstructorSearchResult = ({ details }) => {
                   <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 gap-1 sm:gap-2">
                     <div className="flex border border-black/10 bg-white px-2 py-1 items-center justify-center text-[8px] sm:text-[10px] rounded-sm gap-1 font-bold transition-all duration-200 hover:bg-gray-50">
                       <FaRegClock size={8} className="sm:w-3 sm:h-3 flex-shrink-0" />
-                      <span className="truncate">{cohort?.total_weeks}w</span>
+                      <span className="truncate">Duration: {cohort?.total_weeks}w</span>
                     </div>
                     <div className="flex border border-black/10 bg-white px-2 py-1 items-center justify-center text-[8px] sm:text-[10px] rounded-sm gap-1 font-bold transition-all duration-200 hover:bg-gray-50">
                       <LuUsers size={8} className="sm:w-3 sm:h-3 flex-shrink-0" />
-                      <span className="truncate">{cohort?.total_enrolled_students}</span>
+                      <span className="truncate">Enrolled: {cohort?.total_enrolled_students}</span>
                     </div>
                     <div className="flex border border-black/10 bg-white px-2 py-1 items-center justify-center text-[8px] sm:text-[10px] rounded-sm gap-1 font-bold transition-all duration-200 hover:bg-gray-50 xs:col-span-2 sm:col-span-1">
                       <GoBook size={8} className="sm:w-3 sm:h-3 flex-shrink-0" />
-                      <span className="truncate">{cohort?.start_date}</span>
+                      <span className="truncate">Start date: {cohort?.start_date}</span>
                     </div>
                   </div>
 
                   {/* Enroll Button */}
-                  <Button
-                    onClick={() => handleEnroll(cohort?.cohort_id)}
-                    className="!w-full !bg-black !text-white !border-transparent hover:!border-transparent !text-[10px] sm:!text-xs !py-1 sm:!py-2 !transition-all !duration-200 hover:!bg-gray-800 hover:!scale-[1.02] hover:!shadow-md"
+                  <Tooltip
+                    title={hasFreeTrial ? "This is only available in Premium" : ""}
                   >
-                    Enroll Now
-                  </Button>
+
+                    <Button
+                      disabled={hasFreeTrial}
+                      onClick={hasFreeTrial ? (e) => e.preventDefault() : () => handleEnroll(cohort?.cohort_id)}
+                      className={`${hasFreeTrial ? '!bg-gray-300 hover:!bg-gray-400 !text-gray-500' : '!text-white'} !w-full !bg-black  !border-transparent hover:!border-transparent !text-[10px] sm:!text-xs !py-1 sm:!py-2 !transition-all !duration-200 hover:!bg-gray-800 hover:!scale-[1.02] hover:!shadow-md`}
+                    >
+                      Enroll Now
+                    </Button>
+                  </Tooltip>
                 </div>
               ))}
             </div>
