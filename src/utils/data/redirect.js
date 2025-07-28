@@ -16,6 +16,6 @@ export const links = {
 
 
 export const TRIAL_ALLOWED_PATHS = (role) => [
-  `/${role}/`,
+  `/${role}`,
   `/${role}/subscriptions`,
 ];

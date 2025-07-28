@@ -76,14 +76,12 @@ export async function middleware(request) {
       );
     }
 
-    if (user?.hasFreeTrial === true) {
-      const allowedTrialPaths = TRIAL_ALLOWED_PATHS(userRole);
-      const isAllowed = allowedTrialPaths.some(
-        (p) => path === p || path.startsWith(`${p}/`)
-      );
+    if (user?.has_free_trial === true) {
+      const allowedTrialPaths = TRIAL_ALLOWED_PATHS(user?.role);
+      const isAllowed = allowedTrialPaths.some((p) => path === p);
 
       if (!isAllowed) {
-        return new NextResponse(null, { status: 404 });
+        return NextResponse.rewrite(new URL("/not-found", request.url));
       }
     }
 
