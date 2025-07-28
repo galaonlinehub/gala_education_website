@@ -14,11 +14,13 @@ import {
 } from "react-icons/lu";
 
 import { useUserSubscriptions } from "@/src/hooks/data/useSubscription";
+import { useSubscribeStore } from "@/src/store/subscribeStore";
 
 import SlickSpinner from "./loading/template/SlickSpinner";
 
 const Subscriptions = () => {
   const { current, previous, next } = useUserSubscriptions();
+  const { setSubscribeOpen } = useSubscribeStore();
 
   return (
     <div className="xl:px-6 py-2 rounded-xl">
@@ -41,6 +43,7 @@ const Subscriptions = () => {
               Active Subscriptions
             </div>
             <Tooltip
+              color="#001840"
               title={
                 <div className="text-xs">
                   This feature is currently unavailable.
@@ -69,6 +72,7 @@ const Subscriptions = () => {
               subtitle="Subscribe to unlock premium features"
               actionText="Add Subscription"
               actionIcon={<LuPlus className="h-4 w-4 mr-1" />}
+              action={() => setSubscribeOpen(true)}
             />
           )}
           {current.data?.map((sub) => (
@@ -253,13 +257,23 @@ const SubscriptionItem = ({ sub }) => {
   );
 };
 
-const EmptyState = ({ icon, message, subtitle, actionText, actionIcon }) => (
+const EmptyState = ({
+  icon,
+  message,
+  subtitle,
+  actionText,
+  actionIcon,
+  action = null,
+}) => (
   <div className="flex flex-col items-center justify-center py-10 px-4 w-full bg-gradient-to-br from-[#001840]/5 to-[#001840]/10 rounded-lg border border-[#001840]/10">
     <div className="mb-4 p-4 bg-white rounded-full shadow-md">{icon}</div>
     <p className="text-lg font-medium mb-1">{message}</p>
     {subtitle && <p className="text-sm mb-4 text-gray-500">{subtitle}</p>}
     {actionText && (
-      <button className="flex items-center justify-center bg-[#001840] hover:bg-[#002060] text-white font-medium py-2 px-6 rounded-full shadow-md transition-all duration-300 transform hover:scale-105">
+      <button
+        className="flex items-center justify-center bg-[#001840] hover:bg-[#002060] text-white font-medium py-2 px-6 rounded-full shadow-md transition-all duration-300 transform hover:scale-105"
+        onClick={action || undefined}
+      >
         {actionIcon}
         {actionText}
       </button>

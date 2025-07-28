@@ -25,6 +25,7 @@ import {
   LuUsers,
   LuGraduationCap,
   LuCalendar,
+  LuBookOpen,
 } from "react-icons/lu";
 import { MdOutlineRateReview } from "react-icons/md";
 
@@ -219,7 +220,7 @@ export default function TeacherClasses() {
 
   return (
     <>
-      <Layout className="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
+      <Layout className="min-h-screen bg-white">
         <Content className="p-4 md:p-8">
           <div
             className={`max-w-7xl mx-auto space-y-6 ${
@@ -298,7 +299,7 @@ export default function TeacherClasses() {
             <Row gutter={[16, 16]}>
               <Col xs={24} sm={12} lg={12}>
                 <Card
-                  className="h-full hover:shadow-md transition-all duration-300 border-0 bg-gradient-to-br from-green-50 to-emerald-50"
+                  className="h-full shadow-sm shadow-black/25 hover:shadow-md transition-all duration-300 border-0 bg-gradient-to-br from-green-50 to-emerald-50"
                   styles={{ body: { padding: "20px", height: "100%" } }}
                 >
                   <div className="flex flex-col h-full justify-between text-center">
@@ -315,6 +316,7 @@ export default function TeacherClasses() {
                     </div>
                     <div className="pt-4">
                       <Tooltip
+                        color="#001840"
                         title={
                           hasFreeTrail
                             ? "This is only available in Premium"
@@ -324,11 +326,7 @@ export default function TeacherClasses() {
                         <Button
                           disabled={hasFreeTrail}
                           type="default"
-                          className={`${
-                            hasFreeTrail
-                              ? "!text-black hover:!text-black hover:bg-green-300"
-                              : ""
-                          } w-full border-green-400 hover:bg-green-700`}
+                          className="w-full border-green-400 hover:bg-green-700 disabled:border-gray-200 disabled:bg-transparent"
                           onClick={handleAddNew}
                         >
                           Add New Class
@@ -341,7 +339,7 @@ export default function TeacherClasses() {
 
               <Col xs={24} sm={12} lg={12}>
                 <Card
-                  className="h-full hover:shadow-md transition-all duration-300 border-0 bg-gradient-to-br from-orange-50 to-amber-50"
+                  className="h-full shadow-sm shadow-black/25 hover:shadow-md transition-all duration-300 border-0 bg-gradient-to-br from-orange-50 to-amber-50"
                   styles={{ body: { padding: "20px", height: "100%" } }}
                 >
                   <div className="flex flex-col h-full justify-between text-center">
@@ -358,6 +356,7 @@ export default function TeacherClasses() {
                     </div>
                     <div className="pt-4">
                       <Tooltip
+                        color="#001840"
                         title={
                           hasFreeTrail
                             ? "This is only available in Premium"
@@ -367,11 +366,7 @@ export default function TeacherClasses() {
                         <Button
                           type="default"
                           disabled={hasFreeTrail}
-                          className={`${
-                            hasFreeTrail
-                              ? "!text-black hover:!text-black hover:bg-orange-300"
-                              : ""
-                          } w-full border-orange-300 text-orange-600 hover:border-orange-400`}
+                          className={`w-full border-orange-300 text-orange-600 hover:border-orange-300 disabled:border-gray-200 disabled:bg-transparent`}
                           onClick={() => router.push(`/${user?.role}/reviews`)}
                         >
                           View Reviews
@@ -390,14 +385,14 @@ export default function TeacherClasses() {
                   title={
                     <div className="flex items-center space-x-3">
                       <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                        <LuBook className="text-blue-600" />
+                        <LuBookOpen className="text-blue-600" />
                       </div>
                       <div className="text-sm md:text-lg !mb-0">
                         Your Subjects
                       </div>
                     </div>
                   }
-                  className="h-full shadow-sm border-0"
+                  className="h-full border-0 shadow-sm shadow-black/25"
                   bodyStyle={{
                     padding: device?.type === "mobile" ? "16px" : "24px",
                   }}
@@ -438,7 +433,7 @@ export default function TeacherClasses() {
                   ) : (
                     <Empty
                       description={
-                        <div className="text-center py-8">
+                        <div className="text-center py-2">
                           <Text type="secondary">No subjects assigned yet</Text>
                           <br />
                           <Text type="secondary" className="text-sm">
@@ -484,7 +479,7 @@ export default function TeacherClasses() {
                       </div>
                     </div>
                   }
-                  className="h-full shadow-sm border-0"
+                  className="h-full border-0 shadow-sm shadow-black/25"
                   bodyStyle={{
                     padding: device?.type === "mobile" ? "16px" : "24px",
                   }}
@@ -506,8 +501,8 @@ export default function TeacherClasses() {
                   ) : (
                     <Empty
                       description={
-                        <div className="text-center py-12">
-                          <LuGraduationCap className="text-4xl text-gray-300 mx-auto mb-4" />
+                        <div className="text-center py-2">
+                          {/* <LuGraduationCap className="text-4xl text-gray-300 mx-auto mb-4" /> */}
                           <Title level={5} type="secondary">
                             No classes yet
                           </Title>

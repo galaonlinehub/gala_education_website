@@ -92,12 +92,12 @@ const Signout = ({ onCloseSidebar }) => {
         okButtonProps={{
           disabled: loading,
           className:
-            "[&.ant-btn-primary]:!bg-black [&.ant-btn-primary]:!border-[#000] [&.ant-btn-primary:not(:disabled):hover]:!bg-[#000]/80 [&.ant-btn]:!text-white [&.ant-btn-primary:disabled]:!bg-gray-300 [&.ant-btn-primary:disabled]:!border-gray-300",
+            "[&.ant-btn-primary]:!bg-[#001840] [&.ant-btn-primary]:!border-0 [&.ant-btn-primary:not(:disabled):hover]:!bg-[#001840]/80 [&.ant-btn]:!text-white [&.ant-btn-primary:disabled]:!bg-[#001840]/60 [&.ant-btn-primary:disabled]:!border-0",
         }}
         cancelButtonProps={{
           disabled: loading,
           className:
-            "[&.ant-btn:not(:disabled):hover]:!border-red-500 [&.ant-btn:not(:disabled):hover]:!text-red-500 [&.ant-btn:not(:disabled)]:!border-[#001840]",
+            "[&.ant-btn:not(:disabled):hover]:!border-red-500 [&.ant-btn:not(:disabled):hover]:!text-red-500 [&.ant-btn:not(:disabled)]:!border-[#001840] [&.ant-btn]:!text-[#001840]",
         }}
       >
         <div className="mb-3 lg:mb-6">

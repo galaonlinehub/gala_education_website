@@ -1,6 +1,5 @@
 "use client";
 
-
 import "../globals.css";
 import { Tooltip } from "antd";
 import Link from "next/link";
@@ -20,11 +19,10 @@ import RightTiltedBook from "@/src/utils/vector-svg/vectors/CombinedBlock";
 import KidInPicture from "@/src/utils/vector-svg/vectors/KidInPicture";
 import StudentsInClass from "@/src/utils/vector-svg/vectors/StudentsInClass";
 
-
 export default function TeacherLayout({ children }) {
   const pathname = usePathname();
   const { installPrompt, isInstalled, handleInstallClick } = useInstallPrompt();
-  const { user } = useUser()
+  const { user } = useUser();
 
   const notificationOpen = useStickyNotification(
     (state) => state.notificationOpen
@@ -59,46 +57,52 @@ export default function TeacherLayout({ children }) {
         </div>
 
         {/* Sidebar */}
-     <aside
-  className="hidden md:block sticky top-[90px] left-0 w-[24vw] lg:w-[16vw] h-[calc(100vh-80px)] border-r border-[#d9d9d9] p-4 overflow-y-auto"
->
-  <ul className="space-y-4 pt-6">
-    {teacher_links.map((item, i) => {
-      const href = `/instructor/${item.link}`;
-      const isDashboard = item.link === ".";
-      const isActive =
-        pathname.startsWith(href) ||
-        (isDashboard && pathname === "/instructor");
+        <aside className="hidden md:block sticky top-[90px] left-0 w-[24vw] lg:w-[16vw] h-[calc(100vh-80px)] border-r border-[#d9d9d9] p-4 overflow-y-auto">
+          <ul className="space-y-4 pt-6">
+            {teacher_links.map((item, i) => {
+              const href = `/instructor/${item.link}`;
+              const isDashboard = item.link === ".";
+              const isSubscriptions = item.link === "subscriptions";
+              const isActive =
+                pathname.startsWith(href) ||
+                (isDashboard && pathname === "/instructor");
 
-      const hasFreeTrial = user?.has_free_trial;
-      const isDisabled = hasFreeTrial && !isDashboard;
+              const hasFreeTrial = user?.has_free_trial;
+              const isDisabled =
+                hasFreeTrial && !(isDashboard || isSubscriptions);
 
-      return (
-        <Tooltip
-          color="#001840"
-          title={isDisabled ? "This is only available in Premium" : ""}
-          key={i}
-        >
-          <Link
-            href={href}
-            onClick={(e) => {
-              if (isDisabled) e.preventDefault(); 
-            }}
-            className={`flex items-center gap-3 p-2 rounded-lg transition-colors
-              ${isActive ? "bg-[#001840] text-white hover:bg-[#001840] font-extrabold" : "text-black hover:bg-blue-950/20"}
-              ${isDisabled ? "text-gray-400 cursor-not-allowed hover:bg-transparent" : ""}
+              return (
+                <Tooltip
+                  color="#001840"
+                  title={isDisabled ? "This is only available in Premium" : ""}
+                  key={i}
+                >
+                  <Link
+                    href={href}
+                    onClick={(e) => {
+                      if (isDisabled) e.preventDefault();
+                    }}
+                    className={`flex items-center gap-3 p-2 rounded-lg transition-colors
+              ${
+                isActive
+                  ? "bg-[#001840] text-white hover:bg-[#001840] font-extrabold"
+                  : "text-black hover:bg-blue-950/20"
+              }
+              ${
+                isDisabled
+                  ? "text-gray-400 cursor-not-allowed hover:bg-transparent"
+                  : ""
+              }
             `}
-          >
-            <span className="text-2xl">{item.icon}</span>
-            <span className="font-semibold text-sm">{item.name}</span>
-          </Link>
-        </Tooltip>
-      );
-    })}
-  </ul>
-</aside>
-
-
+                  >
+                    <span className="text-2xl">{item.icon}</span>
+                    <span className="font-semibold text-sm">{item.name}</span>
+                  </Link>
+                </Tooltip>
+              );
+            })}
+          </ul>
+        </aside>
 
         <div className="flex-1 px-2 lg:px-6 py-2 w-full lg:w-[80vw] overflow-y-auto h-[calc(100vh-90px)]">
           {children}

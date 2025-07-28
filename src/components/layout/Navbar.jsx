@@ -1,6 +1,6 @@
 "use client";
 
-import { Tooltip, message, Dropdown,   Button} from "antd";
+import { Tooltip, message, Dropdown, Button } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -18,7 +18,6 @@ import MobileSideBar from "./MobileSideBar";
 import AboutUs from "../home/modals/AboutUs";
 import Subscribe from "../pay/Subscribe";
 import { Signout } from "../ui/auth/signup/Signout";
-
 
 const Navbar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -55,7 +54,7 @@ const Navbar = () => {
           English
         </div>
       ),
-      onClick: () => { },
+      onClick: () => {},
     },
     {
       key: "2",
@@ -64,7 +63,7 @@ const Navbar = () => {
           Swahili
         </div>
       ),
-      onClick: () => { },
+      onClick: () => {},
       disabled: true,
     },
   ];
@@ -90,13 +89,14 @@ const Navbar = () => {
   };
 
   const toggleDrawer = () => {
-    setDrawerOpen(prev => !prev);
-  }
+    setDrawerOpen((prev) => !prev);
+  };
 
   const getIcon = () => {
     if (!isOnline) {
       return (
         <Tooltip
+          color="#001840"
           placement="bottom"
           title={
             <NetworkMessage
@@ -114,6 +114,7 @@ const Navbar = () => {
       case "good":
         return (
           <Tooltip
+            color="#001840"
             placement="bottom"
             title={
               <NetworkMessage
@@ -127,6 +128,7 @@ const Navbar = () => {
       case "moderate":
         return (
           <Tooltip
+            color="#001840"
             placement="bottom"
             title={
               <NetworkMessage
@@ -140,6 +142,7 @@ const Navbar = () => {
       case "weak":
         return (
           <Tooltip
+            color="#001840"
             placement="bottom"
             title={
               <NetworkMessage
@@ -170,14 +173,14 @@ const Navbar = () => {
 
       <ul className="text-black flex sm:gap-x-4 gap-x-2 sm:text-[12px] text-[8px] leading-[5px] items-center justify-center font-black">
         {user?.has_free_trial && !user?.has_active_subscription && (
-          <Button
+          <button
             onClick={() => setSubscribeOpen(true)}
             variant="solid"
             type="primary"
-            className="!rounded-full !bg-[#001840] !text-white hidden sm:block !font-semibold !text-xs hover:!bg-gray-700 !py-2"
+            className="rounded-full bg-[#001840] text-white hidden sm:block font-semibold text-sm hover:bg-[#001840]/80 px-5 py-2"
           >
             Subscribe now
-          </Button>
+          </button>
         )}
         <div className="cursor-pointer">{getIcon()}</div>
 
@@ -189,14 +192,14 @@ const Navbar = () => {
           overlayClassName="rounded-md shadow-lg border border-gray-100"
           arrow={true}
           placement="bottom"
-        // dropdownRender={(menu) => (
-        //   <div>
-        //     <div className="text-xs font-light text-black px-4 py-2">
-        //       Choose language
-        //     </div>
-        //     {menu}
-        //   </div>
-        // )}
+          // dropdownRender={(menu) => (
+          //   <div>
+          //     <div className="text-xs font-light text-black px-4 py-2">
+          //       Choose language
+          //     </div>
+          //     {menu}
+          //   </div>
+          // )}
         >
           <Image
             width={200}
@@ -227,7 +230,7 @@ const Navbar = () => {
         {!user && (
           <div
             className="flex gap-3 items-center justify-center"
-            onClick={() => { }}
+            onClick={() => {}}
           >
             <ChooseAccont
               btnText={"Sign Up"}
