@@ -4,6 +4,7 @@ import {
   TrophyOutlined,
   CheckCircleOutlined,
 } from "@ant-design/icons";
+import { useQueryClient } from "@tanstack/react-query";
 import {
   theme,
   Card,
@@ -17,6 +18,7 @@ import {
   Avatar,
   Badge,
   Tooltip,
+  Progress,
 } from "antd";
 import clsx from "clsx";
 import Link from "next/link";
@@ -37,10 +39,10 @@ export default function Component() {
     enrolledSubjects,
     isFetchingEnrolledSubjects,
     isEnrolledSubjectsError,
-    enrolledTopics,
-    enrolledTopicsLoading,
   } = useEnrolledTopics();
 
+  const queryClient = useQueryClient();
+  const enrolledTopics = queryClient.getQueryData(["enrolledTopics"]);
   return (
     <div className="min-h-screen">
       <div className="max-w-[1920px] mx-auto p-2 sm:p-4 lg:p-6">
@@ -80,77 +82,65 @@ export default function Component() {
                     columns={[
                       {
                         title: (
-                          <span
-                            style={{ color: "#001840", fontWeight: "bold" }}
-                          >
+                          <span className="text-[#001840] font-bold">
                             Class
                           </span>
                         ),
                         dataIndex: "cohort_name",
                         key: "cohort_name",
+                        width: "60%",
                         ellipsis: {
                           showTitle: false,
                         },
-                        render: (cohort_name) => (
+                        render: (_, record) => (
                           <Tooltip
                             color="#001840"
-                            placement="topLeft"
-                            title={cohort_name}
+                            placement="top"
+                            title={
+                              <div className="text-center text-xs">{`${record?.topic_name} (${record?.cohort_name})`}</div>
+                            }
                           >
-                            <span
-                              className="text-xs sm:text-sm truncate block max-w-[120px] sm:max-w-[200px]"
-                              style={{ color: "#001840" }}
-                            >
-                              {cohort_name}
+                            <span className="text-xs sm:text-sm truncate block font-medium capitalize">
+                              {record?.topic_name}
                             </span>
                           </Tooltip>
                         ),
                       },
                       {
                         title: (
-                          <span
-                            style={{ color: "#001840", fontWeight: "bold" }}
-                          >
+                          <span className="text-[#001840] font-bold">
                             Progress
                           </span>
                         ),
                         dataIndex: "progress",
                         key: "progress",
-                        width: "35%",
-                        render: (progress) => {
+                        width: "20%",
+                        render: (_, record) => {
+                          const percent = record?.percent_of_completion ?? 0;
                           return (
-                            <span className="text-black">{progress}%</span>
-                            // <Progress
-                            //   percent={progress}
-                            //   size="small"
-                            //   className="min-w-[80px]"
-                            //   strokeColor={{
-                            //     "0%": "#001840",
-                            //     "100%": "#3b82f6",
-                            //   }}
-                            // />
+                            <Progress
+                              type="circle"
+                              percent={percent}
+                              size={35}
+                            />
                           );
                         },
                       },
                       {
                         title: (
-                          <span
-                            style={{ color: "#001840", fontWeight: "bold" }}
-                          >
+                          <span className="text-[#001840] font-bold">
                             Action
                           </span>
                         ),
                         key: "action",
-                        width: "25%",
+                        width: "20%",
                         render: () => (
-                          <Button
+                          <button
                             disabled={true}
-                            type="primary"
-                            size="small"
-                            className="p-2 !text-xs sm:text-sm bg-black"
+                            className="py-1 px-3 text-[10px] text-white rounded-md bg-[#001840] disabled:bg-[#001840]/40 disabled:pointer-events-none disabled:cursor-not-allowed hover:bg-[#001840]/80 transition-colors duration-200"
                           >
                             Enter
-                          </Button>
+                          </button>
                         ),
                       },
                     ]}
