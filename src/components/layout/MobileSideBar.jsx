@@ -12,7 +12,6 @@ import { links } from "@/src/utils/data/redirect";
 
 import { Signout } from "../ui/auth/signup/Signout";
 
-
 const { Text } = Typography;
 
 const MobileSideBar = ({ isOpen, onClose }) => {
@@ -63,26 +62,39 @@ const MobileSideBar = ({ isOpen, onClose }) => {
       >
         <ul className="space-y-4">
           {links[user?.role]?.map((item, i) => {
-            const href = `/${user?.role}${item.link === "." ? "" : `/${item.link}`}`;
+            const href = `/${user?.role}${
+              item.link === "." ? "" : `/${item.link}`
+            }`;
             const isActive = currentUrl.replace(/\/$/, "") === href;
 
             const hasFreeTrial = user?.has_free_trial;
             const isDashboard = item.link === ".";
+            const isSubscriptions = item.link === "subscriptions";
 
-            const isDisabled = hasFreeTrial && !isDashboard;
+            const isDisabled =
+              hasFreeTrial && !(isDashboard || isSubscriptions);
 
             return (
               <li key={i}>
-                <Tooltip title={isDisabled ? 'This is only available in Premium' : ''}>
+                <Tooltip
+                  color="#001840"
+                  title={isDisabled ? "This is only available in Premium" : ""}
+                >
                   <Link
                     href={href}
                     onClick={(e) => {
-                      if (isDisabled) { e.preventDefault() } else onClose();
+                      if (isDisabled) {
+                        e.preventDefault();
+                      } else onClose();
                     }}
-                    className={clsx("flex items-center gap-4 py-2 px-2 rounded-lg transition-colors", isActive
-                      ? "bg-[#001840] text-white"
-                      : "hover:bg-blue-950/20 hover:text-black",
-                      isDisabled ? "text-gray-400 cursor-not-allowed hover:bg-transparent" : ""
+                    className={clsx(
+                      "flex items-center gap-4 py-2 px-2 rounded-lg transition-colors",
+                      isActive
+                        ? "bg-[#001840] text-white"
+                        : "hover:bg-blue-950/20 hover:text-black",
+                      isDisabled
+                        ? "text-gray-400 cursor-not-allowed hover:bg-transparent hover:text-gray-400"
+                        : ""
                     )}
                   >
                     <span>{item.icon}</span>
@@ -92,7 +104,6 @@ const MobileSideBar = ({ isOpen, onClose }) => {
               </li>
             );
           })}
-
         </ul>
 
         <Divider style={{ margin: "12px 0" }} />

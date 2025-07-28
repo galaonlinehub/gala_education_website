@@ -22,7 +22,6 @@ import RightTiltedBook from "@/src/utils/vector-svg/vectors/CombinedBlock";
 import KidInPicture from "@/src/utils/vector-svg/vectors/KidInPicture";
 import StudentsInClass from "@/src/utils/vector-svg/vectors/StudentsInClass";
 
-
 export default function StudentLayout({ children }) {
   const { installPrompt, isInstalled, handleInstallClick } = useInstallPrompt();
   const currentUrl = usePathname();
@@ -68,18 +67,19 @@ export default function StudentLayout({ children }) {
             {student_links.map((item, i) => {
               const normalizedUrl = currentUrl.replace(/\/$/, "");
 
-              const itemUrl = `/student${item.link === "." ? "" : `/${item.link}`
-                }`;
+              const itemUrl = `/student${
+                item.link === "." ? "" : `/${item.link}`
+              }`;
 
               const isDashboard = itemUrl === "/student";
+              const isSubscriptions = item.link === "subscriptions";
 
               const isActive = isDashboard
                 ? normalizedUrl === itemUrl
                 : normalizedUrl.startsWith(itemUrl);
 
               const hasFreeTrial = user?.has_free_trial;
-              const isDisabled = hasFreeTrial && !isDashboard;
-
+              const isDisabled = hasFreeTrial && !(isDashboard || isSubscriptions);
 
               return (
                 <Tooltip
@@ -98,7 +98,9 @@ export default function StudentLayout({ children }) {
                       isActive
                         ? "bg-[#001840] text-white"
                         : "hover:bg-blue-950/20",
-                      isDisabled ? "text-gray-400 cursor-not-allowed hover:bg-transparent" : ""
+                      isDisabled
+                        ? "text-gray-400 cursor-not-allowed hover:bg-transparent"
+                        : ""
                     )}
                   >
                     <span className="text-2xl">{item.icon}</span>

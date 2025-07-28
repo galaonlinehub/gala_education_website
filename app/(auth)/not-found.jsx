@@ -7,7 +7,7 @@ export default function NotFound() {
 
   const router = useRouter();
   return (
-    <main className='w-screen flex items-center justify-center'>
+    <main className='w-screen h-full flex items-center justify-center'>
       <Result
       status="404"
       title="404"
