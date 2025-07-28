@@ -124,7 +124,7 @@ const StudentProfile = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-1 sm:px-4 lg:px-8 py-8">
-      <div className="bg-white rounded-lg lg:shadow-md p-6 mb-6 border">
+      <div className="bg-white rounded-lg shadow-sm shadow-black/25 p-6 mb-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <div className="flex flex-col sm:flex-row items-start gap-4">
             <div className="relative group">
@@ -247,7 +247,7 @@ const StudentProfile = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
-          <div className="bg-white rounded-lg shadow-md p-6 mb-6 border">
+          <div className="bg-white rounded-lg shadow-sm shadow-black/25 p-6 mb-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-bold">Learning Progress</h2>
               {!user.partner_school && (
@@ -309,7 +309,7 @@ const StudentProfile = () => {
           </div>
 
           {/* Recent Activity Card */}
-          <div className="bg-white rounded-lg shadow-md p-6 border">
+          <div className="bg-white rounded-lg shadow-sm shadow-black/25 p-6">
             <h2 className="text-xl font-bold mb-4">Recent Activity</h2>
 
             {activitiesLoading && (
@@ -354,7 +354,7 @@ const StudentProfile = () => {
 
         <div className="lg:col-span-1">
           {/* Contact Information */}
-          <div className="bg-white rounded-lg shadow-md p-6 mb-6 border">
+          <div className="bg-white rounded-lg shadow-sm shadow-black/25 p-6 mb-6">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-bold">Contact Information</h2>
               {!editContact ? (
@@ -477,7 +477,7 @@ const StudentProfile = () => {
             )}
           </div>
           {user?.partner_school && (
-            <div className="bg-white rounded-lg shadow-md p-6 mb-6 border flex flex-col gap-2 overflow-hidden">
+            <div className="bg-white rounded-lg shadow-sm shadow-black/25 p-6 mb-6 flex flex-col gap-2 overflow-hidden">
               <div className="flex justify-between items-center">
                 <span>Your School</span>
                 <div className="flex gap-2 items-center">

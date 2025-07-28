@@ -35,6 +35,8 @@ export const useEnrolledTopics = (cohortId, instructor_id) => {
   } = useQuery({
     queryKey: ["enrolled-subjects"],
     queryFn: getEnrolledSubjects,
+    staleTime: 1000 * 60 * 60 * 24 * 7,
+    cacheTime: 1000 * 60 * 60 * 24 * 14,
     ...globalOptions,
   });
 
