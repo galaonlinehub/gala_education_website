@@ -29,6 +29,7 @@ const publicEndpoints = new Set([
   "team-members",
   "health",
   "make-donation",
+  "verify-activation"
 ]);
 
 api.interceptors.request.use(
