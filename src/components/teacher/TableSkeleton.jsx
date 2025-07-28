@@ -1,5 +1,5 @@
-import React from 'react';
 import { Table, Skeleton, Space } from 'antd';
+import React from 'react';
 
 const TableSkeleton = () => {
   const columns = [

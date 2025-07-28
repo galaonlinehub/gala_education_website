@@ -1,24 +1,26 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Modal, Input, Button, Form, message } from "antd";
 import {
   LoadingOutlined,
   CheckOutlined,
   ArrowRightOutlined,
   CheckCircleFilled,
 } from "@ant-design/icons";
-import { useUser } from "@/src/hooks/data/useUser";
+import { useQueryClient } from "@tanstack/react-query";
+import { Modal, Input, Button, Form, message } from "antd";
+import clsx from "clsx";
 import Image from "next/image";
+import React, { useState, useEffect, useRef } from "react";
+import { LuImage, LuRotateCcw, LuUser } from "react-icons/lu";
+
+import { useUser } from "@/src/hooks/data/useUser";
+import { useSchoolPartnerStore } from "@/src/store/student/schoolPartnerStore";
 import {
   handlePhoneInput,
   mask_phone_number,
   reformat_phone_number,
 } from "@/src/utils/fns/format_phone_number";
 
-import { LuImage, LuRotateCcw, LuUser } from "react-icons/lu";
-import { useQueryClient } from "@tanstack/react-query";
-import clsx from "clsx";
-import SlickSpinner from "../ui/loading/template/SlickSpinner";
 import { Signout } from "../ui/auth/signup/Signout";
+import SlickSpinner from "../ui/loading/template/SlickSpinner";
 
 export const Stage = {
   SAVE: "save",
@@ -500,6 +502,15 @@ const Verify = ({ phone_number, setStatus }) => {
 };
 
 const Success = () => {
+  const open = useSchoolPartnerStore((state) => state.open);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      open();
+    }, 8000);
+
+    return () => clearTimeout(timer);
+  }, [open]);
+
   return (
     <div className="flex flex-col items-center justify-center h-3/4 bg-white p-6 rounded-lg">
       <div className="p-4 rounded-full mb-4">

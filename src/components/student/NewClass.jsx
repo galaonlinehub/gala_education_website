@@ -1,19 +1,21 @@
 "use client";
 
 import { Drawer } from "antd";
-import { useNewClass } from "@/src/store/student/class";
-import React, { useEffect } from "react";
 import { createStyles, useTheme } from "antd-style";
+import React, { useEffect } from "react";
+
 import { TopicCard, TopicCardSkeleton } from "@/src/components/ui/TopicCard";
+import { useSearch } from "@/src/hooks/data/useSearch";
+import { usePaySteps } from "@/src/store/pay";
+import { useSearchResult } from "@/src/store/search_result";
+import { useNewClass } from "@/src/store/student/class";
+import { useEnrollMe } from "@/src/store/student/useEnrollMe";
+
+import { Payment } from "../pay/Payment";
 import {
   InstructorSearchResult,
   InstructorSearchResultSkeleton,
 } from "../ui/InstructorSearchResult";
-import { useEnrollMe } from "@/src/store/student/useEnrollMe";
-import { usePaySteps } from "@/src/store/pay";
-import { Payment } from "../Pay/Payment";
-import { useSearchResult } from "@/src/store/search_result";
-import { useSearch } from "@/src/hooks/data/useSearch";
 
 const useStyle = createStyles(({ token }) => ({
   "my-drawer-body": {
@@ -35,7 +37,7 @@ const useStyle = createStyles(({ token }) => ({
 
 const NewClass = () => {
   const { openNewClass, setOpenNewClass } = useNewClass();
-  const { isFetchingResults, detailedResults } = useSearch ();
+  const { isFetchingResults, detailedResults } = useSearch();
   const { enrollMe, setEnrollMe, setEnrollCohort } = useEnrollMe();
   const { currentStep, setCurrentStep } = usePaySteps();
   const { selectedItemId } = useSearchResult();
@@ -98,7 +100,6 @@ const NewClass = () => {
         open={openNewClass}
         styles={drawerStyles}
         bodyStyle={{ padding: 0 }}
-        
       >
         {selectedItemId.type === "topic" && !enrollMe && (
           <>

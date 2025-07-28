@@ -1,6 +1,6 @@
 "use client";
-import React, { useState, useEffect } from "react";
 import { Spin } from "antd";
+import React, { useState, useEffect } from "react";
 
 const CountDownCard = () => {
   const [timeLeft, setTimeLeft] = useState({

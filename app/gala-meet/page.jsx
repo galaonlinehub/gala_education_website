@@ -1,16 +1,22 @@
 "use client";
 import { JaaSMeeting } from "@jitsi/react-sdk";
-import { JITSI_API_KEY } from "@/src/config/settings";
 import { useSearchParams } from "next/navigation";
-import { sessionStorageFn } from "@/src/utils/fns/client";
-import { decrypt } from "@/src/utils/fns/encryption";
-import notificationService from "@/src/components/ui/notification/Notification";
 import { useRouter } from "next/navigation";
+import { useState, useRef, useEffect } from "react";
+import { LuBellRing } from "react-icons/lu";
+
+import EndCallModal from "@/src/components/ui/EndCallModal";
+import notificationService from "@/src/components/ui/notification/Notification";
+import { JITSI_API_KEY } from "@/src/config/settings";
 import { useUser } from "@/src/hooks/data/useUser";
 import { apiPost } from "@/src/services/api/api_service";
-import { LuBellRing } from "react-icons/lu";
-import EndCallModal from "@/src/components/ui/EndCallModal";
-import { useState, useRef, useEffect } from "react";
+import { sessionStorageFn } from "@/src/utils/fns/client";
+import { decrypt } from "@/src/utils/fns/encryption";
+
+
+
+
+
 
 const VideoConference = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

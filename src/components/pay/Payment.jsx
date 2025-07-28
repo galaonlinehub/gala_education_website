@@ -1,14 +1,16 @@
 "use client";
 import { Divider, Steps } from "antd";
+
+import { useDevice } from "@/src/hooks/misc/useDevice";
+import { usePay, usePaySteps } from "@/src/store/pay";
+
+import { ConfirmEnrollPay } from "./Confirm";
 import {
   PaymentDetails,
   PayForm,
   MobilePay,
   SwitchPay,
 } from "./PaymentDetails";
-import { useDevice } from "@/src/hooks/misc/useDevice";
-import { usePay, usePaySteps } from "@/src/store/pay";
-import { ConfirmEnrollPay } from "./Confirm";
 
 const { Step } = Steps;
 

@@ -1,8 +1,9 @@
 "use client";
-import { useEffect, useState } from "react";
-import { useCookies } from "@/src/store/auth/signup";
 import { Button } from "antd";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+
+import { useCookies } from "@/src/store/auth/signup";
 
 const AcceptCookies = () => {
   const router = useRouter();

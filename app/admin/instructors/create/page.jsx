@@ -1,5 +1,11 @@
 "use client";
-import React, { useState } from "react";
+import {
+    UserOutlined,
+    MailOutlined,
+    IdcardOutlined,
+    InfoCircleOutlined,
+    FilePdfOutlined,
+} from "@ant-design/icons";
 import {
     Form,
     Input,
@@ -11,23 +17,18 @@ import {
     Tooltip,
     Select,
 } from "antd";
-import {
-    UserOutlined,
-    MailOutlined,
-    IdcardOutlined,
-    InfoCircleOutlined,
-    FilePdfOutlined,
-} from "@ant-design/icons";
-import { useAuth } from "@/src/hooks/data/useAuth";
-import { useRouter } from "next/navigation";
 import clsx from "clsx";
-import { LuUpload } from "react-icons/lu";
-import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 import { IoChevronDownCircleOutline } from "react-icons/io5";
+import { LuUpload } from "react-icons/lu";
+
+import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
 import {
     PartnerSchoolSelect,
     useSpecialPassInstructor,
 } from "@/src/features/admin";
+import { useAuth } from "@/src/hooks/data/useAuth";
 
 const { Text } = Typography;
 

@@ -1,8 +1,9 @@
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { io } from 'socket.io-client';
+
 import { socket_base_url } from '@/src/config/settings';
-import { encrypt } from '@/src/utils/fns/encryption';
 import { sessionStorageFn } from '@/src/utils/fns/client';
+import { encrypt } from '@/src/utils/fns/encryption';
 
 const PaymentSocketContext = createContext();
 

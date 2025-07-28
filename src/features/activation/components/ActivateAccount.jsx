@@ -1,14 +1,16 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { useForm, Controller } from "react-hook-form";
 import { Input, Button, Typography, message } from "antd";
+import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { useForm, Controller } from "react-hook-form";
 import { HiCheckCircle } from "react-icons/hi2";
 import { IoIosCloseCircle } from "react-icons/io";
-import { apiPost } from "@/src/services/api/api_service";
 import { LuEye, LuEyeOff, LuLoaderCircle, LuLock } from "react-icons/lu";
+
 import Error from "@/app/(auth)/error";
-import { useSearchParams } from "next/navigation";
+import { apiPost } from "@/src/services/api/api_service";
+
 
 const { Text } = Typography;
 

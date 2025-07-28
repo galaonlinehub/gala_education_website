@@ -1,13 +1,14 @@
+import React from "react";
+import { FaUserTie } from "react-icons/fa6";
+import { MdOutlineClass } from "react-icons/md";
+import { PiStudentFill } from "react-icons/pi";
+
 import {
     DashboardCard,
     DashboardLineChart,
     DashboardPieChart,
     RecentCustomers,
 } from "@/src/features/admin";
-import React from "react";
-import { FaUserTie } from "react-icons/fa6";
-import { MdOutlineClass } from "react-icons/md";
-import { PiStudentFill } from "react-icons/pi";
 
 function AdminPage() {
     return (

@@ -1,7 +1,7 @@
 'use client';
 
-import { DefaultSeo } from "next-seo";
 import { usePathname } from "next/navigation";
+import { DefaultSeo } from "next-seo";
 
 export default function SEOProvider() {
   const pathname = usePathname();

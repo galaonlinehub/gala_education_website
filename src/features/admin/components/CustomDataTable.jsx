@@ -1,7 +1,8 @@
 "use client"
-import { customStyles } from "@/src/features/admin";
 import React from "react";
 import DataTable from "react-data-table-component";
+
+import { customStyles } from "@/src/features/admin";
 
 function CustomDataTable({ data, columns, paginated = false }) {
     

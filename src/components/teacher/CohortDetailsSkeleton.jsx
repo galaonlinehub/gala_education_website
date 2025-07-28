@@ -1,4 +1,3 @@
-import React from 'react';
 import {
     Skeleton,
     Card,
@@ -8,6 +7,7 @@ import {
     Divider,
     Tag
 } from 'antd';
+import React from 'react';
 
 const CohortDetailsSkeleton = () => {
     return (

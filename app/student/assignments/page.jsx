@@ -1,7 +1,7 @@
 'use client';
-import React, { useState } from 'react';
-import { Card, Tabs, Badge, Drawer, Tag, Typography, Space } from 'antd';
 import { CalendarOutlined, ClockCircleOutlined, CheckCircleOutlined } from '@ant-design/icons';
+import { Card, Tabs, Badge, Drawer, Tag, Typography, Space } from 'antd';
+import React, { useState } from 'react';
 
 const { Title, Text } = Typography;
 const { TabPane } = Tabs;

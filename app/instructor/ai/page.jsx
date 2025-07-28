@@ -1,9 +1,12 @@
+'use client'
 import React from 'react'
-import {AiChatInterface} from '@/src/features/ai'
+
+import CountdownTimer from '@/src/components/ai/CountdownTimer'
 
 const AiChat = () => {
   return (
-    <AiChatInterface />
+    // <AiChatInterface />
+    <CountdownTimer />
   )
 }
 

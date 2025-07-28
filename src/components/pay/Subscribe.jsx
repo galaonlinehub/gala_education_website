@@ -1,12 +1,13 @@
-import { useState } from "react";
-import { useUser } from "@/src/hooks/data/useUser";
 import { Modal, Steps, Button, Drawer } from "antd";
-import ConfirmPlan from "../ui/auth/signup/ConfirmPlan";
+import { createStyles, useTheme } from "antd-style";
+import { useState } from "react";
+
 import SignupPay from "@/src/components/ui/auth/signup/Payment";
+import { useUser } from "@/src/hooks/data/useUser";
 import { useTabNavigator } from "@/src/store/auth/signup";
 import { useSubscribeStore } from "@/src/store/subscribeStore";
 
-import { createStyles, useTheme } from "antd-style";
+import ConfirmPlan from "../ui/auth/signup/ConfirmPlan";
 import { Signout } from "../ui/auth/signup/Signout";
 
 export default function Subscribe({ openDrawer }) {

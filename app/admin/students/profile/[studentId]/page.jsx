@@ -1,7 +1,8 @@
 "use client";
+import { useQuery } from "@tanstack/react-query";
 import { Avatar, Button, Tooltip } from "antd";
-import { useDevice } from "@/src/hooks/misc/useDevice";
-import { img_base_url } from "@/src/config/settings";
+import clsx from "clsx";
+import { Fragment } from "react";
 import {
     LuBookOpenText,
     LuCalendar,
@@ -11,12 +12,15 @@ import {
     LuPhone,
     LuTrophy,
 } from "react-icons/lu";
-import { useQuery } from "@tanstack/react-query";
-import { apiGet } from "@/src/services/api/api_service";
+
 import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
-import clsx from "clsx";
+import { img_base_url } from "@/src/config/settings";
 import { useStudent } from "@/src/features/admin";
-import { Fragment } from "react";
+import { useDevice } from "@/src/hooks/misc/useDevice";
+import { apiGet } from "@/src/services/api/api_service";
+
+
+
 
 const StudentProfile = ({ params: { studentId } }) => {
     const { width } = useDevice();

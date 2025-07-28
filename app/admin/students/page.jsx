@@ -1,11 +1,12 @@
 "use client";
+import { useState } from "react";
+
 import {
     CustomDataTableWithQuery,
     getStudents,
     studentColumns,
 } from "@/src/features/admin";
 import { usePaginationQuery } from "@/src/features/admin";
-import { useState } from "react";
 
 function Students() {
     const [page, setPage] = useState(1);

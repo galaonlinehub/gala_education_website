@@ -1,5 +1,11 @@
 'use client';
-import React, { useState } from 'react';
+import {
+  UploadOutlined,
+  UserOutlined,
+  BookOutlined,
+  ClockCircleOutlined,
+  InfoCircleOutlined
+} from '@ant-design/icons';
 import {
   Form,
   Input,
@@ -16,13 +22,7 @@ import {
   Row,
   Col
 } from 'antd';
-import {
-  UploadOutlined,
-  UserOutlined,
-  BookOutlined,
-  ClockCircleOutlined,
-  InfoCircleOutlined
-} from '@ant-design/icons';
+import React, { useState } from 'react';
 
 const { Title } = Typography;
 const { TextArea } = Input;

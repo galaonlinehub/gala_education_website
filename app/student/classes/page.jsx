@@ -1,12 +1,13 @@
 "use client";
+import Link from "next/link";
 import React from "react";
 import { FaFolderOpen } from "react-icons/fa";
-import { useEnrolledTopics } from "@/src/hooks/data/useEnrolledTopics";
+
 import {
   TopicCard,
   TopicCardSkeleton,
 } from "@/src/components/student/TopicCardStudent";
-import Link from "next/link";
+import { useEnrolledTopics } from "@/src/hooks/data/useEnrolledTopics";
 import { encrypt } from "@/src/utils/fns/encryption";
 
 const ClassList = () => {

@@ -1,12 +1,8 @@
-import { useState, useEffect, useRef } from "react";
-import { Avatar, Dropdown, Skeleton } from "antd";
 import { SmileOutlined } from "@ant-design/icons";
+import { Avatar, Dropdown, Skeleton } from "antd";
 import clsx from "clsx";
-import { useChat } from "@/src/hooks/chat/useChat";
-import { useUser } from "@/src/hooks/data/useUser";
-import useChatStore from "@/src/store/chat/chat";
-import { img_base_url } from "@/src/config/settings";
-import TypingIndicator from "../ui/loading/template/Typing";
+import { format, isToday, isYesterday } from "date-fns";
+import { useState, useEffect, useRef } from "react";
 import {
   LuEllipsisVertical,
   LuArrowLeft,
@@ -20,9 +16,18 @@ import {
   LuClock4,
   LuCircleAlert,
 } from "react-icons/lu";
-import { format, isToday, isYesterday } from "date-fns";
-import SlickSpinner from "../ui/loading/template/SlickSpinner";
+
+import { img_base_url } from "@/src/config/settings";
+import { useChat } from "@/src/hooks/chat/useChat";
+import { useUser } from "@/src/hooks/data/useUser";
+import useChatStore from "@/src/store/chat/chat";
 import { getEntries, getValues, hasData } from "@/src/utils/fns/general";
+
+import SlickSpinner from "../ui/loading/template/SlickSpinner";
+import TypingIndicator from "../ui/loading/template/Typing";
+
+
+
 
 const RenderChat = ({
   isSmallScreen,

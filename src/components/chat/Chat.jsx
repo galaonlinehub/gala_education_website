@@ -1,8 +1,11 @@
+import { LuSendHorizontal } from "react-icons/lu";
+
+import { useDevice } from "@/src/hooks/misc/useDevice";
+import useChatStore from "@/src/store/chat/chat";
+
 import { RenderChat } from "./ChatBody";
 import { RenderSidebar } from "./ChatSidebar";
-import useChatStore from "@/src/store/chat/chat";
-import { useDevice } from "@/src/hooks/misc/useDevice";
-import { LuSendHorizontal } from "react-icons/lu";
+
 
 const Chat = () => {
   const MAIN_COLOR = "#001840";

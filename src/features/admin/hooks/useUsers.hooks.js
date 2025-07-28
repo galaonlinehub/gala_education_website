@@ -1,5 +1,6 @@
-import {  getStudent, getStudents } from "@/src/features/admin";
 import { useQuery } from "@tanstack/react-query";
+
+import {  getStudent, getStudents } from "@/src/features/admin";
 
 export const useStudents = (page)=>{
     return useQuery({

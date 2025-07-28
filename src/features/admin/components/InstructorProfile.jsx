@@ -1,9 +1,10 @@
 "use client";
-import React, { useState } from "react";
-import PdfViewer from "./PdfViewer";
 import { Card, message, Modal } from "antd";
 import Meta from "antd/es/card/Meta";
+import React, { useState } from "react";
 import { CiFileOff } from "react-icons/ci";
+
+import PdfViewer from "./PdfViewer";
 
 function InstructorProfile({ user }) {
     const [isModalOpen, setIsOpenModal] = React.useState(false);

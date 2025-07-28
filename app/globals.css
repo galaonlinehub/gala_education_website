@@ -269,4 +269,9 @@ body.ant-modal-open {
   }
 }
 
+.custom-segmented .ant-segmented-item-selected {
+  background-color: #001840 !important;
+  color: #fff !important;
+}
+
 

@@ -1,5 +1,10 @@
 "use client";
 import {
+  ClockCircleOutlined,
+  TrophyOutlined,
+  CheckCircleOutlined,
+} from "@ant-design/icons";
+import {
   theme,
   Card,
   Typography,
@@ -7,32 +12,27 @@ import {
   Col,
   Table,
   Button,
-  Progress,
   Space,
   Statistic,
   Avatar,
   Badge,
-  Tag,
   Tooltip,
 } from "antd";
-import {
-  ClockCircleOutlined,
-  TrophyOutlined,
-  CheckCircleOutlined,
-} from "@ant-design/icons";
+import clsx from "clsx";
 import Link from "next/link";
-import { useUser } from "@/src/hooks/data/useUser";
+import { useRouter } from "next/navigation";
 import {
   LuBellRing,
-  LuBookOpen,
   LuBookOpenCheck,
   LuUser,
 } from "react-icons/lu";
+
+import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
+import Updates from "@/src/components/ui/notification/Updates";
 import { img_base_url } from "@/src/config/settings";
 import { useEnrolledTopics } from "@/src/hooks/data/useEnrolledTopics";
-import SlickSpinner from "@/src/components/ui/loading/template/SlickSpinner";
-import { useRouter } from "next/navigation";
-import Updates from "@/src/components/ui/notification/Updates";
+import { useUser } from "@/src/hooks/data/useUser";
+
 
 const { Title, Text } = Typography;
 
@@ -82,7 +82,7 @@ export default function Component() {
                     Your Classes
                   </span>
                 }
-                className="w-full shadow-lg"
+                className="w-full shadow-md"
                 style={{
                   background:
                     "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(59,130,246,0.05) 100%)",
@@ -133,7 +133,6 @@ export default function Component() {
                         key: "progress",
                         width: "35%",
                         render: (progress) => {
-
                           return (
                             <span className="text-black">{progress}%</span>
                             // <Progress
@@ -203,20 +202,13 @@ const SelectedSubjects = ({
 }) => {
   return (
     <Card
-      title={
-        <span style={{ color: "#001840", fontWeight: "bold" }}>
-          Selected subjects
-        </span>
-      }
+      title={<span className="font-bold">Selected subjects</span>}
       size="small"
-      className="w-full shadow-lg"
+      className="w-full shadow-md"
       style={{
         background:
           "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(59,130,246,0.05) 100%)",
-        border: "1px solid rgba(0,24,64,0.1)",
-        borderRadius: "12px",
       }}
-      bodyStyle={{ padding: "12px" }}
     >
       <div className="min-h-[100px]">
         {isFetchingEnrolledSubjects ? (
@@ -235,11 +227,14 @@ const SelectedSubjects = ({
           enrolledSubjects.map((subject, index) => (
             <div
               key={index}
-              className="flex flex-col gap-2 justify-start w-full rounded-lg"
+              className={clsx(
+                "flex flex-col justify-start w-full",
+                index === 0 ? "-mt-3" : "mt-2"
+              )}
             >
               <div className="flex items-center gap-2">
-                <LuBookOpen className="flex-shrink-0 text-[#001840]" />
-                <div className="flex-1 text-xs sm:text-sm truncate min-w-0 text-[#001840]">
+                <div className="h-1 w-1 bg-[#001840] rounded-full" />
+                <div className="flex-1 text-xs line-cramp-2 min-w-0 text-[#001840]">
                   {subject}
                 </div>
               </div>
@@ -257,7 +252,7 @@ const QuickLinks = () => (
       <span style={{ color: "#001840", fontWeight: "bold" }}>Quick Links</span>
     }
     size="small"
-    className="w-full shadow-lg"
+    className="w-full shadow-md"
     style={{
       background:
         "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(59,130,246,0.05) 100%)",
@@ -355,7 +350,7 @@ const DeadlinesCard = () => {
           </span>
         </div>
       }
-      className="w-full shadow-lg"
+      className="w-full shadow-md"
       style={{
         background:
           "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(59,130,246,0.05) 100%)",
@@ -389,7 +384,7 @@ const DashboardHeader = () => {
 
   return (
     <Card
-      className="w-full shadow-lg"
+      className="w-full shadow-md"
       style={{
         background:
           "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(59,130,246,0.05) 100%)",
@@ -495,7 +490,7 @@ const StatsSection = ({ token }) => {
       ].map((stat, index) => (
         <Col xs={24} sm={12} key={index}>
           <Card
-            className="h-20 sm:h-24 md:h-28 shadow-lg"
+            className="h-20 sm:h-24 md:h-28 shadow-md"
             style={{
               background:
                 "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(59,130,246,0.05) 100%)",
@@ -552,7 +547,7 @@ const ActivityCard = () => {
           Recent Activities
         </span>
       }
-      className="w-full shadow-lg"
+      className="w-full shadow-md"
       style={{
         background:
           "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(59,130,246,0.05) 100%)",

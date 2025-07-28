@@ -1,13 +1,15 @@
 "use client";
-import React from "react";
 import { SendOutlined, UserOutlined } from "@ant-design/icons";
+import React from "react";
 import { LuBrain } from "react-icons/lu";
+
 import { useAi } from "@/src/hooks/ui/useAi";
 import { getLength, getValues } from "@/src/utils/fns/general";
-import SlickSpinner from "../ui/loading/template/SlickSpinner";
+
+import AiUserAgreement from "./AiUserAgreement";
 import { StreamingMarkdown } from "./StreamingMarkdown";
 import StreamingMarkdownMessage from "./StreamingMarkdownMessage";
-import AiUserAgreement from "./AiUserAgreement";
+import SlickSpinner from "../ui/loading/template/SlickSpinner";
 
 const AiChatInterface = () => {
     const {

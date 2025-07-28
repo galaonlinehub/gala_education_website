@@ -1,8 +1,9 @@
 "use client";
-import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Document, Page, pdfjs } from "react-pdf";
 import axios from "axios";
+import { useState } from "react";
+import { Document, Page, pdfjs } from "react-pdf";
+
 import { useDevice } from "@/src/hooks/misc/useDevice";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;

@@ -1,8 +1,8 @@
 "use client";
-import Image from "next/image";
 import { Button, Modal } from "antd";
-import React, { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
+import React, { useState } from "react";
 
 function Card1({ image, title, desc, details }) {
   const [isModalOpen, setIsModalOpen] = useState(false);

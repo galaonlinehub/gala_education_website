@@ -1,8 +1,9 @@
 "use client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createPartnerSchool } from "@/src/features/admin";
 import { message } from "antd";
 import { useState } from "react";
+
+import { createPartnerSchool } from "@/src/features/admin";
 
 export const useCreatePartnerSchool = () => {
     const [openModal, setOpenModal] = useState(false);

@@ -1,12 +1,14 @@
 "use client";
-import React from "react";
 import { Card, Avatar, Badge, Button, Skeleton } from "antd";
-import { FaUsers } from "react-icons/fa";
-import { GoVerified, GoBook } from "react-icons/go";
-import { FaRegClock } from "react-icons/fa6";
-import { GoShieldCheck } from "react-icons/go";
+import React from "react";
 import { BsGlobe } from "react-icons/bs";
+import { FaUsers } from "react-icons/fa";
+import { FaRegClock } from "react-icons/fa6";
+import { GoVerified, GoBook } from "react-icons/go";
+import { GoShieldCheck } from "react-icons/go";
 import { LuUsers } from "react-icons/lu";
+
+import { img_base_url } from "@/src/config/settings";
 import { useEnrollMe } from "@/src/store/student/useEnrollMe";
 
 const TopicCard = ({ classInfo }) => {
@@ -17,8 +19,10 @@ const TopicCard = ({ classInfo }) => {
     setEnrollCohort(classInfo?.cohort_id);
   };
 
+  console.log("classInfo", classInfo)
+
   return (
-    
+
     <Card
       loading={false}
       className="!text-black !text-[12px] hover:shadow-lg transition-all !self-center !mb-3"
@@ -86,7 +90,10 @@ const TopicCard = ({ classInfo }) => {
               {/* Instructor Section */}
               <div className="flex items-center justify-between mt-3 bg-gray-50 p-2 rounded-lg">
                 <div className="flex items-center gap-2">
-                  <Avatar size={32} src="/api/placeholder/32/32" />
+                  <Avatar size={32} src={
+                    `${img_base_url}${classInfo?.instructor_profile_picture}` ||
+                    undefined
+                  } />
                   <div className="flex flex-col">
                     <div className="flex items-center gap-1">
                       <span className="text-[11px] font-bold capitalize">

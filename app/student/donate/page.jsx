@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
-import Image from "next/image";
 import { Layout, Steps, Button, Input, Select, Row, Col, Typography, Space, Card, Form, Radio, Divider, InputNumber, Avatar, List, Badge, Progress, Statistic, notification } from "antd";
+import Image from "next/image";
+import React, { useState } from "react";
 
 const { Header, Content, Footer } = Layout;
 const { Title, Paragraph, Text } = Typography;

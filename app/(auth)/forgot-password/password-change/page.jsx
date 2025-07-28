@@ -1,16 +1,20 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { useForm, Controller } from "react-hook-form";
 import { Input, Button, Card, Typography, message } from "antd";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { useForm, Controller } from "react-hook-form";
 import { HiCheckCircle } from "react-icons/hi2";
 import { IoIosCloseCircle } from "react-icons/io";
-import { decrypt } from "@/src/utils/fns/encryption";
-import Error from "../../error";
+import { LuEye, LuEyeOff, LuLoaderCircle, LuLock } from "react-icons/lu";
+
+import { RESET_PASSWORD_EMAIL_KEY } from "@/src/config/settings";
 import { apiPost } from "@/src/services/api/api_service";
 import { sessionStorageFn } from "@/src/utils/fns/client";
-import { LuEye, LuEyeOff, LuLoaderCircle, LuLock } from "react-icons/lu";
-import { RESET_PASSWORD_EMAIL_KEY } from "@/src/config/settings";
+import { decrypt } from "@/src/utils/fns/encryption";
+
+import Error from "../../error";
+
+
 
 const { Title, Text } = Typography;
 

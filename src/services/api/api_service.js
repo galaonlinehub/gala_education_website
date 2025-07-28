@@ -1,7 +1,8 @@
 import axios from "axios";
+
+import { API_BASE_URL, USER_COOKIE_KEY } from "@/src/config/settings";
 import { cookieFn } from "@/src/utils/fns/client";
 import { decrypt } from "@/src/utils/fns/encryption";
-import { API_BASE_URL, USER_COOKIE_KEY } from "@/src/config/settings";
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
@@ -27,7 +28,10 @@ const publicEndpoints = new Set([
   "support",
   "team-members",
   "health",
-  "make-donation"
+  "make-donation",
+  "verify-activation",
+  "activate-account",
+  "resend-activation"
 ]);
 
 api.interceptors.request.use(

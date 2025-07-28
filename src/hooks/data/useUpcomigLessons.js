@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { globalOptions } from "../../config/tanstack";
+
 import { apiGet } from "@/src/services/api/api_service";
+
+import { globalOptions } from "../../config/tanstack";
 
 const getUpcomingLessons = async () => {
   const { status, data } = await apiGet("/upcoming-lessons");
@@ -12,7 +14,7 @@ const getUpcomingLessons = async () => {
 export const useUpcomingLessons = () => {
   const {
     data = [],
-    isFetching,
+    isPending,
     isLoading,
   } = useQuery({
     queryKey: ["upcoming-lessons"],
@@ -22,7 +24,7 @@ export const useUpcomingLessons = () => {
 
   return {
     upcomingLessons: data,
-    isFetchingUpcomingLessons: isFetching,
+    isFetchingUpcomingLessons: isPending,
     isLoadingUpcomingLessons: isLoading,
   };
 };

@@ -1,13 +1,15 @@
-import React, { useState } from "react";
 import { Modal, Button } from "antd";
-import { useDonationListener } from "@/src/hooks/misc/paymentSocketContext";
+import React, { useState } from "react";
+
 import { PaymentStatus } from "@/src/config/settings";
-import PaymentLoadingAnimation from "./PaymentLoadingAnimation";
-import { RenderReferenceState } from "../auth/signup/PaymentStatus";
+import { useDonationListener } from "@/src/hooks/misc/paymentSocketContext";
 import { sessionStorageFn } from "@/src/utils/fns/client";
 import { decrypt } from "@/src/utils/fns/encryption";
-import DonationSuccess from "./DonationSuccess";
+
 import PaymentFailedAnimation from "./DonationFailed";
+import DonationSuccess from "./DonationSuccess";
+import PaymentLoadingAnimation from "./PaymentLoadingAnimation";
+import { RenderReferenceState } from "../auth/signup/PaymentStatus";
 
 const ProcessingModal = ({ setShowProcessingModal, showProcessingModal }) => {
   // Use more descriptive state name and enum-like values
