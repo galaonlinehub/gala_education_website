@@ -13,3 +13,9 @@ export const links = {
   // admin: admin_links,
   // parent: parent_links,
 };
+
+
+export const TRIAL_ALLOWED_PATHS = (role) => [
+  `/${role}`,
+  `/${role}/subscriptions`,
+];
