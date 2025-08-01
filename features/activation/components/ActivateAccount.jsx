@@ -8,8 +8,8 @@ import { HiCheckCircle } from "react-icons/hi2";
 import { IoIosCloseCircle } from "react-icons/io";
 import { LuEye, LuEyeOff, LuLoaderCircle, LuLock } from "react-icons/lu";
 
-import Error from "@/app/(auth)/error";
 import { apiPost } from "@/services/api/api_service";
+import Error from "@/src/app/[locale]/error";
 
 const { Text } = Typography;
 

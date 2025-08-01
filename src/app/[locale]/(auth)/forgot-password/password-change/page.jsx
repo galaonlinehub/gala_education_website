@@ -12,7 +12,7 @@ import { apiPost } from "@/services/api/api_service";
 import { sessionStorageFn } from "@/utils/fns/client";
 import { decrypt } from "@/utils/fns/encryption";
 
-import Error from "../../error";
+import Error from "../../../error";
 
 const { Title, Text } = Typography;
 
