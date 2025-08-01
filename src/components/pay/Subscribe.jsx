@@ -15,9 +15,6 @@ export default function Subscribe({ openDrawer }) {
   const { activeTab } = useTabNavigator();
 
   const { subscribeOpen } = useSubscribeStore();
-
-  console.log("User data", user)
-
   const modalStyles = {
     mask: {
       backdropFilter: "blur(10px)",

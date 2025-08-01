@@ -47,7 +47,6 @@ export default function Component() {
     enrolledTopicsLoading,
   } = useEnrolledTopics();
 
-  console.log(enrolledTopics);
 
   return (
     <div className="min-h-screen">
