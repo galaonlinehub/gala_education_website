@@ -14,16 +14,16 @@ import { BsFillCalendar2EventFill } from "react-icons/bs";
 import { GiBookCover } from "react-icons/gi";
 import { MdTopic } from "react-icons/md";
 
+import CohortCardSkeleton from "@/components/teacher/CohortCardSkeleton";
+import { useCohort } from "@/hooks/data/useCohort";
+import { useInstructorCohorts } from "@/hooks/data/useInstructorCohorts";
+import { useUser } from "@/hooks/data/useUser";
 import biologyImage from "@/public/subjects/biology.jpeg";
 import chemistryImage from "@/public/subjects/chemistry.jpeg";
 import defaultImage from "@/public/subjects/default.jpeg";
 import englishImage from "@/public/subjects/english.jpeg";
 import mathImage from "@/public/subjects/mathematics.jpeg";
 import physicsImage from "@/public/subjects/physics.jpeg";
-import CohortCardSkeleton from "@/components/teacher/CohortCardSkeleton";
-import { useCohort } from "@/hooks/data/useCohort";
-import { useInstructorCohorts } from "@/hooks/data/useInstructorCohorts";
-import { useUser } from "@/hooks/data/useUser";
 import { encrypt } from "@/utils/fns/encryption";
 
 import ClassCreationWizard from "../create-class/CreateClass";
