@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 
-import { USER_COOKIE_KEY } from "@/src/config/settings";
-import { apiGet } from "@/src/services/api/api_service";
-import { roleRedirects, TRIAL_ALLOWED_PATHS } from "@/src/utils/data/redirect";
-import { decrypt } from "@/src/utils/fns/encryption";
+import { USER_COOKIE_KEY } from "@/config/settings";
+import { apiGet } from "@/services/api/api_service";
+import { roleRedirects, TRIAL_ALLOWED_PATHS } from "@/utils/data/redirect";
+import { decrypt } from "@/utils/fns/encryption";
 
 const AUTH_CONFIG = {
   PUBLIC_ROUTES: ["/", "/signin", "/signup"],
