@@ -58,14 +58,13 @@ const ConfirmPlan = () => {
 
   useEffect(() => {
     if (user) {
-      const userAccountType = currentUrl.split("/")[1];
+      const userAccountType = currentUrl.split("/")[2];
       if (userAccountType === "student" || userAccountType === "instructor") {
         setAccountType(userAccountType);
       }
     }
   }, [currentUrl, setAccountType, user]);
 
-  console.log("User", user);
 
   return (
     <div className="!px-4 flex flex-col lg:flex-row gap-8 lg:gap-12 justify-center items-center mt-4">
