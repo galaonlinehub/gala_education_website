@@ -20,7 +20,7 @@ function AdminMain({ children }) {
   return (
     <div className="flex w-screen">
       <AdminSidebar />
-      <main className="fixed left-0 sm:left-[300px] sm:w-[calc(100vw-240px)] w-screen bg-white h-screen overflow-hidden">
+      <main className="fixed left-0 sm:left-[240px] sm:w-[calc(100vw-240px)] w-screen bg-white h-screen overflow-hidden">
         <AdminNavbar />
         <section className="h-[calc(100vh-64px)] overflow-auto w-full ">
           <div className="p-4 min-h-screen">{children}</div>
