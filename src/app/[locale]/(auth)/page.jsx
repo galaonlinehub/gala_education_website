@@ -1,7 +1,6 @@
 "use client";
 import { Button } from "antd";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
 import { NextSeo } from "next-seo";
 import React, { useEffect, useState } from "react";
 import { BiChevronRight } from "react-icons/bi";
@@ -43,7 +42,6 @@ import { useUser } from "@/hooks/data/useUser";
 import { useCookies } from "@/store/auth/signup";
 
 function Home() {
-  const t = useTranslations("HomePage");
   const [showDonatePopup, setShowDonatePopup] = useState(false);
   const { user } = useUser();
   const { cookieIsAccepted } = useCookies();
@@ -219,7 +217,6 @@ function Home() {
             <MailingList />
           </div>
         </div>
-        <h1>{t("title")}</h1>;
         <div className="relative flex items-center flex-col gap-2 md:gap-12 md:flex-row px-6 h-[45rem] sm:px-12 xs:h-[45rem] sm:h-[30rem] w-full">
           <div className="relative w-full md:w-1/2 mt-14 h-fit max-sm:p-2">
             <VideoPlayer videoSrc="/videos/gala_intro.mp4" />

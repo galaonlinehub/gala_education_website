@@ -24,6 +24,7 @@ import {
   Space,
   Tag,
 } from "antd";
+import clsx from "clsx";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useCallback } from "react";
@@ -593,7 +594,7 @@ const InstructorSearchResult = ({ details }) => {
                   className="bg-[#001840]/5 rounded-md p-4 sm:p-6 space-y-2 sm:space-y-3 transition-all duration-200 hover:bg-[#001840]/10"
                 >
                   {/* Cohort Header */}
-                  <div className="flex flex-col xs:flex-row xs:items-center xs:justify-between gap-1 xs:gap-2">
+                  <div className="flex flex-col xxs:flex-row xs:items-center xs:justify-between gap-1 xs:gap-2">
                     <h4 className="text-xs sm:text-sm font-black flex-1 min-w-0">
                       {cohort?.cohort_name}
                     </h4>
@@ -663,19 +664,25 @@ const InstructorSearchResult = ({ details }) => {
                     }
                   >
                     <Button
-                      disabled={hasFreeTrial}
+                      disabled={hasFreeTrial || cohort?.is_enrolled}
                       onClick={
-                        hasFreeTrial
+                        hasFreeTrial || cohort?.is_enrolled
                           ? (e) => e.preventDefault()
                           : () => handleEnroll(cohort?.cohort_id)
                       }
-                      className={`${
-                        hasFreeTrial
-                          ? "!bg-gray-300 hover:!bg-gray-400 !text-gray-500"
-                          : "!text-white"
-                      } !w-full !bg-black  !border-transparent hover:!border-transparent !text-[10px] sm:!text-xs !py-1 sm:!py-2 !transition-all !duration-200 hover:!bg-gray-800 hover:!scale-[1.02] hover:!shadow-md`}
+                      className={clsx(
+                        "!w-full !bg-black  !border-transparent hover:!border-transparent !text-[10px] sm:!text-xs !py-1 sm:!py-2 !transition-all !duration-200 hover:!bg-gray-800 hover:!scale-[1.02] hover:!shadow-md !text-white hover:!text-white",
+                        hasFreeTrial &&
+                          "!bg-gray-300 hover:!bg-gray-300 !text-gray-500 hover:!text-gray-500 hover:!scale-[1] cursor-not-allowed",
+                        cohort?.is_enrolled &&
+                          "!bg-green-700 hover:!bg-green-700 hover:!scale-[1] cursor-not-allowed !font-bold !text-base"
+                      )}
                     >
-                      Enroll Now
+                      {cohort?.is_enrolled ? (
+                        <>You Are Enrolled In This Cohort</>
+                      ) : (
+                        <>Enroll Now</>
+                      )}
                     </Button>
                   </Tooltip>
                 </div>
