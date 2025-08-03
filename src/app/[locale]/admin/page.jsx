@@ -1,7 +1,7 @@
+"use client";
+import { Skeleton } from "antd";
 import React from "react";
-import { FaUserTie } from "react-icons/fa6";
-import { MdOutlineClass } from "react-icons/md";
-import { PiStudentFill } from "react-icons/pi";
+
 
 import {
   DashboardCard,
@@ -9,8 +9,11 @@ import {
   DashboardPieChart,
   RecentCustomers,
 } from "@/features/admin";
+import { useDashboard } from "@/features/admin/hooks/useDashboard.hooks";
 
 function AdminPage() {
+  const { metrics, isFetchingMetrics, metricsError, metricsConfig } = useDashboard();
+
   return (
     <div className="flex flex-col gap-4 ">
       <div className="flex justify-between  flex-col sm:flex-row gap-y-5 sm-gap-y-0">
@@ -22,28 +25,22 @@ function AdminPage() {
         </div>
       </div>
 
-      {/* cards */}
       <div className="grid sm:grid-cols-3 sm:gap-6 gap-2">
-        <DashboardCard
-          title={"Students"}
-          bg={"bg-purple-300/20 text-purple-500"}
-          value={200}
-          icon={PiStudentFill}
-        />
-
-        <DashboardCard
-          title={"Instructors"}
-          bg={"bg-blue-300/20 text-blue-500"}
-          value={200}
-          icon={FaUserTie}
-        />
-
-        <DashboardCard
-          title={"Cohorts"}
-          bg={"bg-orange-500/15 text-orange-500"}
-          value={200}
-          icon={MdOutlineClass}
-        />
+        {metricsConfig.map(({ title, icon: Icon, bg }, index) => (
+          <DashboardCard
+            key={index}
+            title={title}
+            value={
+              isFetchingMetrics ? (
+                <Skeleton title={false} active paragraph={{ rows: 1, width: ["100%"],}} className="mt-2" />
+              ) : (
+                metrics?.find((m) => m.title === title)?.value ?? 0
+              )
+            }
+            bg={bg}
+            icon={Icon}
+          />
+        ))}
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 md:gap-x-4">
         <DashboardLineChart />
