@@ -64,8 +64,6 @@ const ConfirmPlan = () => {
       }
     }
   }, [currentUrl, setAccountType, user]);
-
-
   return (
     <div className="!px-4 flex flex-col lg:flex-row gap-8 lg:gap-12 justify-center items-center mt-4">
       {contextHolder}

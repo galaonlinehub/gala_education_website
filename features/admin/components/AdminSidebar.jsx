@@ -15,7 +15,7 @@ function AdminSidebar() {
   }
 
   return (
-    <div className="h-screen fixed sm:block hidden w-[300px] border-black/20 border-r-[0.8px]">
+    <div className="h-screen fixed sm:block hidden w-[240px] border-black/20 border-r-[0.8px]">
       <div className="h-[64px] px-[20px] py-[15px] flex items-center justify-center">
         <Image
           alt="image"

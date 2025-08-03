@@ -2,7 +2,6 @@
 import { Skeleton } from "antd";
 import React from "react";
 
-
 import {
   DashboardCard,
   DashboardLineChart,
@@ -24,7 +23,6 @@ function AdminPage() {
           </h2>
         </div>
       </div>
-
       <div className="grid sm:grid-cols-3 sm:gap-6 gap-2">
         {metricsConfig.map(({ title, icon: Icon, bg }, index) => (
           <DashboardCard
@@ -41,6 +39,7 @@ function AdminPage() {
             icon={Icon}
           />
         ))}
+
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 md:gap-x-4">
         <DashboardLineChart />

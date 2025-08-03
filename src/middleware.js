@@ -191,3 +191,4 @@ export const config = {
     '/sw/:path*',
   ],
 };
+
