@@ -8,14 +8,13 @@
 // };
 
 import { NextResponse } from "next/server";
-import createMiddleware from 'next-intl/middleware';
+import createMiddleware from "next-intl/middleware";
 
 import { USER_COOKIE_KEY } from "@/config/settings";
 import { apiGet } from "@/services/api/api_service";
 import { routing } from "@/src/i18n/routing";
 import { roleRedirects, TRIAL_ALLOWED_PATHS } from "@/utils/data/redirect";
 import { decrypt } from "@/utils/fns/encryption";
-
 
 const intlMiddleware = createMiddleware(routing);
 
@@ -24,7 +23,7 @@ const AUTH_CONFIG = {
   AUTH_ONLY_ROUTES: ["/signin", "/signup"],
   REDIRECT_ROUTES: {
     afterLogin: roleRedirects,
-    notAuthenticated: "/signin", 
+    notAuthenticated: "/signin",
   },
   ROLE_PREFIXES: Object.fromEntries(
     Object.entries(roleRedirects).map(([role, path]) => [role, `${path}/`])
@@ -58,16 +57,18 @@ const isNetworkError = (error) => {
 };
 
 const getLocaleFromPath = (pathname) => {
-  const segments = pathname.split('/');
+  const segments = pathname.split("/");
   const possibleLocale = segments[1];
-  return routing.locales.includes(possibleLocale) ? possibleLocale : routing.defaultLocale;
+  return routing.locales.includes(possibleLocale)
+    ? possibleLocale
+    : routing.defaultLocale;
 };
 
 const getPathWithoutLocale = (pathname) => {
-  const segments = pathname.split('/');
+  const segments = pathname.split("/");
   const possibleLocale = segments[1];
   if (routing.locales.includes(possibleLocale)) {
-    return '/' + segments.slice(2).join('/') || '/';
+    return "/" + segments.slice(2).join("/") || "/";
   }
   return pathname;
 };
@@ -110,19 +111,14 @@ export async function middleware(request) {
     const pathname = request.nextUrl.pathname;
     const locale = getLocaleFromPath(pathname);
     const pathWithoutLocale = getPathWithoutLocale(pathname);
-    
-    // console.log("Middleware path:", pathname);
-    // console.log("Path without locale:", pathWithoutLocale);
-    // console.log("Locale:", locale);
 
     const intlResponse = intlMiddleware(request);
-    
+
     if (intlResponse.status === 307 || intlResponse.status === 302) {
       return intlResponse;
     }
 
     if (AUTH_CONFIG.PUBLIC_ROUTES.includes(pathWithoutLocale)) {
-
       if (AUTH_CONFIG.AUTH_ONLY_ROUTES.includes(pathWithoutLocale)) {
         const user = await getAuthenticatedUser(request);
         const userRole = user?.role;
@@ -151,7 +147,10 @@ export async function middleware(request) {
     const allowedPrefix = AUTH_CONFIG.ROLE_PREFIXES[user.role];
     const basePath = AUTH_CONFIG.REDIRECT_ROUTES.afterLogin[user.role];
 
-    if (pathWithoutLocale !== basePath && !pathWithoutLocale.startsWith(allowedPrefix)) {
+    if (
+      pathWithoutLocale !== basePath &&
+      !pathWithoutLocale.startsWith(allowedPrefix)
+    ) {
       return safeRedirect(
         AUTH_CONFIG.REDIRECT_ROUTES.afterLogin[user.role],
         request,
@@ -164,7 +163,9 @@ export async function middleware(request) {
       const isAllowed = allowedTrialPaths.some((p) => pathWithoutLocale === p);
 
       if (!isAllowed) {
-        return NextResponse.rewrite(new URL(`/${locale}/not-found`, request.url));
+        return NextResponse.rewrite(
+          new URL(`/${locale}/not-found`, request.url)
+        );
       }
     }
 
@@ -173,8 +174,8 @@ export async function middleware(request) {
     console.error("Middleware error:", error);
     const locale = getLocaleFromPath(request.nextUrl.pathname);
     return safeRedirect(
-      AUTH_CONFIG.REDIRECT_ROUTES.notAuthenticated, 
-      request, 
+      AUTH_CONFIG.REDIRECT_ROUTES.notAuthenticated,
+      request,
       locale
     );
   }
@@ -182,13 +183,11 @@ export async function middleware(request) {
 
 export const config = {
   matcher: [
-    '/',
+    "/",
 
-    '/((?!en|sw|api|_next/static|_next/image|favicon.ico).*)',
+    "/((?!_next|api|favicon.ico|.*\\.).*)",
 
-    // Localized paths
-    '/en/:path*',
-    '/sw/:path*',
+    // Explicitly handle your localized routes
+    "/(en|sw)/:path*",
   ],
 };
-
