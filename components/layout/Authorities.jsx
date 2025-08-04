@@ -7,7 +7,7 @@ export const Authorities = () => {
     { src: "tcu.jpeg", alt: "TCU image" },
     { src: "necta.jpeg", alt: "NECTA image" },
     { src: "nactivet.jpeg", alt: "NACTIVET image" },
-    { src: "nida", alt: "NIDA image" },
+    { src: "nida.1", alt: "NIDA image" },
     { src: "cambridge.jpeg", alt: "CAMBRIDGE image" },
     { src: "ib-logo.png", alt: "IB image" },
   ];
