@@ -1,5 +1,8 @@
 {
   "home_page": {
+    "home": "Home",
+    "student":"Student",
+    "teacher":"Teacher",
     "gala_sub_header": "Empowering minds, shaping futures – Gala Education, your pathway to success.",
     "interest_header": "Are you interested in a session and want to know more?",
     "interest_header_subheader": "Fill out the form and you will be contacted as soon as possible by our office",
