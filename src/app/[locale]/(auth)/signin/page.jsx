@@ -5,6 +5,7 @@ import clsx from "clsx";
 import { motion, AnimatePresence } from "framer-motion";
 import debounce from "lodash.debounce";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import React, { useState, useEffect, useRef } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { LuEye, LuEyeOff } from "react-icons/lu";
@@ -123,14 +124,17 @@ const SignInPage = () => {
     return () => debouncedReset.cancel();
   }, [watchedFields, localFeedback.show]);
 
+  const t = useTranslations('sign_up');
+  const sit = useTranslations('sign_in');
+  const ht = useTranslations('home_page');
+
   return (
     <div className="px-6 md:px-8 lg:px-12 xl:px-16 flex justify-center">
       <div className="flex flex-col items-center pt-14 gap-2 lg:gap-3 w-full max-w-xl">
-        <span className="font-black text-xs md:text-base">Sign In</span>
+        <span className="font-black text-xs md:text-base">{t('sign_in')}</span>
         <span className="font-black text-2xl md:text-4xl">Welcome Back</span>
         <span className="text-xs md:text-sm font-medium text-center px-4 sm:px-8">
-          Welcome back! We&#39;re excited to see you again, let&#39;s pick up
-          where you left off and continue your learning journey!
+          {sit('welcome_text')}
         </span>
 
         <motion.div
@@ -182,15 +186,15 @@ const SignInPage = () => {
 
             <div className="flex flex-col gap-1 w-full">
               <label htmlFor="email" className="font-black text-xs lg:text-sm">
-                Email *
+                {ht('email')} *
               </label>
               <input
                 id="email"
                 {...register("email", {
-                  required: "Please enter your email address",
+                  required: t('enter_email'),
                   pattern: {
                     value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: "Please enter valid email address",
+                    message: t('valid_email_address'),
                   },
                   // onChange: handleChange,
                 })}
@@ -214,7 +218,7 @@ const SignInPage = () => {
                 htmlFor="password"
                 className="font-black text-xs lg:text-sm"
               >
-                Password *
+                {ht('password')} *
               </label>
 
               <div className="relative">
@@ -225,7 +229,7 @@ const SignInPage = () => {
                   onPaste={preventCopyPaste}
                   onCut={preventCopyPaste}
                   {...register("password", {
-                    required: "Please enter your password",
+                    required: t('enter_password'),
 
                     // onChange: handleChange,
                   })}
@@ -254,12 +258,12 @@ const SignInPage = () => {
             </div>
 
             <span className="font-bold text-sm self-end">
-              Forgot
+              {sit('forgot')}
               <span
                 className="font-bold sm:text-sm text-[#030DFE] ml-2 cursor-pointer"
                 onClick={() => router.push("/forgot-password")}
               >
-                Password?
+                {ht('password')}?
               </span>
             </span>
 
@@ -275,19 +279,19 @@ const SignInPage = () => {
               {loginMutation.isPending ? (
                 <SlickSpinner size={14} color="white" />
               ) : (
-                "Sign In"
+                t('sign_in')
               )}
             </button>
           </motion.form>
         </motion.div>
 
         <span className="text-xs font-semibold mt-1 md:mt-2">
-          Don&#39;t have an account?{" "}
+          {sit('dont_have_account')}
           <span
             className="text-[#030DFE] cursor-pointer"
             onClick={() => router.push("/signup")}
           >
-            Sign Up
+           {t('sign_up')}
           </span>
         </span>
 

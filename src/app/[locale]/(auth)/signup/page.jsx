@@ -1,6 +1,7 @@
 "use client";
 
 import { Steps, message } from "antd";
+import { useTranslations } from "next-intl";
 import React, { useEffect } from "react";
 
 import InstructorContract from "@/components/student/StudentContract";
@@ -28,9 +29,11 @@ const SignupPage = () => {
     return () => window.removeEventListener("storage", handleStorageChange);
   }, [setActiveTab]);
 
+  const t = useTranslations("sign_up");
+
   const steps = [
     {
-      title: "Sign Up",
+      title: t('sign_up'),
       content:
         accountType === "instructor" ? (
           <InstructorSignUpForm />
@@ -39,11 +42,11 @@ const SignupPage = () => {
         ),
     },
     {
-      title: "Confirm Plan",
+      title: t('confirm_plan'),
       content: <ConfirmPlan />,
     },
     {
-      title: "Payment",
+      title: t('payment'),
       content: <SignupPay />,
     },
   ];
@@ -53,8 +56,8 @@ const SignupPage = () => {
 
     const messageText =
       current < activeTab
-        ? "You can not go back, finish all steps."
-        : "Complete this stage to proceed.";
+        ? t('complete_all_steps')
+        : t('complete_step');
 
     message.info({
       content: (

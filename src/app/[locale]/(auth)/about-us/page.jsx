@@ -2,6 +2,7 @@
 import { Button, Card, Divider, Input, Modal, Typography, Tabs } from "antd";
 import { Segmented, ConfigProvider } from "antd";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import React, { useState, useRef, useEffect } from "react";
 import { IoMailOutline } from "react-icons/io5";
 
@@ -22,6 +23,9 @@ const AboutUs = () => {
   const outreachRef = useRef(null);
   const contactRef = useRef(null);
 
+  const t = useTranslations("about_us");
+  const ht = useTranslations("home_page");
+
   const sectionRefs = React.useMemo(
     () => ({
       aboutUs: aboutUsRef,
@@ -35,10 +39,10 @@ const AboutUs = () => {
 
   const [activeSection, setActiveSection] = useState(null);
 
-  const [selectedLDValue, setSelectedLDValue] = useState("Executive Team");
-  const [selectedWEValue, setSelectedWEValue] = useState("System");
+  const [selectedLDValue, setSelectedLDValue] = useState(t('executive_team'));
+  const [selectedWEValue, setSelectedWEValue] = useState(t('system'));
   const [selecteContactsValue, setSelectedConatctsValue] =
-    useState("Contact Us");
+    useState(t('contact_us'));
 
   const [showProcessingModal, setShowProcessingModal] = useState(false);
 
@@ -198,7 +202,7 @@ const AboutUs = () => {
 
   const renderLDView = (value) => {
     switch (value) {
-      case "Executive Team":
+      case t('executive_team'):
         return (
           <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-4">
             {isMembersPending ? (
@@ -225,7 +229,7 @@ const AboutUs = () => {
                       onClick={() => showModal(member)}
                       className="text-blue-700 underline cursor-pointer"
                     >
-                      Full bio
+                      {t('full_bio')}
                     </Text>
                   </div>
                 </div>
@@ -242,19 +246,13 @@ const AboutUs = () => {
 
   const renderWEView = (value) => {
     switch (value) {
-      case "System":
+      case t('system'):
         return (
           <div className="w-full grid grid-cols-1 md:grid-cols-2 items-center gap-4">
             <Typography className="flex flex-col items-center text-justify">
-              <Text className="font-bold text-lg">Our System</Text>
+              <Text className="font-bold text-lg">{t('system')}</Text>
               <Text className="text-xs lg:text-sm xxs:leading-loose leading-6 lg:leading-8">
-                Our advanced platform integrates AI-driven tutoring, machine
-                learning-powered educational services, secure payment gateways
-                with subscription management, digital assignment distribution
-                and resource sharing, as well as real-time messaging and
-                collaboration tools for students, educators, and cohorts, all
-                engineered to adapt to the rapidly evolving EdTech landscape in
-                Tanzania.
+                {t('system_description')}
               </Text>
             </Typography>
             <div className="w-full flex items-center justify-center">
@@ -269,19 +267,13 @@ const AboutUs = () => {
           </div>
         );
         break;
-      case "Language":
+      case t('language'):
         return (
           <div className="w-full grid grid-cols-1 md:grid-cols-2 items-center gap-4">
             <Typography className="flex flex-col items-center text-justify">
-              <Text className="font-bold text-lg">Language</Text>
+              <Text className="font-bold text-lg">{t('language')}</Text>
               <Text className="text-xs lg:text-sm xxs:leading-loose leading-6 lg:leading-8">
-                Our platform currently supports English and Kiswahili,
-                leveraging a scalable multilingual architecture to ensure
-                seamless user experience across diverse linguistic backgrounds.
-                As part of the company&apos;s vision for international
-                expansion, we are actively developing language integration
-                frameworks that will enable the addition of more languages,
-                enhancing accessibility and inclusivity for a global audience.
+                {t('language_description')}
               </Text>
             </Typography>
             <div className="w-full flex items-center justify-center">
@@ -296,19 +288,13 @@ const AboutUs = () => {
           </div>
         );
         break;
-      case "For teachers":
+      case ht('for_teachers'):
         return (
           <div className="w-full grid grid-cols-1 md:grid-cols-2 items-center gap-4">
             <Typography className="flex flex-col items-center text-justify">
-              <Text className="font-bold text-lg">For teachers</Text>
+              <Text className="font-bold text-lg">{ht('for_teachers')}</Text>
               <Text className="text-xs lg:text-sm xxs:leading-loose leading-6 lg:leading-8">
-                Our platform upholds the highest standards of integrity and
-                quality education, enforcing a zero-tolerance policy for any
-                form of misconduct. To ensure compliance, we conduct periodic
-                in-class evaluations where our staff members attend sessions to
-                assess teaching quality, engagement, and adherence to our
-                educational guidelines, fostering a trustworthy and professional
-                learning environment.
+                {t('for_teachers_description')}
               </Text>
             </Typography>
             <div className="w-full flex items-center justify-center">
@@ -324,20 +310,13 @@ const AboutUs = () => {
         );
         break;
 
-      case "For students":
+      case ht('for_students'):
         return (
           <div className="w-full grid grid-cols-1 md:grid-cols-2 items-center gap-4">
             <Typography className="flex flex-col items-center text-justify">
-              <Text className="font-bold text-lg">For students</Text>
+              <Text className="font-bold text-lg">{ht('for_students')}</Text>
               <Text className="text-xs lg:text-sm xxs:leading-loose leading-6 lg:leading-8">
-                Our platform is committed to maintaining a high standard of
-                academic integrity and quality education, enforcing a
-                zero-tolerance policy for any form of misconduct. Students are
-                expected to engage respectfully, adhere to ethical learning
-                practices, and uphold honesty in all academic activities. To
-                ensure compliance, we conduct periodic assessments and
-                monitoring, fostering a fair, professional, and inclusive
-                learning environment.
+                {t('for_students_description')}
               </Text>
             </Typography>
             <div className="w-full flex items-center justify-center">
@@ -360,7 +339,7 @@ const AboutUs = () => {
 
   const renderContactsView = (value) => {
     switch (value) {
-      case "Contact Us":
+      case t('contact_us'):
         return (
           <Card className="w-full bg-[#F2EFEF]">
             <div className="flex flex-col space-y-4">
@@ -369,12 +348,10 @@ const AboutUs = () => {
                 ref={sectionRefs.contact}
                 className="font-black text-lg lg:text-2xl"
               >
-                Contact Us
+                {t('contact_us')}
               </Text>
               <Text className="text-xs text-justify leading-loose">
-                For inquiries directed to the Gala Education team, please email
-                info@galahub.org or submit your questions by clicking the button
-                below.
+                {t('inquiries')}
               </Text>
               <Button
                 type="primary"
@@ -384,52 +361,42 @@ const AboutUs = () => {
                 className="text-xs bg-black w-full md:w-fit font-bold hover:!bg-gray-500 text-white"
                 icon={<IoMailOutline size={16} />}
               >
-                Mail Us
+                {t('mail_us')}
               </Button>
               <Divider
                 orientation="right"
                 className="!text-xs !text-gray-500"
                 style={{ borderColor: "#dcdcdc" }}
               >
-                Subscription
+                {t('subscription')}
               </Divider>
               <Text className="font-black text-lg lg:text-2xl">
-                Subscribe to email alerts
+                {t('subscribe_to_emails')}
               </Text>
               <Text className="text-xs leading-loose text-justify">
-                To subscribe to email alerts, please enter your email address in
-                the field below and select at least one alert option. Once your
-                request is submitted, you will receive a confirmation email with
-                an activation link, which must be clicked to complete your
-                subscription. Additional alert options can be selected at any
-                time.
+                {t('subscribe_text_1')}
               </Text>
               <Text className="text-xs leading-loose text-justify">
-                At Gala Education, we are committed to safeguarding your privacy
-                and will never share your information with third parties. You
-                may unsubscribe from any alerts by visiting the ‘unsubscribe’
-                section below. If you encounter any issues during this process,
-                please contact us for assistance.
+                {t('subscribe_text_2')}
               </Text>
               <Text className="text-xs leading-loose text-justify">
-                By providing your email address below, you consent to receive
-                email updates from Gala Education.
+                {t('subscribe_text_3')}
               </Text>
               <Text className="text-xs font-bold mt-3">
-                Sign up for email alerts
+                {t('subscribe_to_emails')}
               </Text>
               <div className="flex flex-col md:flex-row gap-4 mb-5">
                 <Input
                   type="email"
                   size="middle"
                   className="w-full md:w-1/4"
-                  placeholder="Email address"
+                  placeholder={ht('email')}
                 />
                 <Button
                   type="primary"
                   className="bg-black text-xs text-white hover:!bg-gray-500"
                 >
-                  Subscribe
+                  {t('subscription')}
                 </Button>
               </div>
               <Divider
@@ -437,123 +404,93 @@ const AboutUs = () => {
                 style={{ borderColor: "#dcdcdc" }}
                 className="!text-xs !text-gray-500"
               >
-                Unsubscribe
+                {t('unsubscribe')}
               </Divider>
               <Text className="font-black text-lg lg:text-2xl">
-                Unsubscribe from email alerts
+                {t('unsubscribe_from_emails')}
               </Text>
               <Text className="text-xs leading-loose text-justify">
-                To opt-out of email alerts, please enter your email address in
-                the field below and you will be removed from all email alerts to
-                which you are subscribed. After submitting your email, you will
-                receive a confirmation email to the requested email address. You
-                must click the confirmation link in order to complete your
-                request to unsubscribe. You can elect to receive alerts at any
-                time you would like.
+                {t('unsubscribe_text')}
               </Text>
               <Text className="text-xs font-bold mt-3">
-                Unsubscribe from email alerts
+                {t('unsubscribe_from_emails')}
               </Text>
               <div className="flex flex-col md:flex-row gap-4 mb-5">
                 <Input
                   type="email"
                   size="middle"
                   className="w-full md:w-1/4"
-                  placeholder="Email address"
+                  placeholder={ht('email')}
                 />
                 <Button
                   type="primary"
                   className="bg-black text-xs text-white hover:!bg-gray-500"
                 >
-                  Unsubscribe
+                  {t('unsubscribe')}
                 </Button>
               </div>
             </div>
           </Card>
         );
         break;
-      case "FAQs":
+      case ht('faqs'):
         return (
           <div className="relative w-full ">
             <FaqCard
-              faqQn={"What is Gala Education?"}
+              faqQn={ht('what_is_gala_education')}
               bgColor={"#F2EFEF"}
-              faqAns={
-                "Gala Education is an online platform dedicated to providing high-quality tutoring for Primary, Secondary, and High School students across Tanzania. In addition to tutoring, we offer short courses designed to equip Tanzanian youth with self-employable skills. Our platform is powered by AI, which helps deliver personalized learning experiences tailored to each student’s individual needs and progress. We also reinvest profits into philanthropic activities, including building classrooms and libraries for under-served communities"
-              }
+              faqAns={ht('what_is_gala_education_description')}
             />
             <FaqCard
-              faqQn={"Is there a money-back guarantee?"}
+              faqQn={ht('is_there_money_back_guarantee')}
               bgColor={"#F2EFEF"}
-              faqAns={
-                "Gala Education does not offer refunds unless there is a verified technical issue that prevents you from accessing our services. If you encounter such a problem, please contact our support team, and we will assist you in resolving the issue or processing a refund if necessary."
-              }
+              faqAns={ht('money_back_guarantee_description')}
             />
             <FaqCard
-              faqQn={"Who can use Gala Education?"}
+              faqQn={ht('who_can_use_gala_education')}
               bgColor={"#F2EFEF"}
-              faqAns={
-                "Gala Education is designed for students in Primary, Secondary, and High School across Tanzania who are looking for personalized tutoring in various subjects. Our short courses are open to young adults looking to acquire practical, self-employable skills in various fields. Anyone with access to a device and internet connection can benefit from our educational resources."
-              }
+              faqAns={ht('who_can_use_gala_education_description')}
             />
             <FaqCard
-              faqQn={"Do I need a device to access the tutoring sessions?"}
+              faqQn={ht('do_i_need_device_for_tutoring')}
               bgColor={"#F2EFEF"}
-              faqAns={
-                "Yes, you will need a device, such as a smartphone, tablet, or computer, and a stable internet connection to access our online tutoring sessions. This allows you to participate in lessons, access learning materials, and interact with our qualified tutors from anywhere at your convenience."
-              }
+              faqAns={ht('do_i_need_device_for_tutoring_description')}
             />
             <FaqCard
-              faqQn={"Do I need to be a registered user to donate?"}
+              faqQn={ht('do_i_need_to_be_registered_to_donate')}
               bgColor={"#F2EFEF"}
-              faqAns={
-                "No, donations can be made by anyone, regardless of whether you are a registered user of Gala Education. Our donation system is designed to allow anyone who wants to support our mission to contribute. The funds are directly used to support children’s education, particularly those from low-income backgrounds who lack access to quality resources."
-              }
+              faqAns={ht('do_i_need_to_be_registered_to_donate_description')}
             />
             <FaqCard
-              faqQn={"How are the donations used?"}
+              faqQn={ht('how_are_donations_used')}
               bgColor={"#F2EFEF"}
-              faqAns={
-                "All donations received are reinvested into our philanthropic efforts to improve education in Tanzania. This includes building and equipping classrooms, libraries, and providing educational materials for under-served communities. The donations also help support the development of educational programs that benefit students in need, ensuring that every child has access to quality learning opportunities."
-              }
+              faqAns={ht('how_are_donations_used_description')}
             />
             <FaqCard
               faqQn={
-                "What makes Gala Education different from other tutoring platforms?"
+                ht('what_makes_gala_education_different')
               }
               bgColor={"#F2EFEF"}
-              faqAns={
-                "Gala Education stands out by combining quality online tutoring with a strong commitment to community development. Not only do we provide expert tutors to support student learning, but we also employ teachers across Tanzania to help address the national shortage of qualified educators. Our platform also integrates AI-powered personalized learning to enhance each student’s progress. Moreover, we reinvest profits into community-building projects like classrooms and libraries, making our mission far-reaching and impactful."
-              }
+              faqAns={ht('what_makes_gala_education_different_description')}
             />
             <FaqCard
-              faqQn={"How do the short courses work?"}
-              faqAns={
-                "Our short courses are specifically designed to equip Tanzanian youth with practical, self-employable skills in various industries such as technology, business, and creative fields. These courses are taught by experienced academics, executives, and industry leaders. Students can take the courses online, at their own pace, and gain valuable skills that will help them pursue self-employment or career opportunities. Upon completion, students may also receive certification for the skills they’ve learned."
-              }
+              faqQn={ht('how_do_short_courses_work')}
+              faqAns={ht('how_do_short_courses_work_description')}
             />
             <FaqCard
-              faqQn={"Is there any age limit for the short courses?"}
+              faqQn={ht('is_there_age_limit_for_short_courses')}
               bgColor={"#F2EFEF"}
-              faqAns={
-                "There is no specific age limit for the short courses. The courses are open to all Tanzanian youth who are eager to learn and acquire skills for self-employment. Whether you’re a recent graduate, a young professional, or someone looking to switch careers, our short courses offer flexible learning opportunities that can be adapted to your personal goals."
-              }
+              faqAns={ht('age_limit_for_short_courses_description')}
             />
             <FaqCard
-              faqQn={"How can I become a tutor on Gala Education?"}
+              faqQn={ht('how_to_become_tutor')}
               bgColor={"#F2EFEF"}
-              faqAns={
-                "If you are a qualified educator with a passion for teaching and helping students succeed, you can apply to become a tutor at Gala Education. We are always looking for skilled tutors who can deliver personalized, high-quality lessons across a range of subjects. To apply, visit our website to submit your application, and we will contact you if there is a suitable opportunity to join our team."
-              }
+              faqAns={ht('how_to_become_tutor_description')}
             />
             <FaqCard
-              faqQn={
-                "Can I access Gala Education if I live outside of Tanzania?"
-              }
+              faqQn={ht('can_i_access_gala_outside_tanzania')}
               bgColor={"#F2EFEF"}
-              faqAns={
-                "While Gala Education is primarily focused on providing services to students within Tanzania, anyone with a stable internet connection can access our short courses. Our online platform allows individuals from anywhere in the world to benefit from our industry-leading courses that equip youth with valuable skills for self-employment. However, tutoring sessions are designed specifically for Tanzanian students, so availability may vary depending on your location."
-              }
+              faqAns={ht('can_i_access_gala_outside_tanzania_description')}
             />
           </div>
         );
@@ -574,41 +511,11 @@ const AboutUs = () => {
               ref={sectionRefs.aboutUs}
               className="font-black text-xl lg:text-2xl"
             >
-              About Us
+              {t('about_us')}
             </Text>
             <div className="flex flex-col">
               <Typography className="text-xs lg:text-sm text-justify !leading-loose">
-                Gala Education is an innovative online tutoring platform created
-                by academic experts to serve Tanzanian Primary, Secondary, and
-                High School students. Our mission is to provide high-quality
-                education while creating employment opportunities for teachers
-                across Tanzania. Recognizing the critical shortage of qualified
-                teachers, we meticulously designed our platform to bridge this
-                gap and ensure that every student receives the education they
-                deserve. At Gala Education, we believe that education is the
-                foundation for a better future. Our platform not only focuses on
-                delivering top-notch tutoring services but also reinvests its
-                profits into various philanthropic activities. These include
-                building classrooms, libraries, and other educational
-                infrastructure across Tanzania, ensuring that students from all
-                backgrounds have access to conducive learning environments. In
-                addition to our primary and secondary education services.
-              </Typography>
-              <Typography className="text-xs lg:text-sm text-justify !leading-loose">
-                {" "}
-                Gala Education offers a range of short courses aimed at
-                equipping Tanzanian youth with practical, self-employable
-                skills. These courses are taught by a diverse team of academics,
-                executives, and industry-leading experts, providing learners
-                with valuable insights and hands-on experience in various
-                fields. Accessing our services is simple. All you need is a
-                device and a stable internet connection to join our online
-                tutoring sessions. Our user-friendly platform makes it easy for
-                students to connect with skilled tutors and access high-quality
-                educational resources from the comfort of their homes. Join us
-                at Gala Education as we strive to make quality education
-                accessible to every child in Tanzania, empowering the next
-                generation with the knowledge and skills they need to succeed.
+                {t('about_us_description')}
               </Typography>
             </div>
 
@@ -618,7 +525,7 @@ const AboutUs = () => {
                 ref={sectionRefs.leadership}
                 className="font-black text-lg lg:text-2xl py-2"
               >
-                Leadership/Governance
+                {t('leadership')}
               </Text>
               <div className="flex flex-col w-full py-3">
                 <ConfigProvider
@@ -634,10 +541,10 @@ const AboutUs = () => {
                   <Segmented
                     className="font-bold"
                     options={[
-                      "Executive Team",
-                      "Advisory Board",
-                      "Board of Directors",
-                      "Governance Docs",
+                      t('executive_team'),
+                      t('advisory_board'),
+                      t('board_of_directors'),
+                      t('governance_docs'),
                     ]}
                     size="middle"
                     value={selectedLDValue}
@@ -655,7 +562,7 @@ const AboutUs = () => {
                 ref={sectionRefs.expectations}
                 className="font-black text-lg lg:text-2xl pt-2"
               >
-                What to expect
+                {t('what_to_expect')}
               </Text>
               <div className="flex flex-col w-full py-3">
                 <ConfigProvider
@@ -671,10 +578,10 @@ const AboutUs = () => {
                   <Segmented
                     className="font-bold"
                     options={[
-                      "System",
-                      "Language",
-                      "For teachers",
-                      "For students",
+                      t('system'),
+                      t('language'),
+                      ht('for_teachers'),
+                      ht('for_students'),
                     ]}
                     size="middle"
                     value={selectedWEValue}
@@ -692,18 +599,13 @@ const AboutUs = () => {
                 ref={sectionRefs.outreach}
                 className="font-black text-lg lg:text-2xl py-2"
               >
-                Outreach efforts
+                {t('outreach_efforts')}
               </Text>
               <Text className="font-black text-sm">
-                You are making a difference
+                {t('making_a_difference')}
               </Text>
               <Text className="text-xs lg:text-sm xxs:leading-loose lg:leading-loose text-justify">
-                Gala Education Financial Aid wing is an extension of our
-                platform that collaborates with organizations to enhance
-                learning opportunities and support educational initiatives in
-                local and global communities. We provide assistance in
-                education, emergency response, family empowerment, hunger
-                relief, and more.
+                {t('outreach_message')}
               </Text>
               <div className="w-full relative py-6">
                 <Image
@@ -714,20 +616,11 @@ const AboutUs = () => {
                   className="w-full"
                 />
                 <Text className="absolute left-6 bottom-10 text-xs md:text-sm font-bold text-white p-3 bg-[#0000004D]/30">
-                  Serve your community from wherever you are
+                  {t('serve_from_wherever')}
                 </Text>
               </div>
               <Text className="text-xs lg:text-sm xxs:leading-loose lg:leading-loose text-justify">
-                Community impact is at the heart of Gala Education. A portion of
-                every contribution is dedicated to outreach, supporting
-                strategic partnerships that address real needs both locally and
-                globally. From empowering schools to providing essential
-                resources for those in need, we are committed to driving
-                meaningful change in education and beyond. We believe in
-                investing generously, serving consistently, and collaborating
-                strategically to create lasting impact. There’s a place for
-                everyone to get involved—join us in shaping a brighter future
-                for learners and communities in need.
+                {t('donate_message')}
               </Text>
               <div className="w-full justify-center flex py-4 mb-10">
                 <Button
@@ -735,7 +628,7 @@ const AboutUs = () => {
                   size="middle"
                   className="font-semibold w-64 bg-[#F2EFEF]"
                 >
-                  Donate for the cause
+                  {ht('donate_now')}
                 </Button>
               </div>
             </div>
@@ -754,7 +647,7 @@ const AboutUs = () => {
                 >
                   <Segmented
                     className="font-bold"
-                    options={["Contact Us", "FAQs"]}
+                    options={[t('contact_us'), ht('faqs')]}
                     size="middle"
                     value={selecteContactsValue}
                     onChange={setSelectedConatctsValue}
@@ -771,53 +664,48 @@ const AboutUs = () => {
             <div className="flex flex-col items-center w-full space-y-4">
               <Text
                 onClick={() => scrollToSection(sectionRefs.aboutUs)}
-                className={`text-right  text-gray-400 w-full  p-2 cursor-pointer ${
-                  activeSection === "aboutUs"
-                    ? "text-white font-bold border-r-4 rounded-r-md border-black bg-gradient-to-l from-gray-500 to-transparent px-4 py-2"
-                    : "hover:text-blue-700"
-                }`}
+                className={`text-right  text-gray-400 w-full  p-2 cursor-pointer ${activeSection === "aboutUs"
+                  ? "text-white font-bold border-r-4 rounded-r-md border-black bg-gradient-to-l from-gray-500 to-transparent px-4 py-2"
+                  : "hover:text-blue-700"
+                  }`}
               >
-                About Us
+                {t('about_us')}
               </Text>
               <Text
                 onClick={() => scrollToSection(sectionRefs.leadership)}
-                className={`text-right  text-gray-400  w-full  p-2  cursor-pointer ${
-                  activeSection === "leadership"
-                    ? "text-white font-bold border-r-4 rounded-r-md border-black bg-gradient-to-l from-gray-500 to-transparent px-4 py-2"
-                    : "hover:text-blue-700"
-                }`}
+                className={`text-right  text-gray-400  w-full  p-2  cursor-pointer ${activeSection === "leadership"
+                  ? "text-white font-bold border-r-4 rounded-r-md border-black bg-gradient-to-l from-gray-500 to-transparent px-4 py-2"
+                  : "hover:text-blue-700"
+                  }`}
               >
-                Leadership
+                {t('leadership')}
               </Text>
               <Text
                 onClick={() => scrollToSection(sectionRefs.expectations)}
-                className={`text-right  text-gray-400 w-full  p-2  cursor-pointer ${
-                  activeSection === "expectations"
-                    ? "text-white font-bold border-r-4 rounded-r-md border-black bg-gradient-to-l from-gray-500 to-transparent px-4 py-2"
-                    : "hover:text-blue-700"
-                }`}
+                className={`text-right  text-gray-400 w-full  p-2  cursor-pointer ${activeSection === "expectations"
+                  ? "text-white font-bold border-r-4 rounded-r-md border-black bg-gradient-to-l from-gray-500 to-transparent px-4 py-2"
+                  : "hover:text-blue-700"
+                  }`}
               >
-                What to expect
+                {t('what_to_expect')}
               </Text>
               <Text
                 onClick={() => scrollToSection(sectionRefs.outreach)}
-                className={`text-right text-gray-400 w-full  p-2  cursor-pointer ${
-                  activeSection === "outreach"
-                    ? "text-white font-bold border-r-4 rounded-r-md border-black bg-gradient-to-l from-gray-500 to-transparent px-4 py-2"
-                    : "hover:text-blue-700"
-                }`}
+                className={`text-right text-gray-400 w-full  p-2  cursor-pointer ${activeSection === "outreach"
+                  ? "text-white font-bold border-r-4 rounded-r-md border-black bg-gradient-to-l from-gray-500 to-transparent px-4 py-2"
+                  : "hover:text-blue-700"
+                  }`}
               >
-                Outreach efforts
+                {t('outreach_efforts')}
               </Text>
               <Text
                 onClick={() => scrollToSection(sectionRefs.contact)}
-                className={`text-right text-gray-400 w-full  p-2  cursor-pointer ${
-                  activeSection === "contact"
-                    ? "text-white font-bold border-r-4 rounded-r-md border-black bg-gradient-to-l from-gray-500 to-transparent px-4 py-2"
-                    : "hover:text-blue-700"
-                }`}
+                className={`text-right text-gray-400 w-full  p-2  cursor-pointer ${activeSection === "contact"
+                  ? "text-white font-bold border-r-4 rounded-r-md border-black bg-gradient-to-l from-gray-500 to-transparent px-4 py-2"
+                  : "hover:text-blue-700"
+                  }`}
               >
-                Contact Us
+                {t('contact_us')}
               </Text>
             </div>
           </div>
