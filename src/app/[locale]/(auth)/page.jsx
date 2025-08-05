@@ -1,6 +1,7 @@
 "use client";
 import { Button } from "antd";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { NextSeo } from "next-seo";
 import React, { useEffect, useState } from "react";
 import { BiChevronRight } from "react-icons/bi";
