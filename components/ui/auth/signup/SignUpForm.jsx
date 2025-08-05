@@ -1,6 +1,7 @@
 import { Form, Input, Select, Button, Typography, Card, Progress } from "antd";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 import {
   LuCheck,
@@ -20,6 +21,7 @@ import { preventCopyPaste } from "@/utils/fns/general";
 
 import EmailVerification from "./EmailVerification";
 import SlickSpinner from "../../loading/template/SlickSpinner";
+
 
 const { Text } = Typography;
 
@@ -43,16 +45,18 @@ const SignUpForm = () => {
     registerError,
   } = useAuth(password);
 
+  const t = useTranslations('sign_up');
+  const ht = useTranslations('home_page');
+
   return (
     <div className="flex justify-center lg:px-8 lg:mt-4">
       <Card className="max-w-3xl !border-0 -mx-5 lg:!w-full lg:-mx-0">
         <div className="text-center mb-4 sm:mb-8">
           <div className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
-            Sign Up
+            {t('sign_up')}
           </div>
           <span className="text-xs xs:text-sm text-gray-600">
-            Step into the realm of endless possibilities! Your adventure in
-            knowledge begins here.
+            {t('step_into_the_realm')}
           </span>
         </div>
         {registerError && (
@@ -62,8 +66,8 @@ const SignUpForm = () => {
               mutation.isSuccess
                 ? "border-green-700 text-green-400 bg-green-50"
                 : mutation.isError
-                ? "border-red-500 text-red-500 bg-red-50"
-                : "border-gray-700 text-gray-700"
+                  ? "border-red-500 text-red-500 bg-red-50"
+                  : "border-gray-700 text-gray-700"
             )}
           >
             {registerError}
@@ -84,14 +88,14 @@ const SignUpForm = () => {
             <Form.Item
               name="first_name"
               rules={[
-                { required: true, message: "Please enter your first name" },
+                { required: true, message: t('enter_first_name') },
               ]}
               className="!mb-0"
             >
               <Input
                 prefix={<LuUser className="!text-gray-400" />}
                 autoComplete="new-password"
-                placeholder="First Name"
+                placeholder={ht('first_name')}
                 className="!h-11 signup-input"
               />
             </Form.Item>
@@ -99,14 +103,14 @@ const SignUpForm = () => {
             <Form.Item
               name="last_name"
               rules={[
-                { required: true, message: "Please enter your last name" },
+                { required: true, message: t('enter_last_name') },
               ]}
               className="!mb-0"
             >
               <Input
                 prefix={<LuUser className="!text-gray-400" />}
                 autoComplete="new-password"
-                placeholder="Last Name"
+                placeholder={ht('second_name')}
                 className="!h-11 signup-input"
               />
             </Form.Item>
@@ -116,8 +120,8 @@ const SignUpForm = () => {
             name="email"
             validateTrigger={["onBlur", "onChange", "onSubmit"]}
             rules={[
-              { required: true, message: "Please enter your email address" },
-              { type: "email", message: "Please enter valid email address" },
+              { required: true, message: t('enter_email') },
+              { type: "email", message: t('valid_email_address') },
             ]}
             validateStatus={emailExists ? "error" : undefined}
           >
@@ -130,7 +134,7 @@ const SignUpForm = () => {
                 onPaste={preventCopyPaste}
                 onCut={preventCopyPaste}
                 prefix={<LuMail className="!text-gray-400" />}
-                placeholder="Email Address"
+                placeholder={ht('email')}
                 className="!h-11 signup-input"
                 onChange={() => {
                   setEmailExists("");
@@ -144,13 +148,13 @@ const SignUpForm = () => {
           <Form.Item
             name="password"
             rules={[
-              { required: true, message: "Please input your password!" },
+              { required: true, message: t('enter_password') },
               // { min: 8, message: "Password must be at least 8 characters!" },
               {
                 validator: (_, value) => {
                   if (value && passwordStrength < 100) {
                     return Promise.reject(
-                      "Password must meet all requirements"
+                      t('password_requirements')
                     );
                   }
                   return Promise.resolve();
@@ -162,7 +166,7 @@ const SignUpForm = () => {
               <Input.Password
                 autoComplete="new-password"
                 prefix={<LuLock className="!text-gray-400" />}
-                placeholder="Password"
+                placeholder={ht('password')}
                 className="!h-11 signup-input"
                 onChange={(e) => {
                   handlePasswordChange(e);
@@ -210,13 +214,13 @@ const SignUpForm = () => {
             name="confirmPassword"
             dependencies={["password"]}
             rules={[
-              { required: true, message: "Please confirm your password!" },
+              { required: true, message: t('confirm_your_password') },
               ({ getFieldValue }) => ({
                 validator(_, value) {
                   if (!value || getFieldValue("password") === value) {
                     return Promise.resolve();
                   }
-                  return Promise.reject("Passwords do not match");
+                  return Promise.reject(t('password_mismatch'));
                 },
               }),
             ]}
@@ -224,7 +228,7 @@ const SignUpForm = () => {
             <Input.Password
               autoComplete="new-password"
               prefix={<LuShieldCheck className="!text-gray-400" />}
-              placeholder="Confirm Password"
+              placeholder={ht('confirm_password')}
               className="!h-11 signup-input"
               iconRender={(visible) => (
                 <span className="hover:!text-blue-500 !transition-colors">
@@ -236,7 +240,7 @@ const SignUpForm = () => {
 
           <Form.Item name="special_needs">
             <Select
-              placeholder="Special Needs (Optional)"
+              placeholder={`${ht('special_needs')} (${ht('optional')})`}
               options={disabilities}
               className="!w-full !rounded-lg !min-h-[2.75rem]"
             />
@@ -263,7 +267,7 @@ const SignUpForm = () => {
               {mutation.isPending ? (
                 <SlickSpinner size={16} color="white" />
               ) : (
-                <span>Create Account</span>
+                <span>{t('create_account')}</span>
               )}
             </Button>
           </Form.Item>
@@ -294,32 +298,32 @@ const SignUpForm = () => {
             />
           </div>
 
-          <Text>I have read and agreed to the</Text>
+          <Text>{t('read_and_agreed')}</Text>
           <Button
             type="link"
             className="!p-0 !m-1 !text-blue-600 hover:!text-blue-700"
             onClick={() => router.push("/terms-and-privacy")}
           >
-            Terms of Service
+            {t('terms_of_service')}
           </Button>
-          <Text> and </Text>
+          <Text> {t('and')} </Text>
           <Button
             type="link"
             className="!p-0 !m-1 !text-blue-600 hover:!text-blue-700"
             onClick={() => router.push("/terms-and-privacy")}
           >
-            Privacy Policy
+            {t('privacy_policy')}
           </Button>
         </div>
 
         <div className="!text-center !text-sm !text-gray-600 !mt-2">
-          <Text>Already have an account?</Text>
+          <Text>{t('already_have_account')}</Text>
           <Button
             type="link"
             className="!p-0 !m-1 !text-blue-600 hover:!text-blue-700"
             onClick={() => router.push("/signin")}
           >
-            Sign In
+            {t('sign_in')}
           </Button>
         </div>
 
