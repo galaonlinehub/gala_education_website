@@ -1,4 +1,5 @@
 import { Dropdown } from "antd";
+import { useTranslations } from "next-intl";
 
 import {
   BILLING_SUPPORT_DESK,
@@ -15,12 +16,15 @@ export const Contact = ({ useBillingContact = false }) => {
   const mailto = `mailto:${SUPPORT_EMAIL}?subject=${subject}&body=${body}`;
   const callto = `tel:${phoneNumber}`;
 
+  const t = useTranslations('sign_up');
+  const at = useTranslations('about_us');
+
   const items = [
     {
       key: "call",
       label: (
         <a href={callto} className="text-xs flex flex-col">
-          <span> 📞 Call Us</span>
+          <span> 📞 {at('call_us')}</span>
           <span className="text-[10px] pl-4 text-gray-500">+{phoneNumber}</span>
         </a>
       ),
@@ -29,7 +33,7 @@ export const Contact = ({ useBillingContact = false }) => {
       key: "email",
       label: (
         <a href={mailto} className="text-xs flex flex-col">
-          <span> ✉️ Email Us</span>
+          <span> ✉️ {at('mail_us')}</span>
           <span className="text-[10px] pl-4 text-gray-500">
             {SUPPORT_EMAIL}
           </span>
@@ -44,12 +48,12 @@ export const Contact = ({ useBillingContact = false }) => {
         href="#"
         className="text-black hover:text-[#030DFE] text-xs font-black"
       >
-        Help Center
+        {t('help_center')}
       </a>
       <span>|</span>
       <Dropdown arrow menu={{ items }} trigger={["click"]}>
         <button className="text-[#030DFE] hover:underline text-xs">
-          Contact Us
+          {at('contact_us')}
         </button>
       </Dropdown>
     </div>

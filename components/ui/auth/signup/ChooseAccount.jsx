@@ -2,6 +2,7 @@
 import { Dropdown } from "antd";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 import React from "react";
 import { FaChalkboardTeacher } from "react-icons/fa";
 import { FaArrowRightLong } from "react-icons/fa6";
@@ -30,6 +31,8 @@ const ChooseAccount = ({
     router.push("/signup");
   };
 
+  const t = useTranslations('home_page');
+
   const items = [
     {
       key: "1",
@@ -39,7 +42,7 @@ const ChooseAccount = ({
           className="flex items-center py-[2px] rounded"
           onClick={handleSelect.bind(null, "student")}
         >
-          <span className="text-sm font-normal">Student</span>
+          <span className="text-sm font-normal">{t('student')}</span>
         </div>
       ),
     },
@@ -51,7 +54,7 @@ const ChooseAccount = ({
           className="flex items-center py-[2px] rounded"
           onClick={handleSelect.bind(null, "instructor")}
         >
-          <span className="text-sm font-normal">Teacher</span>
+          <span className="text-sm font-normal">{t('teacher')}</span>
         </div>
       ),
     },
@@ -68,9 +71,8 @@ const ChooseAccount = ({
       >
         <div className={`flex ${btnClassname} gap-2 items-center`}>
           <button
-            className={`text-black transition-all ${
-              isDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
-            }`}
+            className={`text-black transition-all ${isDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+              }`}
             onClick={(e) => {
               if (isDisabled) {
                 e.preventDefault();

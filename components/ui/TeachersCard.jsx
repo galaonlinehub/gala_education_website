@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import React, { useRef, useState, useEffect } from "react";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 
@@ -6,6 +7,7 @@ const ScrollableContent = () => {
   const scrollContainerRef = useRef(null);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
+  const t = useTranslations('home_page');
 
   const checkScroll = () => {
     const container = scrollContainerRef.current;
@@ -67,8 +69,8 @@ const ScrollableContent = () => {
           </div>
           <div className="md:w-1/2 w-full mt-1">
             <div className="flex flex-col gap-2 w-full h-3/4">
-              <span className="mt-14 text-center font-bold text-xl">Our Teachers</span>
-              <div className="text-xs leading-loose text-justify md:text-left ">Meet Ms. Zahra Mchome, a passionate Chemistry teacher with a commitment to making complex concepts easy and engaging for students. Her expertise and dedication inspire learners to excel, while creating an interactive and supportive environment. Joining Gala Education not only connects teachers like Ms. Mchome with eager students but also offers professional growth, flexible teaching opportunities, and the chance to make a real impact in education across Tanzania.</div>
+              <span className="mt-14 text-center font-bold text-xl">{t('our_teachers')}</span>
+              <div className="text-xs leading-loose text-justify md:text-left ">{t('teacher_1_info')}</div>
             </div>
           </div>
         </div>
@@ -79,8 +81,8 @@ const ScrollableContent = () => {
           </div>
           <div className="md:w-1/2 w-full mt-1">
             <div className="flex flex-col gap-2 w-full h-3/4">
-              <span className="mt-14 text-center font-bold text-xl">Our Teachers</span>
-              <div className="text-xs leading-loose text-justify md:text-left ">Meet Mr. John Smith, a dedicated Mathematics teacher who brings numbers to life through innovative teaching methods and a deep passion for education. His approach simplifies complex equations, empowering students to achieve academic success and develop a lifelong love for math. By partnering with Gala Education, Mr. Smith has access to a dynamic platform that connects him with motivated learners, provides opportunities for professional development, and supports his mission to transform education across Tanzania.</div>
+              <span className="mt-14 text-center font-bold text-xl">{t('our_teachers')}</span>
+              <div className="text-xs leading-loose text-justify md:text-left ">{t('teacher_2_info')}.</div>
             </div>
           </div>
         </div>
@@ -91,8 +93,8 @@ const ScrollableContent = () => {
           </div>
           <div className="md:w-1/2 w-full mt-1">
             <div className="flex flex-col gap-2 w-full h-3/4">
-              <span className="mt-14 text-center font-bold text-xl">Our Teachers</span>
-              <div className="text-xs leading-loose text-justify md:text-left ">Meet Ms. Salome Juma, an enthusiastic English teacher who inspires students to master language skills through creative and engaging lessons. Her dedication to fostering effective communication and critical thinking equips learners with the tools they need for academic and personal success. By joining Gala Education, Ms. Juma not only reaches a wider audience of eager learners but also benefits from professional growth, flexible teaching opportunities, and the chance to make a meaningful impact on education in Tanzania.</div>
+              <span className="mt-14 text-center font-bold text-xl">{t('our_teachers')}</span>
+              <div className="text-xs leading-loose text-justify md:text-left ">{t('teacher_3_info')}</div>
             </div>
           </div>
         </div>

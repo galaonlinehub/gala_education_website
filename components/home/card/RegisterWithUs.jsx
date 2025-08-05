@@ -1,4 +1,5 @@
 import { Carousel } from "antd";
+import { useTranslations } from "next-intl";
 import React from "react";
 
 import RegisterCard from "./RegisterCard";
@@ -13,19 +14,21 @@ const RegisterWithUs = () => {
     width: "100%",
   };
 
+  const t = useTranslations('home_page');
+
   return (
     <div>
-      <h3 className="text-center text-xs md:w-2/3 w-full mb-4 leading-relaxed sm:px-4 ">Join Gala Education today - register as a teacher or student and unlock endless learning opportunities!</h3>
+      <h3 className="text-center text-xs md:w-2/3 w-full mb-4 leading-relaxed sm:px-4 ">{t('register_with_us_subtitle')}</h3>
       <Carousel autoplay={true} dots={true} className="w-full">
       
       <div className="w-full p-3 items-center flex">
         <div style={contentStyle}>
-        <RegisterCard title={"Register as teacher"} image={"/donate_and_funds.jpeg"} desc={"Become part of our team of educators and help deliver exceptional learning experiences."} type={"instructor"} />
+        <RegisterCard title={t('register_as_teacher')} image={"/donate_and_funds.jpeg"} desc={t('register_as_teacher_description')} type={"instructor"} />
         </div>
       </div>
       <div className="w-full p-3 items-center flex">
         <div style={contentStyle}>
-        <RegisterCard title={"Register as student"} image={"/register_student.jpeg"} desc={"Join our community of learners and be part of the journey to excellence in education!"} type={"student"} />
+        <RegisterCard title={t('register_as_student')} image={"/register_student.jpeg"} desc={t('register_as_student_description')} type={"student"} />
         </div>
       </div>
       

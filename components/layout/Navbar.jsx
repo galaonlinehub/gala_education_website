@@ -2,8 +2,7 @@
 
 import { Tooltip, message, Dropdown, Button } from "antd";
 import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 import { BiWifi, BiWifiOff } from "react-icons/bi";
 import { LuGlobe, LuMenu } from "react-icons/lu";
@@ -12,6 +11,7 @@ import ChooseAccont from "@/components/ui/auth/signup/ChooseAccount";
 import { useUser } from "@/hooks/data/useUser";
 import { useDevice } from "@/hooks/misc/useDevice";
 import useNetwork from "@/hooks/misc/useNetwork";
+import { useRouter, usePathname, Link } from "@/src/i18n/navigation";
 import { useSubscribeStore } from "@/store/subscribeStore";
 
 import MobileSideBar from "./MobileSideBar";
@@ -19,17 +19,18 @@ import AboutUs from "../home/modals/AboutUs";
 import Subscribe from "../pay/Subscribe";
 import { Signout } from "../ui/auth/signup/Signout";
 
+
 const Navbar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { user } = useUser();
   const { width } = useDevice();
   const { isOnline, connectionQuality } = useNetwork();
   const router = useRouter();
+  const pathname = usePathname();
 
   const { setSubscribeOpen } = useSubscribeStore();
 
-  const [showLanguage, setShowLanguage] = useState(false);
-  const [language, setLanguage] = useState("english");
+  const [messageApi, contextHolder] = message.useMessage();
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -50,11 +51,14 @@ const Navbar = () => {
       key: "1",
       // icon: <LuGlobe className="text-xl" />,
       label: (
-        <div className="flex flex-col items-center text-sm font-medium">
+        <div className="flex flex-col items-center text-sm px-3 font-medium">
           English
         </div>
       ),
-      onClick: () => {},
+      onClick: () => {
+        router.push(pathname, { locale: "en" });
+        messageApi.info("English language chosen.");
+      },
     },
     {
       key: "2",
@@ -63,8 +67,10 @@ const Navbar = () => {
           Swahili
         </div>
       ),
-      onClick: () => {},
-      disabled: true,
+      onClick: () => {
+        router.push(pathname, { locale: "sw" });
+        messageApi.info("Lugha ya Kiswahili imechaguliwa.");
+      },
     },
   ];
 
@@ -160,8 +166,13 @@ const Navbar = () => {
     }
   };
 
+  const t = useTranslations('home_page');
+  const at = useTranslations('about_us');
+  const sut = useTranslations('sign_up');
+
   return (
     <nav className="h-12 flex justify-between max-w-screen items-center fixed top-0 inset-x-0 z-50 lg:px-10 sm:px-6 px-2 bg-white">
+      {contextHolder}
       <Image
         alt={"Gala logo"}
         width={150}
@@ -189,17 +200,9 @@ const Navbar = () => {
           trigger={["click"]}
           open={open}
           onOpenChange={handleOpenChange}
-          overlayClassName="rounded-md shadow-lg border border-gray-100"
+          overlayClassName="rounded-md shadow-lg"
           arrow={true}
           placement="bottom"
-          // dropdownRender={(menu) => (
-          //   <div>
-          //     <div className="text-xs font-light text-black px-4 py-2">
-          //       Choose language
-          //     </div>
-          //     {menu}
-          //   </div>
-          // )}
         >
           <Image
             width={200}
@@ -212,7 +215,7 @@ const Navbar = () => {
 
         <li>
           <Link href={"/"} className="hover:cursor-pointer tex-black">
-            Home
+            {t('home')}
           </Link>
         </li>
         {user && (
@@ -224,22 +227,22 @@ const Navbar = () => {
         )}
         <li>
           <Link href={"/about-us"} className="hover:cursor-pointer tex-black">
-            About Us
+            {at('about_us')}
           </Link>
         </li>
         {!user && (
           <div
             className="flex gap-3 items-center justify-center"
-            onClick={() => {}}
+            onClick={() => { }}
           >
             <ChooseAccont
-              btnText={"Sign Up"}
+              btnText={sut('sign_up')}
               textColor={"black"}
               placement={"bottom"}
               trigger={"hover"}
             />
             <Link href={"/signin"} className="hover:cursor-pointer">
-              <li>Sign In</li>
+              <li>{sut('sign_in')}</li>
             </Link>
           </div>
         )}

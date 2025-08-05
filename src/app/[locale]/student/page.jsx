@@ -41,6 +41,7 @@ export default function Component() {
     isEnrolledSubjectsError,
   } = useEnrolledTopics();
 
+
   const queryClient = useQueryClient();
   const enrolledTopics = queryClient.getQueryData(["enrolledTopics"]);
   return (

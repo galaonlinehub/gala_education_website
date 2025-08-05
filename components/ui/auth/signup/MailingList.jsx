@@ -1,9 +1,11 @@
 import { Alert, Button, Checkbox, Input, message, Select } from "antd";
+import { useTranslations } from "next-intl";
 import React, { useState, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 
 import Animator from "@/components/home/animations/Animator";
 import { apiPost } from "@/services/api/api_service";
+
 
 const MailingList = () => {
   const [alert, setAlert] = useState({
@@ -11,6 +13,9 @@ const MailingList = () => {
     type: null,
     message: null,
   });
+
+  const t = useTranslations("home_page");
+  
 
   const {
     control,
@@ -85,11 +90,10 @@ const MailingList = () => {
     >
       <Animator delay={0.2} direction="down">
         <h1 className="font-black sm:text-xs text-[12px] mb-2">
-          Are you interested in a session and want to know more?
+         {t('interest_header')}
         </h1>
         <h2 className="sm:text-xs text-[10px]">
-          Fill out the form and you will be contacted as soon as <br />
-          possible by our office
+          {t('interest_header_subheader')}
         </h2>
         {alert.show && (
           <Alert
@@ -108,10 +112,10 @@ const MailingList = () => {
               autoComplete="off"
               autoCapitalize="off"
               autoCorrect="off"
-              placeholder="First Name"
+              placeholder={t('first_name')}
               className={`focus:outline-none text-white text-[10px] h-[34px] bg-[#001840] placeholder:text-white/50 placeholder:text-xs py-1 px-2 rounded-[5px]`}
               {...register("firstname", {
-                required: "This field is mandatory.",
+                required: t('required_field'),
               })}
             />
             {errors.firstname && (
@@ -126,10 +130,10 @@ const MailingList = () => {
               autoComplete="off"
               autoCapitalize="off"
               autoCorrect="off"
-              placeholder="Second Name"
+              placeholder={t('second_name')}
               className={`focus:outline-none text-white text-[10px] h-[34px] bg-[#001840] placeholder:text-white/50 placeholder:text-xs py-1 px-2 rounded-[5px]`}
               {...register("lastname", {
-                required: "This field is mandatory.",
+                required: t('required_field'),
               })}
             />
             {errors.lastname && (
@@ -142,7 +146,7 @@ const MailingList = () => {
             <input
               type="email"
               {...register("email", {
-                required: "This field is mandatory.",
+                required: t('required_field'),
                 pattern: {
                   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                   message: "Invalid email address",
@@ -150,7 +154,7 @@ const MailingList = () => {
               })}
               autoComplete="off"
               autoCorrect="off"
-              placeholder="Email"
+              placeholder={t('email')}
               className={`focus:outline-none text-white text-[10px] h-[34px] bg-[#001840] placeholder:text-white/50 placeholder:text-xs py-1 px-2 rounded-[5px]`}
             />
             {errors.email && (
@@ -164,7 +168,7 @@ const MailingList = () => {
             <input
               type="text"
               {...register("phonenumber", {
-                required: "This field is mandatory.",
+                required: t('required_field'),
                 pattern: {
                   value:
                     /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/,
@@ -173,7 +177,7 @@ const MailingList = () => {
               })}
               autoComplete="off"
               autoCorrect="off"
-              placeholder="Phone Number"
+              placeholder={t('phone')}
               className={`focus:outline-none text-white text-[10px] h-[34px] bg-[#001840] placeholder:text-white/50 placeholder:text-xs py-1 px-2 rounded-[5px]`}
             />
             {errors.phonenumber && (
@@ -187,7 +191,7 @@ const MailingList = () => {
               name="level"
               control={control}
               rules={{
-                required: "This field is mandatory.",
+                required: t('required_field'),
                 validate: (value) =>
                   value !== "other" ||
                   "Please provide additional details for 'Other'",
@@ -195,7 +199,7 @@ const MailingList = () => {
               render={({ field: { onChange, value, ...fieldProps } }) => (
                 <Select
                   {...fieldProps}
-                  placeholder="Level"
+                  placeholder={t('level')}
                   popupClassName="custom-select-dropdown"
                   className="custom-select !h-[34px] !focus:outline-none  !focus:border-none !rounded-[5px]"
                   options={[
@@ -219,7 +223,7 @@ const MailingList = () => {
 
         <div className="mt-4">
           <textarea
-            placeholder="Any additional details about yout request"
+            placeholder={t('additional_info')}
             rows={3}
             className="!bg-[#001840] text-white p-2 w-full rounded-[5px] placeholder:italic placeholder:font-thin placeholder:text-xs focus:outline-none placeholder:text-white/50 text-xs"
             {...register("additional_details")}
@@ -230,7 +234,7 @@ const MailingList = () => {
             name="personal_data_consent"
             control={control}
             rules={{
-              required: "You must authorize personal data processing.",
+              required: t('required_authorize_data_processing'),
             }}
             render={({ field: { value, onChange } }) => (
               <Checkbox
@@ -246,8 +250,7 @@ const MailingList = () => {
             )}
           />
           <span className="text-[10px]  py-3">
-            I authorize the processing of personal data for purposes related to
-            the performance of institutional activities * ( Information)
+            {t('data_procesing_authorize')}
           </span>
         </div>
 
@@ -272,8 +275,7 @@ const MailingList = () => {
             )}
           />
           <span className="text-[10px] py-3">
-            I authorize the processing of data for sending informative material
-            (Information)
+           {t('informative_material_authorize')}
           </span>
         </div>
 
@@ -283,7 +285,7 @@ const MailingList = () => {
             type="submit"
             className="!bg-[#800000] rounded-md !text-white text-xs sm:!px-5 !px-3 !py-2 disabled:opacity-70"
           >
-            {isSubmitting ? "Requesting..." : "Send your request"}
+            {isSubmitting ? t('sending') : t('send_your_request')}
           </button>
         </div>
       </Animator>

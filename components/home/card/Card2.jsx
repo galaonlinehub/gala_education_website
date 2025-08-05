@@ -10,7 +10,7 @@ function Card2({ image, title, desc }) {
         <Image alt="image Data" src={image} className="md:w-[300px] w-full md:h-[119px] h-[150px] object-cover border-white border-[1px] " width={1920} height={1080} />
       </div>
 
-      <div className="lg:h-[181px] md:[190px] bg-[#001840]  flex flex-col px-8 py-10">
+      <div className="md:h-[450px] lg:h-[270px] bg-[#001840]  flex flex-col px-8 py-10">
         <Animator delay={0.4} direction="down">
           <span className="text-white font-black ">{title}</span>
         </Animator>

@@ -1,6 +1,7 @@
 "use client";
 import { Button } from "antd";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { NextSeo } from "next-seo";
 import React, { useEffect, useState } from "react";
 import { BiChevronRight } from "react-icons/bi";
@@ -42,6 +43,9 @@ import { useUser } from "@/hooks/data/useUser";
 import { useCookies } from "@/store/auth/signup";
 
 function Home() {
+
+  const t = useTranslations("home_page");
+
   const [showDonatePopup, setShowDonatePopup] = useState(false);
   const { user } = useUser();
   const { cookieIsAccepted } = useCookies();
@@ -141,15 +145,14 @@ function Home() {
               </div>
               <Animator delay={0.2}>
                 <h2 className="text-white font-bold sm:leading-[30px] leading-[15px] sm:text-[20px] text-[12px] text-center sm:text-start">
-                  Empowering minds, shaping futures - Gala Education, your
-                  <br /> pathway to success.
+                  {t('gala_sub_header')}
                 </h2>
               </Animator>
               <Animator delay={0.2}>
-                <div className="flex items-center justify-center mx-auto flex-col sm:flex-row gap-6 text-white mt-8">
+                <div className="flex items-center md:items-start justify-center md:justify-start mx-auto flex-col sm:flex-row gap-6 text-white mt-8">
                   <div className="flex flex-col gap-2 text-xs sm:text-base">
                     <span className="font-bold sm:text-[19px] text-center sm:text-start text-sm">
-                      For Students
+                      {t('for_students')}
                     </span>
                     <div className="flex flex-col gap-2">
                       <div className="flex gap-2 items-center">
@@ -157,27 +160,27 @@ function Home() {
                           color="blue"
                           className="w-5 h-5 flex-shrink-0"
                         />
-                        <span>Collaborative digital learning</span>
+                        <span>{t('collaborative_digital_learning')}</span>
                       </div>
                       <div className="flex gap-2 items-center">
                         <LuCircleCheckBig
                           color="blue"
                           className="w-5 h-5 flex-shrink-0"
                         />
-                        <span>All curriculums supported</span>
+                        <span>{t('all_curiculums')}</span>
                       </div>
                       <div className="flex gap-2 items-center">
                         <LuCircleCheckBig
                           color="blue"
                           className="w-5 h-5 flex-shrink-0"
                         />
-                        <span>Teachers of all subjects</span>
+                        <span>{t('all_subjects_teachers')}</span>
                       </div>
                     </div>
                   </div>
                   <div className="flex flex-col gap-2 text-xs sm:text-base">
                     <span className="font-bold sm:text-[19px] text-center sm:text-start text-sm">
-                      For Teachers
+                      {t('for_teachers')}
                     </span>
                     <div className="flex flex-col gap-2">
                       <div className="flex gap-2 items-center">
@@ -185,14 +188,14 @@ function Home() {
                           color="blue"
                           className="w-5 h-5 flex-shrink-0"
                         />
-                        <span>Self employment</span>
+                        <span>{t('self_employment')}</span>
                       </div>
                       <div className="flex gap-2 items-center">
                         <LuCircleCheckBig
                           color="blue"
                           className="w-5 h-5 flex-shrink-0"
                         />
-                        <span>Quick payments within 24 hours</span>
+                        <span>{t('quick_payments')}</span>
                       </div>
                     </div>
                   </div>
@@ -201,7 +204,7 @@ function Home() {
               <Animator delay={0.2} direction="left">
                 <div className="mt-12 items-center justify-center sm:justify-start flex mb-8">
                   <ChooseAccount
-                    btnText={"Enroll Now"}
+                    btnText={t('enroll_now')}
                     textColor={"white"}
                     btnIcon={<FaArrowRightLong className="text-white" />}
                     placement={"bottomRight"}
@@ -217,6 +220,9 @@ function Home() {
             <MailingList />
           </div>
         </div>
+
+        {/* <h1>{t("title")}</h1>; */}
+
         <div className="relative flex items-center flex-col gap-2 md:gap-12 md:flex-row px-6 h-[45rem] sm:px-12 xs:h-[45rem] sm:h-[30rem] w-full">
           <div className="relative w-full md:w-1/2 mt-14 h-fit max-sm:p-2">
             <VideoPlayer videoSrc="/videos/gala_intro.mp4" />
@@ -225,97 +231,69 @@ function Home() {
             <div className="flex flex-col gap-4 w-full h-3/4">
               <Animator delay={0.2} className="w-full flex justify-center">
                 <span className="mt-16 text-center text-4xl font-black md:font-bold md:text-xl">
-                  Our Story
+                  {t('our_story')}
                 </span>
               </Animator>
               <Animator direction="left" delay={0.2}>
                 <div className="text-xs leading-loose text-justify md:text-left ">
-                  In Tanzania, many families face the heart-wrenching struggle
-                  of providing quality education for their children due to a
-                  severe lack of qualified teachers and resources. Gala
-                  Education was born from a deep desire to change this reality,
-                  offering hope through high-quality online tutoring for
-                  Primary, Secondary, and High School students. We not only
-                  provide jobs for teachers but also reinvest our profits into
-                  building classrooms, libraries, hiring part-time instructors
-                  and more, bringing dreams within reach for countless children
-                  across Tanzania. Additionally, our platform offers a variety
-                  of short courses designed to equip young Tanzanians with
-                  practical, self-employable skills taught by experts in various
-                  fields. Join us in making a profound difference, one student
-                  at a time.
+                  {t('our_story_text')}
                 </div>
               </Animator>
             </div>
           </div>
         </div>
-        <div className="relative flex items-center w-full md:h-[60rem] mt-5 lg:h-[50rem] ">
+        <div className="relative flex items-center w-full md:h-[60rem] mt-12 sm:mt-64 md:mt-40 lg:mt-20 lg:h-[55rem] ">
           <div className=" w-full mt-2 py-4 px-6 flex gap-5 items-center flex-col h-fit">
             <Animator delay={0.2}>
-              <h1 className="font-black text-4xl">Our services</h1>
+              <h1 className="font-black text-4xl">{t('our_services')}</h1>
             </Animator>
             <Animator delay={0.2}>
               <h2 className="text-center text-xs">
-                We aim to integrate AI to provide personalized, AI-powered
-                tutoring and learning experiences
-                <br />
-                tailored to each student&apos;s unique needs and progress.
+                {t('our_services_subheader')}
               </h2>
             </Animator>
             <div className="hidden md:block">
               <div className="sm:grid flex mt-4  max-sm:w-[98%] overflow-x-auto sm:grid-cols-3 md:gap-10 gap-20 ">
                 <Animator direction="top" delay={0.2}>
                   <Card2
-                    title={"Personalized Subject Tutoring"}
+                    title={t('personalized_tutoring')}
                     image={"/service1.jpeg"}
-                    desc={
-                      "Tailored one-on-one sessions in core subjects like math, science, English, and social studies, focusing on the student's specific needs and learning pace."
-                    }
+                    desc={t('personalized_tutoring_text')}
                   />
                 </Animator>
                 <Animator direction="top" delay={0.4}>
                   <Card2
-                    title={"STEM Enrichment Programs"}
+                    title={t('stem_programs')}
                     image={"/service2.jpeg"}
-                    desc={
-                      "Specialized tutoring in science, technology, engineering, and math for students interested in deepening their knowledge or exploring STEM fields."
-                    }
+                    desc={t('stem_programs_text')}
                   />
                 </Animator>
                 <Animator direction="top" delay={0.6}>
                   <Card2
-                    title={"Special Education Support"}
+                    title={t('special_education')}
                     image={"/service3.jpeg"}
-                    desc={
-                      "Customized sessions for students with learning disabilities or special needs, providing them with tools and support to thrive academically."
-                    }
+                    desc={t('special_education_text')}
                   />
                 </Animator>
                 <Animator direction="top" delay={0.8}>
                   <Card2
-                    title={"Test and Exam Preparation"}
+                    title={t('test_and_preparation')}
                     image={"/service4.jpeg"}
-                    desc={
-                      "Focused tutoring to prepare students for standardized tests, school exams, and quizzes, including practice tests and study strategies."
-                    }
+                    desc={t('test_and_preparation_text')}
                   />
                 </Animator>
                 <Animator direction="top" delay={1}>
                   <Card2
-                    title={"Reading and Literacy Support"}
+                    title={t('reading_and_literacy')}
                     image={"/service5.jpeg"}
-                    desc={
-                      "Personalized reading programs to improve comprehension, vocabulary, and fluency, particularly for early learners or those struggling with literacy."
-                    }
+                    desc={t('reading_and_literacy_text')}
                   />
                 </Animator>
                 <Animator direction="top" delay={1.2}>
                   <Card2
-                    title={"Study Skills Coaching"}
+                    title={t('study_skills_coaching')}
                     image={"/service6.jpeg"}
-                    desc={
-                      "CSessions aimed at improving time management, organization, and study techniques to enhance overall academic performance."
-                    }
+                    desc={t('study_skills_coaching_text')}
                   />
                 </Animator>
               </div>
@@ -326,39 +304,34 @@ function Home() {
           </div>
         </div>
         {!user && (
-          <div className="relative max-sm:w-screen h-[32rem] w-full  mx-auto mt-4 md:mt-8 lg:mt-4 px-6 sm:px-4 py-6 sm:py-10 flex flex-col md:flex-row">
+          <div className="relative max-sm:w-screen h-[32rem] w-full  mx-auto mt-4 md:mt-40 lg:mt-4 px-6 sm:px-4 py-6 sm:py-10 flex flex-col md:flex-row">
             <div className="hidden md:block w-full">
               <div className=" w-full flex flex-col items-center gap-3 p-4">
                 <Animator delay={0.2}>
                   <h1 className="font-black w-full text-center px-3 !text-3xl">
-                    Register with us!
+                    {t('register_with_us')}
                   </h1>
                 </Animator>
 
                 <Animator className="w-full flex justify-center" delay={0.2}>
                   <h3 className="text-center text-xs md:w-2/3 w-full mb-4 leading-relaxed sm:px-6 ">
-                    Join Gala Education today - register as a teacher or student
-                    and unlock endless learning opportunities!
+                    {t('register_with_us_subtitle')}
                   </h3>
                 </Animator>
                 <div className="flex sm:gap-5 gap-2 overflow-x-auto px-2 max-sm:w-[98%] ">
                   <Animator delay={0.2}>
                     <RegisterCard
-                      title={"Register as teacher"}
+                      title={t('register_as_teacher')}
                       image={"/donate_and_funds.jpeg"}
-                      desc={
-                        "Become part of our team of educators and help deliver exceptional learning experiences."
-                      }
+                      desc={t('register_as_teacher_description')}
                       type={"instructor"}
                     />
                   </Animator>
                   <Animator delay={0.4}>
                     <RegisterCard
-                      title={"Register as student"}
+                      title={t('register_as_student')}
                       image={"/register_student.jpeg"}
-                      desc={
-                        "Join our community of learners and be part of the journey to excellence in education!"
-                      }
+                      desc={t('register_as_student_description')}
                       type={"student"}
                     />
                   </Animator>
@@ -367,7 +340,7 @@ function Home() {
             </div>
             <div className="w-full block md:hidden gap-2 ">
               <h1 className="font-black w-full text-center lg:text-4xl text-3xl mb-3">
-                Register with us!
+                {t('register_with_us')}
               </h1>
               <RegisterWithUs />
             </div>
@@ -377,15 +350,12 @@ function Home() {
           <div className=" w-full mt-1 py-4 flex gap-5 items-center justify-center flex-col h-fit">
             <Animator delay={0.2}>
               <h1 className="font-black text-center px-3 text-3xl">
-                What Our Clients Are Saying
+                {t('what_our_clients_are_saying')}
               </h1>
             </Animator>
             <Animator delay={0.4} className="w-full flex justify-center">
               <h2 className="text-center w-full px-3 md:w-2/3 text-xs">
-                Our clients&apos; feedback is at the heart of what we do. We’re
-                proud to share their experiences and the positive impact our
-                platform has had on their learning journey. Here’s what they
-                have to say about Gala Education
+                {t('what_our_clients_are_saying_description')}
               </h2>
             </Animator>
             <div className="hidden md:block">
@@ -460,7 +430,7 @@ function Home() {
           <div className="relative h-[30rem] flex flex-col items-center w-full">
             <Animator direction="bottom" delay={0.2}>
               <h1 className="font-black px-3 text-center text-3xl leading-tight">
-                Why choose our platform?
+                {t('why_choose_our_platform')}
               </h1>
             </Animator>
             <Animator
@@ -469,10 +439,7 @@ function Home() {
               delay={0.4}
             >
               <h2 className="text-center w-3/4 text-xs mt-3 mb-4">
-                Choose Gala Education for personalized learning, innovative
-                teaching methods, and a commitment to
-                <br />
-                unlocking every student&apos;s full potential.
+                {t('why_choose_our_platform_subtitle')}
               </h2>
             </Animator>
 
@@ -481,31 +448,11 @@ function Home() {
                 <Animator direction="right" delay={0.6}>
                   <Card1
                     image={"/card1img1.jpeg"}
-                    title={"Comprehensive Support"}
-                    desc={
-                      "Access 24/7 study assistance, academic tools, and a dedicated support team to guide you."
-                    }
+                    title={t('comprehensive_support')}
+                    desc={t('comprehensive_support_description')}
                     details={
-                      <div className="p-6 text-justify">
-                        <p className="text-xs leading-loose ">
-                          Access 24/7 study assistance, academic tools, and a
-                          dedicated support team to guide you through every step
-                          of your academic journey. Whether you&apos;re
-                          struggling with a challenging assignment, preparing
-                          for an important exam, or simply need advice on how to
-                          improve your study habits, our team is here to help.
-                        </p>
-                        <p className="text-xs leading-loose ">
-                          With round-the-clock availability, you can connect
-                          with tutors, access a wide range of study materials,
-                          and utilize our advanced academic tools whenever you
-                          need them. Our support team is committed to ensuring
-                          you have all the resources and assistance you need to
-                          succeed, no matter the time of day or night. From
-                          personalized tutoring sessions to expert advice on
-                          course selections, we are dedicated to helping you
-                          achieve your academic goals and excel in your studies.
-                        </p>
+                      <div className="p-6 text-justify text-xs leading-loose">
+                        {t('comprehensive_support_modal_text')}
                       </div>
                     }
                   />
@@ -513,37 +460,11 @@ function Home() {
                 <Animator delay={0.4}>
                   <Card1
                     image={"/card1img2.jpeg"}
-                    title={"Expert Instructors"}
-                    desc={
-                      "Learn from highly qualified educators with years of experience."
-                    }
+                    title={t('expert_instructors')}
+                    desc={t('expert_instructors_description')}
                     details={
-                      <div className="p-6 text-justify">
-                        <p className="text-xs leading-loose ">
-                          Learn from highly qualified educators with years of
-                          experience. We meticulously vet each of our
-                          instructors to ensure they are the best in the
-                          country. Our rigorous selection process includes
-                          thorough background checks, professional evaluations,
-                          and multiple rounds of interviews to guarantee that
-                          only the most knowledgeable and skilled educators join
-                          our team. Our instructors are not only experts in
-                          their respective fields but also have a proven track
-                          record of successful teaching. They bring a wealth of
-                          practical experience and academic excellence to the
-                          classroom, ensuring that you receive an education that
-                          is both comprehensive and relevant.
-                        </p>
-                        <p className="text-xs leading-loose ">
-                          We are committed to providing you with top-notch
-                          learning experiences, and that starts with having the
-                          best instructors. By choosing our program, you can be
-                          confident that you are learning from professionals who
-                          are dedicated to your success and are passionate about
-                          imparting their knowledge. Rest assured, you are in
-                          capable and expert hands, receiving education from the
-                          very best in the industry.
-                        </p>
+                      <div className="p-6 text-justify text-xs leading-loose">
+                        {t('expert_instructors_modal_text')}
                       </div>
                     }
                   />
@@ -551,38 +472,11 @@ function Home() {
                 <Animator direction="left" delay={0.6}>
                   <Card1
                     image={"/card1img3.jpeg"}
-                    title={"Customized Learning"}
-                    desc={
-                      "Tailored lessons and resources that adapt to your learning style and pace."
-                    }
+                    title={t('customized_learning')}
+                    desc={t('customized_learning_description')}
                     details={
-                      <div className="p-6 text-justify">
-                        <p className="text-xs leading-loose ">
-                          At Gala, we offer a groundbreaking approach to
-                          education through our customized learning systems.
-                          Imagine having lessons and resources specifically
-                          designed to match your unique learning style and pace.
-                          This is&apos;t just a dream; it&apos;s the reality we
-                          provide to all our students. Our state-of-the-art
-                          educational tools are the best in the country, crafted
-                          to ensure that you not only understand the material
-                          but also enjoy the learning process. We understand
-                          that every student is different, and that&apos;s why
-                          our program adapts to your individual needs, making
-                          learning more effective and enjoyable.
-                        </p>
-                        <p className="text-xs leading-loose ">
-                          With our Customized Learning program, you&apos;ll
-                          experience a personalized educational journey that
-                          keeps you engaged and motivated. Our resources are
-                          designed by top educators and utilize the latest
-                          technology to make sure you have everything you need
-                          to succeed. Join us and discover how our tailored
-                          lessons can transform your educational experience.
-                          With the best tools at your disposal, you&apos;ll be
-                          well-equipped to achieve your academic goals and reach
-                          your full potential.
-                        </p>
+                      <div className="p-6 text-justify text-xs leading-loose">
+                        {t('customized_learning_modal_text')}
                       </div>
                     }
                   />
@@ -600,16 +494,13 @@ function Home() {
           {/* Title */}
           <Animator delay={0.2}>
             <h1 className="font-black text-3xl text-center xxs:mt-12 md:mt-0 px-4">
-              Give the gift of learning - help us Educate every child
+              {t('gift_of_learning')}
             </h1>
           </Animator>
 
           <Animator delay={0.4} className="w-full flex justify-center">
             <h2 className="text-xs md:w-2/3 w-full px-4 text-center py-4">
-              Your support provides vital resources and opportunities that help
-              children, especially in underserved areas, access quality
-              education. Together, we can break barriers to learning and ensure
-              every child has the chance to grow, learn, and thrive.
+              {t('gift_of_learning_description')}
             </h2>
           </Animator>
 
@@ -621,7 +512,7 @@ function Home() {
                 onClick={handleDonateVisibility}
                 className="!p-4 !bg-[#030DFE] !font-bold md:text-xs !rounded-md !text-white"
               >
-                Donate Now
+                {t('donate_now')}
               </Button>
             </div>
           </Animator>
@@ -646,7 +537,7 @@ function Home() {
                   <div className="bg-[url('/donation/village_child.png')] bg-cover bg-center h-[18rem] p-3 rounded-3xl">
                     <div className="flex flex-col justify-center h-full text-white">
                       <p className="text-2xl font-bold leading-none px-4">
-                        Put a smile on a child&apos;s face
+                        {t('put_a_smile')}
                       </p>
                     </div>
                   </div>
@@ -660,8 +551,7 @@ function Home() {
                         85 <span className="text-lg">%</span>
                       </p>
                       <p className="text-xs font-medium mt-2">
-                        Literacy improvement rate in schools we&apos;ve
-                        partnered with
+                        {t('literacy_improvement')}
                       </p>
                     </div>
                   </div>
@@ -673,8 +563,7 @@ function Home() {
                   <div className="flex flex-col justify-end h-full">
                     <p className="text-4xl font-bold leading-none">800+</p>
                     <p className="text-xs font-medium mt-2 mb-4">
-                      Tanzanian teachers empowered through our daily training
-                      programs.
+                      {t('empowered_teachers')}
                     </p>
                   </div>
                 </div>
@@ -684,10 +573,10 @@ function Home() {
                 <div className="lg:w-44 w-44 md:w-32 h-[13rem] flex-shrink-0 rounded-3xl p-3 relative bg-[#7A87A3] text-white snap-start">
                   <div className="flex flex-col justify-between h-full gap-3">
                     <div className="font-bold text-base sm:text-lg md:text-sm px-2">
-                      Join many people building a better tomorrow.
+                      {t('join_many_people')}
                     </div>
                     <div className="!p-2 !bg-black !font-bold items-center flex justify-center text-xs md:text-xs !rounded-xl !text-white">
-                      <span>Join Us Today</span>
+                      <span>{t('join_us')}</span>
                     </div>
                   </div>
                   <SvgThree className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2/3 h-2/3 opacity-70" />
@@ -698,11 +587,10 @@ function Home() {
                 <div className="lg:w-44 w-44 md:w-32 bg-[url('/donation/village_class.png')] bg-cover bg-center h-[20rem] flex-shrink-0 rounded-3xl p-3 snap-start text-white">
                   <div className="flex flex-col justify-end h-full">
                     <p className="text-xs font-bold">
-                      Real stories, real impact
+                      {t('real_stories')}
                     </p>
                     <p className="text-xs font-medium mb-4">
-                      Witness how your support changes lives—from classrooms to
-                      communities
+                      {t('witness_your_support')}
                     </p>
                   </div>
                 </div>
@@ -715,7 +603,7 @@ function Home() {
                     <SvgTwo className="absolute bottom-3 left-8 md:left-4 lg:left-8 w-3/4 h-auto opacity-70" />
                     <div className="relative z-10 flex flex-col justify-center h-full">
                       <p className="text-2xl font-bold leading-none px-4 md:px-1 lg:px-4">
-                        One Child. One Teacher. One Book.
+                        {t('the_ones')}
                       </p>
                     </div>
                   </div>
@@ -725,10 +613,10 @@ function Home() {
                   <div className="bg-[url('/donation/students_in_class.png')] bg-cover bg-center h-[10rem] p-3 rounded-3xl text-white">
                     <div className="flex flex-col justify-end h-full">
                       <p className="text-xs font-medium">
-                        Give the gift of learning
+                        {t('give_the_gift')}
                       </p>
                       <p className="text-xs font-medium mb-4">
-                        Empower a new generation of leaders.
+                        {t('empower_new_generation')}
                       </p>
                     </div>
                   </div>
@@ -745,18 +633,11 @@ function Home() {
           >
             <div className="self-center rounded-[15px] flex flex-col sm:flex-row px-6  shadow-[0px_4px_4px_rgba(0,0,0,0.6)] w-[64rem] mt-28 mb-12 md:mb-14 md:mt-10">
               <div className="  py-6 flex flex-col gap-y-3">
-                <h1 className="font-bold ">Financial Aid</h1>
+                <h1 className="font-bold ">{t('financial_aid')}</h1>
 
                 <div className="flex flex-col md:flex-row gap-6 justify-between items-center md:gap-4 mb-4 w-full">
                   <p className="text-[12px] leading-[15px] basis-2/3">
-                    At Gala Education, we recognize that financial barriers can
-                    limit access to quality education. To support students
-                    facing financial struggles, we offer scholarships, flexible
-                    payment plans, and need-based grants. Our scholarship
-                    program supports talented students, while flexible payment
-                    plans make tuition more manageable. We are committed to
-                    ensuring every student can pursue their educational goals,
-                    regardless of their financial situation.
+                    {t('financial_aid_description')}
                   </p>
                   <div className="flex gap-6 mr-6">
                     <Image
@@ -783,7 +664,7 @@ function Home() {
                   onClick={() => setShowPdf(true)}
                   className="border-[1px] md:w-2/5 w-full text-xs text-center font-bold p-2  border-[#030DFE] rounded"
                 >
-                  Apply for financial aid
+                  {t('financial_aid_apply')}
                 </Button>
               </div>
             </div>
@@ -793,14 +674,12 @@ function Home() {
           <div className="w-full flex  space-y-8   h-fit flex-col items-center">
             <Animator delay={0.2}>
               <h1 className="text-3xl px-3   text-center font-black leading-tight ">
-                Pioneers in Digital Teaching
+                {t('pioneers_in_teaching')}
               </h1>
             </Animator>
             <Animator delay={0.4} className="w-full flex justify-center">
               <h1 className="text-center text-xs px-4">
-                &ldquo;Our platform offers personalized, AI-driven learning
-                while teaching students healthy <br /> digital habits for
-                balanced, responsible technology use.&ldquo;
+                {t('pioneers_description')}
               </h1>
             </Animator>
             <div className="hidden md:block">
@@ -829,10 +708,8 @@ function Home() {
                         </defs>
                       </svg>
                     }
-                    title={"AI Support"}
-                    desc={
-                      "We aim to integrate OpenAI to provide personalized, AI-powered tutoring and learning experiences tailored to each student's unique needs and progress."
-                    }
+                    title={t('ai_support')}
+                    desc={t('ai_support_description')}
                   />
                 </Animator>
                 <Animator direction="left" delay={0.8}>
@@ -858,10 +735,8 @@ function Home() {
                         </defs>
                       </svg>
                     }
-                    title={"Student Platform"}
-                    desc={
-                      "We integrate student platforms that track progress in real-time, allowing us to personalize learning experiences based on individual student needs and performance."
-                    }
+                    title={t('student_platform')}
+                    desc={t('student_platform_description')}
                   />
                 </Animator>
                 <Animator direction="left" delay={1.2}>
@@ -889,10 +764,8 @@ function Home() {
                         />
                       </svg>
                     }
-                    title={"Safety"}
-                    desc={
-                      "We integrate AWS to provide scalable, secure, and cloud-based infrastructure that enhances the performance and accessibility of our learning platform."
-                    }
+                    title={t('safety')}
+                    desc={t('safety_description')}
                   />
                 </Animator>
               </div>
@@ -906,10 +779,10 @@ function Home() {
         <div className="relative px-1">
           <div className="relative py-4">
             <div className="w-full py-3">
-              <div className="basis-1/2 space-y-2 items-center gap-4 flex flex-col">
+              {/* <div className="basis-1/2 space-y-2 items-center gap-4 flex flex-col">
                 <Animator direction="up" delay={0.5}>
                   <h1 className="text-3xl text-center font-black ">
-                    Latest News
+                    {t('latest_news')}
                   </h1>
                 </Animator>
                 <Animator
@@ -918,11 +791,7 @@ function Home() {
                   className="w-full flex justify-center"
                 >
                   <h1 className="text-center text-xs w-full px-3 md:w-2/3">
-                    Stay updated with the latest developments at Gala Education.
-                    Here, we share exciting announcements, new initiatives, and
-                    progress on our mission to make quality education accessible
-                    to all. Follow our journey as we continue to make a
-                    difference in Tanzania&apos;s educational landscape.
+                      {t('latest_news_description')}
                   </h1>
                 </Animator>
                 <div className="flex flex-col p-6 ">
@@ -1005,13 +874,13 @@ function Home() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="py-12 items-center gap-4 px-3 flex flex-col">
             <Animator direction="up" delay={0.5}>
               <h1 className="text-3xl text-center font-black ">
-                Latest Events
+                {t('latest_events')}
               </h1>
             </Animator>
             <Animator
@@ -1020,11 +889,7 @@ function Home() {
               className="w-full flex justify-center"
             >
               <h1 className="text-center text-xs w-full px-3 md:w-2/3">
-                Stay up-to-date with our latest initiatives and activities! From
-                community outreach programs to educational workshops and events,
-                Gala Education is committed to making a positive impact. Join us
-                in supporting our mission to transform education across
-                Tanzania.
+                {t('latest_events_description')}
               </h1>
             </Animator>
             <div className="hidden md:block">
@@ -1037,28 +902,22 @@ function Home() {
                   <Animator direction="right" delay={0.5}>
                     <Events
                       img={"/hackathon.jpeg"}
-                      title={"Future of Learning Summit"}
-                      desc={
-                        "A conference exploring cutting-edge technologies in education, featuring expert speakers on AI, personalized learning, and digital transformation in classrooms."
-                      }
+                      title={t('future_learning_summit')}
+                      desc={t('future_learning_summit_description')}
                     />
                   </Animator>
                   <Animator direction="right" delay={0.8}>
                     <Events
                       img={"/career_guidance.jpeg"}
-                      title={"Student Innovation Hackathon"}
-                      desc={
-                        "A conference exploring cutting-edge technologies in education, featuring expert speakers on AI, personalized learning, and digital transformation in classrooms."
-                      }
+                      title={t('student_innovation')}
+                      desc={t('student_innovation_description')}
                     />
                   </Animator>
                   <Animator direction="right" delay={1.2}>
                     <Events
                       img={"/learning_summit.jpeg"}
-                      title={"Interactive Career Guidance Fair"}
-                      desc={
-                        "A workshop-focused event connecting students with industry professionals, offering career advice, mentorship, and guidance on education pathways for future success."
-                      }
+                      title={t('interactive_career')}
+                      desc={t('interactive_career_description')}
                     />
                   </Animator>
                 </div>
@@ -1072,7 +931,7 @@ function Home() {
           <div className="py-12 items-center gap-4 flex flex-col">
             <Animator direction="up" delay={0.5}>
               <h1 className="text-3xl text-center font-black px-2">
-                Frequently Asked Questions (FAQs)
+                {t('faqs')}
               </h1>
             </Animator>
             <Animator
@@ -1081,114 +940,86 @@ function Home() {
               className="w-full flex justify-center"
             >
               <h1 className="text-center text-xs w-full px-6 md:w-2/3">
-                Here you’ll find answers to common questions about Gala
-                Education’s services, donations, and how our platform works.
-                Whether you&apos;re a student, parent, or supporter, we&apos;ve
-                provided helpful information to guide you. If you don&apos;t
-                find what you&apos;re looking for, feel free to reach out to us!
+                {t('faqs_description')}
               </h1>
             </Animator>
 
             <div className="relative md:w-2/3 px-4 w-full md:py-8">
               <FaqCard
-                faqQn={"What is Gala Education?"}
+                faqQn={t('what_is_gala_education')}
                 bgColor={"#001840"}
                 iconColor={"white"}
                 headerColor={"white"}
-                faqAns={
-                  "Gala Education is an online platform dedicated to providing high-quality tutoring for Primary, Secondary, and High School students across Tanzania. In addition to tutoring, we offer short courses designed to equip Tanzanian youth with self-employable skills. Our platform is powered by AI, which helps deliver personalized learning experiences tailored to each student’s individual needs and progress. We also reinvest profits into philanthropic activities, including building classrooms and libraries for under-served communities"
-                }
+                faqAns={t('what_is_gala_education_description')}
               />
               <FaqCard
-                faqQn={"Is there a money-back guarantee?"}
+                faqQn={t('is_there_money_back_guarantee')}
                 bgColor={"#001840"}
                 iconColor={"white"}
                 headerColor={"white"}
-                faqAns={
-                  "Gala Education does not offer refunds unless there is a verified technical issue that prevents you from accessing our services. If you encounter such a problem, please contact our support team, and we will assist you in resolving the issue or processing a refund if necessary."
-                }
+                faqAns={t('money_back_guarantee_description')}
               />
               <FaqCard
-                faqQn={"Who can use Gala Education?"}
+                faqQn={t('who_can_use_gala_education')}
                 bgColor={"#001840"}
                 iconColor={"white"}
                 headerColor={"white"}
-                faqAns={
-                  "Gala Education is designed for students in Primary, Secondary, and High School across Tanzania who are looking for personalized tutoring in various subjects. Our short courses are open to young adults looking to acquire practical, self-employable skills in various fields. Anyone with access to a device and internet connection can benefit from our educational resources."
-                }
+                faqAns={t('who_can_use_gala_education_description')}
               />
               <FaqCard
-                faqQn={"Do I need a device to access the tutoring sessions?"}
+                faqQn={t('do_i_need_device_for_tutoring')}
                 bgColor={"#001840"}
                 iconColor={"white"}
                 headerColor={"white"}
-                faqAns={
-                  "Yes, you will need a device, such as a smartphone, tablet, or computer, and a stable internet connection to access our online tutoring sessions. This allows you to participate in lessons, access learning materials, and interact with our qualified tutors from anywhere at your convenience."
-                }
+                faqAns={t('do_i_need_device_for_tutoring_description')}
               />
               <FaqCard
-                faqQn={"Do I need to be a registered user to donate?"}
+                faqQn={t('do_i_need_to_be_registered_to_donate')}
                 bgColor={"#001840"}
                 iconColor={"white"}
                 headerColor={"white"}
-                faqAns={
-                  "No, donations can be made by anyone, regardless of whether you are a registered user of Gala Education. Our donation system is designed to allow anyone who wants to support our mission to contribute. The funds are directly used to support children’s education, particularly those from low-income backgrounds who lack access to quality resources."
-                }
+                faqAns={t('do_i_need_to_be_registered_to_donate_description')}
               />
               <FaqCard
-                faqQn={"How are the donations used?"}
+                faqQn={t('how_are_donations_used')}
                 bgColor={"#001840"}
                 iconColor={"white"}
                 headerColor={"white"}
-                faqAns={
-                  "All donations received are reinvested into our philanthropic efforts to improve education in Tanzania. This includes building and equipping classrooms, libraries, and providing educational materials for under-served communities. The donations also help support the development of educational programs that benefit students in need, ensuring that every child has access to quality learning opportunities."
-                }
+                faqAns={t('how_are_donations_used_description')}
               />
               <FaqCard
                 faqQn={
-                  "What makes Gala Education different from other tutoring platforms?"
+                  t('what_makes_gala_education_different')
                 }
                 bgColor={"#001840"}
                 iconColor={"white"}
                 headerColor={"white"}
-                faqAns={
-                  "Gala Education stands out by combining quality online tutoring with a strong commitment to community development. Not only do we provide expert tutors to support student learning, but we also employ teachers across Tanzania to help address the national shortage of qualified educators. Our platform also integrates AI-powered personalized learning to enhance each student’s progress. Moreover, we reinvest profits into community-building projects like classrooms and libraries, making our mission far-reaching and impactful."
-                }
+                faqAns={t('what_makes_gala_education_different_description')}
               />
               <FaqCard
-                faqQn={"How do the short courses work?"}
-                faqAns={
-                  "Our short courses are specifically designed to equip Tanzanian youth with practical, self-employable skills in various industries such as technology, business, and creative fields. These courses are taught by experienced academics, executives, and industry leaders. Students can take the courses online, at their own pace, and gain valuable skills that will help them pursue self-employment or career opportunities. Upon completion, students may also receive certification for the skills they’ve learned."
-                }
+                faqQn={t('how_do_short_courses_work')}
+                faqAns={t('how_do_short_courses_work_description')}
                 bgColor={"#001840"}
                 iconColor={"white"}
                 headerColor={"white"}
               />
               <FaqCard
-                faqQn={"Is there any age limit for the short courses?"}
-                faqAns={
-                  "There is no specific age limit for the short courses. The courses are open to all Tanzanian youth who are eager to learn and acquire skills for self-employment. Whether you’re a recent graduate, a young professional, or someone looking to switch careers, our short courses offer flexible learning opportunities that can be adapted to your personal goals."
-                }
+                faqQn={t('is_there_age_limit_for_short_courses')}
+                faqAns={t('age_limit_for_short_courses_description')}
                 bgColor={"#001840"}
                 iconColor={"white"}
                 headerColor={"white"}
               />
               <FaqCard
-                faqQn={"How can I become a tutor on Gala Education?"}
-                faqAns={
-                  "If you are a qualified educator with a passion for teaching and helping students succeed, you can apply to become a tutor at Gala Education. We are always looking for skilled tutors who can deliver personalized, high-quality lessons across a range of subjects. To apply, visit our website to submit your application, and we will contact you if there is a suitable opportunity to join our team."
-                }
+                faqQn={t('how_to_become_tutor')}
+                faqAns={t('how_to_become_tutor_description')}
                 bgColor={"#001840"}
                 iconColor={"white"}
                 headerColor={"white"}
               />
               <FaqCard
-                faqQn={
-                  "Can I access Gala Education if I live outside of Tanzania?"
-                }
-                faqAns={
-                  "While Gala Education is primarily focused on providing services to students within Tanzania, anyone with a stable internet connection can access our short courses. Our online platform allows individuals from anywhere in the world to benefit from our industry-leading courses that equip youth with valuable skills for self-employment. However, tutoring sessions are designed specifically for Tanzanian students, so availability may vary depending on your location."
-                }
+                faqQn={t('can_i_access_gala_outside_tanzania')}
+                faqAns={t('can_i_access_gala_outside_tanzania_description')}
                 bgColor={"#001840"}
                 iconColor={"white"}
                 headerColor={"white"}

@@ -1,4 +1,5 @@
 import { Carousel } from "antd";
+import { useTranslations } from "next-intl";
 import React from "react";
 
 import PioneerCard from "./PioneerCard";
@@ -11,6 +12,8 @@ const Pioneers = () => {
     textAlign: "center",
     width: "100%",
   };
+
+  const t = useTranslations('home_page');
 
   return (
     <Carousel autoplay={true} dots={true} className="w-full px-3">
@@ -32,8 +35,8 @@ const Pioneers = () => {
                 </defs>
               </svg>
             }
-            title={"AI Support"}
-            desc={"We aim to integrate OpenAI to provide personalized, AI-powered tutoring and learning experiences tailored to each student's unique needs and progress."}
+            title={t('ai_support')}
+            desc={t('ai_support_description')}
           />
         </div>
       </div>
@@ -55,8 +58,8 @@ const Pioneers = () => {
                 </defs>
               </svg>
             }
-            title={"Student Platform"}
-            desc={"We integrate student platforms that track progress in real-time, allowing us to personalize learning experiences based on individual student needs and performance."}
+            title={t('student_platform')}
+            desc={t('student_platform_description')}
           />
         </div>
       </div>
@@ -73,8 +76,8 @@ const Pioneers = () => {
                 />
               </svg>
             }
-            title={"Safety"}
-            desc={"We integrate AWS to provide scalable, secure, and cloud-based infrastructure that enhances the performance and accessibility of our learning platform."}
+            title={t('safety')}
+            desc={t('safety_description')}
           />
         </div>
       </div>
