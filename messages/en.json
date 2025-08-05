@@ -1,5 +1,8 @@
 {
   "home_page": {
+    "home": "Home",
+    "student":"Student",
+    "teacher":"Teacher",
     "gala_sub_header": "Empowering minds, shaping futures – Gala Education, your pathway to success.",
     "interest_header": "Are you interested in a session and want to know more?",
     "interest_header_subheader": "Fill out the form and you will be contacted as soon as possible by our office",
@@ -190,7 +193,7 @@
   },
 
   "sign_in": {
-    "welcome_back": "Welocme Back",
+    "welcome_back": "Welcome Back",
     "welcome_text": "Welcome back! We're excited to see you again, let's pick up where you left off and continue your learning journey!",
     "dont_have_account": "Don't have an account?",
     "forgot":"Forgot"

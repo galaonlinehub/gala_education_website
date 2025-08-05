@@ -2,6 +2,7 @@
 
 import { Tooltip, message, Dropdown, Button } from "antd";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 import { BiWifi, BiWifiOff } from "react-icons/bi";
 import { LuGlobe, LuMenu } from "react-icons/lu";
@@ -45,33 +46,33 @@ const Navbar = () => {
     router.push("/");
   };
 
-    const items = [
-      {
-        key: "1",
-        // icon: <LuGlobe className="text-xl" />,
-        label: (
-          <div className="flex flex-col items-center text-sm px-3 font-medium">
-            English
-          </div>
-        ),
-        onClick: () => {
-          router.push(pathname, { locale: "en" });
-          messageApi.info("English language chosen.");
-        },
+  const items = [
+    {
+      key: "1",
+      // icon: <LuGlobe className="text-xl" />,
+      label: (
+        <div className="flex flex-col items-center text-sm px-3 font-medium">
+          English
+        </div>
+      ),
+      onClick: () => {
+        router.push(pathname, { locale: "en" });
+        messageApi.info("English language chosen.");
       },
-      {
-        key: "2",
-        label: (
-          <div className="flex flex-col items-center text-sm px-3 font-medium">
-            Swahili
-          </div>
-        ),
-        onClick: () => {
-          router.push(pathname, { locale: "sw" });
-          messageApi.info("Lugha ya Kiswahili imechaguliwa.");
-        },
+    },
+    {
+      key: "2",
+      label: (
+        <div className="flex flex-col items-center text-sm px-3 font-medium">
+          Swahili
+        </div>
+      ),
+      onClick: () => {
+        router.push(pathname, { locale: "sw" });
+        messageApi.info("Lugha ya Kiswahili imechaguliwa.");
       },
-    ];
+    },
+  ];
 
   const confirm = () => {
     setOpen(false);
@@ -165,6 +166,10 @@ const Navbar = () => {
     }
   };
 
+  const t = useTranslations('home_page');
+  const at = useTranslations('about_us');
+  const sut = useTranslations('sign_up');
+
   return (
     <nav className="h-12 flex justify-between max-w-screen items-center fixed top-0 inset-x-0 z-50 lg:px-10 sm:px-6 px-2 bg-white">
       {contextHolder}
@@ -210,7 +215,7 @@ const Navbar = () => {
 
         <li>
           <Link href={"/"} className="hover:cursor-pointer tex-black">
-            Home
+            {t('home')}
           </Link>
         </li>
         {user && (
@@ -222,7 +227,7 @@ const Navbar = () => {
         )}
         <li>
           <Link href={"/about-us"} className="hover:cursor-pointer tex-black">
-            About Us
+            {at('about_us')}
           </Link>
         </li>
         {!user && (
@@ -231,13 +236,13 @@ const Navbar = () => {
             onClick={() => { }}
           >
             <ChooseAccont
-              btnText={"Sign Up"}
+              btnText={sut('sign_up')}
               textColor={"black"}
               placement={"bottom"}
               trigger={"hover"}
             />
             <Link href={"/signin"} className="hover:cursor-pointer">
-              <li>Sign In</li>
+              <li>{sut('sign_in')}</li>
             </Link>
           </div>
         )}
