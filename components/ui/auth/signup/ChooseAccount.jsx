@@ -2,13 +2,13 @@
 import { Dropdown } from "antd";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 import React from "react";
 import { FaChalkboardTeacher } from "react-icons/fa";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { PiStudentBold } from "react-icons/pi";
 
 import { useAccountType, useTabNavigator } from "@/store/auth/signup";
-import { useTranslations } from "next-intl";
 
 const ChooseAccount = ({
   btnText,
