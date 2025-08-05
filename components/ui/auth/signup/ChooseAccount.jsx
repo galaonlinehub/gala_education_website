@@ -63,12 +63,10 @@ const ChooseAccount = ({
         menu={{ items }}
         placement={placement}
         disabled={isDisabled}
-        // overlayClassName="rounded-md shadow-lg border border-gray-100"
         trigger={[trigger]}
         arrow={true}
       >
         <div className={`flex ${btnClassname} gap-2 items-center`}>
-          {btnIcon}
           <button
             className={`text-black transition-all ${
               isDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"

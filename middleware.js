@@ -43,6 +43,8 @@ const isNetworkError = (error) => {
 export async function middleware(request) {
   try {
     const path = request.nextUrl.pathname;
+    console.log("Middleware path:", path);
+    console.log("Middleware request URL:", request.url);
 
     if (AUTH_CONFIG.PUBLIC_ROUTES.includes(path)) {
       const user = await getAuthenticatedUser(request);

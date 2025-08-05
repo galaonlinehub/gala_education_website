@@ -8,7 +8,8 @@ import { IoRefreshOutline } from "react-icons/io5";
 export default function Error({ error }) {
 
   return (
-    <main className="flex flex-col items-center justify-center h-full overflow-hidden">
+    <main className="flex flex-col items-center justify-center h-screen w-screen overflow-hidden">
+
       <div className="space-y-8 text-center">
         <div className="relative">
           <div className="w-24 h-24 bg-red-100 rounded-full mx-auto flex items-center justify-center">

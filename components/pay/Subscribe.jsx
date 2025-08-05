@@ -1,6 +1,4 @@
-import { Modal, Steps, Button, Drawer } from "antd";
-import { createStyles, useTheme } from "antd-style";
-import { useState } from "react";
+import { Steps, Drawer } from "antd";
 
 import SignupPay from "@/components/ui/auth/signup/Payment";
 import { useUser } from "@/hooks/data/useUser";
@@ -20,9 +18,6 @@ export default function Subscribe({ openDrawer }) {
     mask: {
       backdropFilter: "blur(10px)",
     },
-    // content: {
-    //   top: "-80px",
-    // },
   };
 
   const steps = [
