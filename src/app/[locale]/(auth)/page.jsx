@@ -48,8 +48,7 @@ function Home() {
 
   const [showDonatePopup, setShowDonatePopup] = useState(false);
   const { user } = useUser();
-  const { cookieIsAccepted } = useCookiesStore;
-
+  const cookieIsAccepted = useCookiesStore((state) => state.cookieIsAccepted);
   const [showPdf, setShowPdf] = useState(false);
 
   const [showProcessingModal, setShowProcessingModal] = useState(false);
