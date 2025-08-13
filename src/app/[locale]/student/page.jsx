@@ -23,6 +23,7 @@ import {
 import clsx from "clsx";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { LuBellRing, LuBookOpenCheck, LuUser } from "react-icons/lu";
 
 import SlickSpinner from "@/components/ui/loading/template/SlickSpinner";
@@ -44,6 +45,9 @@ export default function Component() {
 
   const queryClient = useQueryClient();
   const enrolledTopics = queryClient.getQueryData(["enrolledTopics"]);
+
+  const stdash = useTranslations('student_dashboard');
+  const tdash = useTranslations('teacher_dashboard');
   return (
     <div className="min-h-screen">
       <div className="max-w-[1920px] mx-auto p-2 sm:p-4 lg:p-6">
@@ -74,7 +78,7 @@ export default function Component() {
               <StatsSection token={token} />
               <Card
                 title={
-                  <span className="text-[#001840] font-bold">Your Classes</span>
+                  <span className="text-[#001840] font-bold">{stdash('your_classes')}</span>
                 }
                 className="w-full shadow-sm shadow-black/25 border-0"
               >
@@ -84,7 +88,7 @@ export default function Component() {
                       {
                         title: (
                           <span className="text-[#001840] font-bold">
-                            Class
+                            {stdash('class')}
                           </span>
                         ),
                         dataIndex: "cohort_name",
@@ -110,7 +114,7 @@ export default function Component() {
                       {
                         title: (
                           <span className="text-[#001840] font-bold">
-                            Progress
+                            {stdash('progress')}
                           </span>
                         ),
                         dataIndex: "progress",
@@ -130,7 +134,7 @@ export default function Component() {
                       {
                         title: (
                           <span className="text-[#001840] font-bold">
-                            Action
+                            {tdash('action')}
                           </span>
                         ),
                         key: "action",
@@ -140,7 +144,7 @@ export default function Component() {
                             disabled={true}
                             className="py-1 px-3 text-[10px] text-white rounded-md bg-[#001840] disabled:bg-[#001840]/40 disabled:pointer-events-none disabled:cursor-not-allowed hover:bg-[#001840]/80 transition-colors duration-200"
                           >
-                            Enter
+                            {stdash('enter')}
                           </button>
                         ),
                       },
@@ -176,9 +180,14 @@ const SelectedSubjects = ({
   isFetchingEnrolledSubjects,
   isEnrolledSubjectsError,
 }) => {
+
+
+  const stdash = useTranslations('student_dashboard');
+
+
   return (
     <Card
-      title={<span className="font-bold">Selected subjects</span>}
+      title={<span className="font-bold">{stdash('selected_subjects')}</span>}
       size="small"
       className="w-full shadow-sm shadow-black/25 border-0"
     >
@@ -189,11 +198,11 @@ const SelectedSubjects = ({
           </div>
         ) : isEnrolledSubjectsError ? (
           <div className="flex items-center justify-center w-full h-full text-xs text-red-500 text-center">
-            Failed to load subjects.
+            {stdash('failed_to_load_subjects')}
           </div>
         ) : enrolledSubjects.length === 0 ? (
           <div className="flex items-center justify-center w-full h-full text-xs text-center opacity-70 text-[#001840]">
-            You are not enrolled in any subjects.
+            {stdash('not_enrolled_in_subjects')}
           </div>
         ) : (
           enrolledSubjects.map((subject, index) => (
@@ -218,87 +227,92 @@ const SelectedSubjects = ({
   );
 };
 
-const QuickLinks = () => (
-  <Card
-    title={<span className="text-[#001840] font-bold">Quick Links</span>}
-    size="small"
-    className="w-full shadow-sm shadow-black/25 border-0"
-  >
-    <Space direction="vertical" className="w-full" size="small">
-      <Link href="/student/profile" className="w-fit">
-        <button
-          type="button"
-          className="w-full border-[1px] border-[#001840] text-left h-auto py-1.5 px-2 flex gap-2 items-center rounded-lg truncate text-xs sm:text-sm text-[#001840] hover:text-[#001840]/80 transition-colors duration-200"
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background =
-              "linear-gradient(135deg, rgba(0,24,64,0.1) 0%, rgba(59,130,246,0.1) 100%)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background =
-              "linear-gradient(135deg, rgba(0,24,64,0.05) 0%, rgba(59,130,246,0.05) 100%)";
-          }}
-        >
-          <LuUser color="#001840" />
-          <>Profile</>
-        </button>
-      </Link>
+const QuickLinks = () => {
+  const stdash = useTranslations('student_dashboard');
 
-      <Button
-        type="text"
-        disabled
-        icon={
-          <ClockCircleOutlined style={{ color: "#001840", opacity: 0.5 }} />
-        }
-        block
-        className="text-left h-auto py-2 px-2 flex items-center justify-start min-w-0 rounded-lg"
-        style={{
-          background:
-            "linear-gradient(135deg, rgba(0,24,64,0.03) 0%, rgba(59,130,246,0.03) 100%)",
-          border: "1px solid rgba(0,24,64,0.05)",
-          color: "#001840",
-          opacity: 0.5,
-        }}
-      >
-        <Link
-          href="/student/reminders"
-          className="flex-1 text-left truncate min-w-0 text-xs sm:text-sm"
-          style={{ color: "#001840" }}
-        >
-          <span className="hidden sm:inline">Create Reminders</span>
-          <span className="sm:hidden">Reminders</span>
+  return (
+    <Card
+      title={<span className="text-[#001840] font-bold">{stdash('quick_links')}</span>}
+      size="small"
+      className="w-full shadow-sm shadow-black/25 border-0"
+    >
+      <Space direction="vertical" className="w-full" size="small">
+        <Link href="/student/profile" className="w-fit">
+          <button
+            type="button"
+            className="w-full border-[1px] border-[#001840] text-left h-auto py-1.5 px-2 flex gap-2 items-center rounded-lg truncate text-xs sm:text-sm text-[#001840] hover:text-[#001840]/80 transition-colors duration-200"
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background =
+                "linear-gradient(135deg, rgba(0,24,64,0.1) 0%, rgba(59,130,246,0.1) 100%)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background =
+                "linear-gradient(135deg, rgba(0,24,64,0.05) 0%, rgba(59,130,246,0.05) 100%)";
+            }}
+          >
+            <LuUser color="#001840" />
+            <>{stdash('profile')}</>
+          </button>
         </Link>
-      </Button>
 
-      <Button
-        disabled
-        type="text"
-        icon={<TrophyOutlined style={{ color: "#001840", opacity: 0.5 }} />}
-        block
-        className="text-left h-auto py-2 px-2 flex items-center justify-start min-w-0 rounded-lg"
-        style={{
-          background:
-            "linear-gradient(135deg, rgba(0,24,64,0.03) 0%, rgba(59,130,246,0.03) 100%)",
-          border: "1px solid rgba(0,24,64,0.05)",
-          color: "#001840",
-          opacity: 0.5,
-        }}
-      >
-        <span className="flex-1 text-left truncate min-w-0 text-xs sm:text-sm">
-          <span className="hidden sm:inline">Grades & Progress</span>
-          <span className="sm:hidden">Grades</span>
-        </span>
-      </Button>
-    </Space>
-  </Card>
-);
+        <Button
+          type="text"
+          disabled
+          icon={
+            <ClockCircleOutlined style={{ color: "#001840", opacity: 0.5 }} />
+          }
+          block
+          className="text-left h-auto py-2 px-2 flex items-center justify-start min-w-0 rounded-lg"
+          style={{
+            background:
+              "linear-gradient(135deg, rgba(0,24,64,0.03) 0%, rgba(59,130,246,0.03) 100%)",
+            border: "1px solid rgba(0,24,64,0.05)",
+            color: "#001840",
+            opacity: 0.5,
+          }}
+        >
+          <Link
+            href="/student/reminders"
+            className="flex-1 text-left truncate min-w-0 text-xs sm:text-sm"
+            style={{ color: "#001840" }}
+          >
+            <span className="hidden sm:inline">{stdash('create_reminders')}</span>
+            <span className="sm:hidden">{stdash('reminders')}</span>
+          </Link>
+        </Button>
+
+        <Button
+          disabled
+          type="text"
+          icon={<TrophyOutlined style={{ color: "#001840", opacity: 0.5 }} />}
+          block
+          className="text-left h-auto py-2 px-2 flex items-center justify-start min-w-0 rounded-lg"
+          style={{
+            background:
+              "linear-gradient(135deg, rgba(0,24,64,0.03) 0%, rgba(59,130,246,0.03) 100%)",
+            border: "1px solid rgba(0,24,64,0.05)",
+            color: "#001840",
+            opacity: 0.5,
+          }}
+        >
+          <span className="flex-1 text-left truncate min-w-0 text-xs sm:text-sm">
+            <span className="hidden sm:inline">{stdash('grades_and_progress')}</span>
+            <span className="sm:hidden">{stdash('grades')}</span>
+          </span>
+        </Button>
+      </Space>
+    </Card>)
+};
 
 const DeadlinesCard = () => {
+  const stdash = useTranslations('student_dashboard');
+
   return (
     <Card
       title={
         <div className="w-full">
           <span className="text-[#001840] font-bold block">
-            Upcoming Reminders
+            {stdash('upcoming_reminders')}
           </span>
         </div>
       }
@@ -315,7 +329,7 @@ const DeadlinesCard = () => {
             }}
           />
           <div className="text-sm text-center opacity-70 text-[001840]">
-            No reminders set
+            {stdash('no_reminders_set')}
           </div>
         </div>
       </div>
@@ -326,6 +340,11 @@ const DeadlinesCard = () => {
 const DashboardHeader = () => {
   const { user } = useUser();
   const router = useRouter();
+
+  const stdash = useTranslations('student_dashboard');
+  const sit = useTranslations('sign_in');
+  const notift = useTranslations('notifications');
+  const navt = useTranslations('navbar');
 
   return (
     <Card className="w-full shadow-sm shadow-black/25 border-[2px] border-[#001840] rounded-lg bg-gradient-to-br from-[rgba(255,255,255,0.95)] to-[rgba(59,130,246,0.05)]">
@@ -344,7 +363,7 @@ const DashboardHeader = () => {
               }}
               className="text-sm sm:text-base md:text-lg"
             >
-              Welcome back,{" "}
+              {sit('welcome_back')},{" "}
               <span className="font-black capitalize">
                 {user?.first_name} {user?.last_name}
               </span>
@@ -354,7 +373,7 @@ const DashboardHeader = () => {
               type="secondary"
               className="text-xs sm:text-sm text-[#001840] opacity-70"
             >
-              Your learning dashboard - Track your progress and stay organized
+              {stdash('learning_dashboard_description')}
             </Text>
           </Space>
         </Col>
@@ -362,10 +381,10 @@ const DashboardHeader = () => {
           <Space size="middle">
             <Badge color="#001840" count={0}>
               <Updates>
-                <Tooltip color="#001840" placement="top" title="Notifications">
+                <Tooltip color="#001840" placement="top" title={notift('notifications')}>
                   <Button
                     className="cursor-pointer shadow-md"
-                    onClick={() => {}}
+                    onClick={() => { }}
                     icon={<LuBellRing style={{ color: "#001840" }} />}
                     shape="circle"
                     size="small"
@@ -378,7 +397,7 @@ const DashboardHeader = () => {
                 </Tooltip>
               </Updates>
             </Badge>
-            <Tooltip color="#001840" title="View Profile">
+            <Tooltip color="#001840" title={navt('view_profile')}>
               <Avatar
                 onClick={() => router.push("/student/profile")}
                 className="cursor-pointer shadow-md"
@@ -409,17 +428,19 @@ const StatsSection = ({ token }) => {
     completedAssignments: 0,
   };
 
+  const stdash = useTranslations('student_dashboard');
+
   return (
     <Row gutter={[12, 12]}>
       {[
         {
-          title: "Attendance Rate",
+          title: stdash('attendance_rate'),
           value: stats.attendanceRate,
           suffix: "%",
           icon: <CheckCircleOutlined />,
         },
         {
-          title: "Completed Assignments",
+          title: stdash('completed_assignments'),
           value: stats.completedAssignments,
           icon: <LuBookOpenCheck />,
         },
@@ -468,10 +489,13 @@ const StatsSection = ({ token }) => {
 };
 
 const ActivityCard = () => {
+
+  const stdash = useTranslations('student_dashboard');
+
   return (
     <Card
       title={
-        <span className="text-[#001840] font-bold">Recent Activities</span>
+        <span className="text-[#001840] font-bold">{stdash('recent_activities')}</span>
       }
       className="w-full shadow-sm shadow-black/25 border-0"
     >
@@ -486,7 +510,7 @@ const ActivityCard = () => {
             }}
           />
           <div className="text-sm text-center text-[#001840] opacity-70">
-            No recent activity
+            {stdash('no_recent_activity')}
           </div>
         </div>
       </div>

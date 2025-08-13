@@ -3,12 +3,13 @@ import clsx from "clsx";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 import { LuX, LuUser, LuLogOut, LuLoaderCircle } from "react-icons/lu";
 
 import { img_base_url } from "@/config/settings";
 import { useUser } from "@/hooks/data/useUser";
-import { links } from "@/utils/data/redirect";
+import { useRoleLinks } from "@/utils/data/redirect";
 
 import { Signout } from "../ui/auth/signup/Signout";
 
@@ -18,6 +19,20 @@ const MobileSideBar = ({ isOpen, onClose }) => {
   const { user } = useUser();
   const currentUrl = usePathname();
   const router = useRouter();
+
+  const links = useRoleLinks(user?.role);
+  const tdash = useTranslations('teacher_dashboard')
+  const ht = useTranslations('home_page')
+  const stproft = useTranslations('student_profile')
+  const footer = useTranslations('footer')
+
+  const getUserRole = (role) => {
+    if (role == 'instructor') {
+      return stproft('instructor')
+    } else if (role == 'student') {
+      return ht('student')
+    }
+  }
 
   return (
     <>
@@ -44,7 +59,7 @@ const MobileSideBar = ({ isOpen, onClose }) => {
                   {user?.first_name} {user?.last_name}
                 </Text>
                 <Text className="text-[10px] capitalize font-thin pl-1">
-                  {user?.role}
+                  {getUserRole(user?.role)}
                 </Text>
               </div>
             </div>
@@ -61,11 +76,14 @@ const MobileSideBar = ({ isOpen, onClose }) => {
         closeIcon={null}
       >
         <ul className="space-y-4">
-          {links[user?.role]?.map((item, i) => {
-            const href = `/${user?.role}${
-              item.link === "." ? "" : `/${item.link}`
-            }`;
-            const isActive = currentUrl.replace(/\/$/, "") === href;
+          {(links || []).map((item, i) => {
+            const href = `/${user?.role}${item.link === "." ? "" : `/${item.link}`}`;
+
+            const isActive =
+              currentUrl.replace(/\/$/, "") === `/sw/${user?.role}${item.link === "." ? "" : `/${item.link}`}` ||
+              currentUrl.replace(/\/$/, "") === `/en/${user?.role}${item.link === "." ? "" : `/${item.link}`}` ||
+              // Handle dashboard case
+              (item.link === "." && (currentUrl === `/sw/${user?.role}` || currentUrl === `/en/${user?.role}`));
 
             const hasFreeTrial = user?.has_free_trial;
             const isDashboard = item.link === ".";
@@ -78,7 +96,7 @@ const MobileSideBar = ({ isOpen, onClose }) => {
               <li key={i}>
                 <Tooltip
                   color="#001840"
-                  title={isDisabled ? "This is only available in Premium" : ""}
+                  title={isDisabled ? tdash('only_in_premium') : ""}
                 >
                   <Link
                     href={href}
@@ -97,7 +115,12 @@ const MobileSideBar = ({ isOpen, onClose }) => {
                         : ""
                     )}
                   >
-                    <span>{item.icon}</span>
+                    <span>
+                      {React.isValidElement(item.icon)
+                        ? item.icon
+                        : React.createElement(item.icon)
+                      }
+                    </span>
                     <span className="text-sm font-normal">{item.name}</span>
                   </Link>
                 </Tooltip>
@@ -112,7 +135,7 @@ const MobileSideBar = ({ isOpen, onClose }) => {
 
         <div className="pt-4 mt-auto">
           <Text type="secondary" className="text-xs">
-            © {new Date().getFullYear()} Gala. All rights reserved.
+            © {new Date().getFullYear()} {footer('all_rights_reserved')}
           </Text>
         </div>
       </Drawer>

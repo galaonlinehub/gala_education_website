@@ -25,6 +25,8 @@ const AboutUs = () => {
 
   const t = useTranslations("about_us");
   const ht = useTranslations("home_page");
+  const payt = useTranslations("payments");
+  const tprof = useTranslations('teacher_profile')
 
   const sectionRefs = React.useMemo(
     () => ({
@@ -114,12 +116,14 @@ const AboutUs = () => {
     setIsModalOpen(false);
   };
 
+
+
   const BiographyModal = () => {
     return (
       <>
         <Modal
           title={
-            <div className="text-[14px] flex justify-center">Biography</div>
+            <div className="text-[14px] flex justify-center">{tprof('biography')}</div>
           }
           open={isModalOpen}
           width={{
@@ -132,7 +136,7 @@ const AboutUs = () => {
           }}
           height={100}
           onCancel={handleCancel}
-          okText={<span className="text-[10px] md:text-xs">Dismiss</span>}
+          okText={<span className="text-[10px] md:text-xs">{payt('close')}</span>}
           onOk={handleCancel}
           cancelButtonProps={{ style: { display: "none" } }}
         >
@@ -189,7 +193,7 @@ const AboutUs = () => {
                   {member?.bio}
                 </Text>
                 <div className="flex flex-col">
-                  <Text className="text-xs font-semibold">Email:</Text>
+                  <Text className="text-xs font-semibold">{ht('email')}:</Text>
                   <Text className="text-xs ">{member?.email}</Text>
                 </div>
               </div>

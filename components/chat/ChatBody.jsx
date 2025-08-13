@@ -2,6 +2,7 @@ import { SmileOutlined } from "@ant-design/icons";
 import { Avatar, Dropdown, Skeleton } from "antd";
 import clsx from "clsx";
 import { format, isToday, isYesterday } from "date-fns";
+import { useTranslations } from "next-intl";
 import { useState, useEffect, useRef } from "react";
 import {
   LuEllipsisVertical,
@@ -83,8 +84,8 @@ const RenderChat = ({
         const needsMarking = !userStatus
           ? true
           : (userStatus.status === "sent" ||
-              userStatus.status === "delivered") &&
-            userStatus.status !== "read";
+            userStatus.status === "delivered") &&
+          userStatus.status !== "read";
         return isNotSender && needsMarking;
       });
 
@@ -182,12 +183,14 @@ const RenderChat = ({
     const key = isToday(date)
       ? "Today"
       : isYesterday(date)
-      ? "Yesterday"
-      : format(date, "MMMM d, yyyy");
+        ? "Yesterday"
+        : format(date, "MMMM d, yyyy");
     acc[key] = acc[key] || [];
     acc[key].push(msg);
     return acc;
   }, {});
+
+  const chat = useTranslations('chat');
 
   return (
     <div className="flex flex-col h-full w-full ">
@@ -230,13 +233,12 @@ const RenderChat = ({
                 </h2>
                 <p className="text-xs text-gray-500">
                   {isRecipientTyping
-                    ? "Typing..."
+                    ? chat('typing')
                     : isRecipientOnline
-                    ? "Online"
-                    : `Last seen ${
-                        recipient?.user?.last_active_at
-                          ? recipient.user?.last_active_at
-                          : "recently"
+                      ? chat('online')
+                      : `${chat('last_seen')} ${recipient?.user?.last_active_at
+                        ? recipient.user?.last_active_at
+                        : chat('recently')
                       }`}
                 </p>
               </div>
@@ -253,8 +255,8 @@ const RenderChat = ({
                     {
                       key: "delete",
                       label: deleteChatMutation.isLoading
-                        ? "Deleting..."
-                        : "Delete Chat",
+                        ? chat('deleting')
+                        : chat('delete_chat'),
                       onClick: () =>
                         currentChatId &&
                         !isPreviewChat &&
@@ -263,7 +265,7 @@ const RenderChat = ({
                     },
                     {
                       key: "archive",
-                      label: "Archive",
+                      label: chat('archive'),
                       onClick: () =>
                         console.log("Archive chat:", currentChatId),
                     },
@@ -286,9 +288,9 @@ const RenderChat = ({
         </div>
       ) : getValues(groupedMessages).length === 0 ? (
         <div className="flex flex-col justify-center items-center h-full w-full text-gray-500">
-          <div className="text-2xl text-center">No messages yet</div>
+          <div className="text-2xl text-center">{chat('no_messages_yet')}</div>
           <div className="text-center text-sm">
-            start conversation by sending a message in the input below
+            {chat('start_conversation')}
           </div>
         </div>
       ) : (
@@ -337,22 +339,20 @@ const RenderChat = ({
                       {getSenderName(message.sender_id)}
                     </span>
                     <div
-                      className={`px-3 py-2 rounded-2xl w-full ${
-                        isSender(message.sender_id)
-                          ? "text-white bg-[#001840] rounded-tr-none"
-                          : "bg-gray-200 text-gray-800 rounded-tl-none"
-                      }`}
+                      className={`px-3 py-2 rounded-2xl w-full ${isSender(message.sender_id)
+                        ? "text-white bg-[#001840] rounded-tr-none"
+                        : "bg-gray-200 text-gray-800 rounded-tl-none"
+                        }`}
                     >
                       <div className="flex flex-wrap items-end gap-x-2">
                         <p className="text-xs flex-1 min-w-0 whitespace-normal break-words">
                           {message.content}
                         </p>
                         <div
-                          className={`text-[8px] shrink-0 whitespace-nowrap flex gap-2 items-end justify-center ml-2 ${
-                            isSender(message.sender_id)
-                              ? "text-gray-100"
-                              : "text-gray-500"
-                          }`}
+                          className={`text-[8px] shrink-0 whitespace-nowrap flex gap-2 items-end justify-center ml-2 ${isSender(message.sender_id)
+                            ? "text-gray-100"
+                            : "text-gray-500"
+                            }`}
                         >
                           {message.sent_at} {renderTicks(message)}
                         </div>
@@ -396,7 +396,7 @@ const RenderChat = ({
           <input
             value={newMessage}
             onChange={handleTyping}
-            placeholder="Type a message..."
+            placeholder={chat('type_a_message')}
             className="flex-grow bg-transparent outline-none text-sm px-2"
           />
           <button

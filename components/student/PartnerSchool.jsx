@@ -1,4 +1,5 @@
 import Modal from "antd/es/modal/Modal";
+import { useTranslations } from "next-intl";
 import { LuCircleAlert, LuCircleCheckBig } from "react-icons/lu";
 
 import { useUser } from "@/hooks/data/useUser";
@@ -22,18 +23,20 @@ export const PartnerSchool = () => {
     clearErrors,
   } = usePartnerSchool();
 
+  const stproft = useTranslations('student_profile');
+
   return (
     <Modal open={isOpen} footer={null} closable={false}>
       <div className="space-y-6">
         <div className="flex flex-col gap-2">
-          <div className="text-base">Do you belong to a school?</div>
+          <div className="text-base">{stproft('belong_to_school')}</div>
           <div className="flex gap-3 text-sm">
             <button
               onClick={toggleAffiliate}
               disabled={isAffiliated}
               className="bg-[#001840] text-white rounded w-16 h-7 cursor-pointer hover:scale-110 disabled:scale-100 transition-transform ease-in-out duration-200 disabled:bg-[#001840]/60 disabled:cursor-not-allowed text-xs"
             >
-              Yes
+              {stproft('yes')}
             </button>
             <button
               disabled={mutation.isPending}
@@ -43,7 +46,7 @@ export const PartnerSchool = () => {
               }}
               className="border border-[#001840] text-[#001840] rounded w-16 h-7 cursor-pointer hover:scale-110 transition-transform ease-in-out duration-200 disabled:border-gray-300 disabled:text-gray-300 disabled:cursor-not-allowed disabled:scale-100 text-xs"
             >
-              No
+              {stproft('no')}
             </button>
           </div>
         </div>
@@ -53,7 +56,7 @@ export const PartnerSchool = () => {
           className="data-[isAffiliated=false]:hidden flex flex-col gap-1"
         >
           <div>
-            Please enter the code provided in school or with your teacher
+            {stproft('please_enter_the_code')}
           </div>
           <div>
             <input
@@ -62,7 +65,7 @@ export const PartnerSchool = () => {
               autoComplete="off"
               autoCorrect="off"
               {...register("code", {
-                required: "Please provide school code",
+                required: stproft('provide_school_code'),
                 onChange: () => {
                   resetMutation();
                   clearErrors("_success");
@@ -95,7 +98,7 @@ export const PartnerSchool = () => {
             {mutation.isPending ? (
               <SlickSpinner color="white" size={16} />
             ) : (
-              <>Join</>
+              <>{stproft('join')}</>
             )}
           </button>
         </form>

@@ -19,6 +19,7 @@ import {
   Tooltip,
   message,
 } from "antd";
+import { useTranslations } from "next-intl";
 import React, { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 
@@ -55,6 +56,8 @@ const Donate = ({
     setSelectedAmount(value);
   };
 
+  const donate = useTranslations('donate');
+
   const renderTabContent = () => (
     <Tabs activeKey={activeTab} onChange={setActiveTab} centered>
       <TabPane
@@ -64,7 +67,7 @@ const Donate = ({
               color: activeTab === "1" ? "#001840" : undefined,
             }}
           >
-            Donate Now
+            {donate('donate_now')}
           </span>
         }
         key="1"
@@ -89,15 +92,14 @@ const Donate = ({
                 text-white 
                 hover:bg-blue-900 
                 hover:text-white
-                ${
-                  !selectedAmount
-                    ? "opacity-50 cursor-not-allowed"
-                    : "hover:bg-blue-900"
+                ${!selectedAmount
+                  ? "opacity-50 cursor-not-allowed"
+                  : "hover:bg-blue-900"
                 }
               `}
               onClick={() => setActiveTab("2")}
             >
-              Continue to Payment
+              {donate('continue_to_payment')}
             </Button>
           </Tooltip>
         </div>
@@ -114,7 +116,7 @@ const Donate = ({
                 color: activeTab === "2" ? "#001840" : undefined,
               }}
             >
-              Payment Method
+              {donate('payment_method')}
             </span>
           </Tooltip>
         }
@@ -141,7 +143,7 @@ const Donate = ({
     <>
       <Modal
         title={
-          <div className="flex w-full justify-center">Support Education</div>
+          <div className="flex w-full justify-center">{donate('support_education')}</div>
         }
         open={showDonatePopup}
         onCancel={handleCancel}
@@ -153,8 +155,7 @@ const Donate = ({
       >
         <div className="flex w-full flex-col gap-4">
           <Paragraph className="w-full flex justify-center text-xs">
-            Your generosity helps transform lives through education and
-            opportunity!
+            {donate('your_generosity')}
           </Paragraph>
 
           {renderTabContent()}

@@ -13,6 +13,7 @@ import {
   Input,
 } from "antd";
 import dayjs from "dayjs";
+import { useTranslations } from "next-intl";
 import React, { useState, useEffect, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { FaArrowTurnDown } from "react-icons/fa6";
@@ -35,8 +36,7 @@ import { useInstructorSubjects } from "@/hooks/data/useInstructorSubjects";
 import { useSubTopics } from "@/hooks/data/useSubTopics";
 import { useTopic } from "@/hooks/data/useTopic";
 import { apiGet } from "@/services/api/api_service";
-import { DAYS_MAP } from "@/utils/data/days_of_the_week";
-import { weekOptions } from "@/utils/data/weekData";
+import useWeekDays from "@/utils/data/days_of_the_week";
 
 const componentStyles = {
   select: {
@@ -87,6 +87,11 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
   const [subtopicValues, setSubtopicValues] = useState([]);
 
   const { TextArea } = Input;
+
+  const cct = useTranslations('class_creation');
+  const tdash = useTranslations('teacher_dashboard');
+
+  const { DAYS_MAP, getTranslatedDay } = useWeekDays();
 
   const {
     watch,
@@ -284,16 +289,16 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
 
   const steps = [
     {
-      title: "Subject & Topic Details",
-      header: header("Subject & Topic Details"),
-      subtitle: "Choose your subject and topic",
+      title: cct('subject_topic_details'),
+      header: header(cct('subject_topic_details')),
+      subtitle: cct('choose_subject_topic'),
       icon: <FiBookOpen />,
       content: (
         <div className="space-y-6">
           <div className="space-y-2">
             <div className="w-full">
               <label className="block font-medium text-gray-700 mb-1 text-[12px]">
-                Subject
+                {cct('subject')}
               </label>
               <Select
                 style={componentStyles.select}
@@ -320,7 +325,7 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
             {formData.subject && (
               <div className="w-full">
                 <label className="block font-medium text-gray-700 mb-1 text-[12px]">
-                  Level
+                  {cct('level')}
                 </label>
                 <Select
                   style={componentStyles.select}
@@ -347,7 +352,7 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
             {formData.level && formData.subject && (
               <div className="w-full">
                 <label className="block text-[12px] font-medium text-gray-700 mb-1">
-                  Topic
+                  {cct('topic')}
                 </label>
                 <Select
                   style={componentStyles.select}
@@ -383,13 +388,13 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
       ),
     },
     {
-      title: `Schedule`,
-      header: header("Schedule"),
+      title: cct('schedule'),
+      header: header(cct('schedule')),
       subtitle: (
         <div>
-          Set your class Schedule{" "}
+          {cct('set_your_schedule')}{" "}
           <span className="text-gray-400 text-[9px]">
-            (Min duration 30mins , max duration 120mins)
+            {cct('time_range')}
           </span>
         </div>
       ),
@@ -398,7 +403,7 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
         <div className="space-y-2">
           <div className="w-full">
             <label className="block text-[12px] font-medium text-gray-700 mb-1">
-              Frequency
+              {cct('frequency')}
             </label>
             <Select
               style={componentStyles.select}
@@ -412,13 +417,13 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
               placeholder="How often?"
               suffixIcon={<FiClock className="text-gray-400" />}
             >
-              <Select.Option value="1">Once per week</Select.Option>
-              <Select.Option value="2">Twice per week</Select.Option>
-              <Select.Option value="3">Three times per week</Select.Option>
-              <Select.Option value="4"> Four times per week</Select.Option>
-              <Select.Option value="5">Five times per week</Select.Option>
-              <Select.Option value="6">Six times per week</Select.Option>
-              <Select.Option value="7">Every Day</Select.Option>
+              <Select.Option value="1">{cct('once_per_week')}</Select.Option>
+              <Select.Option value="2">{cct('twice_per_week')}</Select.Option>
+              <Select.Option value="3">{cct('thrice_per_week')}</Select.Option>
+              <Select.Option value="4"> {cct('four_per_week')}</Select.Option>
+              <Select.Option value="5">{cct('five_per_week')}</Select.Option>
+              <Select.Option value="6">{cct('six_per_week')}</Select.Option>
+              <Select.Option value="7">{cct('everyday')}</Select.Option>
             </Select>
           </div>
 
@@ -427,7 +432,7 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
               <div key={i} className="grid grid-cols-3 gap-4 mt-4">
                 <div>
                   <label className="block text-[10px] font-medium text-gray-700 mb-1">
-                    Day {i + 1}
+                    {cct('day')} {i + 1}
                   </label>
                   <Select
                     style={componentStyles.select}
@@ -441,14 +446,14 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
                   >
                     {Object.keys(DAYS_MAP).map((day) => (
                       <Select.Option key={day} value={day}>
-                        {day}
+                        {getTranslatedDay(day)}
                       </Select.Option>
                     ))}
                   </Select>
                 </div>
                 <div>
                   <label className="block text-[10px] font-medium text-gray-700 mb-1">
-                    Time {i + 1}
+                    {cct('time')} {i + 1}
                   </label>
                   <TimePicker
                     style={componentStyles.datePicker}
@@ -468,7 +473,7 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
                 </div>
                 <div>
                   <label className="block text-[10px] font-medium text-gray-700 mb-1">
-                    Duration {i + 1}{" "}
+                    {cct('duration')} {i + 1}{" "}
                   </label>
                   <InputNumber
                     min="30"
@@ -493,37 +498,18 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
     },
 
     {
-      title: `Lesson Plan`,
-      header: header("Lesson Plan"),
+      title: cct('lesson_plan'),
+      header: header(cct('lesson_plan')),
       subtitle: (
         <div>
-          Specificy the number of lessons it will take to complete each
-          Sub-topic:
+          {cct('specify_lessons')}
         </div>
       ),
       icon: <RiCalendarScheduleLine />,
       content: (
         <div className="space-y-2">
           <div className="grid grid-cols-1 gap-4">
-            <div>
-              <label className="block text-[11px] font-medium text-gray-700 mb-1">
-                Start Date
-              </label>
-              <div className="">
-                <DatePicker
-                  minDate={dayjs().add(1, "day")}
-                  prefix={<FiCalendar className="text-gray-400 mr-2" />}
-                  style={componentStyles.datePicker}
-                  className="pl-10"
-                  value={formData.startDate ? dayjs(formData.startDate) : null}
-                  onChange={(date, dateString) => {
-                    updateForm("startDate", dateString);
-                    // calculateEndDate(formData.weeks, dateString);
-                  }}
-                  suffixIcon={null}
-                />
-              </div>
-            </div>
+
             <div
               style={{
                 maxHeight: "400px",
@@ -538,7 +524,7 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
                 items={
                   isSubtopicsPending ? (
                     <div className="flex flex-col gap-1">
-                      <LoadingOutlined /> <span>Loading sub-topics...</span>
+                      <LoadingOutlined /> <span>{cct('loading_sub_topics')}</span>
                     </div>
                   ) : subTopics?.length > 0 ? (
                     subTopics.map((topic, index) => ({
@@ -547,13 +533,13 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
                         <div className="flex gap-2">
                           <Input
                             type="number"
-                            placeholder="Number of lessons?"
+                            placeholder={cct('number_of_lessons')}
                             style={{ width: "100%" }}
                             value={
                               Array.isArray(subtopicValues)
                                 ? subtopicValues.find(
-                                    (item) => item.subtopic === topic.id
-                                  )?.num_lessons || ""
+                                  (item) => item.subtopic === topic.id
+                                )?.num_lessons || ""
                                 : ""
                             }
                             disabled={currentActiveSubtopic < index}
@@ -650,7 +636,7 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
                             }}
                           />
                           {currentActiveSubtopic === index &&
-                          currentActiveSubtopic < subTopics.length - 1 ? (
+                            currentActiveSubtopic < subTopics.length - 1 ? (
                             <Button
                               color="blue"
                               type="primary"
@@ -673,21 +659,40 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
                 }
               />
             </div>
+            <div>
+              <label className="block text-[11px] font-medium text-gray-700 mb-1">
+                {cct('start_date')}
+              </label>
+              <div className="">
+                <DatePicker
+                  minDate={dayjs().add(1, "day")}
+                  prefix={<FiCalendar className="text-gray-400 mr-2" />}
+                  style={componentStyles.datePicker}
+                  className="pl-10"
+                  value={formData.startDate ? dayjs(formData.startDate) : null}
+                  onChange={(date, dateString) => {
+                    updateForm("startDate", dateString);
+                    // calculateEndDate(formData.weeks, dateString);
+                  }}
+                  suffixIcon={null}
+                />
+              </div>
+            </div>
           </div>
         </div>
       ),
     },
 
     {
-      title: "Pricing",
-      header: header("Pricing"),
-      subtitle: "Set duration and pricing",
+      title: cct('pricing'),
+      header: header(cct('pricing')),
+      subtitle: cct('set_duration_and_pricing'),
       icon: <FiCreditCard />,
       content: (
         <div className="space-y-6">
           <div>
             <label className="block text-[12px] font-medium text-gray-700 mb-1">
-              Price
+              {cct('price')}
             </label>
 
             <InputNumber
@@ -698,7 +703,7 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
               }
               style={componentStyles.inputNumber}
               className="!pl-2"
-              placeholder="Enter price"
+              placeholder={cct('enter_price')}
               value={formData.price}
               onChange={(value) => updateForm("price", value)}
               formatter={(value) =>
@@ -710,30 +715,30 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
 
           <div>
             <label className="block text-[12px] font-medium text-gray-700 mb-1">
-              Description
+              {cct('description')}
             </label>
 
             <TextArea
               rows={4}
-              placeholder="Please enter at least 10 words"
+              placeholder={cct('words_required')}
               maxLength={6000}
               // value={formData.description}
               onChange={(v) => {
                 updateForm("description", v.target.value);
               }}
               onBlur={handleBlur}
-              // status={isValid ? "" : "error"}
+            // status={isValid ? "" : "error"}
             />
             <div style={{ marginTop: "8px" }}>
-              Word count:{" "}
+              {cct('words_count')}:{" "}
               {formData.description.trim()
                 ? formData.description
-                    .trim()
-                    .trim()
-                    .split(/\s+/)
-                    .filter((word) => /\w/.test(word)).length
+                  .trim()
+                  .trim()
+                  .split(/\s+/)
+                  .filter((word) => /\w/.test(word)).length
                 : 0}
-              /10 minimum
+              /10 {cct('minimum')}
             </div>
           </div>
         </div>
@@ -777,11 +782,10 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
             onClick={() => setStep(step - 1)}
             disabled={step === 0}
             icon={<FiArrowLeft />}
-            className={`!flex !items-center !border-none !px-4 !bg-black !text-white !text-[11px] ${
-              step === 0 ? "!bg-black/30" : ""
-            }`}
+            className={`!flex !items-center !border-none !px-4 !bg-black !text-white !text-[11px] ${step === 0 ? "!bg-black/30" : ""
+              }`}
           >
-            Back
+            {cct('back')}
           </Button>
 
           {step < steps.length - 1 ? (
@@ -789,11 +793,10 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
               type="primary"
               onClick={() => setStep(step + 1)}
               disabled={!canProceed()}
-              className={`!bg-black !border-none !text-white !px-4 !flex !items-center !gap-2 !text-[11px] hover:!bg-black/90 ${
-                !canProceed() ? "!bg-black/30" : ""
-              }`}
+              className={`!bg-black !border-none !text-white !px-4 !flex !items-center !gap-2 !text-[11px] hover:!bg-black/90 ${!canProceed() ? "!bg-black/30" : ""
+                }`}
             >
-              Next
+              {cct('next')}
               <FiArrowRight />
             </Button>
           ) : (
@@ -801,27 +804,25 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
               type="primary"
               onClick={handleSubmit}
               disabled={!canProceed() || createCohort.isPending}
-              className={`!bg-black !border-none !text-white !px-6 !flex !items-center !gap-2 hover:!bg-[#01840]/90 ${
-                !canProceed() || createCohort.isPending ? "!bg-black/30" : ""
-              } ${
-                createCohort.isSuccess
+              className={`!bg-black !border-none !text-white !px-6 !flex !items-center !gap-2 hover:!bg-[#01840]/90 ${!canProceed() || createCohort.isPending ? "!bg-black/30" : ""
+                } ${createCohort.isSuccess
                   ? "!bg-green-600 !cursor-not-allowed !pointer-events-none"
                   : ""
-              }`}
+                }`}
             >
               {createCohort.isPending ? (
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  Creating...
+                  {cct('creating')}
                 </div>
               ) : createCohort.isSuccess ? (
                 <div className="flex items-center gap-1">
                   <FiCheck />
-                  Created!
+                  {cct('created')}
                 </div>
               ) : (
                 <div className="flex items-center gap-1 !text-[11px]">
-                  Create Class
+                  {tdash('create_class')}
                   <FiCheck />
                 </div>
               )}

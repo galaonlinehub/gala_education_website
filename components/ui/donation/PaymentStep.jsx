@@ -12,6 +12,7 @@ import {
   Input,
   Modal,
 } from "antd";
+import { useTranslations } from "next-intl";
 import { useEffect, useMemo, useState } from "react";
 
 import { PaymentStatus } from "@/config/settings";
@@ -24,6 +25,7 @@ import { sessionStorageFn } from "@/utils/fns/client";
 import { encrypt } from "@/utils/fns/encryption";
 
 import ConfettiButton from "../ConfettiAnimation";
+
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -101,11 +103,17 @@ const PaymentStep = ({
       });
   };
 
+  const enroll_pay = useTranslations('enroll_payments');
+  const donate = useTranslations('donate');
+  const ht = useTranslations('home_page');
+  const sut = useTranslations('sign_up');
+  const cct = useTranslations('class_creation');
+
   return (
     <div>
       <Form form={form} layout="vertical">
         <div style={{ marginBottom: "16px" }}>
-          <Text strong>Choose payment method</Text>
+          <Text strong>{donate('choose_payment_method')}</Text>
           <Radio.Group
             value={paymentMethod}
             onChange={(e) => setPaymentMethod(e.target.value)}
@@ -122,7 +130,7 @@ const PaymentStep = ({
                 color: paymentMethod === "bank" ? "white" : "",
               }}
             >
-              Bank A/C
+              {donate('bank_acc')}
             </Radio.Button>
             <Radio.Button
               value="mobile"
@@ -133,7 +141,7 @@ const PaymentStep = ({
                 color: paymentMethod === "mobile" ? "white" : "",
               }}
             >
-              Mobile
+              {enroll_pay('mobile')}
             </Radio.Button>
           </Radio.Group>
         </div>
@@ -181,14 +189,14 @@ const PaymentStep = ({
         {paymentMethod === "mobile" && (
           <Space direction="vertical" size="middle" style={{ width: "100%" }}>
             <Form.Item
-              label="Phone number"
+              label={ht('phone')}
               name="phone_number"
               rules={[
                 {
                   required: true,
                   message: (
                     <span className="text-xs ">
-                      Please enter your phone number
+                      {sut('enter_phone')}
                     </span>
                   ),
                 },
@@ -203,7 +211,7 @@ const PaymentStep = ({
                       setIsPhoneValid(false);
                       return Promise.reject(
                         <span className="text-xs">
-                          Phone number must start with 6 or 7
+                          {donate('phone_number_start')}
                         </span>
                       );
                     }
@@ -212,7 +220,7 @@ const PaymentStep = ({
                       setIsPhoneValid(false);
                       return Promise.reject(
                         <span className="text-xs">
-                          Phone number must be exactly 9 digits
+                          {donate('phone_number_length')}
                         </span>
                       );
                     }
@@ -223,7 +231,7 @@ const PaymentStep = ({
               ]}
             >
               <Input
-                placeholder="Phone number"
+                placeholder={ht('phone')}
                 addonBefore="255"
                 size="middle"
                 className="text-xs"
@@ -240,13 +248,13 @@ const PaymentStep = ({
           style={{ marginBottom: "16px", background: "#f9f9f9" }}
         >
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <Text>Amount :</Text>
+            <Text>{donate('amount')} :</Text>
             <Text strong>{`TZS ${selectedAmount?.toLocaleString()}`}</Text>
           </div>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <Text>Frequency:</Text>
+            <Text>{cct('frequency')}:</Text>
             <Text strong>
-              {donationFrequency === "monthly" ? "Monthly" : "One-time"}
+              {donationFrequency === "monthly" ? donate('monthly') : donate('one_time')}
             </Text>
           </div>
         </Card>
@@ -259,7 +267,7 @@ const PaymentStep = ({
           }}
         >
           <Button disabled={loading} onClick={() => setActiveTab("1")}>
-            Back
+            {cct('back')}
           </Button>
           <Button
             loading={loading}
@@ -268,7 +276,7 @@ const PaymentStep = ({
             disabled={!selectedAmount || !isPhoneValid || loading}
             onClick={completeDonation}
           >
-            Complete Donation
+            {donate('complete_donation')}
           </Button>
         </div>
       </Form>

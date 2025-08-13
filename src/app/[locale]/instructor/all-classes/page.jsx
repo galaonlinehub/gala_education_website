@@ -8,6 +8,7 @@ import {
 } from "@ant-design/icons";
 import { Card, Row, Col, Button, Avatar, Tag, Typography, Input } from "antd";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 import { BiSolidDetail } from "react-icons/bi";
 import { BsFillCalendar2EventFill } from "react-icons/bs";
@@ -105,18 +106,21 @@ const InstructorClasses = () => {
         .includes(searchText.toLowerCase())
   );
 
+  const act = useTranslations('all_classes');
+  const cct = useTranslations('class_creation');
+
   return (
     <div style={{ padding: "24px" }}>
       <div style={{ marginBottom: "24px" }}>
         <div className="flex gap-1 items-center text-lg font-semibold lg:text-xl">
           <GiBookCover style={{ marginRight: "8px" }} />
-          My Classes
+          {act('my_classes')}
         </div>
 
         {/* Search Input */}
         <div style={{ marginTop: "16px", marginBottom: "24px" }}>
           <Input
-            placeholder="Search classes..."
+            placeholder={act('search_classes')}
             prefix={<SearchOutlined />}
             onChange={(e) => setSearchText(e.target.value)}
             style={{ maxWidth: "400px" }}
@@ -135,7 +139,7 @@ const InstructorClasses = () => {
               const enrollmentPercentage = Math.round(
                 (classItem.data.total_enrolled_students /
                   classItem.data.instructor_total_students) *
-                  100
+                100
               );
 
               // Get subject image
@@ -164,9 +168,8 @@ const InstructorClasses = () => {
                       <div
                         className="h-32 bg-cover bg-center relative"
                         style={{
-                          backgroundImage: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.7)), url(${
-                            classItem.data.image_url || subjectImage.src
-                          })`,
+                          backgroundImage: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.7)), url(${classItem.data.image_url || subjectImage.src
+                            })`,
                         }}
                       >
                         <Tag
@@ -220,7 +223,7 @@ const InstructorClasses = () => {
                               size={12}
                               className="text-blue-800 mr-1"
                             />
-                            <span>Start date</span>
+                            <span>{cct('start_date')}</span>
                           </div>
                           <Text className="text-green-600 text-sm">
                             {classItem.data.timetable?.start_date}
@@ -232,7 +235,7 @@ const InstructorClasses = () => {
                               size={12}
                               className="text-blue-800 mr-1"
                             />
-                            <span>End date</span>
+                            <span>{cct('end_date')}</span>
                           </div>
                           <Text className="text-red-600 text-sm">
                             {classItem.data.timetable?.end_date}
@@ -246,13 +249,13 @@ const InstructorClasses = () => {
                           <TeamOutlined className="text-blue-800 mr-1" />
                           <span>
                             {classItem.data.enrollments?.length} /{" "}
-                            {classItem.data.cohort_size} students
+                            {classItem.data.cohort_size}  {act('students')}
                           </span>
                         </div>
                         <div className="flex items-center">
                           <ClockCircleOutlined className="text-blue-800 mr-1" />
                           <span>
-                            {calculateDuration(classItem.data.timetable)} days
+                            {calculateDuration(classItem.data.timetable)} {act('days')}
                           </span>
                         </div>
                       </div>
@@ -267,7 +270,7 @@ const InstructorClasses = () => {
                           className="flex items-center justify-center bg-[#001840] hover:!bg-blue-900"
                           onClick={() => gotoCohortDetails(classItem.data.id)}
                         >
-                          View Details
+                          {act('view_details')}
                         </Button>
                       </div>
                     </div>

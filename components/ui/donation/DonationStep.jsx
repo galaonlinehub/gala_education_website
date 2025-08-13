@@ -1,7 +1,11 @@
 import { Card, Col, Divider, Form, InputNumber, Radio, Row, Select, Button, Typography, Input } from "antd";
+import { useTranslations } from "next-intl";
 const { Title, Paragraph, Text } = Typography;
 
-const DonationStep = ({form, selectedAmount, setSelectedAmount, setDonationFrequency, donationFrequency, handleAmountChange}) => (
+const DonationStep = ({ form, selectedAmount, setSelectedAmount, setDonationFrequency, donationFrequency, handleAmountChange }) => {
+  const donate = useTranslations('donate');
+  const sut = useTranslations('sign_up');
+  return (
     <Form form={form}>
       <div style={{ marginBottom: "20px" }}>
         <Radio.Group
@@ -22,7 +26,7 @@ const DonationStep = ({form, selectedAmount, setSelectedAmount, setDonationFrequ
               color: donationFrequency === "monthly" ? "white" : "",
             }}
           >
-            Monthly
+            {donate('monthly')}
           </Radio.Button>
           <Radio.Button
             value="onetime"
@@ -33,11 +37,11 @@ const DonationStep = ({form, selectedAmount, setSelectedAmount, setDonationFrequ
               color: donationFrequency === "onetime" ? "white" : "",
             }}
           >
-            One-time
+            {donate('one_time')}
           </Radio.Button>
         </Radio.Group>
 
-        <Form.Item label="Amount">
+        <Form.Item label={donate('amount')}>
           <InputNumber
             addonBefore="TZS"
             min={100}
@@ -68,22 +72,23 @@ const DonationStep = ({form, selectedAmount, setSelectedAmount, setDonationFrequ
       <div style={{ marginTop: "16px" }}>
         <Card size="small" style={{ marginBottom: "16px", background: "#f9f9f9" }}>
           <Paragraph className="text-xs">
-            <Text className="font-semibold text-xs">Your Impact: </Text>
-            {"Supports a rural school with digital resources, covers app subscription for students in need and provides learning materials for students"}
+            <Text className="font-semibold text-xs">{donate('your_impact')} </Text>
+            {donate('support_message')}
           </Paragraph>
         </Card>
 
         <Form.Item name="name">
-          <Input placeholder="Enter your name (Optional)" />
+          <Input placeholder={donate('enter_your_name_optional')} />
         </Form.Item>
 
         <Form.Item name="email" rules={[
-          { type: 'email', message: 'Please enter a valid email' }
+          { type: 'email', message: sut('valid_email_address') }
         ]}>
-          <Input placeholder="Enter your email (Optional)" />
+          <Input placeholder={donate('enter_your_email_optional')} />
         </Form.Item>
       </div>
     </Form>
-  );
+  )
+}
 
-  export default DonationStep;
+export default DonationStep;

@@ -8,6 +8,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Modal, Input, Button, Form, message } from "antd";
 import clsx from "clsx";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import React, { useState, useEffect, useRef } from "react";
 import { LuImage, LuRotateCcw, LuUser } from "react-icons/lu";
 
@@ -63,8 +64,8 @@ const CompleteProfile = () => {
             {status === Stage.SAVE || status === Stage.EDIT
               ? "Quick Setup"
               : status === Stage.VERIFY
-              ? "Verify Phone Number"
-              : "Profile Complete! 🎉"}
+                ? "Verify Phone Number"
+                : "Profile Complete! 🎉"}
           </span>
 
           <Signout />
@@ -177,6 +178,12 @@ const Save = ({ status, setStatus, setPhoneNumber }) => {
     return Promise.resolve();
   };
 
+  const sut = useTranslations('sign_up')
+  const fpass = useTranslations('forgot_password')
+  const tprof = useTranslations('teacher_profile')
+  const ht = useTranslations('home_page')
+  const verify = useTranslations('verification')
+
   return (
     <div
       className={clsx({
@@ -188,8 +195,8 @@ const Save = ({ status, setStatus, setPhoneNumber }) => {
       {status !== Stage.EDIT && (
         <div className="mb-6 w-full">
           <div className="flex gap-2 justify-start items-center mb-5 font-medium">
-            <span>Upload your profile picture</span>
-            <span className="text-xs font-light">Optional</span>
+            <span>{verify('upload_profile_pic')}</span>
+            <span className="text-xs font-light">{ht('optional')}</span>
           </div>
           <div
             className="relative cursor-pointer transition-all duration-300 mx-auto w-32 h-32"
@@ -246,7 +253,7 @@ const Save = ({ status, setStatus, setPhoneNumber }) => {
         </div>
       )}
       {status === Stage.EDIT && (
-        <div className="text-xl font-black mb-6">Change your phone number</div>
+        <div className="text-xl font-black mb-6"> {tprof('change_phone_number')}</div>
       )}
       <Form
         form={form}
@@ -264,7 +271,7 @@ const Save = ({ status, setStatus, setPhoneNumber }) => {
           name="phone_number"
           label={
             <span className="text-gray-700 font-medium text-sm">
-              Phone Number
+              {ht('phone')}
             </span>
           }
           rules={[{ validator: validateNumber }]}
@@ -295,7 +302,7 @@ const Save = ({ status, setStatus, setPhoneNumber }) => {
         >
           {!isUpdatingProfile ? (
             <span className="flex items-center">
-              Continue
+              {verify('continue')}
               <ArrowRightOutlined className="ml-2" />
             </span>
           ) : (
@@ -304,7 +311,7 @@ const Save = ({ status, setStatus, setPhoneNumber }) => {
         </Button>
 
         <p className="text-center text-gray-500 text-xs mt-4">
-          You can update your details anytime in your profile
+          {tprof('update_option')}
         </p>
       </Form>
     </div>
@@ -327,6 +334,12 @@ const Verify = ({ phone_number, setStatus }) => {
     verifyOtpReset,
     resendOtp,
   } = useUser();
+
+  const sut = useTranslations('sign_up')
+  const fpass = useTranslations('forgot_password')
+  const tprof = useTranslations('teacher_profile')
+  const gai = useTranslations('gala_ai')
+  const verify = useTranslations('verification')
 
   const handleChange = (value, index) => {
     if (isNaN(value) || value.length > 1) return;
@@ -353,10 +366,10 @@ const Verify = ({ phone_number, setStatus }) => {
           },
           onError: (error) => {
             message.error(
-              error?.response?.data?.message || "Invalid OTP provided"
+              error?.response?.data?.message || verify('invalid_otp')
             );
             setErrorMessage(
-              error?.response?.data?.message || "Invalid OTP provided"
+              error?.response?.data?.message || verify('invalid_otp')
             );
             // setValues(Array(6).fill(""));
           },
@@ -376,11 +389,11 @@ const Verify = ({ phone_number, setStatus }) => {
       return;
     resendOtp.mutate(phone_number, {
       onSuccess: () => {
-        message.success("OTP resent successfully");
+        message.success(sut('otp_resent_success'));
         resetTimer();
       },
       onError: (error) =>
-        message.error("Failed to resend OTP, Please try again", 8),
+        message.error(sut('otp_resend_failed'), 8),
     });
   };
 
@@ -410,11 +423,11 @@ const Verify = ({ phone_number, setStatus }) => {
   return (
     <div className="flex flex-col gap-6 items- h-full pt-12 pb-4">
       <div className="text-base font-medium px-6 text-center md:text-left">
-        Enter code sent to{" "}
+        {sut('enter_code_sent_to')}{" "}
         <span className="text-blue-700 font-extrabold">
           {phone_number && phone_number}
         </span>{" "}
-        via SMS
+        {sut('via_sms')}
       </div>
       {(verifyOtpError || verifyOtpSuccess) && (
         <div className="w-full flex items-center justify-center">
@@ -451,13 +464,12 @@ const Verify = ({ phone_number, setStatus }) => {
               onChange={(e) => handleChange(e.target.value, index)}
               onKeyDown={(e) => handleKeyDown(e, index)}
               disabled={isVerifyingOtp}
-              className={`text-2xl font-black w-12 h-12 text-center text-black rounded-md focus:outline-none focus:ring transition-all duration-300 ${
-                verifyOtpSuccess
-                  ? "border-2 border-green-500 focus:ring-green-500 text-green-600"
-                  : verifyOtpError
+              className={`text-2xl font-black w-12 h-12 text-center text-black rounded-md focus:outline-none focus:ring transition-all duration-300 ${verifyOtpSuccess
+                ? "border-2 border-green-500 focus:ring-green-500 text-green-600"
+                : verifyOtpError
                   ? "border-2 border-red-500 focus:ring-red-500 text-red-600 input-shake"
                   : "border-2 border-[#030DFE] focus:ring-[#030DFE] text-black"
-              }`}
+                }`}
             />
           ))}
       </div>
@@ -465,7 +477,7 @@ const Verify = ({ phone_number, setStatus }) => {
         {isVerifyingOtp && <SlickSpinner size={28} color="#030DFE" />}
       </div>
       <div className="w-full flex items-center justify-end">
-        Didn&apos;t receive the code?
+        {fpass('didnt_receive_code')}
         <Button
           icon={resendOtp.isPending ? null : <LuRotateCcw />}
           type="link"
@@ -479,22 +491,22 @@ const Verify = ({ phone_number, setStatus }) => {
           className="disabled:!text-gray-500 disabled:cursor-not-allowed"
         >
           {resendOtp.isPending
-            ? "Sending..."
+            ? fpass('sending')
             : !canResend
-            ? `Resend in ${timer}s`
-            : "Resend"}
+              ? `${fpass('resend_otp_in')} ${timer}s`
+              : fpass('resend_code')}
         </Button>
       </div>
 
       {!canResend && (
         <div className="text-xs text-gray-500 text-center mt-1">
-          You can resend OTP in {timer} second{timer !== 1 ? "s" : ""}
+          {fpass('resend_otp_in')} {timer} {gai('seconds')}{timer !== 1 ? "s" : ""}
         </div>
       )}
 
       <div className="w-full mt-3">
         <Button type="link" onClick={() => setStatus(Stage.EDIT)}>
-          Change Phone number
+          {tprof('change_phone_number')}
         </Button>
       </div>
     </div>
@@ -511,19 +523,21 @@ const Success = () => {
     return () => clearTimeout(timer);
   }, [open]);
 
+  const verify = useTranslations('verification')
+
   return (
     <div className="flex flex-col items-center justify-center h-3/4 bg-white p-6 rounded-lg">
       <div className="p-4 rounded-full mb-4">
         <CheckCircleFilled className="text-6xl text-green-500" />
       </div>
       <div className="text-2xl font-semibold text-gray-800 mb-3">
-        Verification Complete
+        {verify('verification_complete')}
       </div>
       <p className="text-gray-500 text-center mt-4">
-        Your phone number has been successfully verified !!
+        {verify('phone_verified')}
       </p>
       <p className="text-gray-500 text-center mt-2">
-        Hold on, we are setting up your profile...
+        {verify('hold_on')}
       </p>
     </div>
   );

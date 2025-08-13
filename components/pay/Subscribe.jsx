@@ -1,4 +1,5 @@
 import { Steps, Drawer } from "antd";
+import { useTranslations } from "next-intl";
 
 import SignupPay from "@/components/ui/auth/signup/Payment";
 import { useUser } from "@/hooks/data/useUser";
@@ -20,13 +21,16 @@ export default function Subscribe({ openDrawer }) {
     },
   };
 
+  const sut = useTranslations('sign_up')
+  const subt = useTranslations('subscription')
+
   const steps = [
     {
-      title: "Confirm Plan",
+      title: sut('confirm_plan'),
       content: <ConfirmPlan />,
     },
     {
-      title: "Payment",
+      title: sut('payment'),
       content: <SignupPay />,
     },
   ];
@@ -36,7 +40,7 @@ export default function Subscribe({ openDrawer }) {
       title={
         <div className="flex justify-between w-full gap-3">
           <div className="font-black text-sm sm:text-base md:text-xl lg:text-2xl line-clamp-2">
-            Subscribe To The Service
+            {subt('subscribe_to_service')}
           </div>
           <Signout />
         </div>

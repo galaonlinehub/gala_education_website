@@ -1,8 +1,10 @@
 "use client";
 import { StarFilled, StarOutlined } from "@ant-design/icons";
 import { Card, Avatar, message, Modal, Button, Divider, Input } from "antd";
+import { startCase } from "lodash";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 import { BsStar, BsStarFill } from "react-icons/bs";
 import {
@@ -60,7 +62,7 @@ const ClassDetailsPage = ({ params }) => {
 
   const handleSubmitRating = async () => {
     if (rateValue == null && comment == "") {
-      messageApi.info("Please provide a rating or comment!");
+      messageApi.info(sct('please_provide_rating_or_comment'));
       return;
     }
 
@@ -78,139 +80,7 @@ const ClassDetailsPage = ({ params }) => {
     messageApi.success(response.data);
   };
 
-  const classData = {
-    id: "BIO-454-44",
-    name: "Advanced Reproduction Biology",
-    subject: "Biology",
-    shortDescription:
-      "Comprehensive exploration of reproductive systems across species",
-    description:
-      "This course explores the biological mechanisms of reproduction across species. Students will gain in-depth knowledge of cellular and systemic reproduction processes, hormonal regulation, and comparative reproductive strategies.",
-    level: "Advanced",
-    grade: "12th Grade",
-    instructor: {
-      name: "Dr. Sarah Johnson",
-      image: "/api/placeholder/200/200",
-      bio: "Ph.D. in Reproductive Biology",
-      phone: "+1 (555) 123-4567",
-      email: "sjohnson@example.edu",
-    },
-    schedule: {
-      startDate: "Jan 15",
-      endDate: "May 30",
-      sessions: [
-        { day: "Monday", time: "10:00 AM - 11:30 AM" },
-        { day: "Wednesday", time: "10:00 AM - 11:30 AM" },
-      ],
-      nextClass: {
-        topic: "Hormonal Regulation in Mammals",
-        date: "Feb 27",
-        time: "10:00 AM",
-        countdown: "Tomorrow",
-      },
-    },
-    progress: 42,
-    materials: [
-      {
-        name: "Reproduction Systems Textbook",
-        type: "pdf",
-        icon: <LuFileText />,
-      },
-      {
-        name: "Lecture Slides - Week 1-5",
-        type: "slides",
-        icon: <LuFileText />,
-      },
-      { name: "Laboratory Manual", type: "pdf", icon: <LuFileMinus /> },
-      {
-        name: "Research Paper - Comparative Reproduction",
-        type: "pdf",
-        icon: <LuFileText />,
-      },
-      {
-        name: "Video Tutorial - Cell Division",
-        type: "video",
-        icon: <LuVideo />,
-      },
-    ],
-    assignments: [
-      {
-        name: "Cellular Division Analysis",
-        dueDate: "Mar 5",
-        status: "pending",
-      },
-      {
-        name: "Comparative Reproduction Essay",
-        dueDate: "Mar 15",
-        status: "pending",
-      },
-      {
-        name: "Hormonal Cycle Diagram",
-        dueDate: "Feb 10",
-        status: "completed",
-      },
-      {
-        name: "Lab Report - Microscope Observations",
-        dueDate: "Mar 20",
-        status: "pending",
-      },
-    ],
-    syllabus: [
-      {
-        week: 1,
-        topic: "Introduction to Reproductive Biology",
-        completed: true,
-      },
-      {
-        week: 2,
-        topic: "Cellular Reproduction - Mitosis and Meiosis",
-        completed: true,
-      },
-      { week: 3, topic: "Gametogenesis Across Species", completed: true },
-      { week: 4, topic: "Reproductive Organs and Systems", completed: true },
-      {
-        week: 5,
-        topic: "Hormonal Regulation in Mammals",
-        completed: false,
-        current: true,
-      },
-      { week: 6, topic: "Fertilization Mechanisms", completed: false },
-      { week: 7, topic: "Embryonic Development", completed: false },
-      { week: 8, topic: "Reproductive Strategies in Plants", completed: false },
-      {
-        week: 9,
-        topic: "Evolutionary Aspects of Reproduction",
-        completed: false,
-      },
-      {
-        week: 10,
-        topic: "Reproductive Technologies and Ethics",
-        completed: false,
-      },
-    ],
-    announcements: [
-      {
-        title: "Extra office hours available next week",
-        content: "Sign up on the portal.",
-        date: "Feb 20, 2025",
-        type: "info",
-      },
-      {
-        title: "Mid-term exam preparation",
-        content:
-          "Mid-term exam will cover weeks 1-5. Study guide has been posted in materials.",
-        date: "Feb 18, 2025",
-        type: "success",
-      },
-      {
-        title: "Lab equipment reminder",
-        content:
-          "Remember to bring your lab notebooks for next week's session.",
-        date: "Feb 15, 2025",
-        type: "default",
-      },
-    ],
-  };
+
 
   const router = useRouter();
   const {
@@ -233,6 +103,13 @@ const ClassDetailsPage = ({ params }) => {
     classAssignmentsError,
   } = useEnrolledTopics(cohort_id, instructor_id);
 
+  const act = useTranslations('all_classes');
+  const cct = useTranslations('class_creation');
+  const sct = useTranslations('student_classes');
+  const subt = useTranslations('subscription');
+  const tdash = useTranslations('teacher_dashboard');
+  const stdash = useTranslations('student_dashboard');
+
   return (
     <div className="min-h-screen w-full">
       {contextHolder}
@@ -250,7 +127,7 @@ const ClassDetailsPage = ({ params }) => {
               />
             </button>
             <div className="text-lg font-semibold text-gray-800">
-              My Classes
+              {act('my_classes')}
             </div>
           </div>
           <div className="flex items-center space-x-2">
@@ -258,7 +135,7 @@ const ClassDetailsPage = ({ params }) => {
               disabled={true}
               className="disabled:opacity-50 disabled:cursor-not-allowed text-red-600 hover:bg-red-100 disabled:hover:bg-transparent transition-colors font-bold border-[0.5px] border-red-500 rounded px-4 py-1 text-xs"
             >
-              Un-Enroll
+              {sct('unenroll')}
             </button>
           </div>
         </div>
@@ -300,7 +177,7 @@ const ClassDetailsPage = ({ params }) => {
                     className="bg-[#001840] hover:bg-[#001840]/90 text-white px-6 py-2 rounded-md flex items-center"
                   >
                     <LuVideo className="mr-2 text-xl" />
-                    <span className="text-sm">Join Next Class</span>
+                    <span className="text-sm">{sct('join_next_class')}</span>
                   </button>
                 </div>
               </div>
@@ -309,13 +186,13 @@ const ClassDetailsPage = ({ params }) => {
               <div className="mt-6 pt-6 border-t border-gray-100">
                 <div className="flex items-center justify-between mb-2">
                   <div className="text-sm font-medium text-gray-800">
-                    Your Progress:{" "}
+                    {sct('your_progress')}:{" "}
                     <span className="text-[#001840] font-semibold">
                       {cohortDetails?.percentage_completion}%
                     </span>
                   </div>
                   <div className="text-sm text-gray-500">
-                    Next class:{" "}
+                    {sct('next_class')}:{" "}
                     <span className="font-medium text-[#001840]">
                       {classSchedule?.nextClass?.countdown}
                     </span>
@@ -337,7 +214,7 @@ const ClassDetailsPage = ({ params }) => {
             <Card className="">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-semibold text-[#001840]">
-                  Next Class
+                  {sct('next_class')}
                 </h3>
                 <span className="bg-blue-500 text-white text-xs px-3 py-1 rounded-md">
                   {classSchedule?.nextClass?.countdown}
@@ -360,7 +237,7 @@ const ClassDetailsPage = ({ params }) => {
 
             <Card className="">
               <h3 className="text-lg font-semibold text-[#001840] mb-4">
-                About This Class
+                {sct('about_this_class')}
               </h3>
               <p className="text-gray-600">
                 {cohortDetails?.topic_description}
@@ -369,7 +246,7 @@ const ClassDetailsPage = ({ params }) => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
                 <div className="rounded-lg bg-gray-50 p-4">
                   <h4 className="text-sm font-medium text-[#001840] mb-2">
-                    Schedule
+                    {cct('schedule')}
                   </h4>
                   <div className="space-y-2 text-sm text-gray-600">
                     <div className="flex items-center">
@@ -395,11 +272,11 @@ const ClassDetailsPage = ({ params }) => {
             <Card className="">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-lg font-semibold text-[#001840]">
-                  Course Syllabus
+                  {sct('course_syllabus')}
                 </h3>
                 <div className="flex items-center text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded-md">
                   <span>
-                    Week {classSyllabus?.find((w) => w.current)?.week} of{" "}
+                    {sct('week')} {classSyllabus?.find((w) => w.current)?.week} {sct('of')}{" "}
                     {classSyllabus?.length}
                   </span>
                 </div>
@@ -419,13 +296,12 @@ const ClassDetailsPage = ({ params }) => {
                         className={`relative ${week.current ? "mb-8" : ""}`}
                       >
                         <div
-                          className={`absolute -left-8 w-6 h-6 rounded-full flex items-center justify-center ${
-                            week.completed
-                              ? "bg-green-100 text-green-600"
-                              : week.current
+                          className={`absolute -left-8 w-6 h-6 rounded-full flex items-center justify-center ${week.completed
+                            ? "bg-green-100 text-green-600"
+                            : week.current
                               ? "bg-blue-100 text-blue-600 ring-4 ring-blue-50"
                               : "bg-gray-100 text-gray-400"
-                          }`}
+                            }`}
                         >
                           {week.completed ? (
                             <LuCheck />
@@ -437,21 +313,19 @@ const ClassDetailsPage = ({ params }) => {
                         </div>
 
                         <div
-                          className={`${
-                            week.current
-                              ? "bg-blue-50 rounded-lg p-4 border border-blue-100"
-                              : ""
-                          }`}
+                          className={`${week.current
+                            ? "bg-blue-50 rounded-lg p-4 border border-blue-100"
+                            : ""
+                            }`}
                         >
                           <h4 className="text-sm font-semibold text-gray-800">
-                            Week {week.week}
+                            {sct('week')} {week.week}
                           </h4>
                           <p
-                            className={`${
-                              week.current
-                                ? "text-blue-700 font-medium"
-                                : "text-gray-600"
-                            }`}
+                            className={`${week.current
+                              ? "text-blue-700 font-medium"
+                              : "text-gray-600"
+                              }`}
                           >
                             {week.topic}
                           </p>
@@ -459,10 +333,10 @@ const ClassDetailsPage = ({ params }) => {
                           {week.current && (
                             <div className="mt-2 flex justify-between items-center">
                               <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">
-                                Current
+                                {subt('current')}
                               </span>
                               <button className="text-xs bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded transition-colors">
-                                View Details
+                                {act('view_details')}
                               </button>
                             </div>
                           )}
@@ -477,12 +351,12 @@ const ClassDetailsPage = ({ params }) => {
             {/* Course Materials Section */}
             <Card className="">
               <h3 className="text-lg font-semibold text-[#001840] mb-6">
-                Class Materials
+                {sct('class_materials')}
               </h3>
               <div className="grid gap-4">
                 {classMaterials?.length === 0 ? (
                   <div className="text-gray-400">
-                    There are no any material provided in this class.
+                    {sct('no_materials_provided')}
                   </div>
                 ) : (
                   classMaterials?.map((material, index) => (
@@ -515,18 +389,18 @@ const ClassDetailsPage = ({ params }) => {
             {/* Assignments Section */}
             <Card className="">
               <h3 className="text-lg font-semibold text-[#001840] mb-6">
-                Assignments
+                {sct('assignments')}
               </h3>
 
               <div className="mb-6">
                 <h4 className="font-medium text-gray-800 mb-4 flex items-center">
                   {/* <div className="w-2 h-2 rounded-full bg-orange-500 mr-2"></div> */}
-                  Upcoming Assignments
+                  {sct('upcoming_assignments')}
                 </h4>
                 <div className="grid gap-3">
                   {classAssigments?.length === 0 ? (
                     <div className="text-gray-400">
-                      There are no any assignments.
+                      {sct('no_assignments')}
                     </div>
                   ) : (
                     classAssigments?.assignments
@@ -545,12 +419,12 @@ const ClassDetailsPage = ({ params }) => {
                                 {assignment.name}
                               </div>
                               <div className="text-xs text-orange-600">
-                                Due {assignment.dueDate}
+                                {sct('due')} {assignment.dueDate}
                               </div>
                             </div>
                           </div>
                           <button className="px-3 py-1.5 text-sm bg-[#001840] text-white rounded-md hover:bg-[#001840]/90 transition-colors">
-                            Start
+                            {tdash('start')}
                           </button>
                         </div>
                       ))
@@ -564,29 +438,27 @@ const ClassDetailsPage = ({ params }) => {
                 onOk={closeModal}
                 footer={[
                   <Button key="cancel" onClick={closeModal}>
-                    Cancel
+                    {act('close')}
                   </Button>,
                   <Button
                     className="!bg-[#001840] !text-white"
                     key="sbmit"
                     onClick={() => handleSubmitRating()}
                   >
-                    Submit
+                    {sct('submit')}
                   </Button>,
                 ]}
               >
                 <Divider>
                   <div className="flex justify-center gap-2">
-                    <span className="font-light">Rate</span>
+                    <span className="font-light">{sct('rate')}</span>
                     <span className="font-bold">{instructorDetails?.name}</span>
                   </div>
                 </Divider>
 
                 <div className="flex flex-col justify-center text-center items-center">
                   <p className="text-sm">
-                    Rate this teacher fairly based on teaching effectiveness,
-                    communication, and support. Share your honest thoughts to
-                    help us enhance teaching quality.
+                    {sct('rate_teacher_instruction')}
                   </p>
                   <div className="w-full mt-3 flex gap-2 items-center justify-center">
                     {[1, 2, 3, 4, 5].map((star, index) => {
@@ -607,7 +479,7 @@ const ClassDetailsPage = ({ params }) => {
                     <TextArea
                       rows={4}
                       name="student_comment"
-                      placeholder="Write your comment here"
+                      placeholder={sct('write_your_comment_here')}
                       value={comment}
                       onChange={(e) => setComment(e.target.value)}
                     />
@@ -654,7 +526,7 @@ const ClassDetailsPage = ({ params }) => {
             <Card className="">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-lg font-semibold text-[#001840]">
-                  Announcements
+                  {sct('announcements')}
                 </h3>
                 {/* <div className="flex items-center space-x-2">
                   <LuBell className="text-[#001840]" />
@@ -665,7 +537,7 @@ const ClassDetailsPage = ({ params }) => {
               <div className="space-y-4">
                 {classMaterials?.length === 0 ? (
                   <div className="text-gray-400">
-                    There are no any announcement.
+                    {sct('no_announcements')}
                   </div>
                 ) : (
                   classMaterials?.map((announcement, index) => {
@@ -673,15 +545,15 @@ const ClassDetailsPage = ({ params }) => {
                       announcement.type === "info"
                         ? "bg-blue-50 border-blue-500"
                         : announcement.type === "success"
-                        ? "bg-green-50 border-green-500"
-                        : "bg-gray-50 border-gray-300";
+                          ? "bg-green-50 border-green-500"
+                          : "bg-gray-50 border-gray-300";
 
                     const iconColor =
                       announcement.type === "info"
                         ? "text-blue-500"
                         : announcement.type === "success"
-                        ? "text-green-500"
-                        : "text-gray-500";
+                          ? "text-green-500"
+                          : "text-gray-500";
 
                     return (
                       <div
@@ -740,8 +612,7 @@ const ClassDetailsPage = ({ params }) => {
                       >
                         <TbMessage2 className="mr-2 md:text-2xl" />
                         <div className="flex gap-2">
-                          <span>Message</span>
-                          <span>Instructor</span>
+                          {sct('message_instructor')}
                         </div>
                       </button>
                       <button
@@ -750,8 +621,7 @@ const ClassDetailsPage = ({ params }) => {
                       >
                         <StarOutlined className="mr-2 md:text-2xl" />
                         <div className="flex gap-2">
-                          <span>Rate</span>
-                          <span>Instructor</span>
+                          {sct('rate_instructor')}
                         </div>
                       </button>
                     </div>
@@ -763,11 +633,11 @@ const ClassDetailsPage = ({ params }) => {
             {/* Course Stats Card */}
             <Card className="">
               <p className="text-lg font-semibold text-[#001840] mb-4">
-                Course Stats
+                {sct('course_stats')}
               </p>
 
               <div className="my-3 text-gray-400">
-                Your cohort statistics will appear here.!
+                {sct('cohort_statistics_info')}
               </div>
               {/* <div className="grid grid-cols-2 gap-4">
                 <div className="bg-blue-50 rounded-lg p-4 text-center group hover:bg-blue-100 transition-colors cursor-pointer">
@@ -813,11 +683,11 @@ const ClassDetailsPage = ({ params }) => {
             {/* Recent Activity Card */}
             <Card className="">
               <p className="text-lg font-semibold text-[#001840] mb-4">
-                Recent Activity
+                {stdash('recent_activities')}
               </p>
 
               <p className="text-gray-400">
-                There are no any recent activities!.
+                {stdash('no_recent_activity')}
               </p>
               {/* <div className="space-y-4">
                 <div className="flex">
@@ -871,32 +741,32 @@ const ClassDetailsPage = ({ params }) => {
             {/* Class Resources Quick Links */}
             <Card className="">
               <h3 className="text-lg font-semibold text-[#001840] mb-4">
-                Quick Links
+                {stdash('quick_links')}
               </h3>
               <div className="grid grid-cols-2 gap-3">
                 <button className="flex flex-col items-center justify-center p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
                   <div className="w-10 h-10 flex items-center justify-center text-[#001840] mb-2">
                     <LuBookText className="text-2xl" />
                   </div>
-                  <span className="text-sm text-gray-800">Class Notes</span>
+                  <span className="text-sm text-gray-800">{sct('class_notes')}</span>
                 </button>
                 <button className="flex flex-col items-center justify-center p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
                   <div className="w-10 h-10 flex items-center justify-center text-[#001840] mb-2">
                     <LuVideo className="text-2xl" />
                   </div>
-                  <span className="text-sm text-gray-800">Recordings</span>
+                  <span className="text-sm text-gray-800">{sct('recordings')}</span>
                 </button>
                 <button className="flex flex-col items-center justify-center p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
                   <div className="w-10 h-10 flex items-center justify-center text-[#001840] mb-2">
                     <LuUsers className="text-2xl" />
                   </div>
-                  <span className="text-sm text-gray-800">Discussion</span>
+                  <span className="text-sm text-gray-800">{sct('discussion')}</span>
                 </button>
                 <button className="flex flex-col items-center justify-center p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
                   <div className="w-10 h-10 flex items-center justify-center text-[#001840] mb-2">
                     <LuFileText className="text-2xl" />
                   </div>
-                  <span className="text-sm text-gray-800">Syllabus</span>
+                  <span className="text-sm text-gray-800">{sct('syllabus')}</span>
                 </button>
               </div>
             </Card>

@@ -2,6 +2,7 @@
 
 import { Drawer } from "antd";
 import { createStyles, useTheme } from "antd-style";
+import { useTranslations } from "next-intl";
 import React, { useEffect } from "react";
 
 import { TopicCard, TopicCardSkeleton } from "@/components/ui/TopicCard";
@@ -91,10 +92,12 @@ const NewClass = () => {
     },
   };
 
+  const navt = useTranslations('navbar');
+
   return (
     <>
       <Drawer
-        title="Explore Classes, Topics, Subtopics and Instructors..."
+        title={navt('explore_variety')}
         width={enrollMe ? 2220 : 824}
         onClose={onClose}
         open={openNewClass}
@@ -106,8 +109,8 @@ const NewClass = () => {
             {isFetchingResults
               ? [1, 2, 3].map((i) => <TopicCardSkeleton key={i} />)
               : detailedResults.map((c, idx) => (
-                  <TopicCard key={idx} classInfo={c} />
-                ))}
+                <TopicCard key={idx} classInfo={c} />
+              ))}
           </>
         )}
 
