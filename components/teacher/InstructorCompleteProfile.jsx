@@ -9,6 +9,7 @@ import {
   message,
 } from "antd";
 import clsx from "clsx";
+import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 import { LuCamera, LuUser } from "react-icons/lu";
 
@@ -39,6 +40,8 @@ const InstructorCompleteProfile = () => {
     updateProfileError,
   } = useUser();
 
+  const tprof = useTranslations('teacher_profile')
+
   const render = () => {
     switch (status) {
       case Stage.SAVE:
@@ -67,7 +70,7 @@ const InstructorCompleteProfile = () => {
     <Modal
       title={
         <div className="flex flex-col xs:flex-row justify-between xs:items-center w-full gap-3 mb-4">
-          <div>Complete your profile</div>
+          <div>{tprof('complete_profile')}</div>
           <div className="self-end">
             <Signout />
           </div>
@@ -102,13 +105,19 @@ const Save = ({
   const { grades } = useGrade();
   const isEditMode = status === Stage.EDIT;
 
+  const tprof = useTranslations('teacher_profile')
+  const sut = useTranslations('sign_up')
+  const donate = useTranslations('donate')
+  const ht = useTranslations('home_page')
+  const sct = useTranslations('student_classes')
+
   const handleFormSubmit = async (values) => {
     try {
       const formData = new FormData();
 
       if (!isEditMode) {
         if (!imageFile) {
-          message.info("Please upload a profile image");
+          message.info(tprof('upload_profile_pic'));
           return;
         }
         formData.append("profile_picture", imageFile);
@@ -135,12 +144,12 @@ const Save = ({
       updateProfile(formData, {
         onSuccess: () => {
           setStatus(Stage.VERIFY);
-          message.success("Profile updated successfully");
+          message.success(tprof('profile_update_success'));
           setImageFile(null);
           form.resetFields();
         },
         onError: () => {
-          message.error("Unexpected error occurred");
+          message.error(tprof('unexpected_error'));
         },
       });
     } catch (error) {
@@ -154,24 +163,20 @@ const Save = ({
 
     switch (info.file.status) {
       case "uploading":
-        message.loading({ content: "Uploading image...", key: "upload" });
+        message.loading({ content: tprof('uploading_image'), key: "upload" });
         break;
       case "done":
         setImageFile(file);
         message.success({
-          content: "Image uploaded successfully!",
+          content: tprof('upload_image_success'),
           key: "upload",
         });
         break;
       case "error":
         message.error({
-          content: "Upload failed. Please try again.",
+          content: tprof('upload_failed'),
           key: "upload",
         });
-        break;
-      case "removed":
-        setImageFile(null);
-        message.info({ content: "Image removed", key: "upload" });
         break;
       default:
         message.info({ content: "Image selected", key: "upload" });
@@ -179,15 +184,15 @@ const Save = ({
   };
 
   const validateNumber = (_, value) => {
-    if (!value) return Promise.reject("Phone number is required");
+    if (!value) return Promise.reject(sut('phone_required'));
 
     const cleanedValue = value.replace(/\D/g, "");
     if (!/^[0-9]{9}$/.test(cleanedValue)) {
-      return Promise.reject("Please enter 9 digits (e.g., 752451811)");
+      return Promise.reject(donate('phone_number_length'));
     }
 
     if (!/^[76][1-9][0-9]{7}$/.test(cleanedValue)) {
-      return Promise.reject("Enter valid phone number");
+      return Promise.reject(sut('valid_phone'));
     }
 
     return Promise.resolve();
@@ -213,12 +218,11 @@ const Save = ({
           "my-3": isEditMode,
         })}
       >
-        This process ensures that only qualified and experienced teachers gain
-        access to our online community.
+        {tprof('teacher_prof_modal_header')}
       </div>
 
       {isEditMode && (
-        <div className="text-xl font-black my-4">Change phone number</div>
+        <div className="text-xl font-black my-4">{tprof('change_phone_number')}</div>
       )}
 
       {!isEditMode && (
@@ -255,7 +259,7 @@ const Save = ({
           {
             required: true,
             message: (
-              <span className="text-xs">Please enter your phone number</span>
+              <span className="text-xs">{sut('enter_phone')}</span>
             ),
           },
           { validator: validateNumber },
@@ -264,7 +268,7 @@ const Save = ({
         validateFirst={true}
       >
         <Input
-          placeholder="Phone number"
+          placeholder={ht('phone')}
           addonBefore="+255"
           size="middle"
           className="text-xs"
@@ -281,7 +285,7 @@ const Save = ({
             rules={[
               {
                 required: true,
-                message: <span className="text-xs ">Language is required</span>,
+                message: <span className="text-xs ">{sut('language_required')}</span>,
               },
             ]}
           >
@@ -289,7 +293,7 @@ const Save = ({
               mode="multiple"
               size="middle"
               className="!text-xs "
-              placeholder="Select language(s)"
+              placeholder={sut('select_language')}
               maxTagCount={3}
               maxTagPlaceholder={(omittedValues) => `+ ${omittedValues.length}`}
             >
@@ -307,7 +311,7 @@ const Save = ({
               {
                 required: true,
                 message: (
-                  <span className="text-xs ">Subject(s) is required</span>
+                  <span className="text-xs ">{sut('subjects_required')}</span>
                 ),
               },
             ]}
@@ -316,7 +320,7 @@ const Save = ({
               mode="multiple"
               size="middle"
               className="!text-xs"
-              placeholder="Subjects you can teach"
+              placeholder={tprof('subjects_you_teach')}
               maxTagCount={2}
               maxTagPlaceholder={(omittedValues) => `+ ${omittedValues.length}`}
             >
@@ -334,7 +338,7 @@ const Save = ({
               {
                 required: true,
                 message: (
-                  <span className="text-xs ">Grade level(s) is required</span>
+                  <span className="text-xs ">{tprof('select_atleast_one_grade_level')}</span>
                 ),
               },
             ]}
@@ -345,7 +349,7 @@ const Save = ({
               className="!text-xs"
               maxTagCount={2}
               maxTagPlaceholder={(omittedValues) => `+ ${omittedValues.length}`}
-              placeholder="Levels you can teach"
+              placeholder={tprof('grade_levels')}
             >
               {grades?.map((level) => (
                 <Select.Option key={level.id} value={level.id}>
@@ -362,7 +366,7 @@ const Save = ({
               className="!text-xs"
               maxTagCount={1}
               maxTagPlaceholder={(omittedValues) => `+ ${omittedValues.length}`}
-              placeholder="Special groups you can teach (OPTIONAL)"
+              placeholder={tprof('special_groups')}
             >
               {special_needs?.map((special) => (
                 <Select.Option key={special.id} value={special.id}>
@@ -377,13 +381,13 @@ const Save = ({
             rules={[
               {
                 required: true,
-                message: <span className="text-xs ">Bio is required</span>,
+                message: <span className="text-xs ">{tprof('bio_required')}</span>,
               },
             ]}
           >
             <TextArea
               className="!text-xs !rounded-lg !p-1 !pl-2"
-              placeholder="Type your bio. This will be visible to students"
+              placeholder={tprof('type_bio')}
               autoSize={{ minRows: 3, maxRows: 5 }}
             />
           </Form.Item>
@@ -402,7 +406,7 @@ const Save = ({
           size="middle"
         >
           {!isUpdatingProfile ? (
-            <span className="flex items-center">Submit</span>
+            <span className="flex items-center">{sct('submit')}</span>
           ) : (
             <SlickSpinner size={14} color="white" />
           )}
@@ -410,7 +414,7 @@ const Save = ({
       </Form.Item>
 
       <p className="text-center text-gray-500 text-xs mt-4">
-        You can update your details anytime in your profile
+        {tprof('update_option')}
       </p>
     </Form>
   );

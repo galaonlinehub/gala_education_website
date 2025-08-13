@@ -3,93 +3,36 @@ import { GoHome } from "react-icons/go";
 import { GrDocumentStore } from "react-icons/gr";
 import { IoDiamond } from "react-icons/io5";
 import { LiaSchoolSolid } from "react-icons/lia";
-import {  MdEventAvailable, MdPayment } from "react-icons/md";
+import { MdEventAvailable, MdPayment } from "react-icons/md";
 
-export const footer_links = {
-  Services: [
-    {
-      name: "Tutoring",
-      link: "tutoring",
-    },
-    {
-      name: "Workshops",
-      link: "Workshops",
-    },
-    {
-      name: "Resources",
-      link: "Resources",
-    },
-    {
-      name: "Assesments",
-      link: "Assesments",
-    },
-    {
-      name: "Mentoring",
-      link: "Mentoring",
-    },
-    {
-      name: "Scholarships",
-      link: "Scholarships",
-    },
-    {
-      name: "Tutoring",
-      link: "tutoring",
-    },
-    {
-      name: "Community",
-      link: "Community",
-    },
-    {
-      name: "Support",
-      link: "Support",
-    },
-  ],
-  Community: [
-    {
-      name: "Forums",
-      link: "Forums",
-    },
-    {
-      name: "Resources",
-      link: "Resources",
-    },
-    {
-      name: "Events",
-      link: "Events",
-    },
-    {
-      name: "Mentorship",
-      link: "Mentorship",
-    },
-    {
-      name: "Support",
-      link: "Support",
-    },
-    {
-      name: "Feedback",
-      link: "Feedback",
-    },
-    {
-      name: "Collaboration",
-      link: "Collaboration",
-    },
-  ],
-  Help: [
-    {
-      name: "Support",
-      link: "Support",
-    },
-    {
-      name: "Troubleshooting",
-      link: "Troubleshooting",
-    },
-    {
-      name: "Contact Us",
-      link: `mailto`,
-    },
-  ],
-};
-
+export function getFooterLinks(t) {
+  return {
+    [t("services")]: [
+      { name: t("tutoring"), link: "tutoring" },
+      { name: t("workshops"), link: "workshops" },
+      { name: t("resources"), link: "resources" },
+      { name: t("assessments"), link: "assessments" },
+      { name: t("mentoring"), link: "mentoring" },
+      { name: t("scholarships"), link: "scholarships" },
+      { name: t("community"), link: "community" },
+      { name: t("support"), link: "support" }
+    ],
+    [t("community")]: [
+      { name: t("forums"), link: "forums" },
+      { name: t("resources"), link: "resources" },
+      { name: t("events"), link: "events" },
+      { name: t("mentorship"), link: "mentorship" },
+      { name: t("support"), link: "support" },
+      { name: t("feedback"), link: "feedback" },
+      { name: t("collaboration"), link: "collaboration" }
+    ],
+    [t("help")]: [
+      { name: t("support"), link: "support" },
+      { name: t("troubleshooting"), link: "troubleshooting" },
+      { name: t("contact_us"), link: `mailto` }
+    ]
+  };
+}
 
 
 export const adminLinks = [

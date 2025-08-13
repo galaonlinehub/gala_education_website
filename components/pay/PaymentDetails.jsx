@@ -6,6 +6,7 @@ import {
 } from "@ant-design/icons";
 import { useMutation } from "@tanstack/react-query";
 import { Button, Input, Card, Switch } from "antd";
+import { useTranslations } from "next-intl";
 import React, { useState, useEffect } from "react";
 import { CiCreditCard1, CiMobile4, CiCreditCardOff } from "react-icons/ci";
 import {
@@ -28,6 +29,9 @@ import notificationService from "../ui/notification/Notification";
 const PaymentDetails = () => {
   const { enrollMeCohort, enrollMeCohortIsFetching, enrollMeCohortError } =
     useEnroll();
+
+  const enroll_pay = useTranslations('enroll_payments');
+  const stprof = useTranslations('student_profile');
 
   if (enrollMeCohortIsFetching) {
     return (
@@ -67,12 +71,13 @@ const PaymentDetails = () => {
     );
   }
 
+
   console.log("enrollMeCohortDta", enrollMeCohort);
   return (
     <Card className="!flex !flex-col !items-start !justify-start !w-full !lg:w-1/2 !border-none">
       <div className="w-full mb-6">
         <div className="space-y-2">
-          <span className="text-sm text-gray-500">Total Amount</span>
+          <span className="text-sm text-gray-500">{enroll_pay('total_amount')}</span>
           <div className="flex items-baseline">
             <span className="text-3xl lg:text-5xl font-black bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-gray-600">
               Tshs {enrollMeCohort?.price?.toLocaleString()}
@@ -85,7 +90,7 @@ const PaymentDetails = () => {
         <div className="space-y-2">
           <div className="flex items-center space-x-2 text-gray-600">
             <FaUsers className="w-4 h-4" />
-            <span className="text-sm font-medium">Class Name </span>
+            <span className="text-sm font-medium">{enroll_pay('class_name')}</span>
           </div>
           <span className="font-bold text-xl line-clamp-2 w-full text-gray-800">
             {enrollMeCohort?.cohort_name}
@@ -94,7 +99,7 @@ const PaymentDetails = () => {
         <div className="space-y-2">
           <div className="flex items-center space-x-2 text-gray-600">
             <FaBookOpen className="w-4 h-4" />
-            <span className="text-sm font-medium">Topic</span>
+            <span className="text-sm font-medium">{enroll_pay('class_topic')}</span>
           </div>
           <span className="font-bold text-xl line-clamp-2 w-full text-gray-800">
             {enrollMeCohort?.topic_title}
@@ -104,7 +109,7 @@ const PaymentDetails = () => {
         <div className="space-y-2">
           <div className="flex items-center space-x-2 text-gray-600">
             <FaGraduationCap className="w-4 h-4" />
-            <span className="text-sm font-medium">Subject</span>
+            <span className="text-sm font-medium">{enroll_pay('class_subject')}</span>
           </div>
           <div className="font-semibold text-lg text-gray-800">
             {enrollMeCohort?.subject}
@@ -116,7 +121,7 @@ const PaymentDetails = () => {
             <div className="space-y-2">
               <span className="text-sm text-gray-600 flex items-center space-x-2">
                 <FaUser className="w-4 h-4" />
-                <span className="text-sm font-medium">Instructor</span>
+                <span className="text-sm font-medium">{stprof('instructor')}</span>
               </span>
               <div className="font-semibold text-lg text-gray-800 capitalize">
                 {enrollMeCohort?.instructor_name}
@@ -126,10 +131,10 @@ const PaymentDetails = () => {
             <div className="flex items-center space-x-2 text-gray-600 pt-1 border-t border-gray-200">
               <FaRegClock className="w-4 h-4" />
               <div className="flex items-baseline">
-                <span className="font-semibold text-lg">
+                {/* <span className="font-semibold text-lg">
                   {enrollMeCohort?.total_weeks}
-                </span>
-                <span className="ml-1 text-sm">Weeks</span>
+                </span> */}
+                <span className="ml-1 text-sm">{enroll_pay('weeks', { count: enrollMeCohort?.total_weeks })}</span>
               </div>
             </div>
           </div>
@@ -146,9 +151,11 @@ const MobilePay = () => {
   const { setEnrollPayStatus, setReference } = useEnrollPay();
   const { enrollMeCohort } = useEnroll();
 
+  const sut = useTranslations('sign_up');
+
   const messages = {
-    required: "Phone number is required",
-    invalid: "Please enter valid phone number",
+    required: sut('phone_required'),
+    invalid: sut('valid_phone'),
   };
 
   const isValidPhoneNumber = (number) => {
@@ -166,6 +173,9 @@ const MobilePay = () => {
     if (!isValidPhoneNumber(value)) return messages.invalid;
     return "";
   };
+
+  const enroll_pay = useTranslations('enroll_payments');
+  const ht = useTranslations('home_page');
 
   const handleKeyPress = (e) => {
     if (
@@ -259,14 +269,14 @@ const MobilePay = () => {
   return (
     <Card className="!border-none !w-full !lg:w-1/2 !h-full !bg-transparent ">
       <span className="font-black text-3xl lg:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-gray-600 pb-3 mb-8 inline-block">
-        Mobile Payment
+        {enroll_pay('mobile_payment')}
       </span>
       <form
         onSubmit={handleSubmit}
         className="flex flex-1 flex-col gap-6 !w-full"
       >
         <div className="flex flex-col gap-1 !w-full">
-          <span className="text-xs">Phone Number</span>
+          <span className="text-xs">{ht('phone')}</span>
           <Input
             className="!w-full"
             addonBefore="+255"
@@ -286,7 +296,7 @@ const MobilePay = () => {
                 {validationMessage}
               </span>
             )}
-            <span className="text-[10px] self-end">Example (752451811)</span>
+            <span className="text-[10px] self-end">{enroll_pay('example')} (752451811)</span>
           </div>
         </div>
         <Button
@@ -295,7 +305,7 @@ const MobilePay = () => {
           htmlType="submit"
           className="!flex !w-full !items-center !justify-center !gap-2 !text-white !bg-gradient-to-r from-gray-800 to-gray-600 !text-[10px] !border-transparent !hover:border-transparent"
         >
-          Request Payment <GoShieldCheck />
+          {enroll_pay('request_payment')} <GoShieldCheck />
         </Button>
       </form>
     </Card>
@@ -303,10 +313,13 @@ const MobilePay = () => {
 };
 
 const PayForm = () => {
+
+  const enroll_pay = useTranslations('enroll_payments')
+
   return (
     <Card className="!border-none !w-full !lg:w-1/2 !h-full !bg-transparent ">
       <span className="font-black text-3xl lg:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-gray-600 pb-3 mb-8 inline-block">
-        Card Payment
+        {enroll_pay('card_payment')}
       </span>
       <div className="flex flex-col gap-6">
         <div className="relative">
@@ -315,12 +328,12 @@ const PayForm = () => {
           <div className="flex flex-col gap-6">
             <Input
               prefix={<CreditCardOutlined />}
-              placeholder="Card Number"
+              placeholder={enroll_pay('card_number')}
               disabled
             />
             <Input
               prefix={<UserOutlined />}
-              placeholder="Card Holder Name"
+              placeholder={enroll_pay('card_holder')}
               disabled
             />
             <div className="flex justify-between gap-6">
@@ -348,13 +361,13 @@ const PayForm = () => {
                 "linear-gradient(to right, rgb(31, 41, 55), rgb(75, 85, 99))",
             }}
           >
-            Pay
+            {enroll_pay('pay')}
           </Button>
         </div>
 
         <div className="text-black mt-2 text-[12px] flex flex-col items-center gap-1">
           <CiCreditCardOff size={40} />
-          Card payment is currently unavailable
+          {enroll_pay('card_payment_unavailbale')}
         </div>
       </div>
     </Card>
@@ -368,6 +381,8 @@ const SwitchPay = () => {
     setMobilePay((isMobile) => !isMobile);
   };
 
+  const enroll_pay = useTranslations('enroll_payments')
+
   return (
     <div className="w-3/4 self-center flex items-center justify-center">
       <Switch
@@ -375,13 +390,13 @@ const SwitchPay = () => {
         checked={mobilePay}
         checkedChildren={
           <div className="flex items-center justify-center gap-2 items-xs">
-            Mobile
+            {enroll_pay('mobile')}
             <CiMobile4 size={15} />
           </div>
         }
         unCheckedChildren={
           <div className="flex items-center justify-center gap-2 items-xs">
-            Card
+            {enroll_pay('card')}
             <CiCreditCard1 size={15} />
           </div>
         }

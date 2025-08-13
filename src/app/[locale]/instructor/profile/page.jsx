@@ -46,6 +46,7 @@ import {
   Row,
   Col,
 } from "antd";
+import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 import { BsPerson, BsPersonBadge } from "react-icons/bs";
 import { GrGroup } from "react-icons/gr";
@@ -62,6 +63,7 @@ import { useReviews } from "@/hooks/data/useReviews";
 import { useSpecialNeeds } from "@/hooks/data/useSpecialNeeds";
 import { useSubject } from "@/hooks/data/useSubject";
 import { useUser } from "@/hooks/data/useUser";
+
 
 const { Content } = Layout;
 const { Option } = Select;
@@ -117,6 +119,12 @@ const TeacherProfile = () => {
     });
     setIsEditing(true);
   };
+
+  const tprof = useTranslations('teacher_profile')
+  const stprof = useTranslations('student_profile')
+  const tdash = useTranslations('teacher_dashboard')
+  const sot = useTranslations('sign_out')
+  const ht = useTranslations('home_page')
 
   const handleUpload = (info) => {
     message.destroy();
@@ -179,7 +187,7 @@ const TeacherProfile = () => {
       console.error("Error updating profile:", error);
       message.error(
         "Failed to update profile: " +
-          (error.response?.data?.message || "Unknown error")
+        (error.response?.data?.message || "Unknown error")
       );
     }
   };
@@ -224,7 +232,7 @@ const TeacherProfile = () => {
           <div className="inline-flex items-center gap-2 bg-white/70 backdrop-blur-sm rounded-full px-6 py-3 shadow-lg border border-white/20">
             <EyeOutlined className="text-blue-600" />
             <Text className="text-sm font-medium text-gray-700">
-              Your profile is visible to students
+              {tprof('visible_profile')}
             </Text>
           </div>
         </div>
@@ -234,14 +242,12 @@ const TeacherProfile = () => {
             <div className="absolute inset-0  backdrop-blur-sm"></div>
 
             <div
-              className={`relative ${
-                isMobile ? "text-center" : "flex items-center justify-between"
-              } text-white`}
+              className={`relative ${isMobile ? "text-center" : "flex items-center justify-between"
+                } text-white`}
             >
               <div
-                className={`flex ${
-                  isMobile ? "flex-col items-center" : "items-center gap-4"
-                }`}
+                className={`flex ${isMobile ? "flex-col items-center" : "items-center gap-4"
+                  }`}
               >
                 <div className="relative">
                   <Avatar
@@ -262,7 +268,7 @@ const TeacherProfile = () => {
                   <div className="flex items-center gap-2 justify-center lg:justify-start">
                     <Badge status="processing" />
                     <div className="text-white/90 text-sm capitalize">
-                      {user?.role}
+                      {stprof(user?.role)}
                     </div>
                   </div>
                   {user?.partner_school != null && (
@@ -282,11 +288,10 @@ const TeacherProfile = () => {
                   size="large"
                   icon={<EditOutlined />}
                   onClick={handleEdit}
-                  className={`${
-                    isMobile ? "w-full mt-6" : ""
-                  } bg-white/20 border-white/30 hover:bg-white/30 backdrop-blur-sm`}
+                  className={`${isMobile ? "w-full mt-6" : ""
+                    } bg-white/20 border-white/30 hover:bg-white/30 backdrop-blur-sm`}
                 >
-                  Edit Profile
+                  {tprof('edit_profile')}
                 </Button>
               ) : (
                 <Space
@@ -299,14 +304,14 @@ const TeacherProfile = () => {
                     onClick={handleSave}
                     className="bg-green-500 border-green-500 hover:bg-green-600"
                   >
-                    Save Changes
+                    {stprof('save')}
                   </Button>
                   <Button
                     size="large"
                     onClick={handleCancel}
                     className="bg-white/20 border-white/30 text-white hover:bg-white/30"
                   >
-                    Cancel
+                    {sot('cancel')}
                   </Button>
                 </Space>
               )}
@@ -318,7 +323,7 @@ const TeacherProfile = () => {
           <Col xs={12} sm={6}>
             <Card className="text-center shadow-lg hover:shadow-xl transition-shadow bg-gradient-to-r border border-blue-400 text-white">
               <Statistic
-                title={<span className="text-black">Students</span>}
+                title={<span className="text-black">{tdash('students')}</span>}
                 value={user?.student_count}
                 prefix={<TeamOutlined className="text-blue-500" />}
                 valueStyle={{
@@ -331,7 +336,7 @@ const TeacherProfile = () => {
           <Col xs={12} sm={6}>
             <Card className="text-center border border-green-400 shadow-lg hover:shadow-xl transition-shadow bg-gradient-to-r text-white">
               <Statistic
-                title={<span className="text-black">Active Classes</span>}
+                title={<span className="text-black">{tdash('active_classes')}</span>}
                 value={user?.active_cohorts}
                 prefix={<MdClass className="text-green-500" />}
                 valueStyle={{
@@ -344,7 +349,7 @@ const TeacherProfile = () => {
           <Col xs={12} sm={6}>
             <Card className="text-center border border-yellow-400 shadow-lg hover:shadow-xl transition-shadow bg-gradient-to-r text-white">
               <Statistic
-                title={<span className="text-black">Rating</span>}
+                title={<span className="text-black">{tprof('rating')}</span>}
                 value={instructorSummary?.average_rating || 0}
                 precision={1}
                 prefix={<StarOutlined className="text-yellow-500" />}
@@ -359,7 +364,7 @@ const TeacherProfile = () => {
           <Col xs={12} sm={6}>
             <Card className="text-center border border-purple-400 shadow-lg hover:shadow-xl transition-shadow bg-gradient-to-r text-white">
               <Statistic
-                title={<span className="text-black">Reviews</span>}
+                title={<span className="text-black">{tprof('reviews')}</span>}
                 value={instructorSummary?.total_reviews || 0}
                 prefix={<MessageOutlined className="text-purple-500" />}
                 valueStyle={{
@@ -379,7 +384,7 @@ const TeacherProfile = () => {
                   <UserOutlined className="text-blue-600 text-lg" />
                 </div>
                 <Title level={4} className="!mb-0 text-gray-800">
-                  Personal Information
+                  {tprof('personal_info')}
                 </Title>
               </div>
 
@@ -389,7 +394,7 @@ const TeacherProfile = () => {
                     <BsPerson className="text-gray-600" />
                     <div>
                       <Text className="text-xs text-gray-500 block">
-                        First Name
+                        {ht('first_name')}
                       </Text>
                       <Text className="font-medium">{user?.first_name}</Text>
                     </div>
@@ -400,7 +405,7 @@ const TeacherProfile = () => {
                     <BsPerson className="text-gray-600" />
                     <div>
                       <Text className="text-xs text-gray-500 block">
-                        Last Name
+                        {ht('second_name')}
                       </Text>
                       <Text className="font-medium">{user?.last_name}</Text>
                     </div>
@@ -410,7 +415,7 @@ const TeacherProfile = () => {
                   <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
                     <MailOutlined className="text-gray-600" />
                     <div>
-                      <Text className="text-xs text-gray-500 block">Email</Text>
+                      <Text className="text-xs text-gray-500 block">{ht('email')}</Text>
                       <Text className="font-medium break-all">
                         {user?.email}
                       </Text>
@@ -421,7 +426,7 @@ const TeacherProfile = () => {
                   <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
                     <PhoneOutlined className="text-gray-600" />
                     <div>
-                      <Text className="text-xs text-gray-500 block">Phone</Text>
+                      <Text className="text-xs text-gray-500 block">{ht('phone')}</Text>
                       <Text className="font-medium">{user?.phone_number}</Text>
                     </div>
                   </div>
@@ -437,7 +442,7 @@ const TeacherProfile = () => {
                       <MdSubject className="text-blue-600" />
                     </div>
                     <Title level={5} className="!mb-0">
-                      Subjects You Teach
+                      {tprof('subjects_you_teach')}
                     </Title>
                   </div>
                   <div className="flex flex-wrap gap-2">
@@ -461,7 +466,7 @@ const TeacherProfile = () => {
                       <GrGroup className="text-orange-600" />
                     </div>
                     <Title level={5} className="!mb-0">
-                      Grade Levels
+                      {tprof('grade_levels')}
                     </Title>
                   </div>
                   <div className="flex flex-wrap gap-2">
@@ -485,7 +490,7 @@ const TeacherProfile = () => {
                       <MdClass className="text-green-600" />
                     </div>
                     <Title level={5} className="!mb-0">
-                      Active Classes
+                      {tdash('active_classes')}
                     </Title>
                   </div>
                   <div className="flex flex-wrap gap-2">
@@ -509,7 +514,7 @@ const TeacherProfile = () => {
                       <TbDisabled className="text-red-600" />
                     </div>
                     <Title level={5} className="!mb-0">
-                      Special Groups
+                      {tprof('special_groups')}
                     </Title>
                   </div>
                   <div className="flex flex-wrap gap-2">
@@ -532,7 +537,7 @@ const TeacherProfile = () => {
                   <TrophyOutlined className="text-purple-600" />
                 </div>
                 <Title level={5} className="!mb-0">
-                  Certifications
+                  {tprof('certifications')}
                 </Title>
               </div>
               <div className="flex flex-wrap gap-2">
@@ -555,7 +560,7 @@ const TeacherProfile = () => {
                 <EditOutlined className="text-blue-600 text-lg" />
               </div>
               <Title level={4} className="!mb-0 text-gray-800">
-                Edit Profile
+                {tprof('edit_profile')}
               </Title>
             </div>
 
@@ -564,9 +569,9 @@ const TeacherProfile = () => {
                 <Col xs={24} md={12}>
                   <Form.Item
                     name="first_name"
-                    label="First Name"
+                    label={ht('first_name')}
                     rules={[
-                      { required: true, message: "First name is required" },
+                      { required: true, message: ht('enter_first_name') },
                     ]}
                   >
                     <Input placeholder="First Name" size="large" />
@@ -575,9 +580,9 @@ const TeacherProfile = () => {
                 <Col xs={24} md={12}>
                   <Form.Item
                     name="last_name"
-                    label="Last Name"
+                    label={ht('second_name')}
                     rules={[
-                      { required: true, message: "Last name is required" },
+                      { required: true, message: ht('enter_last_name') },
                     ]}
                   >
                     <Input placeholder="Last Name" size="large" />
@@ -587,7 +592,7 @@ const TeacherProfile = () => {
                   <Form.Item
                     initialValue={selectedSubjectIds}
                     name="subjects"
-                    label="Subjects you can teach"
+                    label={tprof('subjects_you_teach')}
                     rules={[
                       { required: true, message: "Select at least 1 subject" },
                     ]}
@@ -613,17 +618,17 @@ const TeacherProfile = () => {
                   <Form.Item
                     initialValue={selectedGradeIds}
                     name="grade_levels"
-                    label="Grade levels you can teach"
+                    label={tprof('grade_levels')}
                     rules={[
                       {
                         required: true,
-                        message: "Select at least 1 grade level",
+                        message: tprof('select_atleast_one_grade_level'),
                       },
                     ]}
                   >
                     <Select
                       mode="multiple"
-                      placeholder="Select grades"
+                      placeholder={tprof('select_grades')}
                       size="large"
                       maxTagCount={2}
                       maxTagPlaceholder={(omittedValues) =>
@@ -642,17 +647,17 @@ const TeacherProfile = () => {
                   <Form.Item
                     initialValue={selectedSpecialNeedsIds}
                     name="special_needs"
-                    label="Special groups you can teach"
+                    label={tprof('special_groups')}
                     rules={[
                       {
                         required: true,
-                        message: "Select at least 1 special group",
+                        message: tprof('select_atleast_one_special_group'),
                       },
                     ]}
                   >
                     <Select
                       mode="multiple"
-                      placeholder="Select special groups"
+                      placeholder={tprof('select_special_groups')}
                       size="large"
                       maxTagCount={3}
                       maxTagPlaceholder={(omittedValues) =>
@@ -668,7 +673,7 @@ const TeacherProfile = () => {
                   </Form.Item>
                 </Col>
                 <Col xs={24}>
-                  <Form.Item label="Profile Picture">
+                  <Form.Item label={tprof('profile_pic')}>
                     <div className="flex items-center gap-4">
                       <Upload
                         showUploadList={false}
@@ -708,7 +713,7 @@ const TeacherProfile = () => {
                       </Upload>
                       <div>
                         <Text className="text-sm text-gray-600">
-                          Click to upload new profile picture
+                          {tprof('click_to_upload_new_pic')}
                         </Text>
                       </div>
                     </div>

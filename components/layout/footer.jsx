@@ -1,11 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
 import clsx from "clsx";
+import { useTranslations } from "next-intl";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { LuCircleCheckBig, LuX } from "react-icons/lu";
 
 import { apiPost } from "@/services/api/api_service";
-import { footer_links } from "@/utils/data/links";
+import { footer_links, getFooterLinks } from "@/utils/data/links";
 import FooterVectors from "@/utils/vector-svg/FooterVectors";
 
 import SlickSpinner from "../ui/loading/template/SlickSpinner";
@@ -43,24 +44,31 @@ function Footer() {
           "Unexpected error occurred, Try again later",
       }));
     },
-    onSettled: () => {},
+    onSettled: () => { },
   });
 
   const onSubmit = (data) => {
     emailSubscriptionMutation.mutate(data);
   };
 
+  const footer = useTranslations('footer');
+  const ht = useTranslations('home_page');
+  const sut = useTranslations('sign_up');
+  const t = useTranslations("footer");
+  const footer_links = getFooterLinks(t);
+
+
   return (
     <div className="bg-[#0d0d0d] min-h-screen/2 py-24 px-6 relative bottom-0">
       <div className="max-w-screen-2xl mx-auto h-full justify-start flex lg:items-center flex-col lg:flex-row lg:px-16 lg:justify-between w-full">
         <div className="text-white lg:w-[30rem] md:w-[40rem] items-center justify-center flex-col">
-          <h1 className="font-black text-sm mb-2">Join the Mailing List</h1>
+          <h1 className="font-black text-sm mb-2">{footer('join_mailing_list')}</h1>
           <div className="text-xs">
             <h2>
-              Be the first to experience content, receive real-time updates and
+              {footer('be_the_first')}
             </h2>
             <h2>
-              participate in live events. Sign up now to join the mailing list.
+              {footer('sign_up_now')}
             </h2>
           </div>
           <form
@@ -72,7 +80,7 @@ function Footer() {
                 className={clsx(
                   "text-xs border-[0.1px] p-2 w-full rounded-md mb-2 text-center",
                   status.type === "success" &&
-                    " border-green-600 text-green-600",
+                  " border-green-600 text-green-600",
                   status.type === "error" && "border-red-500 text-red-500"
                 )}
               >
@@ -82,15 +90,15 @@ function Footer() {
             <div className="flex w-full gap-4">
               <div className="flex flex-col w-[75%]">
                 <input
-                  placeholder="Email"
+                  placeholder={ht('email')}
                   autoCapitalize="off"
                   autoCorrect="off"
                   autoComplete="new-password"
                   {...register("email", {
-                    required: "Please enter your email",
+                    required: sut('enter_email'),
                     pattern: {
                       value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                      message: "Please enter a valid email address",
+                      message: sut('valid_email_address'),
                     },
                     onChange: () => {
                       setStatus({ type: "", message: "" });
@@ -102,8 +110,8 @@ function Footer() {
                     emailSubscriptionMutation.isSuccess
                       ? "border-green-700 text-green-700"
                       : emailSubscriptionMutation.isError
-                      ? "border-red-700 text-red-700"
-                      : "border-white text-white"
+                        ? "border-red-700 text-red-700"
+                        : "border-white text-white"
                   )}
                 />
                 {errors.email && (
@@ -123,8 +131,8 @@ function Footer() {
                   emailSubscriptionMutation.isSuccess
                     ? "bg-green-700 border-green-700 hover:bg-green-700 cursor-not-allowed"
                     : emailSubscriptionMutation.isError
-                    ? "bg-red-700 border-red-700 hover:bg-red-700 cursor-not-allowed"
-                    : "bg-gray-500 hover:bg-gray-600 border-white"
+                      ? "bg-red-700 border-red-700 hover:bg-red-700 cursor-not-allowed"
+                      : "bg-gray-500 hover:bg-gray-600 border-white"
                 )}
               >
                 {emailSubscriptionMutation.isPending ? (
@@ -132,15 +140,15 @@ function Footer() {
                 ) : emailSubscriptionMutation.isSuccess ? (
                   <div className="flex gap-1 items-center font-bold">
                     <LuCircleCheckBig strokeWidth={3} size={14} />
-                    JOINED
+                    {footer('joined')}
                   </div>
                 ) : emailSubscriptionMutation.isError ? (
                   <div className="flex gap-1 items-center">
                     <LuX strokeWidth={2.5} size={14} />
-                    TRY AGAIN
+                    {footer('try_again')}
                   </div>
                 ) : (
-                  "JOIN NOW"
+                  footer('join_now')
                 )}
               </button>
             </div>
@@ -148,14 +156,12 @@ function Footer() {
         </div>
         <div className="flex flex-col pt-10 pb-6 gap-y-12">
           <div className="flex flex-wrap !justify-between gap-x-12">
-            {Object.entries(footer_links).map(([item, links], itemKey) => (
-              <div key={itemKey}>
-                <h1 className="font-bold text-[#8C8B8D] py-2">{item}</h1>
+            {Object.entries(footer_links).map(([section, links], i) => (
+              <div key={i}>
+                <h1 className="text-white font-semibold text-sm">{section}</h1>
                 <ul>
-                  {links.map((item, i) => (
-                    <li key={i} className="text-white text-xs">
-                      {item.name}
-                    </li>
+                  {links.map((linkItem, idx) => (
+                    <li className="text-white text-xs" key={idx}>{linkItem.name}</li>
                   ))}
                 </ul>
               </div>
@@ -164,10 +170,7 @@ function Footer() {
           </div>
           <div>
             <p className="text-white text-xs">
-              © {currentYear} Gala Education. All rights reserved. All content,
-              trademarks, and intellectual <br /> property on this website are
-              protected by law. Unauthorized use or reproduction of <br /> any
-              materials without prior written consent is strictly prohibited.
+              © {currentYear} {footer('all_rights_reserved_1')} <br /> {footer('all_rights_reserved_2')} <br /> {footer('all_rights_reserved_3')}
             </p>
           </div>
         </div>

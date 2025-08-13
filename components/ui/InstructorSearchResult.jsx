@@ -26,6 +26,7 @@ import {
 } from "antd";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 import { useCallback } from "react";
 import { BsGlobe } from "react-icons/bs";
@@ -59,7 +60,6 @@ const InstructorSearchResult = ({ details }) => {
   const { user } = useUser();
   const router = useRouter();
   const [openReviewsModal, setOpenReviewsModal] = useState(false);
-  const [instructorId, setInstructorId] = useState();
 
   const {
     instructorReviews,
@@ -77,8 +77,6 @@ const InstructorSearchResult = ({ details }) => {
     setEnrollMe(true);
     setEnrollCohort(idx);
   };
-
-  console.log("DETAILS:..", details);
 
   const hasFreeTrial = user?.has_free_trial;
 
@@ -170,23 +168,36 @@ const InstructorSearchResult = ({ details }) => {
     }
   };
 
-  const getStatusText = (status) => {
-    switch (status) {
-      case "missed":
-        return "Missed";
-      case "completed":
-        return "Completed";
-      case "upcoming":
-        return "Upcoming";
-      default:
-        return status;
-    }
-  };
 
   const handleSeeLessonPlan = (cohortId, cohortName) => {
     showLessonPlan(cohortId);
     setCohortName(cohortName);
   };
+
+  const tproft = useTranslations('teacher_mini_profile');
+  const cct = useTranslations('class_creation');
+  const sct = useTranslations('student_classes');
+  const lct = useTranslations('live_class');
+  const ht = useTranslations('home_page');
+  const rvt = useTranslations('reviews');
+  const sot = useTranslations('sign_out');
+  const lpt = useTranslations('lesson_plan');
+  const tdash = useTranslations('teacher_dashboard')
+
+  const getStatusText = (status) => {
+    switch (status) {
+      case "missed":
+        return lpt('missed_this');
+      case "completed":
+        return lpt('completed_this');
+      case "upcoming":
+        return lpt('upcoming_this');
+      default:
+        return status;
+    }
+  };
+
+
 
   return (
     <div className="w-full max-w-full mx-auto space-y-4 sm:space-y-6 lg:space-y-8 text-xs overflow-hidden p-3 md:p-12">
@@ -196,7 +207,7 @@ const InstructorSearchResult = ({ details }) => {
           <FaUsers size={12} className="sm:w-4 sm:h-4 flex-shrink-0" />
           <span className="whitespace-nowrap text-[10px] sm:text-xs truncate">
             {details.student_count}
-            <span className="hidden xs:inline"> Students</span>
+            <span className="hidden xs:inline"> {tproft('students')}</span>
           </span>
         </div>
 
@@ -250,7 +261,7 @@ const InstructorSearchResult = ({ details }) => {
                   />
                 </div>
 
-                <Badge
+                {/* <Badge
                   count={
                     <div className="!text-[8px] sm:!text-[10px] !flex !justify-center !items-center !gap-1 rounded-full bg-yellow-500 !px-1 sm:!px-2 !py-1 !text-white !font-extralight whitespace-nowrap">
                       <FaRegStar size={8} className="sm:w-3 sm:h-3" />
@@ -258,14 +269,14 @@ const InstructorSearchResult = ({ details }) => {
                       <span className="xs:hidden">Top Rated</span>
                     </div>
                   }
-                />
+                /> */}
                 <Badge
                   onClick={handleViewReviews}
                   className="!cursor-pointer"
                   count={
                     <div className="!text-[8px] sm:!text-[10px] !flex !justify-center !items-center !gap-1 rounded-full bg-black !px-1 sm:!px-2 !py-1 !text-white !font-extralight whitespace-nowrap">
                       <LuEye size={8} className="sm:w-3 sm:h-3" />
-                      <span className="xs:inline">View reviews</span>
+                      <span className="xs:inline">{tproft('view_reviews')}</span>
                     </div>
                   }
                 />
@@ -307,7 +318,7 @@ const InstructorSearchResult = ({ details }) => {
             </div>
 
             <div className="flex-shrink-0 flex justify-center sm:justify-end">
-              <Tooltip title={`Chat with ${details?.name}`}>
+              <Tooltip title={`${tproft('chat_with')} ${details?.name}`}>
                 <div className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-all duration-200 hover:scale-110 cursor-pointer">
                   <TbMessage
                     className="text-lg sm:text-xl"
@@ -325,11 +336,12 @@ const InstructorSearchResult = ({ details }) => {
         open={openReviewsModal}
         onCancel={closeModal}
         onOk={closeModal}
+        cancelText={sot('cancel')}
         width={800}
         title={
           <div className="w-full flex justify-center">
             <Title level={4} style={{ margin: 0 }}>
-              Reviews for {details?.name}
+              {rvt('reviews_for')}: {details?.name}
             </Title>
           </div>
         }
@@ -353,7 +365,7 @@ const InstructorSearchResult = ({ details }) => {
                 />
                 <div>
                   <Text type="secondary">
-                    Based on {instructorReviews?.length} reviews
+                    {rvt('based_on_reviews', { count: instructorReviews?.length ?? 0 })}
                   </Text>
                 </div>
               </div>
@@ -421,7 +433,7 @@ const InstructorSearchResult = ({ details }) => {
             <Title level={3} style={{ margin: 0, color: "#001840" }}>
               📚 {cohortName}
             </Title>
-            <Text type="secondary">Weekly Session Overview</Text>
+            <Text type="secondary">{lpt('weekly_session_overview')}</Text>
           </div>
         }
         open={isModalVisible}
@@ -435,7 +447,7 @@ const InstructorSearchResult = ({ details }) => {
             type="primary"
             onClick={handleLessonPlanOk}
           >
-            Close
+            {sot('cancel')}
           </Button>,
         ]}
         styles={{ body: { padding: "12px" } }}
@@ -467,7 +479,7 @@ const InstructorSearchResult = ({ details }) => {
                       style={{ display: "flex", alignItems: "center", gap: 8 }}
                     >
                       <Text strong style={{ fontSize: "16px" }}>
-                        Week {item.week}
+                        {sct('week')} {item.week}
                       </Text>
                       {item.current && (
                         <Badge status="processing" text="Current" />
@@ -491,7 +503,7 @@ const InstructorSearchResult = ({ details }) => {
                     </Space>
 
                     <Text type="secondary" style={{ fontSize: "12px" }}>
-                      Duration: {item.duration}
+                      {cct('duration')}: {item.duration}
                     </Text>
                   </Space>
                 </Col>
@@ -517,7 +529,7 @@ const InstructorSearchResult = ({ details }) => {
           <Row gutter={[16, 16]} style={{ textAlign: "center" }}>
             <Col xs={24} sm={24} md={8} lg={8} xl={8}>
               <Card size="small" style={{ backgroundColor: "#e7feff" }}>
-                <Text strong>Total Sessions</Text>
+                <Text strong>{lpt('total_sessions')}</Text>
                 <div
                   style={{
                     fontSize: "24px",
@@ -531,7 +543,7 @@ const InstructorSearchResult = ({ details }) => {
             </Col>
             <Col xs={24} sm={24} md={8} lg={8} xl={8}>
               <Card size="small" style={{ backgroundColor: "#fff1f0" }}>
-                <Text strong>Missed</Text>
+                <Text strong>{lpt('missed')}</Text>
                 <div
                   style={{
                     fontSize: "24px",
@@ -548,7 +560,7 @@ const InstructorSearchResult = ({ details }) => {
             </Col>
             <Col xs={24} sm={24} md={8} lg={8} xl={8}>
               <Card size="small" style={{ backgroundColor: "#f6ffed" }}>
-                <Text strong>Duration Each</Text>
+                <Text strong>{lpt('duration_each')}</Text>
                 <div
                   style={{
                     fontSize: "24px",
@@ -620,7 +632,7 @@ const InstructorSearchResult = ({ details }) => {
                         className="sm:w-3 sm:h-3 flex-shrink-0"
                       />
                       <span className="truncate">
-                        Duration: {cohort?.total_weeks}w
+                        {cct('duration')}: {cohort?.total_weeks}w
                       </span>
                     </div>
                     <div className="flex border border-black/10 bg-white px-2 py-1 items-center justify-center text-[8px] sm:text-[10px] rounded-sm gap-1 font-bold transition-all duration-200 hover:bg-gray-50">
@@ -629,7 +641,7 @@ const InstructorSearchResult = ({ details }) => {
                         className="sm:w-3 sm:h-3 flex-shrink-0"
                       />
                       <span className="truncate">
-                        Enrolled: {cohort?.total_enrolled_students}
+                        {lct('enrolled')}: {cohort?.total_enrolled_students}
                       </span>
                     </div>
                     <div className="flex border border-black/10 bg-white px-2 py-1 items-center justify-center text-[8px] sm:text-[10px] rounded-sm gap-1 font-bold transition-all duration-200 hover:bg-gray-50 xs:col-span-2 sm:col-span-1">
@@ -638,7 +650,7 @@ const InstructorSearchResult = ({ details }) => {
                         className="sm:w-3 sm:h-3 flex-shrink-0"
                       />
                       <span className="truncate">
-                        Start date: {cohort?.start_date}
+                        {cct('start_date')}: {cohort?.start_date}
                       </span>
                     </div>
                   </div>
@@ -655,12 +667,12 @@ const InstructorSearchResult = ({ details }) => {
                     className="!text-xs !bg-white !text-black !border-black !border-[0.5px] hover:!border-transparent font-semibold hover:!bg-gray-600 hover:!text-white hover:!scale-[1.02]"
                     block
                   >
-                    See lesson Plan
+                    {cct('lesson_plan')}
                   </Button>
 
                   <Tooltip
                     title={
-                      hasFreeTrial ? "This is only available in Premium" : ""
+                      hasFreeTrial ? tdash('only_in_premium') : ""
                     }
                   >
                     <Button
@@ -673,15 +685,15 @@ const InstructorSearchResult = ({ details }) => {
                       className={clsx(
                         "!w-full !bg-black  !border-transparent hover:!border-transparent !text-[10px] sm:!text-xs !py-1 sm:!py-2 !transition-all !duration-200 hover:!bg-gray-800 hover:!scale-[1.02] hover:!shadow-md !text-white hover:!text-white",
                         hasFreeTrial &&
-                          "!bg-gray-300 hover:!bg-gray-300 !text-gray-500 hover:!text-gray-500 hover:!scale-[1] cursor-not-allowed",
+                        "!bg-gray-300 hover:!bg-gray-300 !text-gray-500 hover:!text-gray-500 hover:!scale-[1] cursor-not-allowed",
                         cohort?.is_enrolled &&
-                          "!bg-green-700 hover:!bg-green-700 hover:!scale-[1] cursor-not-allowed !font-bold !text-base"
+                        "!bg-green-700 hover:!bg-green-700 hover:!scale-[1] cursor-not-allowed !font-bold !text-base"
                       )}
                     >
                       {cohort?.is_enrolled ? (
-                        <>You Are Enrolled In This Cohort</>
+                        <>{tproft('you_are_enrolled')}</>
                       ) : (
-                        <>Enroll Now</>
+                        <>{ht('enroll_now')}</>
                       )}
                     </Button>
                   </Tooltip>

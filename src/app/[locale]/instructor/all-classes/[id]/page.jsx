@@ -45,6 +45,7 @@ import {
 } from "antd";
 import dayjs from "dayjs";
 import { useParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import React, { useEffect, useState } from "react";
 import { FaMoneyBillWave } from "react-icons/fa";
 import { FcCalendar } from "react-icons/fc";
@@ -111,118 +112,24 @@ const ClassDetailsPage = () => {
 
   const { enrolledStudents } = useCohortEnrolledStudents(cohortId);
 
+  const dat = useTranslations('day_abbrev');
+
   const getChosenDays = (timeslots) => {
     if (!timeslots) return [];
 
     const dayMap = {
-      Monday: "Mon",
-      Tuesday: "Tue",
-      Wednesday: "Wed",
-      Thursday: "Thu",
-      Friday: "Fri",
-      Saturday: "Sat",
-      Sunday: "Sun",
+      Monday: dat('mon'),
+      Tuesday: dat('tue'),
+      Wednesday: dat('wed'),
+      Thursday: dat('thu'),
+      Friday: dat('fri'),
+      Saturday: dat('sat'),
+      Sunday: dat('sun'),
     };
 
     return timeslots.map((slot) => dayMap[slot.day] || slot.day);
   };
-  console.log("Enrolled students", enrolledStudents);
-  console.log("COHORT DETAILS", cohortDetails);
 
-  const classData = {
-    students: [
-      {
-        id: 1,
-        name: "Emma Thompson",
-        email: "emma.t@example.com",
-        grade: "10",
-        attendance: "95%",
-        lastAttended: "Apr 10, 2025",
-        status: "Active",
-      },
-      {
-        id: 2,
-        name: "David Wilson",
-        email: "david.w@example.com",
-        grade: "11",
-        attendance: "88%",
-        lastAttended: "Apr 10, 2025",
-        status: "Active",
-      },
-      {
-        id: 3,
-        name: "Sophia Martinez",
-        email: "sophia.m@example.com",
-        grade: "9",
-        attendance: "100%",
-        lastAttended: "Apr 10, 2025",
-        status: "Active",
-      },
-      {
-        id: 4,
-        name: "Ethan Johnson",
-        email: "ethan.j@example.com",
-        grade: "12",
-        attendance: "75%",
-        lastAttended: "Apr 8, 2025",
-        status: "At risk",
-      },
-      {
-        id: 5,
-        name: "Olivia Brown",
-        email: "olivia.b@example.com",
-        grade: "10",
-        attendance: "92%",
-        lastAttended: "Apr 10, 2025",
-        status: "Active",
-      },
-      {
-        id: 6,
-        name: "William Davis",
-        email: "william.d@example.com",
-        grade: "11",
-        attendance: "65%",
-        lastAttended: "Apr 3, 2025",
-        status: "At risk",
-      },
-      {
-        id: 7,
-        name: "Ava Miller",
-        email: "ava.m@example.com",
-        grade: "9",
-        attendance: "98%",
-        lastAttended: "Apr 10, 2025",
-        status: "Active",
-      },
-      {
-        id: 8,
-        name: "James Garcia",
-        email: "james.g@example.com",
-        grade: "10",
-        attendance: "82%",
-        lastAttended: "Apr 8, 2025",
-        status: "Active",
-      },
-      {
-        id: 9,
-        name: "Isabella Rodriguez",
-        email: "isabella.r@example.com",
-        grade: "12",
-        attendance: "90%",
-        lastAttended: "Apr 10, 2025",
-        status: "Active",
-      },
-      {
-        id: 10,
-        name: "Logan Wilson",
-        email: "logan.w@example.com",
-        grade: "11",
-        attendance: "78%",
-        lastAttended: "Apr 5, 2025",
-        status: "At risk",
-      },
-    ],
-  };
 
   const handleUpdateTime = (lesson) => {
     setSelectedLesson(lesson);
@@ -233,12 +140,6 @@ const ClassDetailsPage = () => {
     setTimeModalVisible(true);
   };
 
-  const handleUpdatePrice = () => {
-    priceForm.setFieldsValue({
-      price: parseFloat(classData.price.replace("$", "")),
-    });
-    setPriceModalVisible(true);
-  };
 
   const handleViewStudents = () => {
     setStudentsModalVisible(true);
@@ -267,6 +168,10 @@ const ClassDetailsPage = () => {
     "Saturday",
     "Sunday",
   ];
+
+  const act = useTranslations('all_classes');
+  const cct = useTranslations('class_creation');
+  const dayt = useTranslations('day');
 
   // Students table columns
   const studentsColumns = [
@@ -371,7 +276,7 @@ const ClassDetailsPage = () => {
                             {cohortDetails?.grade_level}
                           </Tag>
                           <Tag icon={<TeamOutlined />} color="cyan">
-                            {cohortDetails?.total_enrolled_students} Students
+                            {cohortDetails?.total_enrolled_students} {act('students')}
                           </Tag>
                         </Space>
 
@@ -405,7 +310,7 @@ const ClassDetailsPage = () => {
                         <Statistic
                           title={
                             <span className="text-xs sm:text-sm">
-                              Start Date
+                              {cct('start_date')}
                             </span>
                           }
                           value={cohortDetails?.start_date}
@@ -417,7 +322,7 @@ const ClassDetailsPage = () => {
                       <Col span={12}>
                         <Statistic
                           title={
-                            <span className="text-xs sm:text-sm">End Date</span>
+                            <span className="text-xs sm:text-sm">{cct('end_date')}</span>
                           }
                           value={cohortDetails?.end_date}
                           prefix={<FcCalendar />}
@@ -429,7 +334,7 @@ const ClassDetailsPage = () => {
                         <Statistic
                           title={
                             <span className="text-xs sm:text-sm">
-                              Class size
+                              {act('class_size')}
                             </span>
                           }
                           value={`${cohortDetails?.instructor_total_students}`}
@@ -450,7 +355,7 @@ const ClassDetailsPage = () => {
                         <Statistic
                           title={
                             <span className="text-xs sm:text-sm">
-                              Lessons per week
+                              {act('lessons_per_week')}
                             </span>
                           }
                           value={cohortDetails?.time_slots.length}
@@ -479,7 +384,7 @@ const ClassDetailsPage = () => {
                 <Card
                   title={
                     <span className="text-xs sm:text-sm lg:text-base">
-                      <InfoCircleOutlined /> Description
+                      <InfoCircleOutlined /> {cct('description')}
                     </span>
                   }
                   bordered={false}
@@ -494,7 +399,7 @@ const ClassDetailsPage = () => {
                 <Card
                   title={
                     <span className="text-xs sm:text-sm lg:text-base">
-                      <ScheduleOutlined /> Class Schedule
+                      <ScheduleOutlined /> {cct('schedule')}
                     </span>
                   }
                   bordered={false}
@@ -514,7 +419,7 @@ const ClassDetailsPage = () => {
                           whiteSpace: "nowrap",
                         }}
                       >
-                        {lesson.day} : {lesson.start_time}
+                       {dayt(lesson.day.toLowerCase())} : {lesson.start_time}
                       </Tag>
                     ))}
                   </div>
@@ -526,7 +431,7 @@ const ClassDetailsPage = () => {
                 <Card
                   title={
                     <span className="text-xs sm:text-sm lg:text-base">
-                      <InfoCircleOutlined /> Class Management
+                      <InfoCircleOutlined /> {act('class_management')}
                     </span>
                   }
                   bordered={false}
@@ -544,7 +449,7 @@ const ClassDetailsPage = () => {
                       onClick={handleViewStudents}
                       className="text-xs sm:text-sm bg-[#001840] hover:!bg-blue-900"
                     >
-                      View Students
+                      {act('view_students')}
                     </Button>
 
                     <Button
@@ -552,7 +457,7 @@ const ClassDetailsPage = () => {
                       icon={<MdOutlineFileUpload />}
                       className="text-xs sm:text-sm"
                     >
-                      Upload Assignment
+                      {act('upload_assignment')}
                     </Button>
                   </Space>
                 </Card>
@@ -561,7 +466,7 @@ const ClassDetailsPage = () => {
                 <Card
                   title={
                     <span className="text-xs sm:text-sm lg:text-base">
-                      <InfoCircleOutlined /> Quick Stats
+                      <InfoCircleOutlined /> {act('quick_stats')}
                     </span>
                   }
                   bordered={false}
@@ -576,10 +481,10 @@ const ClassDetailsPage = () => {
                         style={{ background: "#fff7e6", textAlign: "center" }}
                       >
                         <Statistic
-                          title="Completion"
+                          title={act('completion')}
                           value="0%"
                           valueStyle={{ color: "#fa8c16", fontSize: "18px" }}
-                          suffix="completed"
+                          suffix={act('completed')}
                           className="text-xs sm:text-sm"
                         />
                       </Card>
@@ -674,7 +579,7 @@ const ClassDetailsPage = () => {
                 style={{ display: "flex", alignItems: "center", gap: "8px" }}
               >
                 <TeamOutlined style={{ color: "#1677ff" }} />
-                <span>Enrolled Students</span>
+                <span>{act('enrolled_students')}</span>
               </div>
             }
             open={studentsModalVisible}
@@ -706,7 +611,7 @@ const ClassDetailsPage = () => {
                 </div>
               ) : (
                 <Empty
-                  description="There are no students enrolled in this class yet"
+                  description={act('enrolled_empty')}
                   image={Empty.PRESENTED_IMAGE_DEFAULT}
                   className="py-4 text-xs italic"
                 />
@@ -721,13 +626,13 @@ const ClassDetailsPage = () => {
                 }}
               >
                 <span className="text-xs text-gray-400">
-                  Showing students enrolled in: {cohortDetails?.topic_title}
+                  {act('enrolled_footer')} {cohortDetails?.topic_title}
                 </span>
                 <Button
                   className="text-xs sm:text-sm"
                   onClick={() => setStudentsModalVisible(false)}
                 >
-                  Close
+                  {act('close')}
                 </Button>
               </div>
             </div>

@@ -2,6 +2,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Avatar, Input, Form, Button, message, Tooltip } from "antd";
 import clsx from "clsx";
+import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 import {
   LuBookOpenText,
@@ -61,12 +62,12 @@ const StudentProfile = () => {
       });
     },
     onSuccess: () => {
-      message.success("Profile picture updated successfully");
+      message.success(stproft('profile_pic_success'));
       queryClient.invalidateQueries(["auth-user"]);
       setProfilePicture(null);
     },
     onError: (error) => {
-      message.error(`Profile picture update failed, Try again later`);
+      message.error(stproft('profile_pic_failed'));
     },
   });
 
@@ -86,8 +87,8 @@ const StudentProfile = () => {
     ) {
       message.error(
         first_name
-          ? "Names must only contain letters."
-          : "Please enter a valid name 🤔"
+          ? stproft('name_only_letters')
+          : stproft('enter_valid_name')
       );
       setEditName(false);
       return;
@@ -121,6 +122,19 @@ const StudentProfile = () => {
   const classesInProgress = user?.in_progress_cohorts;
   const achievements = user?.completed_cohorts;
   const completionRate = user?.completion_rate;
+
+  const stproft = useTranslations('student_profile');
+  const stdash = useTranslations('student_dashboard');
+  const ht = useTranslations('home_page');
+  const sot = useTranslations('sign_out');
+
+  const getUserRole = (role) => {
+    if (role == 'instructor') {
+      return stproft('instructor')
+    } else if (role == 'student') {
+      return ht('student')
+    }
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-1 sm:px-4 lg:px-8 py-8">
@@ -164,7 +178,7 @@ const StudentProfile = () => {
                 <Tooltip
                   title={
                     <div className="text-xs">
-                      Double tap to change your name
+                      {stproft('double_tap_to_change')}
                     </div>
                   }
                 >
@@ -182,7 +196,7 @@ const StudentProfile = () => {
                       />
                     </div>
                     <div className="text-sm text-gray-500 capitalize">
-                      {user?.role}
+                      {getUserRole(user?.role)}
                     </div>
                   </div>
                 </Tooltip>
@@ -227,7 +241,7 @@ const StudentProfile = () => {
 
           <div className="flex flex-row items-start gap-6 md:gap-10">
             <div className="flex flex-col items-center">
-              <span className="text-sm text-gray-500">Classes Bought</span>
+              <span className="text-sm text-gray-500">{stproft('classes_bought')}</span>
               <div className="flex gap-2 items-center p-2">
                 <LuBookOpenText className="text-blue-600" size={28} />
                 <span className="font-bold text-2xl">{classesTotal}</span>
@@ -235,7 +249,7 @@ const StudentProfile = () => {
             </div>
 
             <div className="flex flex-col items-center">
-              <span className="text-sm text-gray-500">Achievements</span>
+              <span className="text-sm text-gray-500">{stproft('achievements')}</span>
               <div className="flex gap-2 items-center p-2">
                 <LuTrophy className="text-amber-500" size={28} />
                 <span className="font-bold text-2xl">{achievements}</span>
@@ -249,14 +263,14 @@ const StudentProfile = () => {
         <div className="lg:col-span-2">
           <div className="bg-white rounded-lg shadow-sm shadow-black/25 p-6 mb-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold">Learning Progress</h2>
+              <h2 className="text-xl font-bold">{stproft('learning_progress')}</h2>
               {!user.partner_school && (
                 <button
                   onClick={open}
                   className="text-xs text-white bg-[#001840] font-medium rounded-md px-2 py-1 hover:scale-105 ease-in-out transition-all duration-300 border-[1px] border-[#001840] flex items-center gap-0.5"
                 >
                   <LuPlus size={15} strokeWidth={2} />
-                  <span> Add your school</span>
+                  <span> {stproft('add_your_school')}</span>
                 </button>
               )}
             </div>
@@ -264,7 +278,7 @@ const StudentProfile = () => {
               <div className="bg-gray-50 rounded-md p-4 flex items-center justify-between">
                 <div>
                   <div className="text-sm text-gray-500 font-medium">
-                    Completed
+                    {stproft('completed')}
                   </div>
                   <div className="text-lg font-semibold">
                     {classesCompleted}
@@ -276,7 +290,7 @@ const StudentProfile = () => {
               <div className="bg-gray-50 rounded-md p-4 flex items-center justify-between">
                 <div>
                   <div className="text-sm text-gray-500 font-medium">
-                    In Progress
+                    {stproft('in_progress')}
                   </div>
                   <div className="text-lg font-semibold">
                     {classesInProgress}
@@ -288,7 +302,7 @@ const StudentProfile = () => {
               <div className="bg-gray-50 rounded-md p-4 flex items-center justify-between">
                 <div>
                   <div className="text-sm text-gray-500 font-medium">
-                    Completion Rate
+                    {stproft('completion_rate')}
                   </div>
                   <div className="text-lg font-semibold">{completionRate}%</div>
                 </div>
@@ -310,7 +324,7 @@ const StudentProfile = () => {
 
           {/* Recent Activity Card */}
           <div className="bg-white rounded-lg shadow-sm shadow-black/25 p-6">
-            <h2 className="text-xl font-bold mb-4">Recent Activity</h2>
+            <h2 className="text-xl font-bold mb-4">{stdash('recent_activities')}</h2>
 
             {activitiesLoading && (
               <div className="flex justify-center py-8">
@@ -320,7 +334,7 @@ const StudentProfile = () => {
 
             {activitiesError && (
               <div className="text-center py-6 text-red-500">
-                Failed to load recent activities. Please try again later.
+                {stdash('failed_to__load_recent_activity')}
               </div>
             )}
 
@@ -328,7 +342,7 @@ const StudentProfile = () => {
               !activitiesError &&
               activities?.length === 0 && (
                 <div className="text-center py-6 text-gray-500">
-                  No recent activities found.
+                  {stdash('no_recent_activity')}
                 </div>
               )}
 
@@ -356,9 +370,9 @@ const StudentProfile = () => {
           {/* Contact Information */}
           <div className="bg-white rounded-lg shadow-sm shadow-black/25 p-6 mb-6">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold">Contact Information</h2>
+              <h2 className="text-xl font-bold">{stproft('contact_info')}</h2>
               {!editContact ? (
-                <Tooltip title="Edit Contact Information">
+                <Tooltip title={stproft('edit_contact_info')}>
                   <Button
                     type="text"
                     icon={<LuPencil className="text-blue-500" />}
@@ -367,7 +381,7 @@ const StudentProfile = () => {
                 </Tooltip>
               ) : (
                 <div className="flex">
-                  <Tooltip title="Save">
+                  <Tooltip title={stproft('save')}>
                     <Button
                       type="text"
                       icon={<LuSave size={20} className="!text-green-500" />}
@@ -375,7 +389,7 @@ const StudentProfile = () => {
                       loading={isUpdatingProfile}
                     />
                   </Tooltip>
-                  <Tooltip title="Cancel">
+                  <Tooltip title={sot('cancel')}>
                     <Button
                       type="text"
                       icon={<LuX size={20} className="!text-red-500" />}
@@ -391,7 +405,7 @@ const StudentProfile = () => {
                 <div className="group">
                   <div className="flex items-center justify-between">
                     <div className="flex gap-2 items-center text-gray-500">
-                      <LuMail /> <span>Email</span>
+                      <LuMail /> <span>{ht('email')}</span>
                     </div>
                   </div>
                   <div className="pl-6 font-medium truncate">{user?.email}</div>
@@ -400,14 +414,14 @@ const StudentProfile = () => {
                 <div className="group">
                   <div className="flex items-center justify-between">
                     <div className="flex gap-2 items-center text-gray-500">
-                      <LuPhone /> <span>Phone</span>
+                      <LuPhone /> <span>{ht('phone')}</span>
                     </div>
                   </div>
                   <div className="pl-6 font-medium">{user?.phone_number}</div>
                 </div>
                 <div>
                   <div className="flex gap-2 items-center text-gray-500">
-                    <LuCalendar /> <span>Joined</span>
+                    <LuCalendar /> <span>{stproft('joined')}</span>
                   </div>
                   <div className="pl-6 font-medium">{user?.created_at}</div>
                 </div>
@@ -424,36 +438,36 @@ const StudentProfile = () => {
               >
                 <div className="mb-4">
                   <div className="flex items-center gap-2 text-gray-500 mb-1">
-                    <LuMail /> Email
+                    <LuMail /> {ht('email')}
                   </div>
                   <div className="pl-6">
                     <span className="font-medium">{user?.email}</span>
                     <span className="text-gray-500 text-xs ml-2">
-                      (Not editable)
+                      ({stproft('not_editable')})
                     </span>
                   </div>
                 </div>
                 <div className="mb-4">
                   <div className="flex items-center gap-2 text-gray-500 mb-1">
-                    <LuPhone /> Phone
+                    <LuPhone /> {ht('phone')}
                   </div>
                   <div className="pl-6">
                     <span className="font-medium">{user?.phone_number}</span>
                     <span className="text-gray-500 text-xs ml-2">
-                      (Not editable)
+                      ({stproft('not_editable')})
                     </span>
                   </div>
                 </div>
                 <div className="mb-4">
                   <div className="flex items-center gap-2 text-gray-500 mb-1">
-                    <LuCalendar /> Joined
+                    <LuCalendar /> ({stproft('joined')})
                   </div>
                   <div className="pl-6">
                     <span className="font-medium">
                       {user?.created_at || "--"}
                     </span>
                     <span className="text-gray-500 text-xs ml-2">
-                      (Not editable)
+                      ({stproft('not_editable')})
                     </span>
                   </div>
                 </div>
@@ -464,13 +478,13 @@ const StudentProfile = () => {
                     type="primary"
                     htmlType="submit"
                   >
-                    {isUpdatingProfile ? <>Saving...</> : <>Save</>}
+                    {isUpdatingProfile ? <>{stproft('saving')}</> : <>{stproft('save')}</>}
                   </Button>
                   <Button
                     className="ml-2 hover:!text-red-500 hover:!border-red-500 !text-xs"
                     onClick={() => setEditContact(false)}
                   >
-                    Cancel
+                    {sot('cancel')}
                   </Button>
                 </Form.Item>
               </Form>
@@ -479,9 +493,9 @@ const StudentProfile = () => {
           {user?.partner_school && (
             <div className="bg-white rounded-lg shadow-sm shadow-black/25 p-6 mb-6 flex flex-col gap-2 overflow-hidden">
               <div className="flex justify-between items-center">
-                <span>Your School</span>
+                <span>{stproft('your_school')}</span>
                 <div className="flex gap-2 items-center">
-                  <Tooltip color="#001840" title="Change school">
+                  <Tooltip color="#001840" title={stproft('change_school')}>
                     <button
                       onClick={open}
                       className="rounded-full p-1.5 hover:scale-105 transation-all ease-in-out duration-200 text-xs hover:bg-blue-200 hover:text-blue-600"

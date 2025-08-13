@@ -3,6 +3,7 @@
 import { Tooltip, message, Dropdown, Button } from "antd";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import { useLocale } from "next-intl";
 import React, { useState } from "react";
 import { BiWifi, BiWifiOff } from "react-icons/bi";
 import { LuGlobe, LuMenu } from "react-icons/lu";
@@ -19,9 +20,9 @@ import AboutUs from "../home/modals/AboutUs";
 import Subscribe from "../pay/Subscribe";
 import { Signout } from "../ui/auth/signup/Signout";
 
-
 const Navbar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isLanguageLoading, setIsLanguageLoading] = useState(false);
   const { user } = useUser();
   const { width } = useDevice();
   const { isOnline, connectionQuality } = useNetwork();
@@ -46,33 +47,22 @@ const Navbar = () => {
     router.push("/");
   };
 
-  const items = [
-    {
-      key: "1",
-      // icon: <LuGlobe className="text-xl" />,
-      label: (
-        <div className="flex flex-col items-center text-sm px-3 font-medium">
-          English
-        </div>
-      ),
-      onClick: () => {
-        router.push(pathname, { locale: "en" });
-        messageApi.info("English language chosen.");
-      },
-    },
-    {
-      key: "2",
-      label: (
-        <div className="flex flex-col items-center text-sm px-3 font-medium">
-          Swahili
-        </div>
-      ),
-      onClick: () => {
-        router.push(pathname, { locale: "sw" });
-        messageApi.info("Lugha ya Kiswahili imechaguliwa.");
-      },
-    },
-  ];
+  // Get current locale using next-intl hook
+  const currentLocale = useLocale();
+
+  const handleLanguageToggle = () => {
+    setIsLanguageLoading(true);
+    
+    const newLocale = currentLocale === 'en' ? 'sw' : 'en';
+    const successMessage = newLocale === 'en' ? "English language chosen." : "Lugha ya Kiswahili imechaguliwa.";
+    
+    // Add loading delay for visual feedback
+    setTimeout(() => {
+      router.replace(pathname, { locale: newLocale });
+      messageApi.info(successMessage);
+      setIsLanguageLoading(false);
+    }, 800);
+  };
 
   const confirm = () => {
     setOpen(false);
@@ -98,6 +88,8 @@ const Navbar = () => {
     setDrawerOpen((prev) => !prev);
   };
 
+  const internet = useTranslations('internet');
+
   const getIcon = () => {
     if (!isOnline) {
       return (
@@ -107,7 +99,7 @@ const Navbar = () => {
           title={
             <NetworkMessage
               message={
-                "You're offline. Please connect to Wi-Fi or enable mobile data."
+                internet('offline')
               }
             />
           }
@@ -124,7 +116,7 @@ const Navbar = () => {
             placement="bottom"
             title={
               <NetworkMessage
-                message={"Your internet connection is strong and stable."}
+                message={internet('internet_stable')}
               />
             }
           >
@@ -138,7 +130,7 @@ const Navbar = () => {
             placement="bottom"
             title={
               <NetworkMessage
-                message={"Your connection is working but could be better."}
+                message={internet('internet_mid')}
               />
             }
           >
@@ -153,7 +145,7 @@ const Navbar = () => {
             title={
               <NetworkMessage
                 message={
-                  "Your internet connection is weak and may be unstable."
+                  internet('internet_unstable')
                 }
               />
             }
@@ -169,106 +161,143 @@ const Navbar = () => {
   const t = useTranslations('home_page');
   const at = useTranslations('about_us');
   const sut = useTranslations('sign_up');
+  const navt = useTranslations('navbar');
+  const navlinkt = useTranslations('nav_links');
 
   return (
-    <nav className="h-12 flex justify-between max-w-screen items-center fixed top-0 inset-x-0 z-50 lg:px-10 sm:px-6 px-2 bg-white">
-      {contextHolder}
-      <Image
-        alt={"Gala logo"}
-        width={150}
-        height={150}
-        onClick={gotoHomePage}
-        src={"/gala-logo.png"}
-        className={"w-16 h-16 object-cover cursor-pointer rounded-full "}
-      />
+    <>
+      <nav className="h-12 flex justify-between max-w-screen items-center fixed top-0 inset-x-0 z-50 lg:px-10 sm:px-6 px-2 bg-white">
+        {contextHolder}
+        <Image
+          alt={"Gala logo"}
+          width={150}
+          height={150}
+          onClick={gotoHomePage}
+          src={"/gala-logo.png"}
+          className={"w-16 h-16 object-cover cursor-pointer rounded-full "}
+        />
 
-      <ul className="text-black flex sm:gap-x-4 gap-x-2 sm:text-[12px] text-[8px] leading-[5px] items-center justify-center font-black">
-        {user?.has_free_trial && !user?.has_active_subscription && (
+        <ul className="text-black flex sm:gap-x-4 gap-x-2 sm:text-[12px] text-[8px] leading-[5px] items-center justify-center font-black">
+          {user?.has_free_trial && !user?.has_active_subscription && (
+            <button
+              onClick={() => setSubscribeOpen(true)}
+              variant="solid"
+              type="primary"
+              className="rounded-full bg-[#001840] text-white hidden sm:block font-semibold text-sm hover:bg-[#001840]/80 px-5 py-2"
+            >
+              {navt('subscribe_now')}
+            </button>
+          )}
+          <div className="cursor-pointer">{getIcon()}</div>
+
           <button
-            onClick={() => setSubscribeOpen(true)}
-            variant="solid"
-            type="primary"
-            className="rounded-full bg-[#001840] text-white hidden sm:block font-semibold text-sm hover:bg-[#001840]/80 px-5 py-2"
+            onClick={handleLanguageToggle}
+            disabled={isLanguageLoading}
+            className="bg-[#001840] text-white px-3 py-1.5 rounded-md text-xs font-semibold hover:bg-[#001840]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-w-[40px]"
+            title={`Switch to ${currentLocale === 'en' ? 'Swahili' : 'English'}`}
           >
-            Subscribe now
+            {isLanguageLoading ? '...' : (currentLocale === 'en' ? 'SW' : 'EN')}
           </button>
-        )}
-        <div className="cursor-pointer">{getIcon()}</div>
 
-        <Dropdown
-          menu={{ items }}
-          trigger={["click"]}
-          open={open}
-          onOpenChange={handleOpenChange}
-          overlayClassName="rounded-md shadow-lg"
-          arrow={true}
-          placement="bottom"
-        >
-          <Image
-            width={200}
-            height={200}
-            alt="Language translate image"
-            src="/language_translate.png"
-            className="w-5 h-5 object-cover bg-white/45 cursor-pointer"
-          />
-        </Dropdown>
-
-        <li>
-          <Link href={"/"} className="hover:cursor-pointer tex-black">
-            {t('home')}
-          </Link>
-        </li>
-        {user && (
           <li>
-            <Link href={`/${user.role}`} className="hover:cursor-pointer">
-              Dashboard
+            <Link href={"/"} className="hover:cursor-pointer tex-black">
+              {t('home')}
             </Link>
           </li>
-        )}
-        <li>
-          <Link href={"/about-us"} className="hover:cursor-pointer tex-black">
-            {at('about_us')}
-          </Link>
-        </li>
-        {!user && (
-          <div
-            className="flex gap-3 items-center justify-center"
-            onClick={() => { }}
-          >
-            <ChooseAccont
-              btnText={sut('sign_up')}
-              textColor={"black"}
-              placement={"bottom"}
-              trigger={"hover"}
-            />
-            <Link href={"/signin"} className="hover:cursor-pointer">
-              <li>{sut('sign_in')}</li>
+          {user && (
+            <li>
+              <Link href={`/${user.role}`} className="hover:cursor-pointer">
+                {navlinkt('dashboard')}
+              </Link>
+            </li>
+          )}
+          <li>
+            <Link href={"/about-us"} className="hover:cursor-pointer tex-black">
+              {at('about_us')}
             </Link>
-          </div>
-        )}
-        {width < 768 && user && !isSidebarOpen && (
-          <LuMenu
-            size={32}
-            onClick={toggleSidebar}
-            aria-label="Toggle menu"
-            className="text-[20px] p-1 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
+          </li>
+          {!user && (
+            <div
+              className="flex gap-3 items-center justify-center"
+              onClick={() => { }}
+            >
+              <ChooseAccont
+                btnText={sut('sign_up')}
+                textColor={"black"}
+                placement={"bottom"}
+                trigger={"hover"}
+              />
+              <Link href={"/signin"} className="hover:cursor-pointer">
+                <li>{sut('sign_in')}</li>
+              </Link>
+            </div>
+          )}
+          {width < 768 && user && !isSidebarOpen && (
+            <LuMenu
+              size={32}
+              onClick={toggleSidebar}
+              aria-label="Toggle menu"
+              className="text-[20px] p-1 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
+            />
+          )}
+          {user && width > 768 && <Signout />}
+        </ul>
+
+        {user && width < 768 && (
+          <MobileSideBar
+            isOpen={isSidebarOpen}
+            onClose={() => setIsSidebarOpen(false)}
           />
         )}
-        {user && width > 768 && <Signout />}
-      </ul>
 
-      {user && width < 768 && (
-        <MobileSideBar
-          isOpen={isSidebarOpen}
-          onClose={() => setIsSidebarOpen(false)}
-        />
+      </nav>
+
+      {isLanguageLoading && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center">
+
+          <div 
+            className="absolute inset-0 bg-white/30 backdrop-blur-md"
+            style={{
+              background: 'linear-gradient(135deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.4) 100%)',
+              backdropFilter: 'blur(12px) saturate(150%)',
+              WebkitBackdropFilter: 'blur(12px) saturate(150%)',
+            }}
+          >
+            <div 
+              className="absolute inset-0 opacity-20"
+              style={{
+                background: 'radial-gradient(circle at 30% 20%, rgba(255,255,255,0.8) 0%, transparent 50%)',
+              }}
+            />
+            <div 
+              className="absolute inset-0 opacity-10"
+              style={{
+                background: 'linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.6) 50%, transparent 70%)',
+              }}
+            />
+          </div>
+
+          <div className="relative z-10 bg-white/20 backdrop-blur-sm rounded-2xl border border-white/30 px-8 py-6 shadow-2xl">
+            <div className="flex flex-col items-center space-y-4">
+              {/* Logo */}
+              <Image
+                alt={"Gala logo"}
+                width={80}
+                height={80}
+                src={"/gala-logo.png"}
+                className={"w-20 h-20 object-cover rounded-full"}
+              />
+            
+            </div>
+          </div>
+        </div>
       )}
-      {/* <Subscribe openDrawer={drawerOpen} /> */}
-    </nav>
+    </>
   );
 };
 
 const NetworkMessage = ({ message }) => {
   return <div className="text-xs text-center p-1">{message}</div>;
 };
+
 export default Navbar;

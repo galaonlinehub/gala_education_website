@@ -1,4 +1,5 @@
 import { CommentOutlined, RobotFilled } from "@ant-design/icons";
+import { useTranslations } from "next-intl";
 import { HiOutlineChatBubbleLeftRight } from "react-icons/hi2";
 import {
   LuBox,
@@ -17,6 +18,7 @@ import {
 import { MdOutlineInsertComment } from "react-icons/md";
 import { TbHexagon } from "react-icons/tb";
 
+// Static footer links (no translation needed)
 export const footer_links = {
   Services: [
     {
@@ -102,90 +104,88 @@ export const footer_links = {
   ],
 };
 
-export const teacher_links = [
-  {
-    name: "Dashboard",
-    link: ".",
-    icon: <LuLayoutDashboard strokeWidth={1.5}  />,
-  },
+// Hook to get teacher links with translations
+export const useTeacherLinks = () => {
+  const nbt = useTranslations('nav_links');
+  
+  return [
+    {
+      name: nbt('dashboard'),
+      link: ".",
+      icon: <LuLayoutDashboard strokeWidth={1.5} />,
+    },
+    {
+      name: nbt('live_classes'),
+      link: "live-classes",
+      icon: <LuTv strokeWidth={1.5} />,
+    },
+    {
+      name: nbt('chats'),
+      link: "social",
+      icon: <HiOutlineChatBubbleLeftRight strokeWidth={1.5} />,
+    },
+    {
+      name: nbt('subscriptions'),
+      link: "subscriptions",
+      icon: <LuGem strokeWidth={1.5} />,
+    },
+    {
+      name: nbt('gala_ai'),
+      link: "ai",
+      icon: <LuDiamond strokeWidth={1.5} />,
+    },
+    {
+      name: nbt('library'),
+      link: "library",
+      icon: <LuBook strokeWidth={1.5} />,
+    },
+  ];
+};
 
-  {
-    name: "Live Classes",
-    link: "live-classes",
-    icon: <LuTv  strokeWidth={1.5} />,
-  },
-
-  {
-    name: "Chats",
-    link: "social",
-    icon: <HiOutlineChatBubbleLeftRight strokeWidth={1.5}  />,
-  },
-
-  {
-    name: "Subscriptions",
-    link: "subscriptions",
-    icon: <LuGem strokeWidth={1.5}  />,
-  },
-  {
-    name: "GalaAI",
-    link: "ai",
-    icon: <LuDiamond strokeWidth={1.5} />,
-  },
-  {
-    name: "Library",
-    link: "library",
-    icon: <LuBook strokeWidth={1.5}  />,
-  },
-];
-
-export const student_links = [
-  {
-    name: "Dashboard",
-    link: ".",
-    icon: <LuLayoutDashboard strokeWidth={1.5}  />,
-  },
-  {
-    name: "Live Lessons",
-    link: "live-lessons",
-    icon: <LuTv strokeWidth={1.5}  />,
-  },
-
-  {
-    name: "Classes",
-    link: "classes",
-    icon: <LuLayoutList strokeWidth={1.5} />,
-  },
-
-  {
-    name: "Chats",
-    link: "social",
-    icon: <HiOutlineChatBubbleLeftRight strokeWidth={1.5} />,
-  },
-  {
-    name: "Pending",
-    link: "payments",
-    icon: <LuClock4 strokeWidth={1.5}  />,
-  },
-
-  {
-    name: "Subscriptions",
-    link: "subscriptions",
-    icon: <LuGem strokeWidth={1.5}  />,
-  },
-
-  {
-    name: "GalaAI",
-    link: "ai",
-    icon: <LuDiamond strokeWidth={1.5}  />,
-  },
-  // {
-  //   name: "My Reviews",
-  //   link: "my-reviews",
-  //   icon: <MdOutlineInsertComment />,
-  // },
-  {
-    name: "Library",
-    link: "library",
-    icon: <LuBook strokeWidth={1.5}  />,
-  },
-];
+// Hook to get student links with translations
+export const useStudentLinks = () => {
+  const nbt = useTranslations('nav_links');
+  
+  return [
+    {
+      name: nbt('dashboard'),
+      link: ".",
+      icon: <LuLayoutDashboard strokeWidth={1.5} />,
+    },
+    {
+      name: nbt('live_classes'),
+      link: "live-lessons",
+      icon: <LuTv strokeWidth={1.5} />,
+    },
+    {
+      name: nbt('classes'),
+      link: "classes",
+      icon: <LuLayoutList strokeWidth={1.5} />,
+    },
+    {
+      name: nbt('chats'),
+      link: "social",
+      icon: <HiOutlineChatBubbleLeftRight strokeWidth={1.5} />,
+    },
+    {
+      name: nbt('pending'),
+      link: "payments",
+      icon: <LuClock4 strokeWidth={1.5} />,
+    },
+    {
+      name: nbt('subscriptions'),
+      link: "subscriptions",
+      icon: <LuGem strokeWidth={1.5} />,
+    },
+    {
+      name: nbt('gala_ai'),
+      link: "ai",
+      icon: <LuDiamond strokeWidth={1.5} />,
+    },
+    {
+      name: nbt('library'),
+      link: "library",
+      icon: <LuBook strokeWidth={1.5} />,
+    },
+  ];
+};

@@ -20,6 +20,7 @@ import {
 } from "antd";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 import { LuCheck, LuUpload } from "react-icons/lu";
 
@@ -86,6 +87,9 @@ const InstructorRegistrationForm = () => {
     }));
   };
 
+  const sut = useTranslations('sign_up')
+  const ht = useTranslations('home_page')
+
   const uploadButton = (text, miniText) => (
     <div className="flex flex-col gap-1">
       <Button
@@ -107,16 +111,9 @@ const InstructorRegistrationForm = () => {
     <>
       <Card className="!border-0 -mx-5 lg:-mx-0 mt-3">
         <div className="flex flex-col gap-2 justify-center items-center w-full mb-6">
-          <span className="font-black text-xl sm:text-2xl">Sign Up</span>
+          <span className="font-black text-xl sm:text-2xl">{sut('sign_up')}</span>
           <span className="font-medium text-[12px] w-full text-center">
-            When registering with Gala, teachers undergo a vetting process to
-            ensure only qualified candidates are selected, maintaining service
-            quality. The first payment, which is non-refundable, serves as an
-            application fee. Applications are processed within 2-3 business days
-            and may be approved or denied. Please note: All uploaded
-            certificates must be certified by a registered Advocate to ensure
-            their authenticity. Submissions without proper certification will
-            not be accepted.
+            {sut('sign_up_statement_teachers')}
           </span>
         </div>
         {registerError && (
@@ -126,8 +123,8 @@ const InstructorRegistrationForm = () => {
               mutation.isSuccess
                 ? "border-green-700 text-green-400 bg-green-50"
                 : mutation.isError
-                ? "border-red-500 text-red-500 bg-red-50"
-                : "border-gray-700 text-gray-700"
+                  ? "border-red-500 text-red-500 bg-red-50"
+                  : "border-gray-700 text-gray-700"
             )}
           >
             {registerError}
@@ -147,13 +144,13 @@ const InstructorRegistrationForm = () => {
             <Form.Item
               name="first_name"
               rules={[
-                { required: true, message: "Please enter your first name" },
+                { required: true, message: sut('enter_first_name') },
               ]}
             >
               <Input
                 prefix={<UserOutlined className="!text-gray-400" />}
                 autoComplete="new-password"
-                placeholder="First Name"
+                placeholder={ht('first_name')}
                 className="!h-[42px] signup-input"
               />
             </Form.Item>
@@ -161,13 +158,13 @@ const InstructorRegistrationForm = () => {
             <Form.Item
               name="last_name"
               rules={[
-                { required: true, message: "Please enter your last name" },
+                { required: true, message: sut('enter_last_name') },
               ]}
             >
               <Input
                 prefix={<UserOutlined className="!text-gray-400" />}
                 autoComplete="new-password"
-                placeholder="Last Name"
+                placeholder={ht('second_name')}
                 className="!h-[42px] signup-input"
               />
             </Form.Item>
@@ -175,8 +172,8 @@ const InstructorRegistrationForm = () => {
               name="email"
               validateTrigger={["onBlur", "onChange", "onSubmit"]}
               rules={[
-                { required: true, message: "Please enter your email address" },
-                { type: "email", message: "Please enter valid email address" },
+                { required: true, message: sut('enter_email') },
+                { type: "email", message: sut('valid_email_address') },
               ]}
               validateStatus={emailExists ? "error" : undefined}
             >
@@ -186,7 +183,7 @@ const InstructorRegistrationForm = () => {
                   autoComplete="new-password"
                   autoCapitalize="off"
                   spellCheck="false"
-                  placeholder="Email Address"
+                  placeholder={ht('email')}
                   className="!h-[42px] signup-input"
                   onChange={() => {
                     setEmailExists(false);
@@ -203,12 +200,12 @@ const InstructorRegistrationForm = () => {
             <Form.Item
               name="password"
               rules={[
-                { required: true, message: "Please enter your password" },
+                { required: true, message: sut('enter_password') },
                 {
                   validator: (_, value) => {
                     if (value && passwordStrength < 100) {
                       return Promise.reject(
-                        "Password must meet all requirements"
+                        sut('password_requirements')
                       );
                     }
                     return Promise.resolve();
@@ -219,7 +216,7 @@ const InstructorRegistrationForm = () => {
               <Input.Password
                 prefix={<LockOutlined className="!text-gray-400" />}
                 autoComplete="new-password"
-                placeholder="Password"
+                placeholder={ht('password')}
                 className="!h-[42px] signup-input"
                 onChange={(e) => {
                   handlePasswordChange(e);
@@ -263,13 +260,13 @@ const InstructorRegistrationForm = () => {
               name="confirm_password"
               dependencies={["password"]}
               rules={[
-                { required: true, message: "Please confirm your password" },
+                { required: true, message: sut('confirm_your_password') },
                 ({ getFieldValue }) => ({
                   validator(_, value) {
                     if (!value || getFieldValue("password") === value) {
                       return Promise.resolve();
                     }
-                    return Promise.reject("Passwords do not match");
+                    return Promise.reject(sut('password_mismatch'));
                   },
                 }),
               ]}
@@ -277,7 +274,7 @@ const InstructorRegistrationForm = () => {
               <Input.Password
                 prefix={<LockOutlined className="!text-gray-400" />}
                 autoComplete="new-password"
-                placeholder="Confirm Password"
+                placeholder={ht('confirm_password')}
                 className="!h-[42px] signup-input"
                 onCopy={preventCopyPaste}
                 onPaste={preventCopyPaste}
@@ -288,14 +285,14 @@ const InstructorRegistrationForm = () => {
             <Form.Item
               name="nida"
               rules={[
-                { required: true, message: "Please enter your NIDA number" },
+                { required: true, message: sut('enter_nida_number') },
                 {
                   pattern: /^\d+$/,
-                  message: "Invalid NIDA number",
+                  message: sut('invalid_nida_number'),
                 },
                 {
                   len: 20,
-                  message: "NIDA number must be exactly 20 digits",
+                  message: sut('nida_number_length'),
                 },
               ]}
             >
@@ -303,11 +300,11 @@ const InstructorRegistrationForm = () => {
                 prefix={<IdcardOutlined className="!text-gray-400" />}
                 autoComplete="new-password"
                 suffix={
-                  <Tooltip title="National ID Number">
+                  <Tooltip title={ht('nida_number')}>
                     <InfoCircleOutlined className="!text-gray-400" />
                   </Tooltip>
                 }
-                placeholder="NIDA Number"
+                placeholder={ht('nida_number')}
                 className="!h-[42px] signup-input"
                 maxLength={20}
               />
@@ -320,7 +317,7 @@ const InstructorRegistrationForm = () => {
           <div className="flex flex-col w-full lg:w-4/12">
             <Form.Item
               name="cv"
-              rules={[{ required: true, message: "CV is required" }]}
+              rules={[{ required: true, message: sut('cv_required')}]}
               className="!w-full"
             >
               <Upload
@@ -331,13 +328,13 @@ const InstructorRegistrationForm = () => {
                 fileList={fileList.cv}
                 maxCount={1}
               >
-                {uploadButton("Upload CV", "")}
+                {uploadButton(sut('upload_cv'), "")}
               </Upload>
             </Form.Item>
 
             <Form.Item
               name="transcript"
-              rules={[{ required: true, message: "Transcript is required" }]}
+              rules={[{ required: true, message: sut('transcript_required') }]}
             >
               <Upload
                 accept=".pdf"
@@ -347,7 +344,7 @@ const InstructorRegistrationForm = () => {
                 fileList={fileList.transcript}
                 maxCount={1}
               >
-                {uploadButton("Upload Certificate", "")}
+                {uploadButton(sut('upload_certificate'), "")}
               </Upload>
             </Form.Item>
 
@@ -356,7 +353,7 @@ const InstructorRegistrationForm = () => {
               rules={[
                 {
                   required: true,
-                  message: "O-level certificate is required",
+                  message: sut('o_level_cert_required')
                 },
               ]}
             >
@@ -368,7 +365,7 @@ const InstructorRegistrationForm = () => {
                 fileList={fileList.oLevelCertificate}
                 maxCount={1}
               >
-                {uploadButton("O-Level Certificate", "")}
+                {uploadButton(sut('o_level_cert'), "")}
               </Upload>
             </Form.Item>
 
@@ -381,7 +378,7 @@ const InstructorRegistrationForm = () => {
                 fileList={fileList.aLevelCertificate}
                 maxCount={1}
               >
-                {uploadButton("A-Level Certificate", "Optional")}
+                {uploadButton(sut('a_level_cert'), ht('optional'))}
               </Upload>
             </Form.Item>
           </div>
@@ -402,7 +399,7 @@ const InstructorRegistrationForm = () => {
               {mutation.isPending ? (
                 <SlickSpinner size={14} color="white" />
               ) : (
-                <span className="font-semibold">Apply</span>
+                <span className="font-semibold">{sut('apply')}</span>
               )}
             </Button>
           </Form.Item>
@@ -432,32 +429,32 @@ const InstructorRegistrationForm = () => {
             />
           </div>
 
-          <Text>I have read and agreed to the</Text>
+          <Text>{sut('read_and_agreed')}</Text>
           <Button
             type="link"
             className="!p-0 !m-1 !text-blue-600 hover:!text-blue-700"
             onClick={() => router.push("/terms-and-privacy")}
           >
-            Terms of Service
+            {sut('terms_of_service')}
           </Button>
-          <Text> and </Text>
+          <Text> {sut('and')} </Text>
           <Button
             type="link"
             className="!p-0 !m-1 !text-blue-600 hover:!text-blue-700"
             onClick={() => router.push("/terms-and-privacy")}
           >
-            Privacy Policy
+            {sut('privacy_policy')}
           </Button>
         </div>
 
         <div className="!text-center !text-sm !text-gray-600">
-          <Text>Already have an account?</Text>
+          <Text>{sut('already_have_account')}</Text>
           <Button
             type="link"
             className="!p-0 !m-1 !text-blue-600 hover:!text-blue-700"
             onClick={() => router.push("/signin")}
           >
-            Sign In
+            {sut('sign_in')}
           </Button>
         </div>
 

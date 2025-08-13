@@ -1,4 +1,4 @@
-import { student_links, teacher_links } from "./navigation_links";
+import { useStudentLinks, useTeacherLinks } from "./navigation_links";
 
 export const roleRedirects = {
   student: "/student",
@@ -7,13 +7,20 @@ export const roleRedirects = {
   parent: "/parent",
 };
 
-export const links = {
-  student: student_links,
-  instructor: teacher_links,
-  // admin: admin_links,
-  // parent: parent_links,
+// Custom hook to get links based on role
+export const useRoleLinks = (role) => {
+  const studentLinks = useStudentLinks();
+  const teacherLinks = useTeacherLinks();
+  
+  const links = {
+    student: studentLinks,
+    instructor: teacherLinks,
+    // admin: admin_links, // Add when available
+    // parent: parent_links, // Add when available
+  };
+  
+  return links[role] || [];
 };
-
 
 export const TRIAL_ALLOWED_PATHS = (role) => [
   `/${role}`,

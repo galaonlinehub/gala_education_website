@@ -1,7 +1,8 @@
 import { CloseCircleFilled, QuestionCircleFilled } from '@ant-design/icons';
+import { useTranslations } from 'next-intl';
 import { useState, useEffect } from 'react';
 
-export default function PaymentFailedAnimation({setCloseFailureModal}) {
+export default function PaymentFailedAnimation({ setCloseFailureModal }) {
     const [showDetails, setShowDetails] = useState(false);
     const [shake, setShake] = useState(false);
 
@@ -21,6 +22,9 @@ export default function PaymentFailedAnimation({setCloseFailureModal}) {
             clearTimeout(detailsTimer);
         };
     }, []);
+
+    const payt = useTranslations('payments')
+    const sut = useTranslations('sign_up')
 
     return (
         <div>
@@ -65,13 +69,13 @@ export default function PaymentFailedAnimation({setCloseFailureModal}) {
                 {/* Failed Message */}
                 <div className="mb-8 transform animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
                     <h1 className="text-lg font-bold text-red-700 mb-3">
-                        Payment Failed
+                        {payt('payment_failed')}
                     </h1>
                     <p className="text-gray-600 mb-4">
-                        We couldn&lsquo;t process your payment
+                        {payt('payment_processing_error')}
                     </p>
                     <p className="text-xs text-gray-500">
-                        Don&lsquo;t worry, no charges were made to your account
+                        {payt('no_charges_made')}
                     </p>
                 </div>
                 <div
@@ -79,9 +83,9 @@ export default function PaymentFailedAnimation({setCloseFailureModal}) {
                         }`}
                 >
                     <div className="space-y-3">
-                        <button onClick={()=> setCloseFailureModal(true)} className="w-full bg-gradient-to-r bg-[#001840] text-white py-2 rounded-2xl font-semibold hover:from-blue-600 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center justify-center space-x-2">
+                        <button onClick={() => setCloseFailureModal(true)} className="w-full bg-gradient-to-r bg-[#001840] text-white py-2 rounded-2xl font-semibold hover:from-blue-600 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center justify-center space-x-2">
                             <CloseCircleFilled />
-                            <span>Close</span>
+                            <span>{payt('close')}</span>
                         </button>
 
 
@@ -90,7 +94,7 @@ export default function PaymentFailedAnimation({setCloseFailureModal}) {
                             className="w-full bg-white border-2 border-gray-200 text-gray-600 py-2 rounded-2xl font-medium hover:border-gray-300 hover:bg-gray-50 transition-all duration-300 flex items-center justify-center space-x-2"
                         >
                             <QuestionCircleFilled />
-                            <span>Get Help</span>
+                            <span>{payt('contact_support')}</span>
                         </button>
                     </div>
                 </div>

@@ -349,7 +349,7 @@ function Home() {
         <div className="relative flex items-center w-full px-6 ">
           <div className=" w-full mt-1 py-4 flex gap-5 items-center justify-center flex-col h-fit">
             <Animator delay={0.2}>
-              <h1 className="font-black text-center px-3 text-3xl">
+              <h1 className="font-black text-center mt-8 px-3 text-3xl">
                 {t('what_our_clients_are_saying')}
               </h1>
             </Animator>

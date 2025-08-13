@@ -2,10 +2,13 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { apiGet, apiPost } from "@/services/api/api_service";
 
-import { DAYS_MAP } from "../../utils/data/days_of_the_week";
+
+import useWeekDays from "../../utils/data/days_of_the_week";
 
 export const useCohort = () => {
   const queryClient = useQueryClient();
+
+  const { DAYS_MAP } = useWeekDays();
 
   const { data: cohorts, isFetching } = useQuery({
     queryKey: ["cohorts"],
@@ -14,7 +17,7 @@ export const useCohort = () => {
   });
 
   const createCohort = useMutation({
-    mutationFn: (formData) => postCohortFn(transformFormDataForAPI(formData)),
+    mutationFn: (formData) => postCohortFn(transformFormDataForAPI(formData, DAYS_MAP)),
     onSuccess: (newCohort) => {
       queryClient.invalidateQueries({ queryKey: ["cohorts"] });
 
@@ -70,7 +73,7 @@ export const getSpecificCohortFn = async (cohortId) => {
   }
 };
 
-const transformFormDataForAPI = (formData) => {
+const transformFormDataForAPI = (formData, DAYS_MAP) => {
   const daily_slots = formData.days.map((day, index) => ({
     day_of_week: DAYS_MAP[day],
     start_time: formData.times[index],

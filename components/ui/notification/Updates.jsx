@@ -1,13 +1,13 @@
 import { Drawer, List, Typography, Badge } from "antd";
 import clsx from "clsx";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { LuBell, LuBellRing } from "react-icons/lu";
 
 const notifications = Array.from({ length: 30 }, (_, index) => ({
   id: index,
-  message: `Update ${index + 1}: ${
-    index % 2 === 0 ? "New feature released!" : "Action required."
-  }`,
+  message: `Update ${index + 1}: ${index % 2 === 0 ? "New feature released!" : "Action required."
+    }`,
   time: `2025-04-18 10:${index < 10 ? "0" + index : index}:00`,
   unread: index % 3 === 0,
 }));
@@ -20,6 +20,8 @@ export default function Updates({ children }) {
 
   const updates = [];
 
+  const notift = useTranslations('notifications');
+
   return (
     <>
       <div onClick={showDrawer}>{children}</div>
@@ -28,7 +30,7 @@ export default function Updates({ children }) {
         title={
           <div className="flex items-center justify-between">
             <Typography.Text className="font-semibold text-lg text-gray-900">
-              Notifications
+              {notift('notifications')}
             </Typography.Text>
             <Typography.Link
               className={clsx(
@@ -39,7 +41,7 @@ export default function Updates({ children }) {
               )}
               onClick={() => console.log("Clear All clicked")}
             >
-              Clear All
+              {notift('clear_all')}
             </Typography.Link>
           </div>
         }
@@ -78,10 +80,10 @@ export default function Updates({ children }) {
             <div className="rounded-lg p-8 max-w-sm w-full flex flex-col items-center justify-center">
               <LuBell className="text-7xl text-gray-400 mb-4 bell-icon" />
               <Typography.Text className="text-xl font-semibold text-gray-700 block mb-2 fade-in">
-                No notifications yet
+                {notift('no_notifications_yet')}
               </Typography.Text>
               <Typography.Text className="text-xs md:text-sm text-gray-500 fade-in">
-                Your notifications will appear here.
+                {notift('notifications_appearance')}
               </Typography.Text>
             </div>
           </div>
@@ -90,20 +92,18 @@ export default function Updates({ children }) {
             dataSource={updates}
             renderItem={(item) => (
               <List.Item
-                className={`p-4 border-b border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer !px-6 ${
-                  item.unread ? "bg-blue-50" : "bg-white"
-                }`}
+                className={`p-4 border-b border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer !px-6 ${item.unread ? "bg-blue-50" : "bg-white"
+                  }`}
                 onClick={() => console.log(`Clicked notification ${item.id}`)}
               >
                 <div className="flex items-start space-x-3">
                   <LuBellRing className="text-lg text-blue-600 mt-1" />
                   <div className="flex-1">
                     <Typography.Text
-                      className={`text-sm ${
-                        item.unread
+                      className={`text-sm ${item.unread
                           ? "font-medium text-gray-900"
                           : "text-gray-700"
-                      }`}
+                        }`}
                     >
                       {item.message}
                     </Typography.Text>

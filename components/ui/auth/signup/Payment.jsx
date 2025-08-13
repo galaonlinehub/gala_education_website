@@ -178,6 +178,11 @@ const MobilePay = () => {
     setActiveTab(activeTab - 1);
   };
 
+  const ht = useTranslations('home_page');
+  const donate = useTranslations('donate');
+  const payt = useTranslations('payments');
+  const enroll_pay = useTranslations('enroll_payments');
+
   return (
     <div className="flex flex-col items-center justify-center min-h-[35rem] xs:p-4 md:p-8">
       <Card
@@ -186,12 +191,12 @@ const MobilePay = () => {
       >
         <div className="mb-8">
           <h2 className="text-sm xxs:text-lg xs:text-text-xl sm:text-2xl md:text-2xl font-bold text-gray-900 mb-4">
-            Payment Details
+            {payt('payment_details')}
           </h2>
 
           <div className="bg-gray-50 rounded-lg p-4 space-y-2">
             <div className="flex flex-col xxs:flex-row justify-between items-start xxs:items-center">
-              <span className="text-xs sm:text-sm mb-1 xxs:mb-0">Amount</span>
+              <span className="text-xs sm:text-sm mb-1 xxs:mb-0">{donate('amount')}</span>
               {plan ? (
                 <span className="text-xl font-black">
                   {Number(plan.amount).toLocaleString()} TZS
@@ -202,7 +207,7 @@ const MobilePay = () => {
             </div>
 
             <div className="flex flex-col xxs:flex-row justify-between items-start xxs:items-center">
-              <span className="text-xs sm:text-sm mb-1 xxs:mb-0">Plan</span>
+              <span className="text-xs sm:text-sm mb-1 xxs:mb-0">{payt('plan')}</span>
               {plan ? (
                 <span className="text-gray-900 font-black">{plan.name}</span>
               ) : (
@@ -215,7 +220,7 @@ const MobilePay = () => {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
             <label className="block text-sm font-medium text-gray-700">
-              Phone Number
+              {ht('phone')}
             </label>
             <Input
               className="w-full rounded-lg"
@@ -241,7 +246,7 @@ const MobilePay = () => {
                 </span>
               )}
               <span className="text-gray-500 text-[10px] xxs:text-xs line-clamp-2">
-                Example: 752451811
+                {enroll_pay('example')}: 752451811
               </span>
             </div>
           </div>
@@ -253,7 +258,7 @@ const MobilePay = () => {
                 !bg-[#010798] hover:!opacity-80 !border-transparent !font-semibold
                 rounded-lg transition-colors duration-200 text-[11px] xxs:text-sm"
           >
-            Request Payment
+            {enroll_pay('request_payment')}
           </Button>
         </form>
         <div className="w-full mt-6 flex justify-between">
@@ -261,7 +266,7 @@ const MobilePay = () => {
             onClick={goBack}
             className="font-bold text-[#010798] text-xs cursor-pointer border border-[#010798] p-2 rounded-md"
           >
-            Change plan
+            {payt('change_plan')}
           </div>
 
           <Contact useBillingContact={true} />

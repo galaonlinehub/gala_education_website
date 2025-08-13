@@ -2,6 +2,7 @@ import { CloseCircleOutlined } from "@ant-design/icons";
 import { useQueryClient } from "@tanstack/react-query";
 import { Result, Modal, Progress } from "antd";
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useState, useEffect, useMemo } from "react";
 import { HiMiniDevicePhoneMobile } from "react-icons/hi2";
 import {
@@ -61,6 +62,10 @@ export const RenderLoadingState = ({ setStatus }) => {
     return statusMessages[index % statusMessages.length];
   };
 
+  const donate = useTranslations('donate')
+  const stdash = useTranslations('student_dashboard')
+  const payt = useTranslations('payments')
+
   return (
     <div className="flex flex-col items-center justify-center min-h-[400px] w-full max-w-md mx-auto xxs:px-4">
       <div className="w-full space-y-8">
@@ -69,7 +74,7 @@ export const RenderLoadingState = ({ setStatus }) => {
         </div>
         <div className="space-y-6 text-center">
           <h2 className="text-lg xxs:text-xl xs:text-2xl font-semibold text-primary line-clamp-2">
-            Processing Your Payment
+            {donate('processing_payment')}
           </h2>
           <p className="xxs:text-xs xs:text-sm text-muted-foreground line-clamp-2">
             {getStatusMessage()}
@@ -85,7 +90,7 @@ export const RenderLoadingState = ({ setStatus }) => {
             />
             <div className="flex justify-between items-center text-xs xxs:text-sm">
               <span className="text-muted-foreground">
-                Progress: {Math.round(percent)}%
+                {stdash('progress')}: {Math.round(percent)}%
               </span>
               <span className="font-medium text-primary">
                 {Math.round(seconds)}s
@@ -95,7 +100,7 @@ export const RenderLoadingState = ({ setStatus }) => {
           <div className="my-8 flex items-center justify-center gap-1 xxs:gap-2">
             <LuShieldCheck size={24} />
             <span className="text-[10px] xxs:text-xs line-clamp-2 text-muted-foreground">
-              Your transaction is protected by end-to-end encryption
+              {payt('end_to_end_encrpytion')}
             </span>
           </div>
         </div>
@@ -133,6 +138,8 @@ export const RenderSuccessState = ({
     queryClient.invalidateQueries(["auth-user"]);
   };
 
+  const payt = useTranslations('payments');
+
   return (
     <div className="flex flex-col items-center justify-center p-1 xxs:p-4 min-w-[50px] max-w-[600px] mx-auto mt-4 xs:mt-8">
       <LuCircleCheckBig
@@ -140,21 +147,21 @@ export const RenderSuccessState = ({
         className="text-green-500 text-3xl xxs:text-6xl mb-4"
       />
       <span className="text-base xxs:text-2xl font-semibold text-gray-800 text-center">
-        Payment Successful!
+        {payt('payment_success')}
       </span>
       <div className="space-y-4 mt-4 md:mt-6 lg:mt-8 w-full text-center">
         <p className="text-gray-600 text-xs md:text-sm">
-          Your transaction has been completed successfully.
+          {payt('payment_success_description')}
         </p>
         <p className="text-gray-500 text-xs md:text-sm">
-          A confirmation email will be sent shortly.
+          {payt('confirmation_email')}
         </p>
       </div>
       <button
         onClick={onDone}
         className="my-12 text-xs xxs:text-base px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors duration-200 w-full max-w-[300px]"
       >
-        Done
+        {payt('done')}
       </button>
     </div>
   );
@@ -165,61 +172,65 @@ export const RenderReferenceState = ({
   amount,
   onClose,
   donation,
-}) => (
-  <div className="flex flex-col items-center py-6 xxs:py-0 xxs:p-4 min-w-[50px] max-w-[600px] mx-auto">
-    <HiMiniDevicePhoneMobile className="text-[#001840] text-4xl mb-4" />
-    <div className="flex flex-col gap-3 w-full">
-      <div className="text-center">
-        <p className="text-gray-600 mb-1 text-[10px] xxs:text-sm line-clamp-2">
-          To complete your payment:
-        </p>
-      </div>
-      <div className="flex flex-col xxs:flex-row items-center justify-center text-[#001840] bg-blue-50 p-3 rounded-lg">
-        <span>1. Dial</span>
-        <span className="font-black ml-2">*150*50*1#</span>
-      </div>
-      <div className="space-y-4">
-        <div className="flex items-center justify-center gap-3 text-gray-700 bg-gray-50 p-3 rounded-lg">
-          <LuHash className="text-[#001840] text-xl" />
-          <div className="flex flex-col items-center justify-center">
-            <span className="font-medium">2. Enter Reference Number</span>
-            <p className="text-lg text-[#001840] font-black mt-1 text-center">
-              {reference ?? "---"}
-            </p>
+}) => {
+
+  const payt = useTranslations('payments');
+  return (
+    <div className="flex flex-col items-center py-6 xxs:py-0 xxs:p-4 min-w-[50px] max-w-[600px] mx-auto">
+      <HiMiniDevicePhoneMobile className="text-[#001840] text-4xl mb-4" />
+      <div className="flex flex-col gap-3 w-full">
+        <div className="text-center">
+          <p className="text-gray-600 mb-1 text-[10px] xxs:text-sm line-clamp-2">
+            {payt('to_complete_your_payment')}
+          </p>
+        </div>
+        <div className="flex flex-col xxs:flex-row items-center justify-center text-[#001840] bg-blue-50 p-3 rounded-lg">
+          <span>1. {payt('dial')}</span>
+          <span className="font-black ml-2">*150*50*1#</span>
+        </div>
+        <div className="space-y-4">
+          <div className="flex items-center justify-center gap-3 text-gray-700 bg-gray-50 p-3 rounded-lg">
+            <LuHash className="text-[#001840] text-xl" />
+            <div className="flex flex-col items-center justify-center">
+              <span className="font-medium">2. {payt('enter_reference_number')}</span>
+              <p className="text-lg text-[#001840] font-black mt-1 text-center">
+                {reference ?? "---"}
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center justify-center gap-3 text-gray-700 bg-gray-50 p-3 rounded-lg">
+            <LuWallet className="text-[#001840] text-xl" />
+            <div className="flex flex-col items-center justify-center">
+              <span className="font-medium">
+                {donation
+                  ? `3. ${payt('enter_amount')}`
+                  : `3. ${payt('enter_amount_for_plan_selected')}`}
+              </span>
+              <p className="text-lg text-[#001840] font-black mt-1 text-center">
+                {amount?.toLocaleString()} TZS
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center justify-center gap-3 text-gray-700 bg-gray-50 p-3 rounded-lg">
+            <LuLock className="text-[#001840] text-xl" />
+            <div className="flex flex-col items-center justify-center">
+              <span className="font-medium">4. {payt('enter_pin_to_confirm')}</span>
+              <p className="text-xs text-gray-500 mt-1 text-center">
+                {payt('enter_mobile_money_pin_to_complete_payment')}
+              </p>
+            </div>
           </div>
         </div>
-        <div className="flex items-center justify-center gap-3 text-gray-700 bg-gray-50 p-3 rounded-lg">
-          <LuWallet className="text-[#001840] text-xl" />
-          <div className="flex flex-col items-center justify-center">
-            <span className="font-medium">
-              {donation
-                ? "3. Enter Amount"
-                : "3. Enter Amount for plan selected"}
-            </span>
-            <p className="text-lg text-[#001840] font-black mt-1 text-center">
-              {amount?.toLocaleString()} TZS
-            </p>
-          </div>
-        </div>
-        <div className="flex items-center justify-center gap-3 text-gray-700 bg-gray-50 p-3 rounded-lg">
-          <LuLock className="text-[#001840] text-xl" />
-          <div className="flex flex-col items-center justify-center">
-            <span className="font-medium">4. Enter PIN to Confirm</span>
-            <p className="text-xs text-gray-500 mt-1 text-center">
-              Enter your mobile money PIN to complete payment
-            </p>
-          </div>
-        </div>
       </div>
+      <button
+        onClick={onClose}
+        className="my-8 px-6 py-2 bg-[#010798] text-white rounded-lg hover:opacity-80 transition-colors duration-200 w-full max-w-[400px]"
+      >
+        {payt('close')}
+      </button>
     </div>
-    <button
-      onClick={onClose}
-      className="my-8 px-6 py-2 bg-[#010798] text-white rounded-lg hover:opacity-80 transition-colors duration-200 w-full max-w-[400px]"
-    >
-      Done
-    </button>
-  </div>
-);
+  )
+}
 
 export const RenderFailureState = ({ onClose, setStatus, mutationFn }) => {
   const mailto = `mailto:${SUPPORT_EMAIL}?subject=Payment%20Failure`;
@@ -228,6 +239,9 @@ export const RenderFailureState = ({ onClose, setStatus, mutationFn }) => {
     mutationFn();
   };
 
+  const payt = useTranslations('payments')
+  const sot = useTranslations('sign_out')
+
   return (
     <Result
       icon={
@@ -235,23 +249,22 @@ export const RenderFailureState = ({ onClose, setStatus, mutationFn }) => {
       }
       title={
         <span className="text-base xxs:text-lg xs:text-2xl font-semibold text-gray-800 line-clamp-2">
-          Payment Failed
+          {payt('payment_failed')}
         </span>
       }
       subTitle={
         <div className="space-y-3 mt-4">
           <p className="text-gray-600 line-clamp-3 text-[12px] xxs:text-xs sm:text-sm">
-            We couldn&apos;t process your payment at this time.
+            {payt('payment_processing_error')}
           </p>
           <p className="text-gray-500 line-clamp-3 text-[12px] xxs:text-xs lg:text-sm">
-            Please try again or
+            {payt('please_try_again')}
             <a
               className="mx-1 text-[#030DFE] hover:text-[#030DFE]/70 text-[12px] xxs:text-xs lg:text-sm"
               href={mailto}
             >
-              Contact Support
+              {payt('contact_support')}
             </a>
-            if the issue persists.
           </p>
         </div>
       }
@@ -262,7 +275,7 @@ export const RenderFailureState = ({ onClose, setStatus, mutationFn }) => {
             onClick={reload}
             className="px-6 py-1 xxs:py-2 sm:py-3 bg-[#010798] text-white rounded-lg hover:opacity-80 transition-colors w-3/4 duration-200 text-[10px] xxs:text-xs line-clamp-1"
           >
-            Try Again
+            {payt('try_again')}
           </button>
           ,
           <button
@@ -270,7 +283,7 @@ export const RenderFailureState = ({ onClose, setStatus, mutationFn }) => {
             onClick={onClose}
             className="px-6 py-1 xxs:py-2 sm:py-3 border border-gray-300 text-gray-600 rounded-lg hover:bg-gray-50 w-3/4 transition-colors duration-200 text-[10px] xxs:text-xs line-clamp-1"
           >
-            Cancel
+            {sot('cancel')}
           </button>
         </div>,
       ]}

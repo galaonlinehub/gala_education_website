@@ -2,6 +2,7 @@ import { CloseOutlined } from "@ant-design/icons";
 import { Input, Empty, Tooltip, Avatar, Button } from "antd";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import React from "react";
 import { FaChalkboardTeacher, FaBookReader } from "react-icons/fa";
 import { IoMenu } from "react-icons/io5";
@@ -30,6 +31,8 @@ const SearchResultCard = ({ data, onClick }) => {
     },
   };
 
+  const navt = useTranslations('navbar');
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -50,9 +53,9 @@ const SearchResultCard = ({ data, onClick }) => {
                 <FaBookReader className="text-lg text-black" />
               </div>
               <div>
-                <h2 className="text-xl font-medium">Topics</h2>
+                <h2 className="text-xl font-medium">{navt('topics')}</h2>
                 <p className="text-xs text-gray-800">
-                  {topics.length} topic{topics.length !== 1 ? "s" : ""} found
+                  {navt('topics_found', { count: topics.length ?? 0 })}
                 </p>
               </div>
             </div>
@@ -111,10 +114,9 @@ const SearchResultCard = ({ data, onClick }) => {
                 <FaChalkboardTeacher className="text-lg text-black" />
               </div>
               <div>
-                <h2 className="text-xl font-bold">Instructors</h2>
+                <h2 className="text-xl font-bold">{navt('instructors')}</h2>
                 <p className="text-xs text-gray-800">
-                  {teachers.length} instructor{teachers.length !== 1 ? "s" : ""}{" "}
-                  found
+                  {navt('teachers_found', {count: teachers.length ?? 0})}
                 </p>
               </div>
             </div>
@@ -186,13 +188,13 @@ const SearchResultCard = ({ data, onClick }) => {
                                     ))}
                                   {subjects.length >
                                     (window.innerWidth < 640 ? 2 : 4) && (
-                                    <span className="inline-block bg-black text-white px-1.5 py-0.5 sm:px-2 sm:py-1 rounded text-xs">
-                                      +
-                                      {subjects.length -
-                                        (window.innerWidth < 640 ? 2 : 4)}{" "}
-                                      more
-                                    </span>
-                                  )}
+                                      <span className="inline-block bg-black text-white px-1.5 py-0.5 sm:px-2 sm:py-1 rounded text-xs">
+                                        +
+                                        {subjects.length -
+                                          (window.innerWidth < 640 ? 2 : 4)}{" "}
+                                        more
+                                      </span>
+                                    )}
                                 </div>
                               ) : (
                                 <span className="text-gray-400 italic text-xs">
@@ -210,7 +212,7 @@ const SearchResultCard = ({ data, onClick }) => {
                             <div className="text-right">
                               <div className="text-xs text-black font-medium flex items-center gap-1">
                                 <span className="hidden sm:inline">
-                                  View Profile
+                                  {navt('view_profile')}
                                 </span>
                                 <LuChevronRight className="w-4 h-4" />
                               </div>
@@ -246,6 +248,9 @@ const StudentSearch = () => {
 
   const { setSubscribeOpen } = useSubscribeStore();
 
+  const notift = useTranslations('notifications');
+  const navt = useTranslations('navbar');
+
   return (
     <div
       ref={searchContainerRef}
@@ -256,7 +261,7 @@ const StudentSearch = () => {
           {user?.role === "student" ? (
             <div className="w-full md:w-[653px] relative">
               <Input.Search
-                placeholder="Search teachers or topics..."
+                placeholder={navt('search_teachers_topics')}
                 prefix={<IoMenu className="text-gray-400 mr-2" />}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -292,7 +297,7 @@ const StudentSearch = () => {
                                 image={Empty.PRESENTED_IMAGE_SIMPLE}
                                 description={
                                   <span className="text-gray-500">
-                                    No results found
+                                    {navt('no_results_found')}
                                   </span>
                                 }
                               />
@@ -323,7 +328,7 @@ const StudentSearch = () => {
                   type="primary"
                   className="!rounded-full !bg-black !text-white sm:hidden !font-semibold !text-xs hover:!bg-gray-700 !py-2"
                 >
-                  Subscribe now
+                  {navt('subscribe_now')}
                 </Button>
               )}
             </>
@@ -332,12 +337,12 @@ const StudentSearch = () => {
             {user?.role === "student" && <Clock />}
             <div className="flex items-center gap-3">
               <Updates>
-                <Tooltip placement="top" title="Notifications">
+                <Tooltip placement="top" title={notift('notifications')}>
                   <LuBell className="text-xl text-black hover:text-blue-600 cursor-pointer transition-colors" />
                 </Tooltip>
               </Updates>
 
-              <Tooltip placement="top" title="My Profile">
+              <Tooltip placement="top" title={notift('my_profile')}>
                 <LuCircleUser
                   className="text-xl text-black hover:text-blue-600 cursor-pointer transition-colors"
                   onClick={() => router.push(`/${user.role}/profile`)}

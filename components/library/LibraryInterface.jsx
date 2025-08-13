@@ -2,6 +2,7 @@
 import { BookOutlined, FileTextOutlined, ReadOutlined, CloudDownloadOutlined, MobileOutlined, SearchOutlined } from '@ant-design/icons';
 import { Typography, Card, Space, Tag, Row, Col, Divider, Button } from 'antd';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 import React, { useEffect, useState } from 'react';
 
 import Animator from '../home/animations/Animator';
@@ -15,37 +16,41 @@ const LibraryInterface = () => {
     setIsVisible(true);
   }, []);
 
+  const libt = useTranslations('library');
+
   const features = [
     {
       icon: <BookOutlined style={{ fontSize: '24px', color: '#722ed1' }} />,
-      title: 'eBooks Collection',
-      description: 'Thousands of digital books across all genres'
+      title: libt('ebooks_collection'),
+      description: libt('thousands_of_digital_books')
     },
-    
+
     {
       icon: <MobileOutlined style={{ fontSize: '24px', color: '#722ed1' }} />,
-      title: 'Cross-Device Access',
-      description: 'Access your library from any device'
+      title: libt('cross_device_access'),
+      description: libt('access_your_library_from_any_device')
     }
   ];
+
 
   const benefits = [
     {
       icon: <ReadOutlined style={{ fontSize: '32px', color: '#722ed1' }} />,
-      title: 'Learn Faster',
-      description: 'Advanced search algorithms help you find exactly what you need in seconds'
+      title: libt('learn_faster'),
+      description: libt('advanced_search_algorithms')
     },
     {
       icon: <CloudDownloadOutlined style={{ fontSize: '32px', color: '#722ed1' }} />,
-      title: 'Access Anywhere',
-      description: 'Cloud-based platform ensures your library is always with you'
+      title: libt('access_anywhere'),
+      description: libt('cloud_based_platform')
     },
     {
       icon: <BookOutlined style={{ fontSize: '32px', color: '#722ed1' }} />,
-      title: 'Organized Content',
-      description: 'Smart categorization makes finding resources intuitive and efficient'
+      title: libt('organized_content'),
+      description: libt('smart_categorization')
     }
   ];
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br  py-12 px-4">
@@ -54,44 +59,39 @@ const LibraryInterface = () => {
         <div className="text-center mb-16">
           <Animator delay={0.2} direction="top">
             <Tag color="purple" className="mb-4 px-4 py-1 text-sm font-medium">
-              Coming Soon
+              {libt('coming_soon')}
             </Tag>
           </Animator>
-          
+
           <Animator delay={0.3} direction="bottom">
             <Title level={1} className="!text-4xl !mb-6">
-              Your Digital <span style={{ color: '#722ed1' }}>Library</span>
+              {libt('your_digital_library')}
               <br />
-              <span className="text-2xl text-gray-600 font-normal">
-                Reimagined
-              </span>
             </Title>
           </Animator>
 
           <Animator delay={0.4} direction="bottom">
             <div className="max-w-4xl mx-auto mb-8">
               <Paragraph className="text-sm md:text-base text-gray-700 leading-relaxed">
-                Say goodbye to the limitations of traditional libraries and hello to a smarter, faster way to learn.
-                Our soon-to-launch <Text strong style={{ color: '#722ed1' }}>Online Library</Text> will connect you to a growing collection of eBooks, PDFs, academic papers,
-                and learning tools — categorized, and easy to access from any device.
+                {libt('say_goodbye_to_limitations')}
               </Paragraph>
-              
+
               <Text className="text-lg font-semibold" style={{ color: '#722ed1' }}>
-                Stay tuned — the gateway to a smarter future is just around the corner.
+                {libt('stay_tuned')}
               </Text>
             </div>
           </Animator>
 
-         
+
         </div>
 
         {/* Main Image and Stats */}
         <Row gutter={[48, 48]} align="middle" className="mb-16">
           <Col xs={24} lg={14}>
             <Animator delay={0.4} direction="left">
-              <div 
+              <div
                 className="relative w-full max-w-2xl mx-auto"
-                style={{ 
+                style={{
                   height: '500px',
                   animation: isVisible ? 'subtleBounce 3s ease-in-out infinite' : 'none'
                 }}
@@ -110,12 +110,12 @@ const LibraryInterface = () => {
               </div>
             </Animator>
           </Col>
-          
+
           <Col xs={24} lg={10}>
             <Animator delay={0.4} direction="right">
               <Card className="shadow-xl border-0 bg-white/80 backdrop-blur-sm">
                 <Title level={3} className="!mb-6 text-center">
-                  Why Digital Libraries Matter
+                  {libt('why_digital_libraries_matter')}
                 </Title>
                 <Space direction="vertical" size="large" className="w-full">
                   {benefits.map((benefit, index) => (
@@ -143,13 +143,13 @@ const LibraryInterface = () => {
         <Animator delay={0.4} direction="bottom">
           <div className="mb-16">
             <Title level={2} className="text-center !mb-12">
-              Why Choose Our <span style={{ color: '#722ed1' }}>Digital Library?</span>
+              {libt('why_choose_our_digital_library')}
             </Title>
-            
+
             <Row gutter={[32, 32]}>
               {features.map((feature, index) => (
                 <Col xs={24} sm={12} lg={12} key={index}>
-                  <Card 
+                  <Card
                     className="h-full text-center shadow-lg hover:shadow-xl transition-all duration-300 border-0 bg-white/70 backdrop-blur-sm hover:transform hover:scale-105"
                     bodyStyle={{ padding: '32px 24px' }}
                   >
@@ -173,7 +173,7 @@ const LibraryInterface = () => {
         <Animator delay={0.4} direction="bottom">
           <Card className="shadow-xl border-0 bg-gradient-to-r from-purple-50 to-indigo-50">
             <Title level={2} className="text-center !mb-8">
-              Discover Content Categories
+              {libt('discover_content_categories')}
             </Title>
             <Row gutter={[24, 24]}>
               <Col xs={24} sm={12} md={8}>
@@ -183,7 +183,7 @@ const LibraryInterface = () => {
                   </div>
                   <Title level={4}>Academic Resources</Title>
                   <Paragraph className="text-gray-600">
-                    Research papers, journals, and scholarly articles across all disciplines
+                    {libt('research_papers_description')}
                   </Paragraph>
                 </div>
               </Col>
@@ -192,9 +192,9 @@ const LibraryInterface = () => {
                   <div className="mb-4 p-4 bg-gradient-to-br from-green-100 to-green-200 rounded-full inline-block">
                     <ReadOutlined style={{ fontSize: '32px', color: '#52c41a' }} />
                   </div>
-                  <Title level={4}>Digital Books</Title>
+                  <Title level={4}>{libt('digital_books')}</Title>
                   <Paragraph className="text-gray-600">
-                    Fiction, non-fiction, textbooks, and reference materials for every interest
+                    {libt('books_variety')}
                   </Paragraph>
                 </div>
               </Col>
@@ -203,9 +203,9 @@ const LibraryInterface = () => {
                   <div className="mb-4 p-4 bg-gradient-to-br from-orange-100 to-orange-200 rounded-full inline-block">
                     <FileTextOutlined style={{ fontSize: '32px', color: '#fa8c16' }} />
                   </div>
-                  <Title level={4}>Learning Materials</Title>
+                  <Title level={4}>{libt('learning_materials')}</Title>
                   <Paragraph className="text-gray-600">
-                    Guides, tutorials, and educational resources for skill development
+                    {libt('guides_tutorials')}
                   </Paragraph>
                 </div>
               </Col>
@@ -217,13 +217,12 @@ const LibraryInterface = () => {
         <Animator delay={0.6} direction="bottom">
           <div className="text-center mt-16 p-12 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-3xl text-white">
             <div className="!text-white !mb-4 text-lg md:text-xl lg:text-2xl font-semibold">
-              Ready to Transform Your Learning?
+              {libt('ready_to_transform_your_learning')}
             </div>
             <Paragraph className="text-sm !text-purple-100 !mb-8 max-w-2xl mx-auto">
-              Experience the future of digital libraries with our comprehensive platform. 
-              Discover, learn, and grow with unlimited access to knowledge.
+              {libt('experience_future_digital_libraries')}
             </Paragraph>
-            
+
           </div>
         </Animator>
       </div>

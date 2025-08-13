@@ -1,5 +1,6 @@
 "use client";
 import { Input, Button, Card, Space } from "antd";
+import { useTranslations } from "next-intl";
 import { Controller } from "react-hook-form";
 import {
   LuCircleCheckBig,
@@ -36,12 +37,15 @@ const ForgotPassword = () => {
     setOtpStatus,
   } = usePassword();
 
+  const fpt = useTranslations("forgot_password");
+  const hpt = useTranslations("home_page");
+  const sut = useTranslations("sign_up");
+
   return (
     <div className="flex items-center justify-center px-2 py-2 md:py-6 h-full">
       <Card
-        className={`!w-full !max-w-md !py-4 bg-white rounded-xl transition-all !border-none ${
-          width < 768 ? "shadow-none" : "shadow-sm shadow-black/25"
-        }`}
+        className={`!w-full !max-w-md !py-4 bg-white rounded-xl transition-all ${width < 768 ? "shadow-none border-none" : "shadow-sm"
+          }`}
       >
         <div className="flex items-center justify-center mb-4">
           <div className="bg-[#001840]/10 p-3 rounded-full">
@@ -51,8 +55,8 @@ const ForgotPassword = () => {
 
         <h1 className="font-bold mb-6 text-2xl text-center text-gray-800">
           {!resetPasswordMutation.isSuccess
-            ? "Verify Email"
-            : "Enter Verification Code"}
+            ? fpt('verify_email')
+            : fpt('enter_verification_code')}
         </h1>
 
         {!resetPasswordMutation.isSuccess ? (
@@ -70,16 +74,16 @@ const ForgotPassword = () => {
                 htmlFor="email"
                 className="flex items-center text-gray-700 font-medium mb-2"
               >
-                <LuMail className="mr-2" /> Email Address
+                <LuMail className="mr-2" /> {hpt('email')}
               </label>
               <Controller
-                name="email"
+                name={fpt('email')}
                 control={control}
                 rules={{
-                  required: "Please enter email registered with your account",
+                  required: fpt('enter_email_registered_with_account'),
                   pattern: {
                     value: /^\S+@\S+$/i,
-                    message: "Please enter a valid email",
+                    message: sut('valid_email_address'),
                   },
                 }}
                 render={({ field }) => (
@@ -93,7 +97,7 @@ const ForgotPassword = () => {
                     autoComplete="new-password"
                     autoCorrect="off"
                     autoCapitalize="off"
-                    placeholder="Enter your email"
+                    placeholder={sut('enter_email')}
                     prefix={<LuMail className="text-gray-400" />}
                     className="rounded-lg !text-xs"
                     size="large"
@@ -120,7 +124,7 @@ const ForgotPassword = () => {
                 </div>
               ) : (
                 <div className="flex items-center gap-2 text-sm">
-                  <span>Send Verification Code</span>
+                  <span>{fpt('send_verification_code')}</span>
                   <LuSendHorizontal />
                 </div>
               )}
@@ -129,9 +133,9 @@ const ForgotPassword = () => {
         ) : (
           <div className="flex flex-col items-center pb-2">
             <p className="text-gray-600 mb-4 text-center">
-              We&apos;ve sent a 6-digit verification code to your email.
+              {fpt('sent_6_digit_code')}
               <br />
-              Please enter it below.
+              {fpt('please_enter_it_below')}
             </p>
 
             {otpStatus.message && (
@@ -163,10 +167,9 @@ const ForgotPassword = () => {
                       className={`
                         w-12 h-12 sm:w-14 sm:h-14 text-center text-2xl md:text-4xl border rounded-lg font-black
                         focus:border-4 focus:outline-none transition-all
-                        ${
-                          verificationMutation.isSuccess
-                            ? "border-green-500 text-green-600"
-                            : otpStatus.status === "error"
+                        ${verificationMutation.isSuccess
+                          ? "border-green-500 text-green-600"
+                          : otpStatus.status === "error"
                             ? "border-red-500 text-red-600"
                             : "border-black focus:border-[#030DFE] text-gray-800"
                         }
@@ -185,14 +188,14 @@ const ForgotPassword = () => {
             {verificationMutation.isPending && (
               <div className="w-full flex flex-col items-center justify-center mb-4 text-blue-500">
                 <SlickSpinner size={24} color="blue" />
-                <span className="mt-2">Verifying your code...</span>
+                <span className="mt-2">{fpt('verifying_your_code')}</span>
               </div>
             )}
             {verificationMutation.isError && (
               <div className="w-full flex flex-col items-center justify-center mb-4 text-red-500">
                 <LuX strokeWidth={3.5} size={32} />
                 <span className="font-medium text-center">
-                  OTP Verification failed
+                  {fpt('otp_verification_failed')}
                 </span>
               </div>
             )}
@@ -201,14 +204,14 @@ const ForgotPassword = () => {
                 <LuCircleCheckBig strokeWidth={3} size={32} />
                 <span className="font-medium">Success!</span>
                 <p className="text-sm">
-                  Redirecting you to reset your password...
+                  {fpt('redirecting_to_reset_password')}
                 </p>
               </div>
             )}
 
             <div className="text-center mt-4">
               <p className="text-gray-500 text-xs mb-2">
-                Didn&apos;t receive the code?
+                {fpt('didnt_receive_code')}
               </p>
               <Button
                 type="link"
@@ -220,14 +223,14 @@ const ForgotPassword = () => {
                 {resendOtpMutation.isPending ? (
                   <div className="flex items-center justify-center gap-2">
                     <SlickSpinner size={14} color="blue" />
-                    Sending...
+                    {fpt('sending')}
                   </div>
                 ) : resendCounter > 0 ? (
                   `Resend in ${resendCounter}s`
                 ) : (
                   <div className="flex items-center gap-2">
                     <LuRotateCw />
-                    Resend code
+                    {fpt('resend_code')}
                   </div>
                 )}
               </Button>

@@ -19,6 +19,7 @@ import {
 } from "antd";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useState, useRef } from "react";
 import {
   LuBook,
@@ -72,9 +73,13 @@ export default function TeacherClasses() {
     setOpenAddNewClass(true);
   };
 
+  const sit = useTranslations('sign_in');
+  const tdash = useTranslations('teacher_dashboard');
+  const fpt = useTranslations('forgot_password');
+
   const columns = [
     {
-      title: "Class",
+      title: tdash('class'),
       dataIndex: "class",
       key: "subject",
       width: device?.type === "mobile" ? 150 : 250,
@@ -91,7 +96,7 @@ export default function TeacherClasses() {
       ),
     },
     {
-      title: "Start",
+      title: tdash('start'),
       dataIndex: "startDate",
       key: "startDate",
       width: device?.type === "mobile" ? 80 : 140,
@@ -107,7 +112,7 @@ export default function TeacherClasses() {
       ),
     },
     {
-      title: "End",
+      title: tdash('end'),
       dataIndex: "endDate",
       key: "endDate",
       width: device?.type === "mobile" ? 80 : 140,
@@ -123,7 +128,7 @@ export default function TeacherClasses() {
       ),
     },
     {
-      title: "Students",
+      title: tdash('students'),
       dataIndex: "students",
       key: "students",
       width: device?.type === "mobile" ? 70 : 100,
@@ -135,7 +140,7 @@ export default function TeacherClasses() {
       ),
     },
     {
-      title: "Action",
+      title: tdash('action'),
       key: "action",
       width: device?.type === "mobile" ? 60 : 120,
       fixed: device?.type === "mobile" ? "right" : false,
@@ -150,7 +155,7 @@ export default function TeacherClasses() {
             <RightOutlined />
           ) : (
             <>
-              View <RightOutlined className="text-xs ml-1" />
+              {tdash('view')} <RightOutlined className="text-xs ml-1" />
             </>
           )}
         </Button>
@@ -223,9 +228,8 @@ export default function TeacherClasses() {
       <Layout className="min-h-screen bg-white">
         <Content className="p-4 md:p-8">
           <div
-            className={`max-w-7xl mx-auto space-y-6 ${
-              !isProfileCompleted ? "pointer-events-none opacity-30" : ""
-            }`}
+            className={`max-w-7xl mx-auto space-y-6 ${!isProfileCompleted ? "pointer-events-none opacity-30" : ""
+              }`}
           >
             {/* Header Section */}
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
@@ -237,14 +241,13 @@ export default function TeacherClasses() {
                         level={device?.type === "mobile" ? 3 : 2}
                         className="!text-white !mb-2"
                       >
-                        Welcome back,{" "}
+                        {sit('welcome_back')},
                         <span className="capitalize">
-                          {user?.first_name}! 👋
+                          {" "}{user?.first_name}! 👋
                         </span>
                       </Title>
                       <Paragraph className="!text-blue-100 text-lg !mb-6">
-                        Ready to inspire minds and shape futures? Your digital
-                        classroom awaits your expertise.
+                        {tdash('welcome_words')}
                       </Paragraph>
 
                       <Row gutter={[24, 16]} className="mt-6">
@@ -254,7 +257,7 @@ export default function TeacherClasses() {
                               {user?.active_cohorts || 0}
                             </div>
                             <div className="text-blue-200 text-sm">
-                              Active Classes
+                              {tdash('active_classes')}
                             </div>
                           </div>
                         </Col>
@@ -264,7 +267,7 @@ export default function TeacherClasses() {
                               {user?.student_count || 0}
                             </div>
                             <div className="text-blue-200 text-sm">
-                              Total Students
+                              {tdash('total_students')}
                             </div>
                           </div>
                         </Col>
@@ -274,7 +277,7 @@ export default function TeacherClasses() {
                               {user?.teaching_hours || 0}
                             </div>
                             <div className="text-blue-200 text-sm">
-                              Teaching Hours
+                              {tdash('teaching_hours')}
                             </div>
                           </div>
                         </Col>
@@ -308,10 +311,10 @@ export default function TeacherClasses() {
                         <PlusOutlined className="text-green-600 text-lg" />
                       </div>
                       <Title level={5} className="!mb-2">
-                        Create Class
+                        {tdash('create_class')}
                       </Title>
                       <Text type="secondary" className="text-sm">
-                        Start new learning sessions by creating a new class
+                        {tdash('create_class_description')}
                       </Text>
                     </div>
                     <div className="pt-4">
@@ -319,7 +322,7 @@ export default function TeacherClasses() {
                         color="#001840"
                         title={
                           hasFreeTrail
-                            ? "This is only available in Premium"
+                            ? tdash('only_in_premium')
                             : ""
                         }
                       >
@@ -329,7 +332,7 @@ export default function TeacherClasses() {
                           className="w-full border-green-400 hover:bg-green-700 disabled:border-gray-200 disabled:bg-transparent"
                           onClick={handleAddNew}
                         >
-                          Add New Class
+                          {tdash('create_class')}
                         </Button>
                       </Tooltip>
                     </div>
@@ -348,10 +351,10 @@ export default function TeacherClasses() {
                         <MdOutlineRateReview className="text-orange-600 text-lg" />
                       </div>
                       <Title level={5} className="!mb-2">
-                        Students&apos; Reviews
+                        {tdash('student_reviews')}
                       </Title>
                       <Text type="secondary" className="text-sm">
-                        See what Students have to say about you
+                        {tdash('student_reviews_description')}
                       </Text>
                     </div>
                     <div className="pt-4">
@@ -359,7 +362,7 @@ export default function TeacherClasses() {
                         color="#001840"
                         title={
                           hasFreeTrail
-                            ? "This is only available in Premium"
+                            ? tdash('only_in_premium')
                             : ""
                         }
                       >
@@ -369,7 +372,7 @@ export default function TeacherClasses() {
                           className={`w-full border-orange-300 text-orange-600 hover:border-orange-300 disabled:border-gray-200 disabled:bg-transparent`}
                           onClick={() => router.push(`/${user?.role}/reviews`)}
                         >
-                          View Reviews
+                          {tdash('view_reviews')}
                         </Button>
                       </Tooltip>
                     </div>
@@ -388,7 +391,7 @@ export default function TeacherClasses() {
                         <LuBookOpen className="text-blue-600" />
                       </div>
                       <div className="text-sm md:text-lg !mb-0">
-                        Your Subjects
+                        {tdash('your_subjects')}
                       </div>
                     </div>
                   }
@@ -434,10 +437,10 @@ export default function TeacherClasses() {
                     <Empty
                       description={
                         <div className="text-center py-2">
-                          <Text type="secondary">No subjects assigned yet</Text>
+                          <Text type="secondary">{tdash('no_subjetcs_assigned_yet')}</Text>
                           <br />
                           <Text type="secondary" className="text-sm">
-                            Your teaching subjects will appear here
+                            {tdash('your_subjects_will_appear_here')}
                           </Text>
                         </div>
                       }
@@ -457,7 +460,7 @@ export default function TeacherClasses() {
                           <LuGraduationCap className="text-green-600" />
                         </div>
                         <div className="text-sm md:text-lg !mb-0">
-                          Your Classes
+                          {tdash('your_classes')}
                         </div>
                       </div>
 
@@ -473,7 +476,7 @@ export default function TeacherClasses() {
                             }
                             className="text-blue-600 hover:bg-blue-50 font-medium"
                           >
-                            View All <RightOutlined className="text-xs ml-1" />
+                            {tdash('view_all')} <RightOutlined className="text-xs ml-1" />
                           </Button>
                         )}
                       </div>
@@ -504,16 +507,16 @@ export default function TeacherClasses() {
                         <div className="text-center py-2">
                           {/* <LuGraduationCap className="text-4xl text-gray-300 mx-auto mb-4" /> */}
                           <Title level={5} type="secondary">
-                            No classes yet
+                            {tdash('no_classes_yet')}
                           </Title>
                           <Text type="secondary">
-                            Create your first class to get started
+                            {tdash('create_your_first_class')}
                           </Text>
                           <br />
                           <Tooltip
                             title={
                               hasFreeTrail
-                                ? "This is only available in Premium"
+                                ? tdash('only_in_premium')
                                 : ""
                             }
                           >
@@ -524,7 +527,7 @@ export default function TeacherClasses() {
                               onClick={handleAddNew}
                               className="mt-4 bg-blue-600 border-blue-600"
                             >
-                              Create Your First Class
+                              {tdash('create_your_first_class')}
                             </Button>
                           </Tooltip>
                         </div>
@@ -542,10 +545,10 @@ export default function TeacherClasses() {
             title={
               <div className="text-center">
                 <Title level={4} className="!mb-2">
-                  Verify Your Phone
+                  {tdash('verify_your_phone')}
                 </Title>
                 <Text type="secondary">
-                  Enter the 6-digit code sent to your phone
+                  {tdash('6_digit_to_phone')}
                 </Text>
               </div>
             }
@@ -579,7 +582,7 @@ export default function TeacherClasses() {
                   onClick={handleResendCode}
                   className="text-blue-600"
                 >
-                  Resend Code
+                  {fpt('resend_code')}
                 </Button>
                 <Button
                   type="primary"
@@ -588,7 +591,7 @@ export default function TeacherClasses() {
                   disabled={otp.some((digit) => !digit)}
                   className="px-8 bg-blue-600 border-blue-600"
                 >
-                  Verify & Continue
+                  {tdash('verify_and_continue')}
                 </Button>
               </div>
             </div>

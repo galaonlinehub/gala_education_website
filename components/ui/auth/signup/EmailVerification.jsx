@@ -1,6 +1,7 @@
 import { ReloadOutlined } from "@ant-design/icons";
 import { Modal, Button } from "antd";
 import clsx from "clsx";
+import { useTranslations } from "next-intl";
 import React from "react";
 import { LuBan, LuCheck, LuTriangleAlert } from "react-icons/lu";
 
@@ -8,6 +9,7 @@ import { useEmailVerification } from "@/hooks/ui/useEmailVerification";
 import { maskEmail } from "@/utils/fns/mask_email";
 
 import LoadingState from "../../loading/template/LoadingSpinner";
+
 
 const EmailVerification = () => {
   const {
@@ -23,9 +25,13 @@ const EmailVerification = () => {
     inputs,
   } = useEmailVerification();
 
+  const sut = useTranslations('sign_up')
+  const fpass = useTranslations('forgot_password')
+  const sot = useTranslations('sign_out')
+
   return (
     <Modal
-      title={<p>Verify Email</p>}
+      title={<p>{fpass('verify_email')}</p>}
       closable={false}
       maskClosable={false}
       keyboard={false}
@@ -36,7 +42,7 @@ const EmailVerification = () => {
     >
       <div className="mb-6 flex flex-col">
         <span className="block w-full space-x-2 overflow-hidden text-ellipsis whitespace-nowrap">
-          <span>Enter Verification Code Sent through</span>
+          <span>{sut('enter_verification_code_sent')}</span>
           <span className="font-bold">
             {openEmailVerificationModal && email ? maskEmail(email) : ""}
           </span>
@@ -67,10 +73,10 @@ const EmailVerification = () => {
                     verifyMutate.isSuccess
                       ? "border border-green-500 focus:ring-green-800 focus:outline-green-600 input-shake"
                       : verifyMutate?.error?.status === 429
-                      ? "border border-yellow-500 focus:ring-yellow-500 focus:outline-yellow-500 input-shake failure"
-                      : verifyMutate?.error
-                      ? "border border-red-500 focus:ring-red-500 focus:outline-red-500 input-shake failure"
-                      : "text-2xl font-black w-12 h-12 text-center text-black border border-[#030DFE] rounded-md focus:outline-none focus:ring focus:ring-[#030DFE]"
+                        ? "border border-yellow-500 focus:ring-yellow-500 focus:outline-yellow-500 input-shake failure"
+                        : verifyMutate?.error
+                          ? "border border-red-500 focus:ring-red-500 focus:outline-red-500 input-shake failure"
+                          : "text-2xl font-black w-12 h-12 text-center text-black border border-[#030DFE] rounded-md focus:outline-none focus:ring focus:ring-[#030DFE]"
                   )}
                 />
               ))}
@@ -78,15 +84,15 @@ const EmailVerification = () => {
           {verifyMutate.isPending && (
             <div className="flex flex-col items-center justify-center p-3 gap-2">
               <LoadingState />
-              <span className="font-bold">Verifying...</span>
+              <span className="font-bold">{sut('verifying')}</span>
             </div>
           )}
           {verifyMutate.isSuccess ? (
             <div className="text-green-500 flex flex-col items-center justify-center">
               <LuCheck className="text-2xl" />
-              <span className="text-center">Email Successfully Verified!</span>
+              <span className="text-center">{sut('email_verification_success')}</span>
               <span className="text-center">
-                Hold on a moment. You&apos;ll be directed to the next stage.
+                {sut('redirection')}
               </span>
             </div>
           ) : verifyMutate.isError ? (
@@ -96,13 +102,13 @@ const EmailVerification = () => {
                 <span className="font-bold text-center">
                   {verifyMutate.error?.response?.data?.message ||
                     verifyMutate.error?.message ||
-                    "Email Verification Failed!"}
+                    sut('email_veirification_failed')}
                 </span>
               </div>
             ) : (
               <div className="text-red-500 flex flex-col items-center justify-center gap-2">
                 <LuBan className="text-2xl" />
-                <span>Email Verification Failed!</span>
+                <span>{sut('email_veirification_failed')}</span>
                 <span>
                   {verifyMutate.error?.response?.data?.message ||
                     verifyMutate.error?.message}
@@ -113,7 +119,7 @@ const EmailVerification = () => {
             ""
           )}
           <div className="flex flex-wrap gap-2 text-xs w-full items-center justify-end overflow-hidden">
-            <span>Didn&apos;t get the code?</span>
+            <span>{sut('didnt_get_code')}</span>
             <Button
               type="link"
               onClick={handleResendOtp}
@@ -129,10 +135,10 @@ const EmailVerification = () => {
               icon={!handleResendMutation.isPending && <ReloadOutlined />}
             >
               {resendCounter > 0
-                ? `Resend OTP in ${resendCounter}s`
+                ? `${sut('resend_otp_in')} ${resendCounter}s`
                 : handleResendMutation.isPending
-                ? "Sending..."
-                : "Resend OTP"}
+                  ? sut('sending')
+                  : sut('resend_otp')}
             </Button>
           </div>
         </div>
@@ -142,7 +148,7 @@ const EmailVerification = () => {
           onClick={handleCancel}
           className="border border-black rounded-md px-2 hover:border-red-500 hover:text-red-500"
         >
-          Cancel
+          {sot('cancel')}
         </button>
       </div>
     </Modal>

@@ -1,8 +1,9 @@
 import { CloseCircleFilled } from '@ant-design/icons';
 import confetti from 'canvas-confetti';
+import { useTranslations } from 'next-intl';
 import { useState, useEffect, useRef } from 'react';
 
-export default function DonationSuccess({setCloseSuccessModal}) {
+export default function DonationSuccess({ setCloseSuccessModal }) {
     const [showConfetti, setShowConfetti] = useState(false);
     const [showDetails, setShowDetails] = useState(false);
     const canvasRef = useRef(null);
@@ -19,7 +20,7 @@ export default function DonationSuccess({setCloseSuccessModal}) {
         canvas.style.zIndex = '9999';
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-        
+
         document.body.appendChild(canvas);
         canvasRef.current = canvas;
 
@@ -39,7 +40,7 @@ export default function DonationSuccess({setCloseSuccessModal}) {
                 canvasRef.current.height = window.innerHeight;
             }
         };
-        
+
         window.addEventListener('resize', handleResize);
 
         const confettiTimer = setTimeout(() => {
@@ -48,7 +49,7 @@ export default function DonationSuccess({setCloseSuccessModal}) {
             audio.play().catch(error => {
                 console.log('Audio play failed:', error);
             });
-            
+
             const randomInRange = (min, max) => Math.random() * (max - min) + min;
             const duration = 3000;
             const animationEnd = Date.now() + duration;
@@ -117,6 +118,9 @@ export default function DonationSuccess({setCloseSuccessModal}) {
         };
     }, []);
 
+    const donate = useTranslations('donate');
+    const act = useTranslations('all_classes');
+
     return (
         <>
             <div className="rounded-3xl p-12 max-w-md w-full text-center relative">
@@ -147,19 +151,19 @@ export default function DonationSuccess({setCloseSuccessModal}) {
 
                 <div className="mb-8 transform animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
                     <h1 className="text-lg font-bold text-green-700 mb-3">
-                        Payment Successful!
+                        {donate('donation_success')}
                     </h1>
                     <p className="text-gray-600">
-                        Your transaction has been completed successfully
+                        {donate('success_statement')}
                     </p>
                     <p className="text-gray-600 font-semibold mt-2">
-                        Thank you for your contribution 🤝
+                        {donate('thanks_for_contribution')}
                     </p>
                 </div>
 
                 <button onClick={() => setCloseSuccessModal(true)} className="w-full bg-gradient-to-r bg-[#001840] text-white py-2 rounded-2xl font-semibold hover:from-blue-600 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center justify-center space-x-2">
                     <CloseCircleFilled />
-                    <span>Close</span>
+                    <span>{act('close')}</span>
                 </button>
 
                 <div
