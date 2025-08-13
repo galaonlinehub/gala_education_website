@@ -4,7 +4,6 @@ import {
   EMAIL_VERIFICATION_MODAL_KEY,
   SIGN_UP_CHOOSE_ACCOUNT_KEY,
   SIGN_UP_NAVIGATOR_KEY,
-  USER_HAS_ACCEPTED_COOKIES_KEY,
 } from "@/config/settings";
 import { localStorageFn, sessionStorageFn } from "@/utils/fns/client";
 
@@ -38,18 +37,9 @@ const useAccountType = create((set) => ({
   },
 }));
 
-const useCookies = create((set) => ({
-  cookieIsAccepted: sessionStorageFn.get(USER_HAS_ACCEPTED_COOKIES_KEY),
-  setCookieIsAccepted: (state) => {
-    sessionStorageFn.set(USER_HAS_ACCEPTED_COOKIES_KEY, state);
-    set({ cookieIsAccepted: state });
-  },
-}));
-
 export {
   useEmailVerificationModalOpen,
   useTabNavigator,
   useAccountType,
   useSelectedPlan,
-  useCookies,
 };
