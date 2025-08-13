@@ -190,7 +190,6 @@ const Navbar = () => {
           )}
           <div className="cursor-pointer">{getIcon()}</div>
 
-          {/* Language Toggle Button */}
           <button
             onClick={handleLanguageToggle}
             disabled={isLanguageLoading}
@@ -250,13 +249,12 @@ const Navbar = () => {
             onClose={() => setIsSidebarOpen(false)}
           />
         )}
-        {/* <Subscribe openDrawer={drawerOpen} /> */}
+
       </nav>
 
-      {/* Frost/Mirror Loading Overlay */}
       {isLanguageLoading && (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center">
-          {/* Backdrop with frost effect */}
+
           <div 
             className="absolute inset-0 bg-white/30 backdrop-blur-md"
             style={{
@@ -265,7 +263,6 @@ const Navbar = () => {
               WebkitBackdropFilter: 'blur(12px) saturate(150%)',
             }}
           >
-            {/* Mirror/glass reflection effect */}
             <div 
               className="absolute inset-0 opacity-20"
               style={{
@@ -280,7 +277,6 @@ const Navbar = () => {
             />
           </div>
 
-          {/* Loading content */}
           <div className="relative z-10 bg-white/20 backdrop-blur-sm rounded-2xl border border-white/30 px-8 py-6 shadow-2xl">
             <div className="flex flex-col items-center space-y-4">
               {/* Logo */}
