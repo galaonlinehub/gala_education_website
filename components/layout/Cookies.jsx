@@ -1,28 +1,12 @@
 "use client";
 import { Button } from "antd";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 
-import { useCookies } from "@/store/auth/signup";
+import { useCookies } from "@/hooks/ui/useCookies";
+
 
 const AcceptCookies = () => {
-  const router = useRouter();
-  const { setCookieIsAccepted } = useCookies();
-
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setVisible(true);
-    }, 3000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  const onClick = () => {
-    setCookieIsAccepted(1);
-  };
-
+ 
+const {visible, router, onClick} = useCookies();
   return (
     <div
       className={`bg-white fixed bottom-0 inset-x-0 p-2 sm:p-4 lg:p-6 flex flex-col lg:flex-row justify-center items-center gap-3 lg:gap-8 z-[90] shadow-2xl border-t min-h-[150px] lg:h-44 transition-opacity duration-700 ease-in-out ${
