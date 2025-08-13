@@ -1,4 +1,5 @@
 import { Modal, Button } from "antd";
+import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 import { LuLogOut } from "react-icons/lu";
@@ -21,6 +22,8 @@ const Signout = ({ onCloseSidebar }) => {
     setSignoutVisible(false);
   };
 
+  const sot = useTranslations('sign_out');
+
   const handleSignout = async () => {
     setLoading(true);
     try {
@@ -28,7 +31,7 @@ const Signout = ({ onCloseSidebar }) => {
       window.location.href = "/";
     } catch (e) {
       notificationService.error({
-        message: "Sign Out Failed",
+        message: sot('sign_out_failed'),
         description: e.message,
         position: "top",
       });
@@ -48,7 +51,7 @@ const Signout = ({ onCloseSidebar }) => {
           className="w-full border border-black hover:border-red-500  hover:text-red-500 font-medium flex rounded-md items-center justify-center gap-1 px-2 py-1"
         >
           <LuLogOut />
-          <span className="text-sm line-clamp-1"> Sign out</span>
+          <span className="text-sm line-clamp-1">{sot('sign_out')}</span>
         </button>
       )}
 
@@ -61,7 +64,7 @@ const Signout = ({ onCloseSidebar }) => {
           icon={<LuLogOut />}
           className="w-full !border-red-500 text-red-500 hover:!text-red-500"
         >
-          Sign out
+          {sot('sign_out')}
         </Button>
       )}
 
@@ -73,7 +76,7 @@ const Signout = ({ onCloseSidebar }) => {
           className="w-full border border-black hover:border-red-500 hover:text-red-500 font-medium flex rounded-md items-center justify-center gap-1 px-1 sm:px-2 py-1"
         >
           <LuLogOut className="text-xs sm:text-sm" />
-          <span className="text-xs sm:text-sm line-clamp-1"> Sign out</span>
+          <span className="text-xs sm:text-sm line-clamp-1"> {sot('sign_out')}</span>
         </button>
       )}
 
@@ -82,12 +85,13 @@ const Signout = ({ onCloseSidebar }) => {
         title={
           <div className="flex items-center gap-1">
             <AiOutlineQuestionCircle size={24} className="!text-black" />
-            <span className="text-black font-extrabold text-xl">Sign Out</span>
+            <span className="text-black font-extrabold text-xl">{sot('sign_out')}</span>
           </div>
         }
         open={signoutVisible}
         onOk={handleSignout}
-        okText="Confirm"
+        okText={sot('confirm')}
+        cancelText={sot('cancel')}
         onCancel={handleCancel}
         okButtonProps={{
           disabled: loading,
@@ -104,11 +108,11 @@ const Signout = ({ onCloseSidebar }) => {
           {loading ? (
             <div className="flex flex-col justify-center items-center gap-1 font-black text-xl text-black">
               <StuckSpinner color="black" />
-              <span className="animate-pulse">Signing out...</span>
+              <span className="animate-pulse">{sot('signing_out')}</span>
             </div>
           ) : (
             <p className="text-xs text-black">
-              Are you sure you want to sign out?
+              {sot('sign_out_confirm')}
             </p>
           )}
         </div>

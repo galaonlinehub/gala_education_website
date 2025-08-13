@@ -4,7 +4,6 @@ import { Modal } from "antd";
 import clsx from "clsx";
 import { motion, AnimatePresence } from "framer-motion";
 import debounce from "lodash.debounce";
-import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import React, { useState, useEffect, useRef } from "react";
 import { useForm, useWatch } from "react-hook-form";
@@ -12,6 +11,7 @@ import { LuEye, LuEyeOff } from "react-icons/lu";
 
 import { Contact } from "@/components/layout/Contact";
 import SlickSpinner from "@/components/ui/loading/template/SlickSpinner";
+import { useRouter } from "@/src/i18n/navigation";
 import { roleRedirects } from "@/utils/data/redirect";
 import { login } from "@/utils/fns/auth";
 import { preventCopyPaste } from "@/utils/fns/general";
@@ -45,6 +45,10 @@ const SignInPage = () => {
   } = useForm();
   const watchedFields = useWatch({ name: ["email", "password"], control });
 
+  const t = useTranslations('sign_up');
+  const sit = useTranslations('sign_in');
+  const ht = useTranslations('home_page');
+
   const loginMutation = useMutation({
     mutationFn: login,
     onSuccess: async (res) => {
@@ -60,7 +64,7 @@ const SignInPage = () => {
             ...prev,
             show: true,
             status: "success",
-            message: "Signed in successfully, Redirecting you now…",
+            message: sit('signed_in_success_redirect'),
           }));
 
           const redirectPath = roleRedirects[userData.role] || "/";
@@ -73,7 +77,7 @@ const SignInPage = () => {
       const message =
         error?.response?.data?.message ??
         error?.message ??
-        "Unexpected error occurred, Try again later";
+        sit('error_occured');
       if (error?.status === 403 && message.includes("vetting")) {
         setLoginModal((p) => ({ ...p, open: true, message: message }));
       }
@@ -85,7 +89,7 @@ const SignInPage = () => {
         message,
       }));
     },
-    onSettled: () => {},
+    onSettled: () => { },
   });
 
   const onSubmit = (data) => {
@@ -124,9 +128,7 @@ const SignInPage = () => {
     return () => debouncedReset.cancel();
   }, [watchedFields, localFeedback.show]);
 
-  const t = useTranslations('sign_up');
-  const sit = useTranslations('sign_in');
-  const ht = useTranslations('home_page');
+
 
   return (
     <div className="px-6 md:px-8 lg:px-12 xl:px-16 flex justify-center">
@@ -175,8 +177,8 @@ const SignInPage = () => {
                     loginMutation.isError
                       ? "border-red-500 text-red-600 bg-red-50"
                       : loginMutation.isSuccess
-                      ? "border-green-500 text-green-600 bg-green-50"
-                      : ""
+                        ? "border-green-500 text-green-600 bg-green-50"
+                        : ""
                   )}
                 >
                   {localFeedback.message}
@@ -202,9 +204,8 @@ const SignInPage = () => {
                 autoCorrect="off"
                 autoCapitalize="off"
                 spellCheck="false"
-                className={`h-input-height border-[0.5px] focus:border-[1.5px] rounded-md focus:outline-none p-2 border-[#030DFE] w-full text-xs ${
-                  errors.email ? "border-red-500" : ""
-                }`}
+                className={`h-input-height border-[0.5px] focus:border-[1.5px] rounded-md focus:outline-none p-2 border-[#030DFE] w-full text-xs ${errors.email ? "border-red-500" : ""
+                  }`}
               />
               {errors.email && (
                 <span className="text-red-500 text-[12px] font-normal">
@@ -235,9 +236,8 @@ const SignInPage = () => {
                   })}
                   autoComplete="new-password"
                   autoCorrect="off"
-                  className={`h-input-height border-[0.5px] focus:border-[1.5px] rounded-md focus:outline-none p-2 pr-10 w-full text-xs ${
-                    errors.password ? "border-red-500" : "border-[#030DFE]"
-                  }`}
+                  className={`h-input-height border-[0.5px] focus:border-[1.5px] rounded-md focus:outline-none p-2 pr-10 w-full text-xs ${errors.password ? "border-red-500" : "border-[#030DFE]"
+                    }`}
                 />
 
                 <button
@@ -291,7 +291,7 @@ const SignInPage = () => {
             className="text-[#030DFE] cursor-pointer"
             onClick={() => router.push("/signup")}
           >
-           {t('sign_up')}
+            {t('sign_up')}
           </span>
         </span>
 

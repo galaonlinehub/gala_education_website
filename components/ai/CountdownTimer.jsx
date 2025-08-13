@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { useState, useEffect } from "react";
 import { LuCalendar, LuClock, LuInfo } from "react-icons/lu";
 
@@ -81,6 +82,8 @@ export default function CountdownTimer() {
     }
   };
 
+  const galat = useTranslations('gala_ai');
+
   return (
     <div className="flex items-center justify-center p-4 mt-8">
       <div className="bg-[#001840]/80 bg-gradient-to-br rounded-3xl p-8 md:p-12 shadow-2xl border border-white/20 max-w-2xl w-full">
@@ -89,13 +92,13 @@ export default function CountdownTimer() {
           <div className="flex items-center justify-center mb-4">
             <LuClock className="w-8 h-8 text-white mr-3" />
             <h1 className="text-3xl md:text-4xl font-bold text-white">
-              Update alert!
+              {galat('update_alert')}
             </h1>
           </div>
           <div className="flex items-center justify-center text-white/80">
             <LuInfo className="w-5 h-5 mr-2" />
             <p className="text-sm sm:text-lg">
-              GalaAI is currently undergoing updates
+              {galat('update_description')}
             </p>
           </div>
         </div>
@@ -108,7 +111,7 @@ export default function CountdownTimer() {
                 {formatTime(timeLeft.days)}
               </div>
               <div className="text-white/80 text-sm uppercase tracking-wide">
-                Days
+                {galat('days')}
               </div>
             </div>
 
@@ -117,7 +120,7 @@ export default function CountdownTimer() {
                 {formatTime(timeLeft.hours)}
               </div>
               <div className="text-white/80 text-sm uppercase tracking-wide">
-                Hours
+                {galat('hours')}
               </div>
             </div>
 
@@ -126,7 +129,7 @@ export default function CountdownTimer() {
                 {formatTime(timeLeft.minutes)}
               </div>
               <div className="text-white/80 text-sm uppercase tracking-wide">
-                Minutes
+                {galat('minutes')}
               </div>
             </div>
 
@@ -135,7 +138,7 @@ export default function CountdownTimer() {
                 {formatTime(timeLeft.seconds)}
               </div>
               <div className="text-white/80 text-sm uppercase tracking-wide">
-                Seconds
+                {galat('seconds')}
               </div>
             </div>
           </div>
@@ -143,9 +146,9 @@ export default function CountdownTimer() {
           <div className="text-center mb-8">
             <div className="text-6xl mb-4">🎉</div>
             <h2 className="text-4xl font-bold text-white mb-4">
-              Time`&apos;s Up!
+              {galat('times_up')}
             </h2>
-            <p className="text-xl text-white/80">The countdown has ended</p>
+            <p className="text-xl text-white/80">{galat('countdown_ended')}</p>
           </div>
         )}
 
@@ -158,12 +161,12 @@ export default function CountdownTimer() {
                 width: `${Math.max(
                   0,
                   100 -
-                    ((timeLeft.days * 24 * 60 * 60 +
-                      timeLeft.hours * 60 * 60 +
-                      timeLeft.minutes * 60 +
-                      timeLeft.seconds) /
-                      (7 * 24 * 60 * 60)) *
-                      100
+                  ((timeLeft.days * 24 * 60 * 60 +
+                    timeLeft.hours * 60 * 60 +
+                    timeLeft.minutes * 60 +
+                    timeLeft.seconds) /
+                    (7 * 24 * 60 * 60)) *
+                  100
                 )}%`,
               }}
             ></div>
@@ -174,8 +177,8 @@ export default function CountdownTimer() {
         <div className="text-center text-white/60 mb-4">
           <p className="text-sm">
             {isExpired
-              ? "Timer completed, should be available any time now!"
-              : "We are currently making some updates to this section to give you an even more satisfying user experience. Stay tuned!"}
+              ? galat('timer_completed')
+              : galat('updates_in_progress')}
           </p>
         </div>
       </div>

@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { useState, useEffect } from 'react';
 
 export default function PaymentLoadingAnimation() {
@@ -15,6 +16,8 @@ export default function PaymentLoadingAnimation() {
             clearInterval(progressInterval);
         };
     }, []);
+
+    const donate = useTranslations('donate');
 
     return (
 
@@ -41,15 +44,15 @@ export default function PaymentLoadingAnimation() {
 
             {/* Text */}
             <h2 className="text-lg font-bold text-[#001840] mb-2">
-                Processing Payment
+                {donate('processing_payment')}
             </h2>
 
             <p className="text-[#334155] mb-8">
-                Please wait while we securely process your transaction
+                {donate('processing_statement')}
             </p>
 
 
-            
+
 
             {/* Dot Loader with Enhanced Bounce */}
             <div className="flex items-center justify-center space-x-2 mb-6">
@@ -58,8 +61,8 @@ export default function PaymentLoadingAnimation() {
                 <div className="w-2 h-2 bg-[#003366] rounded-full animate-bounce [animation-duration:0.8s]"></div>
             </div>
 
-             <p className="text-red-500 font-semibold text-xs mb-8">
-                Please do not leave this page or all data will be erased!
+            <p className="text-red-500 font-semibold text-xs mb-8">
+                {donate('dont_leave_this_page')}
             </p>
 
 

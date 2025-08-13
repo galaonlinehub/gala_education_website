@@ -12,6 +12,7 @@ import {
   message,
 } from "antd";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 import { BsStar, BsStarFill } from "react-icons/bs";
 import { LuChevronRight, LuListChecks, LuStar, LuUsers } from "react-icons/lu";
@@ -21,6 +22,9 @@ import { img_base_url } from "@/config/settings";
 import { apiPost } from "@/services/api/api_service";
 
 const TopicCard = ({ details, detailsLink }) => {
+
+  const stt = useTranslations('student_classes');
+
   return (
     <>
       <Card
@@ -46,13 +50,12 @@ const TopicCard = ({ details, detailsLink }) => {
               size={50}
               strokeColor={{
                 "0%": "#001840",
-                "100%": `${
-                  details.color === "blue"
-                    ? "#1890ff"
-                    : details.color === "green"
+                "100%": `${details.color === "blue"
+                  ? "#1890ff"
+                  : details.color === "green"
                     ? "#52c41a"
                     : "#722ed1"
-                }`,
+                  }`,
               }}
             />
           </Tooltip>
@@ -93,12 +96,12 @@ const TopicCard = ({ details, detailsLink }) => {
             ) : (
               <div className="flex items-center text-green-600">
                 <LuListChecks className="mr-1" />
-                <span className="text-sm">All caught up!</span>
+                <span className="text-sm">{stt('no_assignments_due')}</span>
               </div>
             )}
             <Link href={detailsLink}>
               <div className="flex items-center text-[#001840] font-medium">
-                <span className="text-sm font-bold mr-2">Details</span>
+                <span className="text-sm font-bold mr-2">{stt('details')}</span>
                 <LuChevronRight className="group-hover:translate-x-1 transition-transform" />
               </div>
             </Link>

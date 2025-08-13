@@ -1,6 +1,7 @@
 import { SearchOutlined } from "@ant-design/icons";
 import { Avatar, Input, Skeleton } from "antd";
 import clsx from "clsx";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { LuUser, LuMessagesSquare } from "react-icons/lu";
 
@@ -22,15 +23,17 @@ const RenderSidebar = ({ currentTab, setCurrentTab, MAIN_COLOR }) => {
 
   const viewOnClickedUser = (idx) => setCurrentChatId(idx);
 
+
+  const chat = useTranslations('chat');
+
   const NoChat = () => (
     <div className="flex flex-col items-center mt-24 h-full">
       <LuMessagesSquare className="w-12 h-12 mb-2 text-[#001840]" />
       <div className="text-center flex flex-col text-gray-500">
-        <span className="text-xs">You have no chats yet</span>
+        <span className="text-xs">{chat('no_chats_yet')}</span>
         {user?.role === "student" && (
           <span className="text-xs">
-            Start by messaging teachers by searching them through above search
-            bar...!!
+            {chat('start_by_messaging_teachers')}
           </span>
         )}
       </div>
@@ -39,17 +42,16 @@ const RenderSidebar = ({ currentTab, setCurrentTab, MAIN_COLOR }) => {
 
   return (
     <div className="p-2 lg:p-4 h-full">
-      <h2 className={`font-bold text-lg text-[${MAIN_COLOR}]`}>Messages</h2>
+      <h2 className={`font-bold text-lg text-[${MAIN_COLOR}]`}>{chat('messages')}</h2>
       <div className="flex justify-between gap-2 mb-4">
-        {["Direct", "Groups"].map((tab) => (
+        {[chat('direct'), chat('groups')].map((tab) => (
           <button
             key={tab}
             onClick={() => setCurrentTab(tab.toLowerCase())}
-            className={`flex-1 py-2 text-sm font-medium rounded-lg transition-colors ${
-              currentTab === tab.toLowerCase()
-                ? "text-white"
-                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-            }`}
+            className={`flex-1 py-2 text-sm font-medium rounded-lg transition-colors ${currentTab === tab.toLowerCase()
+              ? "text-white"
+              : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+              }`}
             style={{
               backgroundColor:
                 currentTab === tab.toLowerCase() ? MAIN_COLOR : "#f1f1f1",
@@ -63,7 +65,7 @@ const RenderSidebar = ({ currentTab, setCurrentTab, MAIN_COLOR }) => {
       {hasChats && (
         <div className="relative mb-4">
           <input
-            placeholder="Search conversations..."
+            placeholder={chat('search_conversations')}
             value={searchValue}
             onChange={handleChange}
             className="rounded-md border border-gray-200 flex items-center justify-center focus:border-2 focus:border-[#001840] px-2 w-full p-1 placeholder:text-xs placeholder:px-1 outline-none "
@@ -135,8 +137,8 @@ const RenderSidebar = ({ currentTab, setCurrentTab, MAIN_COLOR }) => {
                     <div className="flex justify-between items-center">
                       <p className="text-xs text-gray-500 truncate">
                         {isTyping
-                          ? "Typing..."
-                          : chat?.last_message?.content || "No messages yet"}
+                          ? chat('typing')
+                          : chat?.last_message?.content || chat('no_messages_yet')}
                       </p>
                       {unreadCount > 0 && (
                         <span className="bg-[#001840]  text-white text-[8px] rounded-full h-4 w-4 flex items-center justify-center">

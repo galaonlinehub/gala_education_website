@@ -1,5 +1,6 @@
 "use client";
 import { Divider, Steps } from "antd";
+import { useTranslations } from "next-intl";
 
 import { useDevice } from "@/hooks/misc/useDevice";
 import { usePay, usePaySteps } from "@/store/pay";
@@ -19,9 +20,11 @@ export const Payment = () => {
   const { width } = useDevice();
   const { mobilePay } = usePay();
 
+  const enrollpay = useTranslations('enroll_payments');
+
   const steps = [
     {
-      title: "Pay",
+      title: enrollpay('pay'),
 
       content: (
         <div className="w-full flex-col flex lg:flex-row justify-between lg:p-[5rem] gap-y-12">
@@ -43,7 +46,7 @@ export const Payment = () => {
       ),
     },
     {
-      title: "Confirmation",
+      title: enrollpay('confirmation'),
       content: <ConfirmEnrollPay />,
     },
   ];

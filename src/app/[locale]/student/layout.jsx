@@ -3,6 +3,7 @@ import { Tooltip } from "antd";
 import clsx from "clsx";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import React, { useState, useEffect } from "react";
 
 import Navbar from "@/components/layout/Navbar";
@@ -16,11 +17,12 @@ import StickyNotification from "@/components/ui/notification/StickyNotification"
 import { useUser } from "@/hooks/data/useUser";
 import useInstallPrompt from "@/hooks/misc/useInstallPrompt";
 import { useStickyNotification } from "@/store/notification/notification";
-import { student_links } from "@/utils/data/navigation_links";
+import { useStudentLinks } from "@/utils/data/navigation_links";
 import Clock from "@/utils/vector-svg/vectors/Clock";
 import RightTiltedBook from "@/utils/vector-svg/vectors/CombinedBlock";
 import KidInPicture from "@/utils/vector-svg/vectors/KidInPicture";
 import StudentsInClass from "@/utils/vector-svg/vectors/StudentsInClass";
+
 
 export default function StudentLayout({ children }) {
   const { installPrompt, isInstalled, handleInstallClick } = useInstallPrompt();
@@ -33,9 +35,9 @@ export default function StudentLayout({ children }) {
     (state) => state.openStickyNotification
   );
 
-  // useEffect(() => {
-  //   openStickyNotification();
-  // }, [openStickyNotification]);
+  const student_links = useStudentLinks();
+
+  const tdash = useTranslations('teacher_dashboard')
 
   return (
     <>
@@ -85,7 +87,7 @@ export default function StudentLayout({ children }) {
               return (
                 <Tooltip
                   color="#001840"
-                  title={isDisabled ? "This is only available in Premium" : ""}
+                  title={isDisabled ? tdash('only_in_premium') : ""}
                   key={i}
                 >
                   <Link

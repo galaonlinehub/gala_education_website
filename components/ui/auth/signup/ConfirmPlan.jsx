@@ -1,6 +1,7 @@
 import { Card, Button, Typography, message, Badge, Divider } from "antd";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 import React, { useEffect, useState } from "react";
 import { LuCircleCheckBig, LuUser, LuX } from "react-icons/lu";
 
@@ -49,10 +50,10 @@ const ConfirmPlan = () => {
 
     if (active) {
       setLoading(false);
-      messageApi.success("Your free trial has been activated!");
+      messageApi.success(payt('free_trial_activation'));
     } else {
       setLoading(false);
-      messageApi.error("Free trial activation failed!");
+      messageApi.error(payt('free_trial_activation_failed'));
     }
   };
 
@@ -64,6 +65,8 @@ const ConfirmPlan = () => {
       }
     }
   }, [currentUrl, setAccountType, user]);
+
+  const payt = useTranslations('payments')
   return (
     <div className="!px-4 flex flex-col lg:flex-row gap-8 lg:gap-12 justify-center items-center mt-4">
       {contextHolder}
@@ -97,25 +100,17 @@ const ConfirmPlan = () => {
                           {plan?.name}
                         </div>
                         <Text className="text-gray-500 text-xs sm:text-sm">
-                          Non-refundable-payment
+                          {payt('non_refundable')}
                         </Text>
                       </div>
                       <div className="text-center text-gray-700 text-xs sm:text-sm overflow-hidden">
                         {isInstructor ? (
                           <>
-                            This fee grants you full access to Gala
-                            Education&apos;s teaching platform, allowing you to
-                            connect with students, manage lessons, and utilize
-                            our advanced tools and resources to deliver
-                            high-quality education.
+                            {payt('access_description')}
                           </>
                         ) : (
                           <>
-                            This fee grants you full access to Gala
-                            Education&apos;s learning platform, allowing you to
-                            connect with teachers, access lessons, track your
-                            progress, and use our advanced tools and resources
-                            to achieve high-quality learning.
+                            {payt('access_description_student')}
                           </>
                         )}
                       </div>
@@ -130,11 +125,11 @@ const ConfirmPlan = () => {
                         </div>
                         {plan?.number_of_months === 12 && (
                           <Text className="block text-sm mt-2">
-                            That&apos;s just
+                            {payt('thats_just')}
                             <span className="font-black mx-1">
                               TZS {(plan.amount / 12).toLocaleString()}
                             </span>
-                            per month
+                            {payt('per_month')}
                           </Text>
                         )}
                       </div>
@@ -145,7 +140,7 @@ const ConfirmPlan = () => {
                           className="!bg-[#010798] !rounded-lg !px-8 !font-semibold !text-xs !h-9 !flex !items-center !justify-center hover:!opacity-90 !transition-all !duration-300"
                           icon={<LuCircleCheckBig />}
                         >
-                          CONTINUE
+                          {payt('continue')}
                         </Button>
                       </div>
                     </div>
@@ -156,11 +151,7 @@ const ConfirmPlan = () => {
           </div>
           {isStudent && (
             <div className="mt-5 text-center w-full lg:w-3/4">
-              <span className="font-extrabold">Note</span>: This subscription
-              package grants access to the platform and its network of available
-              teachers. It does not cover individual class fees. Students are
-              required to subscribe separately to each class they wish to attend
-              after gaining access.
+              <span className="font-extrabold">{payt('note')}</span>: {payt('subscription_package_description')}
             </div>
           )}
 
@@ -184,7 +175,7 @@ const ConfirmPlan = () => {
                 {user?.has_free_trial ? "Close" : "Continue with Free Trial"}
               </Button>
               <span className="text-xs text-blue-600">
-                Free trial will only offer you limited access
+                {payt('free_trial_access')}
               </span>
             </div>
             <Contact useBillingContact={true} />
@@ -193,12 +184,12 @@ const ConfirmPlan = () => {
       ) : (
         <div className="flex flex-col items-center justify-center gap-2 md:gap-4 mt-8">
           <span className="font-bold text-sm md:text-2xl text-center">
-            No any payment plan for a moment!!
+            {payt('no_payment_plan')}
           </span>
           <div className="my-3">
             <Contact useBillingContact={true} />
           </div>
-          <Button onClick={() => router.push("/")}>Return Home</Button>
+          <Button onClick={() => router.push("/")}>{payt('return_home')}</Button>
         </div>
       )}
     </div>

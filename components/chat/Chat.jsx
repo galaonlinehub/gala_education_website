@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { LuSendHorizontal } from "react-icons/lu";
 
 import { useDevice } from "@/hooks/misc/useDevice";
@@ -14,6 +15,8 @@ const Chat = () => {
   const { width } = useDevice();
   const isSmallScreen = width <= 768;
 
+  const chat = useTranslations('chat');
+
   const NoChatsMessage = () => (
     <div className="flex items-center justify-center h-full bg-gray-50">
       <div className="text-center p-6">
@@ -24,11 +27,10 @@ const Chat = () => {
           <LuSendHorizontal className={`text-[32px] text-[${MAIN_COLOR}]`} />
         </div>
         <h3 className={`text-lg font-semibold mb-2 text-[${MAIN_COLOR}]`}>
-          Your Messages
+          {chat('your_messages')}
         </h3>
         <p className="text-sm text-gray-500 max-w-xs">
-          You don&apos;t have any conversations yet. Start a new one to chat
-          with your classmates and teachers.
+          {chat('no_conversations_yet')}
         </p>
       </div>
     </div>
@@ -44,7 +46,7 @@ const Chat = () => {
                 MAIN_COLOR={MAIN_COLOR}
                 TEXT_COLOR={TEXT_COLOR}
                 currentTab="direct"
-                setCurrentTab={() => {}}
+                setCurrentTab={() => { }}
               />
             </div>
             <div className="w-2/3 h-full">
@@ -75,7 +77,7 @@ const Chat = () => {
                 MAIN_COLOR={MAIN_COLOR}
                 TEXT_COLOR={TEXT_COLOR}
                 currentTab="direct"
-                setCurrentTab={() => {}}
+                setCurrentTab={() => { }}
               />
             )}
           </div>
