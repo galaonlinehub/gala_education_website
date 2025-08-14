@@ -124,12 +124,13 @@ const ClassCard = ({ classData, status }) => {
           <div className="flex items-center">
             <Button
               type="primary"
-              disabled={isDisabled}
+              // disabled={isDisabled}
               onClick={showConfirmModal}
               target="_blank"
-              className={`${isDisabled
-                ? "!bg-[#d9dadb] !text-black"
-                : "!bg-[#001840] !text-white"
+              className={
+                `${isDisabled
+                ? "!bg-[#d9dadb] !text-black" :
+                "!bg-[#001840] !text-white"
                 }   !font-medium !rounded-md !px-4 !py-1 !h-auto !border-none transition-transform duration-200 ${isHovered ? "!scale-105 !bg-[#003380]" : ""
                 }`}
               icon={isDisabled ? <FaVideoSlash /> : <LuVideo />}
