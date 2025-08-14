@@ -40,7 +40,7 @@ import VideoBackground from "@/components/ui/VideoBackground";
 import VideoPlayer from "@/components/ui/VideoPlayer";
 import { API_BASE_URL } from "@/config/settings";
 import { useUser } from "@/hooks/data/useUser";
-import { useCookies } from "@/store/auth/signup";
+import { useCookiesStore } from "@/store/auth/cookiesStore";
 
 function Home() {
 
@@ -48,8 +48,7 @@ function Home() {
 
   const [showDonatePopup, setShowDonatePopup] = useState(false);
   const { user } = useUser();
-  const { cookieIsAccepted } = useCookies();
-
+  const cookieIsAccepted = useCookiesStore((state) => state.cookieIsAccepted);
   const [showPdf, setShowPdf] = useState(false);
 
   const [showProcessingModal, setShowProcessingModal] = useState(false);

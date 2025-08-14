@@ -42,14 +42,14 @@ const ForgotPassword = () => {
   const sut = useTranslations("sign_up");
 
   return (
-    <div className="flex items-center justify-center px-2 py-2 md:py-6">
+    <div className="flex items-center justify-center px-2 py-2 md:py-6 h-full">
       <Card
         className={`!w-full !max-w-md !py-4 bg-white rounded-xl transition-all ${width < 768 ? "shadow-none border-none" : "shadow-sm"
           }`}
       >
         <div className="flex items-center justify-center mb-4">
-          <div className="bg-blue-50 p-3 rounded-full">
-            <LuKeySquare className="text-[#030DFE] text-2xl" />
+          <div className="bg-[#001840]/10 p-3 rounded-full">
+            <LuKeySquare className="text-[#001840] text-2xl" />
           </div>
         </div>
 
@@ -115,7 +115,7 @@ const ForgotPassword = () => {
               type="primary"
               htmlType="submit"
               disabled={resetPasswordMutation.isPending}
-              className="!h-12 !bg-[#030DFE] hover:!bg-[#0000dd] disabled:!opacity-40 disabled:!cursor-not-allowed disabled:!pointer-events-none !text-white !font-semibold !rounded-lg !flex !items-center !justify-center !gap-2 !mt-4"
+              className="!h-11 !bg-[#001840] hover:!bg-[#001840]/80 disabled:!opacity-40 disabled:!cursor-not-allowed disabled:!pointer-events-none !text-white !font-semibold !rounded-lg !flex !items-center !justify-center !gap-2 !mt-4"
               size="large"
             >
               {resetPasswordMutation.isPending ? (

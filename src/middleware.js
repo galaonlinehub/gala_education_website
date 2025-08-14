@@ -19,7 +19,7 @@ import { decrypt } from "@/utils/fns/encryption";
 const intlMiddleware = createMiddleware(routing);
 
 const AUTH_CONFIG = {
-  PUBLIC_ROUTES: ["/", "/signin", "/signup", "/about-us"],
+  PUBLIC_ROUTES: ["/", "/signin", "/signup", "/about-us", "/forgot-password", "/forgot-password/password-change"],
   AUTH_ONLY_ROUTES: ["/signin", "/signup"],
   REDIRECT_ROUTES: {
     afterLogin: roleRedirects,
