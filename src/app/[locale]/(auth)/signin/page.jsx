@@ -288,7 +288,7 @@ const SignInPage = () => {
         <span className="text-xs font-semibold mt-1 md:mt-2">
           {sit('dont_have_account')}
           <span
-            className="text-[#030DFE] cursor-pointer"
+            className="text-[#030DFE] cursor-pointer ml-2"
             onClick={() => router.push("/signup")}
           >
             {t('sign_up')}

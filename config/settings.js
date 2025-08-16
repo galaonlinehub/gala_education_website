@@ -40,6 +40,7 @@ export const INSTAGRAM_USER_NAME = "galahub.tz";
 export const MAIN_URL = "https://edu.galahub.org";
 
 export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+export const LOCAL_API_BASE_URL = process.env.NEXT_PUBLIC_LOCAL_API_BASE_URL;
 export const img_base_url = process.env.NEXT_PUBLIC_IMAGE_BASE_URL;
 export const socket_base_url = process.env.NEXT_PUBLIC_SOCKET_BASE_URL;
 export const openai_api_key = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
