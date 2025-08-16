@@ -124,7 +124,7 @@ const ClassCard = ({ classData, status }) => {
           <div className="flex items-center">
             <Button
               type="primary"
-              disabled={isDisabled}
+              // disabled={isDisabled}
               onClick={showConfirmModal}
               target="_blank"
               className={`${isDisabled

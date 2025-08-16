@@ -18,8 +18,7 @@ import {
   Select,
 } from "antd";
 import clsx from "clsx";
-import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React from "react";
 import { IoChevronDownCircleOutline } from "react-icons/io5";
 import { LuUpload } from "react-icons/lu";
 
@@ -28,13 +27,12 @@ import {
   PartnerSchoolSelect,
   useSpecialPassInstructor,
 } from "@/features/admin";
-import { useAuth } from "@/hooks/data/useAuth";
+
 
 const { Text } = Typography;
 
 const CreateSpecialPassInstructor = () => {
   const [form] = Form.useForm();
-  const router = useRouter();
 
   const {
     onFinish,
@@ -232,10 +230,11 @@ const CreateSpecialPassInstructor = () => {
               />
             </Form.Item>
             <Form.Item
+              initialValue={"special_pass"}
               name="user_pass_type"
               rules={[
                 {
-                  required: true,
+                  // required: true,
                   message: "Please choose the user pass",
                 },
               ]}
@@ -247,8 +246,9 @@ const CreateSpecialPassInstructor = () => {
                     value: "special_pass",
                     label: "Special Pass",
                   },
-                  { value: "trial", label: "Trial" },
+                  // { value: "trial", label: "Trial" },
                 ]}
+                disabled
                 className="!h-[42px]"
                 placeholder={"User Pass"}
               />

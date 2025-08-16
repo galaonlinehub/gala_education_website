@@ -19,7 +19,15 @@ import { decrypt } from "@/utils/fns/encryption";
 const intlMiddleware = createMiddleware(routing);
 
 const AUTH_CONFIG = {
-  PUBLIC_ROUTES: ["/", "/signin", "/signup", "/about-us", "/forgot-password", "/forgot-password/password-change"],
+  PUBLIC_ROUTES: [
+    "/",
+    "/signin",
+    "/signup",
+    "/about-us",
+    "/forgot-password",
+    "/forgot-password/password-change",
+    "/activate-account",
+  ],
   AUTH_ONLY_ROUTES: ["/signin", "/signup"],
   REDIRECT_ROUTES: {
     afterLogin: roleRedirects,
@@ -111,7 +119,9 @@ export async function middleware(request) {
     const pathname = request.nextUrl.pathname;
     const locale = getLocaleFromPath(pathname);
     const pathWithoutLocale = getPathWithoutLocale(pathname);
-
+    console.log(pathname, "this is pathname");
+    console.log(locale, "this is locale");
+    console.log(pathWithoutLocale, "this is pathname without locale");
     const intlResponse = intlMiddleware(request);
 
     if (intlResponse.status === 307 || intlResponse.status === 302) {
