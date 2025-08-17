@@ -200,7 +200,7 @@ const Navbar = () => {
           </button>
 
           <li>
-            <Link href={"/"} className="hover:cursor-pointer tex-black">
+            <Link href={"/"} className="hover:cursor-pointer text-black">
               {t('home')}
             </Link>
           </li>
@@ -212,7 +212,7 @@ const Navbar = () => {
             </li>
           )}
           <li>
-            <Link href={"/about-us"} className="hover:cursor-pointer tex-black">
+            <Link href={"/about-us"} className="hover:cursor-pointer text-black">
               {at('about_us')}
             </Link>
           </li>

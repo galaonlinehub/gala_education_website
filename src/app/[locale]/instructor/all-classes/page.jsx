@@ -108,6 +108,7 @@ const InstructorClasses = () => {
 
   const act = useTranslations('all_classes');
   const cct = useTranslations('class_creation');
+  const tdash = useTranslations('teacher_dashboard');
 
   return (
     <div style={{ padding: "24px" }}>
@@ -299,7 +300,7 @@ const InstructorClasses = () => {
                   className="bg-blue-500 w-16 h-16 flex items-center justify-center text-3xl mb-4"
                 />
                 <Title level={4} className="m-0">
-                  Add New Class
+                  {tdash('create_class')}
                 </Title>
               </div>
             </Card>
@@ -311,7 +312,7 @@ const InstructorClasses = () => {
             style={{ fontSize: "40px", color: "#d9d9d9", marginBottom: "16px" }}
           />
           <Text className="text-gray-500">
-            No classes found. Add a new class to get started.
+            {tdash('no_classes_yet')}
           </Text>
           <Button
             type="primary"
@@ -319,7 +320,7 @@ const InstructorClasses = () => {
             onClick={handleAddNew}
             style={{ marginTop: "16px" }}
           >
-            Add New Class
+            {tdash('create_class')}
           </Button>
         </div>
       )}

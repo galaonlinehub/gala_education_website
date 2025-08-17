@@ -1,5 +1,6 @@
 "use client";
 import { SendOutlined, UserOutlined } from "@ant-design/icons";
+import { useTranslations } from "next-intl";
 import React from "react";
 import { LuBrain } from "react-icons/lu";
 
@@ -23,6 +24,8 @@ const AiChatInterface = () => {
     handleEnterSubmit,
   } = useAi();
 
+  const gala_ai = useTranslations('gala_ai');
+
   return (
     <div className="flex flex-col h-[calc(100vh-100px)] bg-white overflow-hidden">
       <div
@@ -35,15 +38,11 @@ const AiChatInterface = () => {
               <LuBrain className="text-white text-2xl" />
             </div>
             <p className="text-2xl font-bold mt-3">
-              Welcome to <span className="text-purple-600"> GalaAI!</span> 🎉
+              {gala_ai('ai_welcome')} <span className="text-purple-600"> GalaAI!</span> 🎉
             </p>
 
             <p className="w-full md:w-3/4 mt-3">
-              Experience the power of our fully functional AI right now - ask
-              questions, explore ideas, and get instant insights. While our core
-              intelligence is ready to assist you today, we&apos;re actively
-              crafting even more advanced features behind the scenes. Thank you
-              for joining our journey as we evolve!
+              {gala_ai('ai_header')}
             </p>
           </div>
         ) : (
@@ -106,7 +105,7 @@ const AiChatInterface = () => {
         <div className="max-w-4xl mx-auto flex gap-3 items-center">
           <textarea
             onKeyDown={handleEnterSubmit}
-            placeholder="Ask GalaAI"
+            placeholder={gala_ai('ask_gala')}
             rows={2}
             className="flex-1 p-3 border border-gray-300 rounded-xl resize-none text-sm outline-none focus-visible:border-2 focus-visible:border-blue-800"
             {...register("prompt")}
@@ -122,7 +121,7 @@ const AiChatInterface = () => {
               <SendOutlined />
             )}
             {!isStreaming && (
-              <span className="hidden md:inline text-sm">Submit</span>
+              <span className="hidden md:inline text-sm">{gala_ai('submit')}</span>
             )}
           </button>
           {getLength(openAiMessage) > 0 && !isStreaming && (
