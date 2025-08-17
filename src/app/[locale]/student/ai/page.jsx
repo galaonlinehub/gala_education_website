@@ -6,8 +6,8 @@ import CountdownTimer from "@/components/ai/CountdownTimer";
 
 const AiChat = () => {
   return (
-    // <AiChatInterface />
-    <CountdownTimer />
+    <AiChatInterface />
+    // <CountdownTimer />
   );
 };
 

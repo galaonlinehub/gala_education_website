@@ -44,7 +44,7 @@ const RenderSidebar = ({ currentTab, setCurrentTab, MAIN_COLOR }) => {
     <div className="p-2 lg:p-4 h-full">
       <h2 className={`font-bold text-lg text-[${MAIN_COLOR}]`}>{chat('messages')}</h2>
       <div className="flex justify-between gap-2 mb-4">
-        {[chat('direct'), chat('groups')].map((tab) => (
+        {['direct','groups'].map((tab) => (
           <button
             key={tab}
             onClick={() => setCurrentTab(tab.toLowerCase())}
@@ -58,7 +58,7 @@ const RenderSidebar = ({ currentTab, setCurrentTab, MAIN_COLOR }) => {
               color: currentTab === tab.toLowerCase() ? "white" : "#555",
             }}
           >
-            {tab}
+            {chat(tab)}
           </button>
         ))}
       </div>

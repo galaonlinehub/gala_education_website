@@ -230,7 +230,9 @@
     "dont_have_account": "Hauna akaunti?",
     "forgot": "Umesahau",
     "signed_in_success_redirect": "Umefanikiwa kuingia, unaelekezwa ukurasa husika...",
-    "error_occured": "Hitilafu isiyotarajiwa imetokea, jaribu tena baadaye"
+    "error_occured": "Hitilafu isiyotarajiwa imetokea, jaribu tena baadaye",
+    "wrong_creds": "Pole! Taarifa za kuingia sio sahihi. Tafadhali angalia kisha jaribu tena 🤔",
+    "general_error": "Kuna tatizo, tafadhali jaribu tena baadaye 😬"
   },
 
   "forgot_password": {
@@ -419,6 +421,9 @@
     "current": "Ya sasa",
     "annual_plan": "Usajili wa Mwaka",
     "monthly_plan": "Usajili wa Mwezi",
+    "save_up_to": "Okoa hadi ",
+    "close": "Funga",
+    "continue_with_free_trial": "Endelea na Jaribio la Bure",
     "created": "Imetengenezwa",
     "next_subscriptions": "Usajili ujao",
     "no_upcoming_subscriptions": "Hakuna usajili unaokuja uliopangwa.",
@@ -435,7 +440,12 @@
     "no_subscription_history_found": "Hakuna rekodi ya usajili iliyopatikana.",
     "completed_subscriptions_info": "Usajili ulio kamilika utaonekana hapa mara tu utakapoisha.",
     "start": "Inaanza",
-    "end": "Inaisha"
+    "end": "Inaisha",
+    "initiating_secure_connection": "Inaanzisha muunganisho salama...",
+    "verifying_transaction_details": "Inathibitisha muamala...",
+    "checking_payment_gateway": "Inaangalia lango la malipo...",
+    "encrypting_your_data": "Inasimbisha data yako...",
+    "almost_there_finalizing_payment": "Inamalizia malipo..."
   },
 
   "library": {
@@ -476,7 +486,11 @@
     "hours": "masaa",
     "minutes": "dakika",
     "seconds": "sekunde",
-    "days": "siku"
+    "days": "siku",
+    "ai_welcome": "Karibu",
+    "submit": "Tuma",
+    "ask_gala": "Muulize GalaAI",
+    "ai_header": "Jaribu nguvu ya AI yetu sasa hivi - uliza maswali, chunguza mawazo, na upate majibu ya haraka. Ingawa AI yetu iko hapa kukusaidia leo, tunaendelea kuongeza vipengele vipya. Asante kwa kuwa nasi katika safari hii!"
   },
 
   "student_dashboard": {
@@ -568,7 +582,7 @@
     "please_try_again": "Tafadhali jaribu tena au",
     "contact_support": "Wasiliana Nasi",
     "try_again": "Jaribu Tena",
-    "non_refundable": "Malipo yasiyorudishwa",
+    "non_refundable": "Malipo Utakayofanya Hayatorudishwa",
     "access_description": "Ada hii inakuwezesha kupata huduma kamili za jukwaa la kufundishia la Gala Education, likikuwezesha kuwasiliana na wanafunzi, kusimamia masomo, na kutumia zana na rasilimali zetu za kisasa kutoa elimu bora.",
     "access_description_student": "Ada hii inakupa huduma kamili za jukwaa la kujifunzia la Gala Education, likikuruhusu kuwasiliana na walimu, kupata masomo, kufuatilia maendeleo yako, na kutumia zana na rasilimali zetu za kisasa kufikia elimu bora.",
     "thats_just": "Hio ni",
@@ -674,7 +688,7 @@
     "search_teachers_topics": "Tafuta walimu au mada...",
     "topics": "Mada",
     "instructors": "Walimu",
-    "view_profile": "Angalia wasifu",
+    "view_profile": "Angalia Profaili",
     "explore_variety": "Chunguza Madarasa, Mada, Sehemu ndogo za Mada na Walimu...",
     "topics_found": "mada {count} (z)imepatikana",
     "teachers_found": "walimu {count} wamepatikana"
@@ -693,8 +707,9 @@
     "review_dashboard": "Dashibodi ya Maoni",
     "monitor_performance_feedback": "Fuatilia utendaji wako wa ufundishaji na maoni ya wanafunzi",
     "avg_instructor_rating": "Kiwango cha wastani cha mwalimu",
+    "no_reviews_yet": "Huna Maoni yoyote kutoka kwa wanafunzi kwa sasa",
     "instructor_reviews": "Maoni kuhusu Mwalimu",
-    "individual_student_feedback": "Maoni ya Mwanafunzi mmoja mmoja"
+    "individual_student_feedback": "Maoni ya Wanafunzi"
   },
 
   "lesson_plan": {
