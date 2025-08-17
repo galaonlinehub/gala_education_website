@@ -2,7 +2,6 @@
 
 import { LoadingOutlined } from "@ant-design/icons";
 import { Avatar, Button, Card, Collapse, Modal, Segmented, Tag } from "antd";
-import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 import { FaVideoSlash } from "react-icons/fa6";
@@ -19,6 +18,7 @@ import {
 import { useLesson } from "@/hooks/data/useLesson";
 import { useUpcomingLessons } from "@/hooks/data/useUpcomigLessons";
 import { useUser } from "@/hooks/data/useUser";
+import { useRouter } from "@/src/i18n/navigation";
 import { sessionStorageFn } from "@/utils/fns/client";
 import { encrypt } from "@/utils/fns/encryption";
 
@@ -43,6 +43,8 @@ const ClassCard = ({ classData, status }) => {
 
   const handleJoin = async () => {
     const lessonToken = await getLessonToken(classData.link);
+    console.log("TOKEN", lessonToken)
+
     const lessonId = `${classData.lesson_id}`;
     const roomName = `${classData.class_name}`;
     const userName = `${user?.first_name} ${user?.last_name}`;
@@ -73,8 +75,8 @@ const ClassCard = ({ classData, status }) => {
   const act = useTranslations('all_classes');
   const cct = useTranslations('class_creation');
 
-  const isDisabled = "Pending" ||
-    status === status === "Completed" || status === "Canceled";
+  const isDisabled = status === "Pending" ||
+     status === "Completed" || status === "Canceled";
 
 
   return (
@@ -124,7 +126,7 @@ const ClassCard = ({ classData, status }) => {
           <div className="flex items-center">
             <Button
               type="primary"
-              // disabled={isDisabled}
+              disabled={isDisabled}
               onClick={showConfirmModal}
               target="_blank"
               className={

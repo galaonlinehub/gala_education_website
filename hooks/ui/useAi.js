@@ -2,6 +2,8 @@ import axios from "axios";
 import * as React from "react";
 import { useForm } from "react-hook-form";
 
+import { generateRandomUUID } from "@/utils/fns/ai";
+
 import { USER_COOKIE_KEY } from "../../config/settings";
 import { cookieFn } from "../../utils/fns/client";
 import { decrypt } from "../../utils/fns/encryption";

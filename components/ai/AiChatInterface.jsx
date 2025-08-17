@@ -129,7 +129,7 @@ const AiChatInterface = () => {
               onClick={handleReset}
               className="px-4 py-3 bg-gray-200 text-gray-700 rounded-xl hover:bg-gray-300 transition text-sm"
             >
-              Clear
+              {gala_ai('clear')}
             </button>
           )}
         </div>

@@ -27,8 +27,10 @@ const AUTH_CONFIG = {
     "/forgot-password",
     "/forgot-password/password-change",
     "/activate-account",
+
   ],
   AUTH_ONLY_ROUTES: ["/signin", "/signup"],
+  NON_ROLE_ROUTES: ["/gala-meet"],
   REDIRECT_ROUTES: {
     afterLogin: roleRedirects,
     notAuthenticated: "/signin",
@@ -39,6 +41,7 @@ const AUTH_CONFIG = {
 };
 
 const safeRedirect = (url, request, locale) => {
+
   try {
     const redirectUrl = locale ? `/${locale}${url}` : url;
     return NextResponse.redirect(new URL(redirectUrl, request.url));
@@ -119,9 +122,6 @@ export async function middleware(request) {
     const pathname = request.nextUrl.pathname;
     const locale = getLocaleFromPath(pathname);
     const pathWithoutLocale = getPathWithoutLocale(pathname);
-    console.log(pathname, "this is pathname");
-    console.log(locale, "this is locale");
-    console.log(pathWithoutLocale, "this is pathname without locale");
     const intlResponse = intlMiddleware(request);
 
     if (intlResponse.status === 307 || intlResponse.status === 302) {
@@ -154,6 +154,22 @@ export async function middleware(request) {
       );
     }
 
+    if (user?.has_free_trial === true) {
+      const allowedTrialPaths = TRIAL_ALLOWED_PATHS(user?.role);
+      const isAllowed = allowedTrialPaths.some((p) => pathWithoutLocale === p);
+
+      if (!isAllowed) {
+        return NextResponse.rewrite(
+          new URL(`/${locale}/not-found`, request.url)
+        );
+      }
+    }
+
+    if (AUTH_CONFIG.NON_ROLE_ROUTES.includes(pathWithoutLocale)) {
+      return NextResponse.next();
+
+    }
+
     const allowedPrefix = AUTH_CONFIG.ROLE_PREFIXES[user.role];
     const basePath = AUTH_CONFIG.REDIRECT_ROUTES.afterLogin[user.role];
 
@@ -168,20 +184,10 @@ export async function middleware(request) {
       );
     }
 
-    if (user?.has_free_trial === true) {
-      const allowedTrialPaths = TRIAL_ALLOWED_PATHS(user?.role);
-      const isAllowed = allowedTrialPaths.some((p) => pathWithoutLocale === p);
 
-      if (!isAllowed) {
-        return NextResponse.rewrite(
-          new URL(`/${locale}/not-found`, request.url)
-        );
-      }
-    }
 
     return intlResponse;
   } catch (error) {
-    console.error("Middleware error:", error);
     const locale = getLocaleFromPath(request.nextUrl.pathname);
     return safeRedirect(
       AUTH_CONFIG.REDIRECT_ROUTES.notAuthenticated,
