@@ -173,6 +173,9 @@ export async function middleware(request) {
     const allowedPrefix = AUTH_CONFIG.ROLE_PREFIXES[user.role];
     const basePath = AUTH_CONFIG.REDIRECT_ROUTES.afterLogin[user.role];
 
+
+
+
     if (
       pathWithoutLocale !== basePath &&
       !pathWithoutLocale.startsWith(allowedPrefix)
@@ -186,8 +189,10 @@ export async function middleware(request) {
 
 
 
+
     return intlResponse;
   } catch (error) {
+    console.error("Middleware error:", error);
     const locale = getLocaleFromPath(request.nextUrl.pathname);
     return safeRedirect(
       AUTH_CONFIG.REDIRECT_ROUTES.notAuthenticated,
