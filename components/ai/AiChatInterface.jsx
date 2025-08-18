@@ -24,13 +24,14 @@ const AiChatInterface = () => {
     handleEnterSubmit,
   } = useAi();
 
-  const gala_ai = useTranslations('gala_ai');
+  const gala_ai = useTranslations("gala_ai");
 
   return (
-    <div className="flex flex-col h-[calc(100vh-100px)] bg-white overflow-hidden">
+    <div className="flex flex-col h-[calc(100vh-100px)] bg-white">
+      {/* Messages */}
       <div
         ref={contentRef}
-        className="overflow-y-scroll p-6 h-[90%] md:h-[85%] bg-whit shadow-inner"
+        className="flex-1 overflow-y-auto p-6 shadow-inner"
       >
         {getLength(openAiMessage) === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-center text-gray-700">
@@ -38,12 +39,10 @@ const AiChatInterface = () => {
               <LuBrain className="text-white text-2xl" />
             </div>
             <p className="text-2xl font-bold mt-3">
-              {gala_ai('ai_welcome')} <span className="text-purple-600"> GalaAI!</span> 🎉
+              {gala_ai("ai_welcome")}{" "}
+              <span className="text-purple-600">GalaAI!</span> 🎉
             </p>
-
-            <p className="w-full md:w-3/4 mt-3">
-              {gala_ai('ai_header')}
-            </p>
+            <p className="w-full md:w-3/4 mt-3">{gala_ai("ai_header")}</p>
           </div>
         ) : (
           <div className="space-y-6 max-w-4xl mx-auto">
@@ -82,7 +81,7 @@ const AiChatInterface = () => {
                           <div className="flex items-center justify-center w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex-shrink-0">
                             <LuBrain className="text-white text-sm" />
                           </div>
-                          <div className="bg-gray-100 border border-gray-200 px-4 py-3 rounded-2xl rounded-tl-md relative whitespace-pre-line leading-relaxed min-h-[40px]">
+                          <div className="bg-gray-100 border border-gray-200 px-4 py-3 rounded-2xl rounded-tl-md whitespace-pre-line leading-relaxed min-h-[40px]">
                             <StreamingMarkdown
                               markdown={content}
                               showCursor={false}
@@ -101,11 +100,12 @@ const AiChatInterface = () => {
         )}
       </div>
 
+      {/* Input */}
       <div className="bg-white border-t border-gray-300 p-4 flex-shrink-0">
         <div className="max-w-4xl mx-auto flex gap-3 items-center">
           <textarea
             onKeyDown={handleEnterSubmit}
-            placeholder={gala_ai('ask_gala')}
+            placeholder={gala_ai("ask_gala")}
             rows={2}
             className="flex-1 p-3 border border-gray-300 rounded-xl resize-none text-sm outline-none focus-visible:border-2 focus-visible:border-blue-800"
             {...register("prompt")}
@@ -121,7 +121,9 @@ const AiChatInterface = () => {
               <SendOutlined />
             )}
             {!isStreaming && (
-              <span className="hidden md:inline text-sm">{gala_ai('submit')}</span>
+              <span className="hidden md:inline text-sm">
+                {gala_ai("submit")}
+              </span>
             )}
           </button>
           {getLength(openAiMessage) > 0 && !isStreaming && (
@@ -129,7 +131,7 @@ const AiChatInterface = () => {
               onClick={handleReset}
               className="px-4 py-3 bg-gray-200 text-gray-700 rounded-xl hover:bg-gray-300 transition text-sm"
             >
-              {gala_ai('clear')}
+              {gala_ai("clear")}
             </button>
           )}
         </div>
