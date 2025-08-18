@@ -67,6 +67,17 @@ const ConfirmPlan = () => {
   }, [currentUrl, setAccountType, user]);
 
   const payt = useTranslations('payments')
+  const subt = useTranslations('subscription')
+
+  const getPlanType = (type) => {
+    if (type == 'Annually Plan') {
+      return subt('annual_plan')
+    } else if (type == 'Monthly Plan') {
+      return subt('monthly_plan')
+    }
+  }
+
+
   return (
     <div className="!px-4 flex flex-col lg:flex-row gap-8 lg:gap-12 justify-center items-center mt-4">
       {contextHolder}
@@ -84,7 +95,7 @@ const ConfirmPlan = () => {
                 className="!w-full xs:!w-[65%] sm:!w-[370px] relative"
               >
                 <Badge.Ribbon
-                  text={`Save up to ${savingsPercentage(plans)}%`}
+                  text={`${subt('save_up_to')} ${savingsPercentage(plans)}%`}
                   color="#010798"
                   placement="end"
                   className={
@@ -97,7 +108,7 @@ const ConfirmPlan = () => {
                     <div className="flex flex-col gap-6 md:gap-8 lg:gap-12 p-3 md:p-6">
                       <div className="text-center overflow-hidden">
                         <div className="!mb-2 !font-bold text-base md:text-2xl">
-                          {plan?.name}
+                          {getPlanType(plan?.name)}
                         </div>
                         <Text className="text-gray-500 text-xs sm:text-sm">
                           {payt('non_refundable')}
@@ -172,7 +183,7 @@ const ConfirmPlan = () => {
                 icon={user?.has_free_trial ? <LuX /> : <LuUser />}
                 className="!font-semibold !bg-[#010798] !h-9 !text-white hover:!opacity-80"
               >
-                {user?.has_free_trial ? "Close" : "Continue with Free Trial"}
+                {user?.has_free_trial ? subt('close') : subt('continue_with_free_trial')}
               </Button>
               <span className="text-xs text-blue-600">
                 {payt('free_trial_access')}

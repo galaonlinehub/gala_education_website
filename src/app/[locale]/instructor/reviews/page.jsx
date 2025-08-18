@@ -137,14 +137,14 @@ const ReviewsAndRatings = () => {
   const renderStudentReviews = () => (
     <div className="space-y-4 sm:space-y-6">
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
-        <h2 className="text-lg text-center sm:text-xl font-semibold text-gray-800">
+        <h2 className="text-lg text-center w-full sm:text-xl font-semibold text-gray-800">
           {review('individual_student_feedback')}
         </h2>
       </div>
 
       <div className="grid gap-4 sm:gap-6 grid-cols-1 xl:grid-cols-2">
-        {isLoading
-          ? skeletonItems.map((_, index) => (
+        {isLoading ? (
+          skeletonItems.map((_, index) => (
             <Card
               key={index}
               className="hover:shadow-xl transition-all duration-300 border-l-4 border-l-blue-500"
@@ -152,34 +152,19 @@ const ReviewsAndRatings = () => {
               <div className="flex items-start space-x-3 sm:space-x-4">
                 <Skeleton.Avatar active size={48} shape="circle" />
                 <div className="flex-1 min-w-0 space-y-2">
-                  <Skeleton.Input
-                    active
-                    size="small"
-                    style={{ width: "60%" }}
-                  />
+                  <Skeleton.Input active size="small" style={{ width: "60%" }} />
                   <div className="flex items-center justify-between">
-                    <Skeleton.Input
-                      active
-                      size="small"
-                      style={{ width: "40%" }}
-                    />
-                    <Skeleton.Input
-                      active
-                      size="small"
-                      style={{ width: 40 }}
-                    />
+                    <Skeleton.Input active size="small" style={{ width: "40%" }} />
+                    <Skeleton.Input active size="small" style={{ width: 40 }} />
                   </div>
                   <Skeleton paragraph={{ rows: 2 }} active />
-                  <Skeleton.Input
-                    active
-                    size="small"
-                    style={{ width: "50%" }}
-                  />
+                  <Skeleton.Input active size="small" style={{ width: "50%" }} />
                 </div>
               </div>
             </Card>
           ))
-          : instructorReviews?.map((review) => (
+        ) : instructorReviews?.length > 0 ? (
+          instructorReviews.map((review) => (
             <Card
               key={review.id}
               className="hover:shadow-xl transition-all duration-300 border-l-4 border-l-blue-500"
@@ -231,7 +216,12 @@ const ReviewsAndRatings = () => {
                 </div>
               </div>
             </Card>
-          ))}
+          ))
+        ) : (
+          <div className="col-span-full text-center text-gray-500 py-8">
+            <Empty description={review('no_reviews_yet')} />
+          </div>
+        )}
       </div>
     </div>
   );
@@ -253,7 +243,7 @@ const ReviewsAndRatings = () => {
             <div className="text-center bg-white rounded-lg p-4 shadow-sm">
               <div className="text-2xl sm:text-3xl font-bold text-blue-600">
                 {instructorSummary?.average_rating == null ? (
-                  <Skeleton.Input active size="small" style={{ width: 80 }} />
+                  0
                 ) : (
                   Number(instructorSummary.average_rating).toFixed(2)
                 )}
@@ -263,12 +253,13 @@ const ReviewsAndRatings = () => {
               </div>
             </div>
 
+
             <div className="text-center bg-white rounded-lg p-4 shadow-sm">
               <div className="text-2xl sm:text-3xl font-bold text-purple-600">
                 {isInstructorCohortsPending ? (
                   <Skeleton.Input active size="small" style={{ width: 80 }} />
                 ) : (
-                  Number(InstructorCohorts.length)
+                  Number(InstructorCohorts?.length ?? 0)
                 )}
               </div>
               <div className="text-xs sm:text-sm text-gray-500">

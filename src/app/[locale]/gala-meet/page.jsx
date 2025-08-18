@@ -1,5 +1,6 @@
 "use client";
 import { JaaSMeeting } from "@jitsi/react-sdk";
+import { useMutation } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
@@ -12,6 +13,7 @@ import { useUser } from "@/hooks/data/useUser";
 import { apiPost } from "@/services/api/api_service";
 import { sessionStorageFn } from "@/utils/fns/client";
 import { decrypt } from "@/utils/fns/encryption";
+
 
 const VideoConference = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -40,16 +42,18 @@ const VideoConference = () => {
 
   console.log("roomname:..", decryptedRoomName);
 
-  const handleSendLessonId = (lessonId) => {
-    apiPost("/complete-lesson", { lesson_id: lessonId });
-  };
+  const completeLessonMutation = useMutation({
+    mutationFn: (lessonId)=> apiPost("/complete-lesson", { lesson_id: lessonId })
+  })
 
   const handleEndCall = () => {
     if (pendingHangup && externalApiRef.current) {
-      // Actually end the call now
+
       externalApiRef.current.executeCommand("hangup");
       setPendingHangup(false);
     }
+
+    completeLessonMutation.mutate(decryptedLessonId);
 
     if (user?.role == "instructor") {
       router.replace("/instructor/live-classes");
