@@ -39,7 +39,7 @@ export const usePassword = () => {
 
   const resetPasswordMutation = useMutation({
     mutationFn: (data) =>
-      apiPost("/password/reset-request", { email: data.email }),
+      apiPost("/password/reset-request", { email: data.forgot_password.email }),
     onSuccess: (response, variables) => {
       const encryptedEmail = encrypt(variables.email);
       sessionStorageFn.set(RESET_PASSWORD_EMAIL_KEY, encryptedEmail);
@@ -97,6 +97,8 @@ export const usePassword = () => {
   });
 
   const onSubmit = (data) => {
+    console.log(data);
+    console.log("THIS IS THE PRINT");
     resetPasswordMutation.mutate(data);
   };
 
