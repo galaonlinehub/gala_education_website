@@ -86,6 +86,7 @@ async function getAuthenticatedUser(request, maxRetries = 2) {
   if (!cookieToken) return null;
 
   const token = decrypt(cookieToken);
+
   if (!token) return null;
 
   let retryCount = 0;
@@ -94,11 +95,13 @@ async function getAuthenticatedUser(request, maxRetries = 2) {
       const response = await Promise.race([
         apiGet("/auth-user", {}, token),
         new Promise((_, reject) =>
-          setTimeout(() => reject(new Error("Request timeout")), 5000)
+          setTimeout(() => reject(new Error("Request timeout")), 20000)
         ),
       ]);
+    
       return response?.data?.data || null;
     } catch (error) {
+  
       retryCount++;
       const isLastRetry = retryCount === maxRetries;
 
@@ -119,9 +122,7 @@ export async function middleware(request) {
     const pathname = request.nextUrl.pathname;
     const locale = getLocaleFromPath(pathname);
     const pathWithoutLocale = getPathWithoutLocale(pathname);
-    console.log(pathname, "this is pathname");
-    console.log(locale, "this is locale");
-    console.log(pathWithoutLocale, "this is pathname without locale");
+
     const intlResponse = intlMiddleware(request);
 
     if (intlResponse.status === 307 || intlResponse.status === 302) {
@@ -146,6 +147,7 @@ export async function middleware(request) {
     }
 
     const user = await getAuthenticatedUser(request);
+
     if (!user?.role || !AUTH_CONFIG.ROLE_PREFIXES[user.role]) {
       return safeRedirect(
         AUTH_CONFIG.REDIRECT_ROUTES.notAuthenticated,

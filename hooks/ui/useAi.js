@@ -29,18 +29,24 @@ export const useAi = () => {
     // const galaMessage = { id: galaId, role: "gala", content: "" };
     // handleMessage(galaMessage);
     // setMarkDown("");
+
     try {
       // await fetchWithStream(token, prompt, (chunk) => {
       //     setMarkDown((prev) => prev + chunk);
       // });
+
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+
+      if (process.env.NODE_ENV === "development") {
+        headers["X-Dev-Request"] = "true";
+      }
+
       const { data } = await axios.post(
         `https://ai.galahub.org/ask-gala`,
         { question: prompt },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        { headers }
       );
       const msg = handleOpenAiResponse(data);
       handleMessage(msg);
