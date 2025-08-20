@@ -49,12 +49,18 @@ export const RenderLoadingState = ({ setStatus }) => {
     };
   }, [setStatus]);
 
+
+  const donate = useTranslations('donate')
+  const stdash = useTranslations('student_dashboard')
+  const payt = useTranslations('payments')
+  const subt = useTranslations('subscription')
+
   const statusMessages = [
-    "Initiating secure connection...",
-    "Verifying transaction details...",
-    "Checking payment gateway...",
-    "Encrypting your data...",
-    "Almost there! Finalizing payment...",
+    subt('initiating_secure_connection'),
+    subt('verifying_transaction_details'),
+    subt('checking_payment_gateway'),
+    subt('encrypting_your_data'),
+    subt('almost_there_finalizing_payment'),
   ];
 
   const getStatusMessage = () => {
@@ -62,9 +68,6 @@ export const RenderLoadingState = ({ setStatus }) => {
     return statusMessages[index % statusMessages.length];
   };
 
-  const donate = useTranslations('donate')
-  const stdash = useTranslations('student_dashboard')
-  const payt = useTranslations('payments')
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[400px] w-full max-w-md mx-auto xxs:px-4">

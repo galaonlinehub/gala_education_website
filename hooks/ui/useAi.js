@@ -2,6 +2,8 @@ import axios from "axios";
 import * as React from "react";
 import { useForm } from "react-hook-form";
 
+import { generateRandomUUID } from "@/utils/fns/ai";
+
 import { USER_COOKIE_KEY } from "../../config/settings";
 import { cookieFn } from "../../utils/fns/client";
 import { decrypt } from "../../utils/fns/encryption";
@@ -15,26 +17,20 @@ export const useAi = () => {
   const contentRef = React.useRef(null);
   const token = decrypt(cookieFn.get(USER_COOKIE_KEY));
 
-  const { register, reset, watch } = useForm();
+  const { register, reset, watch } = useForm({
+    defaultValues: { prompt: "" }, // ensures reset clears input
+  });
   const prompt = watch("prompt");
 
   const askGala = async () => {
     if (prompt.trim() === "") return;
     setIsStreaming(true);
+
     const userMessage = handleUserMessage();
     handleMessage(userMessage);
-    reset();
-
-    // const galaId = generateRandomUUID();
-    // const galaMessage = { id: galaId, role: "gala", content: "" };
-    // handleMessage(galaMessage);
-    // setMarkDown("");
-
+    reset({ prompt: "" }); 
+    
     try {
-      // await fetchWithStream(token, prompt, (chunk) => {
-      //     setMarkDown((prev) => prev + chunk);
-      // });
-
       const headers = {
         Authorization: `Bearer ${token}`,
       };
@@ -42,7 +38,6 @@ export const useAi = () => {
       if (process.env.NODE_ENV === "development") {
         headers["X-Dev-Request"] = "true";
       }
-
       const { data } = await axios.post(
         `https://ai.galahub.org/ask-gala`,
         { question: prompt },
@@ -63,11 +58,15 @@ export const useAi = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // 🔽 Auto-scroll when messages or streaming update
   React.useEffect(() => {
     if (contentRef.current) {
-      contentRef.current.scrollTop = contentRef.current.scrollHeight;
+      contentRef.current.scrollTo({
+        top: contentRef.current.scrollHeight,
+        behavior: "smooth",
+      });
     }
-  }, [openAiMessage]);
+  }, [openAiMessage, isStreaming]);
 
   const handleReset = () => {
     setOpenAiMessage({});
@@ -93,7 +92,7 @@ export const useAi = () => {
   };
 
   const handleEnterSubmit = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       askGala();
     }
@@ -109,6 +108,5 @@ export const useAi = () => {
     askGala,
     openAiMessage,
     handleEnterSubmit,
-    isStreaming,
   };
 };

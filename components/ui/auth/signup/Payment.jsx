@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { Button, Input, Card } from "antd";
+import { useTranslations } from "next-intl";
 import { useState, useEffect } from "react";
 import io from "socket.io-client";
 
@@ -182,6 +183,16 @@ const MobilePay = () => {
   const donate = useTranslations('donate');
   const payt = useTranslations('payments');
   const enroll_pay = useTranslations('enroll_payments');
+  const subt = useTranslations('subscription');
+
+  const getPlanType = (type) => {
+    if (type == 'Annually Plan') {
+      return subt('annual_plan')
+    } else if (type == 'Monthly Plan') {
+      return subt('monthly_plan')
+    }
+  }
+
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[35rem] xs:p-4 md:p-8">
@@ -209,7 +220,7 @@ const MobilePay = () => {
             <div className="flex flex-col xxs:flex-row justify-between items-start xxs:items-center">
               <span className="text-xs sm:text-sm mb-1 xxs:mb-0">{payt('plan')}</span>
               {plan ? (
-                <span className="text-gray-900 font-black">{plan.name}</span>
+                <span className="text-gray-900 font-black">{getPlanType(plan.name)}</span>
               ) : (
                 <SlickSpinner color="#010798" size={12} />
               )}

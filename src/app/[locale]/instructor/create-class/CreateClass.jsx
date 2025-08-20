@@ -232,7 +232,6 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log("Forma data here:", formData);
       await createCohort.mutateAsync(formData);
       e.target.reset();
       setOpenAddNewClass(false);
