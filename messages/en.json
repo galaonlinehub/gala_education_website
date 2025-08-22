@@ -230,7 +230,9 @@
     "dont_have_account": "Don't have an account?",
     "forgot": "Forgot",
     "signed_in_success_redirect": "Signed in successfully, Redirecting you now…",
-    "error_occured": "Unexpected error occurred, Try again later"
+    "error_occured": "Unexpected error occurred, Try again later",
+    "wrong_creds": "Oops! Wrong credentials. Please check and try again 🤔",
+    "general_error": "Something went wrong, Please try again later! 😬"
   },
 
   "forgot_password": {
@@ -419,6 +421,9 @@
     "current": "Current",
     "annual_plan": "Annual Plan",
     "monthly_plan": "Monthly Plan",
+    "save_up_to": "Save up to ",
+    "close": "Close",
+    "continue_with_free_trial": "Continue with free trial",
     "created": "Created",
     "next_subscriptions": "Next Subscriptions",
     "no_upcoming_subscriptions": "No upcoming subscriptions scheduled.",
@@ -435,7 +440,12 @@
     "no_subscription_history_found": "No subscription history found",
     "completed_subscriptions_info": "Your completed subscriptions will appear here once they expire",
     "start": "Start",
-    "end": "End"
+    "end": "End",
+    "initiating_secure_connection": "Initiating secure connection...",
+    "verifying_transaction_details": "Verifying transaction details...",
+    "checking_payment_gateway": "Checking payment gateway...",
+    "encrypting_your_data": "Encrypting your data...",
+    "almost_there_finalizing_payment": "Almost there! Finalizing payment..."
   },
 
   "library": {
@@ -476,7 +486,12 @@
     "hours": "hours",
     "minutes": "minutes",
     "seconds": "seconds",
-    "days": "days"
+    "days": "days",
+    "ai_welcome":"Welcome to",
+    "ask_gala":"Ask GalaAI",
+    "submit":"Submit",
+    "clear":"Clear",
+    "ai_header":"Experience the power of our fully functional AI right now - ask questions, explore ideas, and get instant insights. While our core intelligence is ready to assist you today, we're actively crafting even more advanced features behind the scenes. Thank you for joining our journey as we evolve!"
   },
 
   "student_dashboard": {
@@ -499,7 +514,8 @@
     "failed_to_load_subjects": "Failed to load subjects.",
     "profile": "Profile",
     "reminders": "Reminders",
-    "grades": "Grades"
+    "grades": "Grades",
+    "enter": "Enter"
   },
 
   "student_classes": {
@@ -568,7 +584,7 @@
     "contact_support": "Contact Support",
     "try_again": " Try Again",
     "non_refundable": "Non-refundable-payment",
-    "accept_description": "This fee grants you full access to Gala Education&apos;s teaching platform, allowing you toconnect with students, manage lessons, and utilizeour advanced tools and resources to deliver high-quality education.",
+    "access_description": "This fee grants you full access to Gala Education&apos;s teaching platform, allowing you toconnect with students, manage lessons, and utilizeour advanced tools and resources to deliver high-quality education.",
     "access_description_student": "This fee grants you full access to Gala Education&apos;s learning platform, allowing you toconnect with teachers, access lessons, track your progress, and use our advanced tools and resourcesto achieve high-quality learning.",
     "thats_just": "That's just",
     "per_month": "per month",
@@ -694,6 +710,7 @@
     "monitor_performance_feedback": "Monitor your teaching performance and student feedback",
     "avg_instructor_rating": "Avg. Instructor Rating",
     "instructor_reviews": "Instructor Reviews",
+    "no_reviews_yet":"You don't have any Reviews at the moment",
     "individual_student_feedback": "Individual Student Feedback"
   },
 
@@ -768,7 +785,7 @@
     "sign_up_now": "participate in live events. Sign up now to join the mailing list.",
     "join_now": "JOIN NOW",
     "joined": "JOINED",
-    "try_again":"TRY AGAIN",
+    "try_again": "TRY AGAIN",
     "services": "Services",
     "community": "Community",
     "help": "Help",
@@ -786,16 +803,16 @@
     "collaboration": "Collaboration",
     "troubleshooting": "Troubleshooting",
     "contact_us": "Contact Us",
-    "all_rights_reserved":"All rights reserved",
-    "all_rights_reserved_1":"Gala Education. All rights reserved. All content, trademarks, and intellectual",
-    "all_rights_reserved_2":"property on this website are protected by law. Unauthorized use or reproduction of ",
-    "all_rights_reserved_3":"any materials without prior written consent is strictly prohibited."
+    "all_rights_reserved": "All rights reserved",
+    "all_rights_reserved_1": "Gala Education. All rights reserved. All content, trademarks, and intellectual",
+    "all_rights_reserved_2": "property on this website are protected by law. Unauthorized use or reproduction of ",
+    "all_rights_reserved_3": "any materials without prior written consent is strictly prohibited."
   },
 
-  "internet":{
-    "internet_unstable":"Your internet connection is weak and may be unstable.",
-    "internet_stable":"Your internet connection is strong and stable",
-    "internet_mid":"Your connection is working but could be better",
-    "offline":"You're offline. Please connect to Wi-Fi or enable mobile data"
+  "internet": {
+    "internet_unstable": "Your internet connection is weak and may be unstable.",
+    "internet_stable": "Your internet connection is strong and stable",
+    "internet_mid": "Your connection is working but could be better",
+    "offline": "You're offline. Please connect to Wi-Fi or enable mobile data"
   }
 }

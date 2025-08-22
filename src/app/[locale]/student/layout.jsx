@@ -37,7 +37,7 @@ export default function StudentLayout({ children }) {
 
   const student_links = useStudentLinks();
 
-  const tdash = useTranslations('teacher_dashboard')
+  const tdash = useTranslations('teacher_dashboard');
 
   return (
     <>
@@ -67,13 +67,15 @@ export default function StudentLayout({ children }) {
         >
           <ul className="space-y-4 pt-6">
             {student_links.map((item, i) => {
+              // Extract the language prefix from pathname (sw or en)
+              const langPrefix = currentUrl.match(/^\/(sw|en)\//)?.[1] || '';
+
               const normalizedUrl = currentUrl.replace(/\/$/, "");
 
-              const itemUrl = `/student${
-                item.link === "." ? "" : `/${item.link}`
-              }`;
+              const itemUrl = `${langPrefix ? `/${langPrefix}` : ""}/student${item.link === "." ? "" : `/${item.link}`
+                }`;
 
-              const isDashboard = itemUrl === "/student";
+              const isDashboard = itemUrl === `${langPrefix ? `/${langPrefix}` : ""}/student`;
               const isSubscriptions = item.link === "subscriptions";
 
               const isActive = isDashboard

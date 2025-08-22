@@ -11,17 +11,13 @@ const { Title, Text } = Typography;
 const EndCallModal = ({ 
   isOpen, 
   onClose, 
-  onConfirm, 
+  onConfirm,
+  isCompletingLesson,
   participantCount = 3,
   duration = "25:43" 
 }) => {
-  const [isLoading, setIsLoading] = useState(false);
-
   const handleConfirm = async () => {
-    setIsLoading(true);
-    await new Promise(resolve => setTimeout(resolve, 1500));
     onConfirm();
-    setIsLoading(false);
   };
 
   return (
@@ -89,7 +85,7 @@ const EndCallModal = ({
               danger
               size="large"
               block
-              loading={isLoading}
+              loading={isCompletingLesson}
               onClick={handleConfirm}
               className="h-12 font-semibold text-base rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
               style={{
@@ -97,7 +93,7 @@ const EndCallModal = ({
                 borderColor: 'transparent',
               }}
             >
-              {isLoading ? 'Ending Call...' : 'Yes, End Call'}
+              {isCompletingLesson ? 'Ending Call...' : 'Yes, End Call'}
             </Button>
             
             <Button
