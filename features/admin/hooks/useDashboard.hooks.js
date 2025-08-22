@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { FaUserTie } from "react-icons/fa6";
-import { MdOutlineClass } from "react-icons/md";
+import { LuBookOpenText } from "react-icons/lu";
 import { PiStudentFill } from "react-icons/pi";
 
 import { globalOptions } from "@/config/tanstack";
@@ -32,7 +32,7 @@ export const useDashboard = () => {
     },
     {
       title: "Cohorts",
-      icon: MdOutlineClass,
+      icon: LuBookOpenText,
       bg: "bg-orange-500/15 text-orange-500",
     },
   ];
