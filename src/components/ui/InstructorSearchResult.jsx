@@ -1,24 +1,26 @@
 "use client";
-import React from "react";
-import { GoVerified, GoBook } from "react-icons/go";
-import { FaUsers, FaStar, FaClock } from "react-icons/fa";
 import { Avatar, Badge, Card, Button, Skeleton, Tooltip } from "antd";
+import { useRouter } from "next/navigation";
+import React from "react";
+import { useCallback } from "react";
+import { BsGlobe } from "react-icons/bs";
+import { FaUsers, FaStar, FaClock } from "react-icons/fa";
 import { FaRegStar } from "react-icons/fa";
 import { FaRegMessage, FaRegClock } from "react-icons/fa6";
+import { GoVerified, GoBook } from "react-icons/go";
 import { GoShieldCheck } from "react-icons/go";
-import { BsGlobe } from "react-icons/bs";
 import { LuMessageSquare, LuUsers } from "react-icons/lu";
-import { useEnrollMe } from "@/src/store/student/useEnrollMe";
-import { useRouter } from "next/navigation";
+import { TbMessage } from "react-icons/tb";
+
+import { PREVIEW_CHAT_KEY } from "@/src/config/settings";
+import {useChat} from "@/src/hooks/chat/useChat";
 import { useUser } from "@/src/hooks/data/useUser";
+import useChatStore from "@/src/store/chat/chat";
 import { useNewClass } from "@/src/store/student/class";
+import { useEnrollMe } from "@/src/store/student/useEnrollMe";
 import { sessionStorageFn } from "@/src/utils/fns/client";
 import { encrypt } from "@/src/utils/fns/encryption";
-import { PREVIEW_CHAT_KEY } from "@/src/config/settings";
-import useChatStore from "@/src/store/chat/chat";
-import {useChat} from "@/src/hooks/chat/useChat";
-import { TbMessage } from "react-icons/tb";
-import { useCallback } from "react";
+
 
 const InstructorSearchResult = ({ details }) => {
   const { setEnrollMe, setEnrollCohort } = useEnrollMe();
