@@ -1,5 +1,8 @@
 
+import withNextIntl from 'next-intl/plugin';
 import withPWA from "next-pwa";
+
+const withNextIntlPlugin = withNextIntl();
 
 const pwaConfig = withPWA({
   dest: "public",
@@ -21,12 +24,17 @@ const nextConfig = {
         protocol: "https",  
         hostname: "galaweb.galahub.org",
       },
+      {
+        protocol:"https",
+        hostname:"covers.openlibrary.org"
+      }
     ]
   },
-  productionBrowserSourceMaps: false
+  productionBrowserSourceMaps: false,
+
+  
 
   
 };
 
-export default pwaConfig(nextConfig);
-
+export default pwaConfig(withNextIntlPlugin(nextConfig));
