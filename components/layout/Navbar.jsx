@@ -166,7 +166,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="h-12 flex justify-between max-w-screen items-center fixed top-0 inset-x-0 z-50 lg:px-10 sm:px-6 px-2 bg-white">
+      <nav className="h-[3rem] flex justify-between max-w-screen items-center top-0 inset-x-0 z-50 lg:px-10 sm:px-6 px-2 bg-white fixed">
         {contextHolder}
         <Image
           alt={"Gala logo"}

@@ -24,6 +24,10 @@ const nextConfig = {
         protocol: "https",  
         hostname: "galaweb.galahub.org",
       },
+      {
+        protocol:"https",
+        hostname:"covers.openlibrary.org"
+      }
     ]
   },
   productionBrowserSourceMaps: false,

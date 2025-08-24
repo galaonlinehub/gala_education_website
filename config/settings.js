@@ -23,7 +23,7 @@ export const PREVIEW_CHAT_KEY = "fb991dff-db78-4972-baa3-f7068fd06359";
 export const CURRENT_CHAT_KEY =
   "19fb96164-8236-0991bc732fb2-f8bc6b75-1764-4054";
 export const USER_HAS_ACCEPTED_COOKIES_KEY =
-  "1f17695c-c729-4300-9175-d9686b88cbc9";
+  "cookie_consent";
 export const RESET_PASSWORD_EMAIL_KEY = "e4e70c35-1afa-4e04-9347-165d0050a908";
 export const JITSI_API_KEY =
   "vpaas-magic-cookie-c9d16b98edef4d1b82af5d11fc75293b";
@@ -45,3 +45,5 @@ export const img_base_url = process.env.NEXT_PUBLIC_IMAGE_BASE_URL;
 export const socket_base_url = process.env.NEXT_PUBLIC_SOCKET_BASE_URL;
 export const openai_api_key = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
 export const openai_base_url = process.env.NEXT_PUBLIC_OPENAI_BASE_URL;
+
+export const isDev = process.env.NODE_ENV === "development";

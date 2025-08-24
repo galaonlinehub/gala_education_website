@@ -23,7 +23,6 @@ import RightTiltedBook from "@/utils/vector-svg/vectors/CombinedBlock";
 import KidInPicture from "@/utils/vector-svg/vectors/KidInPicture";
 import StudentsInClass from "@/utils/vector-svg/vectors/StudentsInClass";
 
-
 export default function StudentLayout({ children }) {
   const { installPrompt, isInstalled, handleInstallClick } = useInstallPrompt();
   const currentUrl = usePathname();
@@ -37,13 +36,76 @@ export default function StudentLayout({ children }) {
 
   const student_links = useStudentLinks();
 
-  const tdash = useTranslations('teacher_dashboard');
+  const tdash = useTranslations("teacher_dashboard");
 
   return (
     <>
       <Navbar />
       <StudentSearch />
-      <main className="flex flex-col md:flex-row w-full mt-20">
+      <aside
+        className={
+          "hidden md:block fixed top-[6rem] left-0 w-[24vw] lg:w-[17rem] h-[calc(100vh-80px)] border-r border-[#d9d9d9] p-4 overflow-y-auto"
+        }
+      >
+        <ul className="space-y-4 pt-6">
+          {student_links.map((item, i) => {
+            const langPrefix = currentUrl.match(/^\/(sw|en)\//)?.[1] || "";
+            const normalizedUrl = currentUrl.replace(/\/$/, "");
+
+            const itemUrl = `${langPrefix ? `/${langPrefix}` : ""}/student${
+              item.link === "." ? "" : `/${item.link}`
+            }`;
+
+            const isDashboard =
+              itemUrl === `${langPrefix ? `/${langPrefix}` : ""}/student`;
+            const isSubscriptions = item.link === "subscriptions";
+
+            const isActive = isDashboard
+              ? normalizedUrl === itemUrl
+              : normalizedUrl.startsWith(itemUrl);
+
+            const hasFreeTrial = user?.has_free_trial;
+            const isDisabled =
+              hasFreeTrial && !(isDashboard || isSubscriptions);
+
+            return (
+              <Tooltip
+                color="#001840"
+                title={isDisabled ? tdash("only_in_premium") : ""}
+                key={i}
+              >
+                <Link
+                  key={i}
+                  href={itemUrl}
+                  onClick={(e) => {
+                    if (isDisabled) e.preventDefault();
+                  }}
+                  className={clsx(
+                    "flex items-center gap-3 py-2 px-2 rounded-lg transition-colors",
+                    isActive
+                      ? "bg-[#001840] text-white"
+                      : "hover:bg-blue-950/20",
+                    isDisabled
+                      ? "text-gray-400 cursor-not-allowed hover:bg-transparent"
+                      : ""
+                  )}
+                >
+                  <span className="text-2xl">{item.icon}</span>
+                  <span
+                    className={clsx(
+                      "text-base font-bold",
+                      isActive && "font-[900]"
+                    )}
+                  >
+                    {item.name}
+                  </span>
+                </Link>
+              </Tooltip>
+            );
+          })}
+        </ul>
+      </aside>
+      <main className="md:fixed mt-[6rem] md:mt-0 top-[6rem] left-[24vw] lg:left-[17rem] lg:w-[calc(100vw-17rem)] h-[calc(100vh-6rem)] px-2">
         <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
           <div className="absolute left-1/2 top-20 w-52 h-52 hidden md:block">
             <RightTiltedBook />
@@ -59,76 +121,7 @@ export default function StudentLayout({ children }) {
           </div>
         </div>
 
-        {/* Sidebar */}
-        <aside
-          className={
-            "hidden md:block sticky top-[90px] left-0 w-[24vw] lg:w-[16vw] h-[calc(100vh-80px)] border-r border-[#d9d9d9] p-4 overflow-y-auto"
-          }
-        >
-          <ul className="space-y-4 pt-6">
-            {student_links.map((item, i) => {
-              // Extract the language prefix from pathname (sw or en)
-              const langPrefix = currentUrl.match(/^\/(sw|en)\//)?.[1] || '';
-
-              const normalizedUrl = currentUrl.replace(/\/$/, "");
-
-              const itemUrl = `${langPrefix ? `/${langPrefix}` : ""}/student${item.link === "." ? "" : `/${item.link}`
-                }`;
-
-              const isDashboard = itemUrl === `${langPrefix ? `/${langPrefix}` : ""}/student`;
-              const isSubscriptions = item.link === "subscriptions";
-
-              const isActive = isDashboard
-                ? normalizedUrl === itemUrl
-                : normalizedUrl.startsWith(itemUrl);
-
-              const hasFreeTrial = user?.has_free_trial;
-              const isDisabled =
-                hasFreeTrial && !(isDashboard || isSubscriptions);
-
-              return (
-                <Tooltip
-                  color="#001840"
-                  title={isDisabled ? tdash('only_in_premium') : ""}
-                  key={i}
-                >
-                  <Link
-                    key={i}
-                    href={itemUrl}
-                    onClick={(e) => {
-                      if (isDisabled) e.preventDefault();
-                    }}
-                    className={clsx(
-                      "flex items-center gap-3 py-2 px-2 rounded-lg transition-colors",
-                      isActive
-                        ? "bg-[#001840] text-white"
-                        : "hover:bg-blue-950/20",
-                      isDisabled
-                        ? "text-gray-400 cursor-not-allowed hover:bg-transparent"
-                        : ""
-                    )}
-                  >
-                    <span className="text-2xl">{item.icon}</span>
-                    <span
-                      className={clsx(
-                        "text-sm font-black",
-                        isActive && "font-[900]"
-                      )}
-                    >
-                      {item.name}
-                    </span>
-                  </Link>
-                </Tooltip>
-              );
-            })}
-          </ul>
-        </aside>
-
-        {/* Main Content */}
-
-        <div className="flex-1 px-2 xxs:px-3 lg:px-5 py-2 w-full lg:w-[80vw] overflow-y-auto h-[calc(100vh-90px)]">
-          {children}
-        </div>
+        <div className="relative overflow-y-scroll h-full">{children}</div>
       </main>
 
       {/* {!isInstalled && installPrompt && (

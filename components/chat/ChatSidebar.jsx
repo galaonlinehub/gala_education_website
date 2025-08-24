@@ -88,14 +88,14 @@ const RenderSidebar = ({ currentTab, setCurrentTab, MAIN_COLOR }) => {
             )
             .map((chat) => {
               const participantsData = chat.participants.map((participant) => ({
-                id: participant.user.id,
+                id: participant.user?.id,
                 fullName: `${participant.user.first_name} ${participant.user.last_name}`,
                 profilePicture: `${img_base_url}${participant.user.profile_picture}`,
                 email: participant.user.email,
                 online: participant.online,
               }));
               const typingUsers = (sidebarTyping[chat.id] || []).filter(
-                (id) => id !== user.id
+                (id) => id !== user?.id
               );
               const isTyping = typingUsers.length > 0;
               const unreadCount = unreadCounts[chat.id] || 0;

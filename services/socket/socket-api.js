@@ -1,4 +1,8 @@
-import { createConnection, eventEmitter, state } from "./config";
+// src/services/socket/socket-api.js
+import { io } from "socket.io-client";
+import { state, createConnection, eventEmitter, queueMessage, processQueuedMessages, setupConnectionHandlers } from "./config";
+
+const listenerRegistry = new Map();
 
 export const getSocket = (namespace = "default", options = {}) => {
   const existing = state.connections.get(namespace);
@@ -9,7 +13,6 @@ export const getSocket = (namespace = "default", options = {}) => {
 
   return existing;
 };
-
 
 export const emit = (namespace, event, data, options = {}) => {
   const { priority = "normal" } = options;
@@ -38,13 +41,31 @@ export const emit = (namespace, event, data, options = {}) => {
   }
 };
 
-export const listen = (namespace, event, callback) => {
+export const listen = (namespace, eventName, callback) => {
   const socket = getSocket(namespace);
-  if (socket) {
-    socket.on(event, callback);
-    return () => socket.off(event, callback);
+  if (!socket) {
+    console.warn(`Cannot listen to ${eventName}: Socket for ${namespace} not initialized`);
+    return () => {};
   }
-  return () => {};
+
+  // Create a unique key for the listener
+  const listenerKey = `${namespace}:${eventName}:${callback.toString()}`;
+  if (listenerRegistry.has(listenerKey)) {
+    console.log(`Listener already exists for ${eventName} in ${namespace}`);
+    return listenerRegistry.get(listenerKey).cleanup;
+  }
+
+  socket.on(eventName, callback);
+  console.log(`Listener registered for ${eventName} in ${namespace}`);
+
+  const cleanup = () => {
+    socket.off(eventName, callback);
+    listenerRegistry.delete(listenerKey);
+    console.log(`Listener removed for ${eventName} in ${namespace}`);
+  };
+
+  listenerRegistry.set(listenerKey, { cleanup, callback });
+  return cleanup;
 };
 
 export const disconnect = (namespace) => {
@@ -58,6 +79,14 @@ export const disconnect = (namespace) => {
       0,
       state.metrics.activeConnections - 1
     );
+
+    // Clean up all listeners for this namespace
+    for (const [key, { cleanup }] of listenerRegistry) {
+      if (key.startsWith(`${namespace}:`)) {
+        cleanup();
+        listenerRegistry.delete(key);
+      }
+    }
   }
 };
 
@@ -83,6 +112,7 @@ export const getMetrics = () => {
       ])
     ),
     circuitBreakerState: state.circuitBreaker.state,
+    listenerCount: listenerRegistry.size,
   };
 };
 
@@ -94,7 +124,6 @@ export const reconnect = (namespace) => {
   }
 };
 
-// Event system
 export const onConnectionEvent = (event, callback) => {
   return eventEmitter.on(event, callback);
 };
@@ -103,7 +132,6 @@ export const offConnectionEvent = (event, callback) => {
   eventEmitter.off(event, callback);
 };
 
-// Cleanup on page unload
 if (typeof window !== "undefined") {
   window.addEventListener("beforeunload", () => {
     state.connections.forEach((socket, namespace) => {

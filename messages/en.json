@@ -224,15 +224,29 @@
     "sign_up_statement_teachers": "When registering with Gala, teachers undergo a vetting process to ensure only qualified candidates are selected, maintaining service quality. The first payment, which is non-refundable, serves as an application fee. Applications are processed within 2-3 business days and may be approved or denied. Please note: All uploaded certificates must be certified by a registered Advocate to ensure their authenticity. Submissions without proper certification will not be accepted."
   },
 
-  "sign_in": {
-    "welcome_back": "Welcome Back",
-    "welcome_text": "Welcome back! We're excited to see you again, let's pick up where you left off and continue your learning journey!",
-    "dont_have_account": "Don't have an account?",
-    "forgot": "Forgot",
-    "signed_in_success_redirect": "Signed in successfully, Redirecting you now…",
-    "error_occured": "Unexpected error occurred, Try again later",
-    "wrong_creds": "Oops! Wrong credentials. Please check and try again 🤔",
-    "general_error": "Something went wrong, Please try again later! 😬"
+  "signIn": {
+    "signIn": "Sign In",
+    "welcomeBack": "Welcome Back",
+    "welcomeMessage": "Welcome back! We're excited to see you again, let's pick up where you left off and continue your learning journey!",
+    "emailLabel": "Email",
+    "passwordLabel": "Password",
+    "forgotPassword": {
+      "prefix": "Forgot",
+      "link": "Password?",
+      "tooltip": "Click to reset your password",
+      "ariaLabel": "Reset password link"
+    },
+    "noAccount": {
+      "prefix": "Don't have an account?",
+      "link": "Sign Up"
+    },
+    "email": {
+      "required": "This field is requried",
+      "invalid": "Please enter valid email address"
+    },
+    "password": {
+      "required": "This field is requried"
+    }
   },
 
   "forgot_password": {
@@ -287,7 +301,9 @@
     "end": "End",
     "students": "Students",
     "action": "Action",
-    "view": "View"
+    "view": "View",
+        "welcome_back":"Welcome Back"
+
   },
 
   "class_creation": {
@@ -487,11 +503,11 @@
     "minutes": "minutes",
     "seconds": "seconds",
     "days": "days",
-    "ai_welcome":"Welcome to",
-    "ask_gala":"Ask GalaAI",
-    "submit":"Submit",
-    "clear":"Clear",
-    "ai_header":"Experience the power of our fully functional AI right now - ask questions, explore ideas, and get instant insights. While our core intelligence is ready to assist you today, we're actively crafting even more advanced features behind the scenes. Thank you for joining our journey as we evolve!"
+    "ai_welcome": "Welcome to",
+    "ask_gala": "Ask GalaAI",
+    "submit": "Submit",
+    "clear": "Clear",
+    "ai_header": "Experience the power of our fully functional AI right now - ask questions, explore ideas, and get instant insights. While our core intelligence is ready to assist you today, we're actively crafting even more advanced features behind the scenes. Thank you for joining our journey as we evolve!"
   },
 
   "student_dashboard": {
@@ -515,7 +531,8 @@
     "profile": "Profile",
     "reminders": "Reminders",
     "grades": "Grades",
-    "enter": "Enter"
+    "enter": "Enter",
+    "welcome_back": "Welcome Back"
   },
 
   "student_classes": {
@@ -710,7 +727,7 @@
     "monitor_performance_feedback": "Monitor your teaching performance and student feedback",
     "avg_instructor_rating": "Avg. Instructor Rating",
     "instructor_reviews": "Instructor Reviews",
-    "no_reviews_yet":"You don't have any Reviews at the moment",
+    "no_reviews_yet": "You don't have any Reviews at the moment",
     "individual_student_feedback": "Individual Student Feedback"
   },
 
