@@ -1,4 +1,3 @@
-// hooks/useSocket.js
 import { useEffect, useState } from "react";
 
 import { getSocket } from "../../services/socket/socket-api";

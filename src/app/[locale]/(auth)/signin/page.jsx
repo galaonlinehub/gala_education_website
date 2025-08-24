@@ -1,142 +1,41 @@
 "use client";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Modal } from "antd";
 import clsx from "clsx";
 import { motion, AnimatePresence } from "framer-motion";
-import debounce from "lodash.debounce";
 import { useTranslations } from "next-intl";
-import React, { useState, useEffect, useRef } from "react";
-import { useForm, useWatch } from "react-hook-form";
 import { LuEye, LuEyeOff } from "react-icons/lu";
 
 import { Contact } from "@/components/layout/Contact";
 import SlickSpinner from "@/components/ui/loading/template/SlickSpinner";
-import { useRouter } from "@/src/i18n/navigation";
-import { roleRedirects } from "@/utils/data/redirect";
-import { login } from "@/utils/fns/auth";
+import { useLogin } from "@/hooks/ui/useLogin";
 import { preventCopyPaste } from "@/utils/fns/general";
-import { getUser } from "@/utils/fns/global";
 import LoginVectorSvg from "@/utils/vector-svg/sign-in/LoginVectorSvg";
 
 const SignInPage = () => {
-  // const key = crypto.randomUUID();
-  // alert(key);
-
-  const router = useRouter();
-  const queryClient = useQueryClient();
-  const [showPassword, setShowPassword] = useState(false);
-  const [loginModal, setLoginModal] = useState({ open: false, message: "" });
-
-  const [localFeedback, setLocalFeedback] = useState({
-    show: false,
-    status: "",
-    message: "",
-  });
-
-  const togglePasswordVisibility = () => {
-    setShowPassword((prev) => !prev);
-  };
-
   const {
+    localFeedback,
+    loginMutation,
+    onSubmit,
     register,
     handleSubmit,
-    formState: { errors },
-    control,
-  } = useForm();
-  const watchedFields = useWatch({ name: ["email", "password"], control });
+    togglePasswordVisibility,
+    showPassword,
+    loginModal,
+    errors,
+    setLoginModal,
+  } = useLogin();
 
-  const t = useTranslations('sign_up');
-  const sit = useTranslations('sign_in');
-  const ht = useTranslations('home_page');
-
-  const loginMutation = useMutation({
-    mutationFn: login,
-    onSuccess: async (res) => {
-      if (res === 1) {
-        const userData = await queryClient.fetchQuery({
-          queryKey: ["auth-user"],
-          queryFn: getUser,
-          staleTime: Infinity,
-        });
-
-        if (userData?.role) {
-          setLocalFeedback((prev) => ({
-            ...prev,
-            show: true,
-            status: "success",
-            message: sit('signed_in_success_redirect'),
-          }));
-
-          const redirectPath = roleRedirects[userData.role] || "/";
-
-          router.push(redirectPath);
-        }
-      }
-    },
-    onError: (error) => {
-      const message =
-        error?.response?.data?.message ??
-        error?.message ??
-        sit('error_occured');
-      if (error?.status === 403 && message.includes("vetting")) {
-        setLoginModal((p) => ({ ...p, open: true, message: message }));
-      }
-
-      setLocalFeedback((prev) => ({
-        ...prev,
-        show: true,
-        status: "error",
-        message,
-      }));
-    },
-    onSettled: () => { },
-  });
-
-  const onSubmit = (data) => {
-    loginMutation.mutate(data);
-  };
-
-  const debouncedResetRef = useRef(
-    debounce(() => {
-      setLocalFeedback((prev) => {
-        if (prev.show) {
-          loginMutation.reset();
-          return { show: false, message: "", status: "" };
-        }
-        return prev;
-      });
-    }, 700)
-  );
-
-  const prevFieldsRef = useRef(watchedFields);
-
-  useEffect(() => {
-    const debouncedReset = debouncedResetRef.current;
-    const fieldsChanged = watchedFields.some(
-      (field, index) => field !== prevFieldsRef.current[index]
-    );
-
-    if (
-      localFeedback.show &&
-      fieldsChanged &&
-      watchedFields.some((field) => field)
-    ) {
-      debouncedReset();
-    }
-    prevFieldsRef.current = watchedFields;
-
-    return () => debouncedReset.cancel();
-  }, [watchedFields, localFeedback.show]);
-
-
+  const t = useTranslations("signIn");
 
   return (
-    <div className="px-6 md:px-8 lg:px-12 xl:px-16 flex justify-center">
+    <div className="px-6 md:px-8 lg:px-12 xl:px-16 flex justify-center text-sm">
       <div className="flex flex-col items-center pt-14 gap-2 lg:gap-3 w-full max-w-xl">
-        <span className="font-black text-xs md:text-base">{t('sign_in')}</span>
-        <span className="font-black text-2xl md:text-4xl">{sit('welcome_back')}</span>
+        <span className="font-black text-xs md:text-base">{t("signIn")}</span>
+        <span className="font-black text-2xl md:text-4xl">
+          {t("welcomeBack")}
+        </span>
         <span className="text-xs md:text-sm font-medium text-center px-4 sm:px-8">
-          {sit('welcome_text')}
+          {t("welcomeMessage")}
         </span>
 
         <motion.div
@@ -177,8 +76,8 @@ const SignInPage = () => {
                     loginMutation.isError
                       ? "border-red-500 text-red-600 bg-red-50"
                       : loginMutation.isSuccess
-                        ? "border-green-500 text-green-600 bg-green-50"
-                        : ""
+                      ? "border-green-500 text-green-600 bg-green-50"
+                      : ""
                   )}
                 >
                   {localFeedback.message}
@@ -188,24 +87,24 @@ const SignInPage = () => {
 
             <div className="flex flex-col gap-1 w-full">
               <label htmlFor="email" className="font-black text-xs lg:text-sm">
-                {ht('email')} *
+                {t("emailLabel")} *
               </label>
               <input
                 id="email"
                 {...register("email", {
-                  required: t('enter_email'),
+                  required: t("email.required"),
                   pattern: {
                     value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: t('valid_email_address'),
+                    message: t("email.invalid"),
                   },
-                  // onChange: handleChange,
                 })}
                 autoComplete="new-password"
                 autoCorrect="off"
                 autoCapitalize="off"
                 spellCheck="false"
-                className={`h-input-height border-[0.5px] focus:border-[1.5px] rounded-md focus:outline-none p-2 border-[#030DFE] w-full text-xs ${errors.email ? "border-red-500" : ""
-                  }`}
+                className={`h-input-heigt border focus:border-[2px] rounded-md focus:outline-none p-2 border-[#030DFE] w-full text-sm ${
+                  errors.email ? "border-red-500" : ""
+                }`}
               />
               {errors.email && (
                 <span className="text-red-500 text-[12px] font-normal">
@@ -216,10 +115,10 @@ const SignInPage = () => {
 
             <div className="flex flex-col gap-1 w-full relative">
               <label
-                htmlFor="password"
+                tmlFor="password"
                 className="font-black text-xs lg:text-sm"
               >
-                {ht('password')} *
+                {t("passwordLabel")} *
               </label>
 
               <div className="relative">
@@ -230,14 +129,13 @@ const SignInPage = () => {
                   onPaste={preventCopyPaste}
                   onCut={preventCopyPaste}
                   {...register("password", {
-                    required: t('enter_password'),
-
-                    // onChange: handleChange,
+                    required: t("password.required"),
                   })}
                   autoComplete="new-password"
                   autoCorrect="off"
-                  className={`h-input-height border-[0.5px] focus:border-[1.5px] rounded-md focus:outline-none p-2 pr-10 w-full text-xs ${errors.password ? "border-red-500" : "border-[#030DFE]"
-                    }`}
+                  className={`h-input-heigt border focus:border-[2px] rounded-md focus:outline-none p-2 pr-10 w-full text-sm ${
+                    errors.password ? "border-red-500" : "border-[#030DFE]"
+                  }`}
                 />
 
                 <button
@@ -258,12 +156,12 @@ const SignInPage = () => {
             </div>
 
             <span className="font-bold text-sm self-end">
-              {sit('forgot')}
+              {t("forgotPassword.prefix")}
               <span
                 className="font-bold sm:text-sm text-[#030DFE] ml-2 cursor-pointer"
                 onClick={() => router.push("/forgot-password")}
               >
-                {ht('password')}?
+                {t("forgotPassword.link")}?
               </span>
             </span>
 
@@ -279,19 +177,18 @@ const SignInPage = () => {
               {loginMutation.isPending ? (
                 <SlickSpinner size={14} color="white" />
               ) : (
-                t('sign_in')
+                t("signIn")
               )}
             </button>
           </motion.form>
         </motion.div>
-
         <span className="text-xs font-semibold mt-1 md:mt-2">
-          {sit('dont_have_account')}
+          {t("noAccount.prefix")}
           <span
             className="text-[#030DFE] cursor-pointer ml-2"
             onClick={() => router.push("/signup")}
           >
-            {t('sign_up')}
+            {t("noAccount.link")}
           </span>
         </span>
 

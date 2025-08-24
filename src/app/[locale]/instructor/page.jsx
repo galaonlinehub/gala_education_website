@@ -225,8 +225,8 @@ export default function TeacherClasses() {
 
   return (
     <>
-      <Layout className="min-h-screen bg-white">
-        <Content className="p-4 md:p-8">
+      <div className="h-full bg-white">
+        <div className="!p-4 lg:!p-8">
           <div
             className={`max-w-7xl mx-auto space-y-6 ${!isProfileCompleted ? "pointer-events-none opacity-30" : ""
               }`}
@@ -241,7 +241,7 @@ export default function TeacherClasses() {
                         level={device?.type === "mobile" ? 3 : 2}
                         className="!text-white !mb-2"
                       >
-                        {sit('welcome_back')},
+                        {tdash("welcome_back")},
                         <span className="capitalize">
                           {" "}{user?.first_name}! 👋
                         </span>
@@ -596,8 +596,8 @@ export default function TeacherClasses() {
               </div>
             </div>
           </Modal>
-        </Content>
-      </Layout>
+        </div>
+      </div>
 
       <ClassCreationWizard
         openAddNewClass={openAddNewClass}

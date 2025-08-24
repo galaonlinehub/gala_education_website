@@ -1,3 +1,5 @@
+"use client"
+
 import {
   UserOutlined,
   MailOutlined,

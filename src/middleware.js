@@ -18,7 +18,6 @@ const AUTH_CONFIG = {
     "/forgot-password",
     "/forgot-password/password-change",
     "/activate-account",
-
   ],
   AUTH_ONLY_ROUTES: ["/signin", "/signup"],
   NON_ROLE_ROUTES: ["/gala-meet"],
@@ -32,7 +31,6 @@ const AUTH_CONFIG = {
 };
 
 const safeRedirect = (url, request, locale) => {
-
   try {
     const redirectUrl = locale ? `/${locale}${url}` : url;
     return NextResponse.redirect(new URL(redirectUrl, request.url));
@@ -92,10 +90,9 @@ async function getAuthenticatedUser(request, maxRetries = 2) {
           setTimeout(() => reject(new Error("Request timeout")), 20000)
         ),
       ]);
-    
+
       return response?.data?.data || null;
     } catch (error) {
-  
       retryCount++;
       const isLastRetry = retryCount === maxRetries;
 
@@ -118,7 +115,6 @@ export async function middleware(request) {
     const pathWithoutLocale = getPathWithoutLocale(pathname);
 
     const intlResponse = intlMiddleware(request);
-
     if (intlResponse.status === 307 || intlResponse.status === 302) {
       return intlResponse;
     }
@@ -163,7 +159,6 @@ export async function middleware(request) {
 
     if (AUTH_CONFIG.NON_ROLE_ROUTES.includes(pathWithoutLocale)) {
       return NextResponse.next();
-
     }
 
     const allowedPrefix = AUTH_CONFIG.ROLE_PREFIXES[user.role];
@@ -181,7 +176,6 @@ export async function middleware(request) {
     }
 
     return intlResponse;
-    
   } catch (error) {
     console.error("Middleware error:", error);
     const locale = getLocaleFromPath(request.nextUrl.pathname);

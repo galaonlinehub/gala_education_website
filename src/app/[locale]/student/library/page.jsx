@@ -1,9 +1,10 @@
 import React from "react";
 
-import LibraryInterface from "@/components/library/LibraryInterface";
+import { LibraryView } from "@/components/library/LibraryView";
 
 const Library = () => {
-  return <LibraryInterface />;
+  return <LibraryView/>
+
 };
 
 export default Library;

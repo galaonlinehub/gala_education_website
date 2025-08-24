@@ -224,16 +224,31 @@
     "sign_up_statement_teachers": "Wakati wa kujiandikisha na Gala, walimu hupitia mchakato wa uchunguzi ili kuhakikisha kuwa wagombea waliohitimu pekee ndilo wanachaguliwa, ili kudumisha ubora wa huduma. Malipo ya kwanza, ambayo hayarudishwi, hutumika kama ada ya maombi. Maombi hushughulikiwa ndani ya siku 2-3 za biashara na yanaweza kuidhinishwa au kukataliwa. Tafadhali kumbuka: Vyeti vyote vilivyopakiwa lazima visahihishwe na Wakili aliyesajiliwa ili kuhakikisha uhalali wake. Maombi yasiyo na uthibitisho sahihi hayatakubaliwa."
   },
 
-  "sign_in": {
-    "welcome_back": "Karibu tena",
-    "welcome_text": "Karibu Tena! Tunafurahi kukuona tena, hebu tuanze kutoka ulipoishia na tuendelee na safari yako ya kujifunza!",
-    "dont_have_account": "Hauna akaunti?",
-    "forgot": "Umesahau",
-    "signed_in_success_redirect": "Umefanikiwa kuingia, unaelekezwa ukurasa husika...",
-    "error_occured": "Hitilafu isiyotarajiwa imetokea, jaribu tena baadaye",
-    "wrong_creds": "Pole! Taarifa za kuingia sio sahihi. Tafadhali angalia kisha jaribu tena 🤔",
-    "general_error": "Kuna tatizo, tafadhali jaribu tena baadaye 😬"
+  "signIn": {
+    "signIn": "Ingia",
+    "welcomeBack": "Karibu Tena",
+    "welcomeMessage": "Karibu tena! Tunafurahi kukuona tena — hebu tuendelee pale ulipoishia na kuendeleza safari yako ya kujifunza!",
+    "emailLabel": "Barua Pepe",
+    "passwordLabel": "Nenosiri",
+    "forgotPassword": {
+      "prefix": "Umesahau",
+      "link": "Nenosiri",
+      "tooltip": "Bofya ili kuweka upya nenosiri lako",
+      "ariaLabel": "Kiungo cha kuweka upya nenosiri"
+    },
+    "noAccount": {
+      "prefix": "Huna akaunti?",
+      "link": "Jisajili"
+    },
+    "email": {
+      "required": "Sehemu hii ni lazima ijazwe",
+      "invalid": "Tafadhali weka anwani sahihi ya barua pepe"
+    },
+    "password": {
+      "required": "Sehemu hii ni lazima ijazwe"
+    }
   },
+
 
   "forgot_password": {
     "verify_email": "Thibitisha barua pepe",
@@ -287,7 +302,9 @@
     "end": "Linaisha",
     "students": "Wanafunzi",
     "action": "Kitendo",
-    "view": "Angalia"
+    "view": "Angalia",
+    "welcome_back":"Karibu"
+
   },
 
   "class_creation": {
@@ -515,7 +532,8 @@
     "profile": "Profaili",
     "reminders": "Vikumbusho",
     "grades": "Madaraja",
-    "enter": "Ingia"
+    "enter": "Ingia",
+    "welcome_back":"Karibu"
   },
 
   "student_classes": {

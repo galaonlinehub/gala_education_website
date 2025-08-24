@@ -1,24 +1,15 @@
-import { CommentOutlined, RobotFilled } from "@ant-design/icons";
 import { useTranslations } from "next-intl";
+import { GiBookshelf } from "react-icons/gi";
 import { HiOutlineChatBubbleLeftRight } from "react-icons/hi2";
 import {
-  LuBox,
   LuLayoutDashboard,
   LuLayoutList,
-  LuListChecks,
   LuTv,
-  LuUsers,
   LuClock4,
-  LuBrain,
-  LuBook,
   LuGem,
-  LuHexagon,
   LuDiamond,
 } from "react-icons/lu";
-import { MdOutlineInsertComment } from "react-icons/md";
-import { TbHexagon } from "react-icons/tb";
 
-// Static footer links (no translation needed)
 export const footer_links = {
   Services: [
     {
@@ -106,86 +97,86 @@ export const footer_links = {
 
 // Hook to get teacher links with translations
 export const useTeacherLinks = () => {
-  const nbt = useTranslations('nav_links');
-  
+  const nbt = useTranslations("nav_links");
+
   return [
     {
-      name: nbt('dashboard'),
+      name: nbt("dashboard"),
       link: ".",
       icon: <LuLayoutDashboard strokeWidth={1.5} />,
     },
     {
-      name: nbt('live_classes'),
+      name: nbt("live_classes"),
       link: "live-classes",
       icon: <LuTv strokeWidth={1.5} />,
     },
     {
-      name: nbt('chats'),
+      name: nbt("chats"),
       link: "social",
       icon: <HiOutlineChatBubbleLeftRight strokeWidth={1.5} />,
     },
     {
-      name: nbt('subscriptions'),
+      name: nbt("subscriptions"),
       link: "subscriptions",
       icon: <LuGem strokeWidth={1.5} />,
     },
     {
-      name: nbt('gala_ai'),
+      name: nbt("gala_ai"),
       link: "ai",
       icon: <LuDiamond strokeWidth={1.5} />,
     },
     {
-      name: nbt('library'),
+      name: nbt("library"),
       link: "library",
-      icon: <LuBook strokeWidth={1.5} />,
+      icon: <GiBookshelf strokeWidth={1.5} />,
     },
   ];
 };
 
 // Hook to get student links with translations
 export const useStudentLinks = () => {
-  const nbt = useTranslations('nav_links');
-  
+  const nbt = useTranslations("nav_links");
+
   return [
     {
-      name: nbt('dashboard'),
+      name: nbt("dashboard"),
       link: ".",
       icon: <LuLayoutDashboard strokeWidth={1.5} />,
     },
     {
-      name: nbt('live_classes'),
+      name: nbt("live_classes"),
       link: "live-lessons",
       icon: <LuTv strokeWidth={1.5} />,
     },
     {
-      name: nbt('classes'),
+      name: nbt("classes"),
       link: "classes",
       icon: <LuLayoutList strokeWidth={1.5} />,
     },
     {
-      name: nbt('chats'),
+      name: nbt("chats"),
       link: "social",
       icon: <HiOutlineChatBubbleLeftRight strokeWidth={1.5} />,
     },
     {
-      name: nbt('pending'),
+      name: nbt("pending"),
       link: "payments",
       icon: <LuClock4 strokeWidth={1.5} />,
     },
     {
-      name: nbt('subscriptions'),
+      name: nbt("subscriptions"),
       link: "subscriptions",
       icon: <LuGem strokeWidth={1.5} />,
     },
     {
-      name: nbt('gala_ai'),
+      name: nbt("gala_ai"),
       link: "ai",
       icon: <LuDiamond strokeWidth={1.5} />,
     },
     {
-      name: nbt('library'),
+      name: nbt("library"),
       link: "library",
-      icon: <LuBook strokeWidth={1.5} />,
+      icon: <GiBookshelf strokeWidth={1.5} />,
     },
   ];
 };

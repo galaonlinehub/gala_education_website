@@ -2,6 +2,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { useCookiesStore } from "@/store/auth/cookiesStore";
+import { COOKIES_OPTIONS } from "@/utils/data/variables";
 
 export const useCookies = () => {
   const router = useRouter();
@@ -18,7 +19,7 @@ export const useCookies = () => {
   }, []);
 
   const onClick = () => {
-    setCookieIsAccepted(1);
+    setCookieIsAccepted(COOKIES_OPTIONS.accept);
   };
 
   return {

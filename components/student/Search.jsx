@@ -105,7 +105,7 @@ const SearchResultCard = ({ data, onClick }) => {
         <motion.section
           variants={cardVariants}
           whileHover="hover"
-          className="border-t border-gray-200 overflow-hidden"
+          className="border-t border-gray-200 overflow-clip"
         >
           {/* Header */}
           <div className="px-6 py-4 border-b border-gray-200">
@@ -172,6 +172,7 @@ const SearchResultCard = ({ data, onClick }) => {
                             </h3>
 
                             {/* Subjects */}
+
                             <div className="text-xs sm:text-sm text-gray-600">
                               {subjects && subjects.length > 0 ? (
                                 <div className="flex flex-wrap gap-1">
@@ -197,7 +198,7 @@ const SearchResultCard = ({ data, onClick }) => {
                                     )}
                                 </div>
                               ) : (
-                                <span className="text-gray-400 italic text-xs">
+                                <span className="text-gray-400 italic text-xs whitespace-nowrap">
                                   No subjects listed
                                 </span>
                               )}
@@ -254,7 +255,7 @@ const StudentSearch = () => {
   return (
     <div
       ref={searchContainerRef}
-      className="fixed top-12 left-0 right-0 w-full z-10 bg-white shadow-sm lg:px-8"
+      className="fixed top-[3rem] h-[3rem] left-0 right-0 w-full z-10 bg-white shadow-sm lg:px-8"
     >
       <div className="mx-auto lg:px-20 px-4 pt-1 pb-2  bg-white">
         <div className="relative flex justify-between w-full items-center space-x-4">
@@ -269,7 +270,7 @@ const StudentSearch = () => {
                 allowClear={{
                   clearIcon: (
                     <CloseOutlined
-                      className="text-gray-500 hover:text-red-500 transition-colors"
+                      className="text-gray-500 hover:text-red-500 transition-colors !border-black"
                       onClick={clearSearch}
                     />
                   ),

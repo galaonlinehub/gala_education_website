@@ -15,7 +15,7 @@ const TemplateLoader = () => {
       </div>
 
       <div className="fixed bottom-8 left-0 w-full text-center -mt-72">
-        <span className="font-black text-sm md:text-[16px] inline-block">
+        <span className="font-black text-sm md:text-base inline-block">
           Gala Education
         </span>
       </div>
