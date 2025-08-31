@@ -27,11 +27,10 @@ const AiChatInterface = () => {
   const gala_ai = useTranslations("gala_ai");
 
   return (
-    <div className="flex flex-col h-[calc(100vh-100px)] bg-white">
-      {/* Messages */}
+    <div className="flex flex-col w-full h-screen max-h-[calc(100vh-140px)] overflow-hidden">
       <div
         ref={contentRef}
-        className="flex-1 overflow-y-auto p-6 shadow-inner"
+        className="flex-1 overflow-y-auto p-6 shadow-inner w-full"
       >
         {getLength(openAiMessage) === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-center text-gray-700">
@@ -45,57 +44,61 @@ const AiChatInterface = () => {
             <p className="w-full md:w-3/4 mt-3">{gala_ai("ai_header")}</p>
           </div>
         ) : (
-          <div className="space-y-6 max-w-4xl mx-auto">
-            {getValues(openAiMessage).map(({ id, role, content }, idx, all) => {
-              if (role === "user") {
-                return (
-                  <div className="flex justify-end" key={idx}>
-                    <div className="flex items-start gap-3 max-w-[85%]">
-                      <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-2xl rounded-tr-md shadow-lg order-2">
-                        <p className="text-sm">{content}</p>
-                      </div>
-                      <div className="flex items-center justify-center w-8 h-8 bg-green-500 rounded-full flex-shrink-0 order-1">
-                        <UserOutlined className="text-white text-sm" />
-                      </div>
-                    </div>
-                  </div>
-                );
-              }
-              if (role === "gala") {
-                const lastGalaMessageId = [...all]
-                  .reverse()
-                  .find((msg) => msg.role === "gala")?.id;
-                const isLastGala = id === lastGalaMessageId;
-
-                return (
-                  <React.Fragment key={idx}>
-                    {isLastGala ? (
-                      <StreamingMarkdownMessage
-                        fullText={content}
-                        isLoading={isStreaming}
-                        isLastGala={isLastGala}
-                      />
-                    ) : (
-                      <div className="flex justify-start">
-                        <div className="flex items-start gap-3 max-w-[90%]">
-                          <div className="flex items-center justify-center w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex-shrink-0">
-                            <LuBrain className="text-white text-sm" />
-                          </div>
-                          <div className="bg-gray-100 border border-gray-200 px-4 py-3 rounded-2xl rounded-tl-md whitespace-pre-line leading-relaxed min-h-[40px]">
-                            <StreamingMarkdown
-                              markdown={content}
-                              showCursor={false}
-                            />
-                          </div>
+          <div className="space-y-6 w-full">
+            <div className=" w-full">
+              {getValues(openAiMessage).map(({ id, role, content }, idx, all) => {
+                if (role === "user") {
+                  return (
+                    <div className="flex justify-end mb-6" key={idx}>
+                      <div className="flex items-start gap-3 max-w-[85%]">
+                        <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-2xl rounded-tr-md shadow-lg order-2">
+                          <p className="text-sm">{content}</p>
+                        </div>
+                        <div className="flex items-center justify-center w-8 h-8 bg-green-500 rounded-full flex-shrink-0 order-1">
+                          <UserOutlined className="text-white text-sm" />
                         </div>
                       </div>
-                    )}
-                  </React.Fragment>
-                );
-              }
+                    </div>
+                  );
+                }
+                if (role === "gala") {
+                  const lastGalaMessageId = [...all]
+                    .reverse()
+                    .find((msg) => msg.role === "gala")?.id;
+                  const isLastGala = id === lastGalaMessageId;
 
-              return null;
-            })}
+                  return (
+                    <React.Fragment key={idx}>
+                      {isLastGala ? (
+                        <div className="mb-6">
+                          <StreamingMarkdownMessage
+                            fullText={content}
+                            isLoading={isStreaming}
+                            isLastGala={isLastGala}
+                          />
+                        </div>
+                      ) : (
+                        <div className="flex justify-start mb-6">
+                          <div className="flex items-start gap-3 max-w-[90%]">
+                            <div className="flex items-center justify-center w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex-shrink-0">
+                              <LuBrain className="text-white text-sm" />
+                            </div>
+                            <div className="bg-gray-100 border border-gray-200 px-4 py-3 rounded-2xl rounded-tl-md whitespace-pre-line leading-relaxed min-h-[40px]">
+                              <StreamingMarkdown
+                                markdown={content}
+                                showCursor={false}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </React.Fragment>
+                  );
+                }
+
+                return null;
+              })}
+            </div>
           </div>
         )}
       </div>
