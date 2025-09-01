@@ -27,7 +27,7 @@ const AiChatInterface = () => {
   const gala_ai = useTranslations("gala_ai");
 
   return (
-    <div className="flex flex-col w-full h-screen max-h-[calc(100vh-140px)] overflow-hidden">
+    <div className="flex flex-col w-full h-screen max-h-[calc(100vh-160px)] overflow-hidden">
       <div
         ref={contentRef}
         className="flex-1 overflow-y-auto p-6 shadow-inner w-full"
