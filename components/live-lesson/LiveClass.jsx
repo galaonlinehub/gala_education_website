@@ -57,10 +57,14 @@ const ClassCard = ({ classData, status }) => {
     const encryptedUserName = encrypt(userName);
     const encryptedUserEmail = encrypt(userEmail);
 
+    const encryptedMeetingLink = encrypt(classData.link);
+
     sessionStorageFn.set("lessonToken", encryptedLesssonToken);
     sessionStorageFn.set("isModerator", encryptedModeratorvalue);
     sessionStorageFn.set("lessonId", encryptedLessonId);
     sessionStorageFn.set("roomName", encryptedRoomName);
+
+    sessionStorageFn.set("meetingLink", encryptedMeetingLink);
 
     router.push(
       `/gala-meet?room=${encryptedLessonId}&name=${encryptedUserName}&email=${encryptedUserEmail}`

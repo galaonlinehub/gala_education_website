@@ -177,7 +177,7 @@ export default function TeacherLayout({ children }) {
 
   const teacher_links = useTeacherLinks();
 
-  const tdash = useTranslations('teacher_dash')
+  const tdash = useTranslations('teacher_dashboard')
 
   return (
     <>

@@ -337,14 +337,14 @@ const ClassDetailsPage = () => {
                               {act('class_size')}
                             </span>
                           }
-                          value={`${cohortDetails?.instructor_total_students}`}
+                          value={`${cohortDetails?.total_enrolled_students}`}
                           prefix={<TeamOutlined />}
                           valueStyle={{ fontSize: "inherit" }}
                           className="text-xs sm:text-sm lg:text-lg"
                         />
                         <Progress
                           percent={
-                            (cohortDetails?.instructor_total_students / 10) *
+                            (cohortDetails?.total_enrolled_students / 10) *
                             100
                           }
                           status="active"
