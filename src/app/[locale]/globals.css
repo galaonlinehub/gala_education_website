@@ -274,14 +274,6 @@ body.ant-modal-open {
   color: #fff !important;
 }
 
-html, body {
-  height: -webkit-fill-available;
-}
-
-html, body {
-  overflow: hidden;
-}
-
 
 
 
