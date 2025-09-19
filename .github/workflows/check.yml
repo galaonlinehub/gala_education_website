@@ -1,4 +1,4 @@
-name: Code Quality Check
+name: checker
 
 on:
   pull_request:
@@ -30,8 +30,10 @@ jobs:
       - name: Install pnpm
         run: npm install -g pnpm
 
-      - name: Confirm Node version
-        run: node -v
+      - name: Confirm Node and pnpm versions
+        run: |
+          node -v
+          pnpm -v
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
