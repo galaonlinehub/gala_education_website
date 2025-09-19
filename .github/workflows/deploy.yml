@@ -118,12 +118,12 @@ jobs:
             echo "💻 Using Node.js version..."
             nvm use 22.14.0
             
+            echo "📦 Installing pnpm..."
+            npm install -g pnpm
+
             echo "📦 Installing dependencies..."
             pnpm install --frozen-lockfile
 
-            
-            echo "⚡ Installing Sharp for better image optimization..."
-            pnpm add sharp
             
             # Restore .env file
             if [ -f .env.backup ]; then
