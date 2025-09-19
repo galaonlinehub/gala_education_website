@@ -11,9 +11,9 @@ const ClientWrapper = ({ children }) => {
     error,
     userFetching,
     handleRetry,
-    isReady,
-    connections,
-    isPublicRoute,
+    // isReady,
+    // connections,
+    // isPublicRoute,
   } = useClientWrapper();
 
   if (loading) {

@@ -1,11 +1,12 @@
 import Footer from '@/components/layout/footer';
+
+import { Faqs } from './_home/components/Faqs';
 import { FeaturePress } from './_home/components/FeaturePress';
 import { FinancialAid } from './_home/components/FinancialAid';
 import { GiftOfLearning } from './_home/components/GiftOfLearning';
 import { HomeBanner } from './_home/components/HomeBanner';
 import { Trustees } from './_home/components/Trustees';
 import { WhyChooseUs } from './_home/components/WhyChooseUs';
-import { Faqs } from './_home/components/Faqs';
 
 const Home = () => {
   return (

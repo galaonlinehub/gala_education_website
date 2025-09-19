@@ -1,12 +1,12 @@
 "use client";
 import { Collapse } from "antd";
+import clsx from "clsx";
 import { IoIosArrowDropdownCircle } from "react-icons/io";
 
-import clsx from "clsx";
 
 const { Panel } = Collapse;
 
-export const FaqCard = ({ faqQn, faqAns }) => {
+const FaqCard = ({ faqQn, faqAns }) => {
   const customExpandIcon = ({ isActive }) => (
     <IoIosArrowDropdownCircle
       color="#fff"
@@ -36,3 +36,5 @@ export const FaqCard = ({ faqQn, faqAns }) => {
       </Collapse>
   );
 };
+
+export default FaqCard;

@@ -11,7 +11,6 @@ import MultipleProfileSkeletons from "@/components/home/card/ProfileCardSkeleton
 import Footer from "@/components/layout/footer";
 import Donate from "@/components/ui/donation/Donate";
 import ProcessingModal from "@/components/ui/donation/ProcessingModal";
-import { img_base_url } from "@/config/settings";
 import { useTeamMembers } from "@/hooks/data/useTeamMembers";
 
 const { Text } = Typography;

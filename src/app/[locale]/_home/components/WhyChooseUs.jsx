@@ -61,9 +61,9 @@
 // };
 
 
+import { AffordableAndEmpoweringSvg } from "@/utils/vector-svg/home/AffordableAndEmpoeringSvg";
 import { OnlineLibrary } from "@/utils/vector-svg/home/OnlineLibrarySvg";
 import { OnlineTeachingSvg } from "@/utils/vector-svg/home/OnlineTeachingSvg";
-import { AffordableAndEmpoweringSvg } from "@/utils/vector-svg/home/AffordableAndEmpoeringSvg";
 
 export const WhyChooseUs = () => {
   return (

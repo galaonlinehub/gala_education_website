@@ -15,8 +15,8 @@ import { apiPost } from '@/services/api/api_service';
 import { useSubscribeStore } from '@/store/subscribeStore';
 import { localStorageFn } from '@/utils/fns/client';
 import { encrypt } from '@/utils/fns/encryption';
-
 import { getRoleFromUrl } from '@/utils/fns/general';
+
 import SlickSpinner from '../../loading/template/SlickSpinner';
 
 const { Text } = Typography;

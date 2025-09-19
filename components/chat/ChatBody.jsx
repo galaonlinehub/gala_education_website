@@ -425,36 +425,36 @@ const RenderChat = ({
   );
 };
 
-const ChatHeaderSkeleton = ({ TEXT_COLOR, MAIN_COLOR, isSmallScreen }) => (
-  <div className={`p-1 md:p-3 flex items-center text-[${TEXT_COLOR}] bg-white`}>
-    {isSmallScreen && (
-      <Skeleton.Button active size="small" shape="circle" className="mr-3" />
-    )}
-    <div className="flex justify-between items-center w-full">
-      <div className="flex items-center gap-3">
-        <div>
-          <Skeleton.Avatar active size={48} shape="circle" />
-        </div>
-        <div className="flex gap-3">
-          <Skeleton.Input
-            active
-            size="small"
-            style={{ width: 120, color: "white" }}
-          />
-          <Skeleton.Input
-            active
-            size="small"
-            style={{ width: 80, height: 12, marginTop: 4 }}
-          />
-        </div>
-      </div>
-      <div className="flex gap-3 items-center">
-        <Skeleton.Button active size="small" shape="circle" />
-        <Skeleton.Button active size="small" shape="circle" />
-        <Skeleton.Button active size="small" shape="circle" />
-      </div>
-    </div>
-  </div>
-);
+// const ChatHeaderSkeleton = ({ TEXT_COLOR, MAIN_COLOR, isSmallScreen }) => (
+//   <div className={`p-1 md:p-3 flex items-center text-[${TEXT_COLOR}] bg-white`}>
+//     {isSmallScreen && (
+//       <Skeleton.Button active size="small" shape="circle" className="mr-3" />
+//     )}
+//     <div className="flex justify-between items-center w-full">
+//       <div className="flex items-center gap-3">
+//         <div>
+//           <Skeleton.Avatar active size={48} shape="circle" />
+//         </div>
+//         <div className="flex gap-3">
+//           <Skeleton.Input
+//             active
+//             size="small"
+//             style={{ width: 120, color: "white" }}
+//           />
+//           <Skeleton.Input
+//             active
+//             size="small"
+//             style={{ width: 80, height: 12, marginTop: 4 }}
+//           />
+//         </div>
+//       </div>
+//       <div className="flex gap-3 items-center">
+//         <Skeleton.Button active size="small" shape="circle" />
+//         <Skeleton.Button active size="small" shape="circle" />
+//         <Skeleton.Button active size="small" shape="circle" />
+//       </div>
+//     </div>
+//   </div>
+// );
 
 export { RenderChat };
