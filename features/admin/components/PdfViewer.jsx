@@ -20,7 +20,6 @@ function PdfViewer({ pdfPath, width = 400 }) {
         responseType: "blob",
       }
     );
-    console.log(response.data);
     const pdfBlob = response.data;
     const pdfUrl = URL.createObjectURL(pdfBlob);
     return pdfUrl;
