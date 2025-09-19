@@ -2,7 +2,7 @@ name: deploy
 
 on:
   workflow_run:
-    workflows: ["Code Quality Check"]
+    workflows: ["Checker"]
     types:
       - completed
     branches:
