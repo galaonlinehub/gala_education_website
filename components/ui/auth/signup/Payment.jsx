@@ -1,74 +1,69 @@
-import { useMutation } from "@tanstack/react-query";
-import { Button, Input, Card } from "antd";
-import { useTranslations } from "next-intl";
-import { useState, useEffect } from "react";
-import io from "socket.io-client";
+'use client';
+import { useMutation } from '@tanstack/react-query';
+import { Button, Input, Card } from 'antd';
+import { useTranslations } from 'next-intl';
+import { useState, useEffect } from 'react';
+import io from 'socket.io-client';
 
-import { Contact } from "@/components/layout/Contact";
-import {
-  EMAIL_VERIFICATION_KEY,
-  PLAN_CONFIRMED_KEY,
-  socket_base_url,
-} from "@/config/settings";
-import { PaymentStatus } from "@/config/settings";
-import { useUser } from "@/hooks/data/useUser";
-import { apiPost } from "@/services/api/api_service";
-import { useTabNavigator } from "@/store/auth/signup";
-import { localStorageFn, sessionStorageFn } from "@/utils/fns/client";
-import { decrypt } from "@/utils/fns/encryption";
+import { useRouter } from 'next/navigation';
+import { Contact } from '@/components/layout/Contact';
+import { EMAIL_VERIFICATION_KEY, PLAN_CONFIRMED_KEY, socket_base_url } from '@/config/settings';
+import { PaymentStatus } from '@/config/settings';
+import { useUser } from '@/hooks/data/useUser';
+import { apiPost } from '@/services/api/api_service';
+import { localStorageFn, sessionStorageFn } from '@/utils/fns/client';
+import { decrypt } from '@/utils/fns/encryption';
 
-import { PaymentPending } from "./PaymentStatus";
-import SlickSpinner from "../../loading/template/SlickSpinner";
+import { PaymentPending } from './PaymentStatus';
+import SlickSpinner from '../../loading/template/SlickSpinner';
 
 const MobilePay = () => {
-  const [validationMessage, setValidationMessage] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [validationMessage, setValidationMessage] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [plan, setPlan] = useState({});
-  const [email, setEmail] = useState("");
-  const { setActiveTab, activeTab } = useTabNavigator();
+  const [email, setEmail] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [paymentStatus, setPaymentStatus] = useState("");
+  const [paymentStatus, setPaymentStatus] = useState('');
   const [reference, setReference] = useState(null);
   const { user } = useUser();
+  const router = useRouter();
 
   const messages = {
-    required: "Phone number is required",
-    invalid: "Please enter valid phone number",
+    required: 'Phone number is required',
+    invalid: 'Please enter valid phone number',
   };
 
   const isValidPhoneNumber = (number) => {
     if (!number || number.length !== 9) return false;
-    if (!["6", "7"].includes(number[0])) return false;
-    if (!["1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(number[1]))
-      return false;
-    if (!["1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(number[2]))
-      return false;
+    if (!['6', '7'].includes(number[0])) return false;
+    if (!['1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(number[1])) return false;
+    if (!['1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(number[2])) return false;
     return true;
   };
 
   const validateInput = (value) => {
     if (!value) return messages.required;
     if (!isValidPhoneNumber(value)) return messages.invalid;
-    return "";
+    return '';
   };
 
   const handleKeyPress = (e) => {
     if (
       [
-        "Enter",
-        "Shift",
-        "CapsLock",
-        "Tab",
-        "Control",
-        "Alt",
-        "Meta",
-        "ArrowLeft",
-        "ArrowRight",
-        "Backspace",
-        "Delete",
-        "ArrowUp",
-        "ArrowDown",
-        "Home",
+        'Enter',
+        'Shift',
+        'CapsLock',
+        'Tab',
+        'Control',
+        'Alt',
+        'Meta',
+        'ArrowLeft',
+        'ArrowRight',
+        'Backspace',
+        'Delete',
+        'ArrowUp',
+        'ArrowDown',
+        'Home',
       ].includes(e.key)
     ) {
       return;
@@ -119,15 +114,15 @@ const MobilePay = () => {
       };
 
       try {
-        const response = await apiPost("/subscribe-plan", data);
+        const response = await apiPost('/subscribe-plan', data);
         return response.data;
       } catch (error) {
-        console.error("API call failed:", error);
+        console.error('API call failed:', error);
         throw error;
       }
     },
     onSuccess: (data) => {
-      if (data.order_response.resultcode === "000") {
+      if (data.order_response.resultcode === '000') {
         setReference(data.order_response.data[0].payment_token);
       }
     },
@@ -139,20 +134,20 @@ const MobilePay = () => {
   useEffect(() => {
     const socket = io(`${socket_base_url}payment`);
     if (!email) return;
-    socket.on("connect", () => {
-      socket.emit("join", { id: email });
+    socket.on('connect', () => {
+      socket.emit('join', { id: email });
     });
 
-    socket.on("paymentResponse", (msg) => {
-      if (msg.status === "success") {
+    socket.on('paymentResponse', (msg) => {
+      if (msg.status === 'success') {
         setPaymentStatus(PaymentStatus.SUCCESS);
       } else {
         setPaymentStatus(PaymentStatus.REFERENCE);
       }
     });
 
-    socket.on("error", (error) => {
-      console.error("Socket error:", error);
+    socket.on('error', (error) => {
+      console.error('Socket error:', error);
     });
 
     return () => socket.close();
@@ -176,7 +171,8 @@ const MobilePay = () => {
   }, [user]);
 
   const goBack = () => {
-    setActiveTab(activeTab - 1);
+    // setActiveTab(activeTab - 1);
+    router.back();
   };
 
   const ht = useTranslations('home_page');
@@ -187,17 +183,16 @@ const MobilePay = () => {
 
   const getPlanType = (type) => {
     if (type == 'Annually Plan') {
-      return subt('annual_plan')
+      return subt('annual_plan');
     } else if (type == 'Monthly Plan') {
-      return subt('monthly_plan')
+      return subt('monthly_plan');
     }
-  }
-
+  };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[35rem] xs:p-4 md:p-8">
+    <div className="flex flex-col items-center px-3 pt-20 min-h-[35rem] h-full">
       <Card
-        className="w-full lg:w-3/4 max-w-3xl bg-white rounded-xl border-0 md:border-[0.8px] md:border-gray-200
+        className="w-full max-w-xl !bg-transparent rounded-xl border-0  md:border-gray-200
           [&_.ant-card-body]:!p-0 sm:[&_.ant-card-body]:!p-3 md:[&_.ant-card-body]:!p-8 !py-2 md:!py-0"
       >
         <div className="mb-8">
@@ -230,14 +225,10 @@ const MobilePay = () => {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
-              {ht('phone')}
-            </label>
+            <label className="block text-sm font-medium text-gray-700">{ht('phone')}</label>
             <Input
               className="w-full rounded-lg"
-              addonBefore={
-                <span className="text-gray-600 font-medium">255</span>
-              }
+              addonBefore={<span className="text-gray-600 font-medium">255</span>}
               value={phoneNumber}
               onChange={handleChange}
               onKeyDown={handleKeyPress}

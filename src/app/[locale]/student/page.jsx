@@ -350,7 +350,6 @@ const DashboardHeader = () => {
   const router = useRouter();
 
   const stdash = useTranslations("student_dashboard");
-  const sit = useTranslations("sign_in");
   const notift = useTranslations("notifications");
   const navt = useTranslations("navbar");
 

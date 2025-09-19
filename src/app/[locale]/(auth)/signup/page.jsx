@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import { Steps, message } from "antd";
-import { useTranslations } from "next-intl";
-import React, { useEffect } from "react";
+import { Steps, message } from 'antd';
+import { useTranslations } from 'next-intl';
+import React, { useEffect } from 'react';
 
-import InstructorContract from "@/components/student/StudentContract";
-import StudentContract from "@/components/teacher/InstructorContract";
-import ConfirmPlan from "@/components/ui/auth/signup/ConfirmPlan";
-import InstructorSignUpForm from "@/components/ui/auth/signup/InstructorSignUpForm";
-import SignupPay from "@/components/ui/auth/signup/Payment";
-import SignUpForm from "@/components/ui/auth/signup/SignUpForm";
-import { SIGN_UP_NAVIGATOR_KEY } from "@/config/settings";
-import { useTabNavigator, useAccountType } from "@/store/auth/signup";
+import InstructorContract from '@/components/student/StudentContract';
+import StudentContract from '@/components/teacher/InstructorContract';
+import ConfirmPlan from '@/components/ui/auth/signup/ConfirmPlan';
+import InstructorSignUpForm from '@/components/ui/auth/signup/InstructorSignUpForm';
+import SignupPay from '@/components/ui/auth/signup/Payment';
+import SignUpForm from '@/components/ui/auth/signup/SignUpForm';
+import { SIGN_UP_NAVIGATOR_KEY } from '@/config/settings';
+import { useTabNavigator, useAccountType } from '@/store/auth/signup';
 
 const SignupPage = () => {
   const { accountType } = useAccountType();
@@ -25,21 +25,16 @@ const SignupPage = () => {
       }
     };
 
-    window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
   }, [setActiveTab]);
 
-  const t = useTranslations("sign_up");
+  const t = useTranslations('sign_up');
 
   const steps = [
     {
       title: t('sign_up'),
-      content:
-        accountType === "instructor" ? (
-          <InstructorSignUpForm />
-        ) : (
-          <SignUpForm />
-        ),
+      content: accountType === 'instructor' ? <InstructorSignUpForm /> : <SignUpForm />,
     },
     {
       title: t('confirm_plan'),
@@ -54,15 +49,10 @@ const SignupPage = () => {
   const handleStepChange = (current) => {
     if (current === activeTab) return;
 
-    const messageText =
-      current < activeTab
-        ? t('complete_all_steps')
-        : t('complete_step');
+    const messageText = current < activeTab ? t('complete_all_steps') : t('complete_step');
 
     message.info({
-      content: (
-        <div className="font-extralight text-xs py-1">{messageText}</div>
-      ),
+      content: <div className="font-extralight text-xs py-1">{messageText}</div>,
       duration: 10.0,
     });
   };
@@ -81,16 +71,12 @@ const SignupPage = () => {
           onChange={handleStepChange}
           items={items}
           responsive={false}
-          direction={"horizontal"}
+          direction={'horizontal'}
         />
 
         {steps[activeTab].content}
       </div>
-      {accountType == "instructor" ? (
-        <StudentContract />
-      ) : (
-        <InstructorContract />
-      )}
+      {accountType == 'instructor' ? <StudentContract /> : <InstructorContract />}
     </main>
   );
 };

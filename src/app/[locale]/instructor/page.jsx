@@ -63,8 +63,6 @@ export default function TeacherClasses() {
   const [showOtpModal, setShowOtpModal] = useState(false);
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
 
-  const { cohorts } = useCohort();
-
   const hasFreeTrail = user?.has_free_trial;
 
   const inputRefs = useRef([]);

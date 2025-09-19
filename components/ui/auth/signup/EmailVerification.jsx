@@ -71,7 +71,7 @@ const EmailVerification = () => {
                   className={clsx(
                     " text-3xl font-black w-12 h-12 text-center text-black rounded-md focus:outline-none focus:ring",
                     verifyMutate.isSuccess
-                      ? "border border-green-500 focus:ring-green-800 focus:outline-green-600 input-shake"
+                      ? "border border-green-500 focus:ring-green-600 focus:outline-green-600 input-shake"
                       : verifyMutate?.error?.status === 429
                         ? "border border-yellow-500 focus:ring-yellow-500 focus:outline-yellow-500 input-shake failure"
                         : verifyMutate?.error

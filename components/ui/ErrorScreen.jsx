@@ -23,7 +23,7 @@ const ErrorScreen = ({
           Oops! Something went wrong
         </span>
 
-        <p className="text-gray-600 leading-relaxed mb-6 text-sm">{message}</p>
+        <p className="mb-6 text-sm">{message}</p>
 
         {isRetrying ? (
           <div className="flex items-center gap-3 px-6">
@@ -35,7 +35,7 @@ const ErrorScreen = ({
             onClick={onRetry}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
-            className="group relative px-8 py-3 bg-black text-white rounded-full font-medium transition-all duration-300 hover:from-gray-700 hover:bg-opacity-70 hover:shadow-lg hover:scale-105 active:scale-95 focus:outline-none focus:ring-4 focus:ring-gray-300"
+            className="group relative px-8 py-3 bg-[#001840] text-white rounded-full font-medium transition-all duration-300 hover:from-gray-700 hover:bg-opacity-70 hover:shadow-lg hover:scale-105 active:scale-95 focus:outline-none focus:ring-4 focus:ring-gray-300"
           >
             <div className="flex items-center gap-2">
               <LuRotateCcw

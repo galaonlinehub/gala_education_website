@@ -169,8 +169,8 @@
   },
 
   "sign_up": {
-    "sign_up": "Sign Up",
-    "sign_in": "Sign In",
+    "sign_up": "Register",
+    "sign_in": "Login",
     "confirm_plan": "Confirm Plan",
     "payment": "Payment",
     "complete_step": "Complete this stage to proceed",

@@ -1,54 +1,38 @@
-import { Collapse, Select } from "antd";
-import React, { useState } from "react";
+"use client";
+import { Collapse } from "antd";
 import { IoIosArrowDropdownCircle } from "react-icons/io";
 
-import Animator from "../animations/Animator";
+import clsx from "clsx";
 
 const { Panel } = Collapse;
-const { Option } = Select;
 
-const FaqCard = ({ faqQn, faqAns, bgColor, iconColor, headerColor }) => {
-  const [expandIconPosition, setExpandIconPosition] = useState("end");
-
-  const handlePositionChange = (position) => {
-    setExpandIconPosition(position);
-  };
-
-  const handleCollapseChange = (key) => {
-    // console.log(key);
-  };
-
+export const FaqCard = ({ faqQn, faqAns }) => {
   const customExpandIcon = ({ isActive }) => (
     <IoIosArrowDropdownCircle
-      style={{
-        fontSize: "16px",
-        color: iconColor, 
-        transform: isActive ? "rotate(180deg)" : "rotate(0deg)",
-        transition: "transform 0.3s",
-      }}
+      color="#fff"
+      className={clsx(
+        "text-[16px] text-white transition-transform ease-in-out duration-300",
+        isActive ? "rotate-180" : "rotate-0"
+      )}
     />
   );
 
   return (
-    <Animator delay={0.8} direction="left">
-      <div className="collapse-container">
-        <Collapse
-          defaultActiveKey={[]}
-          onChange={handleCollapseChange}
-          expandIcon={customExpandIcon}
-          expandIconPosition={expandIconPosition}
+      <Collapse
+        defaultActiveKey={[]}
+        expandIcon={customExpandIcon}
+        expandIconPosition={"end"}
+        className="my-3"
+      >
+        <Panel
+          key="1"
+          className="bg-[#001840]"
+          header={
+            <span className={"text-[12px] font-bold text-white"}>{faqQn}</span>
+          }
         >
-          <Panel
-            key="1"
-            style={{ backgroundColor: bgColor }}
-            header={<span style={{ color: headerColor, fontSize: "12px", fontWeight: "bold" }}>{faqQn}</span>} // Style the header text
-          >
-            <div className="panel-content font-semibold text-xs">{faqAns}</div>
-          </Panel>
-        </Collapse>
-      </div>
-    </Animator>
+          <div className="panel-content font-semibold text-xs">{faqAns}</div>
+        </Panel>
+      </Collapse>
   );
 };
-
-export default FaqCard;

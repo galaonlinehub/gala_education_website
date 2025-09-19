@@ -16,7 +16,6 @@ import ClientReviewsSm from "@/components/home/card/ClientReviewsSm";
 import Events from "@/components/home/card/Events";
 import FaqCard from "@/components/home/card/FaqCard";
 import LatestNews from "@/components/home/card/LatestNews";
-import NewsCard from "@/components/home/card/NewsCard";
 import OurServicesCard from "@/components/home/card/OurServicesCard";
 import PioneerCard from "@/components/home/card/PioneerCard";
 import Pioneers from "@/components/home/card/Pioneers";
