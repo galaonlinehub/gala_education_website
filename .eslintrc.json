@@ -16,13 +16,13 @@
             "pattern": "@/**",
             "group": "internal"
           }
-        ],
-        "pathGroupsExcludedImportTypes": ["builtin"],
-        "newlines-between": "always",
-        "alphabetize": {
-          "order": "asc",
-          "caseInsensitive": true
-        }
+        ]
+        // "pathGroupsExcludedImportTypes": ["builtin"],
+        // "newlines-between": "always",
+        // "alphabetize": {
+        //   "order": "asc",
+        //   "caseInsensitive": true
+        // }
       }
     ]
   },

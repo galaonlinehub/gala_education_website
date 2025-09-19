@@ -1,29 +1,34 @@
-import { NextResponse } from "next/server";
-import createMiddleware from "next-intl/middleware";
+import { NextResponse } from 'next/server';
+import createMiddleware from 'next-intl/middleware';
 
-import { USER_COOKIE_KEY } from "@/config/settings";
-import { apiGet } from "@/services/api/api_service";
-import { routing } from "@/src/i18n/routing";
-import { roleRedirects, TRIAL_ALLOWED_PATHS } from "@/utils/data/redirect";
-import { decrypt } from "@/utils/fns/encryption";
+import { USER_COOKIE_KEY } from '@/config/settings';
+import { apiGet } from '@/services/api/api_service';
+import { routing } from '@/src/i18n/routing';
+import { roleRedirects, TRIAL_ALLOWED_PATHS } from '@/utils/data/redirect';
+import { decrypt } from '@/utils/fns/encryption';
 
 const intlMiddleware = createMiddleware(routing);
 
 const AUTH_CONFIG = {
   PUBLIC_ROUTES: [
-    "/",
-    "/signin",
-    "/signup",
-    "/about-us",
-    "/forgot-password",
-    "/forgot-password/password-change",
-    "/activate-account",
+    '/',
+    '/signin',
+    '/signup',
+    '/signup/student',
+    '/signup/instructor',
+    '/signup/student',
+    '/signup/instructor/plans',
+    '/signup/instructor/plans/pay',
+    '/about-us',
+    '/forgot-password',
+    '/forgot-password/password-change',
+    '/activate-account',
   ],
-  AUTH_ONLY_ROUTES: ["/signin", "/signup"],
-  NON_ROLE_ROUTES: ["/gala-meet"],
+  AUTH_ONLY_ROUTES: ['/signin', '/signup'],
+  NON_ROLE_ROUTES: ['/gala-meet'],
   REDIRECT_ROUTES: {
     afterLogin: roleRedirects,
-    notAuthenticated: "/signin",
+    notAuthenticated: '/signin',
   },
   ROLE_PREFIXES: Object.fromEntries(
     Object.entries(roleRedirects).map(([role, path]) => [role, `${path}/`])
@@ -35,40 +40,38 @@ const safeRedirect = (url, request, locale) => {
     const redirectUrl = locale ? `/${locale}${url}` : url;
     return NextResponse.redirect(new URL(redirectUrl, request.url));
   } catch (e) {
-    const fallbackUrl = locale ? `/${locale}/signin` : "/signin";
+    const fallbackUrl = locale ? `/${locale}/signin` : '/signin';
     return NextResponse.redirect(new URL(fallbackUrl, request.url));
   }
 };
 
 const isNetworkError = (error) => {
   const networkErrorMessages = [
-    "Request timeout",
-    "Network Error",
-    "Failed to fetch",
-    "Connection refused",
+    'Request timeout',
+    'Network Error',
+    'Failed to fetch',
+    'Connection refused',
   ];
-  const message = error.message?.toLowerCase() || "";
+  const message = error.message?.toLowerCase() || '';
   return (
     networkErrorMessages.some((msg) => message.includes(msg.toLowerCase())) ||
     (error.status && error.status >= 500) ||
-    error.code === "ECONNRESET" ||
-    error.code === "ENOTFOUND"
+    error.code === 'ECONNRESET' ||
+    error.code === 'ENOTFOUND'
   );
 };
 
 const getLocaleFromPath = (pathname) => {
-  const segments = pathname.split("/");
+  const segments = pathname.split('/');
   const possibleLocale = segments[1];
-  return routing.locales.includes(possibleLocale)
-    ? possibleLocale
-    : routing.defaultLocale;
+  return routing.locales.includes(possibleLocale) ? possibleLocale : routing.defaultLocale;
 };
 
 const getPathWithoutLocale = (pathname) => {
-  const segments = pathname.split("/");
+  const segments = pathname.split('/');
   const possibleLocale = segments[1];
   if (routing.locales.includes(possibleLocale)) {
-    return "/" + segments.slice(2).join("/") || "/";
+    return '/' + segments.slice(2).join('/') || '/';
   }
   return pathname;
 };
@@ -85,10 +88,8 @@ async function getAuthenticatedUser(request, maxRetries = 2) {
   while (retryCount < maxRetries) {
     try {
       const response = await Promise.race([
-        apiGet("/auth-user", {}, token),
-        new Promise((_, reject) =>
-          setTimeout(() => reject(new Error("Request timeout")), 20000)
-        ),
+        apiGet('/auth-user', {}, token),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('Request timeout')), 20000)),
       ]);
 
       return response?.data?.data || null;
@@ -125,11 +126,7 @@ export async function middleware(request) {
         const userRole = user?.role;
 
         if (userRole && AUTH_CONFIG.REDIRECT_ROUTES.afterLogin[userRole]) {
-          return safeRedirect(
-            AUTH_CONFIG.REDIRECT_ROUTES.afterLogin[userRole],
-            request,
-            locale
-          );
+          return safeRedirect(AUTH_CONFIG.REDIRECT_ROUTES.afterLogin[userRole], request, locale);
         }
       }
 
@@ -139,11 +136,7 @@ export async function middleware(request) {
     const user = await getAuthenticatedUser(request);
 
     if (!user?.role || !AUTH_CONFIG.ROLE_PREFIXES[user.role]) {
-      return safeRedirect(
-        AUTH_CONFIG.REDIRECT_ROUTES.notAuthenticated,
-        request,
-        locale
-      );
+      return safeRedirect(AUTH_CONFIG.REDIRECT_ROUTES.notAuthenticated, request, locale);
     }
 
     if (user?.has_free_trial === true) {
@@ -151,9 +144,7 @@ export async function middleware(request) {
       const isAllowed = allowedTrialPaths.some((p) => pathWithoutLocale === p);
 
       if (!isAllowed) {
-        return NextResponse.rewrite(
-          new URL(`/${locale}/not-found`, request.url)
-        );
+        return NextResponse.rewrite(new URL(`/${locale}/not-found`, request.url));
       }
     }
 
@@ -164,36 +155,25 @@ export async function middleware(request) {
     const allowedPrefix = AUTH_CONFIG.ROLE_PREFIXES[user.role];
     const basePath = AUTH_CONFIG.REDIRECT_ROUTES.afterLogin[user.role];
 
-    if (
-      pathWithoutLocale !== basePath &&
-      !pathWithoutLocale.startsWith(allowedPrefix)
-    ) {
-      return safeRedirect(
-        AUTH_CONFIG.REDIRECT_ROUTES.afterLogin[user.role],
-        request,
-        locale
-      );
+    if (pathWithoutLocale !== basePath && !pathWithoutLocale.startsWith(allowedPrefix)) {
+      return safeRedirect(AUTH_CONFIG.REDIRECT_ROUTES.afterLogin[user.role], request, locale);
     }
 
     return intlResponse;
   } catch (error) {
-    console.error("Middleware error:", error);
+    console.error('Middleware error:', error);
     const locale = getLocaleFromPath(request.nextUrl.pathname);
-    return safeRedirect(
-      AUTH_CONFIG.REDIRECT_ROUTES.notAuthenticated,
-      request,
-      locale
-    );
+    return safeRedirect(AUTH_CONFIG.REDIRECT_ROUTES.notAuthenticated, request, locale);
   }
 }
 
 export const config = {
   matcher: [
-    "/",
+    '/',
 
-    "/((?!_next|api|favicon.ico|.*\\.).*)",
+    '/((?!_next|api|favicon.ico|.*\\.).*)',
 
     // Explicitly handle your localized routes
-    "/(en|sw)/:path*",
+    '/(en|sw)/:path*',
   ],
 };

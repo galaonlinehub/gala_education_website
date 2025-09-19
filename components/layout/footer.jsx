@@ -1,3 +1,4 @@
+"use client"
 import { useMutation } from "@tanstack/react-query";
 import clsx from "clsx";
 import { useTranslations } from "next-intl";

@@ -111,17 +111,17 @@ const InstructorRegistrationForm = () => {
 
   return (
     <>
-      <Card className="!border-0 -mx-5 lg:-mx-0 mt-3">
-        <div className="flex flex-col gap-2 justify-center items-center w-full mb-6">
+      <Card className="!border-0 -mx-5 lg:-mx-0 mt-3 !bg-transparent">
+        {/* <div className="flex flex-col gap-2 justify-center items-center w-full mb-6">
           <span className="font-black text-xl sm:text-2xl">{sut('sign_up')}</span>
           <span className="font-medium text-[12px] w-full text-center">
             {sut('sign_up_statement_teachers')}
           </span>
-        </div>
+        </div> */}
         {registerError && (
           <div
             className={clsx(
-              "p-1 border-[0.8px] text-xs text-center mb-4 w-full rounded-md",
+              "px-1 py-2.5 border-[0.8px] text-xs text-center mb-4 w-full rounded-md font-light",
               mutation.isSuccess
                 ? "border-green-700 text-green-400 bg-green-50"
                 : mutation.isError
@@ -319,7 +319,7 @@ const InstructorRegistrationForm = () => {
           <div className="flex flex-col w-full lg:w-4/12">
             <Form.Item
               name="cv"
-              rules={[{ required: true, message: sut('cv_required')}]}
+              // rules={[{ required: true, message: sut('cv_required')}]}
               className="!w-full"
             >
               <Upload
@@ -336,7 +336,7 @@ const InstructorRegistrationForm = () => {
 
             <Form.Item
               name="transcript"
-              rules={[{ required: true, message: sut('transcript_required') }]}
+              // rules={[{ required: true, message: sut('transcript_required') }]}
             >
               <Upload
                 accept=".pdf"
@@ -352,12 +352,13 @@ const InstructorRegistrationForm = () => {
 
             <Form.Item
               name="oLevelCertificate"
-              rules={[
-                {
-                  required: true,
-                  message: sut('o_level_cert_required')
-                },
-              ]}
+            //   rules={[
+            //     {
+            //       required: true,
+            //       message: sut('o_level_cert_required')
+            //     },
+            //   ]
+            // }
             >
               <Upload
                 accept=".pdf"
