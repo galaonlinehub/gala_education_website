@@ -119,10 +119,11 @@ jobs:
             nvm use 22.14.0
             
             echo "📦 Installing dependencies..."
-            npm ci
+            pnpm install --frozen-lockfile
+
             
             echo "⚡ Installing Sharp for better image optimization..."
-            npm install sharp
+            pnpm add sharp
             
             # Restore .env file
             if [ -f .env.backup ]; then
@@ -142,7 +143,7 @@ jobs:
             rm -rf .next
             
             # Run the build with memory optimization
-            npm run build
+            pnpm build
             
             echo "🧹 Clearing Next.js cache..."
             rm -rf .next/cache
@@ -154,7 +155,7 @@ jobs:
               PORT=${PORT} pm2 restart ${PM2_APP_NAME} --update-env
             else
               cd ${DEPLOY_PATH}
-              PORT=$PORT pm2 start npm --name "${PM2_APP_NAME}" -- start
+              PORT=$PORT pm2 start pnpm --name "${PM2_APP_NAME}" -- start
             fi
             
             if pm2 list | grep -q "${OTHER_PM2_APP}"; then

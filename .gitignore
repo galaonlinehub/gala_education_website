@@ -43,3 +43,6 @@ server.js
 𐍈🚀send.bash
 !.env.example
 .nextjs_port
+
+.yarn
+test-rhf.js
