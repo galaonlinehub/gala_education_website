@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { LuHouse, LuRotateCcw } from "react-icons/lu";
+
 import { Contact } from "@/components/layout/Contact";
 
 

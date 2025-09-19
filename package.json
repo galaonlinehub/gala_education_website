@@ -6,13 +6,17 @@
     "node": ">=18.0.0"
   },
   "private": true,
+
   "scripts": {
     "dev": "next dev --hostname 0.0.0.0 --port=9400",
     "build": "NODE_OPTIONS='--no-deprecation' next build",
     "start": "NODE_OPTIONS='--no-deprecation' next start",
-    "lint": "next lint",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "lint:check": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "next-lint": "next lint",
     "postbuild": "next-sitemap --config next-sitemap.config.mjs"
   },
+
   "dependencies": {
     "@ant-design/charts": "^2.2.1",
     "@ant-design/cssinjs": "^1.24.0",
@@ -59,13 +63,15 @@
   "devDependencies": {
     "@alloc/quick-lru": "^5.2.0",
     "@ant-design/icons": "^6.0.2",
+    "@eslint/eslintrc": "^3.3.1",
+    "@eslint/js": "^9.36.0",
     "@tailwindcss/postcss": "^4.1.13",
     "@tldraw/tldraw": "^4.0.2",
     "@types/react": "^19.1.13",
     "@types/react-is": "^19",
     "autoprefixer": "^10.4.21",
     "eslint": "^9.36.0",
-    "eslint-config-next": "15.5.3",
+    "eslint-config-next": "^15.5.3",
     "eslint-plugin-import": "^2.32.0",
     "framer-motion": "^12.23.16",
     "mathlive": "^0.107.0",

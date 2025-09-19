@@ -1,11 +1,11 @@
 'use client';
 import { Dropdown } from 'antd';
+import clsx from 'clsx';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import React from 'react';
 import { FaChalkboardTeacher } from 'react-icons/fa';
 import { PiStudentBold } from 'react-icons/pi';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import clsx from 'clsx';
 
 const ChooseAccount = ({ btnText, textColor, btnIcon, btnClassname, placement, trigger }) => {
   const currentUrl = usePathname();

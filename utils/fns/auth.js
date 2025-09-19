@@ -1,5 +1,5 @@
 import { USER_COOKIE_KEY } from '@/config/settings';
-import { apiPost, apiGet } from '@/services/api/api_service';
+import { apiPost } from '@/services/api/api_service';
 
 import { cookieFn, localStorageFn, sessionStorageFn } from './client';
 import { encrypt } from './encryption';

@@ -1,8 +1,8 @@
 import { useTranslations } from "next-intl";
 import { useState, useEffect } from "react";
-import { LuCalendar, LuClock, LuInfo } from "react-icons/lu";
+import {  LuClock, LuInfo } from "react-icons/lu";
 
-import { localStorageFn, sessionStorageFn } from "@/utils/fns/client";
+import { localStorageFn } from "@/utils/fns/client";
 
 export default function CountdownTimer() {
   const [timeLeft, setTimeLeft] = useState({
@@ -11,7 +11,7 @@ export default function CountdownTimer() {
     minutes: 0,
     seconds: 0,
   });
-  const [targetDate, setTargetDate] = useState(null);
+  const [ setTargetDate] = useState(null);
   const [isExpired, setIsExpired] = useState(false);
 
   useEffect(() => {
@@ -71,16 +71,15 @@ export default function CountdownTimer() {
 
   const formatTime = (time) => time.toString().padStart(2, "0");
 
-  // Add reset function for testing/demo purposes
-  const resetTimer = () => {
-    const newTarget = new Date();
-    newTarget.setDate(newTarget.getDate() + 7);
-    setTargetDate(newTarget);
+  // const resetTimer = () => {
+  //   const newTarget = new Date();
+  //   newTarget.setDate(newTarget.getDate() + 7);
+  //   setTargetDate(newTarget);
 
-    if (typeof window !== "undefined") {
-      localStorageFn.set("countdownTarget", newTarget.toISOString());
-    }
-  };
+  //   if (typeof window !== "undefined") {
+  //     localStorageFn.set("countdownTarget", newTarget.toISOString());
+  //   }
+  // };
 
   const galat = useTranslations('gala_ai');
 

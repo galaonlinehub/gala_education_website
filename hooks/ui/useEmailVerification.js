@@ -7,9 +7,9 @@ import { EMAIL_VERIFICATION_KEY } from '@/config/settings';
 import { apiPost } from '@/services/api/api_service';
 import { useEmailVerificationModalOpen } from '@/store/auth/signup';
 import { useTabNavigator } from '@/store/auth/signup';
+import { setToken } from '@/utils/fns/auth';
 import { sessionStorageFn } from '@/utils/fns/client';
 import { decrypt } from '@/utils/fns/encryption';
-import { setToken } from '@/utils/fns/auth';
 
 export const useEmailVerification = () => {
   const openEmailVerificationModal = useEmailVerificationModalOpen(

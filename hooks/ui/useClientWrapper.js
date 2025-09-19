@@ -1,8 +1,8 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 
-import { usePathname } from "next/navigation";
 import { isDev } from "@/config/settings";
 import { useLoading } from "@/store/loading";
 

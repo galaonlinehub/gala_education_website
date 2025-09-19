@@ -64,6 +64,7 @@ const Navbar = () => {
     setOpen(false);
     message.success("Swahili language chosen.");
   };
+
   const handleOpenChange = (newOpen) => {
     if (!newOpen) {
       setOpen(newOpen);
@@ -80,7 +81,7 @@ const Navbar = () => {
     setDrawerOpen((prev) => !prev);
   };
 
-  const internet = useTranslations('internet');
+  // const internet = useTranslations('internet');
 
 
 

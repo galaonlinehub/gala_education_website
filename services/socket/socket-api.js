@@ -1,5 +1,6 @@
 // src/services/socket/socket-api.js
 import { io } from "socket.io-client";
+
 import { state, createConnection, eventEmitter, queueMessage, processQueuedMessages, setupConnectionHandlers } from "./config";
 
 const listenerRegistry = new Map();

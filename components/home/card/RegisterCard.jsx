@@ -3,7 +3,7 @@
 import { message } from "antd";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 import { useAccountType } from "@/store/auth/signup";
 

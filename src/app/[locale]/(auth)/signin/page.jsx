@@ -2,16 +2,16 @@
 import { Modal } from 'antd';
 import clsx from 'clsx';
 import { motion, AnimatePresence } from 'framer-motion';
+import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { LuEye, LuEyeOff } from 'react-icons/lu';
 
-import Link from 'next/link';
 import { Contact } from '@/components/layout/Contact';
+import ChooseAccount from '@/components/ui/auth/signup/ChooseAccount';
 import SlickSpinner from '@/components/ui/loading/template/SlickSpinner';
 import { useLogin } from '@/hooks/ui/useLogin';
 import { preventCopyPaste } from '@/utils/fns/general';
 import LoginVectorSvg from '@/utils/vector-svg/sign-in/LoginVectorSvg';
-import ChooseAccount from '@/components/ui/auth/signup/ChooseAccount';
 
 const SignInPage = () => {
   const {

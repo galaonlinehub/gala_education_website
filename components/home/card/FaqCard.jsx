@@ -1,8 +1,8 @@
 "use client";
 import { Collapse } from "antd";
+import clsx from "clsx";
 import { IoIosArrowDropdownCircle } from "react-icons/io";
 
-import clsx from "clsx";
 
 const { Panel } = Collapse;
 
