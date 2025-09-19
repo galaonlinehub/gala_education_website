@@ -87,80 +87,89 @@ jobs:
         env:
           DEPLOY_USER: ${{ secrets.VPS_USER }}
           DEPLOY_HOST: ${{ secrets.VPS_HOST }}
+          DEPLOY_PATH: ${{ env.DEPLOY_PATH }}
+          PM2_APP_NAME: ${{ env.PM2_APP_NAME }}
+          DOMAIN: ${{ env.DOMAIN }}
+          PORT: ${{ env.PORT }}
+          OTHER_PM2_APP: ${{ env.OTHER_PM2_APP }}
+          OTHER_PORT: ${{ env.OTHER_PORT }}
           DEPLOY_BRANCH: ${{ github.event.workflow_run.head_branch }}
         run: |
           cat << 'EOF' > deploy.sh
-            #!/bin/bash
-            set -e
-            echo "🚀 Starting deployment for branch ${DEPLOY_BRANCH} to ${DEPLOY_PATH}..."
-            echo "🎯 Target domain: ${DOMAIN}"
-            echo "🔄 PM2 Process: ${PM2_APP_NAME}"
-
-            # Ensure parent directory exists
-            mkdir -p $(dirname ${DEPLOY_PATH})
-
-            if [ -d "${DEPLOY_PATH}/.git" ]; then
-              cd ${DEPLOY_PATH}
-              echo "📥 Pulling latest changes..."
-              git fetch origin ${DEPLOY_BRANCH}
-              git reset --hard origin/${DEPLOY_BRANCH}
-            else
-              echo "🔄 Cloning repository..."
-              rm -rf ${DEPLOY_PATH}
-              git clone -b ${DEPLOY_BRANCH} git@github.com:galaonlinehub/gala_education_website.git ${DEPLOY_PATH}
-              cd ${DEPLOY_PATH}
-            fi
-
-            # Backup current .env file if it exists
-            if [ -f .env ]; then
-              cp .env .env.backup
-            fi
-
-            export NVM_DIR="$HOME/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-            echo "💻 Using Node.js version..."
-            nvm use 22.14.0
-
-            echo "📦 Installing pnpm..."
-            npm install -g pnpm
-
-            echo "📦 Installing dependencies..."
-            pnpm install --frozen-lockfile
-
-            # Restore .env file
-            if [ -f .env.backup ]; then
-              mv .env.backup .env
-            fi
-
-            echo "🏗️ Building application with branch env: ${DEPLOY_BRANCH}"
-            echo "🧠 Setting Node.js memory limit to 6GB for build process..."
-            export NODE_OPTIONS="--max-old-space-size=6144"
-            export NEXT_TELEMETRY_DISABLED=1
-
-            # Clear cache and build
-            rm -rf .next
-            pnpm build
-            rm -rf .next/cache
-
-            echo "🔄 Restarting PM2 process..."
-            if pm2 list | grep -q "${PM2_APP_NAME}"; then
-              pm2 stop ${PM2_APP_NAME}
-              cd ${DEPLOY_PATH}
-              PORT=${PORT} pm2 restart ${PM2_APP_NAME} --update-env
-            else
-              cd ${DEPLOY_PATH}
-              PORT=$PORT pm2 start pnpm --name "${PM2_APP_NAME}" -- start
-            fi
-
-            if pm2 list | grep -q "${OTHER_PM2_APP}"; then
-              PORT=${OTHER_PORT} pm2 restart ${OTHER_PM2_APP} --update-env
-            fi
-            pm2 save
-            echo "✅ Deployment completed successfully!"
+          #!/bin/bash
+          set -e
+          
+          echo "🚀 Starting deployment for branch ${DEPLOY_BRANCH} to ${DEPLOY_PATH}..."
+          echo "🎯 Target domain - ${DOMAIN}"
+          echo "🔄 PM2 Process - ${PM2_APP_NAME}"
+          
+          # Ensure parent directory exists
+          mkdir -p $(dirname ${DEPLOY_PATH})
+          
+          if [ -d "${DEPLOY_PATH}/.git" ]; then
+            cd ${DEPLOY_PATH}
+            echo "📥 Pulling latest changes..."
+            git fetch origin ${DEPLOY_BRANCH}
+            git reset --hard origin/${DEPLOY_BRANCH}
+          else
+            echo "🔄 Cloning repository..."
+            rm -rf ${DEPLOY_PATH}
+            git clone -b ${DEPLOY_BRANCH} git@github.com:galaonlinehub/gala_education_website.git ${DEPLOY_PATH}
+            cd ${DEPLOY_PATH}
+          fi
+          
+          # Backup current .env file if it exists
+          if [ -f .env ]; then
+            cp .env .env.backup
+          fi
+          
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+          echo "💻 Using Node.js version..."
+          nvm use 22.14.0
+          
+          echo "📦 Installing pnpm..."
+          npm install -g pnpm
+          
+          echo "📦 Installing dependencies..."
+          pnpm install --frozen-lockfile
+          
+          # Restore .env file
+          if [ -f .env.backup ]; then
+            mv .env.backup .env
+          fi
+          
+          echo "🏗️ Building application with branch env - ${DEPLOY_BRANCH}"
+          echo "🧠 Setting Node.js memory limit to 6GB for build process..."
+          export NODE_OPTIONS="--max-old-space-size=6144"
+          export NEXT_TELEMETRY_DISABLED=1
+          
+          # Clear cache and build
+          rm -rf .next
+          pnpm build
+          rm -rf .next/cache
+          
+          echo "🔄 Restarting PM2 process..."
+          if pm2 list | grep -q "${PM2_APP_NAME}"; then
+            pm2 stop ${PM2_APP_NAME}
+            cd ${DEPLOY_PATH}
+            PORT=${PORT} pm2 restart ${PM2_APP_NAME} --update-env
+          else
+            cd ${DEPLOY_PATH}
+            PORT=$PORT pm2 start pnpm --name "${PM2_APP_NAME}" -- start
+          fi
+          
+          if pm2 list | grep -q "${OTHER_PM2_APP}"; then
+            PORT=${OTHER_PORT} pm2 restart ${OTHER_PM2_APP} --update-env
+          fi
+          
+          pm2 save
+          echo "✅ Deployment completed successfully!"
           EOF
+
           chmod +x deploy.sh
           scp ./deploy.sh $DEPLOY_USER@$DEPLOY_HOST:/tmp/deploy.sh
-          ssh $DEPLOY_USER@$DEPLOY_HOST "bash /tmp/deploy.sh"
+          ssh $DEPLOY_USER@$DEPLOY_HOST "DEPLOY_PATH=$DEPLOY_PATH PM2_APP_NAME=$PM2_APP_NAME DOMAIN=$DOMAIN PORT=$PORT OTHER_PM2_APP=$OTHER_PM2_APP OTHER_PORT=$OTHER_PORT DEPLOY_BRANCH=$DEPLOY_BRANCH bash /tmp/deploy.sh"
           ssh $DEPLOY_USER@$DEPLOY_HOST "rm /tmp/deploy.sh"
 
       - name: Verify Deployment
