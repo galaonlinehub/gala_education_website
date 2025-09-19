@@ -1,4 +1,4 @@
-name: checker
+name: Checker
 
 on:
   pull_request:
@@ -18,28 +18,43 @@ jobs:
     name: Code Quality Check
     runs-on: ubuntu-22.04
     steps:
+      # 1️⃣ Checkout code
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # 2️⃣ Setup Node.js (without pnpm cache first)
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
 
+      # 3️⃣ Install pnpm globally
       - name: Install pnpm
         run: npm install -g pnpm
 
+      # 4️⃣ Confirm Node and pnpm versions
       - name: Confirm Node and pnpm versions
         run: |
           node -v
           pnpm -v
 
+      # 5️⃣ Restore pnpm cache
+      - name: Restore pnpm cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.pnpm-store
+          key: pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-store-
+
+      # 6️⃣ Install dependencies
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # 7️⃣ Run ESLint
       - name: Run ESLint
         run: pnpm lint || exit 1
 
+      # 8️⃣ Build application
       - name: Build application
         run: pnpm build
