@@ -6,7 +6,7 @@ import { IoIosArrowDropdownCircle } from "react-icons/io";
 
 const { Panel } = Collapse;
 
-const FaqCard = ({ faqQn, faqAns }) => {
+export const FaqCard = ({ faqQn, faqAns }) => {
   const customExpandIcon = ({ isActive }) => (
     <IoIosArrowDropdownCircle
       color="#fff"
@@ -37,4 +37,3 @@ const FaqCard = ({ faqQn, faqAns }) => {
   );
 };
 
-export default FaqCard;
