@@ -8,7 +8,7 @@ import { IoMailOutline } from 'react-icons/io5';
 
 import { FaqCard } from '@/components/home/card/FaqCard';
 import MultipleProfileSkeletons from '@/components/home/card/ProfileCardSkeleton';
-import Footer from '@/components/layout/footer';
+import Footer from '@/components/layout/Footer';
 import Donate from '@/components/ui/donation/Donate';
 import ProcessingModal from '@/components/ui/donation/ProcessingModal';
 import { useTeamMembers } from '@/hooks/data/useTeamMembers';
