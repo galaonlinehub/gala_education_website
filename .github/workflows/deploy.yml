@@ -1,14 +1,16 @@
 name: deploy
 
 on:
-  workflow_run:
-    workflows: ["Checker"]
-    types:
-      - completed
-    branches:
-      - develop
-      - main
   workflow_dispatch:
+
+  # workflow_run:
+  #   workflows: ["Checker"]
+  #   types:
+  #     - completed
+  #   branches:
+  #     - develop
+  #     - main
+  # workflow_dispatch:
 
 env:
   NODE_VERSION: "22.14.0"
