@@ -29,7 +29,7 @@ import SvgThree from "@/components/home/svg/SvgThree";
 import SvgTwo from "@/components/home/svg/SvgTwo";
 import { Authorities } from "@/components/layout/Authorities";
 import AcceptCookies from "@/components/layout/Cookies";
-import Footer from "@/components/layout/footer";
+import Footer from "@/components/layout/Footer";
 import ChooseAccount from "@/components/ui/auth/signup/ChooseAccount";
 import MailingList from "@/components/ui/auth/signup/MailingList";
 import Donate from "@/components/ui/donation/Donate";

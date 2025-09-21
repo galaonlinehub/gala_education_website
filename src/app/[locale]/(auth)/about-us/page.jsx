@@ -8,10 +8,10 @@ import { IoMailOutline } from 'react-icons/io5';
 
 import { FaqCard } from '@/components/home/card/FaqCard';
 import MultipleProfileSkeletons from '@/components/home/card/ProfileCardSkeleton';
-import Footer from '@/components/layout/footer';
 import Donate from '@/components/ui/donation/Donate';
 import ProcessingModal from '@/components/ui/donation/ProcessingModal';
 import { useTeamMembers } from '@/hooks/data/useTeamMembers';
+import Footer from '@/components/layout/Footer';
 
 const { Text } = Typography;
 
@@ -681,7 +681,7 @@ const AboutUs = () => {
         />
       </div>
       <div className="w-full">
-        <Footer />
+        <Footer/>
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ import { useChatSocket } from "@/src/hooks/chat/useChatSocket";
 import { useClientWrapper } from "@/src/hooks/ui/useClientWrapper";
 
 export default function ChatLayout({ children }) {
-  const { user, connections } = useClientWrapper();
+  const { connections } = useClientWrapper();
 
   useChatSocket("chat", connections);
 

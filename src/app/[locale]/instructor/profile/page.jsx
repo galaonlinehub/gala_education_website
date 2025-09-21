@@ -3,45 +3,30 @@ import {
   UserOutlined,
   MailOutlined,
   PhoneOutlined,
-  GlobalOutlined,
   EditOutlined,
-  ScheduleOutlined,
-  BookOutlined,
   TeamOutlined,
   TrophyOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
+
   SaveOutlined,
-  ClockCircleOutlined,
   StarOutlined,
   MessageOutlined,
-  PlusOutlined,
-  AccountBookFilled,
   CameraOutlined,
-  UserAddOutlined,
-  CheckCircleOutlined,
-  HeartOutlined,
   EyeOutlined,
 } from "@ant-design/icons";
 import {
-  Layout,
   Typography,
   Avatar,
   Card,
   Button,
-  List,
   Tag,
-  Divider,
   Form,
   Input,
   Select,
-  Modal,
   Upload,
   Statistic,
   Space,
   message,
-  Tooltip,
-  Progress,
+
   Badge,
   Row,
   Col,
@@ -65,7 +50,6 @@ import { useSubject } from "@/hooks/data/useSubject";
 import { useUser } from "@/hooks/data/useUser";
 
 
-const { Content } = Layout;
 const { Option } = Select;
 const { Title, Text } = Typography;
 
@@ -82,8 +66,6 @@ const TeacherProfile = () => {
   const [imageFile, setImageFile] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editForm] = Form.useForm();
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [modalType, setModalType] = useState("");
   const [windowWidth, setWindowWidth] = useState(
     typeof window !== "undefined" ? window.innerWidth : 1024
   );
@@ -196,16 +178,7 @@ const TeacherProfile = () => {
     setIsEditing(false);
   };
 
-  // Handler for showing modal based on type
-  const showModal = (type) => {
-    setModalType(type);
-    setIsModalVisible(true);
-  };
 
-  // Handler for closing modal
-  const handleModalCancel = () => {
-    setIsModalVisible(false);
-  };
 
   const selectedSubjectIds = subjects
     ?.filter((subject) =>

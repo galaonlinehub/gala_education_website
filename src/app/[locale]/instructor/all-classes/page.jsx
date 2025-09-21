@@ -18,7 +18,6 @@ import { MdTopic } from "react-icons/md";
 import CohortCardSkeleton from "@/components/teacher/CohortCardSkeleton";
 import { useCohort } from "@/hooks/data/useCohort";
 import { useInstructorCohorts } from "@/hooks/data/useInstructorCohorts";
-import { useUser } from "@/hooks/data/useUser";
 import biologyImage from "@/public/subjects/biology.jpeg";
 import chemistryImage from "@/public/subjects/chemistry.jpeg";
 import defaultImage from "@/public/subjects/default.jpeg";
@@ -57,19 +56,8 @@ const InstructorClasses = () => {
 
   const [openAddNewClass, setOpenAddNewClass] = useState(false);
 
-  const [open, setOpen] = useState(false);
-  const [selectedClass, setSelectedClass] = useState(null);
   const [searchText, setSearchText] = useState("");
 
-  const showDrawer = (classData) => {
-    setSelectedClass(classData);
-    setOpen(true);
-  };
-
-  const onClose = () => {
-    setOpen(false);
-    setSelectedClass(null);
-  };
 
   const handleAddNew = () => {
     setOpenAddNewClass(true);
