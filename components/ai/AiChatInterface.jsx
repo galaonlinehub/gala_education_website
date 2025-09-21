@@ -24,6 +24,8 @@ const AiChatInterface = () => {
     handleEnterSubmit,
   } = useAi();
 
+  
+
   const gala_ai = useTranslations("gala_ai");
 
   return (
