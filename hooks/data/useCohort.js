@@ -19,7 +19,7 @@ export const useCohort = () => {
   const createCohort = useMutation({
     mutationFn: (formData) => postCohortFn(transformFormDataForAPI(formData, DAYS_MAP)),
     onSuccess: (newCohort) => {
-      queryClient.invalidateQueries({ queryKey: ["cohorts"] });
+      queryClient.invalidateQueries({ queryKey: ["instructor_cohorts"] });
 
       queryClient.setQueryData(["cohorts"], (oldCohorts) => {
         return oldCohorts ? [...oldCohorts, newCohort] : [newCohort];
