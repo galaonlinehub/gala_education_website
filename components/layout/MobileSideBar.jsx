@@ -1,11 +1,11 @@
-import { Drawer, Avatar, Typography, Divider, Button, Tooltip } from "antd";
+import { Drawer, Avatar, Typography, Divider, Tooltip } from "antd";
 import clsx from "clsx";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import React, { useState } from "react";
-import { LuX, LuUser, LuLogOut, LuLoaderCircle } from "react-icons/lu";
+import React from "react";
+import { LuX, LuUser } from "react-icons/lu";
 
 import { img_base_url } from "@/config/settings";
 import { useUser } from "@/hooks/data/useUser";

@@ -1,12 +1,10 @@
 "use client";
-import { StarFilled, StarOutlined } from "@ant-design/icons";
+import { StarOutlined } from "@ant-design/icons";
 import { Card, Avatar, message, Modal, Button, Divider, Input } from "antd";
-import { startCase } from "lodash";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import React, { useState } from "react";
-import { BsStar, BsStarFill } from "react-icons/bs";
 import {
   LuArrowLeft,
   LuBell,
@@ -21,7 +19,7 @@ import {
   LuUsers,
   LuVideo,
 } from "react-icons/lu";
-import { PiStarBold, PiStarFill, PiStarLight } from "react-icons/pi";
+import { PiStarFill, PiStarLight } from "react-icons/pi";
 import { TbMessage2 } from "react-icons/tb";
 
 import SlickSpinner from "@/components/ui/loading/template/SlickSpinner";

@@ -5,6 +5,7 @@ import { LuHouse, LuRotateCcw } from "react-icons/lu";
 
 import { Contact } from "@/components/layout/Contact";
 
+
 export default function Error({ error }) {
   return (
     <main className="flex flex-col items-center justify-center h-screen w-screen overflow-hidden">
@@ -47,7 +48,7 @@ export default function Error({ error }) {
           <Contact />
           {error.digest && (
             <p className="mt-2">
-              Error ID:{" "}
+              Error ID:{"  "}
               <code className="text-xs bg-gray-100 p-1 rounded">
                 {error.digest}
               </code>

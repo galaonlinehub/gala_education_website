@@ -1,14 +1,14 @@
-import { USER_COOKIE_KEY } from "@/config/settings";
-import { apiPost, apiGet } from "@/services/api/api_service";
+import { USER_COOKIE_KEY } from '@/config/settings';
+import { apiPost } from '@/services/api/api_service';
 
-import { cookieFn, localStorageFn, sessionStorageFn } from "./client";
-import { encrypt } from "./encryption";
+import { cookieFn, localStorageFn, sessionStorageFn } from './client';
+import { encrypt } from './encryption';
 
-const errorMessage = "Something went wrong, Please try again later!";
+const errorMessage = 'Something went wrong, Please try again later!';
 
 export const logout = async () => {
   try {
-    const response = await apiPost("logout");
+    const response = await apiPost('logout');
     if (response.status === 200) {
       cookieFn.remove(USER_COOKIE_KEY);
       localStorageFn.clear();
@@ -21,21 +21,30 @@ export const logout = async () => {
 
 export const login = async (data) => {
   try {
-    const response = await apiPost("login", data);
+    const response = await apiPost('login', data);
 
     if (response.status === 200) {
-      const encryptedToken = encrypt(response.data.token);
-      cookieFn.set(USER_COOKIE_KEY, encryptedToken, 7);
-      sessionStorageFn.clear();
-      localStorageFn.clear();
+      setToken(response.data.token);
       return 1;
     }
   } catch (error) {
     if (error?.status === 401) {
-      throw new Error("Oops! Wrong credentials. Please check and try again 🤔");
+      throw new Error('Oops! Wrong credentials. Please check and try again 🤔');
     } else if (error?.status === 403) {
       throw error;
     }
     throw new Error(`${errorMessage}😬`);
+  }
+};
+
+export const setToken = (token) => {
+  try {
+    const encryptedToken = encrypt(token);
+    cookieFn.set(USER_COOKIE_KEY, encryptedToken, 7);
+    sessionStorageFn.clear();
+    localStorageFn.clear();
+  } catch (e) {
+    console.error('Something went wrong login failed', e);
+    throw e;
   }
 };

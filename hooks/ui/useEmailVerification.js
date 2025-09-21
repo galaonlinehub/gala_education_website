@@ -1,14 +1,15 @@
-import { useMutation } from "@tanstack/react-query";
-import { message, Modal } from "antd";
-import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { useMutation } from '@tanstack/react-query';
+import { message, Modal } from 'antd';
+import { usePathname, useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
 
-import { EMAIL_VERIFICATION_KEY } from "@/config/settings";
-import { apiPost } from "@/services/api/api_service";
-import { useEmailVerificationModalOpen } from "@/store/auth/signup";
-import { useTabNavigator } from "@/store/auth/signup";
-import { sessionStorageFn } from "@/utils/fns/client";
-import { decrypt } from "@/utils/fns/encryption";
+import { EMAIL_VERIFICATION_KEY } from '@/config/settings';
+import { apiPost } from '@/services/api/api_service';
+import { useEmailVerificationModalOpen } from '@/store/auth/signup';
+import { useTabNavigator } from '@/store/auth/signup';
+import { setToken } from '@/utils/fns/auth';
+import { sessionStorageFn } from '@/utils/fns/client';
+import { decrypt } from '@/utils/fns/encryption';
 
 export const useEmailVerification = () => {
   const openEmailVerificationModal = useEmailVerificationModalOpen(
@@ -17,12 +18,14 @@ export const useEmailVerification = () => {
   const setOpenEmailVerificationModal = useEmailVerificationModalOpen(
     (state) => state.setOpenEmailVerificationModal
   );
-  const setActiveTab = useTabNavigator((state) => state.setActiveTab);
+
+  // const setActiveTab = useTabNavigator((state) => state.setActiveTab);
   const inputs = React.useRef([]);
-  const [values, setValues] = useState(Array(6).fill(""));
-  const [email, setEmail] = useState("");
+  const [values, setValues] = useState(Array(6).fill(''));
+  const [email, setEmail] = useState('');
   const [resendCounter, setResendCounter] = useState(0);
   const router = useRouter();
+  const url = usePathname();
 
   useEffect(() => {
     const getEmail = () => {
@@ -31,8 +34,9 @@ export const useEmailVerification = () => {
         const decryptedEmail = decrypt(encryptedEmail);
         setEmail(decryptedEmail);
       } else {
-        message.error("Unexpected Error Occurred, Try Again Later!");
-        router.push("/");
+        message.error('Unexpected Error Occurred, Try Again Later!');
+        console.log(encryptedEmail);
+        window.location.reload();
       }
     };
 
@@ -54,22 +58,36 @@ export const useEmailVerification = () => {
       inputs.current[index + 1]?.focus();
     }
 
-    if (newValues.length === 6 && newValues.every((val) => val !== "")) {
-      const code = Number(newValues.join(""));
+    if (newValues.length === 6 && newValues.every((val) => val !== '')) {
+      const code = Number(newValues.join(''));
 
       const formData = new FormData();
-      formData.append("otp", code);
-      formData.append("email", email);
+      formData.append('otp', code);
+      formData.append('email', email);
 
       verifyMutate.mutate(formData);
     }
   };
 
+  const afterRegistration = (data) => {
+    const role = getRoleFromUrl(url);
+    if (role === 'instructor') {
+      router.replace('/signup/instructor/plans');
+    } else if (role === 'student' && data.token) {
+      setToken(data.token);
+      router.replace('/student');
+    } else {
+      message.error('Something went wrong, Try again');
+      window.location.reload();
+    }
+  };
+
   const verifyMutate = useMutation({
     mutationFn: (data) => verifyOtp(data),
-    onSuccess: () => {
+    onSuccess: (data) => {
       setTimeout(() => {
-        setActiveTab(1);
+        // setActiveTab(1);
+        afterRegistration(data);
         setOpenEmailVerificationModal(false);
       }, 5000);
     },
@@ -78,10 +96,10 @@ export const useEmailVerification = () => {
     },
   });
 
-  const verifyOtp = (formData) => apiPost("/verify-otp", formData);
+  const verifyOtp = (formData) => apiPost('/verify-otp', formData);
 
   const handleKeyDown = (e, index) => {
-    if (e.key === "Backspace" && !values[index] && index > 0) {
+    if (e.key === 'Backspace' && !values[index] && index > 0) {
       inputs.current[index - 1]?.focus();
     }
   };
@@ -103,7 +121,7 @@ export const useEmailVerification = () => {
 
   const handleResendMutation = useMutation({
     mutationFn: () =>
-      apiPost("/request-otp", {
+      apiPost('/request-otp', {
         email,
       }),
     onSuccess: () => {
@@ -114,24 +132,24 @@ export const useEmailVerification = () => {
 
   const handleCancel = () => {
     Modal.confirm({
-      title: "Warning: Cancel Email Verification",
+      title: 'Warning: Cancel Email Verification',
       content: (
         <div className="text-xs">
-          <strong>Caution:</strong> If you cancel now, you will not be able to
-          verify your email address. This will result in the permanent deletion
-          of your account, and you will lose access to all associated data.
+          <strong>Caution:</strong> If you cancel now, you will not be able to verify your email
+          address. This will result in the permanent deletion of your account, and you will lose
+          access to all associated data.
         </div>
       ),
-      okText: "Yes, Cancel",
-      okType: "danger",
-      cancelText: "No, Continue Verifying",
+      okText: 'Yes, Cancel',
+      okType: 'danger',
+      cancelText: 'No, Continue Verifying',
       onOk: () => {
         setOpenEmailVerificationModal(false);
-        setValues(Array(6).fill(""));
+        setValues(Array(6).fill(''));
         verifyMutate.reset();
         handleResendMutation.reset();
         inputs.current.forEach((input) => {
-          if (input) input.value = "";
+          if (input) input.value = '';
         });
       },
       onCancel: () => {},
@@ -150,4 +168,10 @@ export const useEmailVerification = () => {
     resendCounter,
     inputs,
   };
+};
+
+const getRoleFromUrl = (url) => {
+  if (!url) return null;
+  const parts = url.split('/').filter(Boolean);
+  return parts[parts.length - 1];
 };

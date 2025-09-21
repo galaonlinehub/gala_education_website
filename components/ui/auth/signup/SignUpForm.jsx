@@ -1,3 +1,4 @@
+"use client"
 import { Form, Input, Select, Button, Typography, Card, Progress } from "antd";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
@@ -49,16 +50,16 @@ const SignUpForm = () => {
   const ht = useTranslations('home_page');
 
   return (
-    <div className="flex justify-center lg:px-8 lg:mt-4">
+    <div className="flex justify-center lg:px-8 w-full">
       <Card className="max-w-3xl !border-0 -mx-5 lg:!w-full lg:-mx-0">
-        <div className="text-center mb-4 sm:mb-8">
+        {/* <div className="text-center mb-4 sm:mb-8">
           <div className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
             {t('sign_up')}
           </div>
           <span className="text-xs xs:text-sm text-gray-600">
             {t('step_into_the_realm')}
           </span>
-        </div>
+        </div> */}
         {registerError && (
           <div
             className={clsx(

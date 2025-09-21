@@ -1,21 +1,14 @@
 "use client";
 import {
-  CalendarOutlined,
   ClockCircleOutlined,
   TeamOutlined,
   TrophyOutlined,
-  DollarOutlined,
   InfoCircleOutlined,
   UserOutlined,
   ScheduleOutlined,
   SaveOutlined,
-  EditOutlined,
   SearchOutlined,
-  MailOutlined,
-  CheckCircleOutlined,
-  CloseCircleOutlined,
-  MoneyCollectOutlined,
-  LoadingOutlined,
+
 } from "@ant-design/icons";
 import {
   Card,
@@ -32,22 +25,16 @@ import {
   Modal,
   Form,
   Input,
-  InputNumber,
   TimePicker,
   Select,
-  DatePicker,
   Divider,
   Table,
-  Tooltip,
-  Badge as AntBadge,
-  Spin,
   Empty,
 } from "antd";
 import dayjs from "dayjs";
 import { useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import React, { useEffect, useState } from "react";
-import { FaMoneyBillWave } from "react-icons/fa";
 import { FcCalendar } from "react-icons/fc";
 import { MdOutlineFileUpload } from "react-icons/md";
 
@@ -68,9 +55,9 @@ const ClassDetailsPage = () => {
   const [cohortId, setCohortId] = useState(null);
   // States for modals
   const [timeModalVisible, setTimeModalVisible] = useState(false);
-  const [priceModalVisible, setPriceModalVisible] = useState(false);
+  const [_priceModalVisible, setPriceModalVisible] = useState(false);
   const [studentsModalVisible, setStudentsModalVisible] = useState(false);
-  const [selectedLesson, setSelectedLesson] = useState(null);
+  // const [selectedLesson, setSelectedLesson] = useState(null);
   const [timeForm] = Form.useForm();
   const [priceForm] = Form.useForm();
   const [searchText, setSearchText] = useState("");
@@ -79,7 +66,6 @@ const ClassDetailsPage = () => {
 
   useEffect(() => {
     if (params.id) {
-      console.log("the raw id:..", params.id);
       try {
         const decryptedId = decrypt(params.id);
         const cohortIdInt = parseInt(decryptedId, 10);
@@ -131,14 +117,14 @@ const ClassDetailsPage = () => {
   };
 
 
-  const handleUpdateTime = (lesson) => {
-    setSelectedLesson(lesson);
-    timeForm.setFieldsValue({
-      day: lesson.day,
-      time: dayjs(lesson.start_time, "HH:mm"),
-    });
-    setTimeModalVisible(true);
-  };
+  // const handleUpdateTime = (lesson) => {
+  //   setSelectedLesson(lesson);
+  //   timeForm.setFieldsValue({
+  //     day: lesson.day,
+  //     time: dayjs(lesson.start_time, "HH:mm"),
+  //   });
+  //   setTimeModalVisible(true);
+  // };
 
 
   const handleViewStudents = () => {

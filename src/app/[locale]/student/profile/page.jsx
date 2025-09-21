@@ -38,7 +38,7 @@ const StudentProfile = () => {
 
   const [editName, setEditName] = useState(false);
   const [editContact, setEditContact] = useState(false);
-  const [profilePicture, setProfilePicture] = useState(null);
+  const [_profilePicture, setProfilePicture] = useState(null);
   const open = useSchoolPartnerStore((state) => state.open);
 
   const {
@@ -57,7 +57,7 @@ const StudentProfile = () => {
 
   const updateProfilePictureMutation = useMutation({
     mutationFn: async (data) => {
-      const response = await apiPut("/update-user", data, {
+    await apiPut("/update-user", data, {
         "Content-Type": "multipart/form-data",
       });
     },
@@ -67,6 +67,7 @@ const StudentProfile = () => {
       setProfilePicture(null);
     },
     onError: (error) => {
+      console.error(error);
       message.error(stproft('profile_pic_failed'));
     },
   });

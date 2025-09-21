@@ -1,3 +1,4 @@
+"use client"
 import { useMutation } from "@tanstack/react-query";
 import clsx from "clsx";
 import { useTranslations } from "next-intl";
@@ -12,7 +13,7 @@ import FooterVectors from "@/utils/vector-svg/FooterVectors";
 import SlickSpinner from "../ui/loading/template/SlickSpinner";
 
 function Footer() {
-  const currentYear = new Date().getFullYear();
+  const currentYear =  new Date().getFullYear();
   const [status, setStatus] = React.useState({ type: "", message: "" });
   const {
     register,

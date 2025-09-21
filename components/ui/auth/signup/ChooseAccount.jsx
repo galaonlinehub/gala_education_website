@@ -1,61 +1,40 @@
-"use client";
-import { Dropdown } from "antd";
-import { useRouter } from "next/navigation";
-import { usePathname } from "next/navigation";
-import { useTranslations } from "next-intl";
-import React from "react";
-import { FaChalkboardTeacher } from "react-icons/fa";
-import { FaArrowRightLong } from "react-icons/fa6";
-import { PiStudentBold } from "react-icons/pi";
+'use client';
+import { Dropdown } from 'antd';
+import clsx from 'clsx';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import React from 'react';
+import { FaChalkboardTeacher } from 'react-icons/fa';
+import { PiStudentBold } from 'react-icons/pi';
 
-import { useAccountType, useTabNavigator } from "@/store/auth/signup";
-
-const ChooseAccount = ({
-  btnText,
-  textColor,
-  btnIcon,
-  btnClassname,
-  placement,
-  trigger,
-}) => {
-  const router = useRouter();
-  const pathname = usePathname();
-
-  const { setActiveTab } = useTabNavigator();
-  const { setAccountType } = useAccountType();
-  const isDisabled = pathname === "/signup";
-
-  const handleSelect = (type) => {
-    setActiveTab(0);
-    setAccountType(type);
-    router.push("/signup");
-  };
-
-  const t = useTranslations('home_page');
+const ChooseAccount = ({ btnText, textColor, btnIcon, btnClassname, placement, trigger }) => {
+  const currentUrl = usePathname();
+  const signUpPart = currentUrl.split('/')[1];
+  const isDisabled = signUpPart === 'signup';
 
   const items = [
     {
-      key: "1",
+      key: '1',
       icon: <PiStudentBold className="text-xl" />,
       label: (
-        <div
-          className="flex items-center py-[2px] rounded"
-          onClick={handleSelect.bind(null, "student")}
+        <Link
+          href={'/signup/student'}
+          className="flex items-center py-[2px] rounded text-xs font-light"
         >
-          <span className="text-sm font-normal">{t('student')}</span>
-        </div>
+          Student
+        </Link>
       ),
     },
     {
-      key: "2",
+      key: '2',
       icon: <FaChalkboardTeacher className="text-xl" />,
       label: (
-        <div
-          className="flex items-center py-[2px] rounded"
-          onClick={handleSelect.bind(null, "instructor")}
+        <Link
+          href={'/signup/instructor'}
+          className="flex items-center py-[2px] rounded text-xs font-light"
         >
-          <span className="text-sm font-normal">{t('teacher')}</span>
-        </div>
+          Instructor
+        </Link>
       ),
     },
   ];
@@ -69,10 +48,12 @@ const ChooseAccount = ({
         trigger={[trigger]}
         arrow={true}
       >
-        <div className={`flex ${btnClassname} gap-2 items-center`}>
+        <div className={clsx('flex gap-2 items-center', btnClassname)}>
           <button
-            className={`text-black transition-all ${isDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
-              }`}
+            className={clsx(
+              'transition-all',
+              isDisabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+            )}
             onClick={(e) => {
               if (isDisabled) {
                 e.preventDefault();

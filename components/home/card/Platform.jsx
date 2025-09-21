@@ -3,7 +3,6 @@ import { useTranslations } from "next-intl";
 import React from "react";
 
 import Card1 from "./Card1";
-import ClientReviews from "./ClientReviews";
 
 const Platform = () => {
   const contentStyle = {

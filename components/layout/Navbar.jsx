@@ -1,23 +1,19 @@
 "use client";
 
-import { Tooltip, message, Dropdown, Button } from "antd";
+import { message } from "antd";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useLocale } from "next-intl";
 import React, { useState } from "react";
-import { BiWifi, BiWifiOff } from "react-icons/bi";
-import { LuGlobe, LuMenu } from "react-icons/lu";
+import { LuMenu } from "react-icons/lu";
 
 import ChooseAccont from "@/components/ui/auth/signup/ChooseAccount";
 import { useUser } from "@/hooks/data/useUser";
 import { useDevice } from "@/hooks/misc/useDevice";
-import useNetwork from "@/hooks/misc/useNetwork";
 import { useRouter, usePathname, Link } from "@/src/i18n/navigation";
 import { useSubscribeStore } from "@/store/subscribeStore";
 
 import MobileSideBar from "./MobileSideBar";
-import AboutUs from "../home/modals/AboutUs";
-import Subscribe from "../pay/Subscribe";
 import { Signout } from "../ui/auth/signup/Signout";
 
 const Navbar = () => {
@@ -25,7 +21,6 @@ const Navbar = () => {
   const [isLanguageLoading, setIsLanguageLoading] = useState(false);
   const { user } = useUser();
   const { width } = useDevice();
-  const { isOnline, connectionQuality } = useNetwork();
   const router = useRouter();
   const pathname = usePathname();
 
@@ -37,11 +32,8 @@ const Navbar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const [open, setOpen] = useState(false);
   const [condition, setCondition] = useState(false);
-  const changeCondition = (checked) => {
-    setCondition(checked);
-  };
+
 
   const gotoHomePage = () => {
     router.push("/");
@@ -72,6 +64,7 @@ const Navbar = () => {
     setOpen(false);
     message.success("Swahili language chosen.");
   };
+
   const handleOpenChange = (newOpen) => {
     if (!newOpen) {
       setOpen(newOpen);
@@ -88,75 +81,9 @@ const Navbar = () => {
     setDrawerOpen((prev) => !prev);
   };
 
-  const internet = useTranslations('internet');
+  // const internet = useTranslations('internet');
 
-  const getIcon = () => {
-    if (!isOnline) {
-      return (
-        <Tooltip
-          color="#001840"
-          placement="bottom"
-          title={
-            <NetworkMessage
-              message={
-                internet('offline')
-              }
-            />
-          }
-        >
-          <BiWifiOff className="text-red-600 text-xl animate-bounce" />
-        </Tooltip>
-      );
-    }
-    switch (connectionQuality) {
-      case "good":
-        return (
-          <Tooltip
-            color="#001840"
-            placement="bottom"
-            title={
-              <NetworkMessage
-                message={internet('internet_stable')}
-              />
-            }
-          >
-            <BiWifi className="text-green-600 text-xl animate-pulse" />
-          </Tooltip>
-        );
-      case "moderate":
-        return (
-          <Tooltip
-            color="#001840"
-            placement="bottom"
-            title={
-              <NetworkMessage
-                message={internet('internet_mid')}
-              />
-            }
-          >
-            <BiWifi className="text-yellow-600 text-xl" />
-          </Tooltip>
-        );
-      case "weak":
-        return (
-          <Tooltip
-            color="#001840"
-            placement="bottom"
-            title={
-              <NetworkMessage
-                message={
-                  internet('internet_unstable')
-                }
-              />
-            }
-          >
-            <BiWifi className="text-orange-600 text-xl animate-bounce" />
-          </Tooltip>
-        );
-      default:
-        return <BiWifi className="text-gray-600 text-xl" />;
-    }
-  };
+
 
   const t = useTranslations('home_page');
   const at = useTranslations('about_us');
@@ -177,7 +104,7 @@ const Navbar = () => {
           className={"w-16 h-16 object-cover cursor-pointer rounded-full "}
         />
 
-        <ul className="text-black flex sm:gap-x-4 gap-x-2 sm:text-[12px] text-[8px] leading-[5px] items-center justify-center font-black">
+        <ul className="text-black flex sm:gap-x-4 gap-x-2 sm:text-[12px] text-[8px] leading-[5px] items-center justify-center font-medium">
           {user?.has_free_trial && !user?.has_active_subscription && (
             <button
               onClick={() => setSubscribeOpen(true)}
@@ -188,16 +115,15 @@ const Navbar = () => {
               {navt('subscribe_now')}
             </button>
           )}
-          <div className="cursor-pointer">{getIcon()}</div>
 
-          <button
+          {/* <button
             onClick={handleLanguageToggle}
             disabled={isLanguageLoading}
             className="bg-[#001840] text-white px-3 py-1.5 rounded-md text-xs font-semibold hover:bg-[#001840]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-w-[40px]"
             title={`Switch to ${currentLocale === 'en' ? 'Swahili' : 'English'}`}
           >
             {isLanguageLoading ? '...' : (currentLocale === 'en' ? 'SW' : 'EN')}
-          </button>
+          </button> */}
 
           <li>
             <Link href={"/"} className="hover:cursor-pointer text-black">
@@ -228,7 +154,10 @@ const Navbar = () => {
                 trigger={"hover"}
               />
               <Link href={"/signin"} className="hover:cursor-pointer">
-                <li>{sut('sign_in')}</li>
+                <li>
+                  {sut('sign_in')}
+
+                </li>
               </Link>
             </div>
           )}
@@ -279,7 +208,6 @@ const Navbar = () => {
 
           <div className="relative z-10 bg-white/20 backdrop-blur-sm rounded-2xl border border-white/30 px-8 py-6 shadow-2xl">
             <div className="flex flex-col items-center space-y-4">
-              {/* Logo */}
               <Image
                 alt={"Gala logo"}
                 width={80}
@@ -294,10 +222,6 @@ const Navbar = () => {
       )}
     </>
   );
-};
-
-const NetworkMessage = ({ message }) => {
-  return <div className="text-xs text-center p-1">{message}</div>;
 };
 
 export default Navbar;
