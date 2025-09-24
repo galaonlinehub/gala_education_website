@@ -140,7 +140,7 @@ export async function middleware(request) {
       return safeRedirect(AUTH_CONFIG.REDIRECT_ROUTES.notAuthenticated, request, locale);
     }
 
-    if (user?.has_free_trial === true) {
+    if (user?.has_free_trial === true  && user?.role === "instructor") {
       const allowedTrialPaths = TRIAL_ALLOWED_PATHS(user?.role);
       const isAllowed = allowedTrialPaths.some((p) => pathWithoutLocale === p);
 

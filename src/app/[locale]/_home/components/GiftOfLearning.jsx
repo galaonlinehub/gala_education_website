@@ -24,7 +24,7 @@ export const GiftOfLearning = () => (
         variant="solid"
         type="primary"
         icon={<FaArrowRightLong />}
-        // onClick={handleDonateVisibility}
+        onClick={handleDonateVisibility}
         className="!p-4 !bg-[#030DFE] !font-bold md:text-xs !rounded-md !text-white"
       >
         Donate Now

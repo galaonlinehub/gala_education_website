@@ -48,6 +48,10 @@ export default function Component() {
   const stdash = useTranslations("student_dashboard");
   const tdash = useTranslations("teacher_dashboard");
 
+  const {user} = useUser();
+
+  console.log("user_data", user)
+
   return (
     <div className="h-full">
       <div className="max-w-[1920px] mx-auto p-2 sm:p-4 lg:p-6">

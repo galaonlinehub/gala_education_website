@@ -219,8 +219,10 @@ export default function TeacherLayout({ children }) {
                 (isDashboard && (pathname === `/sw/instructor` || pathname === `/en/instructor`));
 
               const hasFreeTrial = user?.has_free_trial;
+              const isInstructor = user?.role === "instructor";
+
               const isDisabled =
-                hasFreeTrial && !(isDashboard || isSubscriptions);
+                isInstructor && hasFreeTrial && !(isDashboard || isSubscriptions);
 
               return (
                 <Tooltip

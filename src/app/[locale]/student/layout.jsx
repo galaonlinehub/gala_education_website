@@ -64,9 +64,11 @@ export default function StudentLayout({ children }) {
               ? normalizedUrl === itemUrl
               : normalizedUrl.startsWith(itemUrl);
 
+            const isInstructor = user?.role === "instructor";
             const hasFreeTrial = user?.has_free_trial;
+
             const isDisabled =
-              hasFreeTrial && !(isDashboard || isSubscriptions);
+              isInstructor && hasFreeTrial && !(isDashboard || isSubscriptions);
 
             return (
               <Tooltip
@@ -133,7 +135,7 @@ export default function StudentLayout({ children }) {
 
       <NewClass />
       <CompleteProfile />
-      <Subscribe />
+      {/* <Subscribe /> */}
       <PartnerSchool />
       {notificationOpen && <StickyNotification />}
     </>

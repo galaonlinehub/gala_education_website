@@ -78,7 +78,9 @@ const InstructorSearchResult = ({ details }) => {
     setEnrollCohort(idx);
   };
 
-  const hasFreeTrial = user?.has_free_trial;
+  const isInstructor = user?.role === "instructor";
+
+  const hasFreeTrial = isInstructor && user?.has_free_trial;
 
   const navigateToChat = (chatId) => {
     setCurrentChatId(chatId);

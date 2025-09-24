@@ -322,7 +322,7 @@ const StudentSearch = () => {
           ) : (
             <>
               <Clock />{" "}
-              {user?.has_free_trial && !user?.has_active_subscription && (
+              {user?.role === 'instructor' && user?.has_free_trial && !user?.has_active_subscription && (
                 <Button
                   onClick={() => setSubscribeOpen(true)}
                   variant="solid"

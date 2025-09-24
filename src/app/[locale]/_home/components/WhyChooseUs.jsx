@@ -68,7 +68,7 @@ import { OnlineTeachingSvg } from "@/utils/vector-svg/home/OnlineTeachingSvg";
 export const WhyChooseUs = () => {
   return (
     <section className="p-4 sm:p-8 md:p-12 lg:p-16 xl:p-24 mt-12">
-      <section className="text-center sm:text-left mb-6 sm:mb-8 md:mb-12">
+      <section className="text-center sm:text-left mb-6 sm:mb-8 md:mb-12 justify-items-center">
         <h2 className="text-[#030DFE] font-[800] text-sm sm:text-base">Best Platform</h2>
         <p className="font-[900] text-xl sm:text-2xl md:text-3xl">Why Choose Us</p>
       </section>

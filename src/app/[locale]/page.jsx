@@ -16,7 +16,7 @@ const Home = () => {
       <Trustees />
       <WhyChooseUs />
       <GiftOfLearning />
-      <FinancialAid />
+      {/* <FinancialAid /> */}
       <Faqs />
       <Footer />
     </main>

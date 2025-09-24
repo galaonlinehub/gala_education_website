@@ -88,9 +88,10 @@ const MobileSideBar = ({ isOpen, onClose }) => {
             const hasFreeTrial = user?.has_free_trial;
             const isDashboard = item.link === ".";
             const isSubscriptions = item.link === "subscriptions";
+            const isInstructor = user?.role === "instructor";
 
             const isDisabled =
-              hasFreeTrial && !(isDashboard || isSubscriptions);
+              isInstructor && hasFreeTrial && !(isDashboard || isSubscriptions);
 
             return (
               <li key={i}>

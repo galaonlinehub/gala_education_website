@@ -163,11 +163,11 @@ export const useStudentLinks = () => {
       link: "payments",
       icon: <LuClock4 strokeWidth={1.5} />,
     },
-    {
-      name: nbt("subscriptions"),
-      link: "subscriptions",
-      icon: <LuGem strokeWidth={1.5} />,
-    },
+    // {
+    //   name: nbt("subscriptions"),
+    //   link: "subscriptions",
+    //   icon: <LuGem strokeWidth={1.5} />,
+    // },
     {
       name: nbt("gala_ai"),
       link: "ai",

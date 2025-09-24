@@ -44,10 +44,10 @@ const Navbar = () => {
 
   const handleLanguageToggle = () => {
     setIsLanguageLoading(true);
-    
+
     const newLocale = currentLocale === 'en' ? 'sw' : 'en';
     const successMessage = newLocale === 'en' ? "English language chosen." : "Lugha ya Kiswahili imechaguliwa.";
-    
+
     // Add loading delay for visual feedback
     setTimeout(() => {
       router.replace(pathname, { locale: newLocale });
@@ -105,7 +105,7 @@ const Navbar = () => {
         />
 
         <ul className="text-black flex sm:gap-x-4 gap-x-2 sm:text-[12px] text-[8px] leading-[5px] items-center justify-center font-medium">
-          {user?.has_free_trial && !user?.has_active_subscription && (
+          {user?.role === "instructor" && user?.has_free_trial && !user?.has_active_subscription && (
             <button
               onClick={() => setSubscribeOpen(true)}
               variant="solid"
@@ -184,7 +184,7 @@ const Navbar = () => {
       {isLanguageLoading && (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center">
 
-          <div 
+          <div
             className="absolute inset-0 bg-white/30 backdrop-blur-md"
             style={{
               background: 'linear-gradient(135deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.4) 100%)',
@@ -192,13 +192,13 @@ const Navbar = () => {
               WebkitBackdropFilter: 'blur(12px) saturate(150%)',
             }}
           >
-            <div 
+            <div
               className="absolute inset-0 opacity-20"
               style={{
                 background: 'radial-gradient(circle at 30% 20%, rgba(255,255,255,0.8) 0%, transparent 50%)',
               }}
             />
-            <div 
+            <div
               className="absolute inset-0 opacity-10"
               style={{
                 background: 'linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.6) 50%, transparent 70%)',
@@ -215,7 +215,7 @@ const Navbar = () => {
                 src={"/gala-logo.png"}
                 className={"w-20 h-20 object-cover rounded-full"}
               />
-            
+
             </div>
           </div>
         </div>
