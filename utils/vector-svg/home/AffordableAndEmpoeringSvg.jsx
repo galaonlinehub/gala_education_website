@@ -1,13 +1,14 @@
-export const AffordableAndEmpoweringSvg = () => {
+export const AffordableAndEmpoweringSvg = ({className}) => {
   return (
     <svg
       width="65"
       height="63"
       viewBox="0 0 65 63"
       fill="none"
+      className={className}
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g clip-path="url(#clip0_62_454)">
+      <g clipPath="url(#clip0_62_454)">
         <path
           d="M40.5865 4.78137V23.8751H44.5928V4.78137H40.5865Z"
           fill="#030DFE"

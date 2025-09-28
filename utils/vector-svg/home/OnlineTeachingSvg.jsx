@@ -1,13 +1,14 @@
-export const OnlineTeachingSvg = () => {
+export const OnlineTeachingSvg = ({className}) => {
   return (
     <svg
+      className={className}
       width="85"
       height="84"
       viewBox="0 0 85 84"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g clip-path="url(#clip0_54_5)">
+      <g clipPath="url(#clip0_54_5)">
         <path
           d="M1.07879 68.0837H7.01112H15.6853L25.1666 68.0825H33.4968H38.7362H39.0607C39.5604 68.0825 39.5612 67.3153 39.0607 67.3153H34.3342H26.2766L16.8306 67.3165L7.95432 67.3176H1.57903H1.07879C0.579145 67.3176 0.578368 68.0848 1.07879 68.0848V68.0837Z"
           fill="#030DFE"
