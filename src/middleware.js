@@ -41,6 +41,7 @@ const safeRedirect = (url, request, locale) => {
     return NextResponse.redirect(new URL(redirectUrl, request.url));
   } catch (e) {
     const fallbackUrl = locale ? `/${locale}/signin` : '/signin';
+    console.error(e)
     return NextResponse.redirect(new URL(fallbackUrl, request.url));
   }
 };

@@ -8,7 +8,7 @@ import { LuBellRing } from "react-icons/lu";
 
 import EndCallModal from "@/components/ui/EndCallModal";
 import notificationService from "@/components/ui/notification/Notification";
-import { JITSI_API_KEY } from "@/config/settings";
+import { isDev, JITSI_API_KEY } from "@/config/settings";
 import { useUser } from "@/hooks/data/useUser";
 import { apiPost } from "@/services/api/api_service";
 import { sessionStorageFn } from "@/utils/fns/client";
@@ -33,14 +33,16 @@ const VideoConference = () => {
   const lessonId = sessionStorageFn.get("lessonId");
   const room = sessionStorageFn.get("roomName");
 
+  const meetingLink = sessionStorageFn.get("meetingLink");
+
   const decryptedUserName = decrypt(userName);
   const decryptedUserEmail = decrypt(userEmail);
   const decryptedJwtToken = decrypt(jwtToken);
   const decryptedRoomName = decrypt(room);
   const decryptedModerator = decrypt(isModerator);
   const decryptedLessonId = decrypt(lessonId);
-
-  console.log("roomname:..", decryptedRoomName);
+  
+  const decryptedMeetingLink = decrypt(meetingLink);
 
   const completeLessonMutation = useMutation({
     mutationFn: (lessonId)=> apiPost("/complete-lesson", { lesson_id: lessonId })
@@ -148,7 +150,7 @@ const VideoConference = () => {
         <JaaSMeeting
           appId={appId}
           lang="en"
-          roomName={`${decryptedRoomName}-${decryptedLessonId}`}
+          roomName={isDev ? `${decryptedMeetingLink}_edutz` : `${decryptedMeetingLink}`}
           jwt={decryptedJwtToken?.token}
           configOverwrite={{
             prejoinPageEnabled: false,

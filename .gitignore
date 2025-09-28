@@ -46,3 +46,7 @@ server.js
 
 .yarn
 test-rhf.js
+
+
+# Case sensitivity conflicts
+*.{jsx,tsx,ejs,ts} diff=crlf

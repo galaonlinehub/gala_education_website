@@ -25,10 +25,11 @@ export const HomeBanner = () => {
 
       <div className="absolute inset-0 bg-white/80" />
       <section className="absolute mt-4 md:mt-0 top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col gap-3 sm:gap-4 md:gap-6 lg:gap-8 px-2 sm:px-4 w-full max-w-[95%] sm:max-w-[90%] md:max-w-[85%] lg:max-w-[60%]">
-        <div className="hidden border border-black rounded-full px-1.5 sm:px-2 py-1.5 sm:py-2 xxs:flex items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm md:text-base">
-          <div className="bg-black rounded-full text-white px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 whitespace-nowrap text-xs sm:text-sm md:text-base">
+
+        <section className="hidden w-fit mx-auto border border-black rounded-full px-1.5 sm:px-8 lg:px-16 py-1.5 sm:py-2 min-[280px]:flex items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm md:text-base">
+          <p className="bg-black rounded-full text-white px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 whitespace-nowrap text-xs sm:text-sm md:text-base">
             New 🎉
-          </div>
+          </p>
           <h1 className="font-medium flex items-center gap-1 sm:gap-2 text-center leading-tight whitespace-nowrap overflow-hidden">
             <span className="hidden xs:inline">Experience the future of learning with a</span>
             <span className="xs:hidden">Future of learning with a</span>{' '}
@@ -36,7 +37,8 @@ export const HomeBanner = () => {
             <span className="hidden sm:inline">now live.</span>
             <span className="sm:hidden">live.</span>
           </h1>
-        </div>
+
+        </section>
 
         <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-[900] text-center mt-2 sm:mt-3 md:mt-4 lg:mt-5 max-w-7xl mx-auto leading-tight px-1">
           <span className="block sm:inline">The #1 Tuition Platform</span>{' '}

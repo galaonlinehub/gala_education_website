@@ -3,8 +3,6 @@ import { Collapse } from 'antd';
 import clsx from 'clsx';
 import { IoIosArrowDropdownCircle } from 'react-icons/io';
 
-const { Panel } = Collapse;
-
 export const FaqCard = ({ faqQn, faqAns }) => {
   const customExpandIcon = ({ isActive }) => (
     <IoIosArrowDropdownCircle
@@ -22,6 +20,7 @@ export const FaqCard = ({ faqQn, faqAns }) => {
       label: <span className="text-[12px] font-bold text-white">{faqQn}</span>,
       children: <div className="panel-content font-semibold text-xs">{faqAns}</div>,
       className: 'bg-[#001840]',
+
     },
   ];
 
@@ -32,7 +31,7 @@ export const FaqCard = ({ faqQn, faqAns }) => {
       expandIconPosition={'end'}
       className="my-3"
       items={items}
+
     />
   );
 };
-``

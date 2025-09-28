@@ -395,7 +395,7 @@ const DashboardHeader = () => {
                 >
                   <Button
                     className="cursor-pointer shadow-md"
-                    onClick={() => {}}
+                    onClick={() => { }}
                     icon={<LuBellRing style={{ color: "#001840" }} />}
                     shape="circle"
                     size="small"
@@ -433,7 +433,7 @@ const DashboardHeader = () => {
   );
 };
 
-const StatsSection = ({ token }) => {
+const StatsSection = () => {
   const stats = {
     attendanceRate: 0,
     completedAssignments: 0,
