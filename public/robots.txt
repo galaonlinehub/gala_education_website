@@ -1,12 +1,19 @@
 # *
 User-agent: *
 Allow: /
-Disallow: /admin
-Disallow: /teacher
-Disallow: /student
-Disallow: /signin
-Disallow: /signup
-Disallow: /forgot-password
+Disallow: /*/admin
+Disallow: /*/instructor
+Disallow: /*/student
+Disallow: /*/signin
+Disallow: /*/signup
+Disallow: /*/gala-meet
+Disallow: /*/forgot-password
+Disallow: /_next
+Disallow: /.next
+Disallow: /api
 
 # Host
-Host: https://edu.galahub.org
+Host: https://edu.galahub.tz
+
+# Sitemaps
+Sitemap: https://edu.galahub.tz/sitemap.xml
