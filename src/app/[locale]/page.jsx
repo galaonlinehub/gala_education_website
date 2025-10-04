@@ -1,3 +1,4 @@
+'use client';
 import Footer from '@/components/layout/Footer';
 
 import { Faqs } from './_home/components/Faqs';
@@ -7,6 +8,7 @@ import { GiftOfLearning } from './_home/components/GiftOfLearning';
 import { HomeBanner } from './_home/components/HomeBanner';
 import { Trustees } from './_home/components/Trustees';
 import { WhyChooseUs } from './_home/components/WhyChooseUs';
+// import { PaymentSocketProvider } from '@/hooks/misc/paymentSocketContext';
 
 const Home = () => {
   return (
@@ -15,8 +17,10 @@ const Home = () => {
       <FeaturePress />
       <Trustees />
       <WhyChooseUs />
-      <GiftOfLearning />
-      {/* <FinancialAid /> */}
+      {/* <PaymentSocketProvider> */}
+        <GiftOfLearning />
+      {/* </PaymentSocketProvider> */}
+      {/* <FinancialAid /> */}  
       <Faqs />
       <Footer />
     </main>

@@ -3,7 +3,7 @@ import React, {
   useContext,
   useEffect,
   useRef,
-  useState,
+  useState, useMemo
 } from "react";
 import { io } from "socket.io-client";
 
@@ -20,12 +20,16 @@ export const PaymentSocketProvider = ({ children }) => {
   const [roomName, setRoomName] = useState(null);
   const listenersRef = useRef(new Set());
 
-  const joinRoom = (room) => {
-    setRoomName(room);
-    if (socket && socket.connected) {
-      socket.emit("join", { id: room });
-    }
-  };
+  const room_name = useMemo( () => crypto.randomUUID().replace(/-/g, "").substring(0, 10), [] );
+
+  // const joinRoom = (room) => {
+  //   setRoomName(room);
+  //   if (socket && socket.connected) {
+  //     socket.emit("join", { id: room });
+  //   }
+  // };
+
+  
 
   useEffect(() => {
     const newSocket = io(`${socket_base_url}payment`);
@@ -33,10 +37,11 @@ export const PaymentSocketProvider = ({ children }) => {
     newSocket.on("connect", () => {
       setIsConnected(true);
 
-      if (roomName) {
-        newSocket.emit("join", { id: roomName });
+      if (room_name) {
+        newSocket.emit("join", { id: room_name });
       }
     });
+    
 
     newSocket.on("disconnect", () => {
       setIsConnected(false);
@@ -70,21 +75,21 @@ export const PaymentSocketProvider = ({ children }) => {
       setSocket(null);
       setIsConnected(false);
     };
-  }, [roomName]);
+  }, []);
 
-  useEffect(() => {
-    if (socket && isConnected && roomName) {
-      console.log(`Joining room: ${roomName}`);
-      socket.emit("join", { id: roomName });
-    }
-  }, [socket, isConnected, roomName]);
+  // useEffect(() => {
+  //   if (socket && isConnected && roomName) {
+  //     console.log(`Joining room: ${roomName}`);
+  //     socket.emit("join", { id: roomName });
+  //   }
+  // }, [socket, isConnected, roomName]);
 
-  useEffect(() => {
-    if (socket && socket.connected && roomName) {
-      socket.emit("join", { id: roomName });
-      console.log(`Joined room: ${roomName}`);
-    }
-  }, [socket, roomName]);
+  // useEffect(() => {
+  //   if (socket && socket.connected && roomName) {
+  //     socket.emit("join", { id: roomName });
+  //     console.log(`Joined room: ${roomName}`);
+  //   }
+  // }, [socket, roomName]);
 
   const addListener = (callback) => {
     listenersRef.current.add(callback);
@@ -99,9 +104,12 @@ export const PaymentSocketProvider = ({ children }) => {
     isConnected,
     lastDonation,
     roomName,
-    joinRoom,
+    // joinRoom,
     addListener,
+    room_name
+
   };
+  
 
   return (
     <PaymentSocketContext.Provider value={value}>

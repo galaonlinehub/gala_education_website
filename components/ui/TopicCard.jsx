@@ -10,16 +10,21 @@ import { LuUsers } from "react-icons/lu";
 
 import { img_base_url } from "@/config/settings";
 import { useEnrollMe } from "@/store/student/useEnrollMe";
+import { useEnrolledTopics } from "@/hooks/data/useEnrolledTopics"
 
 const TopicCard = ({ classInfo }) => {
   const { setEnrollMe, setEnrollCohort } = useEnrollMe();
+  const { enrolledTopics } = useEnrolledTopics();
 
   const handleEnroll = () => {
     setEnrollMe(true);
     setEnrollCohort(classInfo?.cohort_id);
   };
 
-  console.log("classInfo", classInfo);
+  console.log("enrolledTopicsNow", enrolledTopics);
+
+  const isEnrolled = (cohortId) =>
+    enrolledTopics?.some((topic) => topic.cohort_id === cohortId);
 
   return (
     <Card
@@ -124,13 +129,18 @@ const TopicCard = ({ classInfo }) => {
                 </div>
               </div>
 
-              {/* Action Button */}
+
               <Button
-                className="!w-full !bg-[#001840] !mt-2 !text-white !border-transparent hover:!border-transparent !text-xs hover:!opacity-90 !font-bold"
+                className={`!w-full !mt-2 !text-xs !font-bold !border-transparent hover:!border-transparent ${isEnrolled(classInfo?.cohort_id)
+                    ? '!bg-gray-400 !text-gray-600 !cursor-not-allowed'
+                    : '!bg-[#001840] !text-white hover:!opacity-90'
+                  }`}
                 onClick={handleEnroll}
+                disabled={isEnrolled(classInfo?.cohort_id)}
               >
-                Enroll Now
+                {isEnrolled(classInfo?.cohort_id) ? 'Enrolled' : 'Enroll Now'}
               </Button>
+              
             </div>
           </div>
         }

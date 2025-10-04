@@ -13,7 +13,7 @@ export const api = axios.create({
       ? { "X-Dev-Request": "true" }
       : {}),
   },
-  withCredentials: true,
+  // withCredentials: true,
 });
 
 const publicEndpoints = new Set([

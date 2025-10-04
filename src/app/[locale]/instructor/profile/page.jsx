@@ -235,12 +235,12 @@ const TeacherProfile = () => {
                 </div>
 
                 <div className={`${isMobile ? "mt-4" : ""}`}>
-                  <div className="!text-white text-xl font-semibold">
+                  <div className="!text-black text-xl font-semibold">
                     {user?.first_name} {user?.last_name}
                   </div>
                   <div className="flex items-center gap-2 justify-center lg:justify-start">
                     <Badge status="processing" />
-                    <div className="text-white/90 text-sm capitalize">
+                    <div className="text-black/90 text-sm capitalize">
                       {stprof(user?.role)}
                     </div>
                   </div>
@@ -292,7 +292,7 @@ const TeacherProfile = () => {
           </div>
         </Card>
 
-        <Row gutter={[16, 16]} className="mb-8">
+        <Row gutter={[16, 16]} className="mb-8 mt-6">
           <Col xs={12} sm={6}>
             <Card className="text-center shadow-lg hover:shadow-xl transition-shadow bg-gradient-to-r border border-blue-400 text-white">
               <Statistic
@@ -407,7 +407,7 @@ const TeacherProfile = () => {
               </Row>
             </Card>
 
-            <Row gutter={[16, 16]}>
+            <Row gutter={[16, 16]} className="mt-6 mb-6">
               <Col xs={24} lg={12}>
                 <Card className="h-full border-0 shadow-lg border-l-4 border-l-blue-500">
                   <div className="flex items-center gap-3 mb-4">

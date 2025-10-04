@@ -44,9 +44,6 @@ const Signout = ({ onCloseSidebar }) => {
   return (
     <div>
       {width > 768 && (
-        (user?.role === "student") ||
-        (user?.role === "instructor" && !user?.has_active_subscription)
-      ) && (
           <button
             onClick={() => {
               setSignoutVisible(true);
@@ -59,9 +56,6 @@ const Signout = ({ onCloseSidebar }) => {
         )}
 
       {width <= 768 && (
-        (user?.role === "student") ||
-        (user?.role === "instructor" && !user?.has_active_subscription)
-      ) && (
           <Button
             onClick={() => {
               onCloseSidebar();

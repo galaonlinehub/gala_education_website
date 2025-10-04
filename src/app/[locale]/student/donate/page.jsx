@@ -335,7 +335,7 @@ const StudentDonate = () => {
                   </Button>
                 ) : (
                   <Button type="primary" onClick={completeDonation} size="large">
-                    Complete Donation
+                    Complete sss
                   </Button>
                 )}
               </div>
