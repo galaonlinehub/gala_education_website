@@ -1,6 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import io from "socket.io-client";
+import { socket_base_url } from "@/config/settings";
 
 import { PaymentStatus } from "@/config/settings";
 import { useUser } from "@/hooks/data/useUser";
@@ -27,7 +28,7 @@ export const ConfirmEnrollPay = () => {
   ])?.price;
 
   useEffect(() => {
-    const socket = io("https://edusockets.galahub.org/payment");
+    const socket = io(`${socket_base_url}/payment`);
     let isMounted = true;
 
     socket.on("connect", () => {
