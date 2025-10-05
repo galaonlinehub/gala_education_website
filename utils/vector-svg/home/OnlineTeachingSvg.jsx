@@ -1,6 +1,7 @@
-export const OnlineTeachingSvg = () => {
+export const OnlineTeachingSvg = ({className}) => {
   return (
     <svg
+      className={className}
       width="85"
       height="84"
       viewBox="0 0 85 84"
