@@ -4,7 +4,7 @@ import { useUser } from "./useUser";
 import { globalOptions } from "../../config/tanstack";
 import { apiGet, apiPut } from "../../services/api/api_service";
 
-export const useReviews = (cohortId, instructorId) => {
+export const useReviews = () => {
   const { user } = useUser();
 
   const getInstructorReviews = async () => {
@@ -23,22 +23,11 @@ export const useReviews = (cohortId, instructorId) => {
     }
   };
 
-  const getCohortReviewsSummary = async () => {
-    try {
-      const response = await apiGet(`/reviews/cohort/${cohortId}/summary`);
-      if (response.status === 200) {
-        return response.data;
-      }
-      return null;
-    } catch (error) {
-      console.warn("Error fetching cohort summary:", error);
-      throw error;
-    }
-  };
+
 
   const getInstructorReviewsSummary = async () => {
     try {
-      const id = user.instructor_id ?? instructorId;
+      const id = user?.instructor_id;
       const response = await apiGet(`/reviews/instructor/${id}/summary`);
 
       if (response.status === 200) {
@@ -51,20 +40,8 @@ export const useReviews = (cohortId, instructorId) => {
     }
   };
 
-  const getCohortReviews = async () => {
-    try {
-      const response = await apiGet(`/reviews/cohort/${cohortId}`);
-      if (response.status === 200) {
-        return response.data.data;
-      }
-      return null;
-    } catch (error) {
-      console.warn("Error fetching cohort reviews:", error);
-      throw error;
-    }
-  };
 
-  const id = user?.instructor_id ?? instructorId;
+  const id = user?.instructor_id;
 
   const instructorReviewsQuery = useQuery({
     queryKey: ["instructor-reviews", id],
@@ -80,39 +57,17 @@ export const useReviews = (cohortId, instructorId) => {
     ...globalOptions,
   });
 
-  const cohortReviewsQuerySummary = useQuery({
-    queryKey: ["cohort-summary", cohortId],
-    queryFn: getCohortReviewsSummary,
-    enabled: !!cohortId,
-    ...globalOptions,
-  });
-
-  const cohortReviewsQuery = useQuery({
-    queryKey: ["class-reviews", cohortId],
-    queryFn: getCohortReviews,
-    enabled: !!cohortId,
-    ...globalOptions,
-  });
 
   return {
     instructorReviews: instructorReviewsQuery.data,
-    cohortReviews: cohortReviewsQuery.data,
     isInstructorReviewsPending: instructorReviewsQuery.isPending,
-    isCohortReviewsPending: cohortReviewsQuery.isPending,
     isInstructorReviewsError: instructorReviewsQuery.isError,
-    isCohortReviewsError: cohortReviewsQuery.isError,
     isInstructorReviewsSuccess: instructorReviewsQuery.isSuccess,
-    isCohortReviewsSuccess: cohortReviewsQuery.isSuccess,
     instructorReviewsError: instructorReviewsQuery.error,
-    cohortReviewsError: cohortReviewsQuery.error,
 
     instructorSummary: instructorReviewsQuerySummary.data,
-    cohortSummary: cohortReviewsQuerySummary.data,
     isInstructorSummaryPending: instructorReviewsQuerySummary.isPending,
-    isCohortSummaryPending: cohortReviewsQuerySummary.isPending,
 
     refetchInstructorReviews: instructorReviewsQuery.refetch,
-    refetchCohortSummary: getCohortReviewsSummary,
-    refetchCohortReviews: cohortReviewsQuery.refetch,
   };
 };

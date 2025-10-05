@@ -8,7 +8,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --hostname 0.0.0.0 --port=9400",
-    "build": "NODE_OPTIONS='--no-deprecation' next build",
+    "build": "NODE_OPTIONS='--no-deprecation --max-old-space-size=8192' next build",
     "start": "NODE_OPTIONS='--no-deprecation' next start",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "lint:check": "eslint . --ext .js,.jsx,.ts,.tsx",

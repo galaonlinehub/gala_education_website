@@ -3,45 +3,30 @@ import {
   UserOutlined,
   MailOutlined,
   PhoneOutlined,
-  GlobalOutlined,
   EditOutlined,
-  ScheduleOutlined,
-  BookOutlined,
   TeamOutlined,
   TrophyOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
+
   SaveOutlined,
-  ClockCircleOutlined,
   StarOutlined,
   MessageOutlined,
-  PlusOutlined,
-  AccountBookFilled,
   CameraOutlined,
-  UserAddOutlined,
-  CheckCircleOutlined,
-  HeartOutlined,
   EyeOutlined,
 } from "@ant-design/icons";
 import {
-  Layout,
   Typography,
   Avatar,
   Card,
   Button,
-  List,
   Tag,
-  Divider,
   Form,
   Input,
   Select,
-  Modal,
   Upload,
   Statistic,
   Space,
   message,
-  Tooltip,
-  Progress,
+
   Badge,
   Row,
   Col,
@@ -65,7 +50,6 @@ import { useSubject } from "@/hooks/data/useSubject";
 import { useUser } from "@/hooks/data/useUser";
 
 
-const { Content } = Layout;
 const { Option } = Select;
 const { Title, Text } = Typography;
 
@@ -82,8 +66,6 @@ const TeacherProfile = () => {
   const [imageFile, setImageFile] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editForm] = Form.useForm();
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [modalType, setModalType] = useState("");
   const [windowWidth, setWindowWidth] = useState(
     typeof window !== "undefined" ? window.innerWidth : 1024
   );
@@ -196,16 +178,7 @@ const TeacherProfile = () => {
     setIsEditing(false);
   };
 
-  // Handler for showing modal based on type
-  const showModal = (type) => {
-    setModalType(type);
-    setIsModalVisible(true);
-  };
 
-  // Handler for closing modal
-  const handleModalCancel = () => {
-    setIsModalVisible(false);
-  };
 
   const selectedSubjectIds = subjects
     ?.filter((subject) =>
@@ -262,12 +235,12 @@ const TeacherProfile = () => {
                 </div>
 
                 <div className={`${isMobile ? "mt-4" : ""}`}>
-                  <div className="!text-white text-xl font-semibold">
+                  <div className="!text-black text-xl font-semibold">
                     {user?.first_name} {user?.last_name}
                   </div>
                   <div className="flex items-center gap-2 justify-center lg:justify-start">
                     <Badge status="processing" />
-                    <div className="text-white/90 text-sm capitalize">
+                    <div className="text-black/90 text-sm capitalize">
                       {stprof(user?.role)}
                     </div>
                   </div>
@@ -319,7 +292,7 @@ const TeacherProfile = () => {
           </div>
         </Card>
 
-        <Row gutter={[16, 16]} className="mb-8">
+        <Row gutter={[16, 16]} className="mb-8 mt-6">
           <Col xs={12} sm={6}>
             <Card className="text-center shadow-lg hover:shadow-xl transition-shadow bg-gradient-to-r border border-blue-400 text-white">
               <Statistic
@@ -434,7 +407,7 @@ const TeacherProfile = () => {
               </Row>
             </Card>
 
-            <Row gutter={[16, 16]}>
+            <Row gutter={[16, 16]} className="mt-6 mb-6">
               <Col xs={24} lg={12}>
                 <Card className="h-full border-0 shadow-lg border-l-4 border-l-blue-500">
                   <div className="flex items-center gap-3 mb-4">

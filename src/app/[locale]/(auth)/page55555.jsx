@@ -29,7 +29,7 @@ import SvgThree from "@/components/home/svg/SvgThree";
 import SvgTwo from "@/components/home/svg/SvgTwo";
 import { Authorities } from "@/components/layout/Authorities";
 import AcceptCookies from "@/components/layout/Cookies";
-import Footer from "@/components/layout/footer";
+import Footer from "@/components/layout/Footer";
 import ChooseAccount from "@/components/ui/auth/signup/ChooseAccount";
 import MailingList from "@/components/ui/auth/signup/MailingList";
 import Donate from "@/components/ui/donation/Donate";
@@ -84,11 +84,11 @@ function Home() {
           title: "Online Tutoring for Tanzanian Students | Gala Education",
           description:
             "Empowering minds, shaping the future. Gala Education offers AI-powered learning and online courses for students of all levels.",
-          url: "https://edu.galahub.org/",
+          url: "https://edu.galahub.tz/",
           type: "website",
           images: [
             {
-              url: "https://edu.galahub.org/gala-logo.jpg",
+              url: "https://edu.galahub.tz/gala-logo.jpg",
               width: 1200,
               height: 630,
               alt: "Gala Education",

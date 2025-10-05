@@ -9,10 +9,11 @@ export const api = axios.create({
   headers: {
     "Content-Type": "application/json",
     ...(process.env.NODE_ENV === "development" ||
-    process.env.NEXT_PUBLIC_BRANCH === "develop"
+      process.env.NEXT_PUBLIC_BRANCH === "develop"
       ? { "X-Dev-Request": "true" }
       : {}),
   },
+  // withCredentials: true,
 });
 
 const publicEndpoints = new Set([

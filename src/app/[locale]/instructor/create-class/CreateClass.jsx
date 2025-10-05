@@ -11,6 +11,7 @@ import {
   Skeleton,
   Tag,
   Input,
+  Checkbox,
 } from "antd";
 import dayjs from "dayjs";
 import { useTranslations } from "next-intl";
@@ -284,6 +285,14 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
 
   const goToNextStep = () => {
     setCurrentActiveSubtopic(currentActiveSubtopic + 1);
+  };
+
+  const handleCheckboxChange = (e) => {
+    const checked = e.target.checked;
+    updateForm("enablePrice", checked);
+    if (!checked) {
+      updateForm("price", 1500);
+    }
   };
 
   const steps = [
@@ -694,12 +703,21 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
               {cct('price')}
             </label>
 
+            <div className="py-2">
+              <Checkbox checked={formData.enablePrice} onChange={handleCheckboxChange}>
+                Enable Price Input
+              </Checkbox>
+            </div>
+
+
             <InputNumber
               prefix={
                 <>
                   <span className="font-black mr-2">Tshs</span>
                 </>
               }
+              disabled={!formData.enablePrice}
+              min={formData.enablePrice ? 7500 : undefined}
               style={componentStyles.inputNumber}
               className="!pl-2"
               placeholder={cct('enter_price')}

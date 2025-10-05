@@ -15,7 +15,7 @@ function PdfViewer({ pdfPath, width = 400 }) {
 
   const fetchPdf = async () => {
     const response = await axios.get(
-      `https://galaweb.galahub.org/api/documents/${pdfPath}`,
+      `https://galaweb.galahub.tz/api/documents/${pdfPath}`,
       {
         responseType: "blob",
       }
@@ -47,7 +47,7 @@ function PdfViewer({ pdfPath, width = 400 }) {
     return <p className="text-xs">No PDF available</p>;
   }
 
-  const pdfFileObj = `https://galaweb.galahub.org/api/documents/${pdfPath}`;
+  const pdfFileObj = `https://galaweb.galahub.tz/api/documents/${pdfPath}`;
 
   return (
     <div className="flex justify-center items-center  w-32">

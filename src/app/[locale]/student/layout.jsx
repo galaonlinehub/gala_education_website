@@ -2,9 +2,9 @@
 import { Tooltip } from "antd";
 import clsx from "clsx";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 import Navbar from "@/components/layout/Navbar";
 import Subscribe from "@/components/pay/Subscribe";
@@ -12,10 +12,10 @@ import { CompleteProfile } from "@/components/student/CompleteProfile";
 import NewClass from "@/components/student/NewClass";
 import { PartnerSchool } from "@/components/student/PartnerSchool";
 import StudentSearch from "@/components/student/Search";
-import { FloatingActionButton } from "@/components/ui/Fab";
+// import { FloatingActionButton } from "@/components/ui/Fab";
 import StickyNotification from "@/components/ui/notification/StickyNotification";
 import { useUser } from "@/hooks/data/useUser";
-import useInstallPrompt from "@/hooks/misc/useInstallPrompt";
+// import useInstallPrompt from "@/hooks/misc/useInstallPrompt";
 import { useStickyNotification } from "@/store/notification/notification";
 import { useStudentLinks } from "@/utils/data/navigation_links";
 import Clock from "@/utils/vector-svg/vectors/Clock";
@@ -24,7 +24,7 @@ import KidInPicture from "@/utils/vector-svg/vectors/KidInPicture";
 import StudentsInClass from "@/utils/vector-svg/vectors/StudentsInClass";
 
 export default function StudentLayout({ children }) {
-  const { installPrompt, isInstalled, handleInstallClick } = useInstallPrompt();
+  // const { installPrompt, isInstalled, handleInstallClick } = useInstallPrompt();
   const currentUrl = usePathname();
   const { user } = useUser();
   const notificationOpen = useStickyNotification(
@@ -64,9 +64,11 @@ export default function StudentLayout({ children }) {
               ? normalizedUrl === itemUrl
               : normalizedUrl.startsWith(itemUrl);
 
+            const isInstructor = user?.role === "instructor";
             const hasFreeTrial = user?.has_free_trial;
+
             const isDisabled =
-              hasFreeTrial && !(isDashboard || isSubscriptions);
+              isInstructor && hasFreeTrial && !(isDashboard || isSubscriptions);
 
             return (
               <Tooltip
@@ -133,7 +135,7 @@ export default function StudentLayout({ children }) {
 
       <NewClass />
       <CompleteProfile />
-      <Subscribe />
+      {/* <Subscribe /> */}
       <PartnerSchool />
       {notificationOpen && <StickyNotification />}
     </>

@@ -50,7 +50,7 @@ function UserCard({
                 {role}
               </h2>
               <h2 className="text-indigo-500 text-xs">
-                edu.galahub.org({is_verified})
+                edu.galahub.tz({is_verified})
               </h2>
               <div className="flex gap-x-2">
                 {is_verified !== "verified" ? (

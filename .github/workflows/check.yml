@@ -1,10 +1,12 @@
 name: Checker
 
 on:
-  pull_request:
-    branches: [develop, main]
-  push:
-    branches: [develop, main]
+  workflow_dispatch:
+
+  # pull_request:
+  #   branches: [develop, main]
+  # push:
+  #   branches: [develop, main]
 
 env:
   NODE_VERSION: '22.14.0'

@@ -4,7 +4,7 @@ import React from 'react'
 const AiLogo = () => {
   return (
     <div>
-        <Image src='/gala_ai_logo.png' width={30} height={30} alt="gala ai logo" />
+        <Image src='/gala_ai_logo.png' width={30} height={30} alt="gala logo for ai" />
     </div>
   )
 }

@@ -43,42 +43,45 @@ const Signout = ({ onCloseSidebar }) => {
 
   return (
     <div>
-      {width > 768 && user?.has_active_subscription && (
-        <button
-          onClick={() => {
-            setSignoutVisible(true);
-          }}
-          className="w-full border border-black hover:border-red-500  hover:text-red-500 font-medium flex rounded-md items-center justify-center gap-1 px-2 py-1"
-        >
-          <LuLogOut />
-          <span className="text-sm line-clamp-1">{sot('sign_out')}</span>
-        </button>
-      )}
+      {width > 768 && (
+          <button
+            onClick={() => {
+              setSignoutVisible(true);
+            }}
+            className="w-full border border-black hover:border-red-500  hover:text-red-500 font-medium flex rounded-md items-center justify-center gap-1 px-2 py-1"
+          >
+            <LuLogOut />
+            <span className="text-sm line-clamp-1">{sot('sign_out')}</span>
+          </button>
+        )}
 
-      {width <= 768 && user?.has_active_subscription && (
-        <Button
-          onClick={() => {
-            onCloseSidebar();
-            setSignoutVisible(true);
-          }}
-          icon={<LuLogOut />}
-          className="w-full !border-red-500 text-red-500 hover:!text-red-500"
-        >
-          {sot('sign_out')}
-        </Button>
-      )}
+      {width <= 768 && (
+          <Button
+            onClick={() => {
+              onCloseSidebar();
+              setSignoutVisible(true);
+            }}
+            icon={<LuLogOut />}
+            className="w-full !border-red-500 text-red-500 hover:!text-red-500"
+          >
+            {sot('sign_out')}
+          </Button>
+        )}
 
-      {!user?.has_active_subscription && (
-        <button
-          onClick={() => {
-            setSignoutVisible(true);
-          }}
-          className="w-full border border-black hover:border-red-500 hover:text-red-500 font-medium flex rounded-md items-center justify-center gap-1 px-1 sm:px-2 py-1"
-        >
-          <LuLogOut className="text-xs sm:text-sm" />
-          <span className="text-xs sm:text-sm line-clamp-1"> {sot('sign_out')}</span>
-        </button>
-      )}
+      {/* {(
+        (user?.role === "student") ||
+        (user?.role === "instructor" && !user?.has_active_subscription)
+      ) && (
+          <button
+            onClick={() => {
+              setSignoutVisible(true);
+            }}
+            className="w-full border border-black hover:border-red-500 hover:text-red-500 font-medium flex rounded-md items-center justify-center gap-1 px-1 sm:px-2 py-1"
+          >
+            <LuLogOut className="text-xs sm:text-sm" />
+            <span className="text-xs sm:text-sm line-clamp-1"> {sot('sign_out')}</span>
+          </button>
+        )} */}
 
       <Modal
         width={400}

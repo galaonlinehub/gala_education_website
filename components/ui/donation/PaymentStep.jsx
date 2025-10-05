@@ -41,17 +41,13 @@ const PaymentStep = ({
   isPhoneValid,
   setShowProcessingModal,
 }) => {
-  const { joinRoom, isConnected, roomName } = usePaymentSocketContext();
+   const {room_name} =  usePaymentSocketContext();
   const [loading, setLoading] = useState(false);
+  const [orderID, setOrderID] = useState();
 
-  const room_name = useMemo(
-    () => crypto.randomUUID().replace(/-/g, "").substring(0, 10),
-    []
-  );
+ console.log(room_name, "ROOM NAME")
 
-  useEffect(() => {
-    joinRoom(room_name);
-  }, [room_name, joinRoom]);
+
 
   useDonationListener((paymentMsg) => {
     if (paymentMsg.status === "success") {
@@ -86,9 +82,8 @@ const PaymentStep = ({
         sessionStorageFn.set("payment_reference", encryptedPaymentReference);
         sessionStorageFn.set("amount_paid", encryptedAmount);
 
-        console.log(
-          "Payment token:",
-          response.data.order_response?.data[0]?.payment_token
+        console.table(
+          response.data
         );
 
         setLoading(false);

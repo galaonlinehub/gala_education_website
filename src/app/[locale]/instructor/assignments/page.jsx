@@ -1,7 +1,6 @@
 'use client';
 import {
   UploadOutlined,
-  UserOutlined,
   BookOutlined,
   ClockCircleOutlined,
   InfoCircleOutlined
@@ -11,8 +10,6 @@ import {
   Input,
   Select,
   DatePicker,
-  TimePicker,
-  InputNumber,
   Upload,
   Button,
   Card,
@@ -22,9 +19,8 @@ import {
   Row,
   Col
 } from 'antd';
-import React, { useState } from 'react';
+import React from 'react';
 
-const { Title } = Typography;
 const { TextArea } = Input;
 const { Option } = Select;
 

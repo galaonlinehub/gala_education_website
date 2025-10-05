@@ -10,7 +10,7 @@ import Navbar from "@/components/layout/Navbar";
 import QueryWrapper from "@/components/layout/QueryWrapper";
 import SEOProvider from "@/components/layout/SEOProvider";
 
-import { quicksand, inter } from "./font";
+import { inter } from "./font";
 import { base_metadata } from "./metadata";
 
 export const metadata = base_metadata;

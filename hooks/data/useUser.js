@@ -11,6 +11,10 @@ import { cookieFn } from "../../utils/fns/client";
 import { getUser } from "../../utils/fns/global";
 
 export const useUser = () => {
+
+
+  if(!cookieFn.get(USER_COOKIE_KEY)) return;
+
   const router = useRouter();
   const pathname = usePathname();
   const queryClient = useQueryClient();

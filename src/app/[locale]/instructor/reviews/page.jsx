@@ -1,75 +1,41 @@
 "use client";
 import {
   UserOutlined,
-  BookOutlined,
-  StarOutlined,
-  MessageOutlined,
-  CalendarOutlined,
-  TeamOutlined,
-  LoadingOutlined,
 } from "@ant-design/icons";
 import {
   Card,
   Rate,
   Avatar,
   Badge,
-  Tag,
-  Divider,
   Empty,
-  Button,
   Skeleton,
 } from "antd";
 import { useTranslations } from "next-intl";
 import React, { useEffect, useState } from "react";
-import { IoArrowBackCircle, IoChevronForwardCircle } from "react-icons/io5";
 import {
-  LuArrowLeft,
-  LuBook,
-  LuBookA,
-  LuBookImage,
+
   LuCalendar,
-  LuLibrary,
   LuMessageSquare,
 } from "react-icons/lu";
 
 import { img_base_url } from "@/config/settings";
 import { useInstructorCohorts } from "@/hooks/data/useInstructorCohorts";
-import { useInstructorProfile } from "@/hooks/data/useInstructorProfile";
 import { useReviews } from "@/hooks/data/useReviews";
 
 const ReviewsAndRatings = () => {
-  const [selectedClass, setSelectedClass] = useState(false);
   const [activeTab, setActiveTab] = useState("instructor_reviews");
-  const [className, setClassName] = useState("");
-  const [topicTitle, setTopicTitle] = useState("");
-  const [reviewCount, setReviewCount] = useState(0);
-  const [studentsEnrolled, setStudentsEnrolled] = useState(0);
-  const [avgRating, setAverageRating] = useState(0);
-
-  const [cohortId, setCohortId] = useState(6);
 
   function formatDateTime(isoDateString) {
     const date = new Date(isoDateString);
     return date.toLocaleString();
   }
 
-  const { instructorProfile } = useInstructorProfile();
 
   const {
     instructorReviews,
-    cohortReviews,
-    isInstructorReviewsPending,
-    isCohortReviewsPending,
-    isInstructorReviewsError,
-    isCohortReviewsError,
-    instructorReviewsError,
-    cohortReviewsError,
+
     instructorSummary,
-    cohortSummary,
-    isInstructorSummaryPending,
-    isCohortSummaryPending,
-    refetchCohortSummary,
-  } = useReviews(cohortId, null);
+  } = useReviews();
 
   function countReview(InstructorCohorts) {
     let total = 0;
@@ -78,7 +44,6 @@ const ReviewsAndRatings = () => {
       total += cohort.data.review_summary?.total_reviews || 0;
     });
 
-    setReviewCount(total);
   }
 
   const { InstructorCohorts, isInstructorCohortsPending } =
@@ -93,35 +58,11 @@ const ReviewsAndRatings = () => {
   const isLoading = !instructorReviews; // or use a separate loading flag if available
   const skeletonItems = Array.from({ length: 4 });
 
-  console.log("Instructor Reviews:", instructorReviews);
-  console.log("cohortReviews:", cohortReviews);
-  console.log("Instructor cohorts:", InstructorCohorts);
-  console.log("Instructor SUMMARY:", instructorSummary);
-  console.log("Instructor Profile:", instructorProfile);
-
-  const handleViewReviews = (
-    cohort_id,
-    class_name,
-    topic,
-    student_count,
-    average_rating
-  ) => {
-    setSelectedClass(true);
-    setCohortId(cohort_id);
-    setClassName(class_name);
-    setTopicTitle(topic);
-    setStudentsEnrolled(student_count);
-    setAverageRating(average_rating);
-  };
 
   const viewInstructorReviews = () => {
     setActiveTab("instructor_reviews");
   };
 
-  const viewClassReviews = () => {
-    setSelectedClass(false);
-    setActiveTab("class_reviews");
-  };
 
   const getRatingColor = (rating) => {
     if (rating >= 4.5) return "text-green-600";

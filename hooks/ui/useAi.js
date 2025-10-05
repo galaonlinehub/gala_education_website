@@ -18,7 +18,7 @@ export const useAi = () => {
   const token = decrypt(cookieFn.get(USER_COOKIE_KEY));
 
   const { register, reset, watch } = useForm({
-    defaultValues: { prompt: "" }, // ensures reset clears input
+    defaultValues: { prompt: "" },
   });
   const prompt = watch("prompt");
 
@@ -39,7 +39,7 @@ export const useAi = () => {
         headers["X-Dev-Request"] = "true";
       }
       const { data } = await axios.post(
-        `https://ai.galahub.org/ask-gala`,
+        `https://ai.galahub.tz/ask-gala`,
         { question: prompt },
         { headers }
       );

@@ -29,12 +29,12 @@ export const PartnerSchool = () => {
     <Modal open={isOpen} footer={null} closable={false}>
       <div className="space-y-6">
         <div className="flex flex-col gap-2">
-          <div className="text-base">{stproft('belong_to_school')}</div>
+          <div className="text-sm font-bold">{stproft('belong_to_school')}</div>
           <div className="flex gap-3 text-sm">
             <button
               onClick={toggleAffiliate}
               disabled={isAffiliated}
-              className="bg-[#001840] text-white rounded w-16 h-7 cursor-pointer hover:scale-110 disabled:scale-100 transition-transform ease-in-out duration-200 disabled:bg-[#001840]/60 disabled:cursor-not-allowed text-xs"
+              className="bg-[#001840] !text-white rounded w-16 h-7 cursor-pointer hover:scale-110 disabled:scale-100 transition-transform ease-in-out duration-200 disabled:bg-[#001840]/60 disabled:cursor-not-allowed text-xs"
             >
               {stproft('yes')}
             </button>

@@ -50,7 +50,7 @@ export default function Subscribe({ openDrawer }) {
       centered={false}
       open={
         subscribeOpen ||
-        (!user?.has_free_trial && !user?.has_active_subscription)
+        (user?.role === "instructor" && !user?.has_free_trial && !user?.has_active_subscription)
       }
       closable={false}
       styles={modalStyles}

@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import { useTranslations } from "next-intl";
 import React from "react";
 import { FaFolderOpen } from "react-icons/fa";

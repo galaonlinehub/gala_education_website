@@ -38,7 +38,7 @@ const StudentProfile = () => {
 
   const [editName, setEditName] = useState(false);
   const [editContact, setEditContact] = useState(false);
-  const [profilePicture, setProfilePicture] = useState(null);
+  const [_profilePicture, setProfilePicture] = useState(null);
   const open = useSchoolPartnerStore((state) => state.open);
 
   const {
@@ -57,7 +57,7 @@ const StudentProfile = () => {
 
   const updateProfilePictureMutation = useMutation({
     mutationFn: async (data) => {
-      const response = await apiPut("/update-user", data, {
+    await apiPut("/update-user", data, {
         "Content-Type": "multipart/form-data",
       });
     },
@@ -67,6 +67,7 @@ const StudentProfile = () => {
       setProfilePicture(null);
     },
     onError: (error) => {
+      console.error(error);
       message.error(stproft('profile_pic_failed'));
     },
   });
@@ -269,8 +270,8 @@ const StudentProfile = () => {
                   onClick={open}
                   className="text-xs text-white bg-[#001840] font-medium rounded-md px-2 py-1 hover:scale-105 ease-in-out transition-all duration-300 border-[1px] border-[#001840] flex items-center gap-0.5"
                 >
-                  <LuPlus size={15} strokeWidth={2} />
-                  <span> {stproft('add_your_school')}</span>
+                  <LuPlus size={15} strokeWidth={2} color="white" />
+                  <span className="text-white text-sm"> {stproft('add_your_school')}</span>
                 </button>
               )}
             </div>

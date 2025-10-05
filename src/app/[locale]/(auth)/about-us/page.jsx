@@ -8,10 +8,10 @@ import { IoMailOutline } from 'react-icons/io5';
 
 import { FaqCard } from '@/components/home/card/FaqCard';
 import MultipleProfileSkeletons from '@/components/home/card/ProfileCardSkeleton';
-import Footer from '@/components/layout/footer';
 import Donate from '@/components/ui/donation/Donate';
 import ProcessingModal from '@/components/ui/donation/ProcessingModal';
 import { useTeamMembers } from '@/hooks/data/useTeamMembers';
+import Footer from '@/components/layout/Footer';
 
 const { Text } = Typography;
 
@@ -664,7 +664,7 @@ const AboutUs = () => {
 
         {BiographyModal()}
         {showDonatePop && (
-          <div className="fixed inset-0 bg-black bg-opacity-70 !z-[80] flex justify-center items-center">
+          <div className="fixed inset-0 bg-black/70 bg-opacity-70 !z-[80] flex justify-center items-center">
             <div className="p-1 rounded-lg w-full items-center justify-center flex ">
               <Donate
                 setShowDonatePopup={setShowDonatePop}
@@ -681,7 +681,7 @@ const AboutUs = () => {
         />
       </div>
       <div className="w-full">
-        <Footer />
+        <Footer/>
       </div>
     </div>
   );

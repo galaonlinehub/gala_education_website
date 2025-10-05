@@ -55,7 +55,10 @@ const CompleteProfile = () => {
   };
   return (
     <Modal
-      open={!user?.completed_profile && user?.has_active_subscription}
+      open={
+        (user?.role === "student" && !user?.completed_profile) ||
+        (user?.role === "instructor" && !user?.completed_profile && user?.has_active_subscription)
+      }
       footer={null}
       styles={{ body: { height: "400px", overflowY: "auto" } }}
       title={
@@ -493,14 +496,14 @@ const Verify = ({ phone_number, setStatus }) => {
           {resendOtp.isPending
             ? fpass('sending')
             : !canResend
-              ? `${fpass('resend_otp_in')} ${timer}s`
+              ? `${sut('resend_otp_in')} ${timer}s`
               : fpass('resend_code')}
         </Button>
       </div>
 
       {!canResend && (
         <div className="text-xs text-gray-500 text-center mt-1">
-          {fpass('resend_otp_in')} {timer} {gai('seconds')}{timer !== 1 ? "s" : ""}
+          {sut('resend_otp_in')} {timer} {gai('seconds')}{timer !== 1 ? "s" : ""}
         </div>
       )}
 

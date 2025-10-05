@@ -14,6 +14,8 @@ const pwaConfig = withPWA({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: false,
+  
   images: {
     remotePatterns: [
       {
@@ -22,7 +24,7 @@ const nextConfig = {
       },
       {
         protocol: "https",  
-        hostname: "galaweb.galahub.org",
+        hostname: "galaweb.galahub.tz",
       },
       {
         protocol:"https",

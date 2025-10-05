@@ -55,6 +55,7 @@ export const useSocketConnection = ({
       return null;
     }
 
+
     return {
       query: {
         ...(user?.id ? { user_id: user?.id } : {}),
@@ -70,6 +71,8 @@ export const useSocketConnection = ({
       },
     };
   }, [useInternalToken, user?.id, isDev, options, initialize]);
+
+
 
   useEffect(() => {
     const handleConnect = ({ namespace: ns, socketId }) => {
@@ -156,9 +159,16 @@ export const useSocketConnection = ({
       cleanupConnect();
       cleanupDisconnect();
       cleanupError();
+
       // Optional: Disconnect socket on unmount
       // if (socket && initialize) socket.disconnect();
+
+   if (socket && initialize) {
+      console.log(`Cleaning and closing namespace ${namespace}`)
+      socket.disconnect();
+      state.connections.delete(namespace);
     };
+   };
   }, [namespace, computedOptions, initialize, options, useInternalToken]);
 
   return connectionInfo;
