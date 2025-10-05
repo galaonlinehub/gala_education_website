@@ -1,7 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import io from "socket.io-client";
-import { socket_base_url } from "@/config/settings";
 
 import { PaymentStatus } from "@/config/settings";
 import { useUser } from "@/hooks/data/useUser";
@@ -13,6 +11,10 @@ import {
   RenderReferenceState,
   RenderFailureState,
 } from "../ui/auth/signup/PaymentStatus";
+import { useSocketConnection } from "@/hooks/sockets/useSocketConnection";
+import { useSocketEmit } from "@/hooks/sockets/useSocketEmit";
+import { NAMESPACES } from "@/utils/data/namespaces";
+import { useSocketEvent } from "@/hooks/sockets/useSocketEvent";
 
 export const ConfirmEnrollPay = () => {
   const { setEnrollPayStatus, reference, enrollPayStatus } = useEnrollPay();
@@ -27,39 +29,48 @@ export const ConfirmEnrollPay = () => {
     enrollCohortId,
   ])?.price;
 
+
+  const { isConnected, socketId } = useSocketConnection({
+    namespace: NAMESPACES.PAYMENT,
+    useInternalToken: true,
+    user
+  });
+
+
+  const { emit, isEmitting, lastEmit, error } = useSocketEmit(NAMESPACES.PAYMENT);
+
   useEffect(() => {
-    const socket = io(`${socket_base_url}/payment`);
-    let isMounted = true;
+    if (isConnected && reference && amount) {
+      emit("join", {
+        id: user?.email,
+      });
+    }
+  }, [isConnected, reference, amount, user, emit]);
 
-    socket.on("connect", () => {
-      socket.emit("join", { id: user?.email });
-      console.log("connected successfully");
-    });
+  const handlePaymentResponse = (data) => {
+    console.log("Payment response:", data);
 
-    socket.on("paymentResponse", (msg) => {
-      if (isMounted) {
-        if (msg.status === "success") {
-          setEnrollPayStatus(PaymentStatus.SUCCESS);
-        } else {
-          setEnrollPayStatus(PaymentStatus.REFERENCE);
-        }
-      }
-    });
+    if (data.status === "success") {
+      setEnrollPayStatus(PaymentStatus.SUCCESS);
+    } else {
+      setEnrollPayStatus(PaymentStatus.REFERENCE);
+    }
+  };
 
-    socket.on("error", (error) => {
-      console.error("Socket error:", error);
-    });
+  useSocketEvent(
+    NAMESPACES.PAYMENT,
+    "paymentResponse",
+    handlePaymentResponse,
+    [setEnrollPayStatus]
+  );
 
-    return () => {
-      isMounted = false;
-      socket.close();
-    };
-  }, [user?.email, setEnrollPayStatus]);
+
+  if (!isConnected) return null;
 
   return (
     <div className="flex items-center justify-center w-full h-[calc(100vh-20rem)]">
       <div className="lg:w-1/2 w-full mx-auto">
-        {enrollPayStatus === PaymentStatus.LOADING && <RenderLoadingState />}
+        {enrollPayStatus === PaymentStatus.LOADING && <RenderLoadingState setStatus={setEnrollPayStatus} />}
         {enrollPayStatus === PaymentStatus.SUCCESS && (
           <RenderSuccessState onClose={handleClose} />
         )}

@@ -17,7 +17,6 @@ export const askGalaAi = async (prompt) => {
         Authorization: `Bearer ${token}`,
       },
     }
-    //here now
   );
 
   return answer;
