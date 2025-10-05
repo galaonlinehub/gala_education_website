@@ -16,7 +16,7 @@ export const userColumns = [
       name: "Profile Picture",
       selector: row => (
         <Image 
-          src={row.profile_picture ? `https://galaweb.galahub.org/storage/${row.profile_picture}` : "/gala_logo.png"} 
+          src={row.profile_picture ? `https://galaweb.galahub.tz/storage/${row.profile_picture}` : "/gala_logo.png"} 
           alt="Profile" 
           width={100} 
           height={100} 

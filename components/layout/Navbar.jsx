@@ -116,14 +116,14 @@ const Navbar = () => {
             </button>
           )}
 
-          {/* <button
+          <button
             onClick={handleLanguageToggle}
             disabled={isLanguageLoading}
             className="bg-[#001840] text-white px-3 py-1.5 rounded-md text-xs font-semibold hover:bg-[#001840]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-w-[40px]"
             title={`Switch to ${currentLocale === 'en' ? 'Swahili' : 'English'}`}
           >
             {isLanguageLoading ? '...' : (currentLocale === 'en' ? 'SW' : 'EN')}
-          </button> */}
+          </button>
 
           <li>
             <Link href={"/"} className="hover:cursor-pointer text-black">

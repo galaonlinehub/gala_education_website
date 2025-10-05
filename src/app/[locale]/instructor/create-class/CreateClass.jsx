@@ -703,10 +703,12 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
               {cct('price')}
             </label>
 
-            <Checkbox className="mb-3" checked={formData.enablePrice} onChange={handleCheckboxChange}>
-              Enable Price Input
-            </Checkbox>
-            
+            <div className="py-2">
+              <Checkbox checked={formData.enablePrice} onChange={handleCheckboxChange}>
+                Enable Price Input
+              </Checkbox>
+            </div>
+
 
             <InputNumber
               prefix={

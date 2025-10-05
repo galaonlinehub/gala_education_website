@@ -120,11 +120,11 @@ export const useTeacherLinks = () => {
       link: "subscriptions",
       icon: <LuGem strokeWidth={1.5} />,
     },
-    {
-      name: nbt("gala_ai"),
-      link: "ai",
-      icon: <LuDiamond strokeWidth={1.5} />,
-    },
+    // {
+    //   name: nbt("gala_ai"),
+    //   link: "ai",
+    //   icon: <LuDiamond strokeWidth={1.5} />,
+    // },
     {
       name: nbt("library"),
       link: "library",
@@ -168,11 +168,11 @@ export const useStudentLinks = () => {
     //   link: "subscriptions",
     //   icon: <LuGem strokeWidth={1.5} />,
     // },
-    {
-      name: nbt("gala_ai"),
-      link: "ai",
-      icon: <LuDiamond strokeWidth={1.5} />,
-    },
+    // {
+    //   name: nbt("gala_ai"),
+    //   link: "ai",
+    //   icon: <LuDiamond strokeWidth={1.5} />,
+    // },
     {
       name: nbt("library"),
       link: "library",

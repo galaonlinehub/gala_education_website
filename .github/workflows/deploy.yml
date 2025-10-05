@@ -39,14 +39,14 @@ jobs:
           if [ "${{ github.event.workflow_run.head_branch }}" = "main" ]; then
             echo "DEPLOY_PATH=/var/www/next-main" >> $GITHUB_ENV
             echo "PM2_APP_NAME=main" >> $GITHUB_ENV
-            echo "DOMAIN=edu.galahub.org" >> $GITHUB_ENV
+            echo "DOMAIN=edu.galahub.tz" >> $GITHUB_ENV
             echo "PORT=3457" >> $GITHUB_ENV
             echo "OTHER_PM2_APP=dev" >> $GITHUB_ENV
             echo "OTHER_PORT=3347" >> $GITHUB_ENV
           else
             echo "DEPLOY_PATH=/var/www/next" >> $GITHUB_ENV
             echo "PM2_APP_NAME=dev" >> $GITHUB_ENV
-            echo "DOMAIN=edutz.galahub.org" >> $GITHUB_ENV
+            echo "DOMAIN=edutz.galahub.tz" >> $GITHUB_ENV
             echo "PORT=3347" >> $GITHUB_ENV
             echo "OTHER_PM2_APP=main" >> $GITHUB_ENV
             echo "OTHER_PORT=3457" >> $GITHUB_ENV

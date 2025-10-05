@@ -9,4 +9,4 @@ Disallow: /signup
 Disallow: /forgot-password
 
 # Host
-Host: https://edu.galahub.org
+Host: https://edu.galahub.tz

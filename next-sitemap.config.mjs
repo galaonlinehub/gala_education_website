@@ -1,6 +1,6 @@
 /** @type {import('next-sitemap').IConfig} */
 const sitemapConfig = {
-  siteUrl: "https://edu.galahub.org",
+  siteUrl: "https://edu.galahub.tz",
   generateRobotsTxt: true,
   exclude: [
     // Your existing exclusions
