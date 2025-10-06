@@ -25,16 +25,14 @@ export const HomeBanner = () => {
 
       <div className="absolute inset-0 bg-white/80" />
       <section className="absolute mt-4 md:mt-0 top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col gap-3 sm:gap-4 md:gap-6 lg:gap-8 px-2 sm:px-4 w-full max-w-[95%] sm:max-w-[90%] md:max-w-[85%] lg:max-w-[60%]">
-        <section className="hidden w-fit mx-auto border border-black rounded-full px-1.5 sm:px-8 lg:px-16 py-1.5 sm:py-2 min-[280px]:flex items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm md:text-base">
+        <section className="hidden w-fit mx-auto border border-black rounded-full px-5 py-1.5 sm:py-2 min-[280px]:flex items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm md:text-base">
           <p className="bg-black rounded-full text-white px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 whitespace-nowrap text-xs sm:text-sm md:text-base">
             New 🎉
           </p>
           <h1 className="font-medium flex items-center gap-1 sm:gap-2 text-center leading-tight whitespace-nowrap overflow-hidden">
-            <span className="hidden xs:inline">Experience the future of learning with a</span>
-            <span className="xs:hidden">Future of learning with a</span>{' '}
-            <span className="font-bold text-[#030DFE] underline whitespace-nowrap">free trial</span>{' '}
-            <span className="hidden sm:inline">now live.</span>
-            <span className="sm:hidden">live.</span>
+            <span className="">Student registration is completely</span>
+            <span className="font-bold text-[#030DFE] underline whitespace-nowrap">FREE </span>{' '}
+            <span className="">- don't wait, register now!</span>
           </h1>
         </section>
 
