@@ -1,5 +1,34 @@
 {
   "home_page": {
+    "new":"New",
+    "experience_the_future_of_learning":"Experience the future of learning with a",
+    "future_of_learning":"Future of learning with a",
+    "free_trial":"free trial",
+    "now_live":"now live.",
+    "the_no_1_student_platform":"The #1 Tuition Platform",
+    "connecting_teacher_students":"Connecting Teachers & Students",
+    "digitally":"Digitally",
+    "gala_education_goal":"Gala Education brings teachers and students together on one powerful digital platform. Learn, teach, and succeed anytime, anywhere with personalized tuition designed for every learner.",
+    "become_student":"Become a Student",
+    "become_teacher":"Become a Tutor",
+
+    "featured_press":"Featured Press",
+    "view_all_press":"View All Press",
+
+    "trusted_by":"Trusted By",
+    "best_platform":"Best Platform",
+    "why_us":"Why Choose Us",
+    "online_teaching_learning":"Online Teaching and Learning",
+    "gala_1_to_6":"Gala Education connects teachers and students in live virtual classrooms, delivering expert tuition aligned with Tanzania's national curriculum from Standard 1 to Form 6.",
+    "gala_assistant":"GalaAI - Your Academic Assistant",
+    "gala_assistant_descritption":"GalaAI, our academic assistant, provides personalized tutoring within the system and is also accessible offline via SMS, ensuring support even in remote areas without internet.",
+
+    "gala_online_library":"Gala Online Library",
+    "gala_online_library_description":"Teachers get access to ready teaching resources, while students benefit from textbooks, storybooks, and study materials for self-paced learning and revision.",
+
+    "affordable_empowering":"Affordable and Empowering",
+    "affordable_empowering_description":"Gala Education makes quality tuition affordable for students, while giving teachers the chance to earn income through flexible online self-employment.",
+
     "home": "Home",
     "student": "Student",
     "teacher": "Teacher",

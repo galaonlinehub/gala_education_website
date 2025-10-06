@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import Donate from "@/components/ui/donation/Donate";
 import ProcessingModal from "@/components/ui/donation/ProcessingModal";
 import { PaymentSocketProvider } from '@/hooks/misc/paymentSocketContext';
+import { useTranslations } from "next-intl";
 
 
 export const GiftOfLearning = () => {
@@ -33,17 +34,16 @@ export const GiftOfLearning = () => {
     };
   }, [showDonatePopup]);
 
+  const homepage = useTranslations('home_page');
+
   return (
     <div className="flex flex-col items-center">
       <h2 className="font-[900] text-3xl text-center xxs:mt-12 md:mt-0 px-4">
-        Give the gift of learning - help us <br /> Educate every child{" "}
+        {homepage('gift_of_learning')}
       </h2>
 
       <p className="text-xs md:w-1/2 w-full px-4 text-center py-4">
-        Your support provides vital resources and opportunities that help
-        children, especially in underserved areas, access quality education.
-        Together, we can break barriers to learning and ensure every child has the
-        chance to grow, learn, and thrive.{" "}
+        {homepage('gift_of_learning_description')}
       </p>
 
       <div className="py-8">
@@ -54,29 +54,29 @@ export const GiftOfLearning = () => {
           onClick={handleDonateVisibility}
           className="!p-4 !bg-[#030DFE] !font-bold md:text-xs !rounded-md !text-white"
         >
-          Donate Now
+          {homepage('donate_now')}
         </Button>
       </div>
 
-    
-    <PaymentSocketProvider>
 
-      {showDonatePopup && (
-        <div className="fixed inset-0 bg-black/70 z-[80] flex justify-center items-center">
-          <div className="p-1 rounded-lg w-full items-center justify-center flex ">
-            <Donate
-              setShowDonatePopup={setShowDonatePopup}
-              showDonatePopup={showDonatePopup}
-              setShowProcessingModal={setShowProcessingModal}
-            />
+      <PaymentSocketProvider>
+
+        {showDonatePopup && (
+          <div className="fixed inset-0 bg-black/70 z-[80] flex justify-center items-center">
+            <div className="p-1 rounded-lg w-full items-center justify-center flex ">
+              <Donate
+                setShowDonatePopup={setShowDonatePopup}
+                showDonatePopup={showDonatePopup}
+                setShowProcessingModal={setShowProcessingModal}
+              />
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      <ProcessingModal
-        setShowProcessingModal={setShowProcessingModal}
-        showProcessingModal={showProcessingModal}
-      />
+        <ProcessingModal
+          setShowProcessingModal={setShowProcessingModal}
+          showProcessingModal={showProcessingModal}
+        />
 
       </PaymentSocketProvider>
 
@@ -90,7 +90,7 @@ export const GiftOfLearning = () => {
             <article className="bg-[url('/donation/village_child.png')] bg-cover bg-center h-[18rem] p-3 rounded-3xl">
               <div className="flex flex-col justify-center h-full text-white">
                 <p className="text-2xl font-bold leading-6 px-4">
-                  Put a <br /> smile <br /> on a <br /> child&apos;s <br /> face
+                  {homepage('put_a_smile')}
                 </p>
               </div>
             </article>
@@ -102,7 +102,7 @@ export const GiftOfLearning = () => {
                   85 <span className="text-lg">%</span>
                 </p>
                 <p className="text-xs font-medium mt-2">
-                  Literacy improvement rate in schools we&apos;ve partnered with.
+                 {homepage('literacy_improvement')}
                 </p>
               </div>
             </div>
@@ -112,7 +112,7 @@ export const GiftOfLearning = () => {
             <div className="flex flex-col justify-end h-full">
               <p className="text-4xl font-bold leading-none">800+</p>
               <p className="text-xs font-medium mt-2 mb-4">
-                Tanzanian teachers empowered through our daily training programs.{" "}
+                {homepage('empowered_teachers')}
               </p>
             </div>
           </div>
@@ -120,10 +120,10 @@ export const GiftOfLearning = () => {
           <div className="lg:w-44 w-44 md:w-32 h-[13rem] flex-shrink-0 rounded-3xl p-3 relative bg-[#7A87A3] text-white snap-start">
             <div className="flex flex-col justify-between h-full gap-3">
               <div className="font-bold text-base sm:text-lg md:text-sm px-2">
-                Join many people building a better tomorrow.
+                {homepage('join_many_people')}
               </div>
               <div className="!p-2 !bg-black !font-bold items-center flex justify-center text-xs md:text-xs !rounded-xl !text-white">
-                <span>Join Our Community</span>
+                <span>{homepage('join_us')}</span>
               </div>
             </div>
             <SvgThree className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2/3 h-2/3 opacity-70" />
@@ -132,8 +132,7 @@ export const GiftOfLearning = () => {
           <div className="lg:w-44 w-44 md:w-32 bg-[url('/donation/village_class.png')] bg-cover bg-center h-[20rem] flex-shrink-0 rounded-3xl p-3 snap-start text-white">
             <div className="flex flex-col justify-end h-full">
               <p className="text-xs font-bold">
-                Real stories, real impact Witness how your support changes
-                lives—from classrooms to communities.
+                {homepage('real_stories')} {homepage('witness_your_support')}
               </p>
               <p className="text-xs font-medium mb-4">
                 {/* {t("witness_your_support")} */}
@@ -147,7 +146,7 @@ export const GiftOfLearning = () => {
               <SvgTwo className="absolute bottom-3 left-8 md:left-4 lg:left-8 w-3/4 h-auto opacity-70" />
               <div className="relative z-10 flex flex-col justify-center h-full">
                 <p className="text-2xl font-bold leading-none px-4 md:px-1 lg:px-4">
-                  One Child. One Teacher. One Book.{" "}
+                 {homepage('the_ones')}
                 </p>
               </div>
             </div>
@@ -156,7 +155,7 @@ export const GiftOfLearning = () => {
               <div className="flex flex-col justify-end h-full">
                 {/* <p className="text-xs font-medium">{t("give_the_gift")}</p> */}
                 <p className="text-xs font-medium mb-4">
-                  Give the Gift of Learning Empower a new generation of leaders.{" "}
+                  {homepage('give_the_gift')} {homepage('empower_new_generation')}
                 </p>
               </div>
             </div>
