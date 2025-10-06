@@ -28,14 +28,14 @@ export const WhyChooseUs = () => {
           </section>
         </article>
         
-        <article className="flex flex-col sm:flex-row items-center gap-4 w-full">
+        <article className="flex flex-col sm:flex-row gap-4 sm:gap-6 w-full">
           <GalaAISvg className={'flex-shrink-0 sm:w-1/4'} />
           <section className="flex flex-col gap-2 text-center sm:text-left order-2 sm:order-1 sm:w-3/4">
             <h3 className="font-[800] text-sm sm:text-base">
               {homepage('gala_assistant')}
             </h3>
             <p className="text-xs sm:text-sm font-light leading-5 sm:leading-6">
-             {homepage('gala_assistant_descritption')}
+             {homepage('gala_assistant_description')}
             </p>
           </section>
         </article>
