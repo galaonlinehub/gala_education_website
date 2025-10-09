@@ -1,4 +1,3 @@
-'use client';
 import Footer from '@/components/layout/Footer';
 import { Faqs } from './_home/components/Faqs';
 import { FeaturePress } from './_home/components/FeaturePress';
