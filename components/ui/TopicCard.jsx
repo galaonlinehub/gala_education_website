@@ -21,7 +21,6 @@ const TopicCard = ({ classInfo }) => {
     setEnrollCohort(classInfo?.cohort_id);
   };
 
-  console.log("enrolledTopicsNow", enrolledTopics);
 
   const isEnrolled = (cohortId) =>
     enrolledTopics?.some((topic) => topic.cohort_id === cohortId);

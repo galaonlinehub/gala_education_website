@@ -1,5 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { PaymentStatus } from "@/config/settings";
 import { useUser } from "@/hooks/data/useUser";
@@ -30,14 +30,14 @@ export const ConfirmEnrollPay = () => {
   ])?.price;
 
 
-  const { isConnected, socketId } = useSocketConnection({
+  const { isConnected } = useSocketConnection({
     namespace: NAMESPACES.PAYMENT,
     useInternalToken: true,
     user
   });
 
 
-  const { emit, isEmitting, lastEmit, error } = useSocketEmit(NAMESPACES.PAYMENT);
+  const { emit} = useSocketEmit(NAMESPACES.PAYMENT);
 
   useEffect(() => {
     if (isConnected && reference && amount) {
@@ -48,8 +48,6 @@ export const ConfirmEnrollPay = () => {
   }, [isConnected, reference, amount, user, emit]);
 
   const handlePaymentResponse = (data) => {
-    console.log("Payment response:", data);
-
     if (data.status === "success") {
       setEnrollPayStatus(PaymentStatus.SUCCESS);
     } else {

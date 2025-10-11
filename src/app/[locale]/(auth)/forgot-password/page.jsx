@@ -13,7 +13,6 @@ import {
 
 import { Contact } from "@/components/layout/Contact";
 import SlickSpinner from "@/components/ui/loading/template/SlickSpinner";
-import { SUPPORT_EMAIL } from "@/config/settings";
 import { usePassword } from "@/hooks/data/usePassword";
 
 const ForgotPassword = () => {

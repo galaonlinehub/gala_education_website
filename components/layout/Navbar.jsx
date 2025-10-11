@@ -32,7 +32,6 @@ const Navbar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const [condition, setCondition] = useState(false);
 
 
   const gotoHomePage = () => {
@@ -56,30 +55,32 @@ const Navbar = () => {
     }, 800);
   };
 
-  const confirm = () => {
-    setOpen(false);
-    message.success("English language chosen.");
-  };
-  const cancel = () => {
-    setOpen(false);
-    message.success("Swahili language chosen.");
-  };
+  // const confirm = () => {
+  //   setOpen(false);
+  //   message.success("English language chosen.");
+  // };
 
-  const handleOpenChange = (newOpen) => {
-    if (!newOpen) {
-      setOpen(newOpen);
-      return;
-    }
-    if (condition) {
-      confirm();
-    } else {
-      setOpen(newOpen);
-    }
-  };
+  
+  // const cancel = () => {
+  //   setOpen(false);
+  //   message.success("Swahili language chosen.");
+  // };
 
-  const toggleDrawer = () => {
-    setDrawerOpen((prev) => !prev);
-  };
+  // const handleOpenChange = (newOpen) => {
+  //   if (!newOpen) {
+  //     setOpen(newOpen);
+  //     return;
+  //   }
+  //   if (condition) {
+  //     confirm();
+  //   } else {
+  //     setOpen(newOpen);
+  //   }
+  // };
+
+  // const toggleDrawer = () => {
+  //   setDrawerOpen((prev) => !prev);
+  // };
 
   // const internet = useTranslations('internet');
 

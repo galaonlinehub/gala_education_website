@@ -1,3 +1,4 @@
+
 import React, {
   createContext,
   useContext,
@@ -10,6 +11,8 @@ import { io } from "socket.io-client";
 import { socket_base_url } from "@/config/settings";
 import { sessionStorageFn } from "@/utils/fns/client";
 import { encrypt } from "@/utils/fns/encryption";
+import { v4 as uuidv4 } from 'uuid';
+
 
 const PaymentSocketContext = createContext();
 
@@ -20,16 +23,8 @@ export const PaymentSocketProvider = ({ children }) => {
   const [roomName, setRoomName] = useState(null);
   const listenersRef = useRef(new Set());
 
-  const room_name = useMemo( () => crypto.randomUUID().replace(/-/g, "").substring(0, 10), [] );
+  const room_name = useMemo( () => uuidv4().replace(/-/g, "").substring(0, 10), [] );
 
-  // const joinRoom = (room) => {
-  //   setRoomName(room);
-  //   if (socket && socket.connected) {
-  //     socket.emit("join", { id: room });
-  //   }
-  // };
-
-  
 
   useEffect(() => {
     const newSocket = io(`${socket_base_url}payment`);
@@ -77,20 +72,7 @@ export const PaymentSocketProvider = ({ children }) => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   if (socket && isConnected && roomName) {
-  //     console.log(`Joining room: ${roomName}`);
-  //     socket.emit("join", { id: roomName });
-  //   }
-  // }, [socket, isConnected, roomName]);
-
-  // useEffect(() => {
-  //   if (socket && socket.connected && roomName) {
-  //     socket.emit("join", { id: roomName });
-  //     console.log(`Joined room: ${roomName}`);
-  //   }
-  // }, [socket, roomName]);
-
+ 
   const addListener = (callback) => {
     listenersRef.current.add(callback);
 
@@ -104,7 +86,6 @@ export const PaymentSocketProvider = ({ children }) => {
     isConnected,
     lastDonation,
     roomName,
-    // joinRoom,
     addListener,
     room_name
 

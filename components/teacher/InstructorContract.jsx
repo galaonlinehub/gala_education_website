@@ -22,10 +22,8 @@ const InstructorContract = () => {
       const isAccepted = decrypt(contractStatus) === "instuctor-accepted";
       if (isAccepted) {
         setOpenInstructorContract(false);
-        console.log("accept value is false");
       } else {
         setOpenInstructorContract(true);
-        console.log("accept value is true");
       }
     } else {
       setOpenInstructorContract(true);

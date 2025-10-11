@@ -1,7 +1,7 @@
 "use client";
 
 import { Drawer } from "antd";
-import { createStyles, useTheme } from "antd-style";
+import {  useTheme } from "antd-style";
 import { useTranslations } from "next-intl";
 import React, { useEffect } from "react";
 
@@ -18,29 +18,29 @@ import {
   InstructorSearchResultSkeleton,
 } from "../ui/InstructorSearchResult";
 
-const useStyle = createStyles(({ token }) => ({
-  "my-drawer-body": {
-    background: token.blue1,
-  },
-  "my-drawer-mask": {
-    boxShadow: `inset 0 0 15px #fff`,
-  },
-  "my-drawer-header": {
-    background: token.green1,
-  },
-  "my-drawer-footer": {
-    color: token.colorPrimary,
-  },
-  "my-drawer-content": {
-    borderLeft: "2px dotted #333",
-  },
-}));
+// const useStyle = createStyles(({ token }) => ({
+//   "my-drawer-body": {
+//     background: token.blue1,
+//   },
+//   "my-drawer-mask": {
+//     boxShadow: `inset 0 0 15px #fff`,
+//   },
+//   "my-drawer-header": {
+//     background: token.green1,
+//   },
+//   "my-drawer-footer": {
+//     color: token.colorPrimary,
+//   },
+//   "my-drawer-content": {
+//     borderLeft: "2px dotted #333",
+//   },
+// }));
 
 const NewClass = () => {
   const { openNewClass, setOpenNewClass } = useNewClass();
   const { isFetchingResults, detailedResults } = useSearch();
   const { enrollMe, setEnrollMe, setEnrollCohort } = useEnrollMe();
-  const { currentStep, setCurrentStep } = usePaySteps();
+  const { setCurrentStep } = usePaySteps();
   const { selectedItemId } = useSearchResult();
 
   const onClose = () => {
@@ -63,16 +63,16 @@ const NewClass = () => {
     };
   }, [openNewClass]);
 
-  const { styles } = useStyle();
+  // const { styles } = useStyle();
   const token = useTheme();
 
-  const classNames = {
-    body: styles["my-drawer-body"],
-    mask: styles["my-drawer-mask"],
-    header: styles["my-drawer-header"],
-    footer: styles["my-drawer-footer"],
-    content: styles["my-drawer-content"],
-  };
+  // const classNames = {
+  //   body: styles["my-drawer-body"],
+  //   mask: styles["my-drawer-mask"],
+  //   header: styles["my-drawer-header"],
+  //   footer: styles["my-drawer-footer"],
+  //   content: styles["my-drawer-content"],
+  // };
 
   const drawerStyles = {
     mask: {

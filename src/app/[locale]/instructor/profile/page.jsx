@@ -33,7 +33,7 @@ import {
 } from "antd";
 import { useTranslations } from "next-intl";
 import React, { useState } from "react";
-import { BsPerson, BsPersonBadge } from "react-icons/bs";
+import { BsPerson } from "react-icons/bs";
 import { GrGroup } from "react-icons/gr";
 import { LuSchool, LuUser } from "react-icons/lu";
 import { MdSubject, MdClass } from "react-icons/md";
@@ -89,7 +89,7 @@ const TeacherProfile = () => {
 
   // Determine if display is mobile
   const isMobile = windowWidth < 768;
-  const isTablet = windowWidth >= 768 && windowWidth < 992;
+  // const isTablet = windowWidth >= 768 && windowWidth < 992;
 
   // Handler for editing profile
   const handleEdit = () => {
@@ -166,7 +166,6 @@ const TeacherProfile = () => {
       setIsEditing(false);
       message.success("Profile updated successfully!");
     } catch (error) {
-      console.error("Error updating profile:", error);
       message.error(
         "Failed to update profile: " +
         (error.response?.data?.message || "Unknown error")

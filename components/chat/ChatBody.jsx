@@ -1,10 +1,9 @@
-
-import { SmileOutlined } from "@ant-design/icons";
-import { Avatar, Dropdown, Skeleton } from "antd";
-import clsx from "clsx";
-import { format, isToday, isYesterday } from "date-fns";
-import { useTranslations } from "next-intl";
-import { useState, useEffect, useRef } from "react";
+import { SmileOutlined } from '@ant-design/icons';
+import { Avatar, Dropdown } from 'antd';
+import clsx from 'clsx';
+import { format, isToday, isYesterday } from 'date-fns';
+import { useTranslations } from 'next-intl';
+import { useState, useEffect, useRef } from 'react';
 import {
   LuEllipsisVertical,
   LuArrowLeft,
@@ -17,24 +16,19 @@ import {
   LuPaperclip,
   LuClock4,
   LuCircleAlert,
-} from "react-icons/lu";
+} from 'react-icons/lu';
 
-import { img_base_url } from "@/config/settings";
-import { useChat } from "@/hooks/chat/useChat";
-import { useUser } from "@/hooks/data/useUser";
-import useChatStore from "@/store/chat/chat";
-import { getEntries, getValues, hasData } from "@/utils/fns/general";
+import { img_base_url } from '@/config/settings';
+import { useChat } from '@/hooks/chat/useChat';
+import { useUser } from '@/hooks/data/useUser';
+import useChatStore from '@/store/chat/chat';
+import { getEntries, getValues, hasData } from '@/utils/fns/general';
 
-import SlickSpinner from "../ui/loading/template/SlickSpinner";
-import TypingIndicator from "../ui/loading/template/Typing";
+import SlickSpinner from '../ui/loading/template/SlickSpinner';
+import TypingIndicator from '../ui/loading/template/Typing';
 
-const RenderChat = ({
-  isSmallScreen,
-  MAIN_COLOR,
-  TEXT_COLOR,
-  MAIN_COLOR_LIGHT,
-}) => {
-  const [newMessage, setNewMessage] = useState("");
+const RenderChat = ({ isSmallScreen, MAIN_COLOR, TEXT_COLOR, MAIN_COLOR_LIGHT }) => {
+  const [newMessage, setNewMessage] = useState('');
   const fileInputRef = useRef(null);
   const chatContainerRef = useRef(null);
   const typingTimeoutRef = useRef(null);
@@ -54,25 +48,20 @@ const RenderChat = ({
   } = useChat();
   const { user } = useUser();
 
-  const isPreviewChat = currentChatId === "preview";
+  const isPreviewChat = currentChatId === 'preview';
   const currentChat = chats?.find((chat) => chat.id === currentChatId);
-  const recipient = currentChat?.participants.find(
-    (p) => p.user?.id !== user?.id
-  );
+  const recipient = currentChat?.participants.find((p) => p.user?.id !== user?.id);
   const displayName =
     currentChat?.participants
       .filter((p) => p.user?.id !== user?.id)
       .map((p) => `${p.user.first_name} ${p.user.last_name}`)
-      .join(", ") || "Chat";
-  const isRecipientTyping =
-    recipient && typingUsers.includes(recipient.user?.id);
-  const isRecipientOnline =
-    recipient && onlineUsers.includes(recipient.user?.id);
+      .join(', ') || 'Chat';
+  const isRecipientTyping = recipient && typingUsers.includes(recipient.user?.id);
+  const isRecipientOnline = recipient && onlineUsers.includes(recipient.user?.id);
 
   useEffect(() => {
     if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop =
-        chatContainerRef.current.scrollHeight;
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
   }, [messages, isRecipientTyping]);
 
@@ -84,9 +73,8 @@ const RenderChat = ({
         const userStatus = m.statuses?.find((s) => s.user_id === user?.id);
         const needsMarking = !userStatus
           ? true
-          : (userStatus.status === "sent" ||
-            userStatus.status === "delivered") &&
-          userStatus.status !== "read";
+          : (userStatus.status === 'sent' || userStatus.status === 'delivered') &&
+            userStatus.status !== 'read';
         return isNotSender && needsMarking;
       });
 
@@ -98,19 +86,21 @@ const RenderChat = ({
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    if (file) console.log("File selected:", file.name);
+    if (file) {
+      // Handle file upload logic here
+    }
   };
 
   const handleEmojiButtonClick = (e) => {
     e.preventDefault();
-    const input = document.createElement("input");
-    input.setAttribute("type", "text");
-    input.setAttribute("inputmode", "none");
-    input.style.position = "fixed";
-    input.style.opacity = "0";
-    input.style.pointerEvents = "none";
+    const input = document.createElement('input');
+    input.setAttribute('type', 'text');
+    input.setAttribute('inputmode', 'none');
+    input.style.position = 'fixed';
+    input.style.opacity = '0';
+    input.style.pointerEvents = 'none';
     document.body.appendChild(input);
-    input.addEventListener("input", (event) => {
+    input.addEventListener('input', (event) => {
       if (event.data) setNewMessage((prev) => prev + event.data);
       input.remove();
     });
@@ -129,24 +119,19 @@ const RenderChat = ({
     if (!newMessage.trim()) return;
     try {
       const recipientId = recipient?.user?.id;
-      if (!recipientId) throw new Error("No recipient ID found");
+      if (!recipientId) throw new Error('No recipient ID found');
       const chatId = isPreviewChat ? null : currentChatId;
       await sendMessage(newMessage, recipientId, chatId);
       sendTypingStatus(false);
-      setNewMessage("");
+      setNewMessage('');
     } catch (error) {
-      console.error("Error sending message:", error);
-    }
+   }
   };
 
   const getSenderName = (senderId) => {
-    if (senderId === user?.id) return "You";
-    const sender = currentChat?.participants.find(
-      (p) => p.user?.id === senderId
-    );
-    return sender
-      ? `${sender.user.first_name} ${sender.user.last_name}`
-      : "Unknown";
+    if (senderId === user?.id) return 'You';
+    const sender = currentChat?.participants.find((p) => p.user?.id === senderId);
+    return sender ? `${sender.user.first_name} ${sender.user.last_name}` : 'Unknown';
   };
 
   const isSender = (idx) => idx === user?.id;
@@ -155,24 +140,18 @@ const RenderChat = ({
     if (message.sender_id !== user?.id) return null;
     const recipientId = recipient?.user?.id;
     const socketStatus = messageReceipts[message.id]?.[recipientId];
-    const fetchedStatus = message.statuses?.find(
-      (s) => s.user_id === recipientId
-    )?.status;
+    const fetchedStatus = message.statuses?.find((s) => s.user_id === recipientId)?.status;
     const status = socketStatus ?? fetchedStatus ?? message.status;
     switch (status) {
-      case "sending":
+      case 'sending':
         return <LuClock4 size={12} className="animate-spin text-white" />;
-      case "sent":
+      case 'sent':
         return <LuCheck size={14} strokeWidth={3} className="text-gray-200" />;
-      case "delivered":
-        return (
-          <LuCheckCheck size={14} strokeWidth={3} className="text-gray-200" />
-        );
-      case "read":
-        return (
-          <LuCheckCheck size={14} strokeWidth={3} className="text-blue-500" />
-        );
-      case "failed":
+      case 'delivered':
+        return <LuCheckCheck size={14} strokeWidth={3} className="text-gray-200" />;
+      case 'read':
+        return <LuCheckCheck size={14} strokeWidth={3} className="text-blue-500" />;
+      case 'failed':
         return <LuCircleAlert size={12} className="text-red-500" />;
       default:
         return <LuClock4 size={12} className="animate-spin text-white" />;
@@ -182,10 +161,10 @@ const RenderChat = ({
   const groupedMessages = getValues(messages).reduce((acc, msg) => {
     const date = new Date(msg.sent_at_iso);
     const key = isToday(date)
-      ? "Today"
+      ? 'Today'
       : isYesterday(date)
-        ? "Yesterday"
-        : format(date, "MMMM d, yyyy");
+        ? 'Yesterday'
+        : format(date, 'MMMM d, yyyy');
     acc[key] = acc[key] || [];
     acc[key].push(msg);
     return acc;
@@ -229,18 +208,17 @@ const RenderChat = ({
                 )}
               </div>
               <div>
-                <h2 className="font-extrabold text-base text-white line-clamp-1">
-                  {displayName}
-                </h2>
+                <h2 className="font-extrabold text-base text-white line-clamp-1">{displayName}</h2>
                 <p className="text-xs text-gray-500">
                   {isRecipientTyping
                     ? chat('typing')
                     : isRecipientOnline
                       ? chat('online')
-                      : `${chat('last_seen')} ${recipient?.user?.last_active_at
-                        ? recipient.user?.last_active_at
-                        : chat('recently')
-                      }`}
+                      : `${chat('last_seen')} ${
+                          recipient?.user?.last_active_at
+                            ? recipient.user?.last_active_at
+                            : chat('recently')
+                        }`}
                 </p>
               </div>
             </div>
@@ -248,31 +226,25 @@ const RenderChat = ({
           <div className="flex gap-3">
             <LuPhoneOff className="text-gray-500 text-[16px] cursor-not-allowed" />
             <LuVideoOff className="text-gray-500 text-[16px] cursor-not-allowed" />
-            {currentChatId !== "preview" && (
+            {currentChatId !== 'preview' && (
               <Dropdown
                 arrow
                 menu={{
                   items: [
                     {
-                      key: "delete",
-                      label: deleteChatMutation.isLoading
-                        ? chat('deleting')
-                        : chat('delete_chat'),
-                      onClick: () =>
-                        currentChatId &&
-                        !isPreviewChat &&
-                        deleteChatMutation.mutate(),
+                      key: 'delete',
+                      label: deleteChatMutation.isLoading ? chat('deleting') : chat('delete_chat'),
+                      onClick: () => currentChatId && !isPreviewChat && deleteChatMutation.mutate(),
                       disabled: deleteChatMutation.isLoading,
                     },
                     {
-                      key: "archive",
+                      key: 'archive',
                       label: chat('archive'),
-                      onClick: () =>
-                        console.log("Archive chat:", currentChatId),
+                      onClick: () => {},
                     },
                   ],
                 }}
-                trigger={["click"]}
+                trigger={['click']}
                 placement="bottomRight"
               >
                 <LuEllipsisVertical className="text-white text-[16px] cursor-pointer" />
@@ -290,9 +262,7 @@ const RenderChat = ({
       ) : getValues(groupedMessages).length === 0 ? (
         <div className="flex flex-col justify-center items-center h-full w-full text-gray-500">
           <div className="text-2xl text-center">{chat('no_messages_yet')}</div>
-          <div className="text-center text-sm">
-            {chat('start_conversation')}
-          </div>
+          <div className="text-center text-sm">{chat('start_conversation')}</div>
         </div>
       ) : (
         <div
@@ -310,10 +280,8 @@ const RenderChat = ({
                 <div
                   key={message.id}
                   className={clsx(
-                    "flex my-3",
-                    isSender(message.sender_id)
-                      ? "justify-end"
-                      : "justify-start"
+                    'flex my-3',
+                    isSender(message.sender_id) ? 'justify-end' : 'justify-start'
                   )}
                 >
                   {message.sender_id !== user?.id && (
@@ -322,7 +290,7 @@ const RenderChat = ({
                         src={
                           recipient?.user.profile_picture
                             ? `${img_base_url}${recipient.user.profile_picture}`
-                            : "/default-avatar.png"
+                            : '/default-avatar.png'
                         }
                         alt={getSenderName(message.sender_id)}
                         size={32}
@@ -332,28 +300,27 @@ const RenderChat = ({
                   )}
                   <div className="flex flex-col max-w-[75%]">
                     <span
-                      className={clsx(
-                        "text-[10px] text-gray-600 mb-[1px] pr-2",
-                        { "self-end": isSender(message.sender_id) }
-                      )}
+                      className={clsx('text-[10px] text-gray-600 mb-[1px] pr-2', {
+                        'self-end': isSender(message.sender_id),
+                      })}
                     >
                       {getSenderName(message.sender_id)}
                     </span>
                     <div
-                      className={`px-3 py-2 rounded-2xl w-full ${isSender(message.sender_id)
-                        ? "text-white bg-[#001840] rounded-tr-none"
-                        : "bg-gray-200 text-gray-800 rounded-tl-none"
-                        }`}
+                      className={`px-3 py-2 rounded-2xl w-full ${
+                        isSender(message.sender_id)
+                          ? 'text-white bg-[#001840] rounded-tr-none'
+                          : 'bg-gray-200 text-gray-800 rounded-tl-none'
+                      }`}
                     >
                       <div className="flex flex-wrap items-end gap-x-2">
                         <p className="text-xs flex-1 min-w-0 whitespace-normal break-words">
                           {message.content}
                         </p>
                         <div
-                          className={`text-[8px] shrink-0 whitespace-nowrap flex gap-2 items-end justify-center ml-2 ${isSender(message.sender_id)
-                            ? "text-gray-100"
-                            : "text-gray-500"
-                            }`}
+                          className={`text-[8px] shrink-0 whitespace-nowrap flex gap-2 items-end justify-center ml-2 ${
+                            isSender(message.sender_id) ? 'text-gray-100' : 'text-gray-500'
+                          }`}
                         >
                           {message.sent_at} {renderTicks(message)}
                         </div>
@@ -370,7 +337,7 @@ const RenderChat = ({
                 src={
                   recipient?.user.profile_picture
                     ? `${img_base_url}${recipient.user.profile_picture}`
-                    : "/default-avatar.png"
+                    : '/default-avatar.png'
                 }
                 alt={displayName}
                 size={32}
@@ -386,12 +353,7 @@ const RenderChat = ({
         className="p-2 md:p-3 border-t bg-white sticky bottom-0 inset-x-0"
       >
         <div className="flex items-center gap-2 rounded-full p-1 bg-gray-200">
-          <input
-            type="file"
-            ref={fileInputRef}
-            onChange={handleFileChange}
-            className="hidden"
-          />
+          <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
 
           <LuPaperclip className="cursor-not-allowed ml-2 text-gray-400 transition-colors" />
           <input
@@ -405,16 +367,14 @@ const RenderChat = ({
             onClick={handleEmojiButtonClick}
             className={`text-gray-500 hover:text-blue-500 transition-colors text-[${MAIN_COLOR_LIGHT}]`}
           >
-            <SmileOutlined style={{ fontSize: "18px" }} />
+            <SmileOutlined style={{ fontSize: '18px' }} />
           </button>
           <button
             type="submit"
             disabled={!newMessage.trim()}
             className={clsx(
-              "p-2 h-8 w-8 rounded-full transition-colors flex items-center justify-center",
-              newMessage.trim()
-                ? `bg-[${MAIN_COLOR}] text-white`
-                : "bg-[#ccc] text-[#666]"
+              'p-2 h-8 w-8 rounded-full transition-colors flex items-center justify-center',
+              newMessage.trim() ? `bg-[${MAIN_COLOR}] text-white` : 'bg-[#ccc] text-[#666]'
             )}
           >
             <LuSendHorizontal className="text-xs" />

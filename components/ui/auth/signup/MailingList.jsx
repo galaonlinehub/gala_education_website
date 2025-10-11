@@ -1,11 +1,10 @@
-import { Alert, Button, Checkbox, Input, message, Select } from "antd";
-import { useTranslations } from "next-intl";
-import React, { useState, useEffect } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { Alert, Checkbox, Select } from 'antd';
+import { useTranslations } from 'next-intl';
+import React, { useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
 
-import Animator from "@/components/home/animations/Animator";
-import { apiPost } from "@/services/api/api_service";
-
+import Animator from '@/components/home/animations/Animator';
+import { apiPost } from '@/services/api/api_service';
 
 const MailingList = () => {
   const [alert, setAlert] = useState({
@@ -14,8 +13,7 @@ const MailingList = () => {
     message: null,
   });
 
-  const t = useTranslations("home_page");
-  
+  const t = useTranslations('home_page');
 
   const {
     control,
@@ -34,19 +32,18 @@ const MailingList = () => {
         formData.append(key, data[key]);
       });
 
-      console.log("The form data", formData);
 
-      const response = await apiPost("/support", formData, {
+      const response = await apiPost('/support', formData, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          'Content-Type': 'multipart/form-data',
         },
       });
 
       if (response.status === 200) {
         setAlert({
           show: true,
-          type: "success",
-          message: "Your data is successfully saved.",
+          type: 'success',
+          message: 'Your data is successfully saved.',
         });
       }
 
@@ -54,7 +51,7 @@ const MailingList = () => {
     } catch (e) {
       setAlert({
         show: true,
-        type: "error",
+        type: 'error',
         message: `Unexpected error occured, try again later, ${e?.message}`,
       });
     } finally {
@@ -72,10 +69,9 @@ const MailingList = () => {
     if (errors?.personal_data_consent || errors?.informative_material_consent)
       setAlert({
         show: true,
-        type: "error",
+        type: 'error',
         message:
-          errors.personal_data_consent?.message ||
-          errors.informative_material_consent?.message,
+          errors.personal_data_consent?.message || errors.informative_material_consent?.message,
       });
   };
 
@@ -89,12 +85,8 @@ const MailingList = () => {
       className="bg-white px-6 py-4 md:w-[29rem] w-full mt-4 md:mt-24  h-fit rounded-[15px]"
     >
       <Animator delay={0.2} direction="down">
-        <h1 className="font-black sm:text-xs text-[12px] mb-2">
-         {t('interest_header')}
-        </h1>
-        <h2 className="sm:text-xs text-[10px]">
-          {t('interest_header_subheader')}
-        </h2>
+        <h1 className="font-black sm:text-xs text-[12px] mb-2">{t('interest_header')}</h1>
+        <h2 className="sm:text-xs text-[10px]">{t('interest_header_subheader')}</h2>
         {alert.show && (
           <Alert
             className="!my-3 !text-[10px] !p-2 !flex !justify-center !items-center custom-alert"
@@ -114,14 +106,12 @@ const MailingList = () => {
               autoCorrect="off"
               placeholder={t('first_name')}
               className={`focus:outline-none text-white text-[10px] h-[34px] bg-[#001840] placeholder:text-white/50 placeholder:text-xs py-1 px-2 rounded-[5px]`}
-              {...register("firstname", {
+              {...register('firstname', {
                 required: t('required_field'),
               })}
             />
             {errors.firstname && (
-              <span className="text-red-500 text-[10px] px-2">
-                {errors.firstname.message}
-              </span>
+              <span className="text-red-500 text-[10px] px-2">{errors.firstname.message}</span>
             )}
           </div>
           <div className="flex flex-col gap-1 w-full">
@@ -132,24 +122,22 @@ const MailingList = () => {
               autoCorrect="off"
               placeholder={t('second_name')}
               className={`focus:outline-none text-white text-[10px] h-[34px] bg-[#001840] placeholder:text-white/50 placeholder:text-xs py-1 px-2 rounded-[5px]`}
-              {...register("lastname", {
+              {...register('lastname', {
                 required: t('required_field'),
               })}
             />
             {errors.lastname && (
-              <span className="text-red-500 text-[10px] px-2">
-                {errors.lastname.message}
-              </span>
+              <span className="text-red-500 text-[10px] px-2">{errors.lastname.message}</span>
             )}
           </div>
           <div className="flex flex-col gap-1 w-full">
             <input
               type="email"
-              {...register("email", {
+              {...register('email', {
                 required: t('required_field'),
                 pattern: {
                   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: "Invalid email address",
+                  message: 'Invalid email address',
                 },
               })}
               autoComplete="off"
@@ -158,21 +146,18 @@ const MailingList = () => {
               className={`focus:outline-none text-white text-[10px] h-[34px] bg-[#001840] placeholder:text-white/50 placeholder:text-xs py-1 px-2 rounded-[5px]`}
             />
             {errors.email && (
-              <span className="text-red-500 text-[10px] px-2">
-                {errors.email.message}
-              </span>
+              <span className="text-red-500 text-[10px] px-2">{errors.email.message}</span>
             )}
           </div>
 
           <div className="flex flex-col gap-1 w-full">
             <input
               type="text"
-              {...register("phonenumber", {
+              {...register('phonenumber', {
                 required: t('required_field'),
                 pattern: {
-                  value:
-                    /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/,
-                  message: "Invalid Phone number",
+                  value: /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/,
+                  message: 'Invalid Phone number',
                 },
               })}
               autoComplete="off"
@@ -181,9 +166,7 @@ const MailingList = () => {
               className={`focus:outline-none text-white text-[10px] h-[34px] bg-[#001840] placeholder:text-white/50 placeholder:text-xs py-1 px-2 rounded-[5px]`}
             />
             {errors.phonenumber && (
-              <span className="text-red-500 text-[10px] px-2">
-                {errors.phonenumber.message}
-              </span>
+              <span className="text-red-500 text-[10px] px-2">{errors.phonenumber.message}</span>
             )}
           </div>
           <div className="flex flex-col gap-1 w-full">
@@ -193,8 +176,7 @@ const MailingList = () => {
               rules={{
                 required: t('required_field'),
                 validate: (value) =>
-                  value !== "other" ||
-                  "Please provide additional details for 'Other'",
+                  value !== 'other' || "Please provide additional details for 'Other'",
               }}
               render={({ field: { onChange, value, ...fieldProps } }) => (
                 <Select
@@ -203,10 +185,10 @@ const MailingList = () => {
                   popupClassName="custom-select-dropdown"
                   className="custom-select !h-[34px] !focus:outline-none  !focus:border-none !rounded-[5px]"
                   options={[
-                    { value: "student", label: "Student" },
-                    { value: "teacher", label: "Teacher" },
-                    { value: "donor", label: "Donor" },
-                    { value: "other", label: "Other" },
+                    { value: 'student', label: 'Student' },
+                    { value: 'teacher', label: 'Teacher' },
+                    { value: 'donor', label: 'Donor' },
+                    { value: 'other', label: 'Other' },
                   ]}
                   onChange={(value) => onChange(value)}
                   value={value}
@@ -214,9 +196,7 @@ const MailingList = () => {
               )}
             />
             {errors.level && (
-              <span className="text-red-500 text-[10px] px-2">
-                {errors.level.message}
-              </span>
+              <span className="text-red-500 text-[10px] px-2">{errors.level.message}</span>
             )}
           </div>
         </div>
@@ -226,7 +206,7 @@ const MailingList = () => {
             placeholder={t('additional_info')}
             rows={3}
             className="!bg-[#001840] text-white p-2 w-full rounded-[5px] placeholder:italic placeholder:font-thin placeholder:text-xs focus:outline-none placeholder:text-white/50 text-xs"
-            {...register("additional_details")}
+            {...register('additional_details')}
           />
         </div>
         <div className="gap-x-2 flex justify-start items-center">
@@ -242,16 +222,14 @@ const MailingList = () => {
                 onChange={(e) => {
                   onChange(e.target.checked);
                   if (errors.personal_data_consent) {
-                    clearErrors("personal_data_consent");
+                    clearErrors('personal_data_consent');
                     hideAlert();
                   }
                 }}
               />
             )}
           />
-          <span className="text-[10px]  py-3">
-            {t('data_procesing_authorize')}
-          </span>
+          <span className="text-[10px]  py-3">{t('data_procesing_authorize')}</span>
         </div>
 
         <div className="gap-x-2 flex justify-start items-center">
@@ -259,7 +237,7 @@ const MailingList = () => {
             name="informative_material_consent"
             control={control}
             rules={{
-              required: "You must authorize Informative material.",
+              required: 'You must authorize Informative material.',
             }}
             render={({ field: { value, onChange } }) => (
               <Checkbox
@@ -267,16 +245,14 @@ const MailingList = () => {
                 onChange={(e) => {
                   onChange(e.target.checked);
                   if (errors.informative_material_consent) {
-                    clearErrors("informative_material_consent");
+                    clearErrors('informative_material_consent');
                     hideAlert();
                   }
                 }}
               />
             )}
           />
-          <span className="text-[10px] py-3">
-           {t('informative_material_authorize')}
-          </span>
+          <span className="text-[10px] py-3">{t('informative_material_authorize')}</span>
         </div>
 
         <div className="py-4">

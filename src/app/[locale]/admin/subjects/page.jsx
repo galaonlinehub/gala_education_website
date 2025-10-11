@@ -1,51 +1,48 @@
-"use client";
-import { useQuery } from "@tanstack/react-query";
-import Link from "next/link";
-import React from "react";
-import DataTable from "react-data-table-component";
+'use client';
+import { useQuery } from '@tanstack/react-query';
+import Link from 'next/link';
+import React from 'react';
+import DataTable from 'react-data-table-component';
 
-import { apiGet } from "@/services/api/api_service";
-import { customStyles } from "@/styles/admin/datatable/customStyles";
+import { apiGet } from '@/services/api/api_service';
+import { customStyles } from '@/styles/admin/datatable/customStyles';
 
 function Subjects() {
-  const [selectedRows, setSelectedRows] = React.useState([]);
-  const [toggleCleared, setToggleCleared] = React.useState(false);
-
   const getSubjects = async () => {
-    const { data } = await apiGet("subjects");
+    const { data } = await apiGet('subjects');
     return data;
   };
 
   const { data: subjects } = useQuery({
-    queryKey: ["subjects"],
+    queryKey: ['subjects'],
     queryFn: getSubjects,
   });
 
   const columns = [
     {
-      name: "Name",
+      name: 'Name',
       selector: (row) => row.name,
       sortable: true,
     },
     {
-      name: "Levels",
+      name: 'Levels',
       selector: (row) => row.levels,
       sortable: true,
     },
     {
-      name: "Medium",
+      name: 'Medium',
       selector: (row) => row.medium,
     },
     {
-      name: "Category",
+      name: 'Category',
       selector: (row) => row.category,
       sortable: true,
     },
   ];
 
-  const handleRowSelected = React.useCallback((state) => {
-    setSelectedRows(state.selectedRows);
-  }, []);
+  // const handleRowSelected = React.useCallback((state) => {
+  //   setSelectedRows(state.selectedRows);
+  // }, []);
 
   return (
     <div>
@@ -54,7 +51,7 @@ function Subjects() {
           <div className="w-full flex justify-between px-2">
             <span className="text-xs text-blue-500">Subjects</span>
             <Link
-              href={"/admin/subjects/add-new"}
+              href={'/admin/subjects/add-new'}
               className="text-xs text-blue-500 hover:underline"
             >
               + new subject

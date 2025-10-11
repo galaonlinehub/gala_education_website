@@ -1,21 +1,12 @@
 'use client';
-import { Modal, Button, Typography, Space, Avatar } from 'antd';
-import React, { useState } from 'react';
-import { BsClock } from 'react-icons/bs';
+import { Modal, Button, Typography, Space } from 'antd';
+import React from 'react';
 import { FiAlertTriangle } from 'react-icons/fi';
-import { LuPhoneOff, LuUserSearch } from 'react-icons/lu';
-
+import { LuPhoneOff } from 'react-icons/lu';
 
 const { Title, Text } = Typography;
 
-const EndCallModal = ({ 
-  isOpen, 
-  onClose, 
-  onConfirm,
-  isCompletingLesson,
-  participantCount = 3,
-  duration = "25:43" 
-}) => {
+const EndCallModal = ({ isOpen, onClose, onConfirm, isCompletingLesson }) => {
   const handleConfirm = async () => {
     onConfirm();
   };
@@ -37,7 +28,7 @@ const EndCallModal = ({
           borderRadius: '20px',
           padding: 0,
           overflow: 'hidden',
-        }
+        },
       }}
     >
       {/* Custom Content */}
@@ -55,15 +46,15 @@ const EndCallModal = ({
           <Title level={3} className="mb-2 text-gray-800">
             End Call Session?
           </Title>
-          
+
           <Text className="text-gray-600 text-base">
-            Are you sure you want to leave this lesson? Other participants will remain in the session.
+            Are you sure you want to leave this lesson? Other participants will remain in the
+            session.
           </Text>
         </div>
 
         {/* Body with session info */}
         <div className="p-6 bg-white">
-         
           <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
             <div className="flex items-start space-x-3">
               <FiAlertTriangle size={18} className="text-amber-600 mt-0.5 flex-shrink-0" />
@@ -72,7 +63,8 @@ const EndCallModal = ({
                   Important Note
                 </Text>
                 <Text className="text-sm text-amber-700">
-                  Once you leave, you&apos;ll be autmatically ending the lesson and marking it as completed.
+                  Once you leave, you&apos;ll be autmatically ending the lesson and marking it as
+                  completed.
                 </Text>
               </div>
             </div>
@@ -95,7 +87,7 @@ const EndCallModal = ({
             >
               {isCompletingLesson ? 'Ending Call...' : 'Yes, End Call'}
             </Button>
-            
+
             <Button
               size="large"
               block

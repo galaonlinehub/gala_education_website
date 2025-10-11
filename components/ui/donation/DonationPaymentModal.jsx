@@ -1,6 +1,6 @@
 import { Modal, Button } from 'antd';
 import { useTranslations } from 'next-intl';
-import React, { useState } from 'react';
+import React from 'react';
 
 import { RenderReferenceState } from '../auth/signup/PaymentStatus';
 
