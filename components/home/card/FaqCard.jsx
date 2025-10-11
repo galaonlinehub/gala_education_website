@@ -4,8 +4,6 @@ import clsx from "clsx";
 import { IoIosArrowDropdownCircle } from "react-icons/io";
 
 
-const { Panel } = Collapse;
-
 export const FaqCard = ({ faqQn, faqAns }) => {
   const customExpandIcon = ({ isActive }) => (
     <IoIosArrowDropdownCircle

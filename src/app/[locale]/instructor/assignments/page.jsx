@@ -13,7 +13,6 @@ import {
   Upload,
   Button,
   Card,
-  Typography,
   Alert,
   Space,
   Row,
@@ -44,7 +43,6 @@ const AssignmentUpload = () => {
     },
     onChange(info) {
       if (info.file.status !== 'uploading') {
-        console.log(info.file, info.fileList);
       }
       if (info.file.status === 'done') {
         message.success(`${info.file.name} file uploaded successfully`);
@@ -54,8 +52,7 @@ const AssignmentUpload = () => {
     },
   };
 
-  const onFinish = (values) => {
-    console.log('Form values:', values);
+  const onFinish = () => {
   };
 
   return (

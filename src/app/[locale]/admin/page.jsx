@@ -11,7 +11,7 @@ import {
 import { useDashboard } from "@/features/admin/hooks/useDashboard.hooks";
 
 function AdminPage() {
-  const { metrics, isFetchingMetrics, metricsError, metricsConfig } = useDashboard();
+  const { metrics, isFetchingMetrics, metricsConfig } = useDashboard();
 
   return (
     <div className="flex flex-col gap-4 ">

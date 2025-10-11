@@ -12,7 +12,6 @@ const StudentContract = () => {
   const [checked, setChecked] = useState(false);
 
   const onChange = (e) => {
-    console.log("checked = ", e.target.checked);
     setChecked(e.target.checked);
   };
 
@@ -23,10 +22,8 @@ const StudentContract = () => {
       const isAccepted = decrypt(contractStatus) === "student-accepted";
       if (isAccepted) {
         setOpenStudentContract(false);
-        console.log("accept value is false");
       } else {
         setOpenStudentContract(true);
-        console.log("accept value is true");
       }
     } else {
       setOpenStudentContract(true);

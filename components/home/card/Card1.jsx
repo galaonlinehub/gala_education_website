@@ -1,7 +1,6 @@
 "use client";
 import {  Modal } from "antd";
 import Image from "next/image";
-import Link from "next/link";
 import React, { useState } from "react";
 
 function Card1({ image, title, desc, details }) {

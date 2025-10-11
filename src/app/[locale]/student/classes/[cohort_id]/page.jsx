@@ -13,7 +13,6 @@ import {
   LuCheck,
   LuClock4,
   LuDownload,
-  LuFileMinus,
   LuFileText,
   LuPlay,
   LuUsers,
@@ -36,7 +35,7 @@ const ClassDetailsPage = ({ params }) => {
   const searchParams = useSearchParams();
   const instructor_id = decrypt(searchParams.get("id"));
 
-  const [passedValue, setPassedValue] = useState("");
+  const [_passedValue, setPassedValue] = useState("");
   const [openRatingModal, setOpenRatingModal] = useState(false);
   const [rateValue, setRateValue] = useState(null);
   const [comment, setComment] = useState("");
@@ -55,7 +54,6 @@ const ClassDetailsPage = ({ params }) => {
 
   const handleRating = (value) => {
     setRateValue(value);
-    console.log("Selected rating:", value);
   };
 
   const handleSubmitRating = async () => {
@@ -86,19 +84,14 @@ const ClassDetailsPage = ({ params }) => {
     cohortDetailsLoading,
     instructorDetails,
     instructorDetailsLoading,
-    instructorDetailsError,
     classSyllabus,
     classSyllabusFetching,
-    classSyllabusError,
     classSchedule,
-    clclassScheduleFetching,
-    classScheduleError,
+
     classMaterials,
-    classMaterialsFetching,
-    classMaterialsErrors,
+
     classAssigments,
-    classAssigmentsFetching,
-    classAssignmentsError,
+  
   } = useEnrolledTopics(cohort_id, instructor_id);
 
   const act = useTranslations('all_classes');

@@ -2,7 +2,7 @@ import { Button, Flex, Modal } from 'antd';
 import React, { useState } from 'react';
 const TeacherSurvey = () => {
   const [open, setOpen] = useState(false);
-  const [openResponsive, setOpenResponsive] = useState(false);
+  
   return (
     <Flex vertical gap="middle" align="flex-start">
       {/* Basic */}

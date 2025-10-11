@@ -16,7 +16,6 @@ import { GiBookCover } from "react-icons/gi";
 import { MdTopic } from "react-icons/md";
 
 import CohortCardSkeleton from "@/components/teacher/CohortCardSkeleton";
-import { useCohort } from "@/hooks/data/useCohort";
 import { useInstructorCohorts } from "@/hooks/data/useInstructorCohorts";
 import biologyImage from "@/public/subjects/biology.jpeg";
 import chemistryImage from "@/public/subjects/chemistry.jpeg";
@@ -51,7 +50,6 @@ const getSubjectImage = (subject) => {
 const InstructorClasses = () => {
   const { InstructorCohorts, isInstructorCohortsPending } =
     useInstructorCohorts();
-  const { cohorts } = useCohort();
   const router = useRouter();
 
   const [openAddNewClass, setOpenAddNewClass] = useState(false);
@@ -81,8 +79,7 @@ const InstructorClasses = () => {
     router.push(`all-classes/${encryptedId}`);
   };
 
-  console.log("Instructor cohorts in page", InstructorCohorts);
-  console.log("The cohorts paginated", cohorts);
+  
 
   const filteredClasses = InstructorCohorts?.filter(
     (classItem) =>
@@ -125,7 +122,7 @@ const InstructorClasses = () => {
           {filteredClasses &&
             filteredClasses.map((classItem) => {
               // Calculate enrollment percentage
-              const enrollmentPercentage = Math.round(
+              Math.round(
                 (classItem.data.total_enrolled_students /
                   classItem.data.instructor_total_students) *
                 100

@@ -1,0 +1,10 @@
+/* TEAM */
+Developer: Gala Hub Team
+Site: https://galahub.tz
+Location: Dar es Salaam, Tanzania
+
+/* SITE */
+Last update: 2025/10/11
+Standards: HTML5, CSS3, JavaScript
+Components: Next.js, React
+Software: VS Code

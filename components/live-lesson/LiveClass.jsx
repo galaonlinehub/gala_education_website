@@ -1,7 +1,7 @@
 "use client";
 
 import { LoadingOutlined } from "@ant-design/icons";
-import { Avatar, Button, Card, Collapse, Modal, Segmented, Tag } from "antd";
+import { Button, Card, Collapse, Modal, Segmented, Tag } from "antd";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import React, { useState } from "react";
@@ -31,7 +31,7 @@ const ClassCard = ({ classData, status }) => {
   const router = useRouter();
   const { user } = useUser();
 
-  const { lessonToken, lessonTokenPending, getLessonToken } = useLesson();
+  const { getLessonToken } = useLesson();
 
   const showConfirmModal = () => {
     setIsModalOpen(true);

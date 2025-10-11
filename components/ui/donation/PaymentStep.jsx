@@ -10,24 +10,16 @@ import {
   Typography,
   Button,
   Input,
-  Modal,
-} from "antd";
-import { useTranslations } from "next-intl";
-import { useEffect, useMemo, useState } from "react";
+} from 'antd';
+import { useTranslations } from 'next-intl';
+import { useState } from 'react';
 
-import { PaymentStatus } from "@/config/settings";
-import {
-  useDonationListener,
-  usePaymentSocketContext,
-} from "@/hooks/misc/paymentSocketContext";
-import { apiPost } from "@/services/api/api_service";
-import { sessionStorageFn } from "@/utils/fns/client";
-import { encrypt } from "@/utils/fns/encryption";
+import { useDonationListener, usePaymentSocketContext } from '@/hooks/misc/paymentSocketContext';
+import { apiPost } from '@/services/api/api_service';
+import { sessionStorageFn } from '@/utils/fns/client';
+import { encrypt } from '@/utils/fns/encryption';
 
-import ConfettiButton from "../ConfettiAnimation";
-
-
-const { Title, Paragraph, Text } = Typography;
+const { Text } = Typography;
 
 const PaymentStep = ({
   form,
@@ -41,19 +33,12 @@ const PaymentStep = ({
   isPhoneValid,
   setShowProcessingModal,
 }) => {
-   const {room_name} =  usePaymentSocketContext();
+  const { room_name } = usePaymentSocketContext();
   const [loading, setLoading] = useState(false);
-  const [orderID, setOrderID] = useState();
-
- console.log(room_name, "ROOM NAME")
-
-
 
   useDonationListener((paymentMsg) => {
-    if (paymentMsg.status === "success") {
-      console.log("Payment successful!");
-    } else if (paymentMsg.status === "failed") {
-      console.log("Payment failed!");
+    if (paymentMsg.status === 'success') {
+    } else if (paymentMsg.status === 'failed') {
     }
   });
 
@@ -64,27 +49,23 @@ const PaymentStep = ({
       .validateFields()
       .then(async (values) => {
         const donationData = {
-          email: values.email || form.getFieldValue("email") || "",
-          frequency: donationFrequency === "monthly" ? "monthly" : "one_time",
-          name: values.name || form.getFieldValue("name") || "",
+          email: values.email || form.getFieldValue('email') || '',
+          frequency: donationFrequency === 'monthly' ? 'monthly' : 'one_time',
+          name: values.name || form.getFieldValue('name') || '',
           amount: selectedAmount,
           phone_number: `255${values.phone_number}`,
           room_name: room_name,
         };
 
-        const response = await apiPost("/make-donation", donationData);
+        const response = await apiPost('/make-donation', donationData);
 
         const encryptedPaymentReference = encrypt(
           response.data.order_response?.data[0]?.payment_token
         );
         const encryptedAmount = encrypt(selectedAmount);
 
-        sessionStorageFn.set("payment_reference", encryptedPaymentReference);
-        sessionStorageFn.set("amount_paid", encryptedAmount);
-
-        console.table(
-          response.data
-        );
+        sessionStorageFn.set('payment_reference', encryptedPaymentReference);
+        sessionStorageFn.set('amount_paid', encryptedAmount);
 
         setLoading(false);
         form.resetFields();
@@ -92,8 +73,7 @@ const PaymentStep = ({
 
         setShowProcessingModal(true);
       })
-      .catch((error) => {
-        console.error("Validation failed:", error);
+      .catch(() => {
         setLoading(false);
       });
   };
@@ -107,22 +87,22 @@ const PaymentStep = ({
   return (
     <div>
       <Form form={form} layout="vertical">
-        <div style={{ marginBottom: "16px" }}>
+        <div style={{ marginBottom: '16px' }}>
           <Text strong>{donate('choose_payment_method')}</Text>
           <Radio.Group
             value={paymentMethod}
             onChange={(e) => setPaymentMethod(e.target.value)}
-            style={{ marginTop: "8px", width: "100%" }}
+            style={{ marginTop: '8px', width: '100%' }}
             buttonStyle="solid"
           >
             <Radio.Button
               disabled
               value="bank"
               style={{
-                width: "50%",
-                textAlign: "center",
-                backgroundColor: paymentMethod === "bank" ? "#001840" : "",
-                color: paymentMethod === "bank" ? "white" : "",
+                width: '50%',
+                textAlign: 'center',
+                backgroundColor: paymentMethod === 'bank' ? '#001840' : '',
+                color: paymentMethod === 'bank' ? 'white' : '',
               }}
             >
               {donate('bank_acc')}
@@ -130,10 +110,10 @@ const PaymentStep = ({
             <Radio.Button
               value="mobile"
               style={{
-                width: "50%",
-                textAlign: "center",
-                backgroundColor: paymentMethod === "mobile" ? "#001840" : "",
-                color: paymentMethod === "mobile" ? "white" : "",
+                width: '50%',
+                textAlign: 'center',
+                backgroundColor: paymentMethod === 'mobile' ? '#001840' : '',
+                color: paymentMethod === 'mobile' ? 'white' : '',
               }}
             >
               {enroll_pay('mobile')}
@@ -141,59 +121,51 @@ const PaymentStep = ({
           </Radio.Group>
         </div>
 
-        {paymentMethod === "bank" && (
-          <Space direction="vertical" size="middle" style={{ width: "100%" }}>
+        {paymentMethod === 'bank' && (
+          <Space direction="vertical" size="middle" style={{ width: '100%' }}>
             <Row gutter={[16, 16]}>
               <Col span={24}>
-                <Form.Item label="Card Number" style={{ marginBottom: "12px" }}>
+                <Form.Item label="Card Number" style={{ marginBottom: '12px' }}>
                   <Input placeholder="1234 5678 9012 3456" />
                 </Form.Item>
               </Col>
 
               <Col span={12}>
-                <Form.Item
-                  label="Expiration Date"
-                  style={{ marginBottom: "12px" }}
-                >
+                <Form.Item label="Expiration Date" style={{ marginBottom: '12px' }}>
                   <Input placeholder="MM/YY" />
                 </Form.Item>
               </Col>
               <Col span={12}>
-                <Form.Item label="CVV" style={{ marginBottom: "12px" }}>
+                <Form.Item label="CVV" style={{ marginBottom: '12px' }}>
                   <Input placeholder="123" />
                 </Form.Item>
               </Col>
             </Row>
 
-            <Form.Item label="Country" style={{ marginBottom: "12px" }}>
-              <Select defaultValue="tanzania" style={{ width: "100%" }}>
+            <Form.Item label="Country" style={{ marginBottom: '12px' }}>
+              <Select defaultValue="tanzania" style={{ width: '100%' }}>
                 <Select.Option value="tanzania">Tanzania</Select.Option>
                 <Select.Option value="kenya">Kenya</Select.Option>
                 <Select.Option value="uganda">Uganda</Select.Option>
               </Select>
             </Form.Item>
 
-            <Text style={{ fontSize: "12px" }}>
-              By providing your card information, you allow Gala Education to
-              charge your card for future payments in accordance with their
-              terms.
+            <Text style={{ fontSize: '12px' }}>
+              By providing your card information, you allow Gala Education to charge your card for
+              future payments in accordance with their terms.
             </Text>
           </Space>
         )}
 
-        {paymentMethod === "mobile" && (
-          <Space direction="vertical" size="middle" style={{ width: "100%" }}>
+        {paymentMethod === 'mobile' && (
+          <Space direction="vertical" size="middle" style={{ width: '100%' }}>
             <Form.Item
               label={ht('phone')}
               name="phone_number"
               rules={[
                 {
                   required: true,
-                  message: (
-                    <span className="text-xs ">
-                      {sut('enter_phone')}
-                    </span>
-                  ),
+                  message: <span className="text-xs ">{sut('enter_phone')}</span>,
                 },
                 {
                   validator: async (_, value) => {
@@ -205,18 +177,14 @@ const PaymentStep = ({
                     if (!/^[67]/.test(value)) {
                       setIsPhoneValid(false);
                       return Promise.reject(
-                        <span className="text-xs">
-                          {donate('phone_number_start')}
-                        </span>
+                        <span className="text-xs">{donate('phone_number_start')}</span>
                       );
                     }
 
                     if (!/^\d{9}$/.test(value)) {
                       setIsPhoneValid(false);
                       return Promise.reject(
-                        <span className="text-xs">
-                          {donate('phone_number_length')}
-                        </span>
+                        <span className="text-xs">{donate('phone_number_length')}</span>
                       );
                     }
                     setIsPhoneValid(true);
@@ -236,32 +204,29 @@ const PaymentStep = ({
           </Space>
         )}
 
-        <Divider style={{ margin: "16px 0" }} />
+        <Divider style={{ margin: '16px 0' }} />
 
-        <Card
-          size="small"
-          style={{ marginBottom: "16px", background: "#f9f9f9" }}
-        >
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <Card size="small" style={{ marginBottom: '16px', background: '#f9f9f9' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <Text>{donate('amount')} :</Text>
             <Text strong>{`TZS ${selectedAmount?.toLocaleString()}`}</Text>
           </div>
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <Text>{cct('frequency')}:</Text>
             <Text strong>
-              {donationFrequency === "monthly" ? donate('monthly') : donate('one_time')}
+              {donationFrequency === 'monthly' ? donate('monthly') : donate('one_time')}
             </Text>
           </div>
         </Card>
 
         <div
           style={{
-            marginTop: "20px",
-            display: "flex",
-            justifyContent: "space-between",
+            marginTop: '20px',
+            display: 'flex',
+            justifyContent: 'space-between',
           }}
         >
-          <Button disabled={loading} onClick={() => setActiveTab("1")}>
+          <Button disabled={loading} onClick={() => setActiveTab('1')}>
             {cct('back')}
           </Button>
           <Button

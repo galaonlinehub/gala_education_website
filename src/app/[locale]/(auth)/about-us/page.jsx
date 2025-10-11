@@ -1,5 +1,5 @@
 'use client';
-import { Button, Card, Divider, Input, Modal, Typography, Tabs } from 'antd';
+import { Button, Card, Divider, Input, Modal, Typography } from 'antd';
 import { Segmented, ConfigProvider } from 'antd';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
