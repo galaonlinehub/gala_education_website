@@ -19,6 +19,7 @@ import { handlePhoneInput, reformat_phone_number } from '@/utils/fns/format_phon
 import { Signout } from '../ui/auth/signup/Signout';
 import SlickSpinner from '../ui/loading/template/SlickSpinner';
 import { Stage } from '@/utils/data/variables';
+import toast from 'react-hot-toast';
 
 const CompleteProfile = () => {
   const [status, setStatus] = useState(Stage.SAVE);
@@ -39,7 +40,7 @@ const CompleteProfile = () => {
   return (
     <Modal
       open={
-        (user?.role === 'student' && user?.completed_profile) ||
+        (user?.role === 'student' && !user?.completed_profile) ||
         (user?.role === 'instructor' && !user?.completed_profile && user?.has_active_subscription)
       }
       footer={null}
@@ -90,7 +91,17 @@ const Save = ({ status, setStatus, setPhoneNumber }) => {
         setImageUrl(null);
       },
       onError: (error) => {
-        message.error('Failed to update profile: ' + error.message);
+        // message.error('Failed to update profile: ' + error.message);
+        toast.error(`Failed to update profile`);
+
+        if (error?.response?.data?.errors?.phone_number) {
+          form.setFields([
+            {
+              name: 'phone_number',
+              errors: error.response.data.errors.phone_number,
+            },
+          ]);
+        }
       },
     });
   };
