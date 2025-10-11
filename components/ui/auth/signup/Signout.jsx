@@ -59,7 +59,7 @@ const Signout = ({ onCloseSidebar }) => {
               setSignoutVisible(true);
             }}
             icon={<LuLogOut />}
-            className="w-full !border-red-500 text-red-500 hover:!text-red-500"
+            className="w-full !border-black text-red-500 hover:!text-red-500"
           >
             {sot('sign_out')}
           </Button>
