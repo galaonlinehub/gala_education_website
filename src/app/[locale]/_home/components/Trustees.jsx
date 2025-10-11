@@ -28,7 +28,15 @@
 // };
 
 "use client"
+
+import { useTranslations } from "next-intl";
+
 export const Trustees = () => {
+
+
+  const homepage = useTranslations('home_page');
+
+
   const trustees = [
     {
       name: "Paediatric Association of Tanzania(PAT)",
@@ -50,7 +58,7 @@ export const Trustees = () => {
   return (
     <section className="bg-[#001840] text-white flex flex-col sm:flex-row items-center gap-2 sm:gap-3 h-auto sm:h-[80px] py-3 sm:py-0 px-2 sm:px-4 justify-center overflow-hidden">
       <h2 className="text-sm sm:text-base md:text-lg font-extrabold whitespace-nowrap flex-shrink-0">
-        Trusted by:
+        {homepage('trusted_by')}:
       </h2>
       
       {/* All screens: Animated marquee */}

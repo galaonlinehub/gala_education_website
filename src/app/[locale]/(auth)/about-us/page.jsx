@@ -1,5 +1,5 @@
 'use client';
-import { Button, Card, Divider, Input, Modal, Typography, Tabs } from 'antd';
+import { Button, Card, Divider, Input, Modal, Typography } from 'antd';
 import { Segmented, ConfigProvider } from 'antd';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
@@ -664,7 +664,7 @@ const AboutUs = () => {
 
         {BiographyModal()}
         {showDonatePop && (
-          <div className="fixed inset-0 bg-black bg-opacity-70 !z-[80] flex justify-center items-center">
+          <div className="fixed inset-0 bg-black/70 bg-opacity-70 !z-[80] flex justify-center items-center">
             <div className="p-1 rounded-lg w-full items-center justify-center flex ">
               <Donate
                 setShowDonatePopup={setShowDonatePop}

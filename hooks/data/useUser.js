@@ -1,14 +1,13 @@
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useRouter, usePathname } from 'next/navigation';
 
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useRouter, usePathname } from "next/navigation";
+import { apiPost } from '@/services/api/api_service';
 
-import { apiPost } from "@/services/api/api_service";
-
-import { USER_COOKIE_KEY } from "../../config/settings";
-import { globalOptions } from "../../config/tanstack";
-import { roleRedirects } from "../../utils/data/redirect";
-import { cookieFn } from "../../utils/fns/client";
-import { getUser } from "../../utils/fns/global";
+import { USER_COOKIE_KEY } from '../../config/settings';
+import { globalOptions } from '../../config/tanstack';
+import { roleRedirects } from '../../utils/data/redirect';
+import { cookieFn } from '../../utils/fns/client';
+import { getUser } from '../../utils/fns/global';
 
 export const useUser = () => {
   const router = useRouter();
@@ -23,7 +22,7 @@ export const useUser = () => {
     isPending,
     refetch,
   } = useQuery({
-    queryKey: ["auth-user"],
+    queryKey: ['auth-user'],
     queryFn: getUser,
     enabled: !!cookieFn.get(USER_COOKIE_KEY),
     staleTime: Infinity,
@@ -31,32 +30,32 @@ export const useUser = () => {
     retry: 1,
     ...globalOptions,
     onSuccess: (user) => {
-      if (user?.role && pathname === "/signin") {
-        router.push(roleRedirects[user.role] || "/signin");
+      if (user?.role && pathname === '/signin') {
+        router.push(roleRedirects[user.role] || '/signin');
       }
     },
     onError: (error) => {
-      console.error("User fetch error:", error);
+      console.error('User fetch error:', error);
     },
   });
 
   const updateProfile = useMutation({
     mutationFn: async (data) => {
-      const response = await apiPost("/update-user", data, {
-        "Content-Type": "multipart/form-data",
+      const response = await apiPost('/update-user', data, {
+        'Content-Type': 'multipart/form-data',
       });
       return response.data;
     },
     enabled: !!user,
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["auth-user"] });
+      queryClient.invalidateQueries({ queryKey: ['auth-user'] });
 
-      if (user?.role === "instructor") {
+      if (user?.role === 'instructor') {
         const keysToInvalidate = [
-          ["instructor"],
-          ["instructor-subjects"],
-          ["instructor-profile"],
-          ["instructor_cohorts"],
+          ['instructor'],
+          ['instructor-subjects'],
+          ['instructor-profile'],
+          ['instructor_cohorts'],
         ];
 
         keysToInvalidate.forEach((key) => {
@@ -69,7 +68,7 @@ export const useUser = () => {
 
   const verifyOtp = useMutation({
     mutationFn: async (data) => {
-      const response = await apiPost("/verify-otp", data);
+      const response = await apiPost('/verify-otp', data);
       return response.data;
     },
     onSuccess: () => {},
@@ -77,10 +76,12 @@ export const useUser = () => {
 
   const resendOtp = useMutation({
     mutationFn: async (phone_number) => {
-      const response = await apiPost("/request-otp", { phone_number });
+      const response = await apiPost('/request-otp', { phone_number });
       return response.data;
     },
   });
+
+  // if (!cookieFn.get(USER_COOKIE_KEY)) return;
 
   return {
     // User data and loading states

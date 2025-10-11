@@ -24,7 +24,6 @@ export default function PaymentFailedAnimation({ setCloseFailureModal }) {
     }, []);
 
     const payt = useTranslations('payments')
-    const sut = useTranslations('sign_up')
 
     return (
         <div>
@@ -90,7 +89,7 @@ export default function PaymentFailedAnimation({ setCloseFailureModal }) {
 
 
                         <button
-                            onClick={() => window.location.href = 'mailto:support@galahub.org?subject=Payment Support Needed'}
+                            onClick={() => window.location.href = 'mailto:support@galahub.tz?subject=Payment Support Needed'}
                             className="w-full bg-white border-2 border-gray-200 text-gray-600 py-2 rounded-2xl font-medium hover:border-gray-300 hover:bg-gray-50 transition-all duration-300 flex items-center justify-center space-x-2"
                         >
                             <QuestionCircleFilled />

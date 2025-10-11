@@ -1,9 +1,38 @@
 {
   "home_page": {
+    "new": "Mpya",
+    "experience_the_future_of_learning": "Pata uzoefu wa elimu ya kisasa kwa kupitia",
+    "future_of_learning": "Elimu ya kisasa kwa kupitia",
+    "completely_free": "BURE kabisa",
+    "student_registration": "Usajili wa wanafunzi ni",
+    "dont_wait": "- usisubiri, jisajili sasa!",
+    "the_no_1_student_platform": "Jukwaa Namba moja la Twisheni",
+    "connecting_teacher_students": "linalounganisha Walimu na Wanafunzi",
+    "digitally": "Kidijitali",
+    "gala_education_goal": "Gala Education inaunganisha walimu na wanafunzi kwenye jukwaa moja lenye nguvu la kidijitali. Jifunze, fundisha, na fanikiwa wakati wowote, popote, kupitia masomo ya kibinafsi yaliyoundwa kwa ajili ya kila mwanafunzi.",
+    "become_student": "Jisajili kama Mwanafunzi",
+    "become_teacher": "Jisajili kama Mwalimu",
+
+    "featured_press": "Vyombo vya Habari Tulivyohusishwa",
+    "view_all_press": "Angalia Vyombo vyote vya Habari",
+
+    "trusted_by": "Tunaaminika na",
+    "best_platform": "Jukwaa bora",
+    "why_us": "Kwa Nini Utuchague",
+    "online_teaching_learning": "Kufundisha na Kujifunza Mtandaoni",
+    "gala_1_to_6": "Gala Education inaunganisha walimu na wanafunzi katika madarasa ya mtandaoni ya moja kwa moja, ikitoa masomo ya kitaalamu yaliyolingana na mtaala wa taifa wa Tanzania kutoka Darasa la Kwanza hadi Kidato cha Sita.",
+    "gala_assistant": "GalaAI - Msaidizi Wako wa Kitaaluma",
+    "gala_assistant_description": "GalaAI, msaidizi wetu wa kitaaluma, hutoa ufundishaji wa kibinafsi ndani ya mfumo na pia inapatikana bila mtandao kupitia SMS, kuhakikisha msaada hata katika maeneo ya mbali bila intaneti.",
+
+    "gala_online_library": "Maktaba ya Mtandaoni",
+    "gala_online_library_description": "Walimu wanapata ufikiaji wa rasilimali za kufundishia tayari, wakati wanafunzi wanapata faida kutokana na vitabu vya masomo, vitabu vya hadithi, na vifaa vya kujifunzia kwa kujitegemea na kurudia masomo.",
+
+    "affordable_empowering": "Nafuu na Inaongeza Uwezo",
+    "affordable_empowering_description": "Gala Education inafanya masomo ya ubora kupatikana kwa bei nafuu kwa wanafunzi, huku ikiwapa walimu fursa ya kupata kipato kupitia ajira ya mtandaoni yenye urahisi.",
+
     "home": "Nyumbani",
     "student": "Mwanafunzi",
     "teacher": "Mwalimu",
-    "gala_sub_header": "Kuimarisha fikra, kuunda mstakabali – “Gala Education”, njia yako ya mafanikio.",
     "interest_header": "Je, unavutiwa na kipindi na ungependa kujua zaidi?",
     "interest_header_subheader": "Jaza fomu na utawasiliana na ofisi yetu haraka iwezekanavyo.",
     "first_name": "Jina la kwanza",
@@ -27,9 +56,6 @@
     "for_teachers": "Kwa Walimu",
     "enroll_now": "Jisajili Sasa",
     "collaborative_digital_learning": "Kujifunza kwa kidijitali kwa ushirikiano",
-    "all_curiculums": "Mitaala yote",
-    "all_subjects_teachers": "Walimu wa masomo yote",
-    "self_employment": "Kujiajiri",
     "quick_payments": "Malipo ya haraka ndani ya masaa 24",
     "our_story": "Stori yetu",
     "our_story_text": "Hapa Tanzania, familia nyingi zinakabiliana na changamoto kubwa ya kutoa elimu bora kwa watoto wao kutokana na uhaba mkubwa wa walimu wenye sifa na rasilimali za kielimu. Gala Education ilianzishwa kutokana na tamaa ya dhati ya kubadilisha hali hii, ikitoa tumaini kupitia ufundishaji bora wa mtandaoni kwa wanafunzi wa Shule za Msingi, Sekondari na Kidato cha Juu. Hatutoi tu ajira kwa walimu, bali pia tunawekeza upya faida zetu katika kujenga madarasa, maktaba, kuajiri wakufunzi wa muda na mengine mengi, tukileta ndoto karibu na ukweli kwa maelfu ya watoto nchini Tanzania. Zaidi ya hayo, jukwaa letu linatoa kozi fupi mbalimbali zilizobuniwa kuwapa vijana wa Kitanzania ujuzi wa vitendo unaowawezesha kujiajiri, unaofundishwa na wataalamu wa fani tofauti. Jiunge nasi katika kuleta mabadiliko makubwa, mwanafunzi mmoja kwa wakati mmoja.",
@@ -155,7 +181,7 @@
     "serve_from_wherever": "Hudumia jamii yako kutoka popote ulipo",
     "donate_message": "Athari kwa jamii iko katikati ya Gala Education. Sehemu ya kila mchango hutolewa kwa shughuli za kuwafikia watu, kuunga mkono ushirikiano wa kimkakati unaoshughulikia mahitaji halisi ndani ya nchi na duniani kote. Kuanzia kuwawezesha shule hadi kutoa rasilimali muhimu kwa wenye uhitaji, tumejizatiti kuleta mabadiliko yenye maana katika elimu na maeneo mengine. Tunaamini katika kuwekeza kwa ukarimu, kuhudumia kwa uthabiti, na kushirikiana kwa mkakati ili kuleta athari za kudumu. Kila mtu ana nafasi ya kushiriki—jiunge nasi katika kuunda mustakabali bora kwa wanafunzi na jamii zinazo hitaji msaada.",
     "contact_us": "Wasiliana nasi",
-    "inquiries": "Kwa maswali yanayoelekezwa kwa timu ya Gala Education, tafadhali tuma barua pepe kwa info@galahub.org au wasilisha maswali yako kwa kubofya kitufe kilicho hapa chini.",
+    "inquiries": "Kwa maswali yanayoelekezwa kwa timu ya Gala Education, tafadhali tuma barua pepe kwa info@galahub.tz au wasilisha maswali yako kwa kubofya kitufe kilicho hapa chini.",
     "mail_us": "Tuandikie",
     "call_us": "Tupigie",
     "subscription": "Jisajili",
@@ -249,7 +275,6 @@
     }
   },
 
-
   "forgot_password": {
     "verify_email": "Thibitisha barua pepe",
     "verification_code": "Weka Msimbo wa Uthibitisho",
@@ -303,8 +328,7 @@
     "students": "Wanafunzi",
     "action": "Kitendo",
     "view": "Angalia",
-    "welcome_back":"Karibu"
-
+    "welcome_back": "Karibu"
   },
 
   "class_creation": {
@@ -533,7 +557,7 @@
     "reminders": "Vikumbusho",
     "grades": "Madaraja",
     "enter": "Ingia",
-    "welcome_back":"Karibu"
+    "welcome_back": "Karibu"
   },
 
   "student_classes": {

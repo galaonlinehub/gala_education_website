@@ -1,9 +1,13 @@
 import clsx from "clsx";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import { FaArrowRightLong } from "react-icons/fa6";
 
 export const FeaturePress = () => {
+
+  const homepage = useTranslations('home_page');
+
   const featuredPress = [
     {
       title: "Tanzania Standard Newspapers",
@@ -22,10 +26,10 @@ export const FeaturePress = () => {
   return (
     <section className="pt-3 sm:pt-4 pb-3 sm:pb-4 flex flex-col lg:flex-row lg:items-center lg:justify-evenly gap-4 sm:gap-6 lg:gap-8 px-2 sm:px-4">
       <section className="flex flex-col gap-2 sm:gap-3 text-center lg:text-left">
-        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold">Featured Press</h2>
+        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold">{homepage('featured_press')}</h2>
         <Link href="/press" className="flex items-center justify-center lg:justify-start gap-2 sm:gap-3">
           <span className="font-medium text-sm sm:text-base md:text-lg lg:text-xl underline underline-offset-2">
-            View All Press
+            {homepage('view_all_press')}
           </span>
           <FaArrowRightLong strokeWidth={1} className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 lg:w-8 lg:h-8" />
         </Link>

@@ -7,7 +7,7 @@ import {
 import { useMutation } from "@tanstack/react-query";
 import { Button, Input, Card, Switch } from "antd";
 import { useTranslations } from "next-intl";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { CiCreditCard1, CiMobile4, CiCreditCardOff } from "react-icons/ci";
 import {
   FaRegClock,
@@ -27,7 +27,7 @@ import { useEnrollPay } from "@/store/student/useEnrollMe";
 import notificationService from "../ui/notification/Notification";
 
 const PaymentDetails = () => {
-  const { enrollMeCohort, enrollMeCohortIsFetching, enrollMeCohortError } =
+  const { enrollMeCohort, enrollMeCohortIsFetching } =
     useEnroll();
 
   const enroll_pay = useTranslations('enroll_payments');
@@ -72,7 +72,6 @@ const PaymentDetails = () => {
   }
 
 
-  console.log("enrollMeCohortDta", enrollMeCohort);
   return (
     <Card className="!flex !flex-col !items-start !justify-start !w-full !lg:w-1/2 !border-none">
       <div className="w-full mb-6">
@@ -246,7 +245,6 @@ const MobilePay = () => {
         const response = await apiPost("join-cohort", data);
         return response.data;
       } catch (error) {
-        console.error("API call failed:", error);
         throw error;
       }
     },

@@ -66,8 +66,7 @@ const StudentProfile = () => {
       queryClient.invalidateQueries(["auth-user"]);
       setProfilePicture(null);
     },
-    onError: (error) => {
-      console.error(error);
+    onError: () => {
       message.error(stproft('profile_pic_failed'));
     },
   });
@@ -270,8 +269,8 @@ const StudentProfile = () => {
                   onClick={open}
                   className="text-xs text-white bg-[#001840] font-medium rounded-md px-2 py-1 hover:scale-105 ease-in-out transition-all duration-300 border-[1px] border-[#001840] flex items-center gap-0.5"
                 >
-                  <LuPlus size={15} strokeWidth={2} />
-                  <span> {stproft('add_your_school')}</span>
+                  <LuPlus size={15} strokeWidth={2} color="white" />
+                  <span className="text-white text-sm"> {stproft('add_your_school')}</span>
                 </button>
               )}
             </div>

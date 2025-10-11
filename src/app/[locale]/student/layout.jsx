@@ -7,7 +7,6 @@ import { useTranslations } from "next-intl";
 import React from "react";
 
 import Navbar from "@/components/layout/Navbar";
-import Subscribe from "@/components/pay/Subscribe";
 import { CompleteProfile } from "@/components/student/CompleteProfile";
 import NewClass from "@/components/student/NewClass";
 import { PartnerSchool } from "@/components/student/PartnerSchool";
@@ -30,9 +29,9 @@ export default function StudentLayout({ children }) {
   const notificationOpen = useStickyNotification(
     (state) => state.notificationOpen
   );
-  const openStickyNotification = useStickyNotification(
-    (state) => state.openStickyNotification
-  );
+  // const openStickyNotification = useStickyNotification(
+  //   (state) => state.openStickyNotification
+  // );
 
   const student_links = useStudentLinks();
 
@@ -64,9 +63,11 @@ export default function StudentLayout({ children }) {
               ? normalizedUrl === itemUrl
               : normalizedUrl.startsWith(itemUrl);
 
+            const isInstructor = user?.role === "instructor";
             const hasFreeTrial = user?.has_free_trial;
+
             const isDisabled =
-              hasFreeTrial && !(isDashboard || isSubscriptions);
+              isInstructor && hasFreeTrial && !(isDashboard || isSubscriptions);
 
             return (
               <Tooltip
@@ -133,7 +134,7 @@ export default function StudentLayout({ children }) {
 
       <NewClass />
       <CompleteProfile />
-      <Subscribe />
+      {/* <Subscribe /> */}
       <PartnerSchool />
       {notificationOpen && <StickyNotification />}
     </>

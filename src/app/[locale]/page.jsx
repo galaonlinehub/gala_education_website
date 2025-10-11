@@ -1,8 +1,6 @@
 import Footer from '@/components/layout/Footer';
-
 import { Faqs } from './_home/components/Faqs';
 import { FeaturePress } from './_home/components/FeaturePress';
-import { FinancialAid } from './_home/components/FinancialAid';
 import { GiftOfLearning } from './_home/components/GiftOfLearning';
 import { HomeBanner } from './_home/components/HomeBanner';
 import { Trustees } from './_home/components/Trustees';
@@ -16,7 +14,6 @@ const Home = () => {
       <Trustees />
       <WhyChooseUs />
       <GiftOfLearning />
-      <FinancialAid />
       <Faqs />
       <Footer />
     </main>

@@ -283,7 +283,6 @@ const CreateSpecialPassInstructor = () => {
                 },
               ]}
               getValueFromEvent={(val) => {
-                console.log("📦 Raw event from Select:", val);
                 return val; // or val?.value if you want just the ID
               }}
             >

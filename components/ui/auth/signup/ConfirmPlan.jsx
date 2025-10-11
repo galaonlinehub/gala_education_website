@@ -25,7 +25,7 @@ const ConfirmPlan = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const { plans, isFetchingPlans, errorOnFetchingPlans, savingsPercentage } = useAuth();
+  const { plans, isFetchingPlans, savingsPercentage } = useAuth();
   const { user, refetchUser } = useUser();
   const currentUrl = usePathname();
 
@@ -166,7 +166,7 @@ const ConfirmPlan = () => {
 
           <div className="mt-5 flex flex-col w-full items-center justify-center">
             <Divider />
-            <span className="font-bold"> {user?.has_free_trial ? '' : 'Or'}</span>
+            <span className="font-bold"> {user?.has_free_trial  ? '' : 'Or'}</span>
             <div className="py-4 flex flex-col gap-1">
               <Button
                 loading={loading}

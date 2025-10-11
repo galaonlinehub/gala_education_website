@@ -1,6 +1,5 @@
 "use client";
 import {
-  StarFilled,
   UserOutlined,
   CalendarOutlined,
   ClockCircleOutlined,
@@ -28,17 +27,13 @@ import clsx from "clsx";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import React, { useState } from "react";
-import { useCallback } from "react";
 import { BsGlobe } from "react-icons/bs";
 import { FaUsers, FaStar, FaClock } from "react-icons/fa";
-import { FaRegStar } from "react-icons/fa";
-import { FaRegMessage, FaRegClock } from "react-icons/fa6";
+import { FaRegClock } from "react-icons/fa6";
 import { GoVerified, GoBook } from "react-icons/go";
-import { GoShieldCheck } from "react-icons/go";
-import { LuEye, LuMessageSquare, LuUsers } from "react-icons/lu";
+import { LuEye, LuUsers } from "react-icons/lu";
 import { TbMessage } from "react-icons/tb";
 
-import { PREVIEW_CHAT_KEY } from "@/config/settings";
 import { img_base_url } from "@/config/settings";
 import { useChat } from "@/hooks/chat/useChat";
 import { useReviews } from "@/hooks/data/useReviews";
@@ -47,8 +42,6 @@ import { apiGet } from "@/services/api/api_service";
 import useChatStore from "@/store/chat/chat";
 import { useNewClass } from "@/store/student/class";
 import { useEnrollMe } from "@/store/student/useEnrollMe";
-import { sessionStorageFn } from "@/utils/fns/client";
-import { encrypt } from "@/utils/fns/encryption";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -64,8 +57,7 @@ const InstructorSearchResult = ({ details }) => {
   const {
     instructorReviews,
     instructorSummary,
-    isInstructorSummaryPending,
-    isInstructorReviewsPending,
+
   } = useReviews(null, details.instructor_id);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -78,7 +70,9 @@ const InstructorSearchResult = ({ details }) => {
     setEnrollCohort(idx);
   };
 
-  const hasFreeTrial = user?.has_free_trial;
+  const isInstructor = user?.role === "instructor";
+
+  const hasFreeTrial = isInstructor && user?.has_free_trial;
 
   const navigateToChat = (chatId) => {
     setCurrentChatId(chatId);
@@ -112,7 +106,7 @@ const InstructorSearchResult = ({ details }) => {
     navigateToChat("preview");
   };
 
-  let makeChat = () => {
+  const makeChat = () => {
     if (setExistingChat()) {
       return;
     }
@@ -123,13 +117,6 @@ const InstructorSearchResult = ({ details }) => {
     setOpenReviewsModal(false);
   };
 
-  useCallback(() => {
-    console.log(details);
-  }, [details]);
-
-  console.log("Reviews:", instructorReviews);
-  console.log("Summary of it:", instructorSummary);
-  console.log("Deatils", details);
 
   const handleViewReviews = () => {
     setOpenReviewsModal(true);
@@ -600,7 +587,7 @@ const InstructorSearchResult = ({ details }) => {
 
             {/* Cohorts */}
             <div className="space-y-2 sm:space-y-3">
-              {topic?.cohorts?.map((cohort, cohortIndex) => (
+              {topic?.cohorts?.map((cohort) => (
                 <div
                   key={cohort?.cohort_id}
                   className="bg-[#001840]/5 rounded-md p-4 sm:p-6 space-y-2 sm:space-y-3 transition-all duration-200 hover:bg-[#001840]/10"

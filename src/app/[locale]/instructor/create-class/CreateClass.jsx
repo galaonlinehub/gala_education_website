@@ -7,10 +7,8 @@ import {
   InputNumber,
   Button,
   Drawer,
-  Alert,
-  Skeleton,
-  Tag,
   Input,
+  Checkbox,
 } from "antd";
 import dayjs from "dayjs";
 import { useTranslations } from "next-intl";
@@ -145,16 +143,16 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
   };
 
   const { instructorSubjects } = useInstructorSubjects();
-  const { topics, isTopicLoadig, isTopicError, topicError } = useTopic(
+  const { topics, isTopicLoadig, isTopicError } = useTopic(
     formData.subject,
     formData.level
   );
-  const { grades, isGradesPending, isGradeError, gradeError, refetch } =
+  const { grades } =
     useGrade();
 
-  const { createCohort, isFetching, cohorts } = useCohort();
+  const { createCohort } = useCohort();
 
-  const { getSubTopics, subTopics, isSubtopicsPending, isSubtopicsError } =
+  const { getSubTopics, subTopics, isSubtopicsPending } =
     useSubTopics();
 
   useEffect(() => {
@@ -216,7 +214,6 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
                   parseInt(subtopicEntry.num_lessons) <= 5
                 );
               } catch (error) {
-                console.error("Error validating subtopic:", error);
                 return false;
               }
             });
@@ -236,7 +233,6 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
       e.target.reset();
       setOpenAddNewClass(false);
     } catch (error) {
-      console.error("Failed to create cohort:", error);
     }
   };
 
@@ -267,7 +263,7 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
   };
 
   const handleBlur = () => {
-    const wordCount = value
+    value
       .trim()
       .split(/\s+/)
       .filter((word) => word.length > 0).length;
@@ -284,6 +280,14 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
 
   const goToNextStep = () => {
     setCurrentActiveSubtopic(currentActiveSubtopic + 1);
+  };
+
+  const handleCheckboxChange = (e) => {
+    const checked = e.target.checked;
+    updateForm("enablePrice", checked);
+    if (!checked) {
+      updateForm("price", 1500);
+    }
   };
 
   const steps = [
@@ -694,12 +698,21 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
               {cct('price')}
             </label>
 
+            <div className="py-2">
+              <Checkbox checked={formData.enablePrice} onChange={handleCheckboxChange}>
+                Enable Price Input
+              </Checkbox>
+            </div>
+
+
             <InputNumber
               prefix={
                 <>
                   <span className="font-black mr-2">Tshs</span>
                 </>
               }
+              disabled={!formData.enablePrice}
+              min={formData.enablePrice ? 7500 : undefined}
               style={componentStyles.inputNumber}
               className="!pl-2"
               placeholder={cct('enter_price')}

@@ -45,7 +45,7 @@ function InstructorProfile({ user }) {
                 {miniPdfPath ? (
                     // <PdfViewer width={70} pdfPath={miniPdfPath} />
                     <iframe
-                        src={`https://galaweb.galahub.org/api/documents/${miniPdfPath}`}
+                        src={`https://galaweb.galahub.tz/api/documents/${miniPdfPath}`}
                         width={70}
                         height={90}
                         className="border rounded cursor-pointer"

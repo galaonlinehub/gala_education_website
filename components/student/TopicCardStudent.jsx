@@ -1,25 +1,18 @@
-import { ExclamationCircleOutlined, StarOutlined } from "@ant-design/icons";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
 import {
   Card,
   Progress,
   Avatar,
   Tooltip,
   Skeleton,
-  Button,
-  Modal,
-  Divider,
-  Input,
-  message,
+
 } from "antd";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
-import React, { useState } from "react";
-import { BsStar, BsStarFill } from "react-icons/bs";
-import { LuChevronRight, LuListChecks, LuStar, LuUsers } from "react-icons/lu";
-import { PiStarBold, PiStarFill, PiStarLight } from "react-icons/pi";
+import React from "react";
+import { LuChevronRight, LuListChecks, LuUsers } from "react-icons/lu";
 
 import { img_base_url } from "@/config/settings";
-import { apiPost } from "@/services/api/api_service";
 
 const TopicCard = ({ details, detailsLink }) => {
 

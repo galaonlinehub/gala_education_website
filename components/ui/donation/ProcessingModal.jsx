@@ -1,4 +1,4 @@
-import { Modal, Button } from "antd";
+import { Modal } from "antd";
 import React, { useState } from "react";
 
 import { PaymentStatus } from "@/config/settings";
@@ -12,9 +12,7 @@ import PaymentLoadingAnimation from "./PaymentLoadingAnimation";
 import { RenderReferenceState } from "../auth/signup/PaymentStatus";
 
 const ProcessingModal = ({ setShowProcessingModal, showProcessingModal }) => {
-  // Use more descriptive state name and enum-like values
-  const [paymentState, setPaymentState] = useState("LOADING"); // 'LOADING', 'PENDING', 'SUCCESS'
-
+  const [paymentState, setPaymentState] = useState("LOADING"); 
   const payment_reference = sessionStorageFn.get("payment_reference");
   const amount_paid = sessionStorageFn.get("amount_paid");
 
@@ -22,7 +20,6 @@ const ProcessingModal = ({ setShowProcessingModal, showProcessingModal }) => {
   const amount = decrypt(amount_paid);
 
   useDonationListener((paymentMsg) => {
-    console.log("Message from socket here:", paymentMsg);
 
     if (paymentMsg.status === PaymentStatus.SUCCESS) {
       setPaymentState("SUCCESS");

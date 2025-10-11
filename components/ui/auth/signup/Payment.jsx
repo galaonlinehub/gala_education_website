@@ -100,7 +100,6 @@ const MobilePay = () => {
         mutation.mutate();
       }
     } catch (e) {
-      console.error(e);
     } finally {
     }
   };
@@ -117,7 +116,6 @@ const MobilePay = () => {
         const response = await apiPost('/subscribe-plan', data);
         return response.data;
       } catch (error) {
-        console.error('API call failed:', error);
         throw error;
       }
     },
@@ -126,7 +124,7 @@ const MobilePay = () => {
         setReference(data.order_response.data[0].payment_token);
       }
     },
-    onError: (error) => {
+    onError: () => {
       setPaymentStatus(PaymentStatus.FAILURE);
     },
   });
@@ -146,8 +144,7 @@ const MobilePay = () => {
       }
     });
 
-    socket.on('error', (error) => {
-      console.error('Socket error:', error);
+    socket.on('error', () => {
     });
 
     return () => socket.close();

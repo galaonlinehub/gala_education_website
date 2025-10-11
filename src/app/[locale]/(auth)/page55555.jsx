@@ -84,11 +84,11 @@ function Home() {
           title: "Online Tutoring for Tanzanian Students | Gala Education",
           description:
             "Empowering minds, shaping the future. Gala Education offers AI-powered learning and online courses for students of all levels.",
-          url: "https://edu.galahub.org/",
+          url: "https://edu.galahub.tz/",
           type: "website",
           images: [
             {
-              url: "https://edu.galahub.org/gala-logo.jpg",
+              url: "https://edu.galahub.tz/gala-logo.jpg",
               width: 1200,
               height: 630,
               alt: "Gala Education",

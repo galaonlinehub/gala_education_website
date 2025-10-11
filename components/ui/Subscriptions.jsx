@@ -150,7 +150,6 @@ const SubscriptionItem = ({ sub }) => {
   };
 
   const subt = useTranslations('subscription');
-  const tdash = useTranslations('teacher_dashboard');
 
   const getPlanType = (type) => {
     if (type == 'Annually Plan') {

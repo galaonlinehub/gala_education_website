@@ -41,7 +41,6 @@ const safeRedirect = (url, request, locale) => {
     return NextResponse.redirect(new URL(redirectUrl, request.url));
   } catch (e) {
     const fallbackUrl = locale ? `/${locale}/signin` : '/signin';
-    console.error(e)
     return NextResponse.redirect(new URL(fallbackUrl, request.url));
   }
 };
@@ -140,7 +139,7 @@ export async function middleware(request) {
       return safeRedirect(AUTH_CONFIG.REDIRECT_ROUTES.notAuthenticated, request, locale);
     }
 
-    if (user?.has_free_trial === true) {
+    if (user?.has_free_trial === true  && user?.role === "instructor") {
       const allowedTrialPaths = TRIAL_ALLOWED_PATHS(user?.role);
       const isAllowed = allowedTrialPaths.some((p) => pathWithoutLocale === p);
 
@@ -162,7 +161,6 @@ export async function middleware(request) {
 
     return intlResponse;
   } catch (error) {
-    console.error('Middleware error:', error);
     const locale = getLocaleFromPath(request.nextUrl.pathname);
     return safeRedirect(AUTH_CONFIG.REDIRECT_ROUTES.notAuthenticated, request, locale);
   }

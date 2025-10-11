@@ -1,5 +1,35 @@
 {
   "home_page": {
+    "new":"New",
+    "experience_the_future_of_learning":"Experience the future of learning with a",
+    "future_of_learning":"Future of learning with a",
+    "completely_free":"FREE",
+    "student_registration":"Student registration is completely",
+    "dont_wait":"- don't wait, register now!",
+    "the_no_1_student_platform":"The #1 Tuition Platform",
+    "connecting_teacher_students":"Connecting Teachers & Students",
+    "digitally":"Digitally",
+    "gala_education_goal":"Gala Education brings teachers and students together on one powerful digital platform. Learn, teach, and succeed anytime, anywhere with personalized tuition designed for every learner.",
+    "become_student":"Become a Student",
+    "become_teacher":"Become a Tutor",
+
+    "featured_press":"Featured Press",
+    "view_all_press":"View All Press",
+
+    "trusted_by":"Trusted By",
+    "best_platform":"Best Platform",
+    "why_us":"Why Choose Us",
+    "online_teaching_learning":"Online Teaching and Learning",
+    "gala_1_to_6":"Gala Education connects teachers and students in live virtual classrooms, delivering expert tuition aligned with Tanzania's national curriculum from Standard 1 to Form 6.",
+    "gala_assistant":"GalaAI - Your Academic Assistant",
+    "gala_assistant_description":"GalaAI, our academic assistant, provides personalized tutoring within the system and is also accessible offline via SMS, ensuring support even in remote areas without internet.",
+
+    "gala_online_library":"Gala Online Library",
+    "gala_online_library_description":"Teachers get access to ready teaching resources, while students benefit from textbooks, storybooks, and study materials for self-paced learning and revision.",
+
+    "affordable_empowering":"Affordable and Empowering",
+    "affordable_empowering_description":"Gala Education makes quality tuition affordable for students, while giving teachers the chance to earn income through flexible online self-employment.",
+
     "home": "Home",
     "student": "Student",
     "teacher": "Teacher",
@@ -155,7 +185,7 @@
     "serve_from_wherever": "Serve your community from wherever you are",
     "donate_message": "Community impact is at the heart of Gala Education. A portion of every contribution is dedicated to outreach, supporting strategic partnerships that address real needs both locally and globally. From empowering schools to providing essential resources for those in need, we are committed to driving meaningful change in education and beyond. We believe in investing generously, serving consistently, and collaborating strategically to create lasting impact. There’s a place for everyone to get involved—join us in shaping a brighter future for learners and communities in need.",
     "contact_us": "Contact Us",
-    "inquiries": "For inquiries directed to the Gala Education team, please email info@galahub.org or submit your questions by clicking the button below.",
+    "inquiries": "For inquiries directed to the Gala Education team, please email info@galahub.tz or submit your questions by clicking the button below.",
     "mail_us": "Mail us",
     "call_us": "Call us",
     "subscription": "Subscription",

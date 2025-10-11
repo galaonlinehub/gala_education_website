@@ -1,55 +1,109 @@
 /** @type {import('next-sitemap').IConfig} */
 const sitemapConfig = {
-  siteUrl: "https://edu.galahub.org",
+  siteUrl: 'https://edu.galahub.tz',
   generateRobotsTxt: true,
   exclude: [
-    // Your existing exclusions
-    "/admin/*",
-    "/teacher/*",
-    "/student/*",
-    "/signin",
-    "/signup",
-    "/forgot-password",
-    "/404",
-    // Add these to fix the ENOENT error with app router
-    "/_next/*",
-    "/.next/*",
-    "/api/*",
-    "/static/*",
-    // Exclude any other build artifacts
-    "/sitemap.xml",
-    "/robots.txt",
+    '/admin/*',
+    '/teacher/*',
+    '/student/*',
+    '/forgot-password',
+    '/404',
+    '/not-found',
+    '/gala-meet',
+    '/_next/*',
+    '/.next/*',
+    '/api/*',
+    '/static/*',
+    '/sitemap.xml',
+    '/robots.txt',
+    '/sw/*',
+    '/en/*',
   ],
   robotsTxtOptions: {
     policies: [
       {
-        userAgent: "*",
-        allow: "/",
+        userAgent: '*',
+        allow: '/',
         disallow: [
-          "/admin",
-          "/teacher",
-          "/student",
-          "/signin",
-          "/signup",
-          "/forgot-password",
-          // Add these to match the sitemap exclusions
-          "/_next",
-          "/.next",
-          "/api",
+          '/admin',
+          '/teacher',
+          '/student',
+          '/forgot-password',
+          '/_next',
+          '/.next',
+          '/api',
+          '/gala-meet',
         ],
       },
     ],
   },
   generateIndexSitemap: false,
-  outDir: "public",
-  // Add these options to handle app router better
-  sitemapSize: 5000, // Limit size to avoid memory issues
-  changefreq: "daily",
-  priority: 0.7,
-  // Skip problematic paths during generation
+  outDir: 'public',
+  sitemapSize: 5000,
+
   additionalPaths: async (config) => {
-    // Return empty array to skip automatic path detection issues
-    return [];
+    const staticRoutes = [
+      '/',
+      '/about-us',
+      '/cookies-policy',
+      '/terms-and-privacy',
+      '/signin',
+      '/signup/student',
+      '/signup/instructor',
+    ];
+
+    const result = [];
+    
+    for (const route of staticRoutes) {
+      let priority = 0.7;
+      let changefreq = 'weekly';
+      
+      if (route === '/') {
+        priority = 1.0;
+        changefreq = 'daily';
+      } else if (route === '/signup/student' || route === '/signup/instructor') {
+        priority = 0.9;
+        changefreq = 'monthly';
+      } else if (route === '/signin') {
+        priority = 0.8;
+        changefreq = 'monthly';
+      }
+
+      const enUrl = `${config.siteUrl}/en${route === '/' ? '' : route}`;
+      const swUrl = `${config.siteUrl}/sw${route === '/' ? '' : route}`;
+      
+      const alternateRefs = [
+        {
+          hreflang: 'en',
+          href: enUrl,
+        },
+        {
+          hreflang: 'sw',
+          href: swUrl,
+        },
+        {
+          hreflang: 'x-default',
+          href: enUrl,
+        },
+      ];
+
+      // DEBUG: Log what we're generating
+      console.log(`Route: ${route}`);
+      console.log('alternateRefs:', JSON.stringify(alternateRefs, null, 2));
+
+      const entry = {
+        loc: enUrl,
+        changefreq: changefreq,
+        priority: priority,
+        lastmod: new Date().toISOString(),
+        alternateRefs: alternateRefs,
+      };
+
+      result.push(entry);
+    }
+    
+    console.log('\nFinal result:', JSON.stringify(result, null, 2));
+    return result;
   },
 };
 

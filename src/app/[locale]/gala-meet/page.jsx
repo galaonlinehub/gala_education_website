@@ -31,14 +31,12 @@ const VideoConference = () => {
   const jwtToken = sessionStorageFn.get("lessonToken");
   const isModerator = sessionStorageFn.get("isModerator");
   const lessonId = sessionStorageFn.get("lessonId");
-  const room = sessionStorageFn.get("roomName");
 
   const meetingLink = sessionStorageFn.get("meetingLink");
 
   const decryptedUserName = decrypt(userName);
   const decryptedUserEmail = decrypt(userEmail);
   const decryptedJwtToken = decrypt(jwtToken);
-  const decryptedRoomName = decrypt(room);
   const decryptedModerator = decrypt(isModerator);
   const decryptedLessonId = decrypt(lessonId);
   
@@ -224,8 +222,6 @@ const VideoConference = () => {
             };
 
             externalApi.addListener("participantJoined", (participant) => {
-              console.log("Participant joined:", participant);
-
               const isModerator =
                 decryptedModerator === "true" || user?.role === "instructor";
 
@@ -283,7 +279,6 @@ const VideoConference = () => {
 
             // Listen for when the conference ends (for all participants)
             externalApi.addListener("videoConferenceEnded", () => {
-              console.log("Conference ended by moderator");
               if (!pendingHangup) {
                 setIsModalOpen(true);
               }

@@ -3,7 +3,7 @@ import { usePathname } from "next/navigation";
 
 export default function JsonLd() {
   const pathname = usePathname();
-  const baseUrl = "https://edu.galahub.org";
+  const baseUrl = "https://edu.galahub.tz";
   const currentUrl = `${baseUrl}${pathname}`;
 
   const organizationData = {

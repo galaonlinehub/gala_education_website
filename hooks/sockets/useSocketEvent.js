@@ -2,7 +2,7 @@
 // hooks/useSocket.js
 import { useEffect, useCallback, useRef } from "react";
 
-import { listen } from "../../services/socket/socket-api";
+import { getSocket, listen } from "../../services/socket/socket-api";
 
 export const useSocketEvent = (namespace, eventName, callback, deps = []) => {
   const callbackRef = useRef(callback);

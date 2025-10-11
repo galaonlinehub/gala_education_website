@@ -379,7 +379,7 @@ const TermsAndPrivacyPreview = () => {
               <p className="space-x-2">
                 <strong>Email:</strong>
                 <a
-                  href="mailto:edu@galahub.org?subject=Inquiry&body=Dear Gala Education,"
+                  href="mailto:edu@galahub.tz?subject=Inquiry&body=Dear Gala Education,"
                   className="text-blue-600 cursor-pointer"
                 >
                   {MAIN_EMAIL}

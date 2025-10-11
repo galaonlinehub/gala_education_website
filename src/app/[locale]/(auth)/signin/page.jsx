@@ -108,7 +108,7 @@ const SignInPage = () => {
             </div>
 
             <div className="flex flex-col gap-1 w-full relative">
-              <label tmlFor="password" className="font-black text-xs lg:text-sm">
+              <label htmlFor="password" className="font-black text-xs lg:text-sm">
                 {t('passwordLabel')} *
               </label>
 

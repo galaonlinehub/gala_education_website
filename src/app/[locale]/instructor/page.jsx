@@ -2,11 +2,9 @@
 
 import { PlusOutlined, RightOutlined } from "@ant-design/icons";
 import {
-  Layout,
   Card,
   Typography,
   Modal,
-  Form,
   Input,
   Button,
   Row,
@@ -31,7 +29,6 @@ import {
 import { MdOutlineRateReview } from "react-icons/md";
 
 import TableSkeleton from "@/components/teacher/TableSkeleton";
-import { useCohort } from "@/hooks/data/useCohort";
 import { useInstructorCohorts } from "@/hooks/data/useInstructorCohorts";
 import { useInstructorSubjects } from "@/hooks/data/useInstructorSubjects";
 import { useUser } from "@/hooks/data/useUser";
@@ -42,10 +39,8 @@ import { encrypt } from "@/utils/fns/encryption";
 import ClassCreationWizard from "./create-class/CreateClass";
 
 const { Title, Text, Paragraph } = Typography;
-const { Content } = Layout;
 
 export default function TeacherClasses() {
-  const [form] = Form.useForm();
   const router = useRouter();
   const device = useDevice();
 
@@ -58,12 +53,12 @@ export default function TeacherClasses() {
   const [openAddNewClass, setOpenAddNewClass] = useState(false);
 
   // States
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isProfileCompleted, setIsProfileCompleted] = useState(true);
+  const [isProfileCompleted, _setIsProfileCompleted] = useState(true);
   const [showOtpModal, setShowOtpModal] = useState(false);
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
 
-  const hasFreeTrail = user?.has_free_trial;
+  const isInstructor = user?.role === "instructor";
+  const hasFreeTrial = user?.has_free_trial;
 
   const inputRefs = useRef([]);
 
@@ -71,7 +66,6 @@ export default function TeacherClasses() {
     setOpenAddNewClass(true);
   };
 
-  const sit = useTranslations('sign_in');
   const tdash = useTranslations('teacher_dashboard');
   const fpt = useTranslations('forgot_password');
 
@@ -185,7 +179,6 @@ export default function TeacherClasses() {
       }
       setShowOtpModal(false);
     } catch (error) {
-      console.error(error);
     }
   };
 
@@ -194,7 +187,6 @@ export default function TeacherClasses() {
       await apiPost("/resend-otp");
       setOtp(["", "", "", "", "", ""]);
     } catch (error) {
-      console.error(error);
     }
   };
 
@@ -319,13 +311,13 @@ export default function TeacherClasses() {
                       <Tooltip
                         color="#001840"
                         title={
-                          hasFreeTrail
+                          (hasFreeTrial && isInstructor)
                             ? tdash('only_in_premium')
                             : ""
                         }
                       >
                         <Button
-                          disabled={hasFreeTrail}
+                          disabled={(hasFreeTrial && isInstructor)}
                           type="default"
                           className="w-full border-green-400 hover:bg-green-700 disabled:border-gray-200 disabled:bg-transparent"
                           onClick={handleAddNew}
@@ -359,14 +351,14 @@ export default function TeacherClasses() {
                       <Tooltip
                         color="#001840"
                         title={
-                          hasFreeTrail
+                          (hasFreeTrial && isInstructor)
                             ? tdash('only_in_premium')
                             : ""
                         }
                       >
                         <Button
                           type="default"
-                          disabled={hasFreeTrail}
+                          disabled={(hasFreeTrial && isInstructor)}
                           className={`w-full border-orange-300 text-orange-600 hover:border-orange-300 disabled:border-gray-200 disabled:bg-transparent`}
                           onClick={() => router.push(`/${user?.role}/reviews`)}
                         >
@@ -513,14 +505,14 @@ export default function TeacherClasses() {
                           <br />
                           <Tooltip
                             title={
-                              hasFreeTrail
+                              (hasFreeTrial && isInstructor)
                                 ? tdash('only_in_premium')
                                 : ""
                             }
                           >
                             <Button
                               type="primary"
-                              disabled={hasFreeTrail}
+                              disabled={(hasFreeTrial && isInstructor)}
                               icon={<PlusOutlined />}
                               onClick={handleAddNew}
                               className="mt-4 bg-blue-600 border-blue-600"

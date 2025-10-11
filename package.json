@@ -13,7 +13,7 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "lint:check": "eslint . --ext .js,.jsx,.ts,.tsx",
     "next-lint": "next lint",
-    "postbuild": "next-sitemap --config next-sitemap.config.mjs"
+    "postbuild": "node scripts/generate-sitemap.js"
   },
   "dependencies": {
     "@ant-design/charts": "^2.2.1",
@@ -56,6 +56,7 @@
     "simple-peer": "^9.11.1",
     "socket.io-client": "^4.8.1",
     "styled-components": "^6.1.19",
+    "uuid": "^13.0.0",
     "zustand": "^5.0.1"
   },
   "devDependencies": {

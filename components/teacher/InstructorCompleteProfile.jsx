@@ -76,7 +76,7 @@ const InstructorCompleteProfile = () => {
           </div>
         </div>
       }
-      open={!user?.completed_profile && user?.has_active_subscription}
+      open={user?.role === 'instructor' && !user?.completed_profile && user?.has_active_subscription}
       closable={false}
       maskClosable={false}
       footer={null}
@@ -153,7 +153,6 @@ const Save = ({
         },
       });
     } catch (error) {
-      console.error(error);
     }
   };
 

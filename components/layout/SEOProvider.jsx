@@ -5,7 +5,7 @@ import { DefaultSeo } from "next-seo";
 
 export default function SEOProvider() {
   const pathname = usePathname();
-  const baseUrl = "https://edu.galahub.org";
+  const baseUrl = "https://edu.galahub.tz";
   const currentUrl = `${baseUrl}${pathname}`;
 
   const getPageTitle = () => {

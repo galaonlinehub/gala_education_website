@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 import { useState, useEffect, useRef } from 'react';
 
 export default function DonationSuccess({ setCloseSuccessModal }) {
-    const [showConfetti, setShowConfetti] = useState(false);
+    const [_showConfetti, setShowConfetti] = useState(false);
     const [showDetails, setShowDetails] = useState(false);
     const canvasRef = useRef(null);
 
@@ -46,8 +46,7 @@ export default function DonationSuccess({ setCloseSuccessModal }) {
         const confettiTimer = setTimeout(() => {
             setShowConfetti(true);
 
-            audio.play().catch(error => {
-                console.log('Audio play failed:', error);
+            audio.play().catch(() => {
             });
 
             const randomInRange = (min, max) => Math.random() * (max - min) + min;

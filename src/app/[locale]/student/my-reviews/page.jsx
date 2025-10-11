@@ -35,7 +35,7 @@ const UserReviewsInterface = () => {
   const [cohort_id, setCohortId] = useState();
   const [instructor_id, setInstructorId] = useState();
 
-  const { enrolledTopics, enrolledTopicsLoading, enrolledTopicsError } =
+  const { enrolledTopics } =
     useEnrolledTopics();
 
   const {
@@ -89,7 +89,7 @@ const UserReviewsInterface = () => {
     message.success(response.data.message);
   };
 
-  const getStatusColor = (status) => {
+  const _getStatusColor = (status) => {
     switch (status) {
       case "Published":
         return "green";
