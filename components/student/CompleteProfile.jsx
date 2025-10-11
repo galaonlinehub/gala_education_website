@@ -18,14 +18,7 @@ import { handlePhoneInput, reformat_phone_number } from '@/utils/fns/format_phon
 
 import { Signout } from '../ui/auth/signup/Signout';
 import SlickSpinner from '../ui/loading/template/SlickSpinner';
-
-export const Stage = {
-  SAVE: 'save',
-  VERIFY: 'verify',
-  EDIT: 'edit',
-  SUCCESS: 'success',
-  FAILURE: 'failure',
-};
+import { Stage } from '@/utils/data/variables';
 
 const CompleteProfile = () => {
   const [status, setStatus] = useState(Stage.SAVE);
