@@ -23,29 +23,21 @@ const routes: Route[] = [
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
 
-  const sitemapEntries: MetadataRoute.Sitemap = [];
+  return routes.map(({ path, changeFrequency, priority }) => {
+    const canonicalUrl = `${SITE_URL}/${DEFAULT_LOCALE}${path === '/' ? '' : path}`;
 
-  routes.forEach(({ path, changeFrequency, priority }) => {
-    // Create entries for each locale
-    LOCALES.forEach((locale) => {
-      const url = `${SITE_URL}/${locale}${path === '/' ? '' : path}`;
-      
-      sitemapEntries.push({
-        url,
-        lastModified,
-        changeFrequency,
-        priority,
-        alternates: {
-          languages: Object.fromEntries(
-            LOCALES.map((loc) => [
-              loc,
-              `${SITE_URL}/${loc}${path === '/' ? '' : path}`,
-            ])
-          ),
+    return {
+      url: canonicalUrl,
+      lastModified,
+      changeFrequency,
+      priority,
+      alternates: {
+        languages: {
+          en: `${SITE_URL}/en${path === '/' ? '' : path}`,
+          sw: `${SITE_URL}/sw${path === '/' ? '' : path}`,
+          'x-default': canonicalUrl,
         },
-      });
-    });
+      },
+    };
   });
-
-  return sitemapEntries;
 }
