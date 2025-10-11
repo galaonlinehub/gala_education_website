@@ -1,5 +1,4 @@
-import { SearchOutlined } from "@ant-design/icons";
-import { Avatar, Input, Skeleton } from "antd";
+import { Avatar } from "antd";
 import clsx from "clsx";
 import { useTranslations } from "next-intl";
 import { useState } from "react";

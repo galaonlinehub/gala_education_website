@@ -66,8 +66,7 @@ const StudentProfile = () => {
       queryClient.invalidateQueries(["auth-user"]);
       setProfilePicture(null);
     },
-    onError: (error) => {
-      console.error(error);
+    onError: () => {
       message.error(stproft('profile_pic_failed'));
     },
   });

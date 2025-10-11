@@ -153,7 +153,6 @@ const Save = ({
         },
       });
     } catch (error) {
-      console.error(error);
     }
   };
 

@@ -11,7 +11,6 @@ export default function CountdownTimer() {
     minutes: 0,
     seconds: 0,
   });
-  const [ setTargetDate] = useState(null);
   const [isExpired, setIsExpired] = useState(false);
 
   useEffect(() => {

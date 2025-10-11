@@ -11,7 +11,7 @@ import {
 
 function PartnerSchools() {
   const [page, setPage] = useState(1);
-  const [search, setSearch] = useState("");
+  const [search, _setSearch] = useState("");
 
   const { data, isLoading, isFetching, error } = usePaginationQuery(
     "partnerSchools",
@@ -20,7 +20,6 @@ function PartnerSchools() {
     search
   );
 
-  console.log("We are in here and the data is ", error);
 
   const tableData = data?.data || [];
   const meta = data?.meta;

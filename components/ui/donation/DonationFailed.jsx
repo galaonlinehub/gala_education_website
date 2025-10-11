@@ -24,7 +24,6 @@ export default function PaymentFailedAnimation({ setCloseFailureModal }) {
     }, []);
 
     const payt = useTranslations('payments')
-    const sut = useTranslations('sign_up')
 
     return (
         <div>

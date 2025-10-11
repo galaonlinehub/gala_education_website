@@ -2,11 +2,9 @@
 
 import { PlusOutlined, RightOutlined } from "@ant-design/icons";
 import {
-  Layout,
   Card,
   Typography,
   Modal,
-  Form,
   Input,
   Button,
   Row,
@@ -31,7 +29,6 @@ import {
 import { MdOutlineRateReview } from "react-icons/md";
 
 import TableSkeleton from "@/components/teacher/TableSkeleton";
-import { useCohort } from "@/hooks/data/useCohort";
 import { useInstructorCohorts } from "@/hooks/data/useInstructorCohorts";
 import { useInstructorSubjects } from "@/hooks/data/useInstructorSubjects";
 import { useUser } from "@/hooks/data/useUser";
@@ -42,10 +39,8 @@ import { encrypt } from "@/utils/fns/encryption";
 import ClassCreationWizard from "./create-class/CreateClass";
 
 const { Title, Text, Paragraph } = Typography;
-const { Content } = Layout;
 
 export default function TeacherClasses() {
-  const [form] = Form.useForm();
   const router = useRouter();
   const device = useDevice();
 
@@ -58,8 +53,7 @@ export default function TeacherClasses() {
   const [openAddNewClass, setOpenAddNewClass] = useState(false);
 
   // States
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isProfileCompleted, setIsProfileCompleted] = useState(true);
+  const [isProfileCompleted, _setIsProfileCompleted] = useState(true);
   const [showOtpModal, setShowOtpModal] = useState(false);
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
 
@@ -72,7 +66,6 @@ export default function TeacherClasses() {
     setOpenAddNewClass(true);
   };
 
-  const sit = useTranslations('sign_in');
   const tdash = useTranslations('teacher_dashboard');
   const fpt = useTranslations('forgot_password');
 
@@ -186,7 +179,6 @@ export default function TeacherClasses() {
       }
       setShowOtpModal(false);
     } catch (error) {
-      console.error(error);
     }
   };
 
@@ -195,7 +187,6 @@ export default function TeacherClasses() {
       await apiPost("/resend-otp");
       setOtp(["", "", "", "", "", ""]);
     } catch (error) {
-      console.error(error);
     }
   };
 
