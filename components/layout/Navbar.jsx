@@ -60,7 +60,7 @@ const Navbar = () => {
   //   message.success("English language chosen.");
   // };
 
-  
+
   // const cancel = () => {
   //   setOpen(false);
   //   message.success("Swahili language chosen.");
