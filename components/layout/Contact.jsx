@@ -43,14 +43,14 @@ export const Contact = ({ useBillingContact = false }) => {
   ];
 
   return (
-    <div className="text-sm flex items-center justify-center gap-2">
+    <div className="text-sm flex flex-col min-[300px]:flex-row items-center justify-center gap-2">
       <a
         href="#"
         className="text-black hover:text-[#030DFE] text-xs font-black"
       >
         {t('help_center')}
       </a>
-      <span>|</span>
+      <span className="hidden min-[300px]:block">|</span>
       <Dropdown arrow menu={{ items }} trigger={["click"]}>
         <button className="text-[#030DFE] hover:underline text-xs">
           {at('contact_us')}
