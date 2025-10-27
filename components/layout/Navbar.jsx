@@ -6,7 +6,6 @@ import { useTranslations } from "next-intl";
 import { useLocale } from "next-intl";
 import React, { useState } from "react";
 import { LuMenu } from "react-icons/lu";
-
 import ChooseAccont from "@/components/ui/auth/signup/ChooseAccount";
 import { useUser } from "@/hooks/data/useUser";
 import { useDevice } from "@/hooks/misc/useDevice";
@@ -32,13 +31,10 @@ const Navbar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-
-
   const gotoHomePage = () => {
     router.push("/");
   };
 
-  // Get current locale using next-intl hook
   const currentLocale = useLocale();
 
   const handleLanguageToggle = () => {
@@ -47,43 +43,12 @@ const Navbar = () => {
     const newLocale = currentLocale === 'en' ? 'sw' : 'en';
     const successMessage = newLocale === 'en' ? "English language chosen." : "Lugha ya Kiswahili imechaguliwa.";
 
-    // Add loading delay for visual feedback
     setTimeout(() => {
       router.replace(pathname, { locale: newLocale });
       messageApi.info(successMessage);
       setIsLanguageLoading(false);
     }, 800);
   };
-
-  // const confirm = () => {
-  //   setOpen(false);
-  //   message.success("English language chosen.");
-  // };
-
-
-  // const cancel = () => {
-  //   setOpen(false);
-  //   message.success("Swahili language chosen.");
-  // };
-
-  // const handleOpenChange = (newOpen) => {
-  //   if (!newOpen) {
-  //     setOpen(newOpen);
-  //     return;
-  //   }
-  //   if (condition) {
-  //     confirm();
-  //   } else {
-  //     setOpen(newOpen);
-  //   }
-  // };
-
-  // const toggleDrawer = () => {
-  //   setDrawerOpen((prev) => !prev);
-  // };
-
-  // const internet = useTranslations('internet');
-
 
 
   const t = useTranslations('home_page');
