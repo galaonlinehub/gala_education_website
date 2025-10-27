@@ -200,14 +200,14 @@
 
   "sign_up": {
     "sign_up": "Register",
-    "sign_in": "Login",
+    "sign_in": "Sign In",
     "confirm_plan": "Confirm Plan",
     "payment": "Payment",
     "complete_step": "Complete this stage to proceed",
     "complete_all_steps": "You can not go back, finish all steps",
     "step_into_the_realm": "Step into the realm of endless possibilities! Your adventure in knowledge begins here.",
     "create_account": "Create account",
-    "read_and_agreed": "I have read and agrred to",
+    "read_and_agreed": "I have read and agreed to",
     "terms_of_service": "Terms of service",
     "and": "and",
     "privacy_policy": "Privacy policy",
