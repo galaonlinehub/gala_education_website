@@ -1,6 +1,7 @@
+"use client"
+
 import { Modal, Typography, Checkbox } from "antd";
 import React, { useEffect, useState } from "react";
-
 import { STUDENT_CONTRACT_KEY } from "@/config/settings";
 import { sessionStorageFn } from "@/utils/fns/client";
 import { decrypt, encrypt } from "@/utils/fns/encryption";
