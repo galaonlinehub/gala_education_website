@@ -1,3 +1,4 @@
+import InstructorContract from '@/components/teacher/InstructorContract';
 import InstructorRegistrationForm from '@/components/ui/auth/signup/InstructorSignUpForm';
 
 export default function InstructorSignUp() {
@@ -15,6 +16,7 @@ export default function InstructorSignUp() {
         </span>
       </section>
       <InstructorRegistrationForm />
+      <InstructorContract/>
     </main>
   );
 }

@@ -1,3 +1,4 @@
+import StudentContract from '@/components/student/StudentContract';
 import SignUpForm from '@/components/ui/auth/signup/SignUpForm';
 
 export default function StudentSignUp() {
@@ -10,6 +11,7 @@ export default function StudentSignUp() {
         </p>
       </section>
       <SignUpForm />
+      <StudentContract/>
     </main>
   );
 }
