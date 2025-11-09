@@ -27,7 +27,7 @@ export const useUser = () => {
     enabled: !!cookieFn.get(USER_COOKIE_KEY),
     staleTime: Infinity,
     cacheTime: Infinity,
-    retry: 1,
+    retry: 3,
     ...globalOptions,
     onSuccess: (user) => {
       if (user?.role && pathname === '/signin') {

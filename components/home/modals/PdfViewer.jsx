@@ -144,7 +144,7 @@ const PdfViewer = ({ pdfUrl, isOpen, onClose }) => {
       open={isOpen}
       onOk={onClose}
       onCancel={onClose}
-      destroyOnClose={true} // Ensure modal is fully destroyed when closed
+      destroyOnHidden={true} // Ensure modal is fully destroyed when closed
       footer={
         useIframe ? null : (
           <div>

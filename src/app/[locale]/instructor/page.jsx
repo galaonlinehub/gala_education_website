@@ -386,8 +386,10 @@ export default function TeacherClasses() {
                     </div>
                   }
                   className="h-full border-0 shadow-sm shadow-black/25"
-                  bodyStyle={{
-                    padding: device?.type === "mobile" ? "16px" : "24px",
+                  styles={{
+                    body: {
+                      padding: device?.type === "mobile" ? "16px" : "24px",
+                    },
                   }}
                 >
                   {isInstructorSubjectsPending ? (
@@ -473,8 +475,10 @@ export default function TeacherClasses() {
                     </div>
                   }
                   className="h-full border-0 shadow-sm shadow-black/25"
-                  bodyStyle={{
-                    padding: device?.type === "mobile" ? "16px" : "24px",
+                  styles={{
+                    body: {
+                      padding: device?.type === "mobile" ? "16px" : "24px",
+                    },
                   }}
                 >
                   {isInstructorCohortsPending ? (

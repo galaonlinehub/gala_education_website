@@ -430,7 +430,12 @@
     "join": "Ingia",
     "join_live_class": "Jiunge na Darasa la Moja kwa Moja",
     "join_live_class_desc": "Unakaribia kujiunga na kikao cha moja kwa moja chenye mawasiliano ya papo kwa papo. Hakikisha kamera na kipaza sauti chako vinafanya kazi ipasavyo.",
-    "confirm_and_join": "Thibitisha na ujiunge"
+    "confirm_and_join": "Thibitisha na ujiunge",
+    "no_pending_lesson_for_selected_subject": "Hakuna madarasa yanayosubiri kwa somo lililochaguliwa",
+    "no_completed_lesson_for_selected_subject": "Hakuna madarasa yaliyokamilika kwa somo lililochaguliwa",
+    "no_canceled_lesson_for_selected_subject": "Hakuna madarasa yaliyofutwa kwa somo lililochaguliwa"
+
+
   },
 
   "chat": {

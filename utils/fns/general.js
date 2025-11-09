@@ -7,14 +7,15 @@ export const getRoleFromUrl = (url) => {
   if (!url) return null;
 
   const parts = url.split('/').filter(Boolean);
-  const signupIndex = parts.indexOf("signup");
+  // Example: parts = ["en", "instructor"]
 
-  if (signupIndex !== -1 && parts[signupIndex + 1]) {
-    return parts[signupIndex + 1]; 
-  }
+  // Look for known roles directly
+  const roles = ["instructor", "student", "admin"];
+  const foundRole = parts.find(p => roles.includes(p));
 
-  return null; 
+  return foundRole || null;
 };
+
 
 export const hasData = (obj) => Object.keys(obj).length > 0;
 export const getKeys = (obj) => Object.keys(obj);
