@@ -2,7 +2,6 @@ import Modal from "antd/es/modal/Modal";
 import { useTranslations } from "next-intl";
 import { LuCircleAlert, LuCircleCheckBig } from "react-icons/lu";
 
-import { useUser } from "@/hooks/data/useUser";
 import { usePartnerSchool } from "@/hooks/ui/usePartnerSchool";
 
 import SlickSpinner from "../ui/loading/template/SlickSpinner";
@@ -11,7 +10,6 @@ export const PartnerSchool = () => {
   const {
     isAffiliated,
     toggleAffiliate,
-    toggleOpen,
     isOpen,
     close,
     register,

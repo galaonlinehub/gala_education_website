@@ -1,15 +1,15 @@
-import { Steps, Drawer } from "antd";
-import { useTranslations } from "next-intl";
+import { Steps, Drawer } from 'antd';
+import { useTranslations } from 'next-intl';
 
-import SignupPay from "@/components/ui/auth/signup/Payment";
-import { useUser } from "@/hooks/data/useUser";
-import { useTabNavigator } from "@/store/auth/signup";
-import { useSubscribeStore } from "@/store/subscribeStore";
+import SignupPay from '@/components/ui/auth/signup/Payment';
+import { useUser } from '@/hooks/data/useUser';
+import { useTabNavigator } from '@/store/auth/signup';
+import { useSubscribeStore } from '@/store/subscribeStore';
 
-import ConfirmPlan from "../ui/auth/signup/ConfirmPlan";
-import { Signout } from "../ui/auth/signup/Signout";
+import ConfirmPlan from '../ui/auth/signup/ConfirmPlan';
+import { Signout } from '../ui/auth/signup/Signout';
 
-export default function Subscribe({ openDrawer }) {
+export default function Subscribe({}) {
   const { user } = useUser();
   const { activeTab } = useTabNavigator();
 
@@ -17,12 +17,12 @@ export default function Subscribe({ openDrawer }) {
 
   const modalStyles = {
     mask: {
-      backdropFilter: "blur(10px)",
+      backdropFilter: 'blur(10px)',
     },
   };
 
-  const sut = useTranslations('sign_up')
-  const subt = useTranslations('subscription')
+  const sut = useTranslations('sign_up');
+  const subt = useTranslations('subscription');
 
   const steps = [
     {
@@ -50,12 +50,12 @@ export default function Subscribe({ openDrawer }) {
       centered={false}
       open={
         subscribeOpen ||
-        (user?.role === "instructor" && !user?.has_free_trial && !user?.has_active_subscription)
+        (user?.role === 'instructor' && !user?.has_free_trial && !user?.has_active_subscription)
       }
       closable={false}
       styles={modalStyles}
     >
-      <Steps current={activeTab} responsive={false} direction={"horizontal"}>
+      <Steps current={activeTab} responsive={false} direction={'horizontal'}>
         {steps.map((step, index) => (
           <Steps.Step key={index} title={step.title} />
         ))}

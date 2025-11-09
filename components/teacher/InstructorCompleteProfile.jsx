@@ -23,13 +23,14 @@ import {
   reformat_phone_number,
 } from "@/utils/fns/format_phone_number";
 
-import { Stage, Success, Verify } from "../student/CompleteProfile";
+import { Success, Verify } from "../student/CompleteProfile";
 import { Signout } from "../ui/auth/signup/Signout";
 import SlickSpinner from "../ui/loading/template/SlickSpinner";
+import { Stage } from "@/utils/data/variables";
 const { TextArea } = Input;
 
 const InstructorCompleteProfile = () => {
-  const [status, setStatus] = useState(Stage.SAVE);
+  const [status, setStatus] = useState(Stage .SAVE);
   const [phoneNumber, setPhoneNumber] = useState(null);
   const {
     isUpdatingProfile,
@@ -156,7 +157,6 @@ const Save = ({
         },
       });
     } catch (error) {
-      console.error(error);
     }
   };
 

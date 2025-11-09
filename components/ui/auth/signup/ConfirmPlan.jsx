@@ -28,6 +28,7 @@ const ConfirmPlan = () => {
   const router = useRouter();
   const { savingsPercentage } = useAuth();
   const { plans, isFetchingPlans, errorOnFetchingPlans } = usePlans();
+
   const { user, refetchUser } = useUser();
   const currentUrl = usePathname();
 

@@ -1,9 +1,9 @@
-"use client"
-import { Form, Input, Select, Button, Typography, Card, Progress } from "antd";
-import clsx from "clsx";
-import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
-import React, { useState } from "react";
+'use client';
+import { Form, Input, Select, Button, Progress } from 'antd';
+import clsx from 'clsx';
+import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import React, { useState } from 'react';
 import {
   LuCheck,
   LuCircleCheck,
@@ -13,24 +13,20 @@ import {
   LuMail,
   LuShieldCheck,
   LuUser,
-} from "react-icons/lu";
-
-import { Contact } from "@/components/layout/Contact";
-import { useAuth } from "@/hooks/data/useAuth";
-import { disabilities } from "@/utils/data/disabilities";
-import { preventCopyPaste } from "@/utils/fns/general";
-
-import EmailVerification from "./EmailVerification";
-import SlickSpinner from "../../loading/template/SlickSpinner";
-
-
-const { Text } = Typography;
+} from 'react-icons/lu';
+import { Contact } from '@/components/layout/Contact';
+import { useAuth } from '@/hooks/data/useAuth';
+import { disabilities } from '@/utils/data/disabilities';
+import { preventCopyPaste } from '@/utils/fns/general';
+import EmailVerification from './EmailVerification';
+import SlickSpinner from '../../loading/template/SlickSpinner';
+import { Link } from '@/src/i18n/navigation';
 
 const SignUpForm = () => {
   const [form] = Form.useForm();
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState('');
   const [isAgreementChecked, setIsAgreementChecked] = useState(false);
-  const router = useRouter();
+
   const {
     getPasswordStatus,
     getPasswordRequirements,
@@ -51,24 +47,16 @@ const SignUpForm = () => {
 
   return (
     <div className="flex justify-center lg:px-8 w-full">
-      <Card className="max-w-3xl !border-0 -mx-5 lg:!w-full lg:-mx-0">
-        {/* <div className="text-center mb-4 sm:mb-8">
-          <div className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
-            {t('sign_up')}
-          </div>
-          <span className="text-xs xs:text-sm text-gray-600">
-            {t('step_into_the_realm')}
-          </span>
-        </div> */}
+      <div className="max-w-2xl lg:w-full">
         {registerError && (
           <div
             className={clsx(
-              "p-1 border-[0.8px] text-xs text-center mb-4 w-full rounded-md",
+              'p-1 border-[0.8px] text-xs text-center mb-4 w-full rounded-md',
               mutation.isSuccess
-                ? "border-green-700 text-green-400 bg-green-50"
+                ? 'border-green-700 text-green-400 bg-green-50'
                 : mutation.isError
-                  ? "border-red-500 text-red-500 bg-red-50"
-                  : "border-gray-700 text-gray-700"
+                  ? 'border-red-500 text-red-500 bg-red-50'
+                  : 'border-gray-700 text-gray-700'
             )}
           >
             {registerError}
@@ -80,7 +68,7 @@ const SignUpForm = () => {
           onFinish={onFinish}
           onFieldsChange={() => {
             mutation.reset();
-            setRegisterError("");
+            setRegisterError('');
           }}
           layout="vertical"
           className="!space-y-4"
@@ -88,9 +76,7 @@ const SignUpForm = () => {
           <div className="!grid !grid-cols-1 lg:!grid-cols-2 !gap-4">
             <Form.Item
               name="first_name"
-              rules={[
-                { required: true, message: t('enter_first_name') },
-              ]}
+              rules={[{ required: true, message: t('enter_first_name') }]}
               className="!mb-0"
             >
               <Input
@@ -103,9 +89,7 @@ const SignUpForm = () => {
 
             <Form.Item
               name="last_name"
-              rules={[
-                { required: true, message: t('enter_last_name') },
-              ]}
+              rules={[{ required: true, message: t('enter_last_name') }]}
               className="!mb-0"
             >
               <Input
@@ -119,12 +103,12 @@ const SignUpForm = () => {
 
           <Form.Item
             name="email"
-            validateTrigger={["onBlur", "onChange", "onSubmit"]}
+            validateTrigger={['onBlur', 'onChange', 'onSubmit']}
             rules={[
               { required: true, message: t('enter_email') },
-              { type: "email", message: t('valid_email_address') },
+              { type: 'email', message: t('valid_email_address') },
             ]}
-            validateStatus={emailExists ? "error" : undefined}
+            validateStatus={emailExists ? 'error' : undefined}
           >
             <div>
               <Input
@@ -138,32 +122,27 @@ const SignUpForm = () => {
                 placeholder={ht('email')}
                 className="!h-11 signup-input"
                 onChange={() => {
-                  setEmailExists("");
+                  setEmailExists('');
                 }}
               />
-              {emailExists && (
-                <div className="ant-form-item-explain-error">{emailExists}</div>
-              )}
+              {emailExists && <div className="ant-form-item-explain-error">{emailExists}</div>}
             </div>
           </Form.Item>
           <Form.Item
             name="password"
             rules={[
               { required: true, message: t('enter_password') },
-              // { min: 8, message: "Password must be at least 8 characters!" },
               {
                 validator: (_, value) => {
                   if (value && passwordStrength < 100) {
-                    return Promise.reject(
-                      t('password_requirements')
-                    );
+                    return Promise.reject(t('password_requirements'));
                   }
                   return Promise.resolve();
                 },
               },
             ]}
           >
-            <div className="space-y-2">
+            <div className="space-y-1">
               <Input.Password
                 autoComplete="new-password"
                 prefix={<LuLock className="!text-gray-400" />}
@@ -185,7 +164,7 @@ const SignUpForm = () => {
                 )}
               />
               {passwordFocused && (
-                <div className="!bg-gray-50 !p-3 !rounded-lg !border !border-gray-200">
+                <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
                   <Progress
                     percent={passwordStrength}
                     size="small"
@@ -195,14 +174,8 @@ const SignUpForm = () => {
                   <div className="grid grid-cols-2 gap-2">
                     {getPasswordRequirements(password).map((req, index) => (
                       <div key={index} className="flex items-center gap-2">
-                        <LuCircleCheck
-                          className={
-                            req.met ? "!text-green-500" : "!text-gray-300"
-                          }
-                        />
-                        <span className="text-xs text-gray-600">
-                          {req.text}
-                        </span>
+                        <LuCircleCheck className={req.met ? '!text-green-500' : '!text-gray-300'} />
+                        <span className="text-xs text-gray-600">{req.text}</span>
                       </div>
                     ))}
                   </div>
@@ -213,12 +186,12 @@ const SignUpForm = () => {
 
           <Form.Item
             name="confirmPassword"
-            dependencies={["password"]}
+            dependencies={['password']}
             rules={[
               { required: true, message: t('confirm_your_password') },
               ({ getFieldValue }) => ({
                 validator(_, value) {
-                  if (!value || getFieldValue("password") === value) {
+                  if (!value || getFieldValue('password') === value) {
                     return Promise.resolve();
                   }
                   return Promise.reject(t('password_mismatch'));
@@ -253,15 +226,12 @@ const SignUpForm = () => {
           <Form.Item className="!mb-0">
             <Button
               disabled={
-                mutation.isPending ||
-                !isAgreementChecked ||
-                mutation.isSuccess ||
-                mutation.isError
+                mutation.isPending || !isAgreementChecked || mutation.isSuccess || mutation.isError
               }
               type="primary"
               htmlType="submit"
               className={
-                "!flex !items-center !justify-center !py-4 !border-transparent !rounded-lg !w-full !h-11  !transition-colors !text-base !text-white !font-medium disabled:!cursor-not-allowed disabled:!opacity-70 !bg-[#010798] hover:!opacity-80"
+                '!flex !items-center !justify-center !py-4 !border-transparent !rounded-lg !w-full !h-11  !transition-colors !text-base !text-white !font-medium disabled:!cursor-not-allowed disabled:!opacity-70 !bg-[#010798] hover:!opacity-80'
               }
               icon={mutation.isPending ? null : <LuShieldCheck />}
             >
@@ -274,24 +244,24 @@ const SignUpForm = () => {
           </Form.Item>
         </Form>
 
-        <div className="text-center text-sm text-gray-600 mt-4 flex items-center justify-center gap-2 flex-wrap">
+        <div className="text-center text-sm text-gray-600 mt-4 flex items-center justify-center gap-x-1 flex-wrap">
           <div className="relative flex items-center">
             <input
               type="checkbox"
               checked={isAgreementChecked}
               onChange={(e) => setIsAgreementChecked(e.target.checked)}
-              className="appearance-none w-5 h-5 border-2 border-[#010798] rounded 
+              className="appearance-none w-5 h-5 border-2 border-[#010798] rounded
                checked:bg-[#010798] cursor-pointer
                transition-all duration-300 ease-in-out
                hover:border-opacity-80 focus:ring-2 focus:ring-[#010798] focus:ring-opacity-40 flex items-center justify-center outline-none"
             />
             <LuCheck
               className={clsx(
-                "absolute left-0.5 top-0.5",
-                "pointer-events-none transition-all duration-300 ease-in-out",
+                'absolute left-0.5 top-0.5',
+                'pointer-events-none transition-all duration-300 ease-in-out',
                 {
-                  "text-white": isAgreementChecked,
-                  "text-transparent": !isAgreementChecked,
+                  'text-white': isAgreementChecked,
+                  'text-transparent': !isAgreementChecked,
                 }
               )}
               size={16}
@@ -299,39 +269,25 @@ const SignUpForm = () => {
             />
           </div>
 
-          <Text>{t('read_and_agreed')}</Text>
-          <Button
-            type="link"
-            className="!p-0 !m-1 !text-blue-600 hover:!text-blue-700"
-            onClick={() => router.push("/terms-and-privacy")}
-          >
+          <span>{t('read_and_agreed')}</span>
+          <Link className="text-blue-600 hover:text-blue-700" href={'/terms-and-privacy'}>
             {t('terms_of_service')}
-          </Button>
-          <Text> {t('and')} </Text>
-          <Button
-            type="link"
-            className="!p-0 !m-1 !text-blue-600 hover:!text-blue-700"
-            onClick={() => router.push("/terms-and-privacy")}
-          >
+          </Link>
+          <span> {t('and')} </span>
+          <Link href={'/terms-and-privacy'} className="text-blue-600 hover:text-blue-700">
             {t('privacy_policy')}
-          </Button>
+          </Link>
         </div>
 
-        <div className="!text-center !text-sm !text-gray-600 !mt-2">
-          <Text>{t('already_have_account')}</Text>
-          <Button
-            type="link"
-            className="!p-0 !m-1 !text-blue-600 hover:!text-blue-700"
-            onClick={() => router.push("/signin")}
-          >
+        <div className="text-center text-sm text-gray-600 mt-3 md:mt-4">
+          <span>{t('already_have_account')}</span>
+          <Link className=" text-blue-600 hover:text-blue-700 pl-1" href={'/signin'}>
             {t('sign_in')}
-          </Button>
+          </Link>
         </div>
 
-        <div className="w-full flex items-center justify-center mt-1">
-          <Contact />
-        </div>
-      </Card>
+        <Contact className="mt-3 md:mt-5" />
+      </div>
       <EmailVerification />
     </div>
   );

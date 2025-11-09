@@ -46,15 +46,13 @@ function AddNew() {
 
   const mutation = useMutation({
     mutationFn: submitFormData,
-    onSuccess: (response) => {
+    onSuccess: () => {
       queryClient.invalidateQueries(["subjects"]);
       router.push("/admin/subjects");
     },
-    onError: (error) => {
-      console.error("Error submitting form:", error.message);
+    onError: () => {
     },
     onSettled: () => {
-      console.log("Mutation settled (success or error)");
     },
   });
 
@@ -114,7 +112,6 @@ const SubjectDetails = ({ control, errors, setCurrent }) => {
     queryFn: getGradeLevels,
   });
 
-  console.log(gradeLevels);
 
   return (
     <div className="grid grid-cols-2 gap-4 py-4">

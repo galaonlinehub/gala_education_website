@@ -33,7 +33,7 @@ const ClassCard = ({ classData, status }) => {
   const router = useRouter();
   const { user } = useUser();
 
-  const { lessonToken, lessonTokenPending, getLessonToken } = useLesson();
+  const { getLessonToken } = useLesson();
 
   const showConfirmModal = () => {
     setIsModalOpen(true);

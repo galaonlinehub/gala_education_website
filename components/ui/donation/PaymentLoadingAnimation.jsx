@@ -2,7 +2,7 @@ import { useTranslations } from 'next-intl';
 import { useState, useEffect } from 'react';
 
 export default function PaymentLoadingAnimation() {
-    const [progress, setProgress] = useState(0);
+    const [_progress, setProgress] = useState(0);
 
     useEffect(() => {
         const progressInterval = setInterval(() => {

@@ -1,7 +1,19 @@
-"use client";
-import { CalendarOutlined, ClockCircleOutlined } from "@ant-design/icons";
-import { Card, Typography, Form, Input, Select, DatePicker, Button, List, Space, Row, Col } from "antd";
-import React from "react";
+'use client';
+import { CalendarOutlined, ClockCircleOutlined } from '@ant-design/icons';
+import {
+  Card,
+  Typography,
+  Form,
+  Input,
+  Select,
+  DatePicker,
+  Button,
+  List,
+  Space,
+  Row,
+  Col,
+} from 'antd';
+import React from 'react';
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -11,44 +23,54 @@ const StudentReminders = () => {
 
   const reminders = [
     {
-      name: "Eng - Speaking Test",
-      time: "10.06.2026",
-      day: "Friday",
+      name: 'Eng - Speaking Test',
+      time: '10.06.2026',
+      day: 'Friday',
     },
     {
-      name: "Eng - Vocabulary Test",
-      time: "10.06.2026",
-      day: "Friday",
+      name: 'Eng - Vocabulary Test',
+      time: '10.06.2026',
+      day: 'Friday',
     },
     {
-      name: "Eng Test",
-      time: "10.06.2026",
-      day: "Friday",
+      name: 'Eng Test',
+      time: '10.06.2026',
+      day: 'Friday',
     },
     {
-      name: "Eng - Speaking Test",
-      time: "10.06.2026",
-      day: "Friday",
+      name: 'Eng - Speaking Test',
+      time: '10.06.2026',
+      day: 'Friday',
     },
     {
-      name: "Eng - Speaking Test",
-      time: "10.06.2026",
-      day: "Friday",
+      name: 'Eng - Speaking Test',
+      time: '10.06.2026',
+      day: 'Friday',
     },
   ];
 
-  const handleFormSubmit = (values) => {
-    console.log("Form values:", values);
-  };
+  const handleFormSubmit = (_values) => {};
 
-  const reminderTimes = ["08:00 AM", "09:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "01:00 PM", "02:00 PM", "03:00 PM"];
+  const reminderTimes = [
+    '08:00 AM',
+    '09:00 AM',
+    '10:00 AM',
+    '11:00 AM',
+    '12:00 PM',
+    '01:00 PM',
+    '02:00 PM',
+    '03:00 PM',
+  ];
 
   return (
     <div className="p-6">
       <Row justify="center" className="mb-6 text-center">
         <Col span={24}>
           <Title level={3}>Reminders</Title>
-          <Text type="secondary">Reminders help students stay organized, ensuring they don&apos;t miss important sessions, deadlines, or updates.</Text>
+          <Text type="secondary">
+            Reminders help students stay organized, ensuring they don&apos;t miss important
+            sessions, deadlines, or updates.
+          </Text>
         </Col>
       </Row>
 
@@ -57,15 +79,27 @@ const StudentReminders = () => {
         <Col xs={24} md={12}>
           <Card title="Create a new reminder" bordered={false}>
             <Form form={form} layout="vertical" onFinish={handleFormSubmit}>
-              <Form.Item label="Reminder Title" name="title" rules={[{ required: true, message: "Please enter reminder title" }]}>
+              <Form.Item
+                label="Reminder Title"
+                name="title"
+                rules={[{ required: true, message: 'Please enter reminder title' }]}
+              >
                 <Input placeholder="Enter reminder title" />
               </Form.Item>
 
-              <Form.Item label="Reminder Date" name="reminderDate" rules={[{ required: true, message: "Please select reminder date" }]}>
+              <Form.Item
+                label="Reminder Date"
+                name="reminderDate"
+                rules={[{ required: true, message: 'Please select reminder date' }]}
+              >
                 <DatePicker className="w-full" format="MM/DD/YYYY" />
               </Form.Item>
 
-              <Form.Item label="Reminder Time" name="time" rules={[{ required: true, message: "Please select time" }]}>
+              <Form.Item
+                label="Reminder Time"
+                name="time"
+                rules={[{ required: true, message: 'Please select time' }]}
+              >
                 <Select placeholder="Select time">
                   {reminderTimes.map((time) => (
                     <Option key={time} value={time}>
@@ -94,14 +128,14 @@ const StudentReminders = () => {
             bordered={false}
             className="bg-slate-900"
             headStyle={{
-              color: "white",
-              borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
-              padding: "16px 24px",
+              color: 'white',
+              borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+              padding: '16px 24px',
             }}
             bodyStyle={{
-              maxHeight: "500px",
-              overflowY: "auto",
-              padding: "24px",
+              maxHeight: '500px',
+              overflowY: 'auto',
+              padding: '24px',
             }}
           >
             <List

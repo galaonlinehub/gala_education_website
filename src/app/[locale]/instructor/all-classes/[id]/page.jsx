@@ -45,7 +45,7 @@ import { useCohortEnrolledStudents } from "@/hooks/data/useCohortEnrolledStudent
 import { useUser } from "@/hooks/data/useUser";
 import { decrypt } from "@/utils/fns/encryption";
 
-const { Title, Text, Paragraph } = Typography;
+const { Text, Paragraph } = Typography;
 const { Option } = Select;
 
 const ClassDetailsPage = () => {
@@ -71,14 +71,12 @@ const ClassDetailsPage = () => {
         const cohortIdInt = decryptedId;
 
         setCohortId(cohortIdInt);
-        console.log("decrypted id:..", cohortIdInt);
 
         const fetchCohortData = async () => {
           try {
             const cohortData = await getSpecificCohortFn(cohortIdInt);
             setCohortDetails(cohortData);
           } catch (error) {
-            console.error("Error fetching cohort data:", error);
           } finally {
             setIsLoading(false);
           }
@@ -86,7 +84,6 @@ const ClassDetailsPage = () => {
 
         fetchCohortData();
       } catch (error) {
-        console.error("Error processing cohort ID:", error);
         setIsLoading(false);
       }
     }
@@ -127,16 +124,12 @@ const ClassDetailsPage = () => {
     setStudentsModalVisible(true);
   };
 
-  const handleTimeSubmit = (values) => {
-    console.log("Updated time:", values);
-    // Here you would typically update your data source
+  const handleTimeSubmit = () => {
     setTimeModalVisible(false);
     timeForm.resetFields();
   };
 
-  const handlePriceSubmit = (values) => {
-    console.log("Updated price:", values);
-    // Here you would typically update your data source
+  const _handlePriceSubmit = () => {
     setPriceModalVisible(false);
     priceForm.resetFields();
   };

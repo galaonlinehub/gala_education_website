@@ -7,7 +7,7 @@ import React from 'react';
 import { FaChalkboardTeacher } from 'react-icons/fa';
 import { PiStudentBold } from 'react-icons/pi';
 
-const ChooseAccount = ({ btnText, textColor, btnIcon, btnClassname, placement, trigger }) => {
+const ChooseAccount = ({ btnText, textColor, btnClassname, placement, trigger }) => {
   const currentUrl = usePathname();
   const signUpPart = currentUrl.split('/')[1];
   const isDisabled = signUpPart === 'signup';

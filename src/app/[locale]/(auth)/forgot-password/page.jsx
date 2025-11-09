@@ -13,7 +13,6 @@ import {
 
 import { Contact } from "@/components/layout/Contact";
 import SlickSpinner from "@/components/ui/loading/template/SlickSpinner";
-import { SUPPORT_EMAIL } from "@/config/settings";
 import { usePassword } from "@/hooks/data/usePassword";
 
 const ForgotPassword = () => {
@@ -42,10 +41,9 @@ const ForgotPassword = () => {
   const sut = useTranslations("sign_up");
 
   return (
-    <div className="flex items-center justify-center px-2 py-2 md:py-6 h-full">
+    <div className="flex justify-center px-2 py-2 pt-12 pb-6 h-full">
       <Card
-        className={`!w-full !max-w-md !py-4 bg-white rounded-xl transition-all ${width < 768 ? "shadow-none border-none" : "shadow-sm"
-          }`}
+        className={`!w-full !max-w-md !py-4 bg-white rounded-xl transition-all !border-none`}
       >
         <div className="flex items-center justify-center mb-4">
           <div className="bg-[#001840]/10 p-3 rounded-full">

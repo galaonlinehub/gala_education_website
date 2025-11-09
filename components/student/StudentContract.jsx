@@ -1,6 +1,7 @@
+"use client"
+
 import { Modal, Typography, Checkbox } from "antd";
 import React, { useEffect, useState } from "react";
-
 import { STUDENT_CONTRACT_KEY } from "@/config/settings";
 import { sessionStorageFn } from "@/utils/fns/client";
 import { decrypt, encrypt } from "@/utils/fns/encryption";
@@ -12,7 +13,6 @@ const StudentContract = () => {
   const [checked, setChecked] = useState(false);
 
   const onChange = (e) => {
-    console.log("checked = ", e.target.checked);
     setChecked(e.target.checked);
   };
 
@@ -23,10 +23,8 @@ const StudentContract = () => {
       const isAccepted = decrypt(contractStatus) === "student-accepted";
       if (isAccepted) {
         setOpenStudentContract(false);
-        console.log("accept value is false");
       } else {
         setOpenStudentContract(true);
-        console.log("accept value is true");
       }
     } else {
       setOpenStudentContract(true);
