@@ -14,8 +14,8 @@ const DonationStep = ({
   const sut = useTranslations('sign_up');
   return (
     <Form form={form}>
-      <div style={{ marginBottom: '20px' }}>
-        <Radio.Group
+      <div className="mb-4">
+        {/* <Radio.Group
           value={donationFrequency}
           onChange={(e) => setDonationFrequency(e.target.value)}
           style={{
@@ -31,6 +31,9 @@ const DonationStep = ({
               textAlign: 'center',
               backgroundColor: donationFrequency === 'monthly' ? '#001840' : '',
               color: donationFrequency === 'monthly' ? 'white' : '',
+              outline: 'none',
+              boxShadow: 'none',
+              border: 'none',
             }}
           >
             {donate('monthly')}
@@ -42,17 +45,20 @@ const DonationStep = ({
               textAlign: 'center',
               backgroundColor: donationFrequency === 'onetime' ? '#001840' : '',
               color: donationFrequency === 'onetime' ? 'white' : '',
+              outline: 'none',
+              boxShadow: 'none',
+              border: 'none',
             }}
           >
             {donate('one_time')}
           </Radio.Button>
-        </Radio.Group>
+        </Radio.Group> */}
 
         <Form.Item label={donate('amount')}>
           <InputNumber
             addonBefore="TZS"
             min={100}
-            style={{ width: '100%' }}
+            className="w-full"
             formatter={(value) => (value ? `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '')}
             parser={(value) => value.replace(/\s|,/g, '')}
             value={selectedAmount}
@@ -80,23 +86,22 @@ const DonationStep = ({
           />
         </Form.Item>
 
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px' }}>
+        <div className="flex justify-between mt-2">
           {[1000, 5000, 10000].map((amount) => (
-            <Button
+            <button
               key={amount}
-              className={`${selectedAmount === amount ? 'bg-[#001840]' : null}`}
+              className={`flex-1 mx-1 border  rounded-md cursor-pointer text-sm ${selectedAmount === amount ? 'bg-[#001840] border-[#001840] hover:text-white text-white' : 'text-gray-400 border-gray-400 hover:border-[#001840] hover:text-[#001840]'}`}
               type={selectedAmount === amount ? 'primary' : 'default'}
               onClick={() => setSelectedAmount(amount)}
-              style={{ flex: 1, margin: '0 4px' }}
             >
               {amount?.toLocaleString()}
-            </Button>
+            </button>
           ))}
         </div>
       </div>
 
-      <div style={{ marginTop: '16px' }}>
-        <Card size="small" style={{ marginBottom: '16px', background: '#f9f9f9' }}>
+      <div className="mt-4">
+        <Card size="small" className="mb-4 bg-[#f9f9f9]">
           <Paragraph className="text-xs">
             <Text className="font-semibold text-xs">{donate('your_impact')} </Text>
             {donate('support_message')}

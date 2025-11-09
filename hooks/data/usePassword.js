@@ -1,22 +1,22 @@
-import { useMutation } from "@tanstack/react-query";
-import { message } from "antd";
-import { useRouter } from "next/navigation";
-import { useState, useEffect, useRef } from "react";
-import { useForm } from "react-hook-form";
+import { useMutation } from '@tanstack/react-query';
+import { message } from 'antd';
+import { useRouter } from 'next/navigation';
+import { useState, useEffect, useRef } from 'react';
+import { useForm } from 'react-hook-form';
 
-import { useDevice } from "@/hooks/misc/useDevice";
-import { apiPost } from "@/services/api/api_service";
-import { sessionStorageFn } from "@/utils/fns/client";
-import { encrypt } from "@/utils/fns/encryption";
+import { useDevice } from '@/hooks/misc/useDevice';
+import { apiPost } from '@/services/api/api_service';
+import { sessionStorageFn } from '@/utils/fns/client';
+import { encrypt } from '@/utils/fns/encryption';
 
-import { RESET_PASSWORD_EMAIL_KEY } from "../../config/settings";
+import { RESET_PASSWORD_EMAIL_KEY } from '../../config/settings';
 
 export const usePassword = () => {
   const router = useRouter();
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
   const [resendCounter, setResendCounter] = useState(0);
-  const [otpValues, setOtpValues] = useState(["", "", "", "", "", ""]);
-  const [otpStatus, setOtpStatus] = useState({ status: "", message: "" });
+  const [otpValues, setOtpValues] = useState(['', '', '', '', '', '']);
+  const [otpStatus, setOtpStatus] = useState({ status: '', message: '' });
   const otpRefs = useRef([]);
   const { width } = useDevice();
 
@@ -38,40 +38,41 @@ export const usePassword = () => {
   }, [resendCounter]);
 
   const resetPasswordMutation = useMutation({
-    mutationFn: (data) =>
-      apiPost("/password/reset-request", { email: data.forgot_password.email }),
+    mutationFn: (data) => apiPost('/password/reset-request', { email: data.forgot_password.email }),
     onSuccess: (response, variables) => {
       const encryptedEmail = encrypt(variables.email);
       sessionStorageFn.set(RESET_PASSWORD_EMAIL_KEY, encryptedEmail);
       setEmail(variables.email);
       setResendCounter(30);
-      message.success("OTP sent to your email");
+      message.success('OTP sent to your email');
     },
     onError: (error) => {
-      if (
-        error.status === 422 &&
-        Object.keys(error?.response?.data?.errors || {}).includes("email")
-      ) {
-        setError("email", {
-          type: "manual",
-          message: "No account registered with this email 😕",
+      // Check if there's a specific email error from backend
+      const emailError = error?.response?.data?.email?.[0];
+
+      if (emailError) {
+        // Display specific email error message
+        setOtpStatus({
+          status: 'error',
+          message: emailError,
         });
       } else {
+        // Fall back to generic error message for unknown errors
         setOtpStatus({
-          status: "error",
+          status: 'error',
           message:
             error?.response?.data?.message ||
-            "Something went wrong. Please try again later. If the issue persists contact support.",
+            'Something went wrong. Please try again later. If the issue persists contact support.',
         });
       }
     },
   });
 
   const resendOtpMutation = useMutation({
-    mutationFn: () => apiPost("/request-otp", { email }),
+    mutationFn: () => apiPost('/request-otp', { email }),
     onSuccess: () => {
       setResendCounter(30);
-      message.success("OTP resent to your email", 6);
+      message.success('OTP resent to your email', 6);
     },
     onError: (error) => {
       message.error(`Failed to resend OTP: ${error.message}`);
@@ -79,26 +80,24 @@ export const usePassword = () => {
   });
 
   const verificationMutation = useMutation({
-    mutationFn: (otp) => apiPost("/verify-otp", { email, otp }),
+    mutationFn: (otp) => apiPost('/verify-otp', { email, otp }),
     onSuccess: (response) => {
-      setOtpStatus({ status: "success", message: "" });
+      setOtpStatus({ status: 'success', message: '' });
       setTimeout(() => {
-        router.push("/forgot-password/password-change");
+        router.push('/forgot-password/password-change');
       }, 3000);
     },
     onError: (error) => {
       setOtpStatus({
-        status: "error",
-        message:
-          error?.response?.data?.message ||
-          "Invalid or expired OTP. Please try again.",
+        status: 'error',
+        message: error?.response?.data?.message || 'Invalid or expired OTP. Please try again.',
       });
     },
   });
 
   const onSubmit = (data) => {
     console.log(data);
-    console.log("THIS IS THE PRINT");
+    console.log('THIS IS THE PRINT');
     resetPasswordMutation.mutate(data);
   };
 
@@ -118,36 +117,35 @@ export const usePassword = () => {
       otpRefs.current[index + 1].focus();
     }
 
-    if (newOtpValues.every((v) => v !== "") && value) {
-      verificationMutation.mutate(newOtpValues.join(""));
+    if (newOtpValues.every((v) => v !== '') && value) {
+      verificationMutation.mutate(newOtpValues.join(''));
     }
 
-    setOtpStatus({ status: "", message: "" });
+    setOtpStatus({ status: '', message: '' });
   };
 
   const handleKeyDown = (e, index) => {
-    if (e.key === "Backspace" && !otpValues[index] && index > 0) {
+    if (e.key === 'Backspace' && !otpValues[index] && index > 0) {
       otpRefs.current[index - 1].focus();
     }
   };
 
   const handlePaste = (e) => {
     e.preventDefault();
-    const pastedData = e.clipboardData.getData("text/plain").trim();
+    const pastedData = e.clipboardData.getData('text/plain').trim();
 
     if (/^\d+$/.test(pastedData) && pastedData.length <= otpValues.length) {
       const newOtpValues = [...otpValues].map((_, index) =>
-        index < pastedData.length ? pastedData[index] : ""
+        index < pastedData.length ? pastedData[index] : ''
       );
       setOtpValues(newOtpValues);
 
-      const nextEmptyIndex = newOtpValues.findIndex((value) => value === "");
-      const focusIndex =
-        nextEmptyIndex === -1 ? otpValues.length - 1 : nextEmptyIndex;
+      const nextEmptyIndex = newOtpValues.findIndex((value) => value === '');
+      const focusIndex = nextEmptyIndex === -1 ? otpValues.length - 1 : nextEmptyIndex;
       otpRefs.current[focusIndex].focus();
 
-      if (newOtpValues.every((v) => v !== "")) {
-        verificationMutation.mutate(newOtpValues.join(""));
+      if (newOtpValues.every((v) => v !== '')) {
+        verificationMutation.mutate(newOtpValues.join(''));
       }
     }
   };

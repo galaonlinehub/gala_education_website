@@ -33,6 +33,7 @@ const Donate = ({ showDonatePopup, setShowDonatePopup, setShowProcessingModal })
   const renderTabContent = () => (
     <Tabs activeKey={activeTab} onChange={setActiveTab} centered>
       <TabPane
+        className=""
         tab={
           <span
             style={{

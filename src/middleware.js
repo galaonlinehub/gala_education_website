@@ -23,6 +23,7 @@ const AUTH_CONFIG = {
     '/forgot-password',
     '/forgot-password/password-change',
     '/activate-account',
+    '/terms-and-privacy',
   ],
   AUTH_ONLY_ROUTES: ['/signin', '/signup'],
   NON_ROLE_ROUTES: ['/gala-meet'],

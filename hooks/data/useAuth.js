@@ -1,25 +1,22 @@
-
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { message } from "antd";
-import { useState } from "react";
-import { LuCircleCheckBig } from "react-icons/lu";
-
-import { apiGet, apiPost } from "@/services/api/api_service";
-import { encrypt } from "@/utils/fns/encryption";
-
-import { EMAIL_VERIFICATION_KEY } from "../../config/settings";
-import { globalOptions } from "../../config/tanstack";
-import {
-  useAccountType,
-  useEmailVerificationModalOpen,
-} from "../../store/auth/signup";
-import { sessionStorageFn } from "../../utils/fns/client";
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { message } from 'antd';
+import { useState } from 'react';
+import { LuCircleCheckBig } from 'react-icons/lu';
+import { apiGet, apiPost } from '@/services/api/api_service';
+import { encrypt } from '@/utils/fns/encryption';
+import { EMAIL_VERIFICATION_KEY } from '../../config/settings';
+import { globalOptions } from '../../config/tanstack';
+import { useAccountType, useEmailVerificationModalOpen } from '../../store/auth/signup';
+import { sessionStorageFn } from '../../utils/fns/client';
+import { setToken } from '@/utils/fns/auth';
+import { useRouter } from 'next/navigation';
+import { roleRedirects } from '@/utils/data/redirect';
 
 export const useAuth = () => {
   const [emailExists, setEmailExists] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [passwordFocused, setPasswordFocused] = useState(false);
-  const [registerError, setRegisterError] = useState("");
+  const [registerError, setRegisterError] = useState('');
   const [fileList, setFileList] = useState({
     cv: [],
     transcript: [],
@@ -29,6 +26,7 @@ export const useAuth = () => {
 
   const { setOpenEmailVerificationModal } = useEmailVerificationModalOpen();
   const { accountType } = useAccountType();
+  const router = useRouter();
 
   const calculatePasswordStrength = (password) => {
     let strength = 0;
@@ -40,18 +38,18 @@ export const useAuth = () => {
   };
 
   const getPasswordStatus = () => {
-    if (passwordStrength >= 100) return { color: "#52c41a", text: "Strong" };
-    if (passwordStrength >= 50) return { color: "#faad14", text: "Medium" };
-    return { color: "#f5222d", text: "Weak" };
+    if (passwordStrength >= 100) return { color: '#52c41a', text: 'Strong' };
+    if (passwordStrength >= 50) return { color: '#faad14', text: 'Medium' };
+    return { color: '#f5222d', text: 'Weak' };
   };
 
   const getPasswordRequirements = (password) => {
     return [
-      { text: "At least 8 characters", met: password?.length >= 8 },
-      { text: "Contains uppercase letter", met: /[A-Z]/.test(password) },
-      { text: "Contains number", met: /[0-9]/.test(password) },
+      { text: 'At least 8 characters', met: password?.length >= 8 },
+      { text: 'Contains uppercase letter', met: /[A-Z]/.test(password) },
+      { text: 'Contains number', met: /[0-9]/.test(password) },
       {
-        text: "Contains special character",
+        text: 'Contains special character',
         met: /[^A-Za-z0-9]/.test(password),
       },
     ];
@@ -63,26 +61,22 @@ export const useAuth = () => {
   };
 
   const mutation = useMutation({
-    mutationFn: ({ formData, headers }) =>
-      apiPost("/register", formData, headers),
+    mutationFn: ({ formData, headers }) => apiPost('/register', formData, headers),
     retry: false,
     onSuccess: (data, variables, context) => {
       message.success({
-        content: "Account created successfully!",
+        content: 'Account created successfully!',
         icon: <LuCircleCheckBig size={20} className="text-[#52c41a] !mx-1" />,
       });
 
-      sessionStorageFn.set(
-        EMAIL_VERIFICATION_KEY,
-        encrypt(variables.formData.get("email"))
-      );
+      sessionStorageFn.set(EMAIL_VERIFICATION_KEY, encrypt(variables.formData.get('email')));
       setOpenEmailVerificationModal(true);
     },
     onError: (error) => {
       const errorMessage =
         error?.response?.data?.email?.[0] ??
         error?.response?.data?.message ??
-        "Something went wrong. Please try again later.";
+        'Something went wrong. Please try again later.';
 
       if (error?.response?.data?.email) {
         setEmailExists(`${errorMessage}😔`);
@@ -95,41 +89,50 @@ export const useAuth = () => {
   });
 
   const onFinish = (values) => {
-    const isInstructor = values.role === "instructor";
-    const formData = new FormData();
+    try {
+      const isInstructor = values.role === 'instructor';
+      const formData = new FormData();
 
-    const fileMapping = {
-      cv: "curriculum_vitae",
-      transcript: "transcript",
-      oLevelCertificate: "o_level_certificate",
-      aLevelCertificate: "a_level_certificate",
-    };
+      const fileMapping = {
+        cv: 'curriculum_vitae',
+        transcript: 'transcript',
+        oLevelCertificate: 'o_level_certificate',
+        aLevelCertificate: 'a_level_certificate',
+      };
 
-    Object.entries(values).forEach(([key, value]) => {
-      if (!Object.keys(fileMapping).includes(key)) {
-        formData.append(key, value);
-      }
-    });
-
-    if (isInstructor) {
-      Object.entries(fileMapping).forEach(([key, formKey]) => {
-        if (fileList[key]?.[0]) {
-          formData.append(formKey, fileList[key][0].originFileObj);
+      Object.entries(values).forEach(([key, value]) => {
+        if (!Object.keys(fileMapping).includes(key)) {
+          formData.append(key, value);
         }
       });
-    }
 
-    formData.append("country", "Tanzania");
-    console.time("signup");
-    mutation.mutate({
-      formData,
-      headers: {
-        "Content-Type": isInstructor
-          ? "multipart/form-data"
-          : "application/json",
-      },
-    });
-    console.timeEnd("signup");
+      if (isInstructor) {
+        Object.entries(fileMapping).forEach(([key, formKey]) => {
+          if (fileList[key]?.[0]) {
+            formData.append(formKey, fileList[key][0].originFileObj);
+          }
+        });
+      }
+
+      formData.append('country', 'Tanzania');
+       mutation.mutate({
+        formData,
+        headers: {
+          'Content-Type': isInstructor ? 'multipart/form-data' : 'application/json',
+        },
+      });
+
+      // if (!isInstructor) {
+      //   if (response.status === 200) {
+      //     setToken(response.data.token);
+
+      //     const route = roleRedirects(values.role || 'student');
+      //     router.push(route);
+      //   }
+      // }
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   const {
@@ -137,7 +140,7 @@ export const useAuth = () => {
     isFetching: isFetchingPlans,
     error: errorOnFetchingPlans,
   } = useQuery({
-    queryKey: ["payment-plan", accountType],
+    queryKey: ['payment-plan', accountType],
     queryFn: async () => {
       const response = await apiGet(`payment-plans?type=${accountType}`);
       return response.data;
@@ -150,9 +153,7 @@ export const useAuth = () => {
   const savingsPercentage = (plans) => {
     const monthlyCost = plans[0]?.amount * 12;
     const annualCost = plans[1]?.amount;
-    const savingsPercentage = Math.round(
-      ((monthlyCost - annualCost) / monthlyCost) * 100
-    );
+    const savingsPercentage = Math.round(((monthlyCost - annualCost) / monthlyCost) * 100);
 
     return savingsPercentage;
   };

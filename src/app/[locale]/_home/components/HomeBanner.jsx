@@ -5,7 +5,7 @@ import Link from 'next/link';
 export const HomeBanner = () => {
   const homepage = useTranslations('home_page');
   return (
-    <section className="relative w-full flex flex-col pt-[3rem]">
+    <section className="relative w-full flex flex-col">
       <div className="w-full">
         <figure role="group" aria-labelledby="hero-caption" className="h-full">
           <Image
@@ -33,7 +33,9 @@ export const HomeBanner = () => {
           </p>
           <h1 className="font-medium flex items-center gap-1 sm:gap-2 text-center leading-tight whitespace-nowrap overflow-hidden">
             <span className="hidden sm:flex">{homepage('student_registration')}</span>
-            <span className="font-bold text-[#030DFE] underline whitespace-nowrap">{homepage('completely_free')} </span>{' '}
+            <span className="font-bold text-[#030DFE] underline whitespace-nowrap">
+              {homepage('completely_free')}{' '}
+            </span>{' '}
             <span className="">{homepage('dont_wait')}</span>
           </h1>
         </section>
@@ -51,16 +53,18 @@ export const HomeBanner = () => {
         <p className="text-center text-xs sm:text-sm md:text-base font-medium leading-tight sm:leading-normal px-2 sm:px-4 md:px-0">
           {homepage('gala_education_goal')}
         </p>
-        <section className="flex flex-col sm:flex-row justify-center text-center gap-2 sm:gap-3 md:gap-4 mt-2 sm:mt-3 md:mt-4 px-2 sm:px-0">
-          <Link href="/signup/student" className="w-full sm:w-fit">
-            <button className="border hover:scale-105 transition-transform ease-in-out duration-200  border-black bg-black text-white px-3 sm:px-4 md:px-5 py-2 sm:py-3 rounded-full font-extrabold text-xs sm:text-sm w-full sm:w-fit whitespace-nowrap">
-              {homepage('become_student')}
-            </button>
+        <section className="flex flex-col sm:flex-row justify-center text-center gap-3 sm:gap-4 md:gap-6 mt-4 sm:mt-8 md:mt-12 px-2 sm:px-0">
+          <Link
+            href="/signup/student"
+            className="border hover:scale-105 transition-transform ease-in-out duration-200  border-black bg-black text-white px-3 sm:px-4 md:px-5 py-2 sm:py-3 rounded-full font-extrabold text-xs sm:text-sm w-full sm:w-[18rem] whitespace-nowrap"
+          >
+            {homepage('become_student')}
           </Link>
-          <Link href={'/signup/instructor'} className="w-full sm:w-fit">
-            <button className="border hover:scale-105 transition-transform ease-in-out duration-200  border-black bg-transparent text-black px-3 sm:px-4 md:px-5 py-2 sm:py-3 rounded-full font-extrabold text-xs sm:text-sm w-full sm:w-fit whitespace-nowrap">
-              {homepage('become_teacher')}
-            </button>
+          <Link
+            href={'/signup/instructor'}
+            className="border hover:scale-105 transition-transform ease-in-out duration-200 border-black bg-transparent text-black px-3 sm:px-4 md:px-5 py-2 sm:py-3 rounded-full font-extrabold text-xs sm:text-sm w-full sm:w-[18rem] whitespace-nowrap"
+          >
+            {homepage('become_teacher')}
           </Link>
         </section>
       </section>

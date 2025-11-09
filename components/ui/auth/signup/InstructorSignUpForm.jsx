@@ -1,4 +1,4 @@
-"use client"
+'use client';
 
 import {
   UserOutlined,
@@ -8,36 +8,24 @@ import {
   InfoCircleOutlined,
   CheckCircleFilled,
   FilePdfOutlined,
-} from "@ant-design/icons";
-import {
-  Form,
-  Input,
-  Button,
-  Typography,
-  Card,
-  Upload,
-  message,
-  Progress,
-  Tooltip,
-} from "antd";
-import clsx from "clsx";
-import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
-import React, { useState } from "react";
-import { LuCheck, LuUpload } from "react-icons/lu";
+} from '@ant-design/icons';
+import { Form, Input, Button, Typography, Card, Upload, message, Progress, Tooltip } from 'antd';
+import clsx from 'clsx';
+import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import React, { useState } from 'react';
+import { LuCheck, LuUpload } from 'react-icons/lu';
+import { Contact } from '@/components/layout/Contact';
+import { useAuth } from '@/hooks/data/useAuth';
+import { preventCopyPaste } from '@/utils/fns/general';
+import EmailVerification from './EmailVerification';
+import SlickSpinner from '../../loading/template/SlickSpinner';
+import { Link } from '@/src/i18n/navigation';
 
-import { Contact } from "@/components/layout/Contact";
-import { useAuth } from "@/hooks/data/useAuth";
-import { preventCopyPaste } from "@/utils/fns/general";
-
-import EmailVerification from "./EmailVerification";
-import SlickSpinner from "../../loading/template/SlickSpinner";
-
-const { Text } = Typography;
 
 const InstructorRegistrationForm = () => {
   const [form] = Form.useForm();
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState('');
   const [isAgreementChecked, setIsAgreementChecked] = useState(false);
   const router = useRouter();
 
@@ -59,16 +47,16 @@ const InstructorRegistrationForm = () => {
   } = useAuth(password);
 
   const beforeUpload = (file) => {
-    const isPdf = file.type === "application/pdf";
+    const isPdf = file.type === 'application/pdf';
     const isValidSize = file.size / 1024 / 1024 < 2;
 
     if (!isPdf) {
-      message.error("Only PDF files are allowed");
+      message.error('Only PDF files are allowed');
       return Upload.LIST_IGNORE;
     }
 
     if (!isValidSize) {
-      message.error("File must be smaller than 2MB");
+      message.error('File must be smaller than 2MB');
       return Upload.LIST_IGNORE;
     }
 
@@ -78,9 +66,7 @@ const InstructorRegistrationForm = () => {
   const handleFileChange = ({ fileList }, type) => {
     const validFiles = fileList.filter(
       (file) =>
-        file.status !== "error" &&
-        file.type === "application/pdf" &&
-        file.size / 1024 / 1024 < 2
+        file.status !== 'error' && file.type === 'application/pdf' && file.size / 1024 / 1024 < 2
     );
 
     setFileList((prev) => ({
@@ -89,44 +75,36 @@ const InstructorRegistrationForm = () => {
     }));
   };
 
-  const sut = useTranslations('sign_up')
-  const ht = useTranslations('home_page')
+  const sut = useTranslations('sign_up');
+  const ht = useTranslations('home_page');
 
   const uploadButton = (text, miniText) => (
     <div className="flex flex-col gap-1">
       <Button
         icon={<LuUpload />}
-        className="!w-full !bg-[#001840] hover:!opacity-90 !text-white !h-input-height !flex !items-center !justify-center !text-xs !outline-none focus:!outline-none hover:!outline-none hover:!border-transparent hover:!box-shadow-none"
+        className="!w-full !bg-[#001840] hover:!opacity-90 !text-white !h-11.5 md:!h-11 !flex !items-center !justify-center !text-xs !outline-none focus:!outline-none hover:!outline-none focus-visible:!outline-none hover:!border-transparent hover:!box-shadow-none"
       >
         {text}
       </Button>
-      <Text className="text-[10px] font-normal text-gray-500 flex items-center gap-1">
+      <div className="text-[10px] font-xs text-gray-500 flex items-center gap-1 font-light">
         <FilePdfOutlined /> PDF only, max 2MB
-        {miniText && (
-          <span className="text-black mx-1 font-bold">({miniText})</span>
-        )}
-      </Text>
+        {miniText && <span className="mx-1">({miniText})</span>}
+      </div>
     </div>
   );
 
   return (
     <>
-      <Card className="!border-0 -mx-5 lg:-mx-0 mt-3 !bg-transparent">
-        {/* <div className="flex flex-col gap-2 justify-center items-center w-full mb-6">
-          <span className="font-black text-xl sm:text-2xl">{sut('sign_up')}</span>
-          <span className="font-medium text-[12px] w-full text-center">
-            {sut('sign_up_statement_teachers')}
-          </span>
-        </div> */}
+      <div className="mt-3 bg-transparent">
         {registerError && (
           <div
             className={clsx(
-              "px-1 py-2.5 border-[0.8px] text-xs text-center mb-4 w-full rounded-md font-light",
+              'px-1 py-2.5 border-[0.8px] text-xs text-center mb-4 w-full rounded-md font-light',
               mutation.isSuccess
-                ? "border-green-700 text-green-400 bg-green-50"
+                ? 'border-green-700 text-green-400 bg-green-50'
                 : mutation.isError
-                  ? "border-red-500 text-red-500 bg-red-50"
-                  : "border-gray-700 text-gray-700"
+                  ? 'border-red-500 text-red-500 bg-red-50'
+                  : 'border-gray-700 text-gray-700'
             )}
           >
             {registerError}
@@ -138,16 +116,14 @@ const InstructorRegistrationForm = () => {
           onFinish={onFinish}
           onFieldsChange={() => {
             mutation.reset();
-            setRegisterError("");
+            setRegisterError('');
           }}
           className="flex flex-col lg:flex-row items-center justify-center gap-3 lg:gap-6 !w-full"
         >
           <div className="w-full lg:w-6/12 flex flex-col">
             <Form.Item
               name="first_name"
-              rules={[
-                { required: true, message: sut('enter_first_name') },
-              ]}
+              rules={[{ required: true, message: sut('enter_first_name') }]}
             >
               <Input
                 prefix={<UserOutlined className="!text-gray-400" />}
@@ -159,9 +135,7 @@ const InstructorRegistrationForm = () => {
 
             <Form.Item
               name="last_name"
-              rules={[
-                { required: true, message: sut('enter_last_name') },
-              ]}
+              rules={[{ required: true, message: sut('enter_last_name') }]}
             >
               <Input
                 prefix={<UserOutlined className="!text-gray-400" />}
@@ -172,12 +146,12 @@ const InstructorRegistrationForm = () => {
             </Form.Item>
             <Form.Item
               name="email"
-              validateTrigger={["onBlur", "onChange", "onSubmit"]}
+              validateTrigger={['onBlur', 'onChange', 'onSubmit']}
               rules={[
                 { required: true, message: sut('enter_email') },
-                { type: "email", message: sut('valid_email_address') },
+                { type: 'email', message: sut('valid_email_address') },
               ]}
-              validateStatus={emailExists ? "error" : undefined}
+              validateStatus={emailExists ? 'error' : undefined}
             >
               <div>
                 <Input
@@ -191,11 +165,7 @@ const InstructorRegistrationForm = () => {
                     setEmailExists(false);
                   }}
                 />
-                {emailExists && (
-                  <div className="ant-form-item-explain-error">
-                    {emailExists}
-                  </div>
-                )}
+                {emailExists && <div className="ant-form-item-explain-error">{emailExists}</div>}
               </div>
             </Form.Item>
 
@@ -206,9 +176,7 @@ const InstructorRegistrationForm = () => {
                 {
                   validator: (_, value) => {
                     if (value && passwordStrength < 100) {
-                      return Promise.reject(
-                        sut('password_requirements')
-                      );
+                      return Promise.reject(sut('password_requirements'));
                     }
                     return Promise.resolve();
                   },
@@ -245,13 +213,9 @@ const InstructorRegistrationForm = () => {
                   {getPasswordRequirements(password).map((req, index) => (
                     <div key={index} className="!flex !items-center !gap-2">
                       <CheckCircleFilled
-                        className={
-                          req.met ? "!text-green-500" : "!text-gray-300"
-                        }
+                        className={req.met ? '!text-green-500' : '!text-gray-300'}
                       />
-                      <span className="!text-xs !text-gray-600">
-                        {req.text}
-                      </span>
+                      <span className="!text-xs !text-gray-600">{req.text}</span>
                     </div>
                   ))}
                 </div>
@@ -260,12 +224,12 @@ const InstructorRegistrationForm = () => {
 
             <Form.Item
               name="confirm_password"
-              dependencies={["password"]}
+              dependencies={['password']}
               rules={[
                 { required: true, message: sut('confirm_your_password') },
                 ({ getFieldValue }) => ({
                   validator(_, value) {
-                    if (!value || getFieldValue("password") === value) {
+                    if (!value || getFieldValue('password') === value) {
                       return Promise.resolve();
                     }
                     return Promise.reject(sut('password_mismatch'));
@@ -326,11 +290,11 @@ const InstructorRegistrationForm = () => {
                 accept=".pdf"
                 listType="text"
                 beforeUpload={beforeUpload}
-                onChange={(info) => handleFileChange(info, "cv")}
+                onChange={(info) => handleFileChange(info, 'cv')}
                 fileList={fileList.cv}
                 maxCount={1}
               >
-                {uploadButton(sut('upload_cv'), "")}
+                {uploadButton(sut('upload_cv'), '')}
               </Upload>
             </Form.Item>
 
@@ -342,33 +306,24 @@ const InstructorRegistrationForm = () => {
                 accept=".pdf"
                 listType="text"
                 beforeUpload={beforeUpload}
-                onChange={(info) => handleFileChange(info, "transcript")}
+                onChange={(info) => handleFileChange(info, 'transcript')}
                 fileList={fileList.transcript}
                 maxCount={1}
               >
-                {uploadButton(sut('upload_certificate'), "")}
+                {uploadButton(sut('upload_certificate'), '')}
               </Upload>
             </Form.Item>
 
-            <Form.Item
-              name="oLevelCertificate"
-            //   rules={[
-            //     {
-            //       required: true,
-            //       message: sut('o_level_cert_required')
-            //     },
-            //   ]
-            // }
-            >
+            <Form.Item name="oLevelCertificate">
               <Upload
                 accept=".pdf"
                 listType="text"
                 beforeUpload={beforeUpload}
-                onChange={(info) => handleFileChange(info, "oLevelCertificate")}
+                onChange={(info) => handleFileChange(info, 'oLevelCertificate')}
                 fileList={fileList.oLevelCertificate}
                 maxCount={1}
               >
-                {uploadButton(sut('o_level_cert'), "")}
+                {uploadButton(sut('o_level_cert'), '')}
               </Upload>
             </Form.Item>
 
@@ -377,7 +332,7 @@ const InstructorRegistrationForm = () => {
                 accept=".pdf"
                 listType="text"
                 beforeUpload={beforeUpload}
-                onChange={(info) => handleFileChange(info, "aLevelCertificate")}
+                onChange={(info) => handleFileChange(info, 'aLevelCertificate')}
                 fileList={fileList.aLevelCertificate}
                 maxCount={1}
               >
@@ -388,15 +343,12 @@ const InstructorRegistrationForm = () => {
           <Form.Item className="w-full lg:w-2/12">
             <Button
               disabled={
-                mutation.isPending ||
-                !isAgreementChecked ||
-                mutation.isSuccess ||
-                mutation.isError
+                mutation.isPending || !isAgreementChecked || mutation.isSuccess || mutation.isError
               }
               type="primary"
               htmlType="submit"
               className={
-                "!flex !items-center !justify-center !w-full !font-normal !py-4 !text-white !border-transparent disabled:!cursor-not-allowed disabled:!opacity-70 !bg-[#010798] hover:!opacity-80"
+                '!flex !items-center !justify-center !w-full !font-normal !py-4 !text-white !border-transparent disabled:!cursor-not-allowed disabled:!opacity-70 !bg-[#010798] hover:!opacity-80 !h-12 md:!h-11'
               }
             >
               {mutation.isPending ? (
@@ -407,24 +359,24 @@ const InstructorRegistrationForm = () => {
             </Button>
           </Form.Item>
         </Form>
-        <div className="text-center text-sm text-gray-600 mt-2 flex items-center justify-center gap-2 flex-wrap">
+        <div className="text-center text-sm text-gray-600 mt-4 flex items-center justify-center gap-x-1 flex-wrap">
           <div className="relative flex items-center">
             <input
               type="checkbox"
               checked={isAgreementChecked}
               onChange={(e) => setIsAgreementChecked(e.target.checked)}
-              className="appearance-none w-5 h-5 border-2 border-[#010798] rounded 
-                      checked:bg-[#010798] cursor-pointer
-                      transition-all duration-300 ease-in-out
-                      hover:border-opacity-80 focus:ring-2 focus:ring-[#010798] focus:ring-opacity-40 flex items-center justify-center outline-none"
+              className="appearance-none w-5 h-5 border-2 border-[#010798] rounded
+                     checked:bg-[#010798] cursor-pointer
+                     transition-all duration-300 ease-in-out
+                     hover:border-opacity-80 focus:ring-2 focus:ring-[#010798] focus:ring-opacity-40 flex items-center justify-center outline-none"
             />
             <LuCheck
               className={clsx(
-                "absolute left-0.5 top-0.5",
-                "pointer-events-none transition-all duration-300 ease-in-out",
+                'absolute left-0.5 top-0.5',
+                'pointer-events-none transition-all duration-300 ease-in-out',
                 {
-                  "text-white": isAgreementChecked,
-                  "text-transparent": !isAgreementChecked,
+                  'text-white': isAgreementChecked,
+                  'text-transparent': !isAgreementChecked,
                 }
               )}
               size={16}
@@ -432,39 +384,29 @@ const InstructorRegistrationForm = () => {
             />
           </div>
 
-          <Text>{sut('read_and_agreed')}</Text>
-          <Button
-            type="link"
-            className="!p-0 !m-1 !text-blue-600 hover:!text-blue-700"
-            onClick={() => router.push("/terms-and-privacy")}
-          >
+          <span>{sut('read_and_agreed')}</span>
+          <Link className="text-blue-600 hover:text-blue-700" href={'/terms-and-privacy'}>
             {sut('terms_of_service')}
-          </Button>
-          <Text> {sut('and')} </Text>
-          <Button
-            type="link"
-            className="!p-0 !m-1 !text-blue-600 hover:!text-blue-700"
-            onClick={() => router.push("/terms-and-privacy")}
-          >
+          </Link>
+          <span> {sut('and')} </span>
+          <Link href={'/terms-and-privacy'} className="text-blue-600 hover:text-blue-700">
             {sut('privacy_policy')}
-          </Button>
+          </Link>
         </div>
 
         <div className="!text-center !text-sm !text-gray-600">
-          <Text>{sut('already_have_account')}</Text>
+          <span>{sut('already_have_account')}</span>
           <Button
             type="link"
             className="!p-0 !m-1 !text-blue-600 hover:!text-blue-700"
-            onClick={() => router.push("/signin")}
+            onClick={() => router.push('/signin')}
           >
             {sut('sign_in')}
           </Button>
         </div>
 
-        <div className="w-full flex items-center justify-center mt-1">
-          <Contact />
-        </div>
-      </Card>
+        <Contact className={'mt-4'} />
+      </div>
       <EmailVerification />
     </>
   );
