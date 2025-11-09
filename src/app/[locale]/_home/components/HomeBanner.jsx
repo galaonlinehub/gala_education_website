@@ -5,7 +5,7 @@ import Link from 'next/link';
 export const HomeBanner = () => {
   const homepage = useTranslations('home_page');
   return (
-    <section className="relative w-full flex flex-col pt-[3rem]">
+    <section className="relative w-full flex flex-col">
       <div className="w-full">
         <figure role="group" aria-labelledby="hero-caption" className="h-full">
           <Image

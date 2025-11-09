@@ -271,11 +271,11 @@
       "link": "Sign Up"
     },
     "email": {
-      "required": "This field is requried",
+      "required": "This field is required",
       "invalid": "Please enter valid email address"
     },
     "password": {
-      "required": "This field is requried"
+      "required": "This field is required"
     }
   },
 

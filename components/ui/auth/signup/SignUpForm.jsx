@@ -26,7 +26,7 @@ const SignUpForm = () => {
   const [form] = Form.useForm();
   const [password, setPassword] = useState('');
   const [isAgreementChecked, setIsAgreementChecked] = useState(false);
-  const router = useRouter();
+
   const {
     getPasswordStatus,
     getPasswordRequirements,

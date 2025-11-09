@@ -1,17 +1,15 @@
-import "./globals.css";
-import { AntdRegistry } from "@ant-design/nextjs-registry";
-import { NextIntlClientProvider } from "next-intl";
-import { getLocale } from "next-intl/server";
-import { Toaster } from "react-hot-toast";
-
-import GoogleAnalyticsComponent from "@/components/analytics/GoogleAnalytics";
-import JsonLd from "@/components/layout/JsonLD";
-import Navbar from "@/components/layout/Navbar";
-import QueryWrapper from "@/components/layout/QueryWrapper";
-import SEOProvider from "@/components/layout/SEOProvider";
-
-import { inter } from "./font";
-import { base_metadata } from "./metadata";
+import './globals.css';
+import { AntdRegistry } from '@ant-design/nextjs-registry';
+import { NextIntlClientProvider } from 'next-intl';
+import { getLocale } from 'next-intl/server';
+import { Toaster } from 'react-hot-toast';
+import GoogleAnalyticsComponent from '@/components/analytics/GoogleAnalytics';
+import JsonLd from '@/components/layout/JsonLD';
+import Navbar from '@/components/layout/Navbar';
+import QueryWrapper from '@/components/layout/QueryWrapper';
+import SEOProvider from '@/components/layout/SEOProvider';
+import { inter } from './font';
+import { base_metadata } from './metadata';
 
 export const metadata = base_metadata;
 
