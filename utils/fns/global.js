@@ -9,7 +9,7 @@ export const getUser = async () => {
       return response.data;
     }
   } catch (e) {
-    console.error(`Error has occured, ${e}`);
+    console.error(`Error has occured, ${JSON.stringify(e)}`);
     throw new Error("Something went wrong, Please try again later");
   }
 };

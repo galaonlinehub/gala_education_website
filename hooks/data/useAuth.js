@@ -132,21 +132,6 @@ export const useAuth = () => {
     console.timeEnd("signup");
   };
 
-  const {
-    data: plans,
-    isFetching: isFetchingPlans,
-    error: errorOnFetchingPlans,
-  } = useQuery({
-    queryKey: ["payment-plan", accountType],
-    queryFn: async () => {
-      const response = await apiGet(`payment-plans?type=${accountType}`);
-      return response.data;
-    },
-    enabled: !!accountType,
-    retry: 1,
-    ...globalOptions,
-  });
-
   const savingsPercentage = (plans) => {
     const monthlyCost = plans[0]?.amount * 12;
     const annualCost = plans[1]?.amount;
@@ -172,9 +157,6 @@ export const useAuth = () => {
     mutation,
     setFileList,
     fileList,
-    plans,
-    isFetchingPlans,
-    errorOnFetchingPlans,
     savingsPercentage,
     registerError,
     setRegisterError,

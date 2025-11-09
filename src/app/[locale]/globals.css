@@ -268,9 +268,44 @@ body.ant-modal-open {
   }
 }
 
+.custom-segmented .ant-segmented-item-label {
+  font-size: 12px !important;
+}
+
 .custom-segmented .ant-segmented-item-selected {
   background-color: #001840 !important;
   color: #fff !important;
+}
+
+/* Focus state */
+.ant-input:focus,
+.ant-input-focused {
+  border-color: #001840 !important;
+  box-shadow: 0 0 0 2px rgba(0, 24, 64, 0.1) !important;
+}
+
+/* Hover state */
+.ant-input:hover {
+  border-color: #001840 !important;
+}
+
+/* Active/Focus within */
+.ant-input-affix-wrapper:focus,
+.ant-input-affix-wrapper-focused {
+  border-color: #001840 !important;
+  box-shadow: 0 0 0 2px rgba(0, 24, 64, 0.1) !important;
+}
+
+.ant-input-affix-wrapper:hover {
+  border-color: #001840 !important;
+}
+
+/* Target the Select component's focused state */
+.ant-select-focused .ant-select-selector,
+.ant-select-selector:focus,
+.ant-select-selector:active {
+  border-color: #001840 !important; /* Outline color */
+  box-shadow: 0 0 0 2px rgba(0, 24, 64, 0.2) !important; /* Optional: Customize the focus shadow */
 }
 
 

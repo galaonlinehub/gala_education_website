@@ -435,7 +435,10 @@
     "join": "Join",
     "join_live_class": "Join Live Class",
     "join_live_class_desc": "You're about to join a live interactive session. Make sure your camera and microphone are working properly.",
-    "confirm_and_join": "Confirm & Join"
+    "confirm_and_join": "Confirm & Join",
+    "no_pending_lesson_for_selected_subject" :"No pending classes for selected subject",
+    "no_completed_lesson_for_selected_subject": "No completed classes for selected subject",
+    "no_canceled_lesson_for_selected_subject": "No canceled classes for selected subject"
   },
 
   "chat": {

@@ -72,7 +72,6 @@ export default function TeacherClasses() {
     setOpenAddNewClass(true);
   };
 
-  const sit = useTranslations('sign_in');
   const tdash = useTranslations('teacher_dashboard');
   const fpt = useTranslations('forgot_password');
 
@@ -395,8 +394,10 @@ export default function TeacherClasses() {
                     </div>
                   }
                   className="h-full border-0 shadow-sm shadow-black/25"
-                  bodyStyle={{
-                    padding: device?.type === "mobile" ? "16px" : "24px",
+                  styles={{
+                    body: {
+                      padding: device?.type === "mobile" ? "16px" : "24px",
+                    },
                   }}
                 >
                   {isInstructorSubjectsPending ? (
@@ -482,8 +483,10 @@ export default function TeacherClasses() {
                     </div>
                   }
                   className="h-full border-0 shadow-sm shadow-black/25"
-                  bodyStyle={{
-                    padding: device?.type === "mobile" ? "16px" : "24px",
+                  styles={{
+                    body: {
+                      padding: device?.type === "mobile" ? "16px" : "24px",
+                    },
                   }}
                 >
                   {isInstructorCohortsPending ? (

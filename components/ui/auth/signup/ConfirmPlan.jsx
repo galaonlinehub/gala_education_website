@@ -18,6 +18,7 @@ import { encrypt } from '@/utils/fns/encryption';
 import { getRoleFromUrl } from '@/utils/fns/general';
 
 import SlickSpinner from '../../loading/template/SlickSpinner';
+import { usePlans } from '@/hooks/data/usePlans';
 
 const { Text } = Typography;
 
@@ -25,7 +26,8 @@ const ConfirmPlan = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const { plans, isFetchingPlans, errorOnFetchingPlans, savingsPercentage } = useAuth();
+  const { savingsPercentage } = useAuth();
+  const { plans, isFetchingPlans, errorOnFetchingPlans } = usePlans();
   const { user, refetchUser } = useUser();
   const currentUrl = usePathname();
 
@@ -41,6 +43,7 @@ const ConfirmPlan = () => {
     localStorageFn.set(PLAN_CONFIRMED_KEY, encriptedPlan);
     router.push("/signup/instructor/plans/pay")
   };
+
 
   const activateFreeTrial = async () => {
     setLoading(true);
@@ -78,6 +81,8 @@ const ConfirmPlan = () => {
     }
   };
 
+  console.log("plans are here", plans)
+
   return (
     <div className="!px-4 flex flex-col lg:flex-row gap-8 lg:gap-12 justify-center items-center">
       {contextHolder}
@@ -97,7 +102,7 @@ const ConfirmPlan = () => {
             </Link>
           )}
           <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 justify-center items-center">
-            {plans.map((plan) => (
+            {plans?.map((plan) => (
               <div key={plan?.id} className="!w-full xs:!w-[65%] sm:!w-[370px] relative">
                 <Badge.Ribbon
                   text={`${subt('save_up_to')} ${savingsPercentage(plans)}%`}

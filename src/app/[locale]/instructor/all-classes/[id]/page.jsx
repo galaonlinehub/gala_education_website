@@ -68,11 +68,7 @@ const ClassDetailsPage = () => {
     if (params.id) {
       try {
         const decryptedId = decrypt(params.id);
-        const cohortIdInt = parseInt(decryptedId, 10);
-
-        if (isNaN(cohortIdInt)) {
-          throw new Error("Invalid cohort ID format");
-        }
+        const cohortIdInt = decryptedId;
 
         setCohortId(cohortIdInt);
         console.log("decrypted id:..", cohortIdInt);
@@ -493,7 +489,7 @@ const ClassDetailsPage = () => {
             open={timeModalVisible}
             onCancel={() => setTimeModalVisible(false)}
             footer={null}
-            destroyOnClose
+            destroyOnHidden
             width={500}
           >
             <div style={{ padding: "20px 0" }}>

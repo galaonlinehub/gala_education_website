@@ -58,70 +58,75 @@ const Donate = ({
 
   const donate = useTranslations('donate');
 
-  const renderTabContent = () => (
-    <Tabs activeKey={activeTab} onChange={setActiveTab} centered>
-      <TabPane
-        tab={
+
+  const renderTabContent = () => {
+  const items = [
+    {
+      key: "1",
+      label: (
+        <span
+          style={{
+            color: activeTab === "1" ? "#001840" : undefined,
+          }}
+        >
+          {donate("donate_now")}
+        </span>
+      ),
+      children: (
+        <>
+          <DonationStep
+            form={form}
+            selectedAmount={selectedAmount}
+            setSelectedAmount={setSelectedAmount}
+            setDonationFrequency={setDonationFrequency}
+            donationFrequency={donationFrequency}
+            handleAmountChange={handleAmountChange}
+          />
+          <div style={{ marginTop: "20px", textAlign: "right" }}>
+            <Tooltip
+              placement="top"
+              title={!selectedAmount ? "Please fill amount first" : ""}
+            >
+              <Button
+                disabled={!selectedAmount}
+                className={`
+                  bg-[#001840] 
+                  text-white 
+                  hover:bg-blue-900 
+                  hover:text-white
+                  ${
+                    !selectedAmount
+                      ? "opacity-50 cursor-not-allowed"
+                      : "hover:bg-blue-900"
+                  }
+                `}
+                onClick={() => setActiveTab("2")}
+              >
+                {donate("continue_to_payment")}
+              </Button>
+            </Tooltip>
+          </div>
+        </>
+      ),
+    },
+    {
+      key: "2",
+      label: (
+        <Tooltip
+          placement="top"
+          title={!selectedAmount ? "Please fill amount first" : ""}
+        >
           <span
             style={{
-              color: activeTab === "1" ? "#001840" : undefined,
+              color: activeTab === "2" ? "#001840" : undefined,
             }}
           >
-            {donate('donate_now')}
+            {donate("payment_method")}
           </span>
-        }
-        key="1"
-      >
-        <DonationStep
-          form={form}
-          selectedAmount={selectedAmount}
-          setSelectedAmount={setSelectedAmount}
-          setDonationFrequency={setDonationFrequency}
-          donationFrequency={donationFrequency}
-          handleAmountChange={handleAmountChange}
-        />
-        <div style={{ marginTop: "20px", textAlign: "right" }}>
-          <Tooltip
-            placement="top"
-            title={!selectedAmount ? "Please fill amount first" : ""}
-          >
-            <Button
-              disabled={!selectedAmount}
-              className={`
-                bg-[#001840] 
-                text-white 
-                hover:bg-blue-900 
-                hover:text-white
-                ${!selectedAmount
-                  ? "opacity-50 cursor-not-allowed"
-                  : "hover:bg-blue-900"
-                }
-              `}
-              onClick={() => setActiveTab("2")}
-            >
-              {donate('continue_to_payment')}
-            </Button>
-          </Tooltip>
-        </div>
-      </TabPane>
-      <TabPane
-        disabled={!selectedAmount}
-        tab={
-          <Tooltip
-            placement="top"
-            title={!selectedAmount ? "Please fill amount first" : ""}
-          >
-            <span
-              style={{
-                color: activeTab === "2" ? "#001840" : undefined,
-              }}
-            >
-              {donate('payment_method')}
-            </span>
-          </Tooltip>
-        }
-        key="2"
-      >
+        </Tooltip>
+      ),
+      disabled: !selectedAmount,
+      children: (
         <PaymentStep
           setShowProcessingModal={setShowProcessingModal}
           setShowDonatePopup={setShowDonatePopup}
@@ -135,9 +140,13 @@ const Donate = ({
           paymentMethod={paymentMethod}
           donationFrequency={donationFrequency}
         />
-      </TabPane>
-    </Tabs>
-  );
+      ),
+    },
+  ];
+
+  return <Tabs activeKey={activeTab} onChange={setActiveTab} centered items={items} />;
+};
+
 
   return (
     <>

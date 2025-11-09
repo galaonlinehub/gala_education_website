@@ -105,6 +105,8 @@ const Save = ({
   const { grades } = useGrade();
   const isEditMode = status === Stage.EDIT;
 
+  const [messageApi, contextHolder] = message.useMessage();
+
   const tprof = useTranslations('teacher_profile')
   const sut = useTranslations('sign_up')
   const donate = useTranslations('donate')
@@ -112,12 +114,13 @@ const Save = ({
   const sct = useTranslations('student_classes')
 
   const handleFormSubmit = async (values) => {
+
     try {
       const formData = new FormData();
 
       if (!isEditMode) {
         if (!imageFile) {
-          message.info(tprof('upload_profile_pic'));
+          messageApi.info(tprof('upload_profile_pic'));
           return;
         }
         formData.append("profile_picture", imageFile);
@@ -144,12 +147,12 @@ const Save = ({
       updateProfile(formData, {
         onSuccess: () => {
           setStatus(Stage.VERIFY);
-          message.success(tprof('profile_update_success'));
+          messageApi.success(tprof('profile_update_success'));
           setImageFile(null);
           form.resetFields();
         },
         onError: () => {
-          message.error(tprof('unexpected_error'));
+          messageApi.error(tprof('unexpected_error'));
         },
       });
     } catch (error) {
@@ -158,28 +161,28 @@ const Save = ({
   };
 
   const handleUpload = (info) => {
-    message.destroy();
+    messageApi.destroy();
     const file = info.file.originFileObj;
 
     switch (info.file.status) {
       case "uploading":
-        message.loading({ content: tprof('uploading_image'), key: "upload" });
+        messageApi.loading({ content: tprof('uploading_image'), key: "upload" });
         break;
       case "done":
         setImageFile(file);
-        message.success({
+        messageApi.success({
           content: tprof('upload_image_success'),
           key: "upload",
         });
         break;
       case "error":
-        message.error({
+        messageApi.error({
           content: tprof('upload_failed'),
           key: "upload",
         });
         break;
       default:
-        message.info({ content: "Image selected", key: "upload" });
+        messageApi.info({ content: "Image selected", key: "upload" });
     }
   };
 
@@ -213,6 +216,7 @@ const Save = ({
           : " ",
       }}
     >
+      {contextHolder}
       <div
         className={clsx("block mb-2 font-extralight text-xs text-center", {
           "my-3": isEditMode,
@@ -227,7 +231,7 @@ const Save = ({
 
       {!isEditMode && (
         <>
-          <div className="flex w-full items-center justify-center">
+          <div className="flex w-full items-center py-4 justify-center">
             <Upload
               showUploadList={false}
               beforeUpload={() => true}

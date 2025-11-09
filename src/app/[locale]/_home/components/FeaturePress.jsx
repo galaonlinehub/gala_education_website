@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaArrowRightLong } from "react-icons/fa6";
 
+
 export const FeaturePress = () => {
 
   const homepage = useTranslations('home_page');
@@ -12,16 +13,22 @@ export const FeaturePress = () => {
     {
       title: "Tanzania Standard Newspapers",
       image: "/featured-press/tsn.png",
+      link: null
     },
     {
       title: "Habari Leo",
       image: "/featured-press/habari-leo.png",
+      link: null
     },
     {
       title: "Daily News",
       image: "/featured-press/daily-news.png",
+      link: "https://dailynews.co.tz/digital-tools-aid-out-of-classroom-learning-for-rural-students/"
     },
   ];
+
+  const goToLink = (link) => link && window.open(link, '_blank');
+
 
   return (
     <section className="pt-3 sm:pt-4 pb-3 sm:pb-4 flex flex-col lg:flex-row lg:items-center lg:justify-evenly gap-4 sm:gap-6 lg:gap-8 px-2 sm:px-4">
@@ -38,7 +45,7 @@ export const FeaturePress = () => {
       {/* Mobile/Tablet Layout - Stacked */}
       <div className="flex flex-col sm:hidden gap-4 items-center">
         {featuredPress.map((feature, idx) => (
-          <div key={idx} className="flex flex-col items-center gap-2">
+          <div key={idx} onClick={() => feature.link ? goToLink(feature.link) : null} className="flex flex-col items-center gap-2 hover:cursor-pointer">
             <Image
               src={feature.image}
               alt={feature.title}
@@ -56,7 +63,7 @@ export const FeaturePress = () => {
       {/* Small Tablet Layout - Horizontal with smaller sizes */}
       <div className="hidden sm:flex lg:hidden justify-center gap-3 md:gap-4 flex-wrap">
         {featuredPress.map((feature, idx) => (
-          <div key={idx} className="flex items-center gap-2 md:gap-3">
+          <div key={idx} onClick={() => feature.link ? goToLink(feature.link) : null} className="flex items-center gap-2 md:gap-3 hover:cursor-pointer">
             <Image
               src={feature.image}
               alt={feature.title}
@@ -74,7 +81,7 @@ export const FeaturePress = () => {
       {/* Desktop Layout - Original horizontal layout */}
       <div className="hidden lg:flex justify-center gap-5">
         {featuredPress.map((feature, idx) => (
-          <div key={idx} className="flex items-center gap-2">
+          <div key={idx} onClick={() => feature.link ? goToLink(feature.link) : null} className="flex items-center gap-2 hover:cursor-pointer">
             <Image
               src={feature.image}
               alt={feature.title}
