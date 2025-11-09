@@ -19,7 +19,7 @@ const ReviewsAndRatings = () => {
 
   const {
     instructorReviews,
-
+    isInstructorReviewsPending,
     instructorSummary,
   } = useReviews();
 
@@ -40,7 +40,6 @@ const ReviewsAndRatings = () => {
     }
   }, [InstructorCohorts]);
 
-  const isLoading = !instructorReviews; // or use a separate loading flag if available
   const skeletonItems = Array.from({ length: 4 });
 
   const viewInstructorReviews = () => {
@@ -67,7 +66,7 @@ const ReviewsAndRatings = () => {
       </div>
 
       <div className="grid gap-4 sm:gap-6 grid-cols-1 xl:grid-cols-2">
-        {isLoading ? (
+        {isInstructorReviewsPending ? (
           skeletonItems.map((_, index) => (
             <Card
               key={index}

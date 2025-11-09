@@ -39,7 +39,6 @@ export const encrypt = (data) => {
 export const decrypt = (encryptedText) => {
   try {
     if (!encryptedText) {
-      console.error("No encrypted text provided");
       return null;
     }
     // Decode the URL encoded string

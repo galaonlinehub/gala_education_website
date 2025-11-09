@@ -35,7 +35,7 @@ const EmailVerification = () => {
       closable={false}
       maskClosable={false}
       keyboard={false}
-      destroyOnClose={false}
+      destroyOnHidden={false}
       footer={null}
       open={openEmailVerificationModal}
       onCancel={handleCancel}

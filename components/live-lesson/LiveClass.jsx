@@ -1,11 +1,12 @@
 "use client";
 
 import { LoadingOutlined } from "@ant-design/icons";
-import { Button, Card, Collapse, Modal, Segmented, Tag } from "antd";
+import { Avatar, Button, Card, Collapse, Modal, Segmented, Tag, Select } from "antd";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 import { FaVideoSlash } from "react-icons/fa6";
+import CalendarComponent from "@/components/ui/Calendar";
 import {
   LuCalendar,
   LuClock,
@@ -18,6 +19,7 @@ import {
 
 import { useLesson } from "@/hooks/data/useLesson";
 import { useUpcomingLessons } from "@/hooks/data/useUpcomigLessons";
+import { useSubject } from "@/hooks/data/useSubject";
 import { useUser } from "@/hooks/data/useUser";
 import { sessionStorageFn } from "@/utils/fns/client";
 import { encrypt } from "@/utils/fns/encryption";
@@ -84,14 +86,14 @@ const ClassCard = ({ classData, status }) => {
   return (
     <>
       <Card
-        className="!flex !flex-col !w-full !rounded-xl !bg-white"
+        className="!flex !flex-col !w-full !rounded-none !mb-4 !bg-white shadow-md shadow-black/25 hover:shadow-lg transition-shadow duration-300 ease-in-out"
         styles={{ body: { padding: "8px", width: "100%" } }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
         <Tag
-          color="#001840"
-          className="!text-white !font-medium !rounded-full !px-2 !py-0.5 !mb-2 !inline-flex !items-center !gap-1"
+          color = {status == "Pending" ? "#9CA3AF" : "#001840"}
+          className="!text-white !font-medium !rounded-none !px-2 !py-0.5 !mb-2 !inline-flex !items-center !gap-1"
         >
           <LuClock className="h-3 w-3 text-yellow-300" />
           {status}
@@ -99,8 +101,9 @@ const ClassCard = ({ classData, status }) => {
         <div className="flex w-full mt-4 flex-col sm:flex-row sm:items-center justify-between gap-4 px-2 md:px-4 py-2">
           <div className="flex-1 flex flex-col sm:flex-row sm:items-center gap-4">
             <div className="min-w-[140px]">
-              <span className="text-base font-semibold leading-tight">
-                {classData.class_name}: {classData.topic}
+              <span className="text-base flex flex-col font-semibold leading-tight">
+                <span className="max-w-[100px] truncate">{classData.class_name}</span>
+                <span className="text-[#003399]">{classData.topic}</span>
               </span>
             </div>
 
@@ -118,8 +121,9 @@ const ClassCard = ({ classData, status }) => {
               <LuUsers className="h-5 w-5 text-[#001840] flex-shrink-0" />
               <div>
                 <span className="text-xs text-gray-500">{lct('enrolled')}</span>
-                <p className="text-xs font-medium text-gray-800">
-                  {classData.enrolled} {act('students')}
+                <p className="text-xs flex gap-1 font-medium text-gray-800">
+                  <span>{classData.enrolled} </span>
+                  <span>{act('students')}</span>
                 </p>
               </div>
             </div>
@@ -233,6 +237,8 @@ const ClassCard = ({ classData, status }) => {
 
 const LiveLessons = () => {
   const { upcomingLessons, isFetchingUpcomingLessons } = useUpcomingLessons();
+  const { subjects, isLoading, isError } = useSubject();
+  const [selectedSubject, setSelectedSubject] = useState(null);
 
   const lct = useTranslations('live_class')
 
@@ -248,6 +254,27 @@ const LiveLessons = () => {
     const lessonDateTime = new Date(`${lesson.date} ${lesson.time}`);
     const now = new Date();
     return lessonDateTime > now;
+  };
+
+  // Filter lessons by subject
+  const filterLessonsBySubject = (lessons) => {
+    if (!selectedSubject) return lessons;
+    return lessons.filter(lesson => lesson.subject_id === selectedSubject);
+  };
+
+  // Subject options for Select
+  const subjectOptions = subjects?.map(subject => ({
+    value: subject.id,
+    label: `${subject.name}`,
+  })) || [];
+
+  const handleSubjectChange = (value) => {
+    setSelectedSubject(value);
+    console.log("filter value", value);
+  };
+
+  const handleClearFilter = () => {
+    setSelectedSubject(null);
   };
 
 
@@ -267,133 +294,101 @@ const LiveLessons = () => {
 
       <Segmented
         block
+        size="large"
         value={alignValue}
-        style={{ marginBottom: 8 }}
+        style={{ marginBottom: 12 }}
         onChange={setAlignValue}
         options={[lct('upcoming'), lct('pending'), lct('completed'), lct('canceled')]}
         className="custom-segmented"
       />
 
-      {alignValue === lct('upcoming') && (
-        <div className="space-y-3">
-          {isFetchingUpcomingLessons ? (
-            <div className="flex justify-center gap-2 items-center w-full py-40 md:py-64">
-              <LoadingOutlined className="text-3xl text-[#001840]" spin />
-              <span className="text-xs">{lct('loading_lessons')}</span>
-            </div>
-          ) : (
-            (() => {
-              const upcoming =
-                upcomingLessons?.filter(
-                  (lesson) =>
-                    lesson.status === 'Upcoming' && isFutureLesson(lesson)
-                ) || [];
+      <div className="mb-4 flex items-center gap-2 flex-wrap">
+        <Select
+          placeholder="Filter by subject"
+          style={{ width: 280 }}
+          onChange={handleSubjectChange}
+          loading={isLoading}
+          options={subjectOptions}
+          value={selectedSubject}
+          allowClear
+          onClear={handleClearFilter}
+          showSearch
+          filterOption={(input, option) =>
+            (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+          }
+        />
+      </div>
 
-              return upcoming.length > 0 ? (
-                upcoming.map((classData) => (
-                  <ClassCard
-                    key={classData.id}
-                    classData={classData}
-                    status={'Upcoming'}
-                  />
-                ))
-              ) : (
-                <div className="flex justify-center items-center w-full py-32">
-                  <p className="text-gray-500 text-xs md:text-sm">
-                    {lct('no_upcoming_classes')}
-                  </p>
+
+      <div className="flex flex-col-reverse lg:flex-row gap-6 justify-center lg:justify-between items-start">
+
+        <div className="flex-1 w-full space-y-3 min-w-0">
+          {(() => {
+            let filteredLessons = [];
+            let status = '';
+            let noLessonsMessage = '';
+
+            if (alignValue === lct('upcoming')) {
+              status = 'Upcoming';
+              filteredLessons = filterLessonsBySubject(
+                upcomingLessons?.filter(l => l.status === 'Upcoming' && isFutureLesson(l)) || []
+              );
+              noLessonsMessage = lct('no_upcoming_classes');
+            } else if (alignValue === lct('pending')) {
+              status = 'Pending';
+              filteredLessons = filterLessonsBySubject(
+                upcomingLessons?.filter(l => l.status === 'Upcoming' && isPastLesson(l)) || []
+              );
+              noLessonsMessage = selectedSubject
+                ? lct('no_pending_lesson_for_selected_subject')
+                : lct('no_pending_classes');
+            } else if (alignValue === lct('completed')) {
+              status = 'Completed';
+              filteredLessons = filterLessonsBySubject(
+                upcomingLessons?.filter(l => l.status === 'Completed') || []
+              );
+              noLessonsMessage = selectedSubject
+                ? lct('no_completed_lesson_for_selected_subject')
+                : lct('no_completed_classes');
+            } else if (alignValue === lct('canceled')) {
+              status = 'Canceled';
+              filteredLessons = filterLessonsBySubject(
+                upcomingLessons?.filter(l => l.status === 'Canceled') || []
+              );
+              noLessonsMessage = selectedSubject
+                ? lct('no_canceled_lesson_for_selected_subject')
+                : lct('no_canceled_classes');
+            }
+
+            if (isFetchingUpcomingLessons) {
+              return (
+                <div className="flex flex-col items-center justify-center w-full py-40 md:py-64">
+                  <LoadingOutlined className="text-3xl text-[#001840] mb-2" spin />
+                  <span className="text-sm text-gray-600">{lct('loading_lessons')}</span>
                 </div>
               );
-            })()
-          )}
-        </div>
-      )}
+            }
 
-      {alignValue === lct('pending') && (
-        <div className="space-y-3">
-          {isFetchingUpcomingLessons ? (
-            <div className="flex justify-center gap-2 items-center w-full py-40 md:py-64">
-              <LoadingOutlined className="text-3xl text-[#001840]" spin />
-              <span className="text-xs">{lct('loading_lessons')}</span>
-            </div>
-          ) : upcomingLessons?.filter((lesson) => lesson.status === 'Upcoming')
-            .length > 0 ? (
-            upcomingLessons
-              .filter(
-                (lesson) => lesson.status === 'Upcoming' && isPastLesson(lesson)
-              )
-              .map((classData) => (
-                <ClassCard
-                  key={classData.id}
-                  classData={classData}
-                  status={'Pending'}
-                />
-              ))
-          ) : (
-            <div className="flex justify-center items-center w-full py-32">
-              <p className="text-gray-500 text-xs md:text-sm">
-                {lct('no_pending_classes')}
-              </p>
-            </div>
-          )}
-        </div>
-      )}
+            if (filteredLessons.length === 0) {
+              return (
+                <div className="flex justify-center items-center w-full py-32">
+                  <p className="text-gray-500 text-sm">{noLessonsMessage}</p>
+                </div>
+              );
+            }
 
-      {alignValue === lct('completed') && (
-        <div className="space-y-3">
-          {isFetchingUpcomingLessons ? (
-            <div className="flex justify-center gap-2 items-center w-full py-40 md:py-64">
-              <LoadingOutlined className="text-3xl text-[#001840]" spin />{" "}
-              <span className="text-xs">{lct('loading_lessons')}</span>
-            </div>
-          ) : upcomingLessons?.filter((lesson) => lesson.status === 'Completed')
-            .length > 0 ? (
-            upcomingLessons
-              .filter((lesson) => lesson.status === 'Completed')
-              .map((classData) => (
-                <ClassCard
-                  key={classData.id}
-                  classData={classData}
-                  status={'Completed'}
-                />
-              ))
-          ) : (
-            <div className="flex justify-center items-center w-full py-32">
-              <p className="text-gray-500 text-xs md:text-sm">
-                {lct('no_completed_classes')}
-              </p>
-            </div>
-          )}
+            return filteredLessons.map((classData, idx) => (
+              <ClassCard key={idx} classData={classData} status={status} />
+            ));
+          })()}
         </div>
-      )}
 
-      {alignValue === lct('canceled') && (
-        <div className="space-y-3">
-          {isFetchingUpcomingLessons ? (
-            <div className="flex justify-center gap-2 items-center w-full py-40 md:py-64">
-              <LoadingOutlined className="text-3xl text-[#001840]" spin />{" "}
-              <span className="text-xs">{lct('loading_lessons')}</span>
-            </div>
-          ) : upcomingLessons?.filter((lesson) => lesson.status === 'Canceled')
-            .length > 0 ? (
-            upcomingLessons
-              .filter((lesson) => lesson.status === 'Canceled')
-              .map((classData) => (
-                <ClassCard
-                  key={classData.id}
-                  classData={classData}
-                  status={'Canceled'}
-                />
-              ))
-          ) : (
-            <div className="flex justify-center items-center w-full py-32">
-              <p className="text-gray-500 text-xs md:text-sm">
-                {lct('no_canceled_classes')}
-              </p>
-            </div>
-          )}
-        </div>
-      )}
+        {upcomingLessons?.length > 0 && (
+          <div className="w-full lg:w-auto lg:min-w-[320px] lg:max-w-[380px] sticky top-4">
+            <CalendarComponent lessons={upcomingLessons} />
+          </div>
+        )}
+      </div>
     </div>
   );
 };

@@ -280,7 +280,7 @@ export const RenderFailureState = ({ onClose, setStatus, mutationFn }) => {
           >
             {payt('try_again')}
           </button>
-          ,
+          
           <button
             key="cancel"
             onClick={onClose}
