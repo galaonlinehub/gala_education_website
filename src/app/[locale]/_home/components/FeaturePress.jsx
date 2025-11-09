@@ -1,12 +1,11 @@
-import clsx from "clsx";
-import { useTranslations } from "next-intl";
-import Image from "next/image";
-import Link from "next/link";
-import { FaArrowRightLong } from "react-icons/fa6";
+import Link from 'next/link';
+import Image from 'next/image';
+import { useTranslations } from 'next-intl';
+import { FaArrowRightLong } from 'react-icons/fa6';
+import { featuredPress } from '@/utils/data/featured_press';
 
 
 export const FeaturePress = () => {
-
   const homepage = useTranslations('home_page');
 
   const featuredPress = [
@@ -31,19 +30,27 @@ export const FeaturePress = () => {
 
 
   return (
-    <section className="pt-3 sm:pt-4 pb-3 sm:pb-4 flex flex-col lg:flex-row lg:items-center lg:justify-evenly gap-4 sm:gap-6 lg:gap-8 px-2 sm:px-4">
+    <section className="pt-6 pb-6 flex flex-col lg:flex-row lg:items-center lg:justify-evenly gap-4 sm:gap-6 lg:gap-8 px-2 sm:px-4">
       <section className="flex flex-col gap-2 sm:gap-3 text-center lg:text-left">
-        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold">{homepage('featured_press')}</h2>
-        <Link href="/press" className="flex items-center justify-center lg:justify-start gap-2 sm:gap-3">
+        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold">
+          {homepage('featured_press')}
+        </h2>
+        <Link
+          href="/press"
+          className="flex items-center justify-center lg:justify-start gap-2 sm:gap-3"
+        >
           <span className="font-medium text-sm sm:text-base md:text-lg lg:text-xl underline underline-offset-2">
             {homepage('view_all_press')}
           </span>
-          <FaArrowRightLong strokeWidth={1} className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 lg:w-8 lg:h-8" />
+          <FaArrowRightLong
+            strokeWidth={1}
+            className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 lg:w-8 lg:h-8"
+          />
         </Link>
       </section>
 
       {/* Mobile/Tablet Layout - Stacked */}
-      <div className="flex flex-col sm:hidden gap-4 items-center">
+      <div className="flex gap-3 min-[250px]:gap-6 py-6 sm:hidden justify-center">
         {featuredPress.map((feature, idx) => (
           <div key={idx} onClick={() => feature.link ? goToLink(feature.link) : null} className="flex flex-col items-center gap-2 hover:cursor-pointer">
             <Image
@@ -53,10 +60,7 @@ export const FeaturePress = () => {
               height={1000}
               className="w-24 h-6 object-contain"
             />
-            {idx < featuredPress.length - 1 && (
-              <div className="w-16 h-[0.16px] bg-black" />
-            )}
-          </div>
+          </a>
         ))}
       </div>
 
@@ -74,7 +78,7 @@ export const FeaturePress = () => {
             {idx < featuredPress.length - 1 && (
               <div className="h-16 sm:h-20 md:h-24 w-[0.16px] bg-black" />
             )}
-          </div>
+          </a>
         ))}
       </div>
 
@@ -89,10 +93,8 @@ export const FeaturePress = () => {
               height={1000}
               className="mx-4 w-36 h-10 object-contain"
             />
-            {idx < featuredPress.length - 1 && (
-              <div className="h-28 w-[0.16px] bg-black" />
-            )}
-          </div>
+            {idx < featuredPress.length - 1 && <div className="h-28 w-[0.16px] bg-black" />}
+          </a>
         ))}
       </div>
     </section>

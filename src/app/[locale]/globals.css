@@ -308,6 +308,29 @@ body.ant-modal-open {
   box-shadow: 0 0 0 2px rgba(0, 24, 64, 0.2) !important; /* Optional: Customize the focus shadow */
 }
 
+/* Remove outline and border from Radio Button */
+.ant-radio-button-wrapper {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: transparent !important;
+}
 
+.ant-radio-button-wrapper:hover,
+.ant-radio-button-wrapper:focus,
+.ant-radio-button-wrapper:active,
+.ant-radio-button-wrapper-checked:hover,
+.ant-radio-button-wrapper-checked:focus,
+.ant-radio-button-wrapper-checked:active {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: transparent !important;
+}
 
+.ant-radio-button-wrapper::before {
+  display: none !important;
+}
 
+.ant-radio-button-wrapper:focus-within {
+  outline: none !important;
+  box-shadow: none !important;
+}

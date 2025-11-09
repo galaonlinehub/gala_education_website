@@ -1,33 +1,33 @@
-import { CloseOutlined } from "@ant-design/icons";
-import { Input, Empty, Tooltip, Avatar, Button } from "antd";
-import { AnimatePresence, motion } from "framer-motion";
-import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
-import React from "react";
-import { FaChalkboardTeacher, FaBookReader } from "react-icons/fa";
-import { IoMenu } from "react-icons/io5";
-import { LuBell, LuChevronRight, LuCircleUser, LuUser } from "react-icons/lu";
+import { CloseOutlined } from '@ant-design/icons';
+import { Input, Empty, Tooltip, Avatar, Button } from 'antd';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import React from 'react';
+import { FaChalkboardTeacher, FaBookReader } from 'react-icons/fa';
+import { IoMenu } from 'react-icons/io5';
+import { LuBell, LuChevronRight, LuCircleUser, LuUser } from 'react-icons/lu';
 
-import { img_base_url } from "@/config/settings";
-import { useSearch } from "@/hooks/data/useSearch";
-import { useUser } from "@/hooks/data/useUser";
-import { useSubscribeStore } from "@/store/subscribeStore";
+import { img_base_url } from '@/config/settings';
+import { useSearch } from '@/hooks/data/useSearch';
+import { useUser } from '@/hooks/data/useUser';
+import { useSubscribeStore } from '@/store/subscribeStore';
 
-import Clock from "../ui/Clock";
-import SlickSpinner from "../ui/loading/template/SlickSpinner";
-import Updates from "../ui/notification/Updates";
+import Clock from '../ui/Clock';
+import SlickSpinner from '../ui/loading/template/SlickSpinner';
+import Updates from '../ui/notification/Updates';
 
 const SearchResultCard = ({ data, onClick }) => {
   const { topics, teachers } = data;
 
   const cardVariants = {
-    hover: { y: -2, transition: { duration: 0.2, ease: "easeOut" } },
+    hover: { y: -2, transition: { duration: 0.2, ease: 'easeOut' } },
   };
 
   const itemVariants = {
     hover: {
       scale: 1.01,
-      transition: { duration: 0.2, ease: "easeOut" },
+      transition: { duration: 0.2, ease: 'easeOut' },
     },
   };
 
@@ -84,9 +84,7 @@ const SearchResultCard = ({ data, onClick }) => {
                         {title}
                       </span>
                       {subject && (
-                        <p className="text-xs text-gray-600 mt-1 line-clamp-2">
-                          {subject}
-                        </p>
+                        <p className="text-xs text-gray-600 mt-1 line-clamp-2">{subject}</p>
                       )}
                     </div>
                     <div className="flex items-center ml-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -116,7 +114,7 @@ const SearchResultCard = ({ data, onClick }) => {
               <div>
                 <h2 className="text-xl font-bold">{navt('instructors')}</h2>
                 <p className="text-xs text-gray-800">
-                  {navt('teachers_found', {count: teachers.length ?? 0})}
+                  {navt('teachers_found', { count: teachers.length ?? 0 })}
                 </p>
               </div>
             </div>
@@ -126,10 +124,7 @@ const SearchResultCard = ({ data, onClick }) => {
           <div className="p-3 sm:p-6">
             <div className="space-y-3">
               {teachers.map(
-                (
-                  { instructor_id: id, name, profile_picture, subjects, type },
-                  index
-                ) => (
+                ({ instructor_id: id, name, profile_picture, subjects, type }, index) => (
                   <motion.div
                     key={id}
                     variants={itemVariants}
@@ -140,7 +135,7 @@ const SearchResultCard = ({ data, onClick }) => {
                       y: 0,
                       transition: { delay: index * 0.1 },
                     }}
-                    className="group w-full hover:bg-gray-100 rounded-lg p-3 sm:p-4 
+                    className="group w-full hover:bg-gray-100 rounded-lg p-3 sm:p-4
                      border border-gray-200 hover:border-black hover:shadow-sm
                      transition-all duration-300 cursor-pointer"
                     onClick={() => onClick({ id, type })}
@@ -148,13 +143,9 @@ const SearchResultCard = ({ data, onClick }) => {
                     <div className="flex items-center gap-3 sm:gap-4 w-full pl-1 sm:pl-3">
                       <div className="flex-shrink-0">
                         <Avatar
-                          src={
-                            profile_picture
-                              ? `${img_base_url}${profile_picture}`
-                              : undefined
-                          }
+                          src={profile_picture ? `${img_base_url}${profile_picture}` : undefined}
                           icon={<LuUser color="black" />}
-                          className="w-12 h-12 sm:w-14 sm:h-14 border-[0.8px] hover:border-2 border-gray-300 group-hover:border-black 
+                          className="w-12 h-12 sm:w-14 sm:h-14 border-[0.8px] hover:border-2 border-gray-300 group-hover:border-black
                            transition-colors duration-300"
                         />
                       </div>
@@ -165,7 +156,7 @@ const SearchResultCard = ({ data, onClick }) => {
                           <div className="flex-1 min-w-0">
                             {/* Name */}
                             <h3
-                              className="font-semibold text-gray-900 group-hover:text-black 
+                              className="font-semibold text-gray-900 group-hover:text-black
                              text-base sm:text-lg leading-tight capitalize mb-1"
                             >
                               {name}
@@ -187,15 +178,11 @@ const SearchResultCard = ({ data, onClick }) => {
                                         {subject}
                                       </span>
                                     ))}
-                                  {subjects.length >
-                                    (window.innerWidth < 640 ? 2 : 4) && (
-                                      <span className="inline-block bg-black text-white px-1.5 py-0.5 sm:px-2 sm:py-1 rounded text-xs">
-                                        +
-                                        {subjects.length -
-                                          (window.innerWidth < 640 ? 2 : 4)}{" "}
-                                        more
-                                      </span>
-                                    )}
+                                  {subjects.length > (window.innerWidth < 640 ? 2 : 4) && (
+                                    <span className="inline-block bg-black text-white px-1.5 py-0.5 sm:px-2 sm:py-1 rounded text-xs">
+                                      +{subjects.length - (window.innerWidth < 640 ? 2 : 4)} more
+                                    </span>
+                                  )}
                                 </div>
                               ) : (
                                 <span className="text-gray-400 italic text-xs whitespace-nowrap">
@@ -207,14 +194,12 @@ const SearchResultCard = ({ data, onClick }) => {
 
                           {/* Action Indicator */}
                           <div
-                            className="flex items-center ml-2 sm:ml-4 opacity-0 group-hover:opacity-100 
+                            className="flex items-center ml-2 sm:ml-4 opacity-0 group-hover:opacity-100
                             transition-opacity duration-300 flex-shrink-0"
                           >
                             <div className="text-right">
                               <div className="text-xs text-black font-medium flex items-center gap-1">
-                                <span className="hidden sm:inline">
-                                  {navt('view_profile')}
-                                </span>
+                                <span className="hidden sm:inline">{navt('view_profile')}</span>
                                 <LuChevronRight className="w-4 h-4" />
                               </div>
                             </div>
@@ -259,14 +244,15 @@ const StudentSearch = () => {
     >
       <div className="mx-auto lg:px-20 px-4 pt-1 pb-2  bg-white">
         <div className="relative flex justify-between w-full items-center space-x-4">
-          {user?.role === "student" ? (
+          {user?.role === 'student' ? (
             <div className="w-full md:w-[653px] relative">
-              <Input.Search
+              {/* <Input.Search
                 placeholder={navt('search_teachers_topics')}
                 prefix={<IoMenu className="text-gray-400 mr-2" />}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 loading={isSearching.loading}
+                className="[&.ant-input-affix-wrapper:focus-within]:!border-red-500 [&.ant-input-affix-wrapper-focused]:!border-red-500 [&.ant-input-affix-wrapper:focus-within]:!shadow-none"
                 allowClear={{
                   clearIcon: (
                     <CloseOutlined
@@ -275,8 +261,26 @@ const StudentSearch = () => {
                     />
                   ),
                 }}
-              />
+              /> */}
 
+              <div className="w-full md:w-[653px] relative [&_.ant-input-affix-wrapper:hover]:!border-[#001840] [&_.ant-input-affix-wrapper:focus-within]:!border-[#001840] [&_.ant-input-affix-wrapper:focus-within]:!border-2 [&_.ant-input-affix-wrapper-focused]:!border-[#001840] [&_.ant-input-affix-wrapper-focused]:!border-2 [&_.ant-input-affix-wrapper:focus-within]:!shadow-[0_0_0_2px_rgba(0,24,64,0.0)] [&_.ant-input-affix-wrapper-focused]:!shadow-[0_0_0_2px_rgba(0,24,64,0.0)]">
+
+                <Input.Search
+                  placeholder={navt('search_teachers_topics')}
+                  prefix={<IoMenu className="text-gray-400 mr-2" />}
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  loading={isSearching.loading}
+                  allowClear={{
+                    clearIcon: (
+                      <CloseOutlined
+                        className="text-gray-500 hover:text-red-500 transition-colors"
+                        onClick={clearSearch}
+                      />
+                    ),
+                  }}
+                />
+              </div>
               <AnimatePresence>
                 {isSearching.resultsVisible && (
                   <motion.div
@@ -297,9 +301,7 @@ const StudentSearch = () => {
                               <Empty
                                 image={Empty.PRESENTED_IMAGE_SIMPLE}
                                 description={
-                                  <span className="text-gray-500">
-                                    {navt('no_results_found')}
-                                  </span>
+                                  <span className="text-gray-500">{navt('no_results_found')}</span>
                                 }
                               />
                             </div>
@@ -321,21 +323,23 @@ const StudentSearch = () => {
             </div>
           ) : (
             <>
-              <Clock />{" "}
-              {user?.role === 'instructor' && user?.has_free_trial && !user?.has_active_subscription && (
-                <Button
-                  onClick={() => setSubscribeOpen(true)}
-                  variant="solid"
-                  type="primary"
-                  className="!rounded-full !bg-black !text-white sm:hidden !font-semibold !text-xs hover:!bg-gray-700 !py-2"
-                >
-                  {navt('subscribe_now')}
-                </Button>
-              )}
+              <Clock />{' '}
+              {user?.role === 'instructor' &&
+                user?.has_free_trial &&
+                !user?.has_active_subscription && (
+                  <Button
+                    onClick={() => setSubscribeOpen(true)}
+                    variant="solid"
+                    type="primary"
+                    className="!rounded-full !bg-black !text-white sm:hidden !font-semibold !text-xs hover:!bg-gray-700 !py-2"
+                  >
+                    {navt('subscribe_now')}
+                  </Button>
+                )}
             </>
           )}
           <div className="md:flex items-center justify-center gap-8 hidden">
-            {user?.role === "student" && <Clock />}
+            {user?.role === 'student' && <Clock />}
             <div className="flex items-center gap-3">
               <Updates>
                 <Tooltip placement="top" title={notift('notifications')}>

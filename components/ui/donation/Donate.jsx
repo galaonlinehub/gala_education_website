@@ -30,64 +30,11 @@ const Donate = ({ showDonatePopup, setShowDonatePopup, setShowProcessingModal })
 
   const donate = useTranslations('donate');
 
-
-  const renderTabContent = () => {
-  const items = [
-    {
-      key: "1",
-      label: (
-        <span
-          style={{
-            color: activeTab === "1" ? "#001840" : undefined,
-          }}
-        >
-          {donate("donate_now")}
-        </span>
-      ),
-      children: (
-        <>
-          <DonationStep
-            form={form}
-            selectedAmount={selectedAmount}
-            setSelectedAmount={setSelectedAmount}
-            setDonationFrequency={setDonationFrequency}
-            donationFrequency={donationFrequency}
-            handleAmountChange={handleAmountChange}
-          />
-          <div style={{ marginTop: "20px", textAlign: "right" }}>
-            <Tooltip
-              placement="top"
-              title={!selectedAmount ? "Please fill amount first" : ""}
-            >
-              <Button
-                disabled={!selectedAmount}
-                className={`
-                  bg-[#001840] 
-                  text-white 
-                  hover:bg-blue-900 
-                  hover:text-white
-                  ${
-                    !selectedAmount
-                      ? "opacity-50 cursor-not-allowed"
-                      : "hover:bg-blue-900"
-                  }
-                `}
-                onClick={() => setActiveTab("2")}
-              >
-                {donate("continue_to_payment")}
-              </Button>
-            </Tooltip>
-          </div>
-        </>
-      ),
-    },
-    {
-      key: "2",
-      label: (
-        <Tooltip
-          placement="top"
-          title={!selectedAmount ? "Please fill amount first" : ""}
-        >
+  const renderTabContent = () => (
+    <Tabs activeKey={activeTab} onChange={setActiveTab} centered>
+      <TabPane
+        className=""
+        tab={
           <span
             style={{
               color: activeTab === '1' ? '#001840' : undefined,

@@ -10,6 +10,7 @@ import { useTabNavigator } from '@/store/auth/signup';
 import { setToken } from '@/utils/fns/auth';
 import { sessionStorageFn } from '@/utils/fns/client';
 import { decrypt } from '@/utils/fns/encryption';
+import { useUser } from '../data/useUser';
 
 export const useEmailVerification = () => {
   const openEmailVerificationModal = useEmailVerificationModalOpen(
@@ -26,6 +27,7 @@ export const useEmailVerification = () => {
   const [resendCounter, setResendCounter] = useState(0);
   const router = useRouter();
   const url = usePathname();
+  const {refetchUser} = useUser();
 
   useEffect(() => {
     const getEmail = () => {
@@ -74,20 +76,24 @@ export const useEmailVerification = () => {
     if (role === 'instructor') {
       router.replace('/signup/instructor/plans');
     } else if (role === 'student' && data.token) {
+
       setToken(data.token);
+
+      refetchUser();
+
       router.replace('/student');
     } else {
       message.error('Something went wrong, Try again');
-      window.location.reload();
+      // window.location.reload();
     }
   };
 
   const verifyMutate = useMutation({
     mutationFn: (data) => verifyOtp(data),
     onSuccess: (data) => {
+   
       setTimeout(() => {
-        // setActiveTab(1);
-        afterRegistration(data);
+        afterRegistration(data.data);
         setOpenEmailVerificationModal(false);
       }, 5000);
     },

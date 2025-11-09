@@ -7,7 +7,7 @@ const TermsAndPrivacyPreview = () => {
   const [activeTab, setActiveTab] = useState("terms");
 
   return (
-    <div className="container mx-auto py-8 px-4 md:px-6 lg:px-8 max-w-5xl -mt-8">
+    <div className="container mx-auto py-16 px-4 md:px-6 lg:px-8 max-w-5xl -mt-8">
       <span className="text-xl lg:text-3xl font-bold text-center mb-4 lg:mb-8 w-full flex flex-wrap items-center justify-center">
         Galahub Company Ltd
         <span className="ml-2">(Gala Education)</span>

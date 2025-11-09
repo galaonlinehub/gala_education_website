@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { LuEye, LuEyeOff } from 'react-icons/lu';
-
 import { Contact } from '@/components/layout/Contact';
 import ChooseAccount from '@/components/ui/auth/signup/ChooseAccount';
 import SlickSpinner from '@/components/ui/loading/template/SlickSpinner';
@@ -30,10 +29,10 @@ const SignInPage = () => {
   const t = useTranslations('signIn');
 
   return (
-    <div className="px-6 md:px-8 lg:px-12 xl:px-16 flex justify-center text-sm">
+    <div className="px-3 min-[440px]:px-6 md:px-8 lg:px-12 xl:px-16 flex justify-center text-sm">
       <div className="flex flex-col items-center pt-14 gap-2 lg:gap-3 w-full max-w-xl">
         <span className="font-black text-xs md:text-base">{t('signIn')}</span>
-        <span className="font-black text-2xl md:text-4xl">{t('welcomeBack')}</span>
+        <span className="font-black text-2xl text-center md:text-4xl">{t('welcomeBack')}</span>
         <span className="text-xs md:text-sm font-medium text-center px-4 sm:px-8">
           {t('welcomeMessage')}
         </span>

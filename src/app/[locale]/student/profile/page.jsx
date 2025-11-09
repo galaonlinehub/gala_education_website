@@ -140,7 +140,7 @@ const StudentProfile = () => {
     <div className="max-w-7xl mx-auto px-1 sm:px-4 lg:px-8 py-8">
       <div className="bg-white rounded-lg shadow-sm shadow-black/25 p-6 mb-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-          <div className="flex flex-col sm:flex-row items-start gap-4">
+          <div className="flex flex-col sm:flex-row items-center gap-4">
             <div className="relative group">
               <Avatar
                 size={width > 768 ? 96 : 64}
