@@ -14,7 +14,7 @@ const StreamingMarkdown = ({ markdown, showCursor = false }) => {
   );
 };
 
-const StreamingMarkdownMessage = ({ fullText, isLoading,isLastGala }) => {
+const StreamingMarkdownMessage = ({ fullText, isLoading }) => {
   const [streamedText, setStreamedText] = useState("");
   const [index, setIndex] = useState(0);
   const [isStreaming, setIsStreaming] = useState(false);

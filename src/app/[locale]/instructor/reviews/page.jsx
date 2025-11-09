@@ -1,35 +1,21 @@
-"use client";
-import {
-  UserOutlined,
-} from "@ant-design/icons";
-import {
-  Card,
-  Rate,
-  Avatar,
-  Badge,
-  Empty,
-  Skeleton,
-} from "antd";
-import { useTranslations } from "next-intl";
-import React, { useEffect, useState } from "react";
-import {
+'use client';
+import { UserOutlined } from '@ant-design/icons';
+import { Card, Rate, Avatar, Badge, Empty, Skeleton } from 'antd';
+import { useTranslations } from 'next-intl';
+import React, { useEffect, useState } from 'react';
+import { LuCalendar, LuMessageSquare } from 'react-icons/lu';
 
-  LuCalendar,
-  LuMessageSquare,
-} from "react-icons/lu";
-
-import { img_base_url } from "@/config/settings";
-import { useInstructorCohorts } from "@/hooks/data/useInstructorCohorts";
-import { useReviews } from "@/hooks/data/useReviews";
+import { img_base_url } from '@/config/settings';
+import { useInstructorCohorts } from '@/hooks/data/useInstructorCohorts';
+import { useReviews } from '@/hooks/data/useReviews';
 
 const ReviewsAndRatings = () => {
-  const [activeTab, setActiveTab] = useState("instructor_reviews");
+  const [activeTab, setActiveTab] = useState('instructor_reviews');
 
   function formatDateTime(isoDateString) {
     const date = new Date(isoDateString);
     return date.toLocaleString();
   }
-
 
   const {
     instructorReviews,
@@ -43,11 +29,10 @@ const ReviewsAndRatings = () => {
     InstructorCohorts.forEach((cohort) => {
       total += cohort.data.review_summary?.total_reviews || 0;
     });
-
+    return total;
   }
 
-  const { InstructorCohorts, isInstructorCohortsPending } =
-    useInstructorCohorts();
+  const { InstructorCohorts, isInstructorCohortsPending } = useInstructorCohorts();
 
   useEffect(() => {
     if (InstructorCohorts && InstructorCohorts.length > 0) {
@@ -57,22 +42,20 @@ const ReviewsAndRatings = () => {
 
   const skeletonItems = Array.from({ length: 4 });
 
-
   const viewInstructorReviews = () => {
-    setActiveTab("instructor_reviews");
+    setActiveTab('instructor_reviews');
   };
-
 
   const getRatingColor = (rating) => {
-    if (rating >= 4.5) return "text-green-600";
-    if (rating >= 4.0) return "text-blue-600";
-    if (rating >= 3.5) return "text-yellow-600";
-    return "text-red-600";
+    if (rating >= 4.5) return 'text-green-600';
+    if (rating >= 4.0) return 'text-blue-600';
+    if (rating >= 3.5) return 'text-yellow-600';
+    return 'text-red-600';
   };
 
-  const review = useTranslations('reviews')
-  const stprof = useTranslations('student_profile')
-  const tdash = useTranslations('teacher_dashboard')
+  const review = useTranslations('reviews');
+  const stprof = useTranslations('student_profile');
+  const tdash = useTranslations('teacher_dashboard');
 
   const renderStudentReviews = () => (
     <div className="space-y-4 sm:space-y-6">
@@ -92,13 +75,13 @@ const ReviewsAndRatings = () => {
               <div className="flex items-start space-x-3 sm:space-x-4">
                 <Skeleton.Avatar active size={48} shape="circle" />
                 <div className="flex-1 min-w-0 space-y-2">
-                  <Skeleton.Input active size="small" style={{ width: "60%" }} />
+                  <Skeleton.Input active size="small" style={{ width: '60%' }} />
                   <div className="flex items-center justify-between">
-                    <Skeleton.Input active size="small" style={{ width: "40%" }} />
+                    <Skeleton.Input active size="small" style={{ width: '40%' }} />
                     <Skeleton.Input active size="small" style={{ width: 40 }} />
                   </div>
                   <Skeleton paragraph={{ rows: 2 }} active />
-                  <Skeleton.Input active size="small" style={{ width: "50%" }} />
+                  <Skeleton.Input active size="small" style={{ width: '50%' }} />
                 </div>
               </div>
             </Card>
@@ -108,7 +91,7 @@ const ReviewsAndRatings = () => {
             <Card
               key={review.id}
               className="hover:shadow-xl transition-all duration-300 border-l-4 border-l-blue-500"
-              styles={{ body: { padding: "16px sm:24px" } }}
+              styles={{ body: { padding: '16px sm:24px' } }}
             >
               <div className="flex items-start space-x-3 sm:space-x-4">
                 <Avatar
@@ -182,17 +165,14 @@ const ReviewsAndRatings = () => {
           <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6 lg:gap-8 mt-4 sm:mt-6">
             <div className="text-center bg-white rounded-lg p-4 shadow-sm">
               <div className="text-2xl sm:text-3xl font-bold text-blue-600">
-                {instructorSummary?.average_rating == null ? (
-                  0
-                ) : (
-                  Number(instructorSummary.average_rating).toFixed(2)
-                )}
+                {instructorSummary?.average_rating == null
+                  ? 0
+                  : Number(instructorSummary.average_rating).toFixed(2)}
               </div>
               <div className="text-xs sm:text-sm text-gray-500">
                 {review('avg_instructor_rating')}
               </div>
             </div>
-
 
             <div className="text-center bg-white rounded-lg p-4 shadow-sm">
               <div className="text-2xl sm:text-3xl font-bold text-purple-600">
@@ -202,9 +182,7 @@ const ReviewsAndRatings = () => {
                   Number(InstructorCohorts?.length ?? 0)
                 )}
               </div>
-              <div className="text-xs sm:text-sm text-gray-500">
-                {tdash('active_classes')}
-              </div>
+              <div className="text-xs sm:text-sm text-gray-500">{tdash('active_classes')}</div>
             </div>
           </div>
         </div>
@@ -215,10 +193,11 @@ const ReviewsAndRatings = () => {
             <nav className="flex w-full">
               <button
                 onClick={viewInstructorReviews}
-                className={`flex-1 flex items-center justify-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base font-medium rounded-t-lg transition-all duration-200 ${activeTab === "instructor_reviews"
-                  ? "bg-blue-50 text-blue-700 border-b-2 border-blue-700"
-                  : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
-                  }`}
+                className={`flex-1 flex items-center justify-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base font-medium rounded-t-lg transition-all duration-200 ${
+                  activeTab === 'instructor_reviews'
+                    ? 'bg-blue-50 text-blue-700 border-b-2 border-blue-700'
+                    : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                }`}
               >
                 <LuMessageSquare />
                 <span className="hidden sm:inline">{review('instructor_reviews')}</span>
@@ -227,19 +206,15 @@ const ReviewsAndRatings = () => {
                   count={instructorReviews?.length}
                   className="ml-1 sm:ml-2"
                   style={{
-                    backgroundColor:
-                      activeTab === "instructor_reviews"
-                        ? "#1890ff"
-                        : "#d9d9d9",
-                    color:
-                      activeTab === "instructor_reviews" ? "white" : "#666",
+                    backgroundColor: activeTab === 'instructor_reviews' ? '#1890ff' : '#d9d9d9',
+                    color: activeTab === 'instructor_reviews' ? 'white' : '#666',
                   }}
                 />
               </button>
             </nav>
           </div>
           <div className="space-y-4 sm:space-y-6">
-            {activeTab === "instructor_reviews" && renderStudentReviews()}
+            {activeTab === 'instructor_reviews' && renderStudentReviews()}
           </div>
         </div>
       </div>

@@ -26,8 +26,10 @@ const ConfirmPlan = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
   const { savingsPercentage } = useAuth();
   const { plans, isFetchingPlans, errorOnFetchingPlans } = usePlans();
+
   const { user, refetchUser } = useUser();
   const currentUrl = usePathname();
 

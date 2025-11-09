@@ -7,9 +7,6 @@ import {
   InputNumber,
   Button,
   Drawer,
-  Alert,
-  Skeleton,
-  Tag,
   Input,
   Checkbox,
 } from "antd";
@@ -146,16 +143,16 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
   };
 
   const { instructorSubjects } = useInstructorSubjects();
-  const { topics, isTopicLoadig, isTopicError, topicError } = useTopic(
+  const { topics, isTopicLoadig, isTopicError } = useTopic(
     formData.subject,
     formData.level
   );
-  const { grades, isGradesPending, isGradeError, gradeError, refetch } =
+  const { grades } =
     useGrade();
 
-  const { createCohort, isFetching, cohorts } = useCohort();
+  const { createCohort } = useCohort();
 
-  const { getSubTopics, subTopics, isSubtopicsPending, isSubtopicsError } =
+  const { getSubTopics, subTopics, isSubtopicsPending } =
     useSubTopics();
 
   useEffect(() => {
@@ -217,7 +214,6 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
                   parseInt(subtopicEntry.num_lessons) <= 5
                 );
               } catch (error) {
-                console.error("Error validating subtopic:", error);
                 return false;
               }
             });
@@ -237,7 +233,6 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
       e.target.reset();
       setOpenAddNewClass(false);
     } catch (error) {
-      console.error("Failed to create cohort:", error);
     }
   };
 
@@ -268,7 +263,7 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
   };
 
   const handleBlur = () => {
-    const wordCount = value
+    value
       .trim()
       .split(/\s+/)
       .filter((word) => word.length > 0).length;

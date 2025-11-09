@@ -13,10 +13,9 @@ import {
   SwitchPay,
 } from "./PaymentDetails";
 
-const { Step } = Steps;
 
 export const Payment = () => {
-  const { currentStep, setCurrentStep } = usePaySteps();
+  const { currentStep } = usePaySteps();
   const { width } = useDevice();
   const { mobilePay } = usePay();
 

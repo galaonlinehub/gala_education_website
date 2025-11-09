@@ -28,7 +28,6 @@ const PdfViewer = ({ pdfUrl, isOpen, onClose }) => {
     if (!isOpen || useIframe) return;
 
     try {
-      console.log("Fetching PDF from:", pdfUrl);
       const response = await fetch(pdfUrl);
 
       if (!response.ok) {
@@ -36,16 +35,13 @@ const PdfViewer = ({ pdfUrl, isOpen, onClose }) => {
       }
 
       const blob = await response.blob();
-      console.log("PDF blob received, size:", blob.size);
       setPdfBlob(blob);
     } catch (error) {
-      console.error("Error fetching PDF:", error);
       setError("Failed to load PDF document: " + error.message);
       setLoading(false);
     }
   }, [isOpen, pdfUrl, useIframe]);
 
-  // Force re-render of PDF Document when modal opens
   useEffect(() => {
     if (isOpen) {
       setLoading(true);
@@ -58,7 +54,6 @@ const PdfViewer = ({ pdfUrl, isOpen, onClose }) => {
     }
   }, [fetchPdf, isOpen, pdfUrl]);
 
-  // Handle responsive scaling
   useEffect(() => {
     if (containerRef.current && isOpen) {
       const updateWidth = () => {
@@ -84,7 +79,6 @@ const PdfViewer = ({ pdfUrl, isOpen, onClose }) => {
   }, [isOpen, type]);
 
   function onDocumentLoadSuccess({ numPages }) {
-    console.log("PDF document loaded successfully with", numPages, "pages");
     setNumPages(numPages);
     setPageNumber(1);
     setDocumentLoaded(true); // Mark document as loaded
@@ -93,7 +87,6 @@ const PdfViewer = ({ pdfUrl, isOpen, onClose }) => {
 
   // Helper function to clean up resources
   const cleanupResources = () => {
-    console.log("Cleaning up PDF resources");
     setNumPages(null);
     setPageNumber(1);
     setError(null);
@@ -251,7 +244,6 @@ const PdfViewer = ({ pdfUrl, isOpen, onClose }) => {
               file={pdfBlob} // Use the blob directly instead of object URL
               onLoadSuccess={onDocumentLoadSuccess}
               onLoadError={(error) => {
-                console.error("Error loading PDF document:", error);
                 setError("Error displaying PDF: " + error.message);
                 setLoading(false);
               }}

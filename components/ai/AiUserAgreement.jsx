@@ -13,7 +13,6 @@ const AiUserAgreement = () => {
   const [checked, setChecked] = useState(false);
 
   const onChange = (e) => {
-    console.log("checked = ", e.target.checked);
     setChecked(e.target.checked);
   };
 
@@ -24,10 +23,8 @@ const AiUserAgreement = () => {
       const isAccepted = decrypt(contractStatus) === "ai-user-accepted";
       if (isAccepted) {
         setOpenAiUserAgreement(false);
-        console.log("accept value is false");
       } else {
         setOpenAiUserAgreement(true);
-        console.log("accept value is true");
       }
     } else {
       setOpenAiUserAgreement(true);

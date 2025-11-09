@@ -1,25 +1,24 @@
 import React from "react";
-import { IoAddOutline } from "react-icons/io5";
 import { MdInstallDesktop, MdInstallMobile } from "react-icons/md";
 
 import { useDevice } from "@/hooks/misc/useDevice";
 
 export const FloatingActionButton = ({
-  icon = <IoAddOutline />,
+  // icon = <IoAddOutline />,
   position = "bottom-center",
   onClick,
   children,
   className = "",
 }) => {
-  const { type, width, height } = useDevice();
+  const { type } = useDevice();
 
-  const positionClasses = {
-    "bottom-right": "bottom-6 right-6",
-    "bottom-left": "bottom-6 left-6",
-    "bottom-center": "bottom-6 left-1/2 -translate-x-1/2",
-    "top-right": "top-6 right-6",
-    "top-left": "top-6 left-6",
-  };
+  // const positionClasses = {
+  //   "bottom-right": "bottom-6 right-6",
+  //   "bottom-left": "bottom-6 left-6",
+  //   "bottom-center": "bottom-6 left-1/2 -translate-x-1/2",
+  //   "top-right": "top-6 right-6",
+  //   "top-left": "top-6 left-6",
+  // };
   const positionClasses2 = {
     "bottom-right": "bottom-6 right-6",
     "bottom-left": "bottom-6 left-6",

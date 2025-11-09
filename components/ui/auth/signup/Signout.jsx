@@ -4,11 +4,9 @@ import React, { useState } from "react";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 import { LuLogOut } from "react-icons/lu";
 
-import { useUser } from "@/hooks/data/useUser";
 import { useDevice } from "@/hooks/misc/useDevice";
 import { logout } from "@/utils/fns/auth";
 
-import SlickSpinner from "../../loading/template/SlickSpinner";
 import StuckSpinner from "../../loading/template/StuckSpinner";
 import notificationService from "../../notification/Notification";
 
@@ -16,7 +14,6 @@ const Signout = ({ onCloseSidebar }) => {
   const [signoutVisible, setSignoutVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const { width } = useDevice();
-  const { user } = useUser();
 
   const handleCancel = () => {
     setSignoutVisible(false);
