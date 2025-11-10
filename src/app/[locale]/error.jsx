@@ -1,14 +1,13 @@
 "use client";
 
-import Link from "next/link";
 import { LuHouse, LuRotateCcw } from "react-icons/lu";
-
 import { Contact } from "@/components/layout/Contact";
+import { Link } from "@/src/i18n/navigation";
 
 
 export default function Error({ error }) {
   return (
-    <main className="flex flex-col items-center justify-center h-screen w-screen overflow-hidden">
+    <main className="flex flex-col items-center justify-cente w-full overflow-hidden pt-20 px-3">
       <div className="space-y-8 text-center">
         <div className="relative">
           <div className="w-24 h-24 bg-red-100 rounded-full mx-auto flex items-center justify-center">
@@ -20,7 +19,7 @@ export default function Error({ error }) {
           <h1 className="text-base lg:text-3xl font-bold text-gray-900">
             Oops! Something went wrong
           </h1>
-          <p className="text-gray-500 max-w-md mx-auto">
+          <p className="text-gray-500">
             {error.message ||
               "We're having trouble processing your request. Please try again."}
           </p>
