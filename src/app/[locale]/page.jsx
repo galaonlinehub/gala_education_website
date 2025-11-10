@@ -9,7 +9,7 @@ import AcceptCookies from '@/components/layout/Cookies';
 
 const Home = () => {
   return (
-    <main className="h-screen w-screen overflow-x-hidden overflow-y-auto fixed mt-[3rem]">
+    <main className="h-screen w-screen overflow-x-hidden overflow-y-auto fixed">
       <HomeBanner />
       <FeaturePress />
       <Trustees />
@@ -17,7 +17,7 @@ const Home = () => {
       <GiftOfLearning />
       <Faqs />
       <Footer />
-       <AcceptCookies />
+      <AcceptCookies />
     </main>
   );
 };
