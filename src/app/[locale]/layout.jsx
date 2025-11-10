@@ -26,7 +26,9 @@ export default async function RootLayout({ children }) {
               <JsonLd />
               <Navbar />
               <GoogleAnalyticsComponent />
-              {children}
+              <main className="w-screen h-[calc(100vh-3rem)] overflow-y-scroll mt-[3rem] fixed">
+                {children}
+              </main>
             </AntdRegistry>
           </QueryWrapper>
           <Toaster position="top-center" reverseOrder={false} />

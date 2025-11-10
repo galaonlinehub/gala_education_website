@@ -864,5 +864,10 @@
     "internet_stable": "Your internet connection is strong and stable",
     "internet_mid": "Your connection is working but could be better",
     "offline": "You're offline. Please connect to Wi-Fi or enable mobile data"
+  },
+
+  "languages": {
+    "swahili": "Swahili",
+    "english": "English"
   }
 }
