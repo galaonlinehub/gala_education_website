@@ -293,7 +293,7 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
   const steps = [
     {
       title: cct('subject_topic_details'),
-      header: header(cct('subject_topic_details')),
+      header: <span className="text-lg">{header(cct('subject_topic_details'))}</span>,
       subtitle: cct('choose_subject_topic'),
       icon: <FiBookOpen />,
       content: (
@@ -304,7 +304,20 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
                 {cct('subject')}
               </label>
               <Select
-                style={componentStyles.select}
+                styles={{
+    root: {
+      width: "100%",
+    },
+    popup: {
+      root: {
+        borderRadius: 8,
+      },
+    },
+    selector: {
+      borderRadius: 8,
+      padding: "0 12px",
+    },
+  }}
                 value={formData.subject}
                 onChange={(v) => {
                   updateForm("subject", v);
@@ -331,7 +344,20 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
                   {cct('level')}
                 </label>
                 <Select
-                  style={componentStyles.select}
+                   styles={{
+    root: {
+      width: "100%",
+    },
+    popup: {
+      root: {
+        borderRadius: 8,
+      },
+    },
+    selector: {
+      borderRadius: 8,
+      padding: "0 12px",
+    },
+  }}
                   value={formData.level}
                   onChange={(v) => {
                     updateForm("level", v);
@@ -358,7 +384,20 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
                   {cct('topic')}
                 </label>
                 <Select
-                  style={componentStyles.select}
+                   styles={{
+    root: {
+      width: "100%",
+    },
+    popup: {
+      root: {
+        borderRadius: 8,
+      },
+    },
+    selector: {
+      borderRadius: 8,
+      padding: "0 12px",
+    },
+  }}
                   value={formData.topic}
                   onChange={(v) => {
                     updateForm("topic", v);
@@ -392,7 +431,7 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
     },
     {
       title: cct('schedule'),
-      header: header(cct('schedule')),
+      header: <span className="text-lg">{header(cct('schedule'))}</span>,
       subtitle: (
         <div>
           {cct('set_your_schedule')}{" "}
@@ -409,7 +448,20 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
               {cct('frequency')}
             </label>
             <Select
-              style={componentStyles.select}
+               styles={{
+    root: {
+      width: "100%",
+    },
+    popup: {
+      root: {
+        borderRadius: 8,
+      },
+    },
+    selector: {
+      borderRadius: 8,
+      padding: "0 12px",
+    },
+  }}
               value={formData.frequency}
               onChange={(v) => {
                 updateForm("frequency", v);
@@ -438,7 +490,20 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
                     {cct('day')} {i + 1}
                   </label>
                   <Select
-                    style={componentStyles.select}
+                     styles={{
+    root: {
+      width: "100%",
+    },
+    popup: {
+      root: {
+        borderRadius: 8,
+      },
+    },
+    selector: {
+      borderRadius: 8,
+      padding: "0 12px",
+    },
+  }}
                     value={formData.days[i]}
                     onChange={(v) => {
                       const newDays = [...formData.days];
@@ -502,7 +567,7 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
 
     {
       title: cct('lesson_plan'),
-      header: header(cct('lesson_plan')),
+      header: <span className="text-lg">{header(cct('lesson_plan'))}</span>,
       subtitle: (
         <div>
           {cct('specify_lessons')}
@@ -688,7 +753,7 @@ const ClassCreationWizard = ({ openAddNewClass, setOpenAddNewClass }) => {
 
     {
       title: cct('pricing'),
-      header: header(cct('pricing')),
+      header: <span className="text-lg">{header(cct('pricing'))}</span>,
       subtitle: cct('set_duration_and_pricing'),
       icon: <FiCreditCard />,
       content: (

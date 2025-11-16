@@ -216,27 +216,27 @@ export default function TeacherClasses() {
   return (
     <>
       <div className="h-full bg-white">
-        <div className="!p-4 lg:!p-8">
+        <div className="p-4! lg:p-8!">
           <div
             className={`max-w-7xl mx-auto space-y-6 ${!isProfileCompleted ? "pointer-events-none opacity-30" : ""
               }`}
           >
             {/* Header Section */}
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-              <div className="bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-8 md:px-8 md:py-12">
+              <div className="bg-linear-to-r from-blue-600 to-purple-600 px-6 py-8 md:px-8 md:py-12">
                 <Row align="middle" gutter={[24, 24]}>
                   <Col xs={24} lg={16}>
                     <div className="text-white">
                       <Title
                         level={device?.type === "mobile" ? 3 : 2}
-                        className="!text-white !mb-2"
+                        className="text-white! mb-2!"
                       >
                         {tdash("welcome_back")},
                         <span className="capitalize">
                           {" "}{user?.first_name}! 👋
                         </span>
                       </Title>
-                      <Paragraph className="!text-blue-100 text-lg !mb-6">
+                      <Paragraph className="text-blue-100! text-lg mb-6!">
                         {tdash('welcome_words')}
                       </Paragraph>
 
@@ -274,17 +274,19 @@ export default function TeacherClasses() {
                       </Row>
                     </div>
                   </Col>
-                  <Col xs={24} lg={8} className="text-center">
-                    <div className="relative">
-                      <Image
-                        src="/sitting_on_books.png"
-                        alt="Teacher illustration"
-                        width={200}
-                        height={200}
-                        className="h-auto w-auto mx-auto drop-shadow-lg"
-                      />
-                    </div>
-                  </Col>
+                  
+                    <Col xs={24} lg={8} className="text-center !hidden sm:!block">
+                      <div className="relative">
+                        <Image
+                          src="/sitting_on_books.png"
+                          alt="Teacher illustration"
+                          width={200}
+                          height={200}
+                          className="h-auto w-auto mx-auto drop-shadow-lg"
+                        />
+                      </div>
+                    </Col>
+                 
                 </Row>
               </div>
             </div>

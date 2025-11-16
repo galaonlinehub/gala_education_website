@@ -59,7 +59,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="fixed top-0 inset-x-0 flex h-[3rem] w-full items-center justify-between bg-white px-2 sm:px-6 lg:px-10 shadow-sm">
+      <nav className="fixed top-0 z-10 inset-x-0 flex h-[3rem] w-full items-center justify-between bg-white px-2 sm:px-6 lg:px-10 shadow-sm">
         {contextHolder}
         <Image
           alt={'Gala logo'}
