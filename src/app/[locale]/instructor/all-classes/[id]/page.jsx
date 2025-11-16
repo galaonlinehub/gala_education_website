@@ -100,7 +100,7 @@ const ClassDetailsPage = () => {
       Monday: dat('mon'),
       Tuesday: dat('tue'),
       Wednesday: dat('wed'),
-      Thursday: dat('thu'),
+      Thursday: dat('thur'),
       Friday: dat('fri'),
       Saturday: dat('sat'),
       Sunday: dat('sun'),
@@ -231,7 +231,7 @@ const ClassDetailsPage = () => {
                 <Col xs={24} lg={14}>
                   <Badge.Ribbon text={cohortDetails?.subject} color="blue">
                     <Card
-                      bordered={false}
+                      variant="borderless"
                       style={{
                         background: "rgba(255, 255, 255, 0.15)",
                         backdropFilter: "blur(0px)",
@@ -279,7 +279,7 @@ const ClassDetailsPage = () => {
                 </Col>
 
                 <Col xs={24} lg={10}>
-                  <Card bordered={false}>
+                  <Card variant="borderless">
                     <Row gutter={[16, 16]}>
                       <Col span={12}>
                         <Statistic
@@ -362,7 +362,7 @@ const ClassDetailsPage = () => {
                       <InfoCircleOutlined /> {cct('description')}
                     </span>
                   }
-                  bordered={false}
+                  variant="borderless"
                   className="card-shadow"
                 >
                   <Paragraph className=" first-letter:capitalize text-xs sm:text-sm">
@@ -377,7 +377,7 @@ const ClassDetailsPage = () => {
                       <ScheduleOutlined /> {cct('schedule')}
                     </span>
                   }
-                  bordered={false}
+                  variant="borderless"
                   className="card-shadow"
                   style={{ marginTop: "24px" }}
                 >
@@ -409,7 +409,7 @@ const ClassDetailsPage = () => {
                       <InfoCircleOutlined /> {act('class_management')}
                     </span>
                   }
-                  bordered={false}
+                  variant="borderless"
                   className="card-shadow"
                 >
                   <Space
@@ -444,7 +444,7 @@ const ClassDetailsPage = () => {
                       <InfoCircleOutlined /> {act('quick_stats')}
                     </span>
                   }
-                  bordered={false}
+                  variant="borderless"
                   className="card-shadow"
                   style={{ marginTop: "24px" }}
                 >
@@ -452,7 +452,7 @@ const ClassDetailsPage = () => {
                     <Col span={24}>
                       <Card
                         size="small"
-                        bordered={false}
+                        variant="borderless"
                         style={{ background: "#fff7e6", textAlign: "center" }}
                       >
                         <Statistic

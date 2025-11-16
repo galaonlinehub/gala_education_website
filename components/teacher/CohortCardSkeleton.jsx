@@ -8,7 +8,10 @@ const CohortCardSkeleton = () => {
                 <Col xs={24} sm={12} md={8} key={`skeleton-${item}`}>
                     <Card
                         className="h-full shadow-md overflow-hidden"
-                        bodyStyle={{ padding: "16px" }}
+                        styles={{
+                          body: { padding: "16px" }
+                        }}
+
                         cover={<div className="h-32 bg-gray-200 animate-pulse" />}
                     >
                         <div className="flex flex-col h-full">

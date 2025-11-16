@@ -27,7 +27,7 @@ import { encrypt } from "@/utils/fns/encryption";
 
 const { Panel } = Collapse;
 
-const ClassCard = ({ classData, status }) => {
+const ClassCard = ({ classData, status, isFutureLesson }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
@@ -79,8 +79,11 @@ const ClassCard = ({ classData, status }) => {
   const act = useTranslations('all_classes');
   const cct = useTranslations('class_creation');
 
-  const isDisabled = status === "Pending" ||
-    status === status === "Completed" || status === "Canceled";
+  const isDisabled =
+    status === "pending" ||
+    status === "completed" ||
+    status === "canceled" ||
+    isFutureLesson;
 
 
   return (
@@ -92,7 +95,7 @@ const ClassCard = ({ classData, status }) => {
         onMouseLeave={() => setIsHovered(false)}
       >
         <Tag
-          color = {status == "Pending" ? "#9CA3AF" : "#001840"}
+          color={status == "pending" ? "#9CA3AF" : "#001840"}
           className="!text-white !font-medium !rounded-none !px-2 !py-0.5 !mb-2 !inline-flex !items-center !gap-1"
         >
           <LuClock className="h-3 w-3 text-yellow-300" />
@@ -103,6 +106,7 @@ const ClassCard = ({ classData, status }) => {
             <div className="min-w-[140px]">
               <span className="text-base flex flex-col font-semibold leading-tight">
                 <span className="max-w-[100px] truncate">{classData.class_name}</span>
+                <span className="max-w-[100px] truncate">{classData.link}</span>
                 <span className="text-[#003399]">{classData.topic}</span>
               </span>
             </div>
@@ -270,7 +274,7 @@ const LiveLessons = () => {
 
   const handleSubjectChange = (value) => {
     setSelectedSubject(value);
-    console.log("filter value", value);
+
   };
 
   const handleClearFilter = () => {
@@ -298,7 +302,7 @@ const LiveLessons = () => {
         value={alignValue}
         style={{ marginBottom: 12 }}
         onChange={setAlignValue}
-        options={[lct('upcoming'), lct('pending'), lct('completed'), lct('canceled')]}
+        options={[lct('upcoming'), lct('pending'), lct('completed'), lct('canceled'), lct('ongoing')]}
         className="custom-segmented"
       />
 
@@ -328,32 +332,46 @@ const LiveLessons = () => {
             let status = '';
             let noLessonsMessage = '';
 
+            const now = new Date();
+
             if (alignValue === lct('upcoming')) {
-              status = 'Upcoming';
+              // upcoming = lesson is in the future
+              status = 'upcoming';
               filteredLessons = filterLessonsBySubject(
-                upcomingLessons?.filter(l => l.status === 'Upcoming' && isFutureLesson(l)) || []
+                upcomingLessons?.filter(lesson => lesson.status === 'upcoming' && isFutureLesson(lesson)) || []
               );
               noLessonsMessage = lct('no_upcoming_classes');
-            } else if (alignValue === lct('pending')) {
-              status = 'Pending';
+            } else if (alignValue === lct('ongoing')) {
+              // Ongoing = lesson has started but is still upcoming
+              status = 'Ongoing';
               filteredLessons = filterLessonsBySubject(
-                upcomingLessons?.filter(l => l.status === 'Upcoming' && isPastLesson(l)) || []
+                upcomingLessons?.filter(
+                  lesson => lesson.status === 'upcoming' && !isFutureLesson(lesson)
+                ) || []
+              );
+              noLessonsMessage = lct('no_ongoing_classes');
+            } else if (alignValue === lct('pending')) {
+              status = 'pending';
+              filteredLessons = filterLessonsBySubject(
+                upcomingLessons?.filter(
+                  lesson => lesson.status === 'upcoming' && isPastLesson(lesson)
+                ) || []
               );
               noLessonsMessage = selectedSubject
                 ? lct('no_pending_lesson_for_selected_subject')
                 : lct('no_pending_classes');
             } else if (alignValue === lct('completed')) {
-              status = 'Completed';
+              status = 'completed';
               filteredLessons = filterLessonsBySubject(
-                upcomingLessons?.filter(l => l.status === 'Completed') || []
+                upcomingLessons?.filter(lesson => lesson.status === 'completed') || []
               );
               noLessonsMessage = selectedSubject
                 ? lct('no_completed_lesson_for_selected_subject')
                 : lct('no_completed_classes');
             } else if (alignValue === lct('canceled')) {
-              status = 'Canceled';
+              status = 'canceled';
               filteredLessons = filterLessonsBySubject(
-                upcomingLessons?.filter(l => l.status === 'Canceled') || []
+                upcomingLessons?.filter(lesson => lesson.status === 'canceled') || []
               );
               noLessonsMessage = selectedSubject
                 ? lct('no_canceled_lesson_for_selected_subject')
@@ -378,9 +396,15 @@ const LiveLessons = () => {
             }
 
             return filteredLessons.map((classData, idx) => (
-              <ClassCard key={idx} classData={classData} status={status} />
+              <ClassCard
+                key={idx}
+                classData={classData}
+                status={status}
+                isFutureLesson={isFutureLesson(classData)}
+              />
             ));
           })()}
+
         </div>
 
         {upcomingLessons?.length > 0 && (

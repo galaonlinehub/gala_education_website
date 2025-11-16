@@ -96,7 +96,14 @@ export const LibraryView = () => {
           options={SUBJECTS}
           size="large"
           className="w-full sm:w-1/3 [&_.ant-select-selector]:!rounded-md [&_.ant-select-selector]:!border-gray-300 [&_.ant-select-selector]:!shadow-sm hover:[&_.ant-select-selector]:!border-[#001840] transition-all"
-          dropdownStyle={{ borderRadius: 8 }}
+          styles={{
+  popup: {
+    root: {
+      borderRadius: 8,
+    },
+  },
+}}
+
           popupMatchSelectWidth={false}
           showSearch
           optionFilterProp="label"
