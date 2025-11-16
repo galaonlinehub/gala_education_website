@@ -106,6 +106,7 @@ const Navbar = () => {
         <MobileSideBar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
       )}
     </nav>
+    </>
   );
 };
 
