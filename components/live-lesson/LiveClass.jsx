@@ -106,7 +106,6 @@ const ClassCard = ({ classData, status, isFutureLesson }) => {
             <div className="min-w-[140px]">
               <span className="text-base flex flex-col font-semibold leading-tight">
                 <span className="max-w-[100px] truncate">{classData.class_name}</span>
-                <span className="max-w-[100px] truncate">{classData.link}</span>
                 <span className="text-[#003399]">{classData.topic}</span>
               </span>
             </div>
