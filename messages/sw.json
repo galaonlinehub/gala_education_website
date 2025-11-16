@@ -862,5 +862,10 @@
     "internet_stable": "Muunganisho wako wa intaneti ni wenye nguvu na thabiti.",
     "internet_mid": "Muunganisho wako unafanya kazi lakini unaweza kuwa bora zaidi.",
     "offline": "Haupo mtandaoni. Tafadhali ungana na Wi-Fi au washa data ya simu."
+  },
+
+  "languages": {
+    "swahili": "Kiswahili",
+    "english": "Kiingereza"
   }
 }
