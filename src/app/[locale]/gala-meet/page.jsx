@@ -1,22 +1,17 @@
 "use client";
 import { JaaSMeeting } from "@jitsi/react-sdk";
-import { useMutation } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { useState, useRef, useEffect } from "react";
-import { LuBellRing } from "react-icons/lu";
+import {useRef } from "react";
 
-import EndCallModal from "@/components/ui/EndCallModal";
-import notificationService from "@/components/ui/notification/Notification";
+
 import { isDev, JITSI_APP_ID } from "@/config/settings";
 import { useUser } from "@/hooks/data/useUser";
-import { apiPost } from "@/services/api/api_service";
 import { sessionStorageFn } from "@/utils/fns/client";
 import { decrypt } from "@/utils/fns/encryption";
 
 
 const VideoConference = () => {
-  const [pendingHangup, setPendingHangup] = useState(false);
   const externalApiRef = useRef(null);
 
   const router = useRouter();
@@ -29,7 +24,6 @@ const VideoConference = () => {
   const userEmail = searchParams.get("email");
   const jwtToken = sessionStorageFn.get("lessonToken");
   const isModerator = sessionStorageFn.get("isModerator");
-  const lessonId = sessionStorageFn.get("lessonId");
 
   const meetingLink = sessionStorageFn.get("meetingLink");
 
@@ -37,7 +31,6 @@ const VideoConference = () => {
   const decryptedUserEmail = decrypt(userEmail);
   const decryptedJwtToken = decrypt(jwtToken);
   const decryptedModerator = decrypt(isModerator);
-  const decryptedLessonId = decrypt(lessonId);
   
   const decryptedMeetingLink = decrypt(meetingLink);
 

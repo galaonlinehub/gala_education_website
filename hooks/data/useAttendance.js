@@ -14,7 +14,7 @@ const getUserAttendance = async (userId, userRole) => {
   return lessons ?? [];
 };
 
-export const UseAttendance = () => {
+export const useAttendance = () => {
   const { user } = useUser();
 
 

@@ -1,8 +1,8 @@
 'use client';
 import React, { useState } from 'react';
 import { Table, Card, Tag, Progress, Statistic, Row, Col, Input, Select, Space } from 'antd';
-import { ClockCircleOutlined, BookOutlined, SearchOutlined, FilterOutlined } from '@ant-design/icons';
-import { UseAttendance } from '@/hooks/data/useAttendance';
+import { ClockCircleOutlined, SearchOutlined, FilterOutlined } from '@ant-design/icons';
+import { useAttendance } from '@/hooks/data/useAttendance';
 import { useTranslations } from "next-intl";
 import { GiTeacher } from "react-icons/gi";
 
@@ -10,7 +10,7 @@ const { Search } = Input;
 const { Option } = Select;
 
 export default function TeacherAttendanceDashboard() {
-  const { userAttendance, isLoadingAttendance } = UseAttendance();
+  const { userAttendance, isLoadingAttendance } = useAttendance();
 
     const tatt = useTranslations('teacher_attendance');
 

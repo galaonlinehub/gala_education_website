@@ -1,7 +1,6 @@
 import { MetadataRoute } from 'next';
 
 const SITE_URL = 'https://edu.galahub.tz';
-const LOCALES = ['en', 'sw'] as const;
 const DEFAULT_LOCALE = 'en';
 
 type Route = {

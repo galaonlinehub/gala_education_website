@@ -35,6 +35,7 @@ export default [
       '**/*.config.mjs',
       '**/*.config.ts',
       'eslint.config.js',
+      'next-env.d.ts'
     ],
   },
   

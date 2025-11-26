@@ -1,24 +1,22 @@
 'use client'
 import React from 'react';
-import { Card, Progress, Statistic, Row, Col, Typography, Avatar, Tag, Table, Space, Spin } from 'antd';
+import { Card, Progress, Statistic, Row, Col, Typography, Tag, Table, Space } from 'antd';
 import { ClockCircleOutlined, TrophyOutlined } from '@ant-design/icons';
-import { UseAttendance } from '@/hooks/data/useAttendance';
+import { useAttendance } from '@/hooks/data/useAttendance';
 import { PiListBulletsFill } from "react-icons/pi";
-import { LuUser } from 'react-icons/lu';
 import { LoadingOutlined } from '@ant-design/icons';
 import { useUser } from "@/hooks/data/useUser";
 import { useTranslations } from "next-intl";
 
 const { Text } = Typography;
 
-const userAttendanceDashboard = () => {
-    const { user } = useUser();
+const UserAttendanceDashboard = () => {
+  const { user } = useUser();
 
-
-    const statt = useTranslations('student_attendance');
+  const statt = useTranslations('student_attendance');
 
   const primaryColor = '#001840';
-  const { userAttendance, isLoadingAttendance } = UseAttendance();
+  const { userAttendance, isLoadingAttendance } = useAttendance();
 
   // Loading spinner
   if (isLoadingAttendance) {
@@ -236,4 +234,4 @@ const userAttendanceDashboard = () => {
   );
 };
 
-export default userAttendanceDashboard;
+export default UserAttendanceDashboard;

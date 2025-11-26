@@ -47,7 +47,6 @@ export default function Component() {
   const enrolledTopics = queryClient.getQueryData(["enrolledTopics"]);
 
   const stdash = useTranslations("student_dashboard");
-  const tdash = useTranslations("teacher_dashboard");
 
     
 

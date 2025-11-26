@@ -7,7 +7,6 @@ import {
   LuTv,
   LuClock4,
   LuGem,
-  LuDiamond,
   LuUserCheck
 } from "react-icons/lu";
 
