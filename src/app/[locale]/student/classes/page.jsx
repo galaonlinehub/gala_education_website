@@ -18,7 +18,7 @@ const ClassList = () => {
   const act = useTranslations('all_classes');
 
   return (
-    <div className="px-2 lg:px-6 py-4">
+    <div className="px-4 lg:px-6 py-4">
       <div className="max-w-7xl mx-auto">
         <div className="mb-4">
           <span className="text-xl lg:text-2xl font-black text-[#001840] mb-2">

@@ -73,8 +73,8 @@ export const LibraryView = () => {
   }, [searchTerm, subject]);
 
   return (
-    <section className="px-2 py-4 sm:px-4 md:px-10 h-full">
-      <h2 className="text-2xl font-bold text-[#001840] mb-6">
+    <section className="px-4 py-4 md:px-10 h-full">
+      <h2 className="text-lg font-bold text-[#001840] mb-6">
         📚 Explore the Library
       </h2>
 
@@ -84,7 +84,7 @@ export const LibraryView = () => {
           placeholder="Search by title or author..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full sm:w-1/2 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#001840] transition"
+          className="w-full sm:w-1/2 px-4 py-2 border border-gray-300 rounded focus:outline-none text-xs sm:text-sm focus:ring-2 focus:ring-[#001840] transition"
         />
         <Select
           value={subject}
@@ -95,14 +95,14 @@ export const LibraryView = () => {
           }}
           options={SUBJECTS}
           size="large"
-          className="w-full sm:w-1/3 [&_.ant-select-selector]:!rounded-md [&_.ant-select-selector]:!border-gray-300 [&_.ant-select-selector]:!shadow-sm hover:[&_.ant-select-selector]:!border-[#001840] transition-all"
+          className="w-full text-xs sm:text-sm sm:w-1/3 [&_.ant-select-selector]:!rounded-md [&_.ant-select-selector]:!border-gray-300 [&_.ant-select-selector]:!shadow-sm hover:[&_.ant-select-selector]:!border-[#001840] transition-all"
           styles={{
-  popup: {
-    root: {
-      borderRadius: 8,
-    },
-  },
-}}
+            popup: {
+              root: {
+                borderRadius: 8,
+              },
+            },
+          }}
 
           popupMatchSelectWidth={false}
           showSearch
@@ -111,7 +111,7 @@ export const LibraryView = () => {
         />
       </div>
 
-      <div className="grid grid-cols-1 xxs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
         {books.map((book) => {
           const coverId = book.cover_id || book.cover_i;
           const coverUrl = coverId

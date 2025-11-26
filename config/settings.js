@@ -25,8 +25,8 @@ export const CURRENT_CHAT_KEY =
 export const USER_HAS_ACCEPTED_COOKIES_KEY =
   "cookie_consent";
 export const RESET_PASSWORD_EMAIL_KEY = "e4e70c35-1afa-4e04-9347-165d0050a908";
-export const JITSI_API_KEY =
-  "vpaas-magic-cookie-c9d16b98edef4d1b82af5d11fc75293b";
+export const JITSI_APP_ID =
+  "vpaas-magic-cookie-51d067d964f847f5959f13bf9774ce6d";
 
 export const SUPPORT_EMAIL = "support@galahub.tz";
 export const MAIN_EMAIL = "edu@galahub.tz";

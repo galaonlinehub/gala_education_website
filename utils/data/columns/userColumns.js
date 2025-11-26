@@ -37,7 +37,7 @@ export const userColumns = [
       
     },{
       name: "Actions",
-      selector: row =><div className={"flex gap-x-2"}>
+      selector: () =><div className={"flex gap-x-2"}>
         <div className={'text-xs text-blue-900 cursor-pointer bg-blue-100 px-2 py-1 rounded'}>view</div>
         <div className={'text-xs text-red-900 cursor-pointer bg-red-100 px-2 py-1 rounded'}>suspend</div>
       </div>,

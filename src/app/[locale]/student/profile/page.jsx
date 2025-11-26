@@ -27,6 +27,7 @@ import { useUser } from "@/hooks/data/useUser";
 import { useDevice } from "@/hooks/misc/useDevice";
 import { apiGet, apiPut } from "@/services/api/api_service";
 import { useSchoolPartnerStore } from "@/store/student/schoolPartnerStore";
+import { LuTimerReset } from "react-icons/lu";
 
 const StudentProfile = () => {
   const { user, updateProfile, isUpdatingProfile } = useUser();
@@ -137,10 +138,10 @@ const StudentProfile = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-1 sm:px-4 lg:px-8 py-8">
+    <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8">
       <div className="bg-white rounded-lg shadow-sm shadow-black/25 p-6 mb-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-          <div className="flex flex-col sm:flex-row items-center gap-4">
+          <div className="flex flex-col sm:flex-row items-start md:items-center gap-4">
             <div className="relative group">
               <Avatar
                 size={width > 768 ? 96 : 64}
@@ -187,7 +188,7 @@ const StudentProfile = () => {
                     onDoubleClick={() => setEditName(true)}
                   >
                     <div className="flex items-center">
-                      <h1 className="text-2xl md:text-3xl font-bold text-black capitalize">
+                      <h1 className="text-base md:text-lg font-semibold text-black capitalize">
                         {user?.name}
                       </h1>
                       <LuPencil
@@ -195,7 +196,7 @@ const StudentProfile = () => {
                         onClick={() => setEditName(true)}
                       />
                     </div>
-                    <div className="text-sm text-gray-500 capitalize">
+                    <div className="text-xs sm:text-sm text-gray-500 font-light capitalize">
                       {getUserRole(user?.role)}
                     </div>
                   </div>
@@ -241,7 +242,7 @@ const StudentProfile = () => {
 
           <div className="flex flex-row items-start gap-6 md:gap-10">
             <div className="flex flex-col items-center">
-              <span className="text-sm text-gray-500">{stproft('classes_bought')}</span>
+              <span className="text-xs sm:text-sm text-gray-500">{stproft('classes_bought')}</span>
               <div className="flex gap-2 items-center p-2">
                 <LuBookOpenText className="text-blue-600" size={28} />
                 <span className="font-bold text-2xl">{classesTotal}</span>
@@ -249,7 +250,7 @@ const StudentProfile = () => {
             </div>
 
             <div className="flex flex-col items-center">
-              <span className="text-sm text-gray-500">{stproft('achievements')}</span>
+              <span className="text-xs sm:text-sm text-gray-500">{stproft('achievements')}</span>
               <div className="flex gap-2 items-center p-2">
                 <LuTrophy className="text-amber-500" size={28} />
                 <span className="font-bold text-2xl">{achievements}</span>
@@ -263,7 +264,7 @@ const StudentProfile = () => {
         <div className="lg:col-span-2">
           <div className="bg-white rounded-lg shadow-sm shadow-black/25 p-6 mb-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold">{stproft('learning_progress')}</h2>
+              <h2 className="text-base font-bold">{stproft('learning_progress')}</h2>
               {!user.partner_school && (
                 <button
                   onClick={open}
@@ -277,7 +278,7 @@ const StudentProfile = () => {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="bg-gray-50 rounded-md p-4 flex items-center justify-between">
                 <div>
-                  <div className="text-sm text-gray-500 font-medium">
+                  <div className="text-xs sm:text-sm text-gray-500 font-medium">
                     {stproft('completed')}
                   </div>
                   <div className="text-lg font-semibold">
@@ -289,7 +290,7 @@ const StudentProfile = () => {
 
               <div className="bg-gray-50 rounded-md p-4 flex items-center justify-between">
                 <div>
-                  <div className="text-sm text-gray-500 font-medium">
+                  <div className="text-xs sm:text-sm text-gray-500 font-medium">
                     {stproft('in_progress')}
                   </div>
                   <div className="text-lg font-semibold">
@@ -301,30 +302,19 @@ const StudentProfile = () => {
 
               <div className="bg-gray-50 rounded-md p-4 flex items-center justify-between">
                 <div>
-                  <div className="text-sm text-gray-500 font-medium">
+                  <div className="text-xs sm:text-sm text-gray-500 font-medium">
                     {stproft('completion_rate')}
                   </div>
                   <div className="text-lg font-semibold">{completionRate}%</div>
                 </div>
-                <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
-                  <div
-                    className={clsx("text-sm font-medium", {
-                      "text-green-500": completionRate > 70,
-                      "text-blue-500":
-                        completionRate > 40 && completionRate <= 70,
-                      "text-red-500": completionRate <= 40,
-                    })}
-                  >
-                    {completionRate}%
-                  </div>
-                </div>
+                    <LuTimerReset className="text-red-500 text-xl" />
               </div>
             </div>
           </div>
 
           {/* Recent Activity Card */}
           <div className="bg-white rounded-lg shadow-sm shadow-black/25 p-6">
-            <h2 className="text-xl font-bold mb-4">{stdash('recent_activities')}</h2>
+            <h2 className="text-base font-bold mb-4">{stdash('recent_activities')}</h2>
 
             {activitiesLoading && (
               <div className="flex justify-center py-8">
@@ -333,7 +323,7 @@ const StudentProfile = () => {
             )}
 
             {activitiesError && (
-              <div className="text-center py-6 text-red-500">
+              <div className="text-center text-xs py-6 text-red-500">
                 {stdash('failed_to__load_recent_activity')}
               </div>
             )}
@@ -341,7 +331,7 @@ const StudentProfile = () => {
             {!activitiesLoading &&
               !activitiesError &&
               activities?.length === 0 && (
-                <div className="text-center py-6 text-gray-500">
+                <div className="text-center text-xs py-6 text-gray-500">
                   {stdash('no_recent_activity')}
                 </div>
               )}
@@ -370,7 +360,7 @@ const StudentProfile = () => {
           {/* Contact Information */}
           <div className="bg-white rounded-lg shadow-sm shadow-black/25 p-6 mb-6">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold">{stproft('contact_info')}</h2>
+              <h2 className="text-base font-bold">{stproft('contact_info')}</h2>
               {!editContact ? (
                 <Tooltip title={stproft('edit_contact_info')}>
                   <Button
@@ -404,26 +394,26 @@ const StudentProfile = () => {
               <div className="space-y-4">
                 <div className="group">
                   <div className="flex items-center justify-between">
-                    <div className="flex gap-2 items-center text-gray-500">
+                    <div className="flex gap-2 text-xs sm:text-sm items-center text-gray-500">
                       <LuMail /> <span>{ht('email')}</span>
                     </div>
                   </div>
-                  <div className="pl-6 font-medium truncate">{user?.email}</div>
+                  <div className="pl-6 font-medium truncate text-xs sm:text-sm">{user?.email}</div>
                 </div>
 
                 <div className="group">
                   <div className="flex items-center justify-between">
-                    <div className="flex gap-2 items-center text-gray-500">
+                    <div className="flex gap-2 items-center text-xs sm:text-sm text-gray-500">
                       <LuPhone /> <span>{ht('phone')}</span>
                     </div>
                   </div>
-                  <div className="pl-6 font-medium">{user?.phone_number}</div>
+                  <div className="pl-6 font-medium text-xs sm:text-sm">{user?.phone_number}</div>
                 </div>
                 <div>
-                  <div className="flex gap-2 items-center text-gray-500">
+                  <div className="flex gap-2 text-xs sm:text-sm items-center text-gray-500">
                     <LuCalendar /> <span>{stproft('joined')}</span>
                   </div>
-                  <div className="pl-6 font-medium">{user?.created_at}</div>
+                  <div className="pl-6 font-medium text-xs sm:text-sm">{user?.created_at}</div>
                 </div>
               </div>
             ) : (
@@ -437,33 +427,33 @@ const StudentProfile = () => {
                 }}
               >
                 <div className="mb-4">
-                  <div className="flex items-center gap-2 text-gray-500 mb-1">
+                  <div className="flex items-center text-xs sm:text-sm gap-2 text-gray-500 mb-1">
                     <LuMail /> {ht('email')}
                   </div>
                   <div className="pl-6">
-                    <span className="font-medium">{user?.email}</span>
+                    <span className="font-medium text-xs sm:text-sm">{user?.email}</span>
                     <span className="text-gray-500 text-xs ml-2">
                       ({stproft('not_editable')})
                     </span>
                   </div>
                 </div>
                 <div className="mb-4">
-                  <div className="flex items-center gap-2 text-gray-500 mb-1">
+                  <div className="flex items-center text-xs sm:text-sm gap-2 text-gray-500 mb-1">
                     <LuPhone /> {ht('phone')}
                   </div>
                   <div className="pl-6">
-                    <span className="font-medium">{user?.phone_number}</span>
+                    <span className="font-medium text-xs sm:text-sm">{user?.phone_number}</span>
                     <span className="text-gray-500 text-xs ml-2">
                       ({stproft('not_editable')})
                     </span>
                   </div>
                 </div>
                 <div className="mb-4">
-                  <div className="flex items-center gap-2 text-gray-500 mb-1">
+                  <div className="flex items-center text-xs sm:text-sm gap-2 text-gray-500 mb-1">
                     <LuCalendar /> ({stproft('joined')})
                   </div>
                   <div className="pl-6">
-                    <span className="font-medium">
+                    <span className="font-medium text-xs sm:text-sm">
                       {user?.created_at || "--"}
                     </span>
                     <span className="text-gray-500 text-xs ml-2">
@@ -492,7 +482,7 @@ const StudentProfile = () => {
           </div>
           {user?.partner_school && (
             <div className="bg-white rounded-lg shadow-sm shadow-black/25 p-6 mb-6 flex flex-col gap-2 overflow-hidden">
-              <div className="flex justify-between items-center">
+              <div className="flex justify-between text-base font-bold items-center">
                 <span>{stproft('your_school')}</span>
                 <div className="flex gap-2 items-center">
                   <Tooltip color="#001840" title={stproft('change_school')}>

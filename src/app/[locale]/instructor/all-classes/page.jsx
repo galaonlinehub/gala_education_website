@@ -23,6 +23,11 @@ import defaultImage from "@/public/subjects/default.jpeg";
 import englishImage from "@/public/subjects/english.jpeg";
 import mathImage from "@/public/subjects/mathematics.jpeg";
 import physicsImage from "@/public/subjects/physics.jpeg";
+import agricultureImage from "@/public/subjects/agriculture.jpg";
+import civicsImage from "@/public/subjects/civics.jpeg";
+import historyImage from "@/public/subjects/history.jpeg";
+import kiswahiliImage from "@/public/subjects/kiswahili.jpg";
+import geographyImage from "@/public/subjects/geography.jpeg";
 import { encrypt } from "@/utils/fns/encryption";
 
 import ClassCreationWizard from "../create-class/CreateClass";
@@ -31,10 +36,15 @@ const { Title, Text, Paragraph } = Typography;
 
 const subjectImages = {
   english: englishImage,
-  math: mathImage,
+  mathematics: mathImage,
   biology: biologyImage,
   chemistry: chemistryImage,
   physics: physicsImage,
+  agriculture: agricultureImage,
+  civics: civicsImage,
+  history: historyImage,
+  kiswahili: kiswahiliImage,
+  geography: geographyImage,
 };
 
 /**
@@ -160,14 +170,14 @@ const InstructorClasses = () => {
                       >
                         <Tag
                           color="blue"
-                          className="absolute top-4 right-4 font-medium px-3 py-1"
+                          className="absolute top-4 left-4 font-medium px-3 py-1"
                         >
                           {classItem.data.topic.subject.name}
                         </Tag>
                         <div className="absolute bottom-4 left-4">
                           <Title
                             level={4}
-                            className="!text-white font-bold relative z-10"
+                            className="!text-white font-bold relative"
                           >
                             <span className="inline-block">
                               {classItem.data.cohort_name}

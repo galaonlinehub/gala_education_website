@@ -28,55 +28,57 @@ function PendingPayment() {
   const sct = useTranslations('student_classes');
 
   return (
-    <div className="mt-layout-margin px-1 sm:px-2 lg:px-4">
-      <div className="mb-8">
-        <h1 className="font-black text-[#001840] mb-1 text-lg md:text-2xl">
-          {sct('pending_payments')}
-        </h1>
-        <p className="text-gray-600 text-xs md:text-sm">
-          {sct('topics_awaiting_payment')}
-        </p>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 w-full">
-        {errorFetchinPendingCohorts ? (
-          <div className="col-span-full text-center py-20 flex flex-col items-center justify-center">
-            <LuCircleX className="text-red-600 text-2xl md:text-4xl mb-2 md:mb-4" />
-            <p className="text-red-600 text-base md:text-xl font-medium mb-1 md:mb-3">
-              {sct('something_went_wrong')}
-            </p>
-            <p className="text-gray-500 text-xs sm:text-sm lg:text-base">
-              {sct('please_try_again_later')}
-            </p>
-          </div>
-        ) : isFetchingPendingCohorts ? (
-          <>
-            {isMobile ? (
-              <div className="flex w-full justify-center py-2">
-                <div className="flex justify-center items-center bg-white rounded-full shadow-md w-fit p-1 shadow-gray-400">
-                  <SlickSpinner color="black" size={18} />
+    <div className="mt-layout-margin  px-4 !w-full flex flex-col items-center">
+      <div className="w-full max-w-7xl">
+        <div className="mb-8 mt-4">
+          <h1 className="font-bold text-[#001840] mb-1 text-lg md:text-xl">
+            {sct('pending_payments')}
+          </h1>
+          <p className="text-gray-600 text-xs md:text-sm">
+            {sct('topics_awaiting_payment')}
+          </p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 w-full justify-items-center">
+          {errorFetchinPendingCohorts ? (
+            <div className="col-span-full text-center py-20 flex flex-col items-center justify-center">
+              <LuCircleX className="text-red-600 text-2xl md:text-4xl mb-2 md:mb-4" />
+              <p className="text-red-600 text-base md:text-xl font-medium mb-1 md:mb-3">
+                {sct('something_went_wrong')}
+              </p>
+              <p className="text-gray-500 text-xs sm:text-sm lg:text-base">
+                {sct('please_try_again_later')}
+              </p>
+            </div>
+          ) : isFetchingPendingCohorts ? (
+            <>
+              {isMobile ? (
+                <div className="col-span-full flex w-full justify-center py-2">
+                  <div className="flex justify-center items-center bg-white rounded-full shadow-md w-fit p-1 shadow-gray-400">
+                    <SlickSpinner color="black" size={18} />
+                  </div>
                 </div>
-              </div>
-            ) : (
-              Array.from({ length: 6 }).map((_, index) => (
-                <TopicCardSkeleton key={index} />
-              ))
-            )}
-          </>
-        ) : pendingCohorts.length === 0 ? (
-          <div className="flex flex-col items-center justify-center col-span-full py-24">
-            <LuFolder className="text-6xl md:text-8xl text-[#001840]" />
-            <p className="text-base sm:text-xl font-medium text-center">
-              {sct('no_pending_payments')}
-            </p>
-            <p className="text-gray-500 text-xs sm:text-sm mt-2 text-center">
-              {sct('use_search_bar_to_find_classes')}
-            </p>
-          </div>
-        ) : (
-          pendingCohorts?.map((classItem) => (
-            <PendingTopicCard key={classItem.cohort_id} {...classItem} />
-          ))
-        )}
+              ) : (
+                Array.from({ length: 6 }).map((_, index) => (
+                  <TopicCardSkeleton key={index} />
+                ))
+              )}
+            </>
+          ) : pendingCohorts.length === 0 ? (
+            <div className="flex flex-col items-center !w-full justify-center  col-span-full py-24">
+              <LuFolder className="text-6xl md:text-8xl text-[#001840]" />
+              <p className="text-base font-medium text-center">
+                {sct('no_pending_payments')}
+              </p>
+              <p className="text-gray-500 text-xs sm:text-sm mt-2 text-center">
+                {sct('use_search_bar_to_find_classes')}
+              </p>
+            </div>
+          ) : (
+            pendingCohorts?.map((classItem) => (
+              <PendingTopicCard key={classItem.cohort_id} {...classItem} />
+            ))
+          )}
+        </div>
       </div>
     </div>
   );
