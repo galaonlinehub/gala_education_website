@@ -292,13 +292,14 @@
 
   "nav_links": {
     "dashboard": "Dashibodi",
-    "live_classes": "Madarasa ya Moja kwa Moja",
+    "live_classes": "Madarasa Mbashara",
     "chats": "Mazungumzo",
     "subscriptions": "Zilizolipiwa",
     "gala_ai": "GalaAI",
     "library": "Maktaba",
     "pending": "Zinasubiri Malipo",
-    "classes": "Madarasa"
+    "classes": "Madarasa",
+    "attendance": "Mahudhurio"
   },
 
   "teacher_dashboard": {
@@ -329,6 +330,7 @@
     "action": "Kitendo",
     "view": "Angalia",
     "welcome_back": "Karibu"
+
   },
 
   "class_creation": {
@@ -414,16 +416,18 @@
   "live_class": {
     "live_learning_center": "Kituo cha Mafunzo Mubashara",
     "live_learning_description": "Shiriki katika madarasa ya moja kwa moja na ya mwingiliano yanayotolewa kwa wakati halisi, yenye masomo yenye mvuto na mijadala ya kuvutia",
-    "upcoming": "Vinavyokuja",
+    "upcoming": "Vinavyofuata",
     "pending": "Vinavyosubiri",
     "completed": "Vilivyokamilika",
     "canceled": "Vilivyobatilishwa",
     "ongoing": "Vilivyo hewani",
-    "no_upcoming_classes": "Hakuna vipindi vijavyo kwa sasa.",
-    "no_ongoing_classes": "Hakuna vipindi vinavyoendelea kwa sasa.",
-    "no_pending_classes": "Hakuna vipindi vinavyosubiri kwa sasa.",
-    "no_completed_classes": "Hakuna vipindi vilivyokamilika kwa sasa.",
-    "no_canceled_classes": "Hakuna vipindi vilivyobatilishwa kwa sasa.",
+    "missed": "Ulivyokosa",
+    "no_upcoming_classes": "Hakuna vipindi vijavyo kwa sasa",
+    "no_ongoing_classes": "Hakuna vipindi vinavyoendelea kwa sasa",
+    "no_pending_classes": "Hakuna vipindi vinavyosubiri kwa sasa",
+    "no_completed_classes": "Hakuna vipindi vilivyokamilika kwa sasa",
+    "no_canceled_classes": "Hakuna vipindi vilivyobatilishwa kwa sasa",
+    "no_missed_classes": "Hakuna vipindi ulivyokosa kwa sasa",
     "loading_lessons": "Inachakata vipindi...",
     "date_and_time": "Tarehe & Muda",
     "enrolled": "Waliosajiliwa",
@@ -435,7 +439,10 @@
     "confirm_and_join": "Thibitisha na ujiunge",
     "no_pending_lesson_for_selected_subject": "Hakuna madarasa yanayosubiri kwa somo lililochaguliwa",
     "no_completed_lesson_for_selected_subject": "Hakuna madarasa yaliyokamilika kwa somo lililochaguliwa",
-    "no_canceled_lesson_for_selected_subject": "Hakuna madarasa yaliyofutwa kwa somo lililochaguliwa"
+    "no_canceled_lesson_for_selected_subject": "Hakuna madarasa yaliyofutwa kwa somo lililochaguliwa",
+    "for_selected_subject" :" kwa somo ulilochagua",
+    "date": "Tar",
+    "time": "Muda"
 
 
   },
@@ -564,7 +571,10 @@
     "reminders": "Vikumbusho",
     "grades": "Madaraja",
     "enter": "Ingia",
-    "welcome_back": "Karibu"
+    "welcome_back": "Karibu",
+    "status": "Hali ya Kipindi",
+    "active": "Hai",
+    "in_active": "Kimekamilika"
   },
 
   "student_classes": {
@@ -769,7 +779,7 @@
     "duration_each": "Muda kwa kila kipindi",
     "missed_this": "Umekosa",
     "upcoming_this": "Kinakuja",
-    "complete_this": "Kimemalizika"
+    "completed_this": "Kimemalizika"
   },
 
   "enroll_payments": {
@@ -867,5 +877,39 @@
   "languages": {
     "swahili": "Kiswahili",
     "english": "Kiingereza"
-  }
+  },
+
+  "teacher_attendance": {
+  "teacher_attendance_dashboard": "Dashibodi ya Mahudhurio ya Mwalimu",
+  "lessons_taught": "Idadi ya Vipindi",
+  "avg_attendance": "Wastani wa mahudhurio",
+  "excellent": "Bora sana",
+  "search_lesson_topic_subtopic": "Tafuta kwa somo, mada au kipengele...",
+  "all_topics": "Mada Zote",
+  "date":"Tarehe",
+  "lesson": "Kipindi",
+  "topic": "Mada",
+  "subtopic": "Kipengele",
+  "attendance_time": "Muda wa Mahudhurio",
+  "completion": "Ukamilisho",
+  "good": "Nzuri",
+  "needs_improvement": "Inahitaji kuboreshwa"
+},
+
+"student_attendance": {
+  "total_lessons": "Jumla ya Masomo",
+  "total_hours": "Jumla ya Masaa",
+  "avg_time_per_lesson": "Wastani wa Muda",
+  "lesson_attendance_details": "Maelezo ya Mahudhurio ya Somo",
+  "lesson": "Kipindi",
+  "topic": "Mada",
+  "subtopic": "Kipengele",
+  "date":"Tarehe",
+  "time_spent":"Muda wa Mahudhurio",
+  "no_attendance_data":"Hakuna rekodi yoyote ya Mahudhurio",
+  "student_attendance_dashboard":"Dashibodi ya Mahudhurio ya Mwanafunzi"
+
+}
+
+
 }

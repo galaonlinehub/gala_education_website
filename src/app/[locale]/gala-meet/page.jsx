@@ -8,7 +8,7 @@ import { LuBellRing } from "react-icons/lu";
 
 import EndCallModal from "@/components/ui/EndCallModal";
 import notificationService from "@/components/ui/notification/Notification";
-import { isDev, JITSI_API_KEY } from "@/config/settings";
+import { isDev, JITSI_APP_ID } from "@/config/settings";
 import { useUser } from "@/hooks/data/useUser";
 import { apiPost } from "@/services/api/api_service";
 import { sessionStorageFn } from "@/utils/fns/client";
@@ -16,14 +16,13 @@ import { decrypt } from "@/utils/fns/encryption";
 
 
 const VideoConference = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [pendingHangup, setPendingHangup] = useState(false);
   const externalApiRef = useRef(null);
 
   const router = useRouter();
   const { user } = useUser();
 
-  const appId = JITSI_API_KEY;
+  const appId = JITSI_APP_ID;
   const searchParams = useSearchParams();
 
   const userName = searchParams.get("name");
@@ -42,105 +41,97 @@ const VideoConference = () => {
   
   const decryptedMeetingLink = decrypt(meetingLink);
 
-  const completeLessonMutation = useMutation({
-    mutationFn: (lessonId)=> apiPost("/complete-lesson", { lesson_id: lessonId })
-  })
 
-  const handleEndCall = () => {
-    if (pendingHangup && externalApiRef.current) {
+  // const handleEndCall = () => {
+  //   if (pendingHangup && externalApiRef.current) {
 
-      externalApiRef.current.executeCommand("hangup");
-      setPendingHangup(false);
-    }
+  //     externalApiRef.current.executeCommand("hangup");
+  //     setPendingHangup(false);
+  //   }
 
-    completeLessonMutation.mutate(decryptedLessonId);
+  //   completeLessonMutation.mutate(decryptedLessonId);
 
-    if (user?.role == "instructor") {
-      router.replace("/instructor/live-classes");
-    } else {
-      router.replace("/student/live-lessons");
-    }
-  };
+  //   if (user?.role == "instructor") {
+  //     router.replace("/instructor/live-classes");
+  //   } else {
+  //     router.replace("/student/live-lessons");
+  //   }
+  // };
 
-  const handleCancelEndCall = () => {
-    setIsModalOpen(false);
-    setPendingHangup(false);
-    window.location.reload();
-  };
+
 
   // Handle before unload (when user closes tab/browser)
-  const handleBeforeUnload = () => {
-    const isModerator =
-      decryptedModerator === "true" || user?.role === "instructor";
+  // const handleBeforeUnload = () => {
+  //   const isModerator =
+  //     decryptedModerator === "true" || user?.role === "instructor";
 
-    if (isModerator && externalApiRef.current) {
-      // End conference for all participants when moderator closes tab
-      externalApiRef.current.executeCommand("endConference");
-    }
-  };
+  //   if (isModerator && externalApiRef.current) {
+  //     // End conference for all participants when moderator closes tab
+  //     externalApiRef.current.executeCommand("endConference");
+  //   }
+  // };
 
   // Function to intercept hangup attempts
-  const interceptHangup = () => {
-    setPendingHangup(true);
-    setIsModalOpen(true);
-    return false; // Prevent the default hangup action
-  };
+  // const interceptHangup = () => {
+  //   setPendingHangup(true);
+  //   return false; // Prevent the default hangup action
+  // };
 
-  useEffect(() => {
-    // Add global click listener to intercept hangup button clicks
-    const handleToolbarClick = (event) => {
-      // Check if the clicked element or its parent is the hangup button
-      const target = event.target;
-      const hangupButton =
-        target.closest('[data-testid="hangup"]') ||
-        target.closest('.toolbox-button[aria-label*="Leave"]') ||
-        target.closest('.toolbox-button[aria-label*="Hang up"]') ||
-        target.closest(".hangup-button") ||
-        (target.classList.contains("toolbox-button") &&
-          target.getAttribute("aria-label")?.includes("Leave"));
+  // useEffect(() => {
+  //   // Add global click listener to intercept hangup button clicks
+  //   const handleToolbarClick = (event) => {
+  //     // Check if the clicked element or its parent is the hangup button
+  //     const target = event.target;
+  //     const hangupButton =
+  //       target.closest('[data-testid="hangup"]') ||
+  //       target.closest('.toolbox-button[aria-label*="Leave"]') ||
+  //       target.closest('.toolbox-button[aria-label*="Hang up"]') ||
+  //       target.closest(".hangup-button") ||
+  //       (target.classList.contains("toolbox-button") &&
+  //         target.getAttribute("aria-label")?.includes("Leave"));
 
-      if (hangupButton && !pendingHangup) {
-        event.preventDefault();
-        event.stopPropagation();
-        interceptHangup();
-      }
-    };
+  //     if (hangupButton && !pendingHangup) {
+  //       event.preventDefault();
+  //       event.stopPropagation();
+  //       interceptHangup();
+  //     }
+  //   };
 
-    // Use capture phase to intercept before Jitsi handles the click
-    document.addEventListener("click", handleToolbarClick, true);
+  //   // Use capture phase to intercept before Jitsi handles the click
+  //   document.addEventListener("click", handleToolbarClick, true);
 
-    return () => {
-      document.removeEventListener("click", handleToolbarClick, true);
-    };
-  }, [pendingHangup]);
+  //   return () => {
+  //     document.removeEventListener("click", handleToolbarClick, true);
+  //   };
+  // }, [pendingHangup]);
 
-  useEffect(() => {
-    // Add global click listener to intercept hangup button clicks
-    const handleToolbarClick = (event) => {
-      // Check if the clicked element or its parent is the hangup button
-      const target = event.target;
-      const hangupButton =
-        target.closest('[data-testid="hangup"]') ||
-        target.closest('.toolbox-button[aria-label*="Leave"]') ||
-        target.closest('.toolbox-button[aria-label*="Hang up"]') ||
-        target.closest(".hangup-button") ||
-        (target.classList.contains("toolbox-button") &&
-          target.getAttribute("aria-label")?.includes("Leave"));
+  // useEffect(() => {
+  //   // Add global click listener to intercept hangup button clicks
+  //   const handleToolbarClick = (event) => {
+  //     // Check if the clicked element or its parent is the hangup button
+  //     const target = event.target;
+  //     const hangupButton =
+  //       target.closest('[data-testid="hangup"]') ||
+  //       target.closest('.toolbox-button[aria-label*="Leave"]') ||
+  //       target.closest('.toolbox-button[aria-label*="Hang up"]') ||
+  //       target.closest(".hangup-button") ||
+  //       (target.classList.contains("toolbox-button") &&
+  //         target.getAttribute("aria-label")?.includes("Leave"));
 
-      if (hangupButton && !pendingHangup) {
-        event.preventDefault();
-        event.stopPropagation();
-        interceptHangup();
-      }
-    };
+  //     if (hangupButton && !pendingHangup) {
+  //       event.preventDefault();
+  //       event.stopPropagation();
+  //       interceptHangup();
+  //     }
+  //   };
 
-    // Use capture phase to intercept before Jitsi handles the click
-    document.addEventListener("click", handleToolbarClick, true);
+  //   // Use capture phase to intercept before Jitsi handles the click
+  //   document.addEventListener("click", handleToolbarClick, true);
 
-    return () => {
-      document.removeEventListener("click", handleToolbarClick, true);
-    };
-  }, [pendingHangup]);
+  //   return () => {
+  //     document.removeEventListener("click", handleToolbarClick, true);
+  //   };
+  // }, [pendingHangup]);
 
   return (
     <div className="w-screen h-screen p-4">
@@ -214,82 +205,32 @@ const VideoConference = () => {
             const originalExecuteCommand =
               externalApi.executeCommand.bind(externalApi);
             externalApi.executeCommand = (command, ...args) => {
-              if (command === "hangup" && !pendingHangup) {
-                interceptHangup();
-                return;
-              }
+              // if (command === "hangup" && !pendingHangup) {
+              //   interceptHangup();
+              //   return;
+              // }
               return originalExecuteCommand(command, ...args);
             };
 
-            externalApi.addListener("participantJoined", (participant) => {
-              const isModerator =
-                decryptedModerator === "true" || user?.role === "instructor";
-
-              if (isModerator) {
-                const participantName =
-                  participant.displayName || "Unknown User";
-
-                notificationService.info({
-                  message: "User joined",
-                  description: `${participantName} joined the lesson meeting!`,
-                  duration: 3,
-                  position: "topRight",
-                  icon: <LuBellRing size={18} />,
-                  customStyle: {
-                    paddingLeft: "8px",
-                    backgroundColor: "#001840",
-                    color: "white",
-                  },
-                });
-              }
-            });
-
-            externalApi.addListener("participantLeft", (participant) => {
-              const isModerator =
-                decryptedModerator === "true" || user?.role === "instructor";
-
-              if (isModerator) {
-                const student = participant.displayName || "A student";
-
-                if (!participant.moderator) {
-                  notificationService.info({
-                    message: "User left",
-                    description: `${student} left the lesson meeting!`,
-                    duration: 3,
-                    icon: <LuBellRing size={18} />,
-                    position: "topRight",
-                    customStyle: {
-                      paddingLeft: "8px",
-
-                      backgroundColor: "#001840",
-                      color: "white",
-                    },
-                  });
-                }
-              }
-            });
-
             externalApi.addListener("videoConferenceLeft", () => {
-              if (user?.role == "instructor" && !pendingHangup) {
-                setIsModalOpen(true);
-              } else {
+              if(user?.role == 'instructor'){
+                router.replace("/instructor/live-classes");
+              }else{
                 router.replace("/student/live-lessons");
+
               }
             });
 
             // Listen for when the conference ends (for all participants)
             externalApi.addListener("videoConferenceEnded", () => {
-              if (!pendingHangup) {
-                setIsModalOpen(true);
-              }
             });
 
             // Add beforeunload event listener for moderator
-            const isModerator =
-              decryptedModerator === "true" || user?.role === "instructor";
-            if (isModerator) {
-              window.addEventListener("beforeunload", handleBeforeUnload);
-            }
+            // const isModerator =
+            //   decryptedModerator === "true" || user?.role === "instructor";
+            // if (isModerator) {
+            //   window.addEventListener("beforeunload", handleBeforeUnload);
+            // }
 
             setTimeout(() => {
               externalApi.executeCommand("toggleToolbox");
@@ -312,14 +253,6 @@ const VideoConference = () => {
           </span>
         </div>
       )}
-
-      <EndCallModal
-        isOpen={isModalOpen}
-        onClose={handleCancelEndCall}
-        onConfirm={handleEndCall}
-        participantCount={5}
-        duration="32:15"
-      />
     </div>
   );
 };

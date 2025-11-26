@@ -339,7 +339,7 @@ const StudentSearch = () => {
             </>
           )}
           <div className="md:flex items-center justify-center gap-8 hidden">
-            {user?.role === 'student' && <Clock />}
+            {/* {user?.role === 'student' && <Clock />} */}
             <div className="flex items-center gap-3">
               <Updates>
                 <Tooltip placement="top" title={notift('notifications')}>

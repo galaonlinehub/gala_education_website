@@ -302,7 +302,8 @@
     "gala_ai": "GalaAI",
     "library": "Library",
     "pending": "Pending",
-    "classes": "Classes"
+    "classes": "Classes",
+    "attendance": "Attendance"
   },
 
   "teacher_dashboard": {
@@ -332,7 +333,8 @@
     "students": "Students",
     "action": "Action",
     "view": "View",
-        "welcome_back":"Welcome Back"
+    "welcome_back":"Welcome Back"
+
 
   },
 
@@ -424,11 +426,13 @@
     "completed": "Completed",
     "canceled": "Canceled",
     "ongoing": "Ongoing",
-    "no_upcoming_classes": "No upcoming classes found.",
-    "no_ongoing_classes": "No ongoing classes found.",
-    "no_pending_classes": "No pending classes found.",
-    "no_completed_classes": "No completed classes found.",
-    "no_canceled_classes": "No canceled classes found.",
+    "missed": "Missed",
+    "no_upcoming_classes": "No upcoming classes found",
+    "no_ongoing_classes": "No ongoing classes found",
+    "no_pending_classes": "No pending classes found",
+    "no_completed_classes": "No completed classes found",
+    "no_canceled_classes": "No canceled classes found",
+    "no_missed_classes": "No missed classes found",
     "loading_lessons": "Loading lessons...",
     "date_and_time": "Date & Time",
     "enrolled": "Enrolled",
@@ -440,7 +444,10 @@
     "confirm_and_join": "Confirm & Join",
     "no_pending_lesson_for_selected_subject" :"No pending classes for selected subject",
     "no_completed_lesson_for_selected_subject": "No completed classes for selected subject",
-    "no_canceled_lesson_for_selected_subject": "No canceled classes for selected subject"
+    "no_canceled_lesson_for_selected_subject": "No canceled classes for selected subject",
+    "for_selected_subject" :" for selected subject",
+    "date": "Date",
+    "time": "Time"
   },
 
   "chat": {
@@ -567,7 +574,10 @@
     "reminders": "Reminders",
     "grades": "Grades",
     "enter": "Enter",
-    "welcome_back": "Welcome Back"
+    "welcome_back": "Welcome Back",
+    "status": "Status",
+    "active": "Active",
+    "in_active": "Inactive"
   },
 
   "student_classes": {
@@ -773,7 +783,7 @@
     "duration_each": "Duration Each",
     "missed_this": "Missed",
     "upcoming_this": "Upcoming",
-    "complete_this": "Complete"
+    "completed_this": "Complete"
   },
 
   "enroll_payments": {
@@ -871,5 +881,37 @@
   "languages": {
     "swahili": "Swahili",
     "english": "English"
+  },
+
+  "teacher_attendance": {
+    "teacher_attendance_dashboard":"Teacher Attendance Dashboard",
+    "lessons_taught":"Lessons taught",
+    "avg_attendance":"Avg. Attendance",
+    "excellent":"Excellent",
+    "search_lesson_topic_subtopic":"Search by lesson, topic or subtopic....",
+    "all_topics":"All Topics",
+    "date":"Date",
+    "lesson":"Lesson",
+    "topic":"Topic",
+    "subtopic":"Subtopic",
+    "attendance_time":"Attendance Time",
+    "completion": "Completion",
+    "good": "Good",
+    "needs_improvement": "Needs Improvement"
+
+  },
+
+  "student_attendance" :{
+    "total_lessons":"Total Lessons",
+    "total_hours":"Total Hours",
+    "avg_time_per_lesson":"Avg Time/Lesson",
+    "lesson_attendance_details":"Lesson Attendance Details",
+    "lesson":"Lesson",
+    "topic":"Topic",
+    "subtopic":"Subtopic",
+    "date":"Date",
+    "time_spent":"Time Spent",
+    "no_attendance_data":"No attendance data available",
+    "student_attendance_dashboard":"Student Attendance Dashboard"
   }
 }

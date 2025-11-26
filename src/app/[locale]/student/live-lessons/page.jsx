@@ -4,7 +4,7 @@ import LiveLessons from '@/components/live-lesson/LiveClass';
 
 const LiveClasses = () => {
   return (
-    <LiveLessons />
+      <LiveLessons />
   )
 }
 

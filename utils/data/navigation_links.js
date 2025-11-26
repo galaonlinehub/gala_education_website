@@ -8,7 +8,9 @@ import {
   LuClock4,
   LuGem,
   LuDiamond,
+  LuUserCheck
 } from "react-icons/lu";
+
 
 export const footer_links = {
   Services: [
@@ -130,6 +132,11 @@ export const useTeacherLinks = () => {
       link: "library",
       icon: <GiBookshelf strokeWidth={1.5} />,
     },
+    {
+          name: nbt("attendance"),
+          link: "attendance",
+          icon: <LuUserCheck strokeWidth={1.5} />,
+    },
   ];
 };
 
@@ -164,19 +171,24 @@ export const useStudentLinks = () => {
       icon: <LuClock4 strokeWidth={1.5} />,
     },
     // {
-    //   name: nbt("subscriptions"),
-    //   link: "subscriptions",
-    //   icon: <LuGem strokeWidth={1.5} />,
-    // },
-    // {
-    //   name: nbt("gala_ai"),
-    //   link: "ai",
-    //   icon: <LuDiamond strokeWidth={1.5} />,
-    // },
-    {
-      name: nbt("library"),
-      link: "library",
-      icon: <GiBookshelf strokeWidth={1.5} />,
-    },
+      //   name: nbt("subscriptions"),
+      //   link: "subscriptions",
+      //   icon: <LuGem strokeWidth={1.5} />,
+      // },
+      // {
+        //   name: nbt("gala_ai"),
+        //   link: "ai",
+        //   icon: <LuDiamond strokeWidth={1.5} />,
+        // },
+        {
+          name: nbt("library"),
+          link: "library",
+          icon: <GiBookshelf strokeWidth={1.5} />,
+        },
+        {
+          name: nbt("attendance"),
+          link: "attendance",
+          icon: <LuUserCheck strokeWidth={1.5} />,
+        },
   ];
 };
