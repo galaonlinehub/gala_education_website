@@ -106,7 +106,7 @@ export default function StudentLayout({ children }) {
           })}
         </ul>
       </aside>
-      <main className="md:fixed mt-[6rem] md:mt-0 top-[6rem] left-[24vw] lg:left-[17rem] lg:w-[calc(100vw-17rem)] h-[calc(100vh-6rem)] px-2">
+     <main className="md:fixed mt-[3rem] md:mt-0 top-[6rem] left-0 md:left-[24vw] lg:left-[17rem] w-full md:w-[calc(100vw-24vw)] lg:w-[calc(100vw-17rem)] h-[calc(100vh-6rem)]">
         <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
           <div className="absolute left-1/2 top-20 w-52 h-52 hidden md:block">
             <RightTiltedBook />

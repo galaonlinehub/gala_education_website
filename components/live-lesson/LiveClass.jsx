@@ -1,12 +1,13 @@
 "use client";
 
 import { LoadingOutlined } from "@ant-design/icons";
-import { Avatar, Button, Card, Collapse, Modal, Segmented, Tag, Select } from "antd";
+import { Button, Card, Collapse, Modal, Select, Tag } from "antd";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaVideoSlash } from "react-icons/fa6";
 import CalendarComponent from "@/components/ui/Calendar";
+import clsx from 'clsx';
 import {
   LuCalendar,
   LuClock,
@@ -18,12 +19,11 @@ import {
 } from "react-icons/lu";
 
 import { useLesson } from "@/hooks/data/useLesson";
-import { useUpcomingLessons } from "@/hooks/data/useUpcomigLessons";
+import { useLiveLessons } from "@/hooks/data/useLiveLessons";
 import { useSubject } from "@/hooks/data/useSubject";
 import { useUser } from "@/hooks/data/useUser";
 import { sessionStorageFn } from "@/utils/fns/client";
 import { encrypt } from "@/utils/fns/encryption";
-
 
 const { Panel } = Collapse;
 
@@ -79,80 +79,108 @@ const ClassCard = ({ classData, status }) => {
   const act = useTranslations('all_classes');
   const cct = useTranslations('class_creation');
 
-  const isDisabled = status === "Pending" ||
-    status === status === "Completed" || status === "Canceled";
-
+  const isDisabled =
+    status === "upcoming" ||
+    status === "completed" ||
+    status === "missed";
 
   return (
     <>
       <Card
-        className="!flex !flex-col !w-full !rounded-none !mb-4 !bg-white shadow-md shadow-black/25 hover:shadow-lg transition-shadow duration-300 ease-in-out"
+        className={clsx("!flex !flex-col !w-full !rounded-none !mb-4  shadow-md shadow-black/25 hover:shadow-lg transition-shadow duration-300 ease-in-out",
+         {
+          "!bg-red-50 border-l-4 !border-red-500": status === "missed",
+          "!bg-green-50 border-l-4 !border-green-500": status === "completed",
+          "!bg-white": status !== "missed" && status !== "completed"
+        }
+        )}
         styles={{ body: { padding: "8px", width: "100%" } }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
         <Tag
-          color = {status == "Pending" ? "#9CA3AF" : "#001840"}
+          color={status == "pending" ? "#9CA3AF" : "#001840"}
           className="!text-white !font-medium !rounded-none !px-2 !py-0.5 !mb-2 !inline-flex !items-center !gap-1"
         >
           <LuClock className="h-3 w-3 text-yellow-300" />
-          {status}
+          {lct(status)}
         </Tag>
-        <div className="flex w-full mt-4 flex-col sm:flex-row sm:items-center justify-between gap-4 px-2 md:px-4 py-2">
-          <div className="flex-1 flex flex-col sm:flex-row sm:items-center gap-4">
-            <div className="min-w-[140px]">
-              <span className="text-base flex flex-col font-semibold leading-tight">
-                <span className="max-w-[100px] truncate">{classData.class_name}</span>
-                <span className="text-[#003399]">{classData.topic}</span>
-              </span>
-            </div>
+        <div className="flex w-full mt-4 flex-col lg:flex-row lg:items-start justify-between gap-4 px-2 md:px-4 py-2">
+  {/* Left Section - Class Info */}
+  <div className="flex-1 flex flex-col gap-3">
+    {/* Class Name and Topic */}
+    <div>
+      <h3 className="text-base font-semibold leading-tight text-gray-900">{classData.class_name}</h3>
+      <p className="text-[#003399] text-sm mt-0.5">{classData.topic}</p>
+    </div>
 
-            <div className="flex items-center gap-2">
-              <LuCalendar className="h-5 w-5 text-[#001840] flex-shrink-0" />
-              <div>
-                <span className="text-xs text-gray-500">{lct('date_and_time')}</span>
-                <p className="text-xs font-medium text-gray-800">
-                  {classData.date}, {classData.time} ({classData.duration})
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <LuUsers className="h-5 w-5 text-[#001840] flex-shrink-0" />
-              <div>
-                <span className="text-xs text-gray-500">{lct('enrolled')}</span>
-                <p className="text-xs flex gap-1 font-medium text-gray-800">
-                  <span>{classData.enrolled} </span>
-                  <span>{act('students')}</span>
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex items-center">
-            <Button
-              type="primary"
-              disabled={isDisabled}
-              onClick={showConfirmModal}
-              target="_blank"
-              className={`${isDisabled
-                ? "!bg-[#d9dadb] !text-black"
-                : "!bg-[#001840] !text-white"
-                }   !font-medium !rounded-md !px-4 !py-1 !h-auto !border-none transition-transform duration-200 ${isHovered ? "!scale-105 !bg-[#003380]" : ""
-                }`}
-              icon={isDisabled ? <FaVideoSlash /> : <LuVideo />}
-            >
-              {lct('join')}
-            </Button>
-          </div>
+    {/* Metadata Grid - 2 columns on mobile, 3 on tablet+ */}
+    <div className="grid grid-cols-2 gap-5 md:grid-cols-3">
+      {/* Date */}
+      <div className="flex items-start gap-2">
+        <LuCalendar className="h-4 w-4 text-[#001840] flex-shrink-0 mt-0.5" />
+        <div>
+          <span className="text-xs text-gray-500 block">{lct('date')}</span>
+          <p className="text-xs font-medium text-gray-800">{classData.date}</p>
         </div>
+      </div>
+
+      {/* Time */}
+      <div className="flex items-start gap-2">
+        <LuClock className="h-4 w-4 text-[#001840] flex-shrink-0 mt-0.5" />
+        <div>
+          <span className="text-xs text-gray-500 block">{lct('time')}</span>
+          <p className="text-xs font-medium text-gray-800">
+            {classData.time}
+            <span className="text-gray-500 ml-1">({classData.duration})</span>
+          </p>
+        </div>
+      </div>
+
+      {/* Enrolled Students */}
+      <div className="flex items-start gap-2">
+        <LuUsers className="h-4 w-4 text-[#001840] flex-shrink-0 mt-0.5" />
+        <div>
+          <span className="text-xs text-gray-500 block">{lct('enrolled')}</span>
+          <p className="text-xs font-medium text-gray-800">
+            {classData.enrolled} {act('students')}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {/* Right Section - Join Button */}
+  {(status !== "completed" && status !== "missed") && (
+    <div className="flex items-start lg:items-center lg:ml-4 mt-2 lg:mt-0">
+      <Button
+        type="primary"
+        disabled={isDisabled}
+        onClick={showConfirmModal}
+        target="_blank"
+        className={clsx(
+          "!font-medium !rounded-md !px-5 !py-2 !h-auto !border-none transition-all duration-200 !whitespace-nowrap",
+          {
+            "!bg-[#d9dadb] !text-gray-600 cursor-not-allowed": isDisabled,
+            "!bg-[#001840] !text-white hover:!bg-[#003380]": !isDisabled,
+            "!scale-105 !shadow-lg": isHovered && !isDisabled,
+          }
+        )}
+        icon={isDisabled ? <FaVideoSlash /> : <LuVideo />}
+      >
+        {lct('join')}
+      </Button>
+    </div>
+  )}
+</div>
 
         <Collapse
           bordered={false}
           expandIcon={({ isActive }) => (
             <LuInfo
-              className={`h-5 w-5 text-[#001840] transition-transform ${isActive ? "rotate-180" : ""
-                }`}
+              className={`h-5 w-5 text-[#001840] transition-transform ${
+                isActive ? "rotate-180" : ""
+              }`}
             />
           )}
           className="!mt-4 !bg-transparent"
@@ -173,94 +201,83 @@ const ClassCard = ({ classData, status }) => {
           </Panel>
         </Collapse>
       </Card>
-      {/* Confrimation Modal */}
 
-      <>
-        <Modal
-          open={isModalOpen}
-          footer={null}
-          onCancel={handleCancel}
-          centered
-          closeIcon={<LuX className="text-gray-500 hover:text-gray-700" />}
-          className="confirm-join-modal"
-        >
-          <div className="py-4">
-            <div className="flex justify-center mb-6">
-              <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center">
-                <LuVideo className="text-4xl text-[#001840]" />
-              </div>
-            </div>
-
-            <h3 className="text-xl font-semibold text-center mb-2">
-              {lct('join_live_class')}
-            </h3>
-
-            <div className="bg-gray-50 rounded-lg p-4 mb-6">
-              <div className="font-medium text-gray-800 mb-2">
-                {classData.class_name}: {classData.topic}
-              </div>
-
-              <div className="flex items-center gap-2 text-sm text-gray-600 mb-1">
-                <LuCalendar className="flex-shrink-0" />
-                <span>
-                  {classData.date}, {classData.time}
-                </span>
-              </div>
-            </div>
-
-            <p className="text-gray-600 text-xs lg:text-sm text-center mb-6">
-              {lct('join_live_class_desc')}
-            </p>
-
-            <div className="flex gap-3 justify-center">
-              <Button
-                onClick={handleCancel}
-                className="!border-gray-300 !text-gray-700 !px-5 !h-10 !rounded-md"
-              >
-                {act('close')}
-              </Button>
-              <Button
-                type="primary"
-                onClick={handleJoin}
-                className="!bg-[#001840] !border-none !text-white !px-5 !h-10 !rounded-md !flex !items-center !gap-1"
-                icon={<LuCheckCheck />}
-              >
-                {lct('confirm_and_join')}
-              </Button>
+      <Modal
+        open={isModalOpen}
+        footer={null}
+        onCancel={handleCancel}
+        centered
+        closeIcon={<LuX className="text-gray-500 hover:text-gray-700" />}
+        className="confirm-join-modal"
+      >
+        <div className="py-4">
+          <div className="flex justify-center mb-6">
+            <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center">
+              <LuVideo className="text-4xl text-[#001840]" />
             </div>
           </div>
-        </Modal>
-      </>
+
+          <h3 className="text-xl font-semibold text-center mb-2">
+            {lct('join_live_class')}
+          </h3>
+
+          <div className="bg-gray-50 rounded-lg p-4 mb-6">
+            <div className="font-medium text-gray-800 mb-2">
+              {classData.class_name}: {classData.topic}
+            </div>
+
+            <div className="flex items-center gap-2 text-sm text-gray-600 mb-1">
+              <LuCalendar className="shrink-0" />
+              <span>
+                {classData.date}, {classData.time}
+              </span>
+            </div>
+          </div>
+
+          <p className="text-gray-600 text-xs lg:text-sm text-center mb-6">
+            {lct('join_live_class_desc')}
+          </p>
+
+          <div className="flex gap-3 justify-center">
+            <Button
+              onClick={handleCancel}
+              className="border-gray-300! !text-gray-700 !px-5 !h-10 !rounded-md"
+            >
+              {act('close')}
+            </Button>
+            <Button
+              type="primary"
+              onClick={handleJoin}
+              className="!bg-[#001840] !border-none !text-white !px-5 !h-10 !rounded-md !flex !items-center !gap-1"
+              icon={<LuCheckCheck />}
+            >
+              {lct('confirm_and_join')}
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </>
   );
 };
 
 const LiveLessons = () => {
-  const { upcomingLessons, isFetchingUpcomingLessons } = useUpcomingLessons();
-  const { subjects, isLoading, isError } = useSubject();
+  const { subjects, isLoading } = useSubject();
   const [selectedSubject, setSelectedSubject] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState('ongoing');
+  const { user } = useUser();
 
-  const lct = useTranslations('live_class')
+  const { liveLessons, isFetchingLiveLessons } = useLiveLessons(selectedCategory);
 
-  const [alignValue, setAlignValue] = useState(lct('upcoming'));
-
-  const isPastLesson = (lesson) => {
-    const lessonDateTime = new Date(`${lesson.date} ${lesson.time}`);
-    const now = new Date();
-    return now > lessonDateTime;
-  };
-
-  const isFutureLesson = (lesson) => {
-    const lessonDateTime = new Date(`${lesson.date} ${lesson.time}`);
-    const now = new Date();
-    return lessonDateTime > now;
-  };
+  const lct = useTranslations('live_class');
 
   // Filter lessons by subject
   const filterLessonsBySubject = (lessons) => {
-    if (!selectedSubject) return lessons;
+    if (!selectedSubject || !lessons) return lessons;
     return lessons.filter(lesson => lesson.subject_id === selectedSubject);
   };
+
+  // Get filtered lessons
+  const filteredLessons = filterLessonsBySubject(liveLessons);
 
   // Subject options for Select
   const subjectOptions = subjects?.map(subject => ({
@@ -270,124 +287,156 @@ const LiveLessons = () => {
 
   const handleSubjectChange = (value) => {
     setSelectedSubject(value);
-    console.log("filter value", value);
   };
 
   const handleClearFilter = () => {
     setSelectedSubject(null);
   };
 
+  // Get no lessons message based on category
+  const getNoLessonsMessage = () => {
+    const messages = {
+      ongoing: lct('no_ongoing_classes'),
+      upcoming: lct('no_upcoming_classes'),
+      completed: lct('no_completed_classes'),
+      missed: lct('no_missed_classes'),
+      pending: lct('no_pending_classes'),
+      canceled: lct('no_canceled_classes'),
+    };
+    
+    return selectedSubject 
+      ? `${messages[selectedCategory]} ${lct('for_selected_subject')}`
+      : messages[selectedCategory];
+  };
 
   return (
-    <div className="w-full p-4 mt-layout-margin">
-      <div className="flex flex-col justify-center gap-1 mb-4">
-        <div className="flex items-center gap-2">
-          <LuVideo className="text-2xl md:text-4xl text-[#001840] flex-shrink-0" />
-          <span className="font-semibold text-lg md:text-2xl text-[#001840] tracking-tight">
-            {lct('live_learning_center')}
-          </span>
-        </div>
-        <p className="text-xs md:text-sm text-gray-600 leading-relaxed max-w-4xl px-3">
-          {lct('live_learning_description')}
-        </p>
-      </div>
+    <div className="w-full h-screen flex flex-col">
 
-      <Segmented
-        block
-        size="large"
-        value={alignValue}
-        style={{ marginBottom: 12 }}
-        onChange={setAlignValue}
-        options={[lct('upcoming'), lct('pending'), lct('completed'), lct('canceled')]}
-        className="custom-segmented"
-      />
+      <div className="">
+        <div className="p-4">
 
-      <div className="mb-4 flex items-center gap-2 flex-wrap">
-        <Select
-          placeholder="Filter by subject"
-          style={{ width: 280 }}
-          onChange={handleSubjectChange}
-          loading={isLoading}
-          options={subjectOptions}
-          value={selectedSubject}
-          allowClear
-          onClear={handleClearFilter}
-          showSearch
-          filterOption={(input, option) =>
-            (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-          }
-        />
-      </div>
-
-
-      <div className="flex flex-col-reverse lg:flex-row gap-6 justify-center lg:justify-between items-start">
-
-        <div className="flex-1 w-full space-y-3 min-w-0">
-          {(() => {
-            let filteredLessons = [];
-            let status = '';
-            let noLessonsMessage = '';
-
-            if (alignValue === lct('upcoming')) {
-              status = 'Upcoming';
-              filteredLessons = filterLessonsBySubject(
-                upcomingLessons?.filter(l => l.status === 'Upcoming' && isFutureLesson(l)) || []
-              );
-              noLessonsMessage = lct('no_upcoming_classes');
-            } else if (alignValue === lct('pending')) {
-              status = 'Pending';
-              filteredLessons = filterLessonsBySubject(
-                upcomingLessons?.filter(l => l.status === 'Upcoming' && isPastLesson(l)) || []
-              );
-              noLessonsMessage = selectedSubject
-                ? lct('no_pending_lesson_for_selected_subject')
-                : lct('no_pending_classes');
-            } else if (alignValue === lct('completed')) {
-              status = 'Completed';
-              filteredLessons = filterLessonsBySubject(
-                upcomingLessons?.filter(l => l.status === 'Completed') || []
-              );
-              noLessonsMessage = selectedSubject
-                ? lct('no_completed_lesson_for_selected_subject')
-                : lct('no_completed_classes');
-            } else if (alignValue === lct('canceled')) {
-              status = 'Canceled';
-              filteredLessons = filterLessonsBySubject(
-                upcomingLessons?.filter(l => l.status === 'Canceled') || []
-              );
-              noLessonsMessage = selectedSubject
-                ? lct('no_canceled_lesson_for_selected_subject')
-                : lct('no_canceled_classes');
-            }
-
-            if (isFetchingUpcomingLessons) {
-              return (
-                <div className="flex flex-col items-center justify-center w-full py-40 md:py-64">
-                  <LoadingOutlined className="text-3xl text-[#001840] mb-2" spin />
-                  <span className="text-sm text-gray-600">{lct('loading_lessons')}</span>
-                </div>
-              );
-            }
-
-            if (filteredLessons.length === 0) {
-              return (
-                <div className="flex justify-center items-center w-full py-32">
-                  <p className="text-gray-500 text-sm">{noLessonsMessage}</p>
-                </div>
-              );
-            }
-
-            return filteredLessons.map((classData, idx) => (
-              <ClassCard key={idx} classData={classData} status={status} />
-            ));
-          })()}
-        </div>
-
-        {upcomingLessons?.length > 0 && (
-          <div className="w-full lg:w-auto lg:min-w-[320px] lg:max-w-[380px] sticky top-4">
-            <CalendarComponent lessons={upcomingLessons} />
+          <div className="flex flex-col justify-center gap-1 mb-4">
+            <div className="flex items-center gap-2">
+              <LuVideo className="text-2xl md:text-4xl text-[#001840] flex-shrink-0" />
+              <span className="font-semibold text-lg md:text-2xl text-[#001840] tracking-tight">
+                {lct('live_learning_center')}
+              </span>
+            </div>
+            <p className="text-xs md:text-sm text-gray-600 leading-relaxed max-w-4xl px-3">
+              {lct('live_learning_description')}
+            </p>
           </div>
-        )}
+
+          <div className={clsx("w-full grid  mb-4 items-center gap-2 md:gap-4",
+            {
+              " grid-cols-2 sm:grid-cols-4": user?.role === "student",
+              "grid-cols-3": user?.role === "instructor"
+            }
+          )}>
+            <Button 
+              onClick={() => setSelectedCategory('ongoing')} 
+              type={selectedCategory === 'ongoing' ? 'primary' : 'default'}
+              block 
+              className={`!text-xs sm:!text-sm ${
+                selectedCategory === 'ongoing' 
+                  ? '!bg-[#001840] !text-white !border-[#001840]'
+                  : ''
+              }`}
+            >
+              {lct('ongoing')}
+            </Button>
+            <Button 
+              onClick={() => setSelectedCategory('upcoming')} 
+              type={selectedCategory === 'upcoming' ? 'primary' : 'default'}
+              block 
+              className={`!text-xs sm:!text-sm ${
+                selectedCategory === 'upcoming' 
+                  ? '!bg-[#001840] !text-white !border-[#001840]' 
+                  : ''
+              }`}
+            >
+              {lct('upcoming')}
+            </Button>
+            <Button 
+              onClick={() => setSelectedCategory('completed')} 
+              type={selectedCategory === 'completed' ? 'primary' : 'default'}
+              block 
+              className={`!text-xs sm:!text-sm ${
+                selectedCategory === 'completed' 
+                  ? '!bg-[#001840] !text-white !border-[#001840]' 
+                  : ''
+              }`}
+            >
+              {lct('completed')}
+            </Button>
+            {user?.role == 'student' &&
+            <Button 
+              onClick={() => setSelectedCategory('missed')} 
+              type={selectedCategory === 'missed' ? 'primary' : 'default'}
+              block 
+              className={`!text-xs sm:!text-sm ${
+                selectedCategory === 'missed' 
+                  ? '!bg-[#001840] !text-white !border-[#001840]' 
+                  : ''
+              }`}
+            >
+              {lct('missed')}
+            </Button>
+}
+          </div>
+
+          {/* Subject Filter */}
+          <div className="mb-2 flex items-center gap-2 flex-wrap">
+            <Select
+              placeholder="Filter by subject"
+              className="w-full text-xs sm:text-sm sm:w-[280px]"
+              onChange={handleSubjectChange}
+              loading={isLoading}
+              options={subjectOptions}
+              value={selectedSubject}
+              allowClear
+              onClear={handleClearFilter}
+              showSearch
+              filterOption={(input, option) =>
+                (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+              }
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Scrollable Content Section */}
+      <div className="flex-1 overflow-y-auto p-4">
+        <div className="flex flex-col-reverse lg:flex-row gap-6 justify-center lg:justify-between items-start">
+          {/* Lessons List */}
+          <div className="flex-1 w-full space-y-3 min-w-0">
+            {isFetchingLiveLessons ? (
+              <div className="flex flex-col items-center justify-center w-full py-20 md:py-32">
+                <LoadingOutlined className="text-3xl text-[#001840] mb-2" spin />
+                <span className="text-sm text-gray-600">{lct('loading_lessons')}</span>
+              </div>
+            ) : filteredLessons && filteredLessons.length === 0 ? (
+              <div className="flex justify-center items-center w-full py-20 md:py-32">
+                <p className="text-gray-500 text-sm">{getNoLessonsMessage()}</p>
+              </div>
+            ) : (
+              filteredLessons?.map((classData, idx) => (
+                <ClassCard
+                  key={idx}
+                  classData={classData}
+                  status={selectedCategory}
+                />
+              ))
+            )}
+          </div>
+
+          {/* Calendar - Sticky on larger screens */}
+          {filteredLessons && filteredLessons.length > 0 && (
+            <div className="w-full lg:w-auto lg:min-w-[320px] lg:max-w-[380px] lg:sticky lg:top-4">
+              <CalendarComponent lessons={filteredLessons} />
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

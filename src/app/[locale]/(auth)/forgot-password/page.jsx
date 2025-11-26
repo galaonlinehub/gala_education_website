@@ -28,7 +28,6 @@ const ForgotPassword = () => {
     verificationMutation,
     handleResendOtp,
     resendOtpMutation,
-    width,
     otpStatus,
     otpValues,
     resendCounter,

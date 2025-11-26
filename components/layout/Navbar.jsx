@@ -31,8 +31,10 @@ const Navbar = () => {
   const navlinkt = useTranslations('nav_links');
 
   return (
-    <nav className="fixed top-0 inset-x-0 flex h-[3rem] w-full items-center justify-between bg-white px-2 sm:px-6 lg:px-10">
+    <>
+      <nav className="fixed top-0 inset-x-0 flex h-[3rem] w-full items-center justify-between bg-white px-2 sm:px-6 lg:px-10">
       <Link href={'/'}>
+
         <Image
           alt={'Gala logo'}
           width={150}
@@ -102,6 +104,7 @@ const Navbar = () => {
         <MobileSideBar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
       )}
     </nav>
+    </>
   );
 };
 

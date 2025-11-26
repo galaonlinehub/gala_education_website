@@ -42,7 +42,7 @@ export default function TeacherLayout({ children }) {
       <Navbar />
       <StudentSearch />
 
-      <main className="flex flex-col md:flex-row w-full mt-20 overflow-hidden">
+      <main className="flex flex-col md:flex-row w-full mt-12 overflow-hidden">
         <div className="fixed inset-0 -z-1 opacity-95 pointer-events-none">
           <div className="absolute left-1/2 top-20 w-52 h-52 hidden md:block">
             <RightTiltedBook />
