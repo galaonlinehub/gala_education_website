@@ -1,6 +1,6 @@
-import { io } from "socket.io-client";
+import { io } from 'socket.io-client';
 
-import { socket_base_url } from "@/config/settings";
+import { socket_base_url } from '@/config/settings';
 
 export const state = {
   connections: new Map(),
@@ -19,7 +19,7 @@ export const state = {
     failures: 0,
     threshold: 5,
     timeout: 30000,
-    state: "CLOSED",
+    state: 'CLOSED',
   },
 };
 
@@ -71,11 +71,11 @@ export const createEventEmitter = () => {
 export const eventEmitter = createEventEmitter();
 
 // Core socket functions
-export const createConnection = (namespace = "default", options = {}) => {
-  if (typeof window === "undefined") return null;
+export const createConnection = (namespace = 'default', options = {}) => {
+  if (typeof window === 'undefined') return null;
 
   const socketOptions = {
-    transports: ["websocket", "polling"],
+    transports: ['websocket', 'polling'],
     reconnectionAttempts: Infinity,
     reconnectionDelay: 1000,
     reconnectionDelayMax: 5000,
@@ -84,7 +84,10 @@ export const createConnection = (namespace = "default", options = {}) => {
     ...options,
   };
 
-  const socket = io(`${socket_base_url}${namespace}`, socketOptions);
+  // Ensure namespace starts with / for socket.io
+  const formattedNamespace =
+    namespace === 'default' ? '' : namespace.startsWith('/') ? namespace : `/${namespace}`;
+  const socket = io(`${socket_base_url}${formattedNamespace}`, socketOptions);
 
   // Setup handlers using functional approach
   setupConnectionHandlers(socket, namespace);
@@ -92,7 +95,7 @@ export const createConnection = (namespace = "default", options = {}) => {
   // Update state
   state.connections.set(namespace, socket);
   state.messageQueues.set(namespace, []);
-  state.connectionStates.set(namespace, "connecting");
+  state.connectionStates.set(namespace, 'connecting');
   state.metrics.totalConnections++;
 
   return socket;
@@ -101,12 +104,12 @@ export const createConnection = (namespace = "default", options = {}) => {
 export const setupConnectionHandlers = (socket, namespace) => {
   const handlers = {
     connect: () => {
-      state.connectionStates.set(namespace, "connected");
+      state.connectionStates.set(namespace, 'connected');
       state.metrics.activeConnections++;
       state.circuitBreaker.failures = 0;
 
       processQueuedMessages(namespace);
-      eventEmitter.emit("connection:connected", {
+      eventEmitter.emit('connection:connected', {
         namespace,
         socketId: socket.id,
       });
@@ -114,39 +117,34 @@ export const setupConnectionHandlers = (socket, namespace) => {
     },
 
     disconnect: (reason) => {
-      state.connectionStates.set(namespace, "disconnected");
-      state.metrics.activeConnections = Math.max(
-        0,
-        state.metrics.activeConnections - 1
-      );
+      state.connectionStates.set(namespace, 'disconnected');
+      state.metrics.activeConnections = Math.max(0, state.metrics.activeConnections - 1);
 
-      eventEmitter.emit("connection:disconnected", { namespace, reason });
+      eventEmitter.emit('connection:disconnected', { namespace, reason });
       console.log(`❌ Socket disconnected [${namespace}]:`, reason);
     },
 
     connect_error: (error) => {
-      state.connectionStates.set(namespace, "error");
+      state.connectionStates.set(namespace, 'error');
       state.metrics.reconnectAttempts++;
       state.metrics.errors++;
 
       // Circuit breaker logic
       state.circuitBreaker.failures++;
       if (state.circuitBreaker.failures >= state.circuitBreaker.threshold) {
-        state.circuitBreaker.state = "OPEN";
+        state.circuitBreaker.state = 'OPEN';
         setTimeout(() => {
-          state.circuitBreaker.state = "HALF_OPEN";
+          state.circuitBreaker.state = 'HALF_OPEN';
         }, state.circuitBreaker.timeout);
       }
 
-      eventEmitter.emit("connection:error", { namespace, error });
+      eventEmitter.emit('connection:error', { namespace, error });
       console.error(`❌ Socket connection error [${namespace}]:`, error);
     },
 
     reconnect: (attemptNumber) => {
-      eventEmitter.emit("connection:reconnected", { namespace, attemptNumber });
-      console.log(
-        `🔄 Socket reconnected [${namespace}] after ${attemptNumber} attempts`
-      );
+      eventEmitter.emit('connection:reconnected', { namespace, attemptNumber });
+      console.log(`🔄 Socket reconnected [${namespace}] after ${attemptNumber} attempts`);
     },
   };
 
@@ -175,18 +173,15 @@ export const processQueuedMessages = (namespace) => {
       if (message.retries < 3) {
         failed.push(message);
       }
-      console.error("Failed to process queued message:", error);
+      console.error('Failed to process queued message:', error);
     }
   });
 
   state.messageQueues.set(namespace, failed);
-  state.metrics.messagesQueued = Math.max(
-    0,
-    state.metrics.messagesQueued - processed.length
-  );
+  state.metrics.messagesQueued = Math.max(0, state.metrics.messagesQueued - processed.length);
 };
 
-export const queueMessage = (namespace, event, data, priority = "normal") => {
+export const queueMessage = (namespace, event, data, priority = 'normal') => {
   const queue = state.messageQueues.get(namespace) || [];
   const message = {
     event,
@@ -196,7 +191,7 @@ export const queueMessage = (namespace, event, data, priority = "normal") => {
     retries: 0,
   };
 
-  if (priority === "high") {
+  if (priority === 'high') {
     queue.unshift(message);
   } else {
     queue.push(message);
