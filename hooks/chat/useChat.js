@@ -57,7 +57,12 @@ export const useChat = () => {
     enabled: !!currentChatId && currentChatId !== 'preview',
   });
 
-  const { isConnected } = useSocketConnection(namespace);
+  const { isConnected } = useSocketConnection({
+    namespace,
+    useInternalToken: true,
+    user,
+    initialize: true,
+  });
 
   // const getChatMessages = async () => {
   //   try {
@@ -197,13 +202,13 @@ export const useChat = () => {
     emitSocialEvent(chatIds, emit, connections);
   }, [chats, user, emitSocialEvent, emit]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const metrics = getMetrics();
-      console.log('Socket Metrics:', metrics);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     const metrics = getMetrics();
+  //     console.log('Socket Metrics:', metrics);
+  //   }, 5000);
+  //   return () => clearInterval(interval);
+  // }, []);
 
   // const combinedChats = useMemo(() => {
   //   const chatsArray = chatsQuery.data || chats;

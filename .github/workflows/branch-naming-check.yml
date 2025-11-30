@@ -1,0 +1,67 @@
+name: Branch Naming Check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  check-branch-name:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check branch naming convention
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const branchName = context.payload.pull_request.head.ref;
+            const validPrefixes = [
+              'feature/',
+              'bugfix/',
+              'fix/',
+              'hotfix/',
+              'refactor/',
+              'style/',
+              'docs/',
+              'test/',
+              'chore/'
+            ];
+            
+            // Special branches that don't need prefixes
+            const specialBranches = ['develop', 'main', 'staging'];
+            
+            if (specialBranches.includes(branchName)) {
+              console.log(`✅ Special branch: ${branchName}`);
+              return;
+            }
+            
+            const hasValidPrefix = validPrefixes.some(prefix => branchName.startsWith(prefix));
+            
+            if (!hasValidPrefix) {
+              const message = `
+              ❌ Invalid branch name: "${branchName}"
+              
+              Branch names must follow the convention: <type>/<description>
+              
+              Valid types:
+              - feature/    : New features
+              - bugfix/ or fix/ : Bug fixes
+              - hotfix/     : Critical production fixes
+              - refactor/   : Code refactoring
+              - style/      : UI/styling changes
+              - docs/       : Documentation updates
+              - test/       : Test additions/updates
+              - chore/      : Maintenance tasks
+              
+              Examples:
+              - feature/add-user-dashboard
+              - bugfix/fix-login-issue
+              - hotfix/critical-payment-bug
+              - refactor/optimize-queries
+              
+              Please rename your branch and update the PR.
+              `;
+              
+              core.setFailed(message);
+            } else {
+              console.log(`✅ Valid branch name: ${branchName}`);
+            }
+
