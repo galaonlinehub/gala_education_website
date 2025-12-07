@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import { getSocket } from "../../services/socket/socket-api";
+import { getSocket } from '../../services/socket/socket-api';
+import { useSocketConnection } from './useSocketConnection';
 
 /**
  * Auto-reconnect hook with exponential backoff
@@ -12,7 +13,7 @@ export const useAutoReconnect = (namespace, maxAttempts = 10) => {
     lastAttempt: null,
   });
 
-  const { isConnected } = useSocketConnection(namespace);
+  const { isConnected } = useSocketConnection({ namespace });
 
   useEffect(() => {
     if (isConnected) {
@@ -28,10 +29,7 @@ export const useAutoReconnect = (namespace, maxAttempts = 10) => {
       return;
     }
 
-    const reconnectDelay = Math.min(
-      1000 * Math.pow(2, reconnectInfo.attempts),
-      30000
-    );
+    const reconnectDelay = Math.min(1000 * Math.pow(2, reconnectInfo.attempts), 30000);
 
     setReconnectInfo((prev) => ({
       ...prev,

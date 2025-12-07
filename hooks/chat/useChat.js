@@ -1,34 +1,19 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { message } from "antd";
-import { format } from "date-fns";
-import { useEffect, useRef, useState, useMemo } from "react";
-import io from "socket.io-client";
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { message } from 'antd';
+import { useEffect, useMemo } from 'react';
 
-import { apiPost, apiGet, apiDelete } from "@/services/api/api_service";
-import { getMetrics, getSocket } from "@/services/socket/socket-api";
+import { getMetrics } from '@/services/socket/socket-api';
 
-import { useChatSocketEvents } from "./useChatEvents";
-import { socket_base_url, USER_COOKIE_KEY } from "../../config/settings";
-import useChatStore from "../../store/chat/chat";
-import { EVENTS } from "../../utils/data/events";
-import { MESSAGE_STATUSES } from "../../utils/data/message";
-import {
-  handleMessageIdUpadate,
-  handleMessageStatusBatchUpdate,
-  handleMessageStatusUpdate,
-  handleNewMessage,
-  normalizedMessages,
-} from "../../utils/fns/chat";
-import { cookieFn } from "../../utils/fns/client";
-import { decrypt } from "../../utils/fns/encryption";
-import { useUser } from "../data/useUser";
-import { useSocketConnection } from "../sockets/useSocketConnection";
-import { useSocketEmit } from "../sockets/useSocketEmit";
+import useChatStore from '../../store/chat/chat';
+import { normalizedMessages } from '../../utils/fns/chat';
+import { useUser } from '../data/useUser';
+import { useSocketConnection } from '../sockets/useSocketConnection';
+import { useSocketEmit } from '../sockets/useSocketEmit';
 
 export const useChat = () => {
   const queryClient = useQueryClient();
   const { user } = useUser();
-  const namespace = "chat";
+  const namespace = 'chat';
   const { emit } = useSocketEmit(namespace);
   const {
     currentChatId,
@@ -59,20 +44,25 @@ export const useChat = () => {
   } = useChatStore();
 
   const chatsQuery = useQuery({
-    queryKey: ["chats", user?.id],
+    queryKey: ['chats', user?.id],
     queryFn: getChats,
     staleTime: Infinity,
     enabled: !!user,
   });
 
   const messagesQuery = useQuery({
-    queryKey: ["chat_messages", currentChatId],
+    queryKey: ['chat_messages', currentChatId],
     queryFn: () => getChatMessages(currentChatId),
     staleTime: Infinity,
-    enabled: !!currentChatId && currentChatId !== "preview",
+    enabled: !!currentChatId && currentChatId !== 'preview',
   });
 
-  const { isConnected } = useSocketConnection(namespace);
+  const { isConnected } = useSocketConnection({
+    namespace,
+    useInternalToken: true,
+    user,
+    initialize: true,
+  });
 
   // const getChatMessages = async () => {
   //   try {
@@ -82,7 +72,7 @@ export const useChat = () => {
   // };
 
   const { data: apiChats, isFetching: isFetchingChats } = useQuery({
-    queryKey: ["chats", user.id],
+    queryKey: ['chats', user.id],
     queryFn: () => getChats(),
     staleTime: Infinity,
     enabled: true,
@@ -101,13 +91,7 @@ export const useChat = () => {
 
       setOnlineUsers(getOnlineUsersFromChats(apiChats));
     }
-  }, [
-    apiChats,
-    getOnlineUsersFromChats,
-    setChats,
-    setOnlineUsers,
-    setUnreadCounts,
-  ]);
+  }, [apiChats, getOnlineUsersFromChats, setChats, setOnlineUsers, setUnreadCounts]);
 
   // const getChats = async () => {
   //   try {
@@ -124,32 +108,6 @@ export const useChat = () => {
   //     socketRef.current.emit(EVENTS.SOCIAL, getChatIds());
   //   }
   // }, [chats]);
-
-  useEffect(() => {
-    if (!chats || !isConnected) {
-      if (!isConnected) {
-        console.warn("No connection. Social event will be queued.");
-      }
-      return;
-    }
-
-    const getChatIds = () => chats.map((c) => c?.id).filter(Boolean);
-    const chatIds = getChatIds();
-
-    const emitSocialEvent = async () => {
-      console.log(chatIds, "chats");
-      try {
-        const success = await emit(EVENTS.SOCIAL, chatIds);
-        if (!success) {
-          console.warn("Failed to emit social event, action queued.");
-        }
-      } catch (error) {
-        console.error("Error emitting social event:", error);
-      }
-    };
-
-    emitSocialEvent();
-  }, [chats, emit, isConnected]);
 
   useEffect(() => {
     if (!messagesQuery.data) {
@@ -185,13 +143,13 @@ export const useChat = () => {
   const deleteChatMutation = useMutation({
     mutationFn: () => deleteChat(currentChatId),
     onSuccess: () => {
-      queryClient.invalidateQueries(["chats", user?.id]);
+      queryClient.invalidateQueries(['chats', user?.id]);
       setCurrentChatId(null);
-      message.success("Chat deleted successfully");
+      message.success('Chat deleted successfully');
     },
     onError: (error) => {
-      console.error("Error deleting chat:", error);
-      message.error("Failed to delete chat");
+      console.error('Error deleting chat:', error);
+      message.error('Failed to delete chat');
     },
   });
 
@@ -207,32 +165,23 @@ export const useChat = () => {
       }));
       setOnlineUsers(getOnlineUsersFromChats(chatsQuery.data));
     }
-  }, [
-    chatsQuery.data,
-    setChats,
-    setUnreadCounts,
-    setOnlineUsers,
-    getOnlineUsersFromChats,
-  ]);
+  }, [chatsQuery.data, setChats, setUnreadCounts, setOnlineUsers, getOnlineUsersFromChats]);
 
   useEffect(() => {
     if (messagesQuery.data) {
       const normalized = normalizedMessages(messagesQuery.data);
       setMessages(normalized);
-      const initialStatuses = Object.values(normalized).reduce(
-        (acc, message) => {
-          if (message.statuses?.length > 0) {
-            acc[message.id] = message.statuses.reduce((statusAcc, status) => {
-              statusAcc[status.user_id] = status.status;
-              return statusAcc;
-            }, {});
-          }
-          return acc;
-        },
-        {}
-      );
+      const initialStatuses = Object.values(normalized).reduce((acc, message) => {
+        if (message.statuses?.length > 0) {
+          acc[message.id] = message.statuses.reduce((statusAcc, status) => {
+            statusAcc[status.user_id] = status.status;
+            return statusAcc;
+          }, {});
+        }
+        return acc;
+      }, {});
       setMessageReceipts((prev) => ({ ...prev, ...initialStatuses }));
-    } else if (!currentChatId || currentChatId === "preview") {
+    } else if (!currentChatId || currentChatId === 'preview') {
       setMessages({});
       setMessageReceipts({});
     }
@@ -245,16 +194,21 @@ export const useChat = () => {
   useEffect(() => {
     if (!chats || !user) return;
     const chatIds = chats.map((c) => c?.id).filter(Boolean);
-    emitSocialEvent(chatIds);
-  }, [chats, user, emitSocialEvent]);
+    const connections = {
+      chat: {
+        connected: user && getMetrics().connectionStates[namespace] === 'connected',
+      },
+    };
+    emitSocialEvent(chatIds, emit, connections);
+  }, [chats, user, emitSocialEvent, emit]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const metrics = getMetrics();
-      console.log("Socket Metrics:", metrics);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     const metrics = getMetrics();
+  //     console.log('Socket Metrics:', metrics);
+  //   }, 5000);
+  //   return () => clearInterval(interval);
+  // }, []);
 
   // const combinedChats = useMemo(() => {
   //   const chatsArray = chatsQuery.data || chats;
@@ -274,8 +228,7 @@ export const useChat = () => {
     sendMessage: (content, recipientId, chatId) =>
       sendMessage(content, recipientId, chatId, user, emit, {
         chat: {
-          connected:
-            user && getMetrics().connectionStates[namespace] === "connected",
+          connected: user && getMetrics().connectionStates[namespace] === 'connected',
         },
       }),
     sendTypingStatus: (isTyping) =>
@@ -284,8 +237,7 @@ export const useChat = () => {
         user,
         {
           chat: {
-            connected:
-              user && getMetrics().connectionStates[namespace] === "connected",
+            connected: user && getMetrics().connectionStates[namespace] === 'connected',
           },
         },
         emit
@@ -296,8 +248,7 @@ export const useChat = () => {
         user,
         {
           chat: {
-            connected:
-              user && getMetrics().connectionStates[namespace] === "connected",
+            connected: user && getMetrics().connectionStates[namespace] === 'connected',
           },
         },
         emit

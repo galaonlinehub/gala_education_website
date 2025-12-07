@@ -3,7 +3,7 @@ import { GoHome } from "react-icons/go";
 import { GrDocumentStore } from "react-icons/gr";
 import { IoDiamond } from "react-icons/io5";
 import { LiaSchoolSolid } from "react-icons/lia";
-import { MdEventAvailable, MdPayment } from "react-icons/md";
+import { MdEventAvailable, MdPayment, MdDescription } from "react-icons/md";
 
 export function getFooterLinks(t) {
   return {
@@ -62,6 +62,11 @@ export const adminLinks = [
     link: "/admin/subjects",
   },
   {
+    name: "Materials",
+    icon: MdDescription,
+    link: "/admin/materials",
+  },
+  {
     name: "News",
     icon: FaNewspaper,
     link: "/admin/news",
@@ -87,5 +92,3 @@ export const adminLinks = [
     link: "/admin/logs",
   },
 ];
-
-

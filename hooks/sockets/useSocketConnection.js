@@ -1,13 +1,15 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useMemo, useState } from 'react';
 
-import { USER_COOKIE_KEY } from "@/config/settings";
-import { state } from "@/services/socket/config";
-import {  getConnectionState,
+import { USER_COOKIE_KEY } from '@/config/settings';
+import { state } from '@/services/socket/config';
+import {
+  getConnectionState,
   getSocket,
   isHealthy,
-  onConnectionEvent, } from "@/services/socket/socket-api";
-import { cookieFn } from "@/utils/fns/client";
-import { decrypt } from "@/utils/fns/encryption";
+  onConnectionEvent,
+} from '@/services/socket/socket-api';
+import { cookieFn } from '@/utils/fns/client';
+import { decrypt } from '@/utils/fns/encryption';
 
 /**
  * Hook for managing socket connection status and optionally initializing a connection.
@@ -23,7 +25,7 @@ import { decrypt } from "@/utils/fns/encryption";
  * @returns {Object} Connection information: isConnected, socketId, state, isHealthy, lastError
  */
 export const useSocketConnection = ({
-  namespace = "default",
+  namespace = 'default',
   options = null,
   initialize = true,
   useInternalToken = false,
@@ -40,26 +42,36 @@ export const useSocketConnection = ({
 
   if (options && useInternalToken) {
     console.warn(
-      "[useSocketConnection] Both `options` and `useInternalToken` provided. Internal options may override the external ones."
+      '[useSocketConnection] Both `options` and `useInternalToken` provided. Internal options may override the external ones.'
     );
   }
 
   const computedOptions = useMemo(() => {
     if (!useInternalToken || !initialize) return options;
 
-    const token = decrypt(cookieFn.get(USER_COOKIE_KEY));
-    if (!token) {
-      console.error(
-        "[useSocketConnection] No token available for socket authentication"
-      );
+    const encryptedToken = cookieFn.get(USER_COOKIE_KEY);
+    console.log(
+      '[useSocketConnection] Encrypted token from cookie:',
+      encryptedToken ? 'EXISTS' : 'MISSING'
+    );
+
+    if (!encryptedToken) {
+      console.error('[useSocketConnection] No encrypted token found in cookies');
       return null;
     }
 
+    const token = decrypt(encryptedToken);
+    console.log('[useSocketConnection] Decrypted token:', token ? 'EXISTS' : 'DECRYPTION FAILED');
+
+    if (!token) {
+      console.error('[useSocketConnection] No token available for socket authentication');
+      return null;
+    }
 
     return {
       query: {
         ...(user?.id ? { user_id: user?.id } : {}),
-        ...(isDev ? { mode: "development" } : {}),
+        ...(isDev ? { mode: 'development' } : {}),
       },
       auth: { token },
       transportOptions: {
@@ -72,15 +84,13 @@ export const useSocketConnection = ({
     };
   }, [useInternalToken, user?.id, isDev, options, initialize]);
 
-
-
   useEffect(() => {
     const handleConnect = ({ namespace: ns, socketId }) => {
       if (ns === namespace) {
         setConnectionInfo((prev) => ({
           ...prev,
           isConnected: true,
-          state: "connected",
+          state: 'connected',
           isHealthy: true,
           socketId,
           lastError: null,
@@ -93,7 +103,7 @@ export const useSocketConnection = ({
         setConnectionInfo((prev) => ({
           ...prev,
           isConnected: false,
-          state: "disconnected",
+          state: 'disconnected',
           isHealthy: false,
           socketId: null,
           lastError: reason,
@@ -106,7 +116,7 @@ export const useSocketConnection = ({
         setConnectionInfo((prev) => ({
           ...prev,
           isConnected: false,
-          state: "error",
+          state: 'error',
           isHealthy: false,
           lastError: error.message || error,
         }));
@@ -114,15 +124,9 @@ export const useSocketConnection = ({
     };
 
     // Subscribe to socket events
-    const cleanupConnect = onConnectionEvent(
-      "connection:connected",
-      handleConnect
-    );
-    const cleanupDisconnect = onConnectionEvent(
-      "connection:disconnected",
-      handleDisconnect
-    );
-    const cleanupError = onConnectionEvent("connection:error", handleError);
+    const cleanupConnect = onConnectionEvent('connection:connected', handleConnect);
+    const cleanupDisconnect = onConnectionEvent('connection:disconnected', handleDisconnect);
+    const cleanupError = onConnectionEvent('connection:error', handleError);
 
     let socket = null;
 
@@ -137,7 +141,7 @@ export const useSocketConnection = ({
       setConnectionInfo((prev) => ({
         ...prev,
         isConnected: socket.connected,
-        state: socket.connected ? "connected" : "disconnected",
+        state: socket.connected ? 'connected' : 'disconnected',
         isHealthy: isHealthy(namespace),
         socketId: socket.id,
       }));
@@ -145,13 +149,11 @@ export const useSocketConnection = ({
       setConnectionInfo((prev) => ({
         ...prev,
         isConnected: false,
-        state: "disconnected",
+        state: 'disconnected',
         isHealthy: false,
         socketId: null,
         lastError:
-          computedOptions === null && useInternalToken
-            ? "No token available"
-            : prev.lastError,
+          computedOptions === null && useInternalToken ? 'No token available' : prev.lastError,
       }));
     }
 
@@ -163,12 +165,12 @@ export const useSocketConnection = ({
       // Optional: Disconnect socket on unmount
       // if (socket && initialize) socket.disconnect();
 
-   if (socket && initialize) {
-      console.log(`Cleaning and closing namespace ${namespace}`)
-      socket.disconnect();
-      state.connections.delete(namespace);
+      if (socket && initialize) {
+        console.log(`Cleaning and closing namespace ${namespace}`);
+        socket.disconnect();
+        state.connections.delete(namespace);
+      }
     };
-   };
   }, [namespace, computedOptions, initialize, options, useInternalToken]);
 
   return connectionInfo;
