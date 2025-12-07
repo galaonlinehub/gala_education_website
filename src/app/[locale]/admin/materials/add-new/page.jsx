@@ -101,8 +101,13 @@ function AddMaterial() {
     formData.append('subject_id', data.subject_id);
     formData.append('file', file);
 
-    if (data.type === 'notes' && data.topic_id) {
-      formData.append('topic_id', data.topic_id);
+    if (data.type === 'notes') {
+      if (data.grade_level_id) {
+        formData.append('grade_level_id', data.grade_level_id);
+      }
+      if (data.topic_id) {
+        formData.append('topic_id', data.topic_id);
+      }
     }
 
     const response = await apiPost('study-materials', formData, {
@@ -216,7 +221,6 @@ function AddMaterial() {
           )}
         </div>
 
-        {/* Grade Level and Topic - Only show if type is "notes" (not for video or past_paper) */}
         {materialType === 'notes' && (
           <>
             {/* Grade Level */}
@@ -332,7 +336,7 @@ function AddMaterial() {
             type="primary"
             htmlType="submit"
             loading={mutation.isPending}
-            className="bg-blue-500"
+            className="bg-[#001840]! hover:bg-[#001840]/90!"
           >
             {mutation.isPending ? 'Creating...' : 'Create Material'}
           </Button>
