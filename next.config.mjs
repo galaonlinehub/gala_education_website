@@ -15,7 +15,7 @@ const pwaConfig = withPWA({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
-  
+
   images: {
     remotePatterns: [
       {
@@ -23,20 +23,20 @@ const nextConfig = {
         hostname: 'source.unsplash.com'
       },
       {
-        protocol: "https",  
+        protocol: "https",
         hostname: "galaweb.galahub.tz",
       },
       {
-        protocol:"https",
-        hostname:"covers.openlibrary.org"
+        protocol: "https",
+        hostname: "covers.openlibrary.org"
       }
     ]
   },
   productionBrowserSourceMaps: false,
 
-  
 
-  
+
+
 };
 
 export default pwaConfig(withNextIntlPlugin(nextConfig));
