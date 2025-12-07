@@ -1,22 +1,22 @@
-"use client";
+'use client';
 
-import { Drawer } from "antd";
-import {  useTheme } from "antd-style";
-import { useTranslations } from "next-intl";
-import React, { useEffect } from "react";
+import { Drawer } from 'antd';
+import { useTheme } from 'antd-style';
+import { useTranslations } from 'next-intl';
+import { useEffect } from 'react';
 
-import { TopicCard, TopicCardSkeleton } from "@/components/ui/TopicCard";
-import { useSearch } from "@/hooks/data/useSearch";
-import { usePaySteps } from "@/store/pay";
-import { useSearchResult } from "@/store/search_result";
-import { useNewClass } from "@/store/student/class";
-import { useEnrollMe } from "@/store/student/useEnrollMe";
+import { TopicCard, TopicCardSkeleton } from '@/components/ui/TopicCard';
+import { useSearch } from '@/hooks/data/useSearch';
+import { usePaySteps } from '@/store/pay';
+import { useSearchResult } from '@/store/search_result';
+import { useNewClass } from '@/store/student/class';
+import { useEnrollMe } from '@/store/student/useEnrollMe';
 
-import { Payment } from "../pay/Payment";
+import { Payment } from '../pay/Payment';
 import {
   InstructorSearchResult,
   InstructorSearchResultSkeleton,
-} from "../ui/InstructorSearchResult";
+} from '../ui/InstructorSearchResult';
 
 // const useStyle = createStyles(({ token }) => ({
 //   "my-drawer-body": {
@@ -52,14 +52,14 @@ const NewClass = () => {
 
   useEffect(() => {
     if (openNewClass) {
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = "auto";
+      document.body.style.overflow = 'auto';
     }
 
     return () => {
-      document.body.style.overflow = "auto";
-      document.body.style.filter = "none";
+      document.body.style.overflow = 'auto';
+      document.body.style.filter = 'none';
     };
   }, [openNewClass]);
 
@@ -76,16 +76,17 @@ const NewClass = () => {
 
   const drawerStyles = {
     mask: {
-      backdropFilter: "blur(10px)",
+      backdropFilter: 'blur(10px)',
     },
     content: {
-      boxShadow: "-10px 0 10px #666",
+      boxShadow: '-10px 0 10px #666',
     },
     header: {
       borderBottom: `1px solid ${token.colorPrimary}`,
     },
     body: {
       fontSize: token.fontSizeLG,
+      padding: 0,
     },
     footer: {
       borderTop: `1px solid ${token.colorBorder}`,
@@ -102,19 +103,16 @@ const NewClass = () => {
         onClose={onClose}
         open={openNewClass}
         styles={drawerStyles}
-        bodyStyle={{ padding: 0 }}
       >
-        {selectedItemId.type === "topic" && !enrollMe && (
+        {selectedItemId.type === 'topic' && !enrollMe && (
           <>
             {isFetchingResults
               ? [1, 2, 3].map((i) => <TopicCardSkeleton key={i} />)
-              : detailedResults.map((c, idx) => (
-                <TopicCard key={idx} classInfo={c} />
-              ))}
+              : detailedResults.map((c, idx) => <TopicCard key={idx} classInfo={c} />)}
           </>
         )}
 
-        {selectedItemId.type === "instructor" && !enrollMe && (
+        {selectedItemId.type === 'instructor' && !enrollMe && (
           <>
             {isFetchingResults ? (
               <InstructorSearchResultSkeleton />

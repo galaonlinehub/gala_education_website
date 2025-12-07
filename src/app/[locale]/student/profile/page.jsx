@@ -25,7 +25,7 @@ import SlickSpinner from "@/components/ui/loading/template/SlickSpinner";
 import { img_base_url } from "@/config/settings";
 import { useUser } from "@/hooks/data/useUser";
 import { useDevice } from "@/hooks/misc/useDevice";
-import { apiGet, apiPut } from "@/services/api/api_service";
+import { apiGet, apiPost, apiPut } from "@/services/api/api_service";
 import { useSchoolPartnerStore } from "@/store/student/schoolPartnerStore";
 import { LuTimerReset } from "react-icons/lu";
 
@@ -58,7 +58,7 @@ const StudentProfile = () => {
 
   const updateProfilePictureMutation = useMutation({
     mutationFn: async (data) => {
-    await apiPut("/update-user", data, {
+    await apiPost("/update-user", data, {
         "Content-Type": "multipart/form-data",
       });
     },

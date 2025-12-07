@@ -1,13 +1,13 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
-import { Select } from 'antd';
-import { LuChevronDown } from 'react-icons/lu';
-import { useLocale, useTranslations } from 'next-intl';
-import { useRouter, usePathname } from '@/src/i18n/navigation';
+import { usePathname, useRouter } from '@/src/i18n/navigation';
 import TzFlag from '@/utils/vector-svg/flags/TzFlag';
 import UkFlag from '@/utils/vector-svg/flags/UkFlag';
+import { Select } from 'antd';
 import clsx from 'clsx';
+import { useLocale, useTranslations } from 'next-intl';
+import { useMemo, useState } from 'react';
+import { LuChevronDown } from 'react-icons/lu';
 
 const LanguageSwitcher = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -58,7 +58,7 @@ const LanguageSwitcher = () => {
           'language-switcher-dropdown !min-w-[170px] !rounded-xl !p-1 [&_.ant-select-item-option]:!rounded-lg [&_.ant-select-item-option-selected]:!bg-gray-100 [&_.ant-select-item-option]:hover:!bg-gray-50',
       }}
       popupMatchSelectWidth={false}
-      onDropdownOpenChange={(open) => setIsDropdownOpen(open)}
+      onOpenChange={(open) => setIsDropdownOpen(open)}
       optionRender={({ data }) => {
         const FlagComponent = data.flag;
         return (

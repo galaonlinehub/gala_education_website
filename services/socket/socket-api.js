@@ -1,38 +1,44 @@
 // src/services/socket/socket-api.js
-import { io } from "socket.io-client";
 
-import { state, createConnection, eventEmitter, queueMessage, processQueuedMessages, setupConnectionHandlers } from "./config";
+import { createConnection, eventEmitter, queueMessage, state } from './config';
 
 const listenerRegistry = new Map();
 
-export const getSocket = (namespace = "default", options = {}) => {
+export const getSocket = (namespace = 'default', options = {}) => {
   const existing = state.connections.get(namespace);
 
-  if (!existing && options?.auth?.token) {
+  console.log(`[getSocket] namespace: ${namespace}, existing: ${!!existing}, options:`, options);
+
+  if (!existing && Object.keys(options).length > 0) {
+    console.log(`[getSocket] Creating new connection for ${namespace}`);
     return createConnection(namespace, options);
+  }
+
+  if (!existing) {
+    console.warn(`[getSocket] No existing connection and no options provided for ${namespace}`);
   }
 
   return existing;
 };
 
 export const emit = (namespace, event, data, options = {}) => {
-  const { priority = "normal" } = options;
+  const { priority = 'normal' } = options;
   const socket = getSocket(namespace);
   const connectionState = state.connectionStates.get(namespace);
 
-  if (state.circuitBreaker.state === "OPEN") {
+  if (state.circuitBreaker.state === 'OPEN') {
     console.warn(`Circuit breaker is OPEN for ${namespace}. Message queued.`);
     queueMessage(namespace, event, data, priority);
     return false;
   }
 
-  if (connectionState === "connected" && socket) {
+  if (connectionState === 'connected' && socket) {
     try {
       socket.emit(event, data);
       state.metrics.messagesSent++;
       return true;
     } catch (error) {
-      console.error("Socket emit error:", error);
+      console.error('Socket emit error:', error);
       queueMessage(namespace, event, data, priority);
       return false;
     }
@@ -76,10 +82,7 @@ export const disconnect = (namespace) => {
     state.connections.delete(namespace);
     state.messageQueues.delete(namespace);
     state.connectionStates.delete(namespace);
-    state.metrics.activeConnections = Math.max(
-      0,
-      state.metrics.activeConnections - 1
-    );
+    state.metrics.activeConnections = Math.max(0, state.metrics.activeConnections - 1);
 
     // Clean up all listeners for this namespace
     for (const [key, { cleanup }] of listenerRegistry) {
@@ -92,14 +95,12 @@ export const disconnect = (namespace) => {
 };
 
 export const getConnectionState = (namespace) => {
-  return state.connectionStates.get(namespace) || "disconnected";
+  return state.connectionStates.get(namespace) || 'disconnected';
 };
 
 export const isHealthy = (namespace) => {
   const connectionState = state.connectionStates.get(namespace);
-  return (
-    connectionState === "connected" && state.circuitBreaker.state !== "OPEN"
-  );
+  return connectionState === 'connected' && state.circuitBreaker.state !== 'OPEN';
 };
 
 export const getMetrics = () => {
@@ -107,10 +108,7 @@ export const getMetrics = () => {
     ...state.metrics,
     connectionStates: Object.fromEntries(state.connectionStates),
     queueSizes: Object.fromEntries(
-      Array.from(state.messageQueues.entries()).map(([ns, queue]) => [
-        ns,
-        queue.length,
-      ])
+      Array.from(state.messageQueues.entries()).map(([ns, queue]) => [ns, queue.length])
     ),
     circuitBreakerState: state.circuitBreaker.state,
     listenerCount: listenerRegistry.size,
@@ -133,8 +131,8 @@ export const offConnectionEvent = (event, callback) => {
   eventEmitter.off(event, callback);
 };
 
-if (typeof window !== "undefined") {
-  window.addEventListener("beforeunload", () => {
+if (typeof window !== 'undefined') {
+  window.addEventListener('beforeunload', () => {
     state.connections.forEach((socket, namespace) => {
       disconnect(namespace);
     });
