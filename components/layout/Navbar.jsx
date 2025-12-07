@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
+import { usePathname } from 'next/navigation';
 import React, { useState } from 'react';
 import { LuMenu } from 'react-icons/lu';
 import ChooseAccont from '@/components/ui/auth/signup/ChooseAccount';
@@ -14,9 +15,15 @@ import { Signout } from '../ui/auth/signup/Signout';
 import LanguageSwitcher from './LanguageSwitcher';
 
 const Navbar = () => {
+  const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { user } = useUser();
   const { width } = useDevice();
+
+  // Hide navbar on admin routes
+  if (pathname?.includes('/admin')) {
+    return null;
+  }
 
   const { setSubscribeOpen } = useSubscribeStore();
 
