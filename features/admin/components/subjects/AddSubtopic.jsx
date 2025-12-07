@@ -1,3 +1,4 @@
+"use client";
 import { Input } from "antd";
 import React from "react";
 import { useFormContext } from "react-hook-form";
@@ -21,4 +22,3 @@ function AddSubtopic({ topicIndex, subtopicIndex, removeSubtopic }) {
 }
 
 export default AddSubtopic;
-
