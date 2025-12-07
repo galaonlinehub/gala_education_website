@@ -63,9 +63,42 @@ function Materials() {
       sortable: true,
     },
     {
+      name: 'Title',
+      selector: (row) => row.title || '-',
+      sortable: true,
+      width: '200px',
+      minWidth: '150px',
+      cell: (row) => (
+        <div style={{ width: '100%', maxWidth: '200px' }}>
+          {row.title ? (
+            <span
+              className={`font-medium ${
+                row.type === 'past_paper' ? 'text-[#001840]' : 'text-gray-800'
+              }`}
+              title={row.title}
+              style={{
+                display: 'block',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+                width: '100%',
+              }}
+            >
+              {row.title}
+            </span>
+          ) : (
+            <span className="text-gray-400">-</span>
+          )}
+        </div>
+      ),
+      wrap: false,
+    },
+    {
       name: 'Subject',
       selector: (row) => row.subject?.name || '-',
       sortable: true,
+      width: '150px',
+      minWidth: '120px',
     },
     {
       name: 'Grade Level',

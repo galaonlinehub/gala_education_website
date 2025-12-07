@@ -1,34 +1,34 @@
 {
   "home_page": {
-    "new":"New",
-    "experience_the_future_of_learning":"Experience the future of learning with a",
-    "future_of_learning":"Future of learning with a",
-    "completely_free":"FREE",
-    "student_registration":"Student registration is completely",
-    "dont_wait":"- don't wait, register now!",
-    "the_no_1_student_platform":"The #1 Tuition Platform",
-    "connecting_teacher_students":"Connecting Teachers & Students",
-    "digitally":"Digitally",
-    "gala_education_goal":"Gala Education brings teachers and students together on one powerful digital platform. Learn, teach, and succeed anytime, anywhere with personalized tuition designed for every learner.",
-    "become_student":"Become a Student",
-    "become_teacher":"Become a Tutor",
+    "new": "New",
+    "experience_the_future_of_learning": "Experience the future of learning with a",
+    "future_of_learning": "Future of learning with a",
+    "completely_free": "FREE",
+    "student_registration": "Student registration is completely",
+    "dont_wait": "- don't wait, register now!",
+    "the_no_1_student_platform": "The #1 Tuition Platform",
+    "connecting_teacher_students": "Connecting Teachers & Students",
+    "digitally": "Digitally",
+    "gala_education_goal": "Gala Education brings teachers and students together on one powerful digital platform. Learn, teach, and succeed anytime, anywhere with personalized tuition designed for every learner.",
+    "become_student": "Become a Student",
+    "become_teacher": "Become a Tutor",
 
-    "featured_press":"Featured Press",
-    "view_all_press":"View All Press",
+    "featured_press": "Featured Press",
+    "view_all_press": "View All Press",
 
-    "trusted_by":"Trusted By",
-    "best_platform":"Best Platform",
-    "why_us":"Why Choose Us",
-    "online_teaching_learning":"Online Teaching and Learning",
-    "gala_1_to_6":"Gala Education connects teachers and students in live virtual classrooms, delivering expert tuition aligned with Tanzania's national curriculum from Standard 1 to Form 6.",
-    "gala_assistant":"GalaAI - Your Academic Assistant",
-    "gala_assistant_description":"GalaAI, our academic assistant, provides personalized tutoring within the system and is also accessible offline via SMS, ensuring support even in remote areas without internet.",
+    "trusted_by": "Trusted By",
+    "best_platform": "Best Platform",
+    "why_us": "Why Choose Us",
+    "online_teaching_learning": "Online Teaching and Learning",
+    "gala_1_to_6": "Gala Education connects teachers and students in live virtual classrooms, delivering expert tuition aligned with Tanzania's national curriculum from Standard 1 to Form 6.",
+    "gala_assistant": "GalaAI - Your Academic Assistant",
+    "gala_assistant_description": "GalaAI, our academic assistant, provides personalized tutoring within the system and is also accessible offline via SMS, ensuring support even in remote areas without internet.",
 
-    "gala_online_library":"Gala Online Library",
-    "gala_online_library_description":"Teachers get access to ready teaching resources, while students benefit from textbooks, storybooks, and study materials for self-paced learning and revision.",
+    "gala_online_library": "Gala Online Library",
+    "gala_online_library_description": "Teachers get access to ready teaching resources, while students benefit from textbooks, storybooks, and study materials for self-paced learning and revision.",
 
-    "affordable_empowering":"Affordable and Empowering",
-    "affordable_empowering_description":"Gala Education makes quality tuition affordable for students, while giving teachers the chance to earn income through flexible online self-employment.",
+    "affordable_empowering": "Affordable and Empowering",
+    "affordable_empowering_description": "Gala Education makes quality tuition affordable for students, while giving teachers the chance to earn income through flexible online self-employment.",
 
     "home": "Home",
     "student": "Student",
@@ -300,7 +300,7 @@
     "chats": "Chats",
     "subscriptions": "Subscriptions",
     "gala_ai": "GalaAI",
-    "library": "Library",
+    "library": "Learning Resources",
     "pending": "Pending",
     "classes": "Classes",
     "attendance": "Attendance"
@@ -333,9 +333,7 @@
     "students": "Students",
     "action": "Action",
     "view": "View",
-    "welcome_back":"Welcome Back"
-
-
+    "welcome_back": "Welcome Back"
   },
 
   "class_creation": {
@@ -442,10 +440,10 @@
     "join_live_class": "Join Live Class",
     "join_live_class_desc": "You're about to join a live interactive session. Make sure your camera and microphone are working properly.",
     "confirm_and_join": "Confirm & Join",
-    "no_pending_lesson_for_selected_subject" :"No pending classes for selected subject",
+    "no_pending_lesson_for_selected_subject": "No pending classes for selected subject",
     "no_completed_lesson_for_selected_subject": "No completed classes for selected subject",
     "no_canceled_lesson_for_selected_subject": "No canceled classes for selected subject",
-    "for_selected_subject" :" for selected subject",
+    "for_selected_subject": " for selected subject",
     "date": "Date",
     "time": "Time"
   },
@@ -884,34 +882,33 @@
   },
 
   "teacher_attendance": {
-    "teacher_attendance_dashboard":"Teacher Attendance Dashboard",
-    "lessons_taught":"Lessons taught",
-    "avg_attendance":"Avg. Attendance",
-    "excellent":"Excellent",
-    "search_lesson_topic_subtopic":"Search by lesson, topic or subtopic....",
-    "all_topics":"All Topics",
-    "date":"Date",
-    "lesson":"Lesson",
-    "topic":"Topic",
-    "subtopic":"Subtopic",
-    "attendance_time":"Attendance Time",
+    "teacher_attendance_dashboard": "Teacher Attendance Dashboard",
+    "lessons_taught": "Lessons taught",
+    "avg_attendance": "Avg. Attendance",
+    "excellent": "Excellent",
+    "search_lesson_topic_subtopic": "Search by lesson, topic or subtopic....",
+    "all_topics": "All Topics",
+    "date": "Date",
+    "lesson": "Lesson",
+    "topic": "Topic",
+    "subtopic": "Subtopic",
+    "attendance_time": "Attendance Time",
     "completion": "Completion",
     "good": "Good",
     "needs_improvement": "Needs Improvement"
-
   },
 
-  "student_attendance" :{
-    "total_lessons":"Total Lessons",
-    "total_hours":"Total Hours",
-    "avg_time_per_lesson":"Avg Time/Lesson",
-    "lesson_attendance_details":"Lesson Attendance Details",
-    "lesson":"Lesson",
-    "topic":"Topic",
-    "subtopic":"Subtopic",
-    "date":"Date",
-    "time_spent":"Time Spent",
-    "no_attendance_data":"No attendance data available",
-    "student_attendance_dashboard":"Student Attendance Dashboard"
+  "student_attendance": {
+    "total_lessons": "Total Lessons",
+    "total_hours": "Total Hours",
+    "avg_time_per_lesson": "Avg Time/Lesson",
+    "lesson_attendance_details": "Lesson Attendance Details",
+    "lesson": "Lesson",
+    "topic": "Topic",
+    "subtopic": "Subtopic",
+    "date": "Date",
+    "time_spent": "Time Spent",
+    "no_attendance_data": "No attendance data available",
+    "student_attendance_dashboard": "Student Attendance Dashboard"
   }
 }

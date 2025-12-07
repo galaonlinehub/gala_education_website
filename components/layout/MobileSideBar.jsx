@@ -110,7 +110,7 @@ const MobileSideBar = ({ isOpen, onClose }) => {
                       "flex items-center gap-4 py-2 px-2 rounded-lg transition-colors",
                       isActive
                         ? "bg-[#001840] text-white"
-                        : "hover:bg-blue-950/20 hover:text-black",
+                        : "text-black hover:bg-blue-950/20 hover:text-black",
                       isDisabled
                         ? "text-gray-400 cursor-not-allowed hover:bg-transparent hover:text-gray-400"
                         : ""

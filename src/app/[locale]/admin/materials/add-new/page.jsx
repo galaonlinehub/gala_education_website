@@ -1,7 +1,7 @@
 'use client';
 import { FilePdfOutlined } from '@ant-design/icons';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Button, message, Select, Upload } from 'antd';
+import { Button, Input, message, Select, Upload } from 'antd';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -28,6 +28,7 @@ function AddMaterial() {
       subject_id: '',
       grade_level_id: '',
       topic_id: '',
+      title: '',
     },
   });
 
@@ -101,6 +102,11 @@ function AddMaterial() {
     formData.append('subject_id', data.subject_id);
     formData.append('file', file);
 
+    // Add title if provided (especially for past_paper)
+    if (data.title) {
+      formData.append('title', data.title);
+    }
+
     if (data.type === 'notes') {
       if (data.grade_level_id) {
         formData.append('grade_level_id', data.grade_level_id);
@@ -168,9 +174,10 @@ function AddMaterial() {
                 value={field.value || undefined}
                 onChange={(value) => {
                   field.onChange(value);
-                  // Reset topic, grade level, and file when type changes
+                  // Reset topic, grade level, title, and file when type changes
                   setValue('topic_id', '');
                   setValue('grade_level_id', '');
+                  setValue('title', '');
                   setFileList([]); // Clear file when type changes
                 }}
                 status={errors.type ? 'error' : ''}
@@ -220,6 +227,36 @@ function AddMaterial() {
             <p className="text-red-500 text-xs mt-1">{errors.subject_id.message}</p>
           )}
         </div>
+
+        {/* Title - Required for past_paper, optional for others */}
+        {materialType && (
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Title {materialType === 'past_paper' && <span className="text-red-500">*</span>}
+            </label>
+            <Controller
+              name="title"
+              control={control}
+              rules={{
+                required:
+                  materialType === 'past_paper' ? 'Title is required for past papers' : false,
+              }}
+              render={({ field }) => (
+                <Input
+                  placeholder={
+                    materialType === 'past_paper'
+                      ? "Enter past paper title (e.g., '2023 Mathematics Paper 1')"
+                      : 'Enter material title (optional)'
+                  }
+                  value={field.value}
+                  onChange={field.onChange}
+                  status={errors.title ? 'error' : ''}
+                />
+              )}
+            />
+            {errors.title && <p className="text-red-500 text-xs mt-1">{errors.title.message}</p>}
+          </div>
+        )}
 
         {materialType === 'notes' && (
           <>
