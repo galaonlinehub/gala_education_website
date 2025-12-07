@@ -1,8 +1,8 @@
-import { Drawer, List, Typography } from "antd";
-import clsx from "clsx";
-import { useTranslations } from "next-intl";
-import { useState } from "react";
-import { LuBell, LuBellRing } from "react-icons/lu";
+import { Drawer, List, Typography } from 'antd';
+import clsx from 'clsx';
+import { useTranslations } from 'next-intl';
+import { useState } from 'react';
+import { LuBell, LuBellRing } from 'react-icons/lu';
 
 // const notifications = Array.from({ length: 30 }, (_, index) => ({
 //   id: index,
@@ -34,10 +34,10 @@ export default function Updates({ children }) {
             </Typography.Text>
             <Typography.Link
               className={clsx(
-                "!text-sm",
+                '!text-sm',
                 updates.length > 0
-                  ? "!text-blue-600 hover:!text-blue-800"
-                  : "!text-gray-400 !cursor-not-allowed"
+                  ? '!text-blue-600 hover:!text-blue-800'
+                  : '!text-gray-400 !cursor-not-allowed'
               )}
             >
               {notift('clear_all')}
@@ -45,14 +45,14 @@ export default function Updates({ children }) {
           </div>
         }
         placement="right"
-        width={600}
+        size={600}
         onClose={closeDrawer}
         open={open}
         closable={true}
         className="rounded-r-lg"
         styles={{
-          header: { background: "#f8fafc", borderBottom: "1px solid #e5e7eb" },
-          body: { background: "#ffffff" },
+          header: { background: '#f8fafc', borderBottom: '1px solid #e5e7eb' },
+          body: { background: '#ffffff' },
         }}
       >
         {updates.length === 0 ? (
@@ -91,18 +91,17 @@ export default function Updates({ children }) {
             dataSource={updates}
             renderItem={(item) => (
               <List.Item
-                className={`p-4 border-b border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer !px-6 ${item.unread ? "bg-blue-50" : "bg-white"
-                  }`}
-             
+                className={`p-4 border-b border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer !px-6 ${
+                  item.unread ? 'bg-blue-50' : 'bg-white'
+                }`}
               >
                 <div className="flex items-start space-x-3">
                   <LuBellRing className="text-lg text-blue-600 mt-1" />
                   <div className="flex-1">
                     <Typography.Text
-                      className={`text-sm ${item.unread
-                          ? "font-medium text-gray-900"
-                          : "text-gray-700"
-                        }`}
+                      className={`text-sm ${
+                        item.unread ? 'font-medium text-gray-900' : 'text-gray-700'
+                      }`}
                     >
                       {item.message}
                     </Typography.Text>

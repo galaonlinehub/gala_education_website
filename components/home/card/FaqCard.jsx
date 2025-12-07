@@ -1,8 +1,7 @@
-"use client";
-import { Collapse } from "antd";
-import clsx from "clsx";
-import { IoIosArrowDropdownCircle } from "react-icons/io";
-
+'use client';
+import { Collapse } from 'antd';
+import clsx from 'clsx';
+import { IoIosArrowDropdownCircle } from 'react-icons/io';
 
 export const FaqCard = ({ faqQn, faqAns }) => {
   const customExpandIcon = ({ isActive }) => (
@@ -28,7 +27,7 @@ export const FaqCard = ({ faqQn, faqAns }) => {
     <Collapse
       defaultActiveKey={[]}
       expandIcon={customExpandIcon}
-      expandIconPosition={'end'}
+      expandIconPlacement="end"
       className="my-3"
       items={items}
     />

@@ -7,7 +7,7 @@ import { Link } from "@/src/i18n/navigation";
 
 export default function Error({ error }) {
   return (
-    <main className="flex flex-col items-center justify-cente w-full overflow-hidden pt-20 px-3">
+    <main className="flex flex-col items-center justify-cente w-full md:w-3/4 mx-auto overflow-hidden pt-20 px-3">
       <div className="space-y-8 text-center">
         <div className="relative">
           <div className="w-24 h-24 bg-red-100 rounded-full mx-auto flex items-center justify-center">
