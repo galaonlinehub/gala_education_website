@@ -84,9 +84,8 @@ export const createConnection = (namespace = 'default', options = {}) => {
     ...options,
   };
 
-  // Ensure namespace starts with / for socket.io
   const formattedNamespace =
-    namespace === 'default' ? '' : namespace.startsWith('/') ? namespace : `/${namespace}`;
+    namespace === 'default' ? '' : namespace.startsWith('/') ? namespace.slice(1) : namespace;
   const socket = io(`${socket_base_url}${formattedNamespace}`, socketOptions);
 
   // Setup handlers using functional approach
