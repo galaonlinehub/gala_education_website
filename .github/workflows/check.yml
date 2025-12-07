@@ -24,15 +24,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2️⃣ Setup Node.js (without pnpm cache first)
+      # 2️⃣ Install pnpm
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
+
+      # 3️⃣ Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-
-      # 3️⃣ Install pnpm globally
-      - name: Install pnpm
-        run: npm install -g pnpm
+          cache: 'pnpm'
 
       # 4️⃣ Confirm Node and pnpm versions
       - name: Confirm Node and pnpm versions
@@ -40,16 +43,7 @@ jobs:
           node -v
           pnpm -v
 
-      # 5️⃣ Restore pnpm cache
-      - name: Restore pnpm cache
-        uses: actions/cache@v3
-        with:
-          path: ~/.pnpm-store
-          key: pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            pnpm-store-
-
-      # 6️⃣ Install dependencies
+      # 5️⃣ Install dependencies
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
