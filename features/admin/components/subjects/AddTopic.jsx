@@ -1,11 +1,11 @@
-import { Input } from "antd";
-import React from "react";
-import { useFieldArray, useFormContext } from "react-hook-form";
+'use client';
+import { Input } from 'antd';
+import { useFieldArray, useFormContext } from 'react-hook-form';
 
-import AddSubtopic from "./AddSubtopic";
+import AddSubtopic from './AddSubtopic';
 
 function AddTopic({ index, removeTopic, totalTopics }) {
-  const { control,setValue,getValues } = useFormContext();
+  const { control, setValue, getValues } = useFormContext();
   const { fields, append, remove } = useFieldArray({
     control,
     name: `topics.${index}.subtopics`,
@@ -15,15 +15,21 @@ function AddTopic({ index, removeTopic, totalTopics }) {
     <div className="border-b-[0.8px] border-gray-200 grid grid-cols-2 py-2 gap-2">
       <div className="text-sm col-span-2 font-bold text-gray-400">Topic {index + 1}</div>
       <Input {...useFormContext().register(`topics.${index}.title`)} placeholder="title" />
-      <Input {...useFormContext().register(`topics.${index}.description`)} placeholder="description" />
-      <Input {...useFormContext().register(`topics.${index}.gradeLevel`)} placeholder="grade level" />
+      <Input
+        {...useFormContext().register(`topics.${index}.description`)}
+        placeholder="description"
+      />
+      <Input
+        {...useFormContext().register(`topics.${index}.gradeLevel`)}
+        placeholder="grade level"
+      />
       <div />
       <div className="col-span-2 px-5">
         <div className="flex gap-2 items-center border-b-[1px] border-gray-200 w-full pb-2">
           <span className="text-xs font-semibold text-gray-400">Topic {index + 1} subtopics</span>
           <button
             type="button"
-            onClick={() => append({ title: "", description: "" })}
+            onClick={() => append({ title: '', description: '' })}
             className="rounded border-2 w-fit p-1 text-xs border-blue-500 text-blue-500 cursor-pointer"
           >
             + add subtopic
@@ -32,7 +38,11 @@ function AddTopic({ index, removeTopic, totalTopics }) {
         {fields.map((field, subIndex) => (
           <div key={field.id} className="flex items-center gap-x-2">
             <span className="text-gray-300">{subIndex + 1}. </span>
-            <AddSubtopic topicIndex={index} subtopicIndex={subIndex} removeSubtopic={() => remove(subIndex)} />
+            <AddSubtopic
+              topicIndex={index}
+              subtopicIndex={subIndex}
+              removeSubtopic={() => remove(subIndex)}
+            />
           </div>
         ))}
       </div>
@@ -40,7 +50,17 @@ function AddTopic({ index, removeTopic, totalTopics }) {
         {index === totalTopics - 1 && (
           <button
             type="button"
-            onClick={() => setValue("topics", [...getValues("topics"), { title: "", description: "", gradeLevel: "", subtopics: [{ title: "", description: "" }] }])}
+            onClick={() =>
+              setValue('topics', [
+                ...getValues('topics'),
+                {
+                  title: '',
+                  description: '',
+                  gradeLevel: '',
+                  subtopics: [{ title: '', description: '' }],
+                },
+              ])
+            }
             className="rounded border-2 w-fit p-2 text-xs border-blue-500 text-blue-500 cursor-pointer"
           >
             + add topic

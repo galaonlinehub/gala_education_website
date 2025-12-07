@@ -4,6 +4,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getLocale } from 'next-intl/server';
 import { Toaster } from 'react-hot-toast';
 import GoogleAnalyticsComponent from '@/components/analytics/GoogleAnalytics';
+import ConditionalMain from '@/components/layout/ConditionalMain';
 import JsonLd from '@/components/layout/JsonLD';
 import Navbar from '@/components/layout/Navbar';
 import QueryWrapper from '@/components/layout/QueryWrapper';
@@ -26,9 +27,9 @@ export default async function RootLayout({ children }) {
               <JsonLd />
               <Navbar />
               <GoogleAnalyticsComponent />
-              <main className="w-screen h-[calc(100vh-3rem)] overflow-y-scroll mt-[3rem] fixed">
+              <ConditionalMain>
                 {children}
-              </main>
+              </ConditionalMain>
             </AntdRegistry>
           </QueryWrapper>
           <Toaster position="top-center" reverseOrder={false} />
