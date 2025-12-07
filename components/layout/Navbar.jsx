@@ -26,7 +26,6 @@ const Navbar = () => {
   const navt = useTranslations('navbar');
   const navlinkt = useTranslations('nav_links');
 
-  // Hide navbar on admin routes
   if (pathname?.includes('/admin')) {
     return null;
   }

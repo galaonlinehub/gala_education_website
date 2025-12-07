@@ -99,7 +99,7 @@ const NewClass = () => {
     <>
       <Drawer
         title={navt('explore_variety')}
-        width={enrollMe ? 2220 : 824}
+        size={enrollMe ? 2220 : 824}
         onClose={onClose}
         open={openNewClass}
         styles={drawerStyles}
