@@ -1,6 +1,6 @@
 import React from "react";
 import { useRouter } from "next/navigation";
-import { FaEye, FaDownload } from "react-icons/fa";
+import { FaEye } from "react-icons/fa";
 
 export const ResourceCard = ({
   title,
@@ -50,20 +50,13 @@ export const ResourceCard = ({
       </div>
 
       {/* Actions */}
-      <div className="flex gap-3 mt-auto">
+      <div className="mt-auto">
         <button
           onClick={handleView}
-          className="flex-1 flex items-center justify-center gap-2 border border-gray-200 text-[#001840] py-2 rounded-lg text-sm font-bold hover:bg-gray-50 transition-colors"
+          className="w-full flex items-center justify-center gap-2 bg-[#001840] text-white py-2 rounded-lg text-sm font-bold hover:bg-blue-950 transition-colors"
         >
           <FaEye /> View
         </button>
-        <a
-          href={download_link || link}
-          download
-          className="flex-1 flex items-center justify-center gap-2 bg-[#001840] text-white py-2 rounded-lg text-sm font-bold hover:bg-blue-950 transition-colors"
-        >
-          <FaDownload /> Download
-        </a>
       </div>
     </div>
   );
