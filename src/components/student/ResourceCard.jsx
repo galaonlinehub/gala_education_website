@@ -26,13 +26,13 @@ export const ResourceCard = ({
         <span className="bg-gray-100 text-gray-700 text-xs font-bold px-2 py-1 rounded-md uppercase tracking-wide">
           {subject}
         </span>
-        <span className="text-xs text-blue-400 font-medium">
+        {/* <span className="text-xs text-blue-400 font-medium">
           {pages_duration}
-        </span>
+        </span> */}
       </div>
 
       {/* Main Content */}
-      <div className="mb-4 flex-grow">
+      <div className="mb-4 grow">
         <h3 className="text-base font-bold text-[#001840] mb-1 line-clamp-2">
           {title}
         </h3>
@@ -53,7 +53,7 @@ export const ResourceCard = ({
       <div className="mt-auto">
         <button
           onClick={handleView}
-          className="w-full flex items-center justify-center gap-2 bg-[#001840] text-white py-2 rounded-lg text-sm font-bold hover:bg-blue-950 transition-colors"
+          className="w-full flex items-center justify-center gap-2 bg-[#001840] text-white py-2 rounded-lg text-sm font-bold hover:bg-blue-950 transition-colors cursor-pointer"
         >
           <FaEye /> View
         </button>
